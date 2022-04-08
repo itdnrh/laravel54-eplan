@@ -369,12 +369,12 @@
                         </div><!-- /.box-footer -->
                     </form>
 
-                    @include('orders._assets-list')
-
                 </div><!-- /.box -->
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('orders._assets-list')
 
     </section>
 
