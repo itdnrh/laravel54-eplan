@@ -50,6 +50,7 @@
                                         name="year"
                                         ng-model="asset.year"
                                         class="form-control"
+                                        tabindex="1"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -100,7 +101,7 @@
                                             name="plan_no"
                                             ng-model="asset.plan_no"
                                             class="form-control"
-                                            tabindex="6">
+                                            tabindex="3">
                                     <span class="help-block" ng-show="checkValidate(asset, 'plan_no')">
                                         กรุณาระบุเลขที่
                                     </span>
@@ -117,7 +118,7 @@
                                         name="desc"
                                         ng-model="asset.desc"
                                         class="form-control pull-right"
-                                        tabindex="1">
+                                        tabindex="4">
                                     <span class="help-block" ng-show="checkValidate(asset, 'desc')">
                                         กรุณาระบุรายการ
                                     </span>
@@ -136,7 +137,7 @@
                                         name="spec"
                                         ng-model="asset.spec"
                                         class="form-control pull-right"
-                                        tabindex="1">
+                                        tabindex="5">
                                     <span class="help-block" ng-show="checkValidate(asset, 'spec')">
                                         กรุณาระบุสเปก
                                     </span>
@@ -172,7 +173,7 @@
                                             ng-model="asset.unit_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
+                                            tabindex="7">
                                         <option value="">-- เลือกหน่วย --</option>
 
                                         @foreach($units as $unit)
@@ -201,7 +202,7 @@
                                             name="amount"
                                             ng-model="asset.amount"
                                             class="form-control pull-right"
-                                            tabindex="5"
+                                            tabindex="8"
                                             ng-change="calculateSumPrice()" />
                                     <span class="help-block" ng-show="checkValidate(asset, 'amount')">
                                         @{{ formError.errors.amount[0] }}
@@ -218,7 +219,7 @@
                                             name="sum_price"
                                             ng-model="asset.sum_price"
                                             class="form-control pull-right"
-                                            tabindex="5" />
+                                            tabindex="9" />
                                     <span class="help-block" ng-show="checkValidate(asset, 'sum_price')">
                                         กรุณาระบุรวมเป็นเงิน
                                     </span>
@@ -236,7 +237,7 @@
                                         name="start_month"
                                         ng-model="asset.start_month"
                                         class="form-control"
-                                        tabindex="5"
+                                        tabindex="10"
                                     >
                                         <option value="">-- เลือกเดือน --</option>
                                         <option value="@{{ month.id }}" ng-repeat="month in monthLists">
@@ -257,7 +258,7 @@
                                             ng-model="asset.faction_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
-                                            tabindex="2"
+                                            tabindex="11"
                                             ng-change="onFactionSelected(asset.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
 
@@ -287,7 +288,7 @@
                                             ng-model="asset.depart_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
-                                            tabindex="2"
+                                            tabindex="12"
                                             ng-change="onDepartSelected(asset.depart_id)">
                                         <option value="">-- เลือกกลุ่มงาน --</option>
                                         <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
@@ -308,7 +309,7 @@
                                             ng-model="asset.division_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
+                                            tabindex="13">
                                         <option value="">-- เลือกงาน --</option>
                                         <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
                                             @{{ division.ward_name }}
@@ -331,7 +332,7 @@
                                         name="reason" 
                                         ng-model="asset.reason" 
                                         class="form-control"
-                                        tabindex="17"
+                                        tabindex="14"
                                     ></textarea>
                                     <span class="help-block" ng-show="checkValidate(asset, 'reason')">
                                         กรุณาระบุเหตุผล
@@ -348,7 +349,7 @@
                                         name="remark"
                                         ng-model="asset.remark"
                                         class="form-control"
-                                        tabindex="17"
+                                        tabindex="15"
                                     ></textarea>
                                     <span class="help-block" ng-show="checkValidate(asset, 'remark')">
                                         กรุณาระบุหมายเหตุ
