@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  web:
+    image: leandrosilva/php5.6-apache
+    container_name: assetapp
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+
+  db:
+    image: mariadb
+    container_name: assetdb
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+
+  myadmin:
+    image: phpmyadmin
+    container_name: assetm_myadmin
+    restart: always
+    ports:
+      - "8000:80"
+    depends_on: 
+      - db
+    environment:
+      PMA_HOST: db

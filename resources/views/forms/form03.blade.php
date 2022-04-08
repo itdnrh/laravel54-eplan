@@ -1,0 +1,174 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>แบบขอยกเลิกวันลา</title>
+        <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h2 style="margin: 0px; padding: 0px;">แบบขอยกเลิกวันลา</h2>
+            </div>
+            <div class="content">
+                <table style="width: 100%;">
+                    <tr style="height: 20px">
+                        <td style="width: 5%;"></td>
+                        <td style="width: 30%;"></td>
+                        <td style="width: 65%;" colspan="2">
+                            <p style="margin: 0 0 0 100px;">
+                                เขียนที่ <span style="margin: 0px;">{{ $places[$leave->leave_place] }}</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;"></td>
+                        <td style="width: 30%;"></td>
+                        <td style="width: 30%;" colspan="2">
+                            <p style="margin: 0 0 0 20px;">
+                                วันที่ <span style="margin-left: 10px;">{{ convDbDateToLongThDate($cancel->cancel_date) }}</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            เรื่อง <span style="margin-left: 10px;">ขอยกเลิกวัน{{ $leave->type->name }}</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            เรียน <span style="margin-left: 10px;">{{ $leave->leave_to }}</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p style="margin: 0 0 0 80px;">
+                                ตามที่ข้าพเจ้า 
+                                <span class="text-val" style="margin-right: 50px;">
+                                    {{ $leave->person->prefix->prefix_name.$leave->person->person_firstname. ' ' .$leave->person->person_lastname }}
+                                </span>
+                                ตำแหน่ง
+                                <span class="text-val">
+                                    {{ $leave->person->position->position_name }}{{ $leave->person->academic ? $leave->person->academic->ac_name : '' }}
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            สังกัด 
+                            <span class="text-val" style="margin-right: 10px;">
+                                โรงพยาบาลเทพรัตน์นครราชสีมา
+                            </span>
+                            <span>
+                                สำนักงานสาธารณสุขจังหวัดนครราชสีมา
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            ได้รับอนุญาตให้
+                            <span class="text-val" style="margin-right: 20px;">
+                                {{ $leave->type->name }}
+                            </span>
+                            ตั้งแต่วันที่
+                            <span class="text-val" style="margin-right: 20px;">
+                                {{ convDbDateToLongThDate($leave->start_date) }}
+                            </span>
+                            ถึงวันที่ 
+                            <span class="text-val">
+                                {{ convDbDateToLongThDate($leave->end_date) }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p style="text-indent: 80px">
+                                เนื่องจาก
+                                <span class="text-val">
+                                    {{ $cancel->reason }}
+                                </span>
+                            </p>
+                            จึงขอยกเลิกวัน
+                            <span class="text-val" style="margin-right: 10px;">{{ $leave->type->name }}</span>
+                            จำนวน <span class="text-val" style="margin-right: 10px;"> {{ $cancel->days }}  วัน</span>
+                            ตั้งแต่วันที่
+                            <span class="text-val" style="margin-right: 10px;">
+                                {{ convDbDateToLongThDate($cancel->start_date) }}
+                            </span>
+                            ถึงวันที่ 
+                            <span class="text-val">
+                                {{ convDbDateToLongThDate($cancel->end_date) }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                        <td colspan="2">
+                            <p style="margin: 10px 0 0 60px;">
+                                ขอแสดงความนับถือ
+                            </p>
+                            <p style="margin-left: 20px; margin-top: 10px;">
+                                (ลงชื่อ)<span class="dot">......................................................</span>
+                            </p>
+                            <p style="margin-left: 65px;">
+                                ( {{ $leave->person->prefix->prefix_name.$leave->person->person_firstname. ' ' .$leave->person->person_lastname }} )
+                            </p>
+                            <p style="margin-left: 20px;">
+                                ตำแหน่ง <span>{{ $leave->person->position->position_name }}{{ $leave->person->academic ? $leave->person->academic->ac_name : '' }}</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div style="margin-top: 0px;">
+                                <p>
+                                    ความเห็นของผู้บังคับบัญชา
+                                </p>
+                                <p>
+                                    <span class="dot">...............................................................................................................</span>
+                                </p>
+                                <p style="margin-left: 340px;">
+                                    (ลงชื่อ)<span class="dot">......................................................</span>
+                                </p>
+                                <p style="margin-left: 370px;">
+                                    (<span class="dot">......................................................</span>)
+                                </p>
+                                <p style="margin-left: 340px;">
+                                    ตำแหน่ง<span class="dot">......................................................</span>
+                                </p>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <p style="margin-left: 20px; font-weight: bold;">
+                                    คำสั่ง
+                                </p>
+                                <p style="margin-left: 20px;">
+                                    <span style="margin-right: 20px;">[&nbsp;&nbsp;] อนุญาต</span>
+                                    <span>[&nbsp;&nbsp;] ไม่อนุญาต</span>
+                                </p>
+                                <p>
+                                    <span class="dot">...............................................................................................................</span>
+                                </p>
+                                <p style="margin-left: 340px;">
+                                    (ลงชื่อ)<span class="dot">......................................................</span>
+                                </p>
+                                <p style="margin-left: 370px;">
+                                    (<span class="dot">......................................................</span>)
+                                </p>
+                                <p style="margin-left: 340px;">
+                                    ตำแหน่ง<span class="dot">......................................................</span>
+                                </p>
+                                <p style="margin-left: 360px;">
+                                    วันที่<span class="dot">......................................................</span>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

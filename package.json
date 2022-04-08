@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "node_modules/cross-env/bin/cross-env.js NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "node_modules/cross-env/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "devDependencies": {
+    "axios": "^0.15.2",
+    "bootstrap-sass": "^3.3.7",
+    "jquery": "^3.1.0",
+    "laravel-mix": "^0.5.0",
+    "lodash": "^4.16.2",
+    "vue": "^2.0.1"
+  },
+  "dependencies": {
+    "angular": "^1.8.2",
+    "angular-modal-service": "^0.12.1",
+    "angular-xeditable": "^0.8.0",
+    "angularjs-toaster": "^2.1.0",
+    "axios": "^0.16.2",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "fullcalendar": "3.10.1",
+    "ng-tags-input": "3.2.0",
+    "underscore": "^1.8.3",
+    "moment": "^2.18.1",
+    "jquery": "3.5.1",
+    "jquery-ui-dist": "1.12.1",
+    "bootstrap": "3.4.1",
+    "select2": "~4.0",
+    "bootstrap-datepicker": "^1.9.0",
+    "bootstrap3-wysihtml5-bower": "^0.3.3",
+    "daterangepicker": "^1.6.0"
+  }
+}
