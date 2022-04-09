@@ -108,7 +108,7 @@
 						Auth::user()->memberOf->duty_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
-						<li class="treeview" ng-class="{ 'menu-open active': menu == 'approvals' }">
+						<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'approvals' }">
 							<a href="#">
 								<i class="fa fa-check-square-o"></i>
 								<span>การอนุมัติ</span>
@@ -116,7 +116,7 @@
 									<i class="fa fa-angle-left pull-right"></i>
 								</span>
 							</a>
-							<ul class="treeview-menu" ng-style="{ 'display': (menu == 'approvals') ? 'block' : 'none' }">
+							<ul class="treeview-menu" ng-style="{ 'display': (menu == 'approvals') ? 'block' : 'none' }"> -->
 								<!-- // Authorize เฉพาะหัวหน้ากลุ่มงาน -->
 								@if (
 									Auth::user()->person_id == '1300200009261' ||
@@ -155,8 +155,8 @@
 									</li> -->
 								@endif
 
-							</ul>
-						</li>
+							<!-- </ul>
+						</li> -->
 					@endif
 
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
