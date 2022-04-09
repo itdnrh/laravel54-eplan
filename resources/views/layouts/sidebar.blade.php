@@ -61,7 +61,7 @@
 						</ul>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': menu == 'suppoerts' }">
+					<li class="treeview" ng-class="{ 'menu-open active': menu == 'supports' }">
 						<a href="#">
 							<i class="fa fa-handshake-o"></i>
 							<span>ขอสนับสนุน</span>
@@ -71,12 +71,12 @@
 						</a>
 						<ul class="treeview-menu">
 							<li ng-class="{ 'active': submenu == 'list' }">
-								<a href="{{ url('suppoerts/list') }}">
+								<a href="{{ url('supports/list') }}">
 									<i class="fa fa-circle-o"></i> รายการขอสนับสนุน
 								</a>
 							</li>
 							<li ng-class="{ 'active': submenu == 'receive' }">
-								<a href="{{ url('suppoerts/receive') }}">
+								<a href="{{ url('supports/receive') }}">
 									<i class="fa fa-circle-o"></i> รับใบขอสนับสนุน
 								</a>
 							</li>

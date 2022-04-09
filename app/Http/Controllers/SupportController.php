@@ -59,8 +59,8 @@ class SupportController extends Controller
 
     public function index()
     {
-        return view('orders.list', [
-            "suppliers" => Supplier::all()
+        return view('supports.list', [
+            // "suppliers" => Supplier::all()
         ]);
     }
 
