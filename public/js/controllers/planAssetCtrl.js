@@ -136,7 +136,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
         $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}`)
         .then(function(res) {
-            $scope.setLeaves(res);
+            $scope.setAssets(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -145,8 +145,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         });
     };
 
-    // TODO: Duplicated method
-    $scope.setLeaves = function(res) {
+    $scope.setAssets = function(res) {
         const { data, ...pager } = res.data.assets;
         $scope.assets = data;
         $scope.pager = pager;
@@ -158,7 +157,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.pager    = pager;
     };
 
-    // TODO: Duplicated method
     $scope.getDataWithURL = function(e, URL, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;

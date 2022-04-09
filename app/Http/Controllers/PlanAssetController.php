@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
+use App\Models\Plan;
 use App\Models\PlanAsset;
 use App\Models\AssetCategory;
 use App\Models\Unit;
@@ -77,26 +78,6 @@ class PlanAssetController extends Controller
         }
     }
 
-    private function isDateExistsValidation($dbDate, $column)
-    {
-        list($year, $month, $day) = explode('-', $dbDate);
-        $sdate = $year.'-'.$month.'-01';
-        $edate = date('Y-m-t', strtotime($sdate));
-
-        $leaves = Leave::where('leave_person', Auth::user()->person_id)
-                    ->whereBetween($column, [$sdate, $edate])
-                    ->get();
-
-        $existed = 0;
-        foreach($leaves as $leave) {
-            if ($leave->start_date <= $dbDate && $leave->end_date >= $dbDate) {
-                $existed++;
-            }
-        }
-
-        return $existed > 0;
-    }
-
     public function index()
     {
         return view('assets.list', [
@@ -132,7 +113,7 @@ class PlanAssetController extends Controller
         $qsName     = $req->get('name');
         $qsMonth    = $req->get('month');
 
-        $assets = PlanAsset::when(count($conditions) > 0, function($q) use ($conditions) {
+        $assets = Plan::when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
                     ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
@@ -141,7 +122,8 @@ class PlanAssetController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->with('unit','category','depart','division')
+                    ->with('budget','depart','division')
+                    ->with('asset','asset.unit','asset.category')
                     ->when(!empty($qsMonth), function($q) use ($qsMonth) {
                         $sdate = $qsMonth. '-01';
                         $edate = date('Y-m-t', strtotime($sdate));

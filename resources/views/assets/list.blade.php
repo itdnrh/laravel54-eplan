@@ -115,15 +115,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, asset) in assets">
+                                <tr ng-repeat="(index, plan) in assets">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ asset.plan_no }}</td>
-                                    <!-- <td style="text-align: center;">@{{ asset.year }}</td> -->
+                                    <td style="text-align: center;">@{{ plan.plan_no }}</td>
+                                    <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <p style="margin: 0;">@{{ asset.category.category_name }}</p>
-                                        @{{ asset.desc }} จำนวน 
-                                        <span>@{{ asset.amount | currency:'':0 }}</span>
-                                        <span>@{{ asset.unit.name }}</span>
+                                        <p style="margin: 0;">@{{ plan.asset.category.category_name }}</p>
+                                        @{{ plan.asset.desc }} จำนวน 
+                                        <span>@{{ plan.asset.amount | currency:'':0 }}</span>
+                                        <span>@{{ plan.asset.unit.name }}</span>
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                             class="btn btn-default btn-xs" 
                                             title="ไฟล์แนบ"
@@ -133,44 +133,44 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ asset.price_per_unit | currency:'':0 }}
+                                        @{{ plan.asset.price_per_unit | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ asset.sum_price | currency:'':0 }}
+                                        @{{ plan.asset.sum_price | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        <p style="margin: 0;">@{{ asset.depart.depart_name }}</p>
-                                        <p style="margin: 0;">@{{ asset.division.ward_name }}</p>
+                                        <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
+                                        <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
                                     </td>
                                     <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="asset.status == 0">
+                                        <span class="label label-primary" ng-show="plan.status == 0">
                                             อยู่ระหว่างดำเนินการ
                                         </span>
-                                        <span class="label label-info" ng-show="asset.status == 1">
+                                        <span class="label label-info" ng-show="plan.status == 1">
                                             อนุมัติแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="asset.status == 2">
+                                        <span class="label label-info" ng-show="plan.status == 2">
                                             รับเอกสารแล้ว
                                         </span>
-                                        <span class="label label-success" ng-show="asset.status == 3">
+                                        <span class="label label-success" ng-show="plan.status == 3">
                                             ออกใบ PO แล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="asset.status == 4">
+                                        <span class="label label-default" ng-show="plan.status == 4">
                                             ไม่ผ่านการอนุมัติ
                                         </span>
-                                        <span class="label label-danger" ng-show="asset.status == 9">
+                                        <span class="label label-danger" ng-show="plan.status == 9">
                                             ยกเลิก
                                         </span>
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/assets/detail') }}/@{{ asset.id }}"
+                                            <a  href="{{ url('/assets/detail') }}/@{{ plan.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(asset.id)"
-                                                ng-show="asset.status == 0 || (asset.status == 1 && {{ Auth::user()->memberOf->duty_id }} == 2)"
+                                            <a  ng-click="edit(plan.id)"
+                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -179,12 +179,12 @@
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/assets/delete') }}"
-                                                ng-show="asset.status == 0 || (asset.status == 1 && {{ Auth::user()->memberOf->duty_id }} == 2)"
+                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
                                                     type="submit"
-                                                    ng-click="delete($event, asset.id)"
+                                                    ng-click="delete($event, plan.id)"
                                                     class="btn btn-danger btn-xs"
                                                 >
                                                     <i class="fa fa-trash"></i>
@@ -206,13 +206,13 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setLeaves)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setAssets)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setLeaves)" aria-label="Prev">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setAssets)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -230,13 +230,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setLeaves)" aria-label="Next">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setAssets)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setLeaves)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setAssets)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
