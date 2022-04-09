@@ -17,14 +17,4 @@ class PlanAsset extends Model
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
-
-    public function depart()
-    {
-        return $this->belongsTo(Depart::class, 'depart_id', 'depart_id');
-    }
-
-    public function division()
-    {
-        return $this->belongsTo(Division::class, 'division_id', 'ward_id');
-    }
 }
