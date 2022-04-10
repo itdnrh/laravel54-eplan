@@ -75,7 +75,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     });
 
     $scope.initForms = (data) => {
-        console.log(data);
         if (data) {
             tmpDeparts = data.departs
             tmpDivisions = data.divisions

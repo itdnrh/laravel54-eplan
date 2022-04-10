@@ -182,31 +182,36 @@ class PlanAssetController extends Controller
 
     public function store(Request $req)
     {
-        $asset = new PlanAsset();
-        // $asset->year            = calcBudgetYear($req['year']);
-        $asset->year            = $req['year'];
-        $asset->plan_no         = $req['plan_no'];
-        $asset->depart_id       = $req['depart_id'];
-        $asset->division_id     = $req['division_id'];
-        $asset->category_id     = $req['category_id'];
-        $asset->desc            = $req['desc'];
-        $asset->spec            = $req['spec'];
-        $asset->price_per_unit  = $req['price_per_unit'];
-        $asset->unit_id         = $req['unit_id'];
-        $asset->amount          = $req['amount'];
-        $asset->sum_price       = $req['sum_price'];
-        $asset->start_month     = $req['start_month'];
-        $asset->reason          = $req['reason'];
-        $asset->remark          = $req['remark'];
-        $asset->status          = '0';
+        $plan = new Plan();
+        // $plan->year      = calcBudgetYear($req['year']);
+        $plan->year         = $req['year'];
+        $plan->plan_no      = $req['plan_no'];
+        $plan->depart_id    = $req['depart_id'];
+        $plan->division_id  = $req['division_id'];
+        $plan->start_month  = $req['start_month'];
+        $plan->reason       = $req['reason'];
+        $plan->remark       = $req['remark'];
+        $plan->status       = '0';
 
         /** Upload attach file */
         // $attachment = uploadFile($req->file('attachment'), 'uploads/');
         // if (!empty($attachment)) {
-        //     $asset->attachment = $attachment;
+        //     $plan->attachment = $attachment;
         // }
 
-        if($asset->save()) {
+        if($plan->save()) {
+            $planId = $plan->id;
+
+            $asset = new PlanAsset();
+            $asset->plan_id         = $planId;
+            $asset->category_id     = $req['category_id'];
+            $asset->desc            = $req['desc'];
+            $asset->spec            = $req['spec'];
+            $asset->price_per_unit  = $req['price_per_unit'];
+            $asset->unit_id         = $req['unit_id'];
+            $asset->amount          = $req['amount'];
+            $asset->sum_price       = $req['sum_price'];
+
             return redirect('/assets/list');
         }
     }

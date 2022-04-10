@@ -58,7 +58,7 @@
                                         </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(asset, 'year')">
-                                        กรุณาเลือกเขียนที่
+                                        @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
 
@@ -75,7 +75,7 @@
                                             tabindex="2">
                                         <option value="">-- เลือกประเภทครุภัณฑ์ --</option>
 
-                                        @foreach($asset_categories as $category)
+                                        @foreach($categories as $category)
 
                                             <option value="{{ $category->id }}">
                                                 {{ $category->category_name }}
@@ -85,7 +85,7 @@
 
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(leave, 'category_id')">
-                                        กรุณาเลือกเรื่อง
+                                        @{{ formError.errors.category_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                             class="form-control"
                                             tabindex="3">
                                     <span class="help-block" ng-show="checkValidate(asset, 'plan_no')">
-                                        กรุณาระบุเลขที่
+                                        @{{ formError.errors.plan_no[0] }}
                                     </span>
                                 </div>
 
@@ -120,7 +120,7 @@
                                         class="form-control pull-right"
                                         tabindex="4">
                                     <span class="help-block" ng-show="checkValidate(asset, 'desc')">
-                                        กรุณาระบุรายการ
+                                        @{{ formError.errors.desc[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                                         class="form-control pull-right"
                                         tabindex="5">
                                     <span class="help-block" ng-show="checkValidate(asset, 'spec')">
-                                        กรุณาระบุสเปก
+                                        @{{ formError.errors.spec[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -221,7 +221,7 @@
                                             class="form-control pull-right"
                                             tabindex="9" />
                                     <span class="help-block" ng-show="checkValidate(asset, 'sum_price')">
-                                        กรุณาระบุรวมเป็นเงิน
+                                        @{{ formError.errors.sum_price[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -245,7 +245,7 @@
                                         </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(asset, 'start_month')">
-                                        กรุณาระบุเริ่มเดือน
+                                        @{{ formError.errors.start_month[0] }}
                                     </span>
                                 </div>
                                 <div
@@ -272,7 +272,7 @@
 
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(asset, 'faction_id')">
-                                        กรุณาเลือกกลุ่มภารกิจ
+                                        @{{ formError.errors.faction_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -296,7 +296,7 @@
                                         </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(asset, 'depart_id')">
-                                        กรุณาเลือกกลุ่มงาน
+                                        @{{ formError.errors.depart_id[0] }}
                                     </span>
                                 </div>
                                 <div
@@ -316,7 +316,7 @@
                                         </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(asset, 'division_id')">
-                                        กรุณาเลือกงาน
+                                        @{{ formError.errors.division_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -335,7 +335,7 @@
                                         tabindex="14"
                                     ></textarea>
                                     <span class="help-block" ng-show="checkValidate(asset, 'reason')">
-                                        กรุณาระบุเหตุผล
+                                        @{{ formError.errors.reason[0] }}
                                     </span>
                                 </div>
 
