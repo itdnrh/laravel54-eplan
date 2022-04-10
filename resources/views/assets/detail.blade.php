@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนครุภัณฑ์ : เลขที่ ({{ $asset->plan_no }})
+            รายละเอียดแผนครุภัณฑ์ : เลขที่ ({{ $plan->plan_no }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
@@ -15,7 +15,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planAssetCtrl" ng-init="getById({{ $asset->id }}, setEditControls);">
+    <section class="content" ng-controller="planAssetCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
 
         <div class="row">
             <div class="col-md-12">
@@ -38,7 +38,7 @@
                                     />
                                 </div>
                                 <div style="text-align: center; margin-top: 10px;">
-                                    <a  ng-click="showApprovalDetail({{ $asset->id }})"
+                                    <a  ng-click="showApprovalDetail({{ $plan->id }})"
                                         class="btn btn-default" 
                                         title="การอนุมัติ"
                                         target="_blank">
@@ -225,28 +225,19 @@
                                             @{{ asset.status }} อยู่ระหว่างดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="asset.status == 1">
-                                            @{{ asset.status }} หัวหน้าลงความเห็นแล้ว
+                                            @{{ asset.status }} อนุมัติแล้ว
                                         </span>
                                         <span class="label label-info" ng-show="asset.status == 2">
                                             @{{ asset.status }} รับเอกสารแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="asset.status == 3">
-                                            @{{ asset.status }} ผ่านการอนุมัติ
+                                            @{{ asset.status }} ออกใบ PO แล้ว
                                         </span>
                                         <span class="label label-default" ng-show="asset.status == 4">
                                             @{{ asset.status }} ไม่ผ่านการอนุมัติ
                                         </span>
-                                        <span class="label label-default" ng-show="asset.status == 7">
-                                            @{{ asset.status }} หัวหน้าไม่อนุญาต
-                                        </span>
-                                        <span class="label label-warning" ng-show="asset.status == 5">
-                                            @{{ asset.status }} อยู่ระหว่างการยกเลิก
-                                        </span>
                                         <span class="label label-danger" ng-show="asset.status == 9">
                                             @{{ asset.status }} ยกเลิก
-                                        </span>
-                                        <span class="label label-success" ng-show="asset.status == 8">
-                                            @{{ asset.status }} ผ่านการอนุมัติ
                                         </span>
                                     </div>
                                 </div>

@@ -184,22 +184,24 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.setEditControls = function(data) {
-        $scope.asset.asset_id           = data.asset.id;
-        $scope.asset.year               = data.asset.year;
-        $scope.asset.plan_no            = data.asset.plan_no;
-        $scope.asset.desc               = data.asset.desc;
-        $scope.asset.spec               = data.asset.spec;
-        $scope.asset.price_per_unit     = data.asset.price_per_unit;
-        $scope.asset.amount             = data.asset.amount;
-        $scope.asset.sum_price          = data.asset.sum_price;
-        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == data.asset.start_month).name;
-        $scope.asset.status             = data.asset.status;
+        $scope.asset.asset_id           = data.plan.id;
+        $scope.asset.year               = data.plan.year;
+        $scope.asset.plan_no            = data.plan.plan_no;
+        $scope.asset.desc               = data.plan.asset.desc;
+        $scope.asset.spec               = data.plan.asset.spec;
+        $scope.asset.price_per_unit     = data.plan.asset.price_per_unit;
+        $scope.asset.amount             = data.plan.asset.amount;
+        $scope.asset.sum_price          = data.plan.asset.sum_price;
+        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == data.plan.start_month).name;
+        $scope.asset.reason             = data.plan.reason;
+        $scope.asset.remark             = data.plan.remark;
+        $scope.asset.status             = data.plan.status;
 
         /** Convert int value to string */
-        $scope.asset.category_id        = data.asset.category_id.toString();
-        $scope.asset.unit_id            = data.asset.unit_id.toString();
-        $scope.asset.depart_id          = data.asset.depart_id.toString();
-        $scope.asset.division_id        = data.asset.division_id.toString();
+        $scope.asset.category_id        = data.plan.asset.category_id.toString();
+        $scope.asset.unit_id            = data.plan.asset.unit_id.toString();
+        $scope.asset.depart_id          = data.plan.depart_id.toString();
+        $scope.asset.division_id        = data.plan.division_id ? data.plan.division_id.toString() : '';
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };
