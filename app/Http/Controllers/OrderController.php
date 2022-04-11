@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Plan;
 use App\Models\PlanAsset;
 use App\Models\Supplier;
 use App\Models\AssetCategory;
@@ -140,11 +141,18 @@ class OrderController extends Controller
                 $detail->sum_price      = $item['sum_price'];
                 $detail->save();
 
-                /** Update status of plan data */
-                if (PlanAsset::find($item['plan_id'])->update(['status' => 3])) {
-
-                }
+                /** Update plan data */
+                $plan = Plan::find($item['plan_id']);
+                $plan->po_no        = $req['po_no'];
+                $plan->po_date      = convThDateToDbDate($req['po_date']);
+                $plan->po_net_total = $req['net_total'];
+                $plan->status       = 3;
+                $plan->save();
             }
+
+            return [
+                'order' => $order
+            ];
         }
     }
 

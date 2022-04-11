@@ -17,8 +17,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.orders = [];
     $scope.pager = [];
 
-    $scope.assets = [];
-    $scope.assets_pager = [];
+    $scope.plans = [];
+    $scope.plans_pager = [];
 
     $scope.order = {
         year: '',
@@ -144,11 +144,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}`)
         .then(function(res) {
-            $scope.setAssets(res);
+            $scope.setPlans(res);
 
             $scope.loading = false;
 
-            $('#assets-list').modal('show');
+            $('#plans-list').modal('show');
         }, function(err) {
             console.log(err);
             $scope.loading = false;
@@ -159,8 +159,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if (plan) {
             $scope.newItem = {
                 plan_no: plan.plan_no,
-                plan_detail: `${plan.desc} (${plan.category.category_name})`,
-                plan_depart: plan.division.ward_name,
+                plan_detail: `${plan.desc} (${plan.asset.category.category_name})`,
+                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
                 plan_id: plan.id,
                 price_per_unit: plan.price_per_unit,
                 unit_id: `${plan.unit_id}`,
@@ -172,11 +172,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#assets-list').modal('hide');
     };
 
-    $scope.setAssets = function(res) {
+    $scope.setPlans = function(res) {
         const { data, ...pager } = res.data.assets;
 
-        $scope.assets = data;
-        $scope.assets_pager = pager;
+        $scope.plans = data;
+        $scope.plans_pager = pager;
     };
 
     $scope.getAll = function() {

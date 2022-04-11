@@ -283,7 +283,7 @@ class PlanController extends Controller
         $plan->po_date      = convThDateToDbDate($req['po_date']);
         $plan->po_net_total = $req['po_net_total'];
         $plan->po_user      = $req['po_user'];
-        $plan->status       = 2;
+        $plan->status       = 3;
 
         if ($plan->save()) {
             return [

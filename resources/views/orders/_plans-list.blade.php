@@ -1,4 +1,4 @@
-<div class="modal fade" id="assets-list" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal fade" id="plans-list" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 80%;">
         <div class="modal-content">
             <form action="">
@@ -45,36 +45,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, asset) in assets">
-                                <td style="text-align: center;">@{{ index+assets_pager.from }}</td>
-                                <!-- <td style="text-align: center;">@{{ asset.year }}</td> -->
-                                <td style="text-align: center;">@{{ asset.plan_no }}</td>
+                            <tr ng-repeat="(index, plan) in plans">
+                                <td style="text-align: center;">@{{ index+plans_pager.from }}</td>
+                                <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
+                                <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <p style="margin: 0;">@{{ asset.category.category_name }}</p>
-                                    @{{ asset.desc }} จำนวน 
-                                    <span>@{{ asset.amount | currency:'':0 }}</span>
-                                    <span>@{{ asset.unit.name }}</span>
-                                    <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
+                                    <p style="margin: 0;">@{{ plan.asset.category.category_name }}</p>
+                                    @{{ plan.desc }} จำนวน 
+                                    <span>@{{ plan.amount | currency:'':0 }}</span>
+                                    <span>@{{ plan.unit.name }}</span>
+                                    <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                         class="btn btn-default btn-xs" 
                                         title="ไฟล์แนบ"
                                         target="_blank"
-                                        ng-show="asset.attachment">
+                                        ng-show="plan.attachment">
                                         <i class="fa fa-paperclip" aria-hidden="true"></i>
                                     </a>
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ asset.price_per_unit | currency:'':0 }}
+                                    @{{ plan.price_per_unit | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ asset.sum_price | currency:'':0 }}
+                                    @{{ plan.sum_price | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <p style="margin: 0;">@{{ asset.depart.depart_name }}</p>
-                                    <p style="margin: 0;">@{{ asset.division.ward_name }}</p>
+                                    <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
+                                    <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
                                 </td>
                                 <td style="text-align: center;">
                                         <a  href="#"
-                                            ng-click="onSelectedPlan($event, asset)"
+                                            ng-click="onSelectedPlan($event, plan)"
                                             class="btn btn-primary btn-xs"
                                             title="เลือก">
                                             เลือก
@@ -95,38 +95,38 @@
                     <div class="row">
                         <div class="col-md-4">
                             <span class="pull-left" style="margin-top: 5px;">
-                                หน้า @{{ assets_pager.current_page }} จาก @{{ assets_pager.last_page }} | 
-                                จำนวน @{{ assets_pager.total }} รายการ
+                                หน้า @{{ plans_pager.current_page }} จาก @{{ plans_pager.last_page }} | 
+                                จำนวน @{{ plans_pager.total }} รายการ
                             </span>
                         </div>
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
-                                <li ng-if="assets_pager.current_page !== 1">
-                                    <a ng-click="getDataWithURL($event, assets_pager.path+ '?page=1', setPersons)" aria-label="Previous">
+                                <li ng-if="plans_pager.current_page !== 1">
+                                    <a ng-click="getDataWithURL($event, plans_pager.path+ '?page=1', setPlans)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
-                                <li ng-class="{'disabled': (assets_pager.current_page==1)}">
-                                    <a ng-click="getDataWithURL($event, assets_pager.prev_page_url, setPersons)" aria-label="Prev">
+                                <li ng-class="{'disabled': (plans_pager.current_page==1)}">
+                                    <a ng-click="getDataWithURL($event, plans_pager.prev_page_url, setPlans)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
 
-                                <!-- <li ng-if="assets_pager.current_page < assets_pager.last_page && (assets_pager.last_page - assets_pager.current_page) > 10">
-                                    <a href="@{{ assets_pager.url(assets_pager.current_page + 10) }}">
+                                <!-- <li ng-if="plans_pager.current_page < plans_pager.last_page && (plans_pager.last_page - plans_pager.current_page) > 10">
+                                    <a href="@{{ plans_pager.url(plans_pager.current_page + 10) }}">
                                         ...
                                     </a>
                                 </li> -->
 
-                                <li ng-class="{'disabled': (assets_pager.current_page==assets_pager.last_page)}">
-                                    <a ng-click="getDataWithURL($event, assets_pager.next_page_url, setPersons)" aria-label="Next">
+                                <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
+                                    <a ng-click="getDataWithURL($event, plans_pager.next_page_url, setPlans)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
-                                <li ng-if="assets_pager.current_page !== assets_pager.last_page">
-                                    <a ng-click="getDataWithURL($event, assets_pager.path+ '?page=' +assets_pager.last_page, setPersons)" aria-label="Previous">
+                                <li ng-if="plans_pager.current_page !== plans_pager.last_page">
+                                    <a ng-click="getDataWithURL($event, plans_pager.path+ '?page=' +plans_pager.last_page, setPlans)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>

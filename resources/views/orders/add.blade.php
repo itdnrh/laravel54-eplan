@@ -374,7 +374,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('orders._assets-list')
+        @include('orders._plans-list')
 
     </section>
 

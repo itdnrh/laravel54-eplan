@@ -55,6 +55,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
+                                        ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         @foreach($categories as $category)
