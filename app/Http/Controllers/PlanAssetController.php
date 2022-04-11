@@ -93,7 +93,7 @@ class PlanAssetController extends Controller
 
         $conditions = [];
         if($year != '0') array_push($conditions, ['year', '=', $year]);
-        if($cate != '0') array_push($conditions, ['category_id', $cate]);
+        if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
         if($status != '-') {
             if (preg_match($pattern, $status, $matched) == 1) {
                 $arrStatus = explode($matched[0], $status);
@@ -113,7 +113,8 @@ class PlanAssetController extends Controller
         $qsName     = $req->get('name');
         $qsMonth    = $req->get('month');
 
-        $assets = Plan::when(count($conditions) > 0, function($q) use ($conditions) {
+        $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
+                    ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
                     ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
@@ -211,6 +212,7 @@ class PlanAssetController extends Controller
             $asset->unit_id         = $req['unit_id'];
             $asset->amount          = $req['amount'];
             $asset->sum_price       = $req['sum_price'];
+            $asset->save();
 
             return redirect('/assets/list');
         }

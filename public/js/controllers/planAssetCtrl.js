@@ -146,6 +146,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.setAssets = function(res) {
         const { data, ...pager } = res.data.assets;
+
         $scope.assets = data;
         $scope.pager = pager;
     };

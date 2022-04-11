@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlanAsset extends Model
 {
     protected $table = "plan_assets";
+    protected $primaryKey = "plan_id";
 
     public function category()
     {
