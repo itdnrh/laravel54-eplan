@@ -51,7 +51,6 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         @foreach($categories as $category)
@@ -63,55 +62,50 @@
                                         @endforeach
                                     </select>
                                 </div><!-- /.form group -->
-                                <div class="form-group col-md-6">
-                                    <label>กลุ่มภารกิจ</label>
-                                    <select
-                                        id="cboFaction"
-                                        name="cboFaction"
-                                        ng-model="cboFaction"
-                                        class="form-control select2"
-                                        ng-change="getAll($event)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        @foreach($factions as $faction)
+                            </div><!-- /.row -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="cboFaction"
+                                            name="cboFaction"
+                                            ng-model="cboFaction"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($factions as $faction)
 
-                                            <option value="{{ $faction->faction_id }}">
-                                                {{ $faction->faction_name }}
-                                            </option>
+                                                <option value="{{ $faction->faction_id }}">
+                                                    {{ $faction->faction_name }}
+                                                </option>
 
-                                        @endforeach
-                                    </select>
-                                </div><!-- /.form group -->
-                                <div class="form-group col-md-6">
-                                    <label>กลุ่มงาน</label>
-                                    <select
-                                        id="cboDepart"
-                                        name="cboDepart"
-                                        ng-model="cboDepart"
-                                        class="form-control select2"
-                                        ng-change="getAll($event)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        @foreach($departs as $depart)
+                                            @endforeach
+                                        </select>
+                                    </div><!-- /.form group -->
+                                </div><!-- /.col-md-6 -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลุ่มงาน</label>
+                                        <select
+                                            id="cboDepart"
+                                            name="cboDepart"
+                                            ng-model="cboDepart"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($departs as $depart)
 
-                                            <option value="{{ $depart->depart_id }}">
-                                                {{ $depart->depart_name }}
-                                            </option>
+                                                <option value="{{ $depart->depart_id }}">
+                                                    {{ $depart->depart_name }}
+                                                </option>
 
-                                        @endforeach
-                                    </select>
-                                </div><!-- /.form group -->
-                                <!-- <div class="form-group">
-                                    <label>คำค้นหา</label>
-                                    <input
-                                        type="text"
-                                        id="searchKey"
-                                        name="searchKey"
-                                        ng-model="searchKeyword"
-                                        ng-keyup="getData($event)"
-                                        class="form-control">
-                                </div> -->
-
+                                            @endforeach
+                                        </select>
+                                    </div><!-- /.form group -->
+                                </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
@@ -303,17 +297,6 @@
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
-
-            //Date range picker with time picker
-            $('#debtDate').daterangepicker({
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'YYYY-MM-DD',
-                    separator: " , ",
-                }
-            }, function(e) {
-                console.log(e);
-            });
         });
     </script>
 

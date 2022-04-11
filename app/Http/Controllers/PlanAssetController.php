@@ -110,14 +110,15 @@ class PlanAssetController extends Controller
         // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
 
         /** Get params from query string */
-        $qsDepart   = Auth::user()->person_id == '1300200009261' ? '' : $req->get('depart');
-        $qsDivision = Auth::user()->person_id == '1300200009261' ? '' : $req->get('division');
-        $qsName     = $req->get('name');
-        $qsMonth    = $req->get('month');
+        $depart     = $req->get('depart');
+        $month      = $req->get('month');
 
         $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
                     })
                     ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
                         $q->whereIn('status', $arrStatus);
@@ -127,8 +128,8 @@ class PlanAssetController extends Controller
                     })
                     ->with('budget','depart','division')
                     ->with('asset','asset.unit','asset.category')
-                    ->when(!empty($qsMonth), function($q) use ($qsMonth) {
-                        $sdate = $qsMonth. '-01';
+                    ->when(!empty($month), function($q) use ($month) {
+                        $sdate = $month. '-01';
                         $edate = date('Y-m-t', strtotime($sdate));
 
                         $q->whereBetween('leave_date', [$sdate, $edate]);

@@ -6,6 +6,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
                         : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
     $scope.cboCategory = "";
+    $scope.cboDepart = "";
     $scope.cboStatus = "";
     $scope.cboMenu = "";
     $scope.searchKeyword = "";
@@ -135,11 +136,12 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
         let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}`)
+        $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
         .then(function(res) {
             $scope.setAssets(res);
 
