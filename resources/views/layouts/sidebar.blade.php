@@ -44,18 +44,33 @@
 						</a>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': menu == 'leaves' || menu == 'cancellations' }">
+					<li class="treeview" ng-class="{ 'menu-open active': menu == 'plans' }">
 						<a href="#">
 							<i class="fa fa-calendar"></i>
-							<span>แผนครุภัณฑ์</span>
+							<span>แผนจัดซื้อจัดจ้าง</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
 						</a>
-						<ul class="treeview-menu" ng-style="{ 'display': (menu == 'assets' || menu == 'cancellations') ? 'block' : 'none' }">
+						<ul class="treeview-menu" ng-style="{ 'display': (menu == 'plans') ? 'block' : 'none' }">
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/assets/list') }}">
-									<i class="fa fa-circle-o"></i> รายการอนุมัติแล้ว
+								<a href="{{ url('/plans/assets') }}">
+									<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
+								</a>
+							</li>
+							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/materials') }}">
+									<i class="fa fa-circle-o"></i> แผนวัสดุ
+								</a>
+							</li>
+							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/services') }}">
+									<i class="fa fa-circle-o"></i> แผนจ้างเหมาบริการ
+								</a>
+							</li>
+							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/constructions') }}">
+									<i class="fa fa-circle-o"></i> แผนก่อสร้าง/ซ่อมแซม
 								</a>
 							</li>
 						</ul>
