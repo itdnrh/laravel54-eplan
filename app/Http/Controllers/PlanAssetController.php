@@ -190,6 +190,8 @@ class PlanAssetController extends Controller
         // $plan->year      = calcBudgetYear($req['year']);
         $plan->year         = $req['year'];
         $plan->plan_no      = $req['plan_no'];
+        $plan->plan_type_id = '1';
+        $plan->budget_id    = '1';
         $plan->depart_id    = $req['depart_id'];
         $plan->division_id  = $req['division_id'];
         $plan->start_month  = $req['start_month'];
