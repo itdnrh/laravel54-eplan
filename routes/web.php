@@ -86,6 +86,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('orders/add', 'OrderController@create');
     Route::post('orders/store', 'OrderController@store');
     Route::get('orders/edit/{id}', 'OrderController@edit');
+    Route::get('orders/detail/{id}', 'OrderController@detail');
+    Route::get('orders/getOrder/{id}', 'OrderController@getOrder');
     Route::post('orders/update', 'OrderController@update');
     Route::post('orders/delete/{id}', 'OrderController@delete');
     Route::post('orders/approve', 'OrderController@doApprove');

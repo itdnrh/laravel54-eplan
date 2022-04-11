@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มใบ PO
+            รายละเอียดใบ PO
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มใบ PO</li>
+            <li class="breadcrumb-item active">รายละเอียดใบ PO</li>
         </ol>
     </section>
 
@@ -27,7 +27,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มใบ PO</h3>
+                        <h3 class="box-title">รายละเอียดใบ PO</h3>
                     </div>
 
                     <div class="box-body">
@@ -48,9 +48,6 @@
                                         @{{ y }}
                                     </option>
                                 </select>
-                                <span class="help-block" ng-show="checkValidate(order, 'year')">
-                                    กรุณาเลือกเขียนที่
-                                </span>
                             </div>
 
                             <div
@@ -58,26 +55,13 @@
                                 ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
                             >
                                 <label>เจ้าหนี้ :</label>
-                                <select id="supplier_id"
-                                        name="supplier_id"
-                                        ng-model="order.supplier_id"
-                                        class="form-control select2" 
-                                        style="width: 100%; font-size: 12px;"
-                                        tabindex="2">
-                                    <option value="">-- เลือกเจ้าหนี้ --</option>
-
-                                    @foreach($suppliers as $supplier)
-
-                                        <option value="{{ $supplier->supplier_id }}">
-                                            {{ $supplier->supplier_name }}
-                                        </option>
-
-                                    @endforeach
-
-                                </select>
-                                <span class="help-block" ng-show="checkValidate(order, 'supplier_id')">
-                                    กรุณาเลือกเจ้าหนี้
-                                </span>
+                                <input
+                                    id="supplier_id"
+                                    name="supplier_id"
+                                    ng-model="order.supplier_id"
+                                    class="form-control"
+                                    tabindex="2"
+                                />
                             </div>
                         </div>
 
@@ -92,10 +76,7 @@
                                         name="po_no"
                                         ng-model="order.po_no"
                                         class="form-control"
-                                        tabindex="6">
-                                <span class="help-block" ng-show="checkValidate(order, 'po_no')">
-                                    กรุณาระบุเลขที่ PO
-                                </span>
+                                        tabindex="6" />
                             </div>
 
                             <div
@@ -105,14 +86,10 @@
                                 <label>วันที่ใบ PO :</label>
                                 <input
                                     type="text"
-                                    id="po_date"
                                     name="po_date"
                                     ng-model="order.po_date"
-                                    class="form-control pull-right"
-                                    tabindex="1">
-                                <span class="help-block" ng-show="checkValidate(order, 'po_date')">
-                                    กรุณาระบุวันที่ใบ PO
-                                </span>
+                                    class="form-control"
+                                    tabindex="1" />
                             </div>
                         </div>
 
@@ -128,16 +105,13 @@
                                     name="spec"
                                     ng-model="order.spec"
                                     class="form-control pull-right"
-                                    tabindex="1">
-                                <span class="help-block" ng-show="checkValidate(order, 'spec')">
-                                    กรุณาระบุหมายเหตุ
-                                </span>
+                                    tabindex="1" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center">ลำดับ</th>
@@ -147,138 +121,28 @@
                                             <th style="width: 12%; text-align: center">หน่วยนับ</th>
                                             <th style="width: 8%; text-align: center">จำนวน</th>
                                             <th style="width: 10%; text-align: center">รวมเป็นเงิน</th>
-                                            <th style="width: 8%; text-align: center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td style="text-align: center">#</td>
-                                            <td style="text-align: center">
-                                                <!-- เลขที่ -->
-                                                <input
-                                                    type="text"
-                                                    id="plan_no"
-                                                    name="plan_no"
-                                                    class="form-control"
-                                                    style="text-align: center"
-                                                    ng-model="newItem.plan_no"
-                                                    readonly
-                                                />
-                                            </td>
-                                            <td>
-                                                <!-- รายการ -->
-                                                <div class="input-group">
-                                                    <input
-                                                        type="text"
-                                                        id="plan_detail"
-                                                        name="plan_detail"
-                                                        class="form-control"
-                                                        ng-model="newItem.plan_detail"
-                                                        readonly
-                                                    />
-                                                    <input
-                                                        type="hidden"
-                                                        id="plan_id"
-                                                        name="plan_id"
-                                                        class="form-control"
-                                                        ng-model="newItem.plan_id"
-                                                    />
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-info btn-flat" ng-click="showAssetsList();">
-                                                            ...
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <!-- ราคาต่อหน่วย -->
-                                                <input
-                                                    type="text"
-                                                    id="price_per_unit"
-                                                    name="price_per_unit"
-                                                    class="form-control"
-                                                    style="text-align: center"
-                                                    ng-model="newItem.price_per_unit"
-                                                    ng-change="calculateSumPrice()"
-                                                />
-                                            </td>
-                                            <td style="text-align: center">
-                                                <!-- หน่วยนับ -->
-                                                <select
-                                                    id="unit_id"
-                                                    name="unit_id"
-                                                    class="form-control"
-                                                    ng-model="newItem.unit_id"
-                                                >
-                                                    <option value="">เลือกหน่วยนับ</option>
-                                                    @foreach($units as $unit)
-                                                        <option value="{{ $unit->id }}">
-                                                            {{ $unit->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <!-- จำนวน -->
-                                                <input
-                                                    type="text"
-                                                    id="amount"
-                                                    name="amount"
-                                                    class="form-control"
-                                                    style="text-align: center"
-                                                    ng-model="newItem.amount"
-                                                    ng-change="calculateSumPrice()"
-                                                />
-                                            </td>
-                                            <td style="text-align: center">
-                                                <!-- รวมเป็นเงิน -->
-                                                <input
-                                                    type="text"
-                                                    id="sum_price"
-                                                    name="sum_price"
-                                                    class="form-control"
-                                                    style="text-align: center"
-                                                    ng-model="newItem.sum_price"
-                                                />
-                                            </td>
-                                            <td style="text-align: center">
-                                                <a
-                                                    href="#"
-                                                    class="btn btn-primary btn-sm"
-                                                    ng-show="!editRow"
-                                                    ng-click="addOrderItem()"
-                                                >
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-
-                                                <a href="#" class="btn btn-success btn-sm" ng-show="editRow">
-                                                    <i class="fa fa-floppy-o"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-danger btn-sm" ng-show="editRow">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
                                         <tr ng-repeat="(index, detail) in order.details">
                                             <td style="text-align: center">@{{ index+1 }}</td>
                                             <td style="text-align: center">@{{ detail.plan_no }}</td>
                                             <td>
-                                                @{{ detail.plan_detail }}
+                                                @{{ detail.plan.desc }}
                                                 <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                             </td>
-                                            <td style="text-align: center">@{{ detail.price_per_unit }}</td>
-                                            <td style="text-align: center">@{{ detail.unit_id }}</td>
-                                            <td style="text-align: center">@{{ detail.amount }}</td>
-                                            <td style="text-align: center">@{{ detail.sum_price }}</td>
-                                            <td style="text-align: center">
-                                                <a href="#" class="btn btn-warning btn-sm">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-danger btn-sm" ng-click="removeOrderItem(index)">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
+                                            <td style="text-align: right">@{{ detail.price_per_unit | currency:'':0 }}</td>
+                                            <td style="text-align: center">@{{ detail.unit.name }}</td>
+                                            <td style="text-align: center">@{{ detail.amount | currency:'':0 }}</td>
+                                            <td style="text-align: right">@{{ detail.sum_price | currency:'':0 }}</td>
                                         </tr>
+                                        <!-- ===== TOTAL ROW ===== -->
+                                        <!-- <tr>
+                                            <td style="text-align: center" colspan="5">รวม</td>
+                                            <td style="text-align: right">@{{ 1 }}</td>
+                                            <td style="text-align: right">@{{ 2 }}</td>
+                                        </tr> -->
+                                        <!-- ===== TOTAL ROW ===== -->
                                     </tbody>
                                 </table>
                             </div>
@@ -295,12 +159,9 @@
                                             id="total"
                                             name="total"
                                             ng-model="order.total"
-                                            class="form-control pull-right"
+                                            class="form-control"
                                             style="text-align: right;"
                                             tabindex="5" />
-                                    <span class="help-block" ng-show="checkValidate(order, 'total')">
-                                        กรุณาระบุรวมเป็นเงิน
-                                    </span>
                                 </div>
                                 <div
                                     class="form-group"
@@ -308,27 +169,19 @@
                                 >
                                     <label>ภาษีมูลค่าเพิ่ม :</label>
                                     <div style="display: flex">
-                                        <select id="vat_rate"
+                                        <input id="vat_rate"
                                                 name="vat_rate"
                                                 ng-model="order.vat_rate"
-                                                ng-change="calculateVat()"
-                                                class="form-control">
-                                            <option value="">-- VAT --</option>
-                                            <option ng-repeat="vat in vatRates" value="@{{ vat }}">
-                                                @{{ vat }}%
-                                            </option>
-                                        </select>
+                                                style="text-align: center;"
+                                                class="form-control" />
                                         <input  type="text"
                                                 id="vat"
                                                 name="vat"
                                                 ng-model="order.vat"
-                                                class="form-control pull-right"
+                                                class="form-control"
                                                 style="text-align: right;"
                                                 tabindex="5" />
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(order, 'vat')">
-                                        กรุณาระบุรวมเป็นเงิน
-                                    </span>
                                 </div>
                                 <div
                                     class="form-group"
@@ -342,9 +195,6 @@
                                             class="form-control"
                                             style="text-align: right;"
                                             tabindex="5" />
-                                    <span class="help-block" ng-show="checkValidate(order, 'net_total')">
-                                        กรุณาระบุรวมเป็นเงิน
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -352,12 +202,12 @@
                     </div><!-- /.box-body -->
 
                     <div class="box-footer clearfix">
-                        <button
+                        <!-- <button
                             ng-click="formValidate($event, '/orders/validate', order, 'frmNewPO', store)"
                             class="btn btn-warning"
                         >
                             แก้ไข
-                        </button>
+                        </button> -->
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 

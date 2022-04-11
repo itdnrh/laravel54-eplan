@@ -247,24 +247,23 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     }
 
     $scope.edit = function(id) {
-        console.log(id);
-
-        $http.get(`${CONFIG.baseUrl}/orders`)
+        $http.get(`${CONFIG.baseUrl}/orders/getOrder/${id}`)
         .then(res => {
-            console.log(res);
+            $scope.order.id = res.data.order.id;
+            $scope.order.year = res.data.order.year.toString();
+            $scope.order.supplier_id = res.data.order.supplier.supplier_name;
+            $scope.order.po_no = res.data.order.po_no;
+            $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
+            $scope.order.remark = res.data.order.remark;
+            $scope.order.total = res.data.order.total;
+            $scope.order.vat_rate = res.data.order.vat_rate+'%';
+            $scope.order.vat = res.data.order.vat;
+            $scope.order.net_total = res.data.order.net_total;
+            $scope.order.details = res.data.order.details;
 
-            // $scope.cancellation.leave_id = leave.id;
-            // $scope.cancellation.reason = leave.cancellation[0].reason;
-            // $scope.cancellation.start_date = StringFormatService.convFromDbDate(leave.cancellation[0].start_date);
-            // $scope.cancellation.end_date = StringFormatService.convFromDbDate(leave.cancellation[0].end_date);
-            // $scope.cancellation.start_period = leave.cancellation[0].start_period.toString();
-            // $scope.cancellation.end_period = leave.cancellation[0].end_period.toString();
-            // $scope.cancellation.days = leave.cancellation[0].days;
-            // $scope.cancellation.working_days = leave.cancellation[0].working_days;
-
-            // $('#po_date')
-            //     .datepicker(dtpOptions)
-            //     .datepicker('update', moment(leave.cancellation[0].start_date).toDate());
+            $('#po_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(res.data.order.po_date).toDate());
         }, err => {
             console.log(err);
         });

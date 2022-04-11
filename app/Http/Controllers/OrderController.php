@@ -89,6 +89,18 @@ class OrderController extends Controller
         ]);
     }
 
+    public function getOrder($id)
+    {
+        $order = Order::where('id', $id)
+                    ->with('supplier','details')
+                    ->with('details.unit','details.plan')
+                    ->first();
+
+        return [
+            "order" => $order
+        ];
+    }
+
     public function create()
     {
         return view('orders.add', [

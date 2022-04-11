@@ -199,7 +199,7 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/orders/detail') }}/@{{ plan.id }}"
+                                            <a  href="{{ url('/assets/detail') }}/@{{ plan.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
