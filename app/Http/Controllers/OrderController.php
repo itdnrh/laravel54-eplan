@@ -73,7 +73,8 @@ class OrderController extends Controller
                     ->paginate(10);
 
         return [
-            "orders" => $orders
+            "orders"    => $orders,
+            "plans"     => Plan::with('depart','division')->where('status', '3')->get()
         ];
     }
 

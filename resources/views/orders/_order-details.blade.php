@@ -1,5 +1,5 @@
 <div class="modal fade" id="order-details" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="width: 65%;">
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
@@ -14,7 +14,7 @@
                             <tr>
                                 <th style="width: 3%; text-align: center;">#</th>
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                <th style="width: 20%; text-align: center;">หน่วยงาน</th>
+                                <th style="width: 30%;">หน่วยงาน</th>
                                 <th>รายการ</th>
                                 <th style="width: 10%; text-align: center;">จำนวน</th>
                                 <th style="width: 10%; text-align: center;">ราคา</th>
@@ -25,13 +25,13 @@
                             <tr ng-repeat="(index, detail) in assets">
                                 <td style="text-align: center;">@{{ index+1 }}</td>
                                 <!-- <td style="text-align: center;">@{{ detail.year }}</td> -->
-                                <td style="text-align: center;">
-                                    <p style="margin: 0;">@{{ asset.depart.depart_name }}</p>
-                                    <p style="margin: 0;">@{{ asset.division.ward_name }}</p>
+                                <td>
+                                    <p style="margin: 0;">@{{ detail.depart.depart_name }}</p>
+                                    <p style="margin: 0;">@{{ detail.division.ward_name }}</p>
                                 </td>
                                 <td>
                                     <p style="margin: 0;">@{{ detail.category.category_name }}</p>
-                                    @{{ detail.plan.desc }}
+                                    @{{ detail.plan_no }} - @{{ detail.plan.desc }}
                                 </td>
                                 <td style="text-align: center;">
                                     <span>@{{ detail.amount | currency:'':0 }}</span>
