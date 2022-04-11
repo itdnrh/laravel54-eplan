@@ -19,6 +19,8 @@
 
         @include('dashboard._stat-cards')
 
+        @include('dashboard._stat-cards2')
+
         <!-- Main row -->
         <div class="row">
 
