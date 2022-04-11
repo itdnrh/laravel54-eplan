@@ -60,12 +60,12 @@
                 </a>
             </td> -->
             <td style="text-align: center;">
-                <a  href="{{ url('/orders/detail') }}/@{{ cancel.id }}"
+                <a  href="{{ url('/orders/detail') }}/@{{ order.id }}"
                     class="btn btn-primary btn-xs" 
                     title="รายละเอียด">
                     <i class="fa fa-search"></i>
                 </a>
-                <a  href="{{ url('/orders/edit') }}/@{{ cancel.id }}"
+                <a  href="{{ url('/orders/edit') }}/@{{ order.id }}"
                     class="btn btn-warning btn-xs"
                     title="แก้ไขรายการ">
                     <i class="fa fa-edit"></i>
@@ -79,7 +79,7 @@
                     {{ csrf_field() }}
                     <button
                         type="submit"
-                        ng-click="onDelete($event, cancel.cancellation[0].id)"
+                        ng-click="delete($event, order.id)"
                         class="btn btn-danger btn-xs"
                     >
                         <i class="fa fa-trash"></i>

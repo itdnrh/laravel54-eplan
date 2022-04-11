@@ -243,28 +243,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(res);
         }, err => {
             console.log(err);
-        })
+        });
     }
 
-    $scope.edit = function(leave) {
-        $scope.leave = leave;
+    $scope.edit = function(id) {
+        console.log(id);
 
-        $scope.cancellation.leave_id = leave.id;
-        $scope.cancellation.reason = leave.cancellation[0].reason;;
-        $scope.cancellation.start_date = StringFormatService.convFromDbDate(leave.cancellation[0].start_date);
-        $scope.cancellation.end_date = StringFormatService.convFromDbDate(leave.cancellation[0].end_date);
-        $scope.cancellation.start_period = leave.cancellation[0].start_period.toString();
-        $scope.cancellation.end_period = leave.cancellation[0].end_period.toString();
-        $scope.cancellation.days = leave.cancellation[0].days;
-        $scope.cancellation.working_days = leave.cancellation[0].working_days;
+        $http.get(`${CONFIG.baseUrl}/orders`)
+        .then(res => {
+            console.log(res);
 
-        $('#start_date')
-            .datepicker(dtpOptions)
-            .datepicker('update', moment(leave.cancellation[0].start_date).toDate());
+            // $scope.cancellation.leave_id = leave.id;
+            // $scope.cancellation.reason = leave.cancellation[0].reason;
+            // $scope.cancellation.start_date = StringFormatService.convFromDbDate(leave.cancellation[0].start_date);
+            // $scope.cancellation.end_date = StringFormatService.convFromDbDate(leave.cancellation[0].end_date);
+            // $scope.cancellation.start_period = leave.cancellation[0].start_period.toString();
+            // $scope.cancellation.end_period = leave.cancellation[0].end_period.toString();
+            // $scope.cancellation.days = leave.cancellation[0].days;
+            // $scope.cancellation.working_days = leave.cancellation[0].working_days;
 
-        $('#end_date')
-            .datepicker(dtpOptions)
-            .datepicker('update', moment(leave.cancellation[0].end_date).toDate());
+            // $('#po_date')
+            //     .datepicker(dtpOptions)
+            //     .datepicker('update', moment(leave.cancellation[0].start_date).toDate());
+        }, err => {
+            console.log(err);
+        });
     };
 
     $scope.update = function(event, form) {

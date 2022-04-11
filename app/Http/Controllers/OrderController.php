@@ -76,6 +76,19 @@ class OrderController extends Controller
         ];
     }
 
+    public function detail($id)
+    {
+        return view('orders.detail', [
+            "order"         => Order::find($id),
+            "suppliers"     => Supplier::all(),
+            "categories"    => AssetCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
+        ]);
+    }
+
     public function create()
     {
         return view('orders.add', [
