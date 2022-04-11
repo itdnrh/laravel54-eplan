@@ -238,6 +238,25 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         });
     };
 
+    $scope.createPO = (e) => {
+        e.preventDefault();
+
+        let data = {
+            po_no: $('#po_no').val(),
+            po_date: $('#po_date').val(),
+            po_net_total: $('#po_net_total').val(),
+            po_user: $('#po_user').val(),
+        };
+
+        console.log(data);
+        $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.asset.asset_id}`, data)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
     $scope.store = function(event, form) {
         event.preventDefault();
 

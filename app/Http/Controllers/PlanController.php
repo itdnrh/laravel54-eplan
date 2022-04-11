@@ -277,6 +277,21 @@ class PlanController extends Controller
         }
     }
 
+    public function createPO(Request $req, $id) {
+        $plan = Plan::find($id);
+        $plan->po_no        = $req['po_no'];
+        $plan->po_date      = convThDateToDbDate($req['po_date']);
+        $plan->po_net_total = $req['po_net_total'];
+        $plan->po_user      = $req['po_user'];
+        $plan->status       = 2;
+
+        if ($plan->save()) {
+            return [
+                'plan' => $plan
+            ];
+        }
+    }
+
     public function printLeaveForm($id)
     {
         $pdfView = '';
