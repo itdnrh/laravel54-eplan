@@ -228,13 +228,15 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             sent_user: $('#sent_user').val(),
         };
 
-        console.log(data);
         $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.asset.asset_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
             console.log(err);
         });
+
+        /** Redirect to list view */
+        window.location.href = `${CONFIG.baseUrl}/assets/list`;
     };
 
     $scope.showPoForm = function() {
@@ -251,13 +253,15 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             po_user: $('#po_user').val(),
         };
 
-        console.log(data);
         $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.asset.asset_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
             console.log(err);
         });
+
+        /** Redirect to list view */
+        window.location.href = `${CONFIG.baseUrl}/assets/list`;
     };
 
     $scope.store = function(event, form) {
