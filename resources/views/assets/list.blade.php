@@ -16,7 +16,11 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planAssetCtrl" ng-init="getAll()">
+    <section
+        class="content"
+        ng-controller="planAssetCtrl"
+        ng-init="getAll(); initForms({ departs: {{ $departs }} });"
+    >
 
         <div class="row">
             <div class="col-md-12">
@@ -71,8 +75,8 @@
                                             id="cboFaction"
                                             name="cboFaction"
                                             ng-model="cboFaction"
-                                            class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            class="form-control"
+                                            ng-change="onFactionSelected(cboFaction)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -96,13 +100,9 @@
                                             ng-change="getAll($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            @foreach($departs as $depart)
-
-                                                <option value="{{ $depart->depart_id }}">
-                                                    {{ $depart->depart_name }}
-                                                </option>
-
-                                            @endforeach
+                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                                                @{{ dep.depart_name }}
+                                            </option>
                                         </select>
                                     </div><!-- /.form group -->
                                 </div><!-- /.col-md-6 -->

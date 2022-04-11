@@ -88,8 +88,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.initForms = (data) => {
         if (data) {
-            tmpDeparts = data.departs
-            tmpDivisions = data.divisions
+            tmpDeparts = data.departs ? data.departs : [];
+            tmpDivisions = data.divisions ? data.divisions : [];
         }
     };
 
