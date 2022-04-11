@@ -67,12 +67,23 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         todayHighlight: true
     };
 
-    $('#leave_date').datepicker(dtpOptions).datepicker('update', new Date()).on('show', function (e) {
-        $('.day').click(function(event) {
-            event.preventDefault();
-            event.stopPropagation();
+    $('#doc_date').datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            $('.day').click(function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
         });
-    });
+
+    $('#sent_date').datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            $('.day').click(function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+        });
 
     $scope.initForms = (data) => {
         if (data) {
@@ -204,6 +215,26 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.division_id        = data.plan.division_id ? data.plan.division_id.toString() : '';
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+    };
+
+    $scope.sendSupportedDoc = (e) => {
+        e.preventDefault();
+
+        let data = {
+            plan_id: $scope.asset.asset_id,
+            doc_no: $('#doc_no').val(),
+            doc_date: $('#doc_date').val(),
+            sent_date: $('#sent_date').val(),
+            sent_user: $('#sent_user').val(),
+        };
+
+        console.log(data);
+        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${id}`, data)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
     };
 
     $scope.store = function(event, form) {

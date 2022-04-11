@@ -54,22 +54,22 @@
 						</a>
 						<ul class="treeview-menu" ng-style="{ 'display': (menu == 'plans') ? 'block' : 'none' }">
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/assets') }}">
+								<a href="{{ url('/assets/list') }}">
 									<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/materials') }}">
+								<a href="{{ url('/materials/list') }}">
 									<i class="fa fa-circle-o"></i> แผนวัสดุ
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/services') }}">
+								<a href="{{ url('/services/list') }}">
 									<i class="fa fa-circle-o"></i> แผนจ้างเหมาบริการ
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/constructions') }}">
+								<a href="{{ url('/constructions/list') }}">
 									<i class="fa fa-circle-o"></i> แผนก่อสร้าง/ซ่อมแซม
 								</a>
 							</li>
