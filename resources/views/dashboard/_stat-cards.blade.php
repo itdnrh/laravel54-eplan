@@ -9,7 +9,7 @@
                 <p><h4>ยอดหนี้ทั้งหมด</h4></p>
             </div>
             <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion ion-connection-bars"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
@@ -25,7 +25,7 @@
                 <p><h4>ออกใบสั้งซื้อ</h4></p>
             </div>
             <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="ion ion-paper-airplane"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
@@ -55,7 +55,7 @@
                 <p><h4>เบิกจ่ายแล้ว</h4></p>
             </div>
             <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion ion-stats-bars"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
