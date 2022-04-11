@@ -2,7 +2,6 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form>
-                <input type="hidden" id="plan_id" name="plan_id" />
                 <div class="modal-header">
                     <h5 class="modal-title">บันทึกขอสนับสนุน</h5>
                 </div>

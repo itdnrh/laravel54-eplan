@@ -221,7 +221,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         e.preventDefault();
 
         let data = {
-            plan_id: $scope.asset.asset_id,
             doc_no: $('#doc_no').val(),
             doc_date: $('#doc_date').val(),
             sent_date: $('#sent_date').val(),
@@ -229,7 +228,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         };
 
         console.log(data);
-        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${id}`, data)
+        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.asset.asset_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
