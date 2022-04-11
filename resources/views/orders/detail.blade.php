@@ -213,9 +213,6 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
-
-        @include('orders._assets-list')
-
     </section>
 
     <script>

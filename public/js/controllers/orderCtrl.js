@@ -169,7 +169,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             };
         }
 
-        $('#assets-list').modal('hide');
+        $('#plans-list').modal('hide');
     };
 
     $scope.setPlans = function(res) {
