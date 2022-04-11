@@ -245,40 +245,53 @@
 
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                <a
-                                    href="#"
-                                    class="btn btn-success"
-                                    ng-show="![8, 9].includes(leave.status)"
-                                    ng-click="showSupportedForm()"
-                                >
-                                    <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                </a>
-                                <a
-                                    href="#"
-                                    ng-click="edit(asset.asset_id)"
-                                    class="btn btn-warning"
-                                >
-                                    <i class="fa fa-edit"></i> แก้ไข
-                                </a>
-                                <form
-                                    id="frmDelete"
-                                    method="POST"
-                                    action="{{ url('/asset/delete') }}"
-                                >
-                                    <input type="hidden" id="id" name="id" value="@{{ asset.asset_id }}" />
-                                    {{ csrf_field() }}
-                                    <button
-                                        type="submit"
-                                        ng-click="delete($event, asset.asset_id)"
-                                        class="btn btn-danger btn-block"
+                                    <a
+                                        href="#"
+                                        class="btn btn-success"
+                                        ng-show="[0].includes(asset.status)"
+                                        ng-click="showSupportedForm()"
                                     >
-                                        <i class="fa fa-trash"></i> ลบ
-                                    </button>
-                                </form>
-                            </div>
-                            <!-- /** Action buttons container */ -->
+                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
+                                    </a>
+                                    <a
+                                        href="#"
+                                        class="btn btn-primary"
+                                        ng-show="[1].includes(asset.status)"
+                                        ng-click="showPoForm()"
+                                    >
+                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
+                                    </a>
+                                    <a
+                                        href="#"
+                                        ng-click="edit(asset.asset_id)"
+                                        ng-show="[0,1].includes(asset.status)"
+                                        class="btn btn-warning"
+                                    >
+                                        <i class="fa fa-edit"></i> แก้ไข
+                                    </a>
+                                    <form
+                                        id="frmDelete"
+                                        method="POST"
+                                        action="{{ url('/asset/delete') }}"
+                                        ng-show="[0,1].includes(asset.status)"
+                                    >
+                                        <input type="hidden" id="id" name="id" value="@{{ asset.asset_id }}" />
+                                        {{ csrf_field() }}
+                                        <button
+                                            type="submit"
+                                            ng-click="delete($event, asset.asset_id)"
+                                            class="btn btn-danger btn-block"
+                                        >
+                                            <i class="fa fa-trash"></i> ลบ
+                                        </button>
+                                    </form>
+                                </div>
+                                <!-- /** Action buttons container */ -->
 
-                            @include('assets._supported-from')
+                            </div>
+
+                            @include('assets._supported-form')
+                            @include('assets._po-form')
 
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->

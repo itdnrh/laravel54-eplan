@@ -80,12 +80,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $('#sent_date')
         .datepicker(dtpOptions)
         .datepicker('update', new Date());
-        // .on('show', function (e) {
-        //     $('.day').click(function(event) {
-        //         event.preventDefault();
-        //         event.stopPropagation();
-        //     });
-        // });
+
+    $('#po_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date());
 
     $scope.initForms = (data) => {
         if (data) {
@@ -131,11 +129,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $('#sum_price').val(price * amount);
     };
 
-    $scope.showSupportedForm = function() {
-        $('#supported-from').modal('show');
-    };
-
-    // TODO: Duplicated method
     $scope.getAll = function(event) {
         $scope.assets = [];
         $scope.loading = true;
@@ -219,6 +212,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };
 
+    $scope.showSupportedForm = function() {
+        $('#supported-from').modal('show');
+    };
+
     $scope.sendSupportedDoc = (e) => {
         e.preventDefault();
 
@@ -236,6 +233,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         }, function(err) {
             console.log(err);
         });
+    };
+
+    $scope.showPoForm = function() {
+        $('#po-form').modal('show');
     };
 
     $scope.createPO = (e) => {

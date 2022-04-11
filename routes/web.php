@@ -47,7 +47,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนจัดซื้อจัดจ้าง */
     Route::post('plans/send-supported/{id}', 'PlanController@sendSupported');
-    Route::post('plans/create-op/{id}', 'PlanController@createPO');
+    Route::post('plans/create-po/{id}', 'PlanController@createPO');
 
     /** แผนครุภัณฑ์ */
     Route::post('assets/validate', 'PlanAssetController@formValidate');

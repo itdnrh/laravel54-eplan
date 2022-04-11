@@ -1,9 +1,9 @@
-<div class="modal fade" id="po-from" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal fade" id="po-form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form>
                 <div class="modal-header">
-                    <h5 class="modal-title">บันทึกออกใบ OP</h5>
+                    <h5 class="modal-title">บันทึกใบ OP</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
