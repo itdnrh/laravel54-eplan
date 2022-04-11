@@ -1,13 +1,13 @@
 <div class="box" ng-init="getHeadLeaves()">
     <div class="box-header">
-        <h3 class="box-title">หัวหน้าลาประจำวัน</h3>
+        <h3 class="box-title">สรุปแผนวัสดุ ประจำเดือน</h3>
         <div class="pull-right box-tools">
             <div class="row">
                 <div class="form-group col-md-12" style="margin-bottom: 0px;">
                     <input
                         type="text"
-                        id="cboHeadDate"
-                        name="cboHeadDate"
+                        id="cboMaterialDate"
+                        name="cboMaterialDate"
                         class="form-control"
                     />
                 </div>
@@ -15,18 +15,20 @@
         </div>
     </div>
     <div class="box-body">
-        <table class="table table-triped" style="margin-bottom: 1rem; ng-show="!loading">
+        <table class="table table-triped" style="margin-bottom: 1rem;" ng-show="!loading">
             <tr>
-                <th style="width: 5%; text-align: center;">#</th>
-                <th>ชื่อ-สกุล</th>
-                <th style="width: 30%; text-align: center;">ประเภท</th>
-                <th style="width: 30%; text-align: center;">จำนวน (วัน)</th>
+                <th>ประเภท</th>
+                <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
+                <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
+                <th style="width: 15%; text-align: center;">ส่งเอกสารเบิกเงิน</th>
+                <th style="width: 15%; text-align: center;">เบิกจ่ายแล้ว</th>
             </tr>
-            <tr ng-repeat="(index, leave) in headLeaves">
-                <td style="text-align: center;">@{{ pager.from+index }}</td>
-                <td>@{{ leave.person.person_firstname + ' ' + leave.person.person_lastname }}</td>
-                <td style="text-align: center;">@{{ leave.type.name }}</td>
-                <td style="text-align: center;">@{{ leave.leave_days }}</td>
+            <tr ng-repeat="(index, mat) in materials">
+                <td>@{{ index+1 }}. @{{ mat.name }}</td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
             </tr>
         </table>
     </div><!-- /.box-body -->
@@ -38,7 +40,7 @@
                 </span>
             </div>
             <div class="col-md-4" style="text-align: center;">
-                จำนวน @{{ pager.total }} รายการ
+                จำนวน @{{ pager.total }} บาท
             </div>
             <div class="col-md-4">
                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">

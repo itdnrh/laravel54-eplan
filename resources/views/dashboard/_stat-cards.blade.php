@@ -4,9 +4,9 @@
             <div class="inner">
                 <h3>
                     @{{ statCards[0].num }}
-                    <span style="font-size: 14px;">ครั้ง</span>
+                    <span style="font-size: 14px;">บาท</span>
                 </h3>
-                <p><h4>ลาป่วยทั้งหมด</h4></p>
+                <p><h4>ยอดหนี้ทั้งหมด</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -19,10 +19,10 @@
             <div class="inner">
                 <h3>
                     @{{ statCards[1].num }}
-                    <span style="font-size: 14px;">ครั้ง</span>
+                    <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>
-                <p><h4>ลากิจทั้งหมด</h4></p>
+                <p><h4>ออกใบสั้งซื้อ</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -35,9 +35,9 @@
             <div class="inner">
                 <h3>
                     @{{ statCards[2].num }}
-                    <span style="font-size: 14px;">ครั้ง</span>
+                    <span style="font-size: 14px;">บาท</span>
                 </h3>
-                <p><h4>ลาพักผ่อนทั้งหมด</h4></p>
+                <p><h4>ตั้งหนี้แล้ว</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -50,9 +50,9 @@
             <div class="inner">
                 <h3>
                     @{{ '0' }}
-                    <span style="font-size: 14px;">ครั้ง</span>
+                    <span style="font-size: 14px;">บาท</span>
                 </h3>
-                <p><h4>ลาคลอดทั้งหมด</h4></p>
+                <p><h4>เบิกจ่ายแล้ว</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>

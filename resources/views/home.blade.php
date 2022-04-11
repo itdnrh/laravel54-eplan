@@ -36,13 +36,13 @@
 
             <section class="col-lg-6 connectedSortable">
 
-                @include('dashboard._head')
+                @include('dashboard._assets')
 
             </section>
 
             <section class="col-lg-6 connectedSortable">
 
-                @include('dashboard._depart')
+                @include('dashboard._materials')
 
             </section>
 

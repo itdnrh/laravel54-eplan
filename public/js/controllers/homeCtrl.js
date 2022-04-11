@@ -8,28 +8,59 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
     $scope.departs = [];
     $scope.departPager = null;
 
-    $('#cboHeadDate').datepicker({
-        autoclose: true,
-        language: 'th',
-        format: 'dd/mm/yyyy',
-        orientation: 'bottom',
-        thaiyear: true
-    })
-    .datepicker('update', moment().toDate())
-    .on('changeDate', function(event) {
-        $scope.getHeadLeaves();
-    });
+    $scope.assets = [
+        { id: '1', name: 'ครุภัณฑ์การแพทย์' },
+        { id: '2', name: 'ครุภัณฑ์สำนักงาน' },
+        { id: '3', name: 'ครุภัณฑ์คอมพิวเตอร์' },
+        { id: '4', name: 'ครุภัณฑ์โฆษณาและเผยแพร่' },
+        { id: '5', name: 'ครุภัณฑ์งานบ้านงานครัว' },
+        { id: '6', name: 'ครุภัณฑ์ไฟฟ้าและวิทยุ' },
+        { id: '7', name: 'ครุภัณฑ์ยานพาหนะ' },
+        { id: '8', name: 'ครุภัณฑ์การเกษตร' },
+        { id: '9', name: 'ครุภัณฑ์ก่อสร้าง' },
+    ];
 
-    $('#cboDepartDate').datepicker({
+    $scope.materials = [
+        { id: '1', name: 'วัสดุการแพทย์' },
+        { id: '2', name: 'วัสดุสำนักงาน' },
+        { id: '3', name: 'วัสดุคอมพิวเตอร์' },
+        { id: '4', name: 'วัสดุโฆษณาและเผยแพร่' },
+        { id: '5', name: 'วัสดุงานบ้านงานครัว' },
+        { id: '6', name: 'วัสดุไฟฟ้าและวิทยุ' },
+        { id: '7', name: 'วัสดุยานพาหนะ' },
+        { id: '8', name: 'วัสดุการเกษตร' },
+        { id: '9', name: 'วัสดุก่อสร้าง' },
+        { id: '10', name: 'วัสดุวิทยาศาสตร์' },
+        { id: '11', name: 'วัสดุตีพิมพ์ แบบพิมพ์ ,สติ๊กเกอร์' },
+        { id: '12', name: 'วัสดุผ้าและเครื่องแต่งกาย' },
+        { id: '13', name: 'วัสดุซ่อมบำรุง' },
+        { id: '14', name: 'เวชภัณฑ์มิใช่ยา' },
+    ];
+
+    $('#cboAssetDate').datepicker({
         autoclose: true,
+        format: 'mm/yyyy',
+        viewMode: "months", 
+        minViewMode: "months",
         language: 'th',
-        format: 'dd/mm/yyyy',
-        orientation: 'bottom',
         thaiyear: true
     })
     .datepicker('update', moment().toDate())
     .on('changeDate', function(event) {
         $scope.getDepartLeaves();
+    });
+
+    $('#cboMaterialDate').datepicker({
+        autoclose: true,
+        format: 'mm/yyyy',
+        viewMode: "months", 
+        minViewMode: "months",
+        language: 'th',
+        thaiyear: true
+    })
+    .datepicker('update', moment().toDate())
+    .on('changeDate', function(event) {
+        $scope.getHeadLeaves();
     });
 
     $scope.getHeadLeaves = function() {

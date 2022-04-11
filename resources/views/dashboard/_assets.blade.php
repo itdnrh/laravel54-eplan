@@ -1,13 +1,13 @@
 <div class="box" ng-init="getDepartLeaves()">
     <div class="box-header">
-        <h3 class="box-title">ยอดลาบุคลากร ประจำวัน</h3>
+        <h3 class="box-title">สรุปแผนครุภัณฑ์ ประจำเดือน</h3>
         <div class="pull-right box-tools">
             <div class="row">
                 <div class="form-group col-md-12" style="margin-bottom: 0px;">
                     <input
                         type="text"
-                        id="cboDepartDate"
-                        name="cboDepartDate"
+                        id="cboAssetDate"
+                        name="cboAssetDate"
                         class="form-control"
                     />
                 </div>
@@ -17,12 +17,18 @@
     <div class="box-body">
         <table class="table table-striped table-bordered">
             <tr>
-                <th>กลุ่มงาน</th>
-                <th style="width: 20%; text-align: center;">จำนวน (ราย)</th>
+                <th>ประเภท</th>
+                <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
+                <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
+                <th style="width: 15%; text-align: center;">ส่งเอกสารเบิกเงิน</th>
+                <th style="width: 15%; text-align: center;">เบิกจ่ายแล้ว</th>
             </tr>
-            <tr ng-repeat="(index, dep) in departs">
-                <td>@{{ departPager.from + index }}. @{{ dep.depart_name }}</td>
-                <td style="text-align: center;">@{{ dep.sum_leave }}</td>
+            <tr ng-repeat="(index, asset) in assets">
+                <td>@{{ index+1 }}. @{{ asset.name }}</td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
             </tr>
         </table>
     </div><!-- /.box-body -->
@@ -34,7 +40,7 @@
                 </span>
             </div>
             <div class="col-md-4" style="text-align: center;">
-                จำนวนทั้งสิ้น @{{ departTotal }} ราย
+                จำนวนทั้งสิ้น @{{ departTotal }} บาท
             </div>
             <div class="col-md-4">
                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="departPager.last_page > 1">
