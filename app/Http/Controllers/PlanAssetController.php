@@ -81,7 +81,9 @@ class PlanAssetController extends Controller
     public function index()
     {
         return view('assets.list', [
-            "asset_categories"   => AssetCategory::all(),
+            "categories"    => AssetCategory::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 

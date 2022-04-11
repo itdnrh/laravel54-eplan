@@ -54,10 +54,48 @@
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        @foreach($asset_categories as $category)
+                                        @foreach($categories as $category)
 
                                             <option value="{{ $category->id }}">
                                                 {{ $category->category_name }}
+                                            </option>
+
+                                        @endforeach
+                                    </select>
+                                </div><!-- /.form group -->
+                                <div class="form-group col-md-6">
+                                    <label>กลุ่มภารกิจ</label>
+                                    <select
+                                        id="cboFaction"
+                                        name="cboFaction"
+                                        ng-model="cboFaction"
+                                        class="form-control select2"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($factions as $faction)
+
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+
+                                        @endforeach
+                                    </select>
+                                </div><!-- /.form group -->
+                                <div class="form-group col-md-6">
+                                    <label>กลุ่มงาน</label>
+                                    <select
+                                        id="cboDepart"
+                                        name="cboDepart"
+                                        ng-model="cboDepart"
+                                        class="form-control select2"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($departs as $depart)
+
+                                            <option value="{{ $depart->depart_id }}">
+                                                {{ $depart->depart_name }}
                                             </option>
 
                                         @endforeach
@@ -76,18 +114,21 @@
 
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
-
-                        <div class="box-footer">
-                            <a href="{{ url('/assets/add') }}" class="btn btn-primary">
-                                เพิ่มรายการ
-                            </a>
-                        </div>
                     </form>
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">รายการอนุมัติแล้ว</h3>
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายการอนุมัติแล้ว</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
+                                    เพิ่มรายการ
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
