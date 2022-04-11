@@ -147,7 +147,7 @@
                                             อยู่ระหว่างดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="plan.status == 1">
-                                            อนุมัติแล้ว
+                                            ส่งเอกสารแล้ว
                                         </span>
                                         <span class="label label-info" ng-show="plan.status == 2">
                                             รับเอกสารแล้ว
@@ -156,7 +156,7 @@
                                             ออกใบ PO แล้ว
                                         </span>
                                         <span class="label label-default" ng-show="plan.status == 4">
-                                            ไม่ผ่านการอนุมัติ
+                                            ตั้งหนี้แล้ว
                                         </span>
                                         <span class="label label-danger" ng-show="plan.status == 9">
                                             ยกเลิก

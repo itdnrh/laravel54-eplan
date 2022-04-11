@@ -265,14 +265,14 @@ class PlanController extends Controller
     public function sendSupported(Request $req, $id) {
         $plan = Plan::find($id);
         $plan->doc_no       = $req['doc_no'];
-        $plan->doc_date     = $req['doc_date'];
-        $plan->sent_date    = $req['sent_date'];
+        $plan->doc_date     = convThDateToDbDate($req['doc_date']);
+        $plan->sent_date    = convThDateToDbDate($req['sent_date']);
         $plan->sent_user    = $req['sent_user'];
         $plan->status       = 1;
 
         if ($plan->save()) {
             return [
-
+                'plan' => $plan
             ];
         }
     }

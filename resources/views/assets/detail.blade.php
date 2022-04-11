@@ -225,7 +225,7 @@
                                             @{{ asset.status }} อยู่ระหว่างดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="asset.status == 1">
-                                            @{{ asset.status }} อนุมัติแล้ว
+                                            @{{ asset.status }} ส่งเอกสารแล้ว
                                         </span>
                                         <span class="label label-info" ng-show="asset.status == 2">
                                             @{{ asset.status }} รับเอกสารแล้ว
@@ -234,7 +234,7 @@
                                             @{{ asset.status }} ออกใบ PO แล้ว
                                         </span>
                                         <span class="label label-default" ng-show="asset.status == 4">
-                                            @{{ asset.status }} ไม่ผ่านการอนุมัติ
+                                            @{{ asset.status }} ตั้งหนี้แล้ว
                                         </span>
                                         <span class="label label-danger" ng-show="asset.status == 9">
                                             @{{ asset.status }} ยกเลิก

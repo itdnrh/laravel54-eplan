@@ -67,23 +67,25 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         todayHighlight: true
     };
 
-    $('#doc_date').datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('show', function (e) {
-            $('.day').click(function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            });
-        });
+    $('#doc_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date());
+        // .on('show', function (e) {
+        //     $('.day').click(function(event) {
+        //         event.preventDefault();
+        //         event.stopPropagation();
+        //     });
+        // });
 
-    $('#sent_date').datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('show', function (e) {
-            $('.day').click(function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            });
-        });
+    $('#sent_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date());
+        // .on('show', function (e) {
+        //     $('.day').click(function(event) {
+        //         event.preventDefault();
+        //         event.stopPropagation();
+        //     });
+        // });
 
     $scope.initForms = (data) => {
         if (data) {
