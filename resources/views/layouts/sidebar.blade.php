@@ -76,6 +76,54 @@
 						</ul>
 					</li>
 
+					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1309900322504' ||
+						Auth::user()->memberOf->duty_id == 1 ||
+						Auth::user()->memberOf->duty_id == 2 ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'approvals' }">
+							<a href="#">
+								<i class="fa fa-check-square-o"></i>
+								<span>การอนุมัติ</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu" ng-style="{ 'display': (menu == 'approvals') ? 'block' : 'none' }">
+								<!-- // Authorize เฉพาะหัวหน้ากลุ่มงาน -->
+								<li ng-class="{ 'active': submenu == 'comment' }">
+									<a href="{{ url('approvals/comment') }}">
+										<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
+									</a>
+								</li>
+
+								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
+								<li ng-class="{ 'active': submenu == 'receive' }">
+									<a href="{{ url('approvals/receive') }}">
+										<i class="fa fa-circle-o"></i> แผนวัสดุ (นอกคลัง)
+									</a>
+								</li>
+
+								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
+								<li ng-class="{ 'active': submenu == 'receive' }">
+									<a href="{{ url('approvals/receive') }}">
+										<i class="fa fa-circle-o"></i> แผนจ้างเหมาบริการ
+									</a>
+								</li>
+
+								<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ -->
+								<li ng-class="{ 'active': submenu == 'approve' }">
+									<a href="{{ url('approvals/approve') }}">
+										<i class="fa fa-circle-o"></i> แผนก่อสร้าง/ซ่อมแซม
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
+
 					<li class="treeview" ng-class="{ 'menu-open active': menu == 'supports' }">
 						<a href="#">
 							<i class="fa fa-handshake-o"></i>
@@ -112,6 +160,16 @@
 									<i class="fa fa-circle-o"></i> รายการใบ PO
 								</a>
 							</li>
+							<li ng-class="{ 'active': submenu == 'orders' }">
+								<a href="{{ url('orders/inspect') }}">
+									<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
+								</a>
+							</li>
+							<li ng-class="{ 'active': submenu == 'orders' }">
+								<a href="{{ url('orders/withdraw') }}">
+									<i class="fa fa-circle-o"></i> ส่งเอกสารเบิกเงิน
+								</a>
+							</li>
 						</ul>
 					</li>
 
@@ -120,68 +178,9 @@
 						Auth::user()->person_id == '1300200009261' ||
 						Auth::user()->person_id == '1309900322504' ||
 						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2 ||
-						count(Auth::user()->delegations) > 0
-					)
-						<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'approvals' }">
-							<a href="#">
-								<i class="fa fa-check-square-o"></i>
-								<span>การอนุมัติ</span>
-								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu" ng-style="{ 'display': (menu == 'approvals') ? 'block' : 'none' }"> -->
-								<!-- // Authorize เฉพาะหัวหน้ากลุ่มงาน -->
-								@if (
-									Auth::user()->person_id == '1300200009261' ||
-									Auth::user()->memberOf->duty_id == 2 ||
-									count(Auth::user()->delegations) > 0
-								)
-									<!-- <li ng-class="{ 'active': submenu == 'comment' }">
-										<a href="{{ url('approvals/comment') }}">
-											<i class="fa fa-circle-o"></i> หัวหน้ากลุ่มงาน
-										</a>
-									</li> -->
-								@endif
-
-								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
-								@if (
-									Auth::user()->person_id == '1300200009261' ||
-									Auth::user()->person_id == '1309900322504'
-								)
-									<!-- <li ng-class="{ 'active': submenu == 'receive' }">
-										<a href="{{ url('approvals/receive') }}">
-											<i class="fa fa-circle-o"></i> รับเอกสาร
-										</a>
-									</li> -->
-								@endif
-
-								<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ -->
-								@if (
-									Auth::user()->person_id == '1300200009261' ||
-									Auth::user()->person_id == '1309900322504' ||
-									Auth::user()->memberOf->duty_id == 1
-								)
-									<!-- <li ng-class="{ 'active': submenu == 'approve' }">
-										<a href="{{ url('approvals/approve') }}">
-											<i class="fa fa-circle-o"></i> อนุมัติใบลา
-										</a>
-									</li> -->
-								@endif
-
-							<!-- </ul>
-						</li> -->
-					@endif
-
-					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
-					@if (
-						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
 						Auth::user()->memberOf->duty_id == 2
 					)
-						<li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
+						<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
 							<a href="#">
 								<i class="fa fa-pie-chart"></i>
 								<span>รายงาน</span>
@@ -206,7 +205,7 @@
 									</a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 					@endif
 
 					@if (Auth::user()->person_id == '1300200009261')
