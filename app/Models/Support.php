@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Support extends Model
 {
-    protected $table = "requests";
+    protected $table = "supports";
 
     public function depart()
     {

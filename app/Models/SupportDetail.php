@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SupportDetail extends Model
 {
-    protected $table = "request_details";
+    protected $table = "support_details";
 
     public function unit()
     {
