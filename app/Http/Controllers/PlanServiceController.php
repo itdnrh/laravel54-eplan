@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
-use App\Models\PlanAsset;
-use App\Models\AssetCategory;
+use App\Models\PlanService;
+use App\Models\ServiceType;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -156,24 +156,24 @@ class PlanServiceController extends Controller
 
     public function detail($id)
     {
-        return view('assets.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => AssetCategory::all(),
-            "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
+        return view('services.detail', [
+            "plan"      => Plan::with('service')->where('id', $id)->first(),
+            "types"     => ServiceType::all(),
+            "units"     => Unit::all(),
+            "factions"  => Faction::all(),
+            "departs"   => Depart::all(),
+            "divisions" => Division::all(),
         ]);
     }
 
     public function add()
     {
-        return view('assets.add', [
-            "categories"    => AssetCategory::all(),
-            "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
+        return view('services.add', [
+            "types"     => ServiceType::all(),
+            "units"     => Unit::all(),
+            "factions"  => Faction::all(),
+            "departs"   => Depart::all(),
+            "divisions" => Division::all(),
         ]);
     }
 

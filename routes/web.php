@@ -64,18 +64,18 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('assets/print/{id}', 'PlanAssetController@printLeaveForm');
 
     /** แผนจ้างเหมา */
-    Route::post('services/validate', 'PlanAssetController@formValidate');
-    Route::get('services/list', 'PlanAssetController@index');
-    Route::get('services/search/{year}/{cate}/{status}/{menu}', 'PlanAssetController@search');
-    Route::get('services/get-ajax-all', 'PlanAssetController@getAll');
-    Route::get('services/get-ajax-byid/{id}', 'PlanAssetController@getById');
-    Route::get('services/detail/{id}', 'PlanAssetController@detail');
-    Route::get('services/add', 'PlanAssetController@add');
-    Route::post('services/store', 'PlanAssetController@store');
-    Route::get('services/edit/{id}', 'PlanAssetController@edit');
-    Route::post('services/update', 'PlanAssetController@update');
-    Route::post('services/delete/{id}', 'PlanAssetController@delete');
-    Route::get('services/print/{id}', 'PlanAssetController@printLeaveForm');
+    Route::post('services/validate', 'PlanServiceController@formValidate');
+    Route::get('services/list', 'PlanServiceController@index');
+    Route::get('services/search/{year}/{cate}/{status}/{menu}', 'PlanServiceController@search');
+    Route::get('services/get-ajax-all', 'PlanServiceController@getAll');
+    Route::get('services/get-ajax-byid/{id}', 'PlanServiceController@getById');
+    Route::get('services/detail/{id}', 'PlanServiceController@detail');
+    Route::get('services/add', 'PlanServiceController@add');
+    Route::post('services/store', 'PlanServiceController@store');
+    Route::get('services/edit/{id}', 'PlanServiceController@edit');
+    Route::post('services/update', 'PlanServiceController@update');
+    Route::post('services/delete/{id}', 'PlanServiceController@delete');
+    Route::get('services/print/{id}', 'PlanServiceController@printLeaveForm');
 
     /** การอนุมัติ */
     Route::get('approvals/comment', 'ApprovalController@getComment');

@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planAssetCtrl"
+        ng-controller="planServiceCtrl"
         ng-init="getAll(); initForms({ departs: {{ $departs }} });"
     >
 
@@ -58,10 +58,10 @@
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        @foreach($categories as $category)
+                                        @foreach($types as $type)
 
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->category_name }}
+                                            <option value="{{ $type->id }}">
+                                                {{ $type->name }}
                                             </option>
 
                                         @endforeach
@@ -119,7 +119,7 @@
                                 <h3 class="box-title">แผนจ้างเหมาบริการ</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/services/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>

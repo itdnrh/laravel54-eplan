@@ -135,13 +135,13 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.loading = true;
 
         let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
+        let type    = $scope.cboServiceType === '' ? 0 : $scope.cboServiceType;
         let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/services/search/${year}/${type}/${status}/${menu}${query}?depart=${depart}`)
         .then(function(res) {
             $scope.setAssets(res);
 
