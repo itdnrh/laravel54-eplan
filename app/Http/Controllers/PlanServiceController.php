@@ -149,7 +149,7 @@ class PlanServiceController extends Controller
         return [
             'plan' => Plan::where('id', $id)
                         ->with('budget','depart','division')
-                        ->with('asset','asset.unit','asset.category')
+                        ->with('service','service.unit','service.type')
                         ->first(),
         ];
     }

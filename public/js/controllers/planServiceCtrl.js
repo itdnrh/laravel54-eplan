@@ -189,26 +189,26 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     }
 
     $scope.setEditControls = function(data) {
-        $scope.service.asset_id         = data.plan.id;
+        $scope.service.service_id       = data.plan.id;
         $scope.service.year             = data.plan.year;
         $scope.service.plan_no          = data.plan.plan_no;
-        $scope.service.service_desc     = data.plan.asset.service_desc;
-        $scope.service.spec             = data.plan.asset.spec;
-        $scope.service.price_per_unit   = data.plan.asset.price_per_unit;
-        $scope.service.amount           = data.plan.asset.amount;
-        $scope.service.sum_price        = data.plan.asset.sum_price;
+        $scope.service.service_desc     = data.plan.service.service_desc;
+        $scope.service.price_per_unit   = data.plan.service.price_per_unit;
+        $scope.service.amount           = data.plan.service.amount;
+        $scope.service.sum_price        = data.plan.service.sum_price;
         $scope.service.start_month      = $scope.monthLists.find(m => m.id == data.plan.start_month).name;
         $scope.service.reason           = data.plan.reason;
         $scope.service.remark           = data.plan.remark;
         $scope.service.status           = data.plan.status;
 
         /** Convert int value to string */
-        $scope.service.service_type_id  = data.plan.asset.service_type_id.toString();
-        $scope.service.unit_id          = data.plan.asset.unit_id.toString();
+        $scope.service.service_type_id  = data.plan.service.service_type_id.toString();
+        $scope.service.unit_id          = data.plan.service.unit_id.toString();
         $scope.service.depart_id        = data.plan.depart_id.toString();
         $scope.service.division_id      = data.plan.division_id ? data.plan.division_id.toString() : '';
+
         /** Convert db date to thai date. */            
-        // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+        // $scope.service.service_date     = StringFormatService.convFromDbDate(data.plan.service.service_date);
     };
 
     $scope.showSupportedForm = function() {
@@ -225,7 +225,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             sent_user: $('#sent_user').val(),
         };
 
-        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.asset.asset_id}`, data)
+        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.service.service_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
@@ -250,7 +250,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             po_user: $('#po_user').val(),
         };
 
-        $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.asset.asset_id}`, data)
+        $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.service.service_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
