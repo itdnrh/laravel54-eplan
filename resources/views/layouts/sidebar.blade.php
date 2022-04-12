@@ -65,7 +65,7 @@
 							</li>
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/services/list') }}">
-									<i class="fa fa-circle-o"></i> แผนจ้างเหมาบริการ
+									<i class="fa fa-circle-o"></i> แผนจ้างบริการ
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
@@ -110,7 +110,7 @@
 								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
 								<li ng-class="{ 'active': submenu == 'receive' }">
 									<a href="{{ url('approvals/receive') }}">
-										<i class="fa fa-circle-o"></i> แผนจ้างเหมาบริการ
+										<i class="fa fa-circle-o"></i> แผนจ้างบริการ
 									</a>
 								</li>
 
@@ -157,7 +157,7 @@
 						<ul class="treeview-menu">
 							<li ng-class="{ 'active': submenu == 'orders' }">
 								<a href="{{ url('orders/list') }}">
-									<i class="fa fa-circle-o"></i> รายการใบ PO
+									<i class="fa fa-circle-o"></i> ใบสั่งซื้อ
 								</a>
 							</li>
 							<li ng-class="{ 'active': submenu == 'orders' }">
@@ -167,7 +167,7 @@
 							</li>
 							<li ng-class="{ 'active': submenu == 'orders' }">
 								<a href="{{ url('orders/withdraw') }}">
-									<i class="fa fa-circle-o"></i> ส่งเอกสารเบิกเงิน
+									<i class="fa fa-circle-o"></i> ส่งเบิกเงิน
 								</a>
 							</li>
 						</ul>
