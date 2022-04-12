@@ -11,7 +11,7 @@ class PlanService extends Model
 
     public function category()
     {
-        return $this->belongsTo(AssetCategory::class, 'category_id', 'id');
+        return $this->belongsTo(ServiceType::class, 'service_type_id', 'id');
     }
 
     public function unit()

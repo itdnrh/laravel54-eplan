@@ -74,7 +74,7 @@ class PlanServiceController extends Controller
 
     public function index()
     {
-        return view('assets.list', [
+        return view('services.list', [
             "categories"    => AssetCategory::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -108,6 +108,9 @@ class PlanServiceController extends Controller
         $month      = $req->get('month');
 
         $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
+                    ->with('budget','depart','division')
+                    ->with('asset','asset.unit','asset.category')
+                    ->where('plan_type_id', '3')
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
@@ -120,8 +123,6 @@ class PlanServiceController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->with('budget','depart','division')
-                    ->with('asset','asset.unit','asset.category')
                     ->when(!empty($month), function($q) use ($month) {
                         $sdate = $month. '-01';
                         $edate = date('Y-m-t', strtotime($sdate));
@@ -182,7 +183,7 @@ class PlanServiceController extends Controller
         // $plan->year      = calcBudgetYear($req['year']);
         $plan->year         = $req['year'];
         $plan->plan_no      = $req['plan_no'];
-        $plan->plan_type_id = '1';
+        $plan->plan_type_id = '3';
         $plan->budget_id    = '1';
         $plan->depart_id    = $req['depart_id'];
         $plan->division_id  = $req['division_id'];
@@ -222,7 +223,6 @@ class PlanServiceController extends Controller
             "leave_types"   => LeaveType::all(),
             "positions"     => Position::all(),
             "departs"       => Depart::where('faction_id', '5')->get(),
-            "periods"       => $this->periods,
         ]);
     }
 

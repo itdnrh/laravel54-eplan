@@ -19,12 +19,6 @@ use PDF;
 
 class PlanAssetController extends Controller
 {
-    protected $periods = [
-        '1'  => 'เต็มวัน',
-        '2'  => 'ช่วงเช้า (08.00-12.00น.)',
-        '3'  => 'ช่วงบ่าย (13.00-16.00น.)',
-    ];
-
     public function formValidate (Request $request)
     {
         $rules = [
@@ -114,6 +108,9 @@ class PlanAssetController extends Controller
         $month      = $req->get('month');
 
         $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
+                    ->with('budget','depart','division')
+                    ->with('asset','asset.unit','asset.category')
+                    ->where('plan_type_id', '1')
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
@@ -126,8 +123,6 @@ class PlanAssetController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->with('budget','depart','division')
-                    ->with('asset','asset.unit','asset.category')
                     ->when(!empty($month), function($q) use ($month) {
                         $sdate = $month. '-01';
                         $edate = date('Y-m-t', strtotime($sdate));
@@ -168,7 +163,6 @@ class PlanAssetController extends Controller
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
-            "periods"       => $this->periods,
         ]);
     }
 
@@ -180,7 +174,6 @@ class PlanAssetController extends Controller
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
-            "periods"       => $this->periods,
         ]);
     }
 
@@ -230,7 +223,6 @@ class PlanAssetController extends Controller
             "leave_types"   => LeaveType::all(),
             "positions"     => Position::all(),
             "departs"       => Depart::where('faction_id', '5')->get(),
-            "periods"       => $this->periods,
         ]);
     }
 
