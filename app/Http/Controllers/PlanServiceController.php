@@ -24,8 +24,8 @@ class PlanServiceController extends Controller
         $rules = [
             'year'              => 'required',
             'plan_no'           => 'required',
-            'category_id'       => 'required',
-            'desc'              => 'required',
+            'service_type_id'   => 'required',
+            'service_desc'      => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
             'amount'            => 'required',
@@ -109,7 +109,7 @@ class PlanServiceController extends Controller
 
         $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
                     ->with('budget','depart','division')
-                    ->with('asset','asset.unit','asset.category')
+                    ->with('service','service.unit','service.type')
                     ->where('plan_type_id', '3')
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);

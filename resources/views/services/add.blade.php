@@ -5,20 +5,20 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการครุภัณฑ์
+            เพิ่มรายการจ้างเหมาบริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการครุภัณฑ์</li>
+            <li class="breadcrumb-item active">เพิ่มรายการจ้างเหมาบริการ</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planAssetCtrl"
+        ng-controller="planServiceCtrl"
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
@@ -30,7 +30,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการครุภัณฑ์</h3>
+                        <h3 class="box-title">เพิ่มรายการจ้างเหมาบริการ</h3>
                     </div>
 
                     <form id="frmNewService" name="frmNewService" method="post" action="{{ url('/services/store') }}" role="form" enctype="multipart/form-data">

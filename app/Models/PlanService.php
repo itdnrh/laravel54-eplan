@@ -9,7 +9,7 @@ class PlanService extends Model
     protected $table = "plan_services";
     protected $primaryKey = "plan_id";
 
-    public function category()
+    public function type()
     {
         return $this->belongsTo(ServiceType::class, 'service_type_id', 'id');
     }
