@@ -33,7 +33,7 @@
                         <h3 class="box-title">เพิ่มรายการครุภัณฑ์</h3>
                     </div>
 
-                    <form id="frmNewLeave" name="frmNewLeave" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewService" name="frmNewService" method="post" action="{{ url('/services/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -42,13 +42,13 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'year')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="year"
                                         name="year"
-                                        ng-model="asset.year"
+                                        ng-model="service.year"
                                         class="form-control"
                                         tabindex="1"
                                     >
@@ -57,35 +57,35 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'year')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'year')">
                                         @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'category_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'service_type_id')}"
                                 >
-                                    <label>ประเภทครุภัณฑ์ :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="asset.category_id"
+                                    <label>ประเภท :</label>
+                                    <select id="service_type_id"
+                                            name="service_type_id"
+                                            ng-model="service.service_type_id"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
-                                        <option value="">-- เลือกประเภทครุภัณฑ์ --</option>
+                                        <option value="">-- เลือกประเภท --</option>
 
-                                        @foreach($categories as $category)
+                                        @foreach($types as $type)
 
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->category_name }}
+                                            <option value="{{ $type->id }}">
+                                                {{ $type->name }}
                                             </option>
 
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(leave, 'category_id')">
-                                        @{{ formError.errors.category_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(service, 'service_type_id')">
+                                        @{{ formError.errors.service_type_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -93,33 +93,33 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'plan_no')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'plan_no')}"
                                 >
                                     <label>เลขที่ :</label>
                                     <input  type="text"
                                             id="plan_no"
                                             name="plan_no"
-                                            ng-model="asset.plan_no"
+                                            ng-model="service.plan_no"
                                             class="form-control"
                                             tabindex="3">
-                                    <span class="help-block" ng-show="checkValidate(asset, 'plan_no')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'plan_no')">
                                         @{{ formError.errors.plan_no[0] }}
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'desc')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'service_desc')}"
                                 >
                                     <label>รายการ :</label>
                                     <input
                                         type="text"
-                                        id="desc"
-                                        name="desc"
-                                        ng-model="asset.desc"
+                                        id="service_desc"
+                                        name="service_desc"
+                                        ng-model="service.service_desc"
                                         class="form-control pull-right"
                                         tabindex="4">
-                                    <span class="help-block" ng-show="checkValidate(asset, 'desc')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'service_desc')">
                                         @{{ formError.errors.desc[0] }}
                                     </span>
                                 </div>
@@ -127,50 +127,31 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'spec')}"
-                                >
-                                    <label>สเปก :</label>
-                                    <input
-                                        type="text"
-                                        id="spec"
-                                        name="spec"
-                                        ng-model="asset.spec"
-                                        class="form-control pull-right"
-                                        tabindex="5">
-                                    <span class="help-block" ng-show="checkValidate(asset, 'spec')">
-                                        @{{ formError.errors.spec[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'price_per_unit')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'price_per_unit')}"
                                 >
                                     <label>ราคาต่อหน่วย :</label>
                                     <input  type="text"
                                             id="price_per_unit"
                                             name="price_per_unit"
-                                            ng-model="asset.price_per_unit"
+                                            ng-model="service.price_per_unit"
                                             value=""
                                             class="form-control"
                                             tabindex="6"
                                             ng-change="calculateSumPrice()" />
-                                    <span class="help-block" ng-show="checkValidate(asset, 'price_per_unit')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'price_per_unit')">
                                         @{{ formError.errors.price_per_unit[0] }}
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'unit_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'unit_id')}"
                                 >
                                     <label>หน่วย :</label>
                                     <select id="unit_id" 
                                             name="unit_id"
-                                            ng-model="asset.unit_id" 
+                                            ng-model="service.unit_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="7">
@@ -185,7 +166,7 @@
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'unit_id')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'unit_id')">
                                         @{{ formError.errors.unit_id[0] }}
                                     </span>
                                 </div>
@@ -194,33 +175,33 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'amount')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'amount')}"
                                 >
                                     <label>จำนวน :</label>
                                     <input  type="text"
                                             id="amount"
                                             name="amount"
-                                            ng-model="asset.amount"
+                                            ng-model="service.amount"
                                             class="form-control pull-right"
                                             tabindex="8"
                                             ng-change="calculateSumPrice()" />
-                                    <span class="help-block" ng-show="checkValidate(asset, 'amount')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'amount')">
                                         @{{ formError.errors.amount[0] }}
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'sum_price')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'sum_price')}"
                                 >
                                     <label>รวมเป็นเงิน :</label>
                                     <input  type="text"
                                             id="sum_price"
                                             name="sum_price"
-                                            ng-model="asset.sum_price"
+                                            ng-model="service.sum_price"
                                             class="form-control pull-right"
                                             tabindex="9" />
-                                    <span class="help-block" ng-show="checkValidate(asset, 'sum_price')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'sum_price')">
                                         @{{ formError.errors.sum_price[0] }}
                                     </span>
                                 </div>
@@ -229,13 +210,13 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'start_month')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'start_month')}"
                                 >
                                     <label>เริ่มเดือน :</label>
                                     <select
                                         id="start_month"
                                         name="start_month"
-                                        ng-model="asset.start_month"
+                                        ng-model="service.start_month"
                                         class="form-control"
                                         tabindex="10"
                                     >
@@ -244,22 +225,22 @@
                                             @{{ month.name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'start_month')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'start_month')">
                                         @{{ formError.errors.start_month[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'faction_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'faction_id')}"
                                 >
                                     <label>กลุ่มภารกิจ :</label>
                                     <select id="faction_id" 
                                             name="faction_id"
-                                            ng-model="asset.faction_id" 
+                                            ng-model="service.faction_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="11"
-                                            ng-change="onFactionSelected(asset.faction_id)">
+                                            ng-change="onFactionSelected(service.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
 
                                         @foreach($factions as $faction)
@@ -271,7 +252,7 @@
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'faction_id')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'faction_id')">
                                         @{{ formError.errors.faction_id[0] }}
                                     </span>
                                 </div>
@@ -280,33 +261,33 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'depart_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'depart_id')}"
                                 >
                                     <label>กลุ่มงาน :</label>
                                     <select id="depart_id" 
                                             name="depart_id"
-                                            ng-model="asset.depart_id" 
+                                            ng-model="service.depart_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="12"
-                                            ng-change="onDepartSelected(asset.depart_id)">
+                                            ng-change="onDepartSelected(service.depart_id)">
                                         <option value="">-- เลือกกลุ่มงาน --</option>
                                         <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
                                             @{{ depart.depart_name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'depart_id')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'depart_id')">
                                         @{{ formError.errors.depart_id[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'division_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'division_id')}"
                                 >
                                     <label>งาน :</label>
                                     <select id="division_id" 
                                             name="division_id"
-                                            ng-model="asset.division_id" 
+                                            ng-model="service.division_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="13">
@@ -315,7 +296,7 @@
                                             @{{ division.ward_name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'division_id')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'division_id')">
                                         @{{ formError.errors.division_id[0] }}
                                     </span>
                                 </div>
@@ -324,34 +305,34 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'reason')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'reason')}"
                                 >
                                     <label>เหตุผล :</label>
                                     <textarea
                                         id="reason" 
                                         name="reason" 
-                                        ng-model="asset.reason" 
+                                        ng-model="service.reason" 
                                         class="form-control"
                                         tabindex="14"
                                     ></textarea>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'reason')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'reason')">
                                         @{{ formError.errors.reason[0] }}
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
                                 >
                                     <label>หมายเหตุ :</label>
                                     <textarea
                                         id="remark"
                                         name="remark"
-                                        ng-model="asset.remark"
+                                        ng-model="service.remark"
                                         class="form-control"
                                         tabindex="15"
                                     ></textarea>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'remark')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'remark')">
                                         กรุณาระบุหมายเหตุ
                                     </span>
                                 </div>
@@ -372,7 +353,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewLeave', store)"
+                                ng-click="formValidate($event, '/services/validate', service, 'frmNewService', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

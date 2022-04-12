@@ -38,24 +38,22 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     let tmpDeparts = [];
     let tmpDivisions = [];
 
-    $scope.asset = {
-        asset_id: '',
+    $scope.service = {
+        service_id: '',
         year: '',
         plan_no: '',
         faction_id: '',
         depart_id: '',
         division_id: '',
-        category_id: '',
-        desc: '',
-        spec: '',
+        service_type_id: '',
+        service_desc: '',
         price_per_unit: '',
         unit_id: '',
         amount: '',
         sum_price: '',
         start_month: '',
         reason: '',
-        remark: '',
-        owner: '',
+        remark: ''
     };
 
     /** ============================== Init Form elements ============================== */
@@ -101,24 +99,23 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.forms.divisions = tmpDivisions.filter(div => div.depart_id == depart);
     };
 
-    $scope.clearLeaveObj = function() {
-        $scope.asset = {
-            asset_id: '',
+    $scope.clearServiceObj = function() {
+        $scope.service = {
+            service_id: '',
+            year: '',
             plan_no: '',
             faction_id: '',
             depart_id: '',
             division_id: '',
-            category_id: '',
-            desc: '',
-            spec: '',
+            service_type_id: '',
+            service_desc: '',
             price_per_unit: '',
             unit_id: '',
             amount: '',
             sum_price: '',
             start_month: '',
             reason: '',
-            remark: '',
-            owner: '',
+            remark: ''
         };
     };
 
@@ -183,7 +180,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.baseUrl}/services/get-ajax-byid/${id}`)
         .then(function(res) {
             cb(res.data);
         }, function(err) {
@@ -236,7 +233,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         });
 
         /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/assets/list`;
+        window.location.href = `${CONFIG.baseUrl}/services/list`;
     };
 
     $scope.showPoForm = function() {
@@ -261,17 +258,17 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         });
 
         /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/assets/list`;
+        window.location.href = `${CONFIG.baseUrl}/services/list`;
     };
 
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        $('#frmNewLeave').submit();
+        $(`#${form}`).submit();
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/services/edit/${id}`;
     };
 
     $scope.update = function(event) {
