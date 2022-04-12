@@ -107,7 +107,7 @@ class PlanServiceController extends Controller
         $depart     = $req->get('depart');
         $month      = $req->get('month');
 
-        $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
+        $services = Plan::join('plan_services', 'plans.id', '=', 'plan_services.plan_id')
                     ->with('budget','depart','division')
                     ->with('service','service.unit','service.type')
                     ->where('plan_type_id', '3')
@@ -133,7 +133,7 @@ class PlanServiceController extends Controller
                     ->paginate(10);
 
         return [
-            'assets' => $assets,
+            'services' => $services,
         ];
     }
 

@@ -205,7 +205,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     }
 /** ################################################################################## */
     /** MENU */
-    $scope.menu = 'leaves';
+    $scope.menu = 'assets';
     $scope.submenu = 'list';
     $scope.setActivedMenu = function() {
         let routePath = $location.$$absUrl.replace(`${CONFIG.baseUrl}/`, '');

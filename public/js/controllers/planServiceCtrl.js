@@ -27,7 +27,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         { id: '12', name: 'ธันวาคม' },
     ];
 
-    $scope.assets = [];
+    $scope.services = [];
     $scope.pager = [];
 
     $scope.forms = {
@@ -140,7 +140,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
         $http.get(`${CONFIG.baseUrl}/services/search/${year}/${type}/${status}/${menu}${query}?depart=${depart}`)
         .then(function(res) {
-            $scope.setAssets(res);
+            $scope.setServices(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -149,10 +149,10 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         });
     };
 
-    $scope.setAssets = function(res) {
-        const { data, ...pager } = res.data.assets;
+    $scope.setServices = function(res) {
+        const { data, ...pager } = res.data.services;
 
-        $scope.assets = data;
+        $scope.services = data;
         $scope.pager = pager;
     };
 
