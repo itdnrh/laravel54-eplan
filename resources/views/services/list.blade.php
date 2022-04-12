@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการอนุมัติแล้ว
+            แผนจ้างเหมาบริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการอนุมัติแล้ว</li>
+            <li class="breadcrumb-item active">แผนจ้างเหมาบริการ</li>
         </ol>
     </section>
 
@@ -49,11 +49,11 @@
                                     </select>
                                 </div><!-- /.form group -->
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทครุภัณฑ์</label>
+                                    <label>ประเภท</label>
                                     <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
+                                        id="cboServiceType"
+                                        name="cboServiceType"
+                                        ng-model="cboServiceType"
                                         class="form-control"
                                         ng-change="getAll($event)"
                                     >
@@ -116,7 +116,7 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">รายการอนุมัติแล้ว</h3>
+                                <h3 class="box-title">แผนจ้างเหมาบริการ</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">

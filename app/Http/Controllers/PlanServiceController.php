@@ -75,9 +75,9 @@ class PlanServiceController extends Controller
     public function index()
     {
         return view('services.list', [
-            "categories"    => AssetCategory::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
+            "types"     => ServiceType::all(),
+            "factions"  => Faction::all(),
+            "departs"   => Depart::all(),
         ]);
     }
 
@@ -201,18 +201,18 @@ class PlanServiceController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $asset = new PlanAsset();
-            $asset->plan_id         = $planId;
-            $asset->category_id     = $req['category_id'];
-            $asset->desc            = $req['desc'];
-            $asset->spec            = $req['spec'];
-            $asset->price_per_unit  = $req['price_per_unit'];
-            $asset->unit_id         = $req['unit_id'];
-            $asset->amount          = $req['amount'];
-            $asset->sum_price       = $req['sum_price'];
-            $asset->save();
+            $service = new PlanService();
+            $service->plan_id         = $planId;
+            $service->category_id     = $req['category_id'];
+            $service->desc            = $req['desc'];
+            $service->spec            = $req['spec'];
+            $service->price_per_unit  = $req['price_per_unit'];
+            $service->unit_id         = $req['unit_id'];
+            $service->amount          = $req['amount'];
+            $service->sum_price       = $req['sum_price'];
+            $service->save();
 
-            return redirect('/assets/list');
+            return redirect('/services/list');
         }
     }
 

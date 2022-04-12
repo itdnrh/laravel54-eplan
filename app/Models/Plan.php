@@ -13,6 +13,11 @@ class Plan extends Model
         return $this->hasOne(PlanAsset::class, 'plan_id', 'id');
     }
 
+    public function service()
+    {
+        return $this->hasOne(PlanService::class, 'plan_id', 'id');
+    }
+
     public function type()
     {
         return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');
