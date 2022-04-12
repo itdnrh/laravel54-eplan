@@ -77,6 +77,20 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('services/delete/{id}', 'PlanServiceController@delete');
     Route::get('services/print/{id}', 'PlanServiceController@printLeaveForm');
 
+    /** แผนจ้างเหมา */
+    Route::post('constructs/validate', 'PlanConstructController@formValidate');
+    Route::get('constructs/list', 'PlanConstructController@index');
+    Route::get('constructs/search/{year}/{cate}/{status}/{menu}', 'PlanConstructController@search');
+    Route::get('constructs/get-ajax-all', 'PlanConstructController@getAll');
+    Route::get('constructs/get-ajax-byid/{id}', 'PlanConstructController@getById');
+    Route::get('constructs/detail/{id}', 'PlanConstructController@detail');
+    Route::get('constructs/add', 'PlanConstructController@add');
+    Route::post('constructs/store', 'PlanConstructController@store');
+    Route::get('constructs/edit/{id}', 'PlanConstructController@edit');
+    Route::post('constructs/update', 'PlanConstructController@update');
+    Route::post('constructs/delete/{id}', 'PlanConstructController@delete');
+    Route::get('constructs/print/{id}', 'PlanConstructController@printLeaveForm');
+
     /** การอนุมัติ */
     Route::get('approvals/comment', 'ApprovalController@getComment');
     Route::post('approvals/comment', 'ApprovalController@doComment');
