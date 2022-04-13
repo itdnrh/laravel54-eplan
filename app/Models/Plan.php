@@ -13,9 +13,19 @@ class Plan extends Model
         return $this->hasOne(PlanAsset::class, 'plan_id', 'id');
     }
 
+    public function material()
+    {
+        return $this->hasOne(Material::class, 'plan_id', 'id');
+    }
+
     public function service()
     {
         return $this->hasOne(PlanService::class, 'plan_id', 'id');
+    }
+
+    public function construct()
+    {
+        return $this->hasOne(PlanConstruct::class, 'plan_id', 'id');
     }
 
     public function type()
