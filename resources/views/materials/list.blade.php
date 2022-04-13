@@ -156,7 +156,7 @@
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <p style="margin: 0;">@{{ plan.material.category.category_name }}</p>
+                                        <p style="margin: 0;">@{{ plan.material.category.name }}</p>
                                         @{{ plan.material.desc }} จำนวน 
                                         <span>@{{ plan.material.amount | currency:'':0 }}</span>
                                         <span>@{{ plan.material.unit.name }}</span>

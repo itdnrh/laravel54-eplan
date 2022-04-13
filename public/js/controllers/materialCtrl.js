@@ -181,7 +181,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.baseUrl}/materials/get-ajax-byid/${id}`)
         .then(function(res) {
             cb(res.data);
         }, function(err) {
@@ -190,24 +190,24 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
     }
 
     $scope.setEditControls = function(data) {
-        $scope.asset.asset_id           = data.plan.id;
-        $scope.asset.year               = data.plan.year;
-        $scope.asset.plan_no            = data.plan.plan_no;
-        $scope.asset.desc               = data.plan.asset.desc;
-        $scope.asset.spec               = data.plan.asset.spec;
-        $scope.asset.price_per_unit     = data.plan.asset.price_per_unit;
-        $scope.asset.amount             = data.plan.asset.amount;
-        $scope.asset.sum_price          = data.plan.asset.sum_price;
-        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == data.plan.start_month).name;
-        $scope.asset.reason             = data.plan.reason;
-        $scope.asset.remark             = data.plan.remark;
-        $scope.asset.status             = data.plan.status;
+        $scope.material.material_id     = data.plan.id;
+        $scope.material.year            = data.plan.year;
+        $scope.material.plan_no         = data.plan.plan_no;
+        $scope.material.desc            = data.plan.material.desc;
+        $scope.material.spec            = data.plan.material.spec;
+        $scope.material.price_per_unit  = data.plan.material.price_per_unit;
+        $scope.material.amount          = data.plan.material.amount;
+        $scope.material.sum_price       = data.plan.material.sum_price;
+        $scope.material.start_month     = $scope.monthLists.find(m => m.id == data.plan.start_month).name;
+        $scope.material.reason          = data.plan.reason;
+        $scope.material.remark          = data.plan.remark;
+        $scope.material.status          = data.plan.status;
 
         /** Convert int value to string */
-        $scope.asset.category_id        = data.plan.asset.category_id.toString();
-        $scope.asset.unit_id            = data.plan.asset.unit_id.toString();
-        $scope.asset.depart_id          = data.plan.depart_id.toString();
-        $scope.asset.division_id        = data.plan.division_id ? data.plan.division_id.toString() : '';
+        $scope.material.category_id     = data.plan.material.category_id.toString();
+        $scope.material.unit_id         = data.plan.material.unit_id.toString();
+        $scope.material.depart_id       = data.plan.depart_id.toString();
+        $scope.material.division_id     = data.plan.division_id ? data.plan.division_id.toString() : '';
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };
@@ -226,7 +226,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
             sent_user: $('#sent_user').val(),
         };
 
-        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.asset.asset_id}`, data)
+        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.material.material_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
@@ -234,7 +234,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         });
 
         /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/assets/list`;
+        window.location.href = `${CONFIG.baseUrl}/materials/list`;
     };
 
     $scope.showPoForm = function() {
@@ -251,7 +251,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
             po_user: $('#po_user').val(),
         };
 
-        $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.asset.asset_id}`, data)
+        $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.material.material_id}`, data)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
@@ -259,7 +259,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         });
 
         /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/assets/list`;
+        window.location.href = `${CONFIG.baseUrl}/materials/list`;
     };
 
     $scope.store = function(event, form) {

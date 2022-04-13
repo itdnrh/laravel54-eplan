@@ -5,24 +5,24 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนครุภัณฑ์ : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดแผนวัสดุ : เลขที่ ({{ $plan->plan_no }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดแผนครุภัณฑ์</li>
+            <li class="breadcrumb-item active">รายละเอียดแผนวัสดุ</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planAssetCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
+    <section class="content" ng-controller="materialCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
 
         <div class="row">
             <div class="col-md-12">
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนครุภัณฑ์</h3>
+                        <h3 class="box-title">รายละเอียดแผนวัสดุ</h3>
                     </div>
 
                     <div class="box-body">
@@ -53,24 +53,24 @@
                                     <input type="text"
                                             id="year" 
                                             name="year"
-                                            ng-model="asset.year"
+                                            ng-model="material.year"
                                             class="form-control"
                                             tabindex="2">
                                     </inp>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทครุภัณฑ์ :</label>
+                                    <label>ประเภทวัสดุ :</label>
                                     <select id="category_id"
                                             name="category_id"
-                                            ng-model="asset.category_id"
+                                            ng-model="material.category_id"
                                             class="form-control"
                                             tabindex="2">
 
                                             @foreach($categories as $category)
 
                                                 <option value="{{ $category->id }}">
-                                                    {{ $category->category_name }}
+                                                    {{ $category->name }}
                                                 </option>
 
                                             @endforeach
@@ -78,23 +78,13 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label>รายการ :</label>
                                     <input
                                         type="text"
-                                        ng-model="asset.desc"
+                                        ng-model="material.desc"
                                         class="form-control pull-right"
                                         tabindex="1" />
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>รายละเอียด (Spec.) :</label>
-                                    <input  type="text"
-                                            id="spec"
-                                            name="spec"
-                                            ng-model="asset.spec"
-                                            class="form-control"
-                                            tabindex="6">
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -102,7 +92,7 @@
                                     <input  type="text"
                                             id="price_per_unit"
                                             name="price_per_unit"
-                                            ng-model="asset.price_per_unit"
+                                            ng-model="material.price_per_unit"
                                             class="form-control"
                                             tabindex="6" />
                                 </div>
@@ -111,7 +101,7 @@
                                     <label>หน่วย :</label>
                                     <select id="unit_id"
                                             name="unit_id"
-                                            ng-model="asset.unit_id"
+                                            ng-model="material.unit_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -130,7 +120,7 @@
                                     <label>กลุ่มงาน :</label>
                                     <select id="depart_id"
                                             name="depart_id"
-                                            ng-model="asset.depart_id"
+                                            ng-model="material.depart_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -149,7 +139,7 @@
                                     <label>งาน :</label>
                                     <select id="division_id"
                                             name="division_id"
-                                            ng-model="asset.division_id"
+                                            ng-model="material.division_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -212,7 +202,7 @@
                                             <i class="fa fa-clock-o"></i>
                                         </div>
                                         <input  type="text"
-                                                value="@{{ asset.start_month }}"
+                                                value="@{{ material.start_month }}"
                                                 class="form-control pull-right"
                                                 tabindex="5">
                                     </div>
@@ -221,23 +211,23 @@
                                 <div class="form-group col-md-6">
                                     <label>สถานะ :</label>
                                     <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
-                                        <span class="label label-primary" ng-show="asset.status == 0">
-                                            @{{ asset.status }} อยู่ระหว่างดำเนินการ
+                                        <span class="label label-primary" ng-show="material.status == 0">
+                                            @{{ material.status }} อยู่ระหว่างดำเนินการ
                                         </span>
-                                        <span class="label label-info" ng-show="asset.status == 1">
-                                            @{{ asset.status }} ส่งเอกสารแล้ว
+                                        <span class="label label-info" ng-show="material.status == 1">
+                                            @{{ material.status }} ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="asset.status == 2">
-                                            @{{ asset.status }} รับเอกสารแล้ว
+                                        <span class="label label-info" ng-show="material.status == 2">
+                                            @{{ material.status }} รับเอกสารแล้ว
                                         </span>
-                                        <span class="label label-success" ng-show="asset.status == 3">
-                                            @{{ asset.status }} ออกใบ PO แล้ว
+                                        <span class="label label-success" ng-show="material.status == 3">
+                                            @{{ material.status }} ออกใบ PO แล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="asset.status == 4">
-                                            @{{ asset.status }} ตั้งหนี้แล้ว
+                                        <span class="label label-default" ng-show="material.status == 4">
+                                            @{{ material.status }} ตั้งหนี้แล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="asset.status == 9">
-                                            @{{ asset.status }} ยกเลิก
+                                        <span class="label label-danger" ng-show="material.status == 9">
+                                            @{{ material.status }} ยกเลิก
                                         </span>
                                     </div>
                                 </div>
@@ -248,7 +238,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-success"
-                                        ng-show="[0].includes(asset.status)"
+                                        ng-show="[0].includes(material.status)"
                                         ng-click="showSupportedForm()"
                                     >
                                         <i class="fa fa-print"></i> บันทึกขอสนับสนุน
@@ -256,15 +246,15 @@
                                     <a
                                         href="#"
                                         class="btn btn-primary"
-                                        ng-show="[1].includes(asset.status)"
+                                        ng-show="[1].includes(material.status)"
                                         ng-click="showPoForm()"
                                     >
                                         <i class="fa fa-calculator"></i> บันทึกใบ PO
                                     </a>
                                     <a
                                         href="#"
-                                        ng-click="edit(asset.asset_id)"
-                                        ng-show="[0,1].includes(asset.status)"
+                                        ng-click="edit(material.material_id)"
+                                        ng-show="[0,1].includes(material.status)"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
@@ -272,14 +262,14 @@
                                     <form
                                         id="frmDelete"
                                         method="POST"
-                                        action="{{ url('/asset/delete') }}"
-                                        ng-show="[0,1].includes(asset.status)"
+                                        action="{{ url('/material/delete') }}"
+                                        ng-show="[0,1].includes(material.status)"
                                     >
-                                        <input type="hidden" id="id" name="id" value="@{{ asset.asset_id }}" />
+                                        <input type="hidden" id="id" name="id" value="@{{ material.material_id }}" />
                                         {{ csrf_field() }}
                                         <button
                                             type="submit"
-                                            ng-click="delete($event, asset.asset_id)"
+                                            ng-click="delete($event, material.material_id)"
                                             class="btn btn-danger btn-block"
                                         >
                                             <i class="fa fa-trash"></i> ลบ
@@ -290,8 +280,8 @@
 
                             </div>
 
-                            @include('assets._supported-form')
-                            @include('assets._po-form')
+                            @include('materials._supported-form')
+                            @include('materials._po-form')
 
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
