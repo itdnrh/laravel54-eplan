@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนครุภัณฑ์
+            แผนวัสดุ (นอกคลัง)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนครุภัณฑ์</li>
+            <li class="breadcrumb-item active">แผนวัสดุ (นอกคลัง)</li>
         </ol>
     </section>
 
@@ -49,7 +49,7 @@
                                     </select>
                                 </div><!-- /.form group -->
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทครุภัณฑ์</label>
+                                    <label>ประเภทวัสดุ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"
