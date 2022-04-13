@@ -63,6 +63,20 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('assets/delete/{id}', 'PlanAssetController@delete');
     Route::get('assets/print/{id}', 'PlanAssetController@printLeaveForm');
 
+    /** แผนวัสดุ */
+    Route::post('materials/validate', 'MaterialController@formValidate');
+    Route::get('materials/list', 'MaterialController@index');
+    Route::get('materials/search', 'MaterialController@search');
+    Route::get('materials/get-ajax-all', 'MaterialController@getAll');
+    Route::get('materials/get-ajax-byid/{id}', 'MaterialController@getById');
+    Route::get('materials/detail/{id}', 'MaterialController@detail');
+    Route::get('materials/add', 'MaterialController@add');
+    Route::post('materials/store', 'MaterialController@store');
+    Route::get('materials/edit/{id}', 'MaterialController@edit');
+    Route::post('materials/update', 'MaterialController@update');
+    Route::post('materials/delete/{id}', 'MaterialController@delete');
+    Route::get('materials/print/{id}', 'MaterialController@printLeaveForm');
+
     /** แผนจ้างเหมา */
     Route::post('services/validate', 'PlanServiceController@formValidate');
     Route::get('services/list', 'PlanServiceController@index');

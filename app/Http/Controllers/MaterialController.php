@@ -74,22 +74,29 @@ class MaterialController extends Controller
 
     public function index()
     {
-        return view('assets.list', [
-            "categories"    => AssetCategory::all(),
+        return view('materials.list', [
+            "categories"    => MaterialCategory::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);
     }
 
-    public function search(Request $req, $year, $cate, $status, $menu)
+    public function search(Request $req)
     {
         $matched = [];
         $arrStatus = [];
         $pattern = '/^\<|\>|\&|\-/i';
+        
+        /** Get params from query string */
+        $depart = $req->get('depart');
+        $month  = $req->get('month');
+        $year   = $req->get('year');
+        $cate   = $req->get('cate');
+        $status = $req->get('status');
 
         $conditions = [];
         if($year != '0') array_push($conditions, ['year', '=', $year]);
-        if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
+        if($cate != '0') array_push($conditions, ['plan_materials.category_id', $cate]);
         if($status != '-') {
             if (preg_match($pattern, $status, $matched) == 1) {
                 $arrStatus = explode($matched[0], $status);
@@ -103,44 +110,34 @@ class MaterialController extends Controller
         }
         // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
 
-        /** Get params from query string */
-        $depart     = $req->get('depart');
-        $month      = $req->get('month');
-
-        $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
-                    ->with('budget','depart','division')
-                    ->with('asset','asset.unit','asset.category')
-                    ->where('plan_type_id', '1')
-                    ->when(count($conditions) > 0, function($q) use ($conditions) {
-                        $q->where($conditions);
-                    })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
-                        $q->whereIn('status', $arrStatus);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                        $q->whereBetween('status', $arrStatus);
-                    })
-                    ->when(!empty($month), function($q) use ($month) {
-                        $sdate = $month. '-01';
-                        $edate = date('Y-m-t', strtotime($sdate));
-
-                        $q->whereBetween('leave_date', [$sdate, $edate]);
-                    })
-                    ->orderBy('plan_no', 'ASC')
-                    ->paginate(10);
+        $materials = Plan::join('plan_materials', 'plans.id', '=', 'plan_materials.plan_id')
+                        ->with('budget','depart','division')
+                        ->with('material','material.unit','material.category')
+                        ->where('plan_type_id', '1')
+                        ->when(count($conditions) > 0, function($q) use ($conditions) {
+                            $q->where($conditions);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('depart_id', $depart);
+                        })
+                        ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
+                            $q->whereIn('status', $arrStatus);
+                        })
+                        ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                            $q->whereBetween('status', $arrStatus);
+                        })
+                        ->orderBy('plan_no', 'ASC')
+                        ->paginate(10);
 
         return [
-            'assets' => $assets,
+            'materials' => $materials,
         ];
     }
 
     public function getAll()
     {
         return [
-            'assets' => PlanAsset::orderBy('plan_no')->get(),
+            'materials' => Material::orderBy('plan_id')->get(),
         ];
     }
 
@@ -149,16 +146,16 @@ class MaterialController extends Controller
         return [
             'plan' => Plan::where('id', $id)
                         ->with('budget','depart','division')
-                        ->with('asset','asset.unit','asset.category')
+                        ->with('material','material.unit','material.category')
                         ->first(),
         ];
     }
 
     public function detail($id)
     {
-        return view('assets.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => AssetCategory::all(),
+        return view('materials.detail', [
+            "plan"          => Plan::with('material')->where('id', $id)->first(),
+            "categories"    => MaterialCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -168,8 +165,8 @@ class MaterialController extends Controller
 
     public function add()
     {
-        return view('assets.add', [
-            "categories"    => AssetCategory::all(),
+        return view('materials.add', [
+            "categories"    => MaterialCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -212,17 +209,17 @@ class MaterialController extends Controller
             $asset->sum_price       = $req['sum_price'];
             $asset->save();
 
-            return redirect('/assets/list');
+            return redirect('/materials/list');
         }
     }
 
     public function edit($id)
     {
-        return view('leaves.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
+        return view('materials.edit', [
+            "material"      => Material::find($id),
+            "categories"    => MaterialCategory::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 
@@ -287,7 +284,7 @@ class MaterialController extends Controller
                 $ord->save();
             }
 
-            return redirect('/leaves/list');
+            return redirect('/materials/list');
         }
     }
 
@@ -296,7 +293,7 @@ class MaterialController extends Controller
         $leave = Leave::find($id);
 
         if($leave->delete()) {
-            return redirect('/leaves/list')->with('status', 'ลบใบลา ID: ' .$id. ' เรียบร้อยแล้ว !!');
+            return redirect('/materials/list')->with('status', 'ลบใบลา ID: ' .$id. ' เรียบร้อยแล้ว !!');
         }
     }
 
