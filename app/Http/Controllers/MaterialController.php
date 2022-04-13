@@ -23,7 +23,7 @@ class MaterialController extends Controller
     {
         $rules = [
             'year'              => 'required',
-            'plan_no'           => 'required',
+            // 'plan_no'           => 'required',
             'category_id'       => 'required',
             'desc'              => 'required',
             'price_per_unit'    => 'required',
@@ -88,11 +88,11 @@ class MaterialController extends Controller
         $pattern = '/^\<|\>|\&|\-/i';
         
         /** Get params from query string */
-        $depart = $req->get('depart');
-        $month  = $req->get('month');
         $year   = $req->get('year');
         $cate   = $req->get('cate');
         $status = $req->get('status');
+        $depart = $req->get('depart');
+        $month  = $req->get('month');
 
         $conditions = [];
         if($year != '0') array_push($conditions, ['year', '=', $year]);
@@ -113,19 +113,19 @@ class MaterialController extends Controller
         $materials = Plan::join('plan_materials', 'plans.id', '=', 'plan_materials.plan_id')
                         ->with('budget','depart','division')
                         ->with('material','material.unit','material.category')
-                        ->where('plan_type_id', '1')
-                        ->when(count($conditions) > 0, function($q) use ($conditions) {
-                            $q->where($conditions);
-                        })
+                        ->where('plan_type_id', '2')
+                        // ->when(count($conditions) > 0, function($q) use ($conditions) {
+                        //     $q->where($conditions);
+                        // })
                         ->when(!empty($depart), function($q) use ($depart) {
                             $q->where('depart_id', $depart);
                         })
-                        ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
-                            $q->whereIn('status', $arrStatus);
-                        })
-                        ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                            $q->whereBetween('status', $arrStatus);
-                        })
+                        // ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
+                        //     $q->whereIn('status', $arrStatus);
+                        // })
+                        // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                        //     $q->whereBetween('status', $arrStatus);
+                        // })
                         ->orderBy('plan_no', 'ASC')
                         ->paginate(10);
 
@@ -180,7 +180,7 @@ class MaterialController extends Controller
         // $plan->year      = calcBudgetYear($req['year']);
         $plan->year         = $req['year'];
         $plan->plan_no      = $req['plan_no'];
-        $plan->plan_type_id = '1';
+        $plan->plan_type_id = '2';
         $plan->budget_id    = '1';
         $plan->depart_id    = $req['depart_id'];
         $plan->division_id  = $req['division_id'];
@@ -198,15 +198,15 @@ class MaterialController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $asset = new PlanAsset();
+            $asset = new Material();
             $asset->plan_id         = $planId;
             $asset->category_id     = $req['category_id'];
             $asset->desc            = $req['desc'];
-            $asset->spec            = $req['spec'];
             $asset->price_per_unit  = $req['price_per_unit'];
             $asset->unit_id         = $req['unit_id'];
             $asset->amount          = $req['amount'];
             $asset->sum_price       = $req['sum_price'];
+            $asset->in_stock        = $req['in_stock'];
             $asset->save();
 
             return redirect('/materials/list');

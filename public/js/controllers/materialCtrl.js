@@ -47,7 +47,6 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         division_id: '',
         category_id: '',
         desc: '',
-        spec: '',
         price_per_unit: '',
         unit_id: '',
         amount: '',
@@ -55,7 +54,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         start_month: '',
         reason: '',
         remark: '',
-        owner: '',
+        in_stock: '0',
     };
 
     /** ============================== Init Form elements ============================== */
@@ -110,7 +109,6 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
             division_id: '',
             category_id: '',
             desc: '',
-            spec: '',
             price_per_unit: '',
             unit_id: '',
             amount: '',
@@ -118,7 +116,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
             start_month: '',
             reason: '',
             remark: '',
-            owner: '',
+            in_stock: '0',
         };
     };
 
@@ -126,12 +124,12 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
         let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
 
-        $scope.asset.sum_price = price * amount;
+        $scope.material.sum_price = price * amount;
         $('#sum_price').val(price * amount);
     };
 
     $scope.getAll = function(event) {
-        $scope.assets = [];
+        $scope.materials = [];
         $scope.loading = true;
 
         let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
@@ -141,7 +139,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/materials/search${query}?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/materials/search${query}?status=${status}&depart=${depart}`)
         .then(function(res) {
             $scope.setMaterials(res);
 
@@ -267,7 +265,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        $('#frmNewLeave').submit();
+        $(`#${form}`).submit();
     }
 
     $scope.edit = function(id) {

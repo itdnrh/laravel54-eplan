@@ -116,7 +116,7 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">แผนครุภัณฑ์</h3>
+                                <h3 class="box-title">แผนวัสดุ (นอกคลัง)</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/materials/add') }}" class="btn btn-primary pull-right">
