@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planAssetCtrl"
+        ng-controller="materialCtrl"
         ng-init="getAll(); initForms({ departs: {{ $departs }} });"
     >
 
@@ -61,7 +61,7 @@
                                         @foreach($categories as $category)
 
                                             <option value="{{ $category->id }}">
-                                                {{ $category->category_name }}
+                                                {{ $category->name }}
                                             </option>
 
                                         @endforeach
@@ -119,7 +119,7 @@
                                 <h3 class="box-title">แผนครุภัณฑ์</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/materials/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
@@ -151,28 +151,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in assets">
+                                <tr ng-repeat="(index, plan) in materials">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <p style="margin: 0;">@{{ plan.asset.category.category_name }}</p>
-                                        @{{ plan.asset.desc }} จำนวน 
-                                        <span>@{{ plan.asset.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.asset.unit.name }}</span>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
+                                        <p style="margin: 0;">@{{ plan.material.category.category_name }}</p>
+                                        @{{ plan.material.desc }} จำนวน 
+                                        <span>@{{ plan.material.amount | currency:'':0 }}</span>
+                                        <span>@{{ plan.material.unit.name }}</span>
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ material.attachment }}"
                                             class="btn btn-default btn-xs" 
                                             title="ไฟล์แนบ"
                                             target="_blank"
-                                            ng-show="asset.attachment">
+                                            ng-show="material.attachment">
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.asset.price_per_unit | currency:'':0 }}
+                                        @{{ plan.material.price_per_unit | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.asset.sum_price | currency:'':0 }}
+                                        @{{ plan.material.sum_price | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
@@ -200,7 +200,7 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/assets/detail') }}/@{{ plan.id }}"
+                                            <a  href="{{ url('/materials/detail') }}/@{{ plan.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
@@ -214,7 +214,7 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/assets/delete') }}"
+                                                action="{{ url('/materials/delete') }}"
                                                 ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
                                             >
                                                 {{ csrf_field() }}
@@ -242,13 +242,13 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setMaterials)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setAssets)" aria-label="Prev">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setMaterials)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -266,13 +266,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setAssets)" aria-label="Next">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setMaterials)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setMaterials)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

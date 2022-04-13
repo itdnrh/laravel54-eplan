@@ -27,7 +27,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         { id: '12', name: 'ธันวาคม' },
     ];
 
-    $scope.assets = [];
+    $scope.materials = [];
     $scope.pager = [];
 
     $scope.forms = {
@@ -38,8 +38,8 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
     let tmpDeparts = [];
     let tmpDivisions = [];
 
-    $scope.asset = {
-        asset_id: '',
+    $scope.material = {
+        material_id: '',
         year: '',
         plan_no: '',
         faction_id: '',
@@ -101,8 +101,8 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         $scope.forms.divisions = tmpDivisions.filter(div => div.depart_id == depart);
     };
 
-    $scope.clearLeaveObj = function() {
-        $scope.asset = {
+    $scope.clearMaterialObj = function() {
+        $scope.material = {
             asset_id: '',
             plan_no: '',
             faction_id: '',
@@ -141,9 +141,9 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/materials/search${query}?depart=${depart}`)
         .then(function(res) {
-            $scope.setAssets(res);
+            $scope.setMaterials(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -152,10 +152,10 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         });
     };
 
-    $scope.setAssets = function(res) {
-        const { data, ...pager } = res.data.assets;
+    $scope.setMaterials = function(res) {
+        const { data, ...pager } = res.data.materials;
 
-        $scope.assets = data;
+        $scope.materials = data;
         $scope.pager = pager;
     };
 
