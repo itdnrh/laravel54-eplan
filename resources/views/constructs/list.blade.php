@@ -119,7 +119,7 @@
                                 <h3 class="box-title">แผนก่อสร้าง</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/services/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/constructs/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
