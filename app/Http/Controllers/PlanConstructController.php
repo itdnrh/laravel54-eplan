@@ -75,9 +75,9 @@ class PlanConstructController extends Controller
     public function index()
     {
         return view('constructs.list', [
-            "types"     => ServiceType::all(),
-            "factions"  => Faction::all(),
-            "departs"   => Depart::all(),
+            "categories"    => ConstructCategory::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 
@@ -109,7 +109,7 @@ class PlanConstructController extends Controller
 
         $constructs = Plan::join('plan_constructs', 'plans.id', '=', 'plan_constructs.plan_id')
                         ->with('budget','depart','division')
-                        ->with('construct','construct.unit','construct.type')
+                        ->with('construct','construct.unit','construct.category')
                         ->where('plan_type_id', '4')
                         ->when(count($conditions) > 0, function($q) use ($conditions) {
                             $q->where($conditions);
