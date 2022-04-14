@@ -27,7 +27,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         { id: '12', name: 'ธันวาคม' },
     ];
 
-    $scope.services = [];
+    $scope.constructs = [];
     $scope.pager = [];
 
     $scope.forms = {
@@ -38,8 +38,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     let tmpDeparts = [];
     let tmpDivisions = [];
 
-    $scope.service = {
-        service_id: '',
+    $scope.construct = {
+        construct_id: '',
         year: '',
         plan_no: '',
         faction_id: '',
@@ -99,9 +99,9 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.forms.divisions = tmpDivisions.filter(div => div.depart_id == depart);
     };
 
-    $scope.clearServiceObj = function() {
-        $scope.service = {
-            service_id: '',
+    $scope.clearConstructObj = function() {
+        $scope.construct = {
+            construct_id: '',
             year: '',
             plan_no: '',
             faction_id: '',
@@ -123,12 +123,12 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
         let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
 
-        $scope.service.sum_price = price * amount;
+        $scope.construct.sum_price = price * amount;
         $('#sum_price').val(price * amount);
     };
 
     $scope.getAll = function(event) {
-        $scope.assets = [];
+        $scope.constructs = [];
         $scope.loading = true;
 
         let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
@@ -140,7 +140,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
         $http.get(`${CONFIG.baseUrl}/services/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
         .then(function(res) {
-            $scope.setServices(res);
+            $scope.setConstructs(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -149,17 +149,11 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         });
     };
 
-    $scope.setServices = function(res) {
-        const { data, ...pager } = res.data.services;
+    $scope.setConstructs = function(res) {
+        const { data, ...pager } = res.data.constructs;
 
-        $scope.services = data;
+        $scope.constructs = data;
         $scope.pager = pager;
-    };
-
-    $scope.setPersons = function(res) {
-        let { data, ...pager } = res.data.persons;
-        $scope.persons  = data;
-        $scope.pager    = pager;
     };
 
     $scope.getDataWithURL = function(e, URL, cb) {
