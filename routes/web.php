@@ -46,8 +46,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('holidays/list', 'HolidayController@index');
 
     /** แผนจัดซื้อจัดจ้าง */
-    Route::post('plans/send-supported/{id}', 'PlanController@sendSupported');
+    Route::get('plans/search', 'PlanController@search');
     Route::post('plans/create-po/{id}', 'PlanController@createPO');
+    Route::post('plans/send-supported/{id}', 'PlanController@sendSupported');
 
     /** แผนครุภัณฑ์ */
     Route::post('assets/validate', 'PlanAssetController@formValidate');

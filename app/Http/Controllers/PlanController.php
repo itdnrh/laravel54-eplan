@@ -79,57 +79,59 @@ class PlanController extends Controller
         ]);
     }
 
-    public function search(Request $req, $year, $cate, $status, $menu)
+    public function search(Request $req)
     {
         $matched = [];
         $arrStatus = [];
         $pattern = '/^\<|\>|\&|\-/i';
-
         $conditions = [];
-        if($year != '0') array_push($conditions, ['year', '=', $year]);
-        if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
-        if($status != '-') {
-            if (preg_match($pattern, $status, $matched) == 1) {
-                $arrStatus = explode($matched[0], $status);
-
-                if ($matched[0] != '-' && $matched[0] != '&') {
-                    array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
-                }
-            } else {
-                array_push($conditions, ['status', '=', $status]);
-            }
-        }
-        // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
 
         /** Get params from query string */
-        $qsDepart   = Auth::user()->person_id == '1300200009261' ? '' : $req->get('depart');
-        $qsDivision = Auth::user()->person_id == '1300200009261' ? '' : $req->get('division');
-        $qsName     = $req->get('name');
-        $qsMonth    = $req->get('month');
+        $planType = $req->get('type');
 
-        $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
-                    ->when(count($conditions) > 0, function($q) use ($conditions) {
-                        $q->where($conditions);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
-                        $q->whereIn('status', $arrStatus);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                        $q->whereBetween('status', $arrStatus);
-                    })
-                    ->with('budget','depart','division')
-                    ->with('asset','asset.unit','asset.category')
-                    ->when(!empty($qsMonth), function($q) use ($qsMonth) {
-                        $sdate = $qsMonth. '-01';
-                        $edate = date('Y-m-t', strtotime($sdate));
+        // if($year != '0') array_push($conditions, ['year', '=', $year]);
+        // if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
+        // if($status != '-') {
+        //     if (preg_match($pattern, $status, $matched) == 1) {
+        //         $arrStatus = explode($matched[0], $status);
 
-                        $q->whereBetween('leave_date', [$sdate, $edate]);
-                    })
-                    ->orderBy('plan_no', 'ASC')
-                    ->paginate(10);
+        //         if ($matched[0] != '-' && $matched[0] != '&') {
+        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+        //         }
+        //     } else {
+        //         array_push($conditions, ['status', '=', $status]);
+        //     }
+        // }
+        // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
+
+        $plans = Plan::with('budget','depart','division')
+                    ->where('status', '1')
+                    ->where('plan_type_id', $planType);
+
+                    if ($planType == '1') {
+                        $plans->leftJoin('plan_materials', 'plans.id', '=', 'plan_materials.plan_id');
+                        $plans->with('asset','asset.unit','asset.category');
+                    } else if ($planType == '2') {
+                        $plans->leftJoin('plan_assets', 'plans.id', '=', 'plan_assets.plan_id');
+                        $plans->with('material','material.unit','material.category');
+                    }
+
+                    // ->leftJoin('plan_services', 'plans.id', '=', 'plan_services.plan_id')
+                    // ->leftJoin('plan_constructs', 'plans.id', '=', 'plan_constructs.plan_id')
+
+                    // ->when(count($conditions) > 0, function($q) use ($conditions) {
+                    //     $q->where($conditions);
+                    // })
+                    // ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
+                    //     $q->whereIn('status', $arrStatus);
+                    // })
+                    // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                    //     $q->whereBetween('status', $arrStatus);
+                    // })
+                    $plans->orderBy('plan_no', 'ASC');
 
         return [
-            'assets' => $assets,
+            'plans' => $plans->paginate(10),
         ];
     }
 

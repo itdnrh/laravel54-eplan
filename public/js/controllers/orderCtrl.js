@@ -7,6 +7,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.cboMonth = moment().format('MM');
     $scope.cboCategory = "";
     $scope.cboStatus = "";
+    $scope.cboPlanType = "";
     $scope.cboMenu = "";
     $scope.searchKeyword = "";
     $scope.cboQuery = "";
@@ -138,11 +139,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let status  = $scope.cboStatus === '' ? '1' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
+        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
+        let type    = $scope.cboPlanType === '' ? 2 : $scope.cboPlanType;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}`)
         .then(function(res) {
             $scope.setPlans(res);
 
