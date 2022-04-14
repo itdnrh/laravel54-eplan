@@ -66,7 +66,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'category_id')}"
                                 >
-                                    <label>ประเภท :</label>
+                                    <label>ประเภทงานก่อสร้าง :</label>
                                     <select id="category_id"
                                             name="category_id"
                                             ng-model="service.category_id"
@@ -93,6 +93,32 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'group_id')}"
+                                >
+                                    <label>กลุ่มงานก่อสร้าง :</label>
+                                    <select id="group_id"
+                                            name="group_id"
+                                            ng-model="service.group_id"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภท --</option>
+
+                                        @foreach($groups as $group)
+
+                                            <option value="{{ $group->id }}">
+                                                {{ $group->name }}
+                                            </option>
+
+                                        @endforeach
+
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(service, 'group_id')">
+                                        @{{ formError.errors.service_type_id[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'plan_no')}"
                                 >
                                     <label>เลขที่ :</label>
@@ -106,12 +132,79 @@
                                         @{{ formError.errors.plan_no[0] }}
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'service_desc')}"
+                                >
+                                    <label>รายการ :</label>
+                                    <input
+                                        type="text"
+                                        id="service_desc"
+                                        name="service_desc"
+                                        ng-model="service.service_desc"
+                                        class="form-control pull-right"
+                                        tabindex="4">
+                                    <span class="help-block" ng-show="checkValidate(service, 'service_desc')">
+                                        @{{ formError.errors.desc[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'service_desc')}"
+                                >
+                                    <label>สถานที่ :</label>
+                                    <input
+                                        type="text"
+                                        id="service_desc"
+                                        name="service_desc"
+                                        ng-model="service.service_desc"
+                                        class="form-control pull-right"
+                                        tabindex="4">
+                                    <span class="help-block" ng-show="checkValidate(service, 'service_desc')">
+                                        @{{ formError.errors.desc[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'group_id')}"
+                                >
+                                    <label>อาคาร :</label>
+                                    <select id="group_id"
+                                            name="group_id"
+                                            ng-model="service.group_id"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภท --</option>
+
+                                        @foreach($groups as $group)
+
+                                            <option value="{{ $group->id }}">
+                                                {{ $group->name }}
+                                            </option>
+
+                                        @endforeach
+
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(service, 'group_id')">
+                                        @{{ formError.errors.service_type_id[0] }}
+                                    </span>
+                                </div>
 
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'service_desc')}"
                                 >
-                                    <label>รายการ :</label>
+                                    <label>BOQ เลขที่ :</label>
                                     <input
                                         type="text"
                                         id="service_desc"

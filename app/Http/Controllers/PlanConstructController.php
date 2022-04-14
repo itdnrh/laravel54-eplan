@@ -10,6 +10,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Plan;
 use App\Models\PlanConstruct;
 use App\Models\ConstructCategory;
+use App\Models\ConstructGroup;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -170,6 +171,7 @@ class PlanConstructController extends Controller
     {
         return view('constructs.add', [
             "categories"    => ConstructCategory::all(),
+            "groups"        => ConstructGroup::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
