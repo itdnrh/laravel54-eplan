@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนจ้างเหมาบริการ
+            แผนจ้างบริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนจ้างเหมาบริการ</li>
+            <li class="breadcrumb-item active">แผนจ้างบริการ</li>
         </ol>
     </section>
 
@@ -116,7 +116,7 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">แผนจ้างเหมาบริการ</h3>
+                                <h3 class="box-title">แผนจ้างบริการ</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/services/add') }}" class="btn btn-primary pull-right">
@@ -157,7 +157,7 @@
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
                                         <h4 style="margin: 0;">@{{ plan.service.type.name }}</h4>
-                                        @{{ plan.service.service_desc }} จำนวน 
+                                        @{{ plan.service.desc }} จำนวน 
                                         <span>@{{ plan.service.amount | currency:'':0 }}</span>
                                         <span>@{{ plan.service.unit.name }}</span>
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
