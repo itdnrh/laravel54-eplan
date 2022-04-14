@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
-use App\Models\Material;
+use App\Models\PlanMaterial;
 use App\Models\MaterialCategory;
 use App\Models\Unit;
 use App\Models\Person;
@@ -137,7 +137,7 @@ class MaterialController extends Controller
     public function getAll()
     {
         return [
-            'materials' => Material::orderBy('plan_id')->get(),
+            'materials' => PlanMaterial::orderBy('plan_id')->get(),
         ];
     }
 
@@ -198,7 +198,7 @@ class MaterialController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $asset = new Material();
+            $asset = new PlanMaterial();
             $asset->plan_id         = $planId;
             $asset->category_id     = $req['category_id'];
             $asset->desc            = $req['desc'];
