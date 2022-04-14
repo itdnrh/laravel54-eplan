@@ -1,4 +1,4 @@
-app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.cboYear = parseInt(moment().format('MM')) > 9
