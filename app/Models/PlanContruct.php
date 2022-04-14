@@ -9,8 +9,8 @@ class PlanConstruct extends Model
     protected $table = "plan_constructs";
     protected $primaryKey = "plan_id";
 
-    public function type()
+    public function category()
     {
-        return $this->belongsTo(ConstructType::class, 'construct_type_id', 'id');
+        return $this->belongsTo(ConstructCategory::class, 'category_id', 'id');
     }
 }

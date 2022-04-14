@@ -9,9 +9,9 @@ class PlanService extends Model
     protected $table = "plan_services";
     protected $primaryKey = "plan_id";
 
-    public function type()
+    public function category()
     {
-        return $this->belongsTo(ServiceType::class, 'service_type_id', 'id');
+        return $this->belongsTo(ServiceCategory::class, 'category_id', 'id');
     }
 
     public function unit()
