@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
-use App\Models\PlanService;
-use App\Models\ServiceType;
+use App\Models\PlanConstruct;
+use App\Models\ConstructCategory;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -24,8 +24,8 @@ class PlanConstructController extends Controller
         $rules = [
             'year'              => 'required',
             'plan_no'           => 'required',
-            'service_type_id'   => 'required',
-            'service_desc'      => 'required',
+            'category_id'       => 'required',
+            'desc'              => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
             'amount'            => 'required',
@@ -74,80 +74,80 @@ class PlanConstructController extends Controller
 
     public function index()
     {
-        return view('services.list', [
+        return view('constructs.list', [
             "types"     => ServiceType::all(),
             "factions"  => Faction::all(),
             "departs"   => Depart::all(),
         ]);
     }
 
-    public function search(Request $req, $year, $cate, $status, $menu)
+    public function search(Request $req)
     {
         $matched = [];
         $arrStatus = [];
         $pattern = '/^\<|\>|\&|\-/i';
-
         $conditions = [];
-        if($year != '0') array_push($conditions, ['year', '=', $year]);
-        if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
-        if($status != '-') {
-            if (preg_match($pattern, $status, $matched) == 1) {
-                $arrStatus = explode($matched[0], $status);
-
-                if ($matched[0] != '-' && $matched[0] != '&') {
-                    array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
-                }
-            } else {
-                array_push($conditions, ['status', '=', $status]);
-            }
-        }
-        // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
 
         /** Get params from query string */
         $depart     = $req->get('depart');
         $month      = $req->get('month');
 
-        $services = Plan::join('plan_services', 'plans.id', '=', 'plan_services.plan_id')
-                    ->with('budget','depart','division')
-                    ->with('service','service.unit','service.type')
-                    ->where('plan_type_id', '3')
-                    ->when(count($conditions) > 0, function($q) use ($conditions) {
-                        $q->where($conditions);
-                    })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
-                        $q->whereIn('status', $arrStatus);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                        $q->whereBetween('status', $arrStatus);
-                    })
-                    ->when(!empty($month), function($q) use ($month) {
-                        $sdate = $month. '-01';
-                        $edate = date('Y-m-t', strtotime($sdate));
+        // if($year != '0') array_push($conditions, ['year', '=', $year]);
+        // if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
+        // if($status != '-') {
+        //     if (preg_match($pattern, $status, $matched) == 1) {
+        //         $arrStatus = explode($matched[0], $status);
 
-                        $q->whereBetween('leave_date', [$sdate, $edate]);
-                    })
-                    ->orderBy('plan_no', 'ASC')
-                    ->paginate(10);
+        //         if ($matched[0] != '-' && $matched[0] != '&') {
+        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+        //         }
+        //     } else {
+        //         array_push($conditions, ['status', '=', $status]);
+        //     }
+        // }
+        // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
+
+        $constructs = Plan::join('plan_constructs', 'plans.id', '=', 'plan_constructs.plan_id')
+                        ->with('budget','depart','division')
+                        ->with('construct','construct.unit','construct.type')
+                        ->where('plan_type_id', '4')
+                        ->when(count($conditions) > 0, function($q) use ($conditions) {
+                            $q->where($conditions);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('depart_id', $depart);
+                        })
+                        ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
+                            $q->whereIn('status', $arrStatus);
+                        })
+                        ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                            $q->whereBetween('status', $arrStatus);
+                        })
+                        ->when(!empty($month), function($q) use ($month) {
+                            $sdate = $month. '-01';
+                            $edate = date('Y-m-t', strtotime($sdate));
+
+                            $q->whereBetween('leave_date', [$sdate, $edate]);
+                        })
+                        ->orderBy('plan_no', 'ASC')
+                        ->paginate(10);
 
         return [
-            'services' => $services,
+            'constructs' => $constructs,
         ];
     }
 
     public function getAll()
     {
         return [
-            'assets' => PlanAsset::orderBy('plan_no')->get(),
+            'constructs' => Plan::with('construct')->orderBy('plan_no')->get(),
         ];
     }
 
     public function getById($id)
     {
         return [
-            'plan' => Plan::where('id', $id)
+            'construct' => Plan::where('id', $id)
                         ->with('budget','depart','division')
                         ->with('service','service.unit','service.type')
                         ->first(),
@@ -156,24 +156,24 @@ class PlanConstructController extends Controller
 
     public function detail($id)
     {
-        return view('services.detail', [
-            "plan"      => Plan::with('service')->where('id', $id)->first(),
-            "types"     => ServiceType::all(),
-            "units"     => Unit::all(),
-            "factions"  => Faction::all(),
-            "departs"   => Depart::all(),
-            "divisions" => Division::all(),
+        return view('constructs.detail', [
+            "plan"          => Plan::with('construct')->where('id', $id)->first(),
+            "categories"    => ConstructCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 
     public function add()
     {
-        return view('services.add', [
-            "types"     => ServiceType::all(),
-            "units"     => Unit::all(),
-            "factions"  => Faction::all(),
-            "departs"   => Depart::all(),
-            "divisions" => Division::all(),
+        return view('constructs.add', [
+            "categories"    => ConstructCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 
@@ -201,10 +201,10 @@ class PlanConstructController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $service = new PlanService();
+            $service = new PlanConstruct();
             $service->plan_id           = $planId;
-            $service->service_type_id   = $req['service_type_id'];
-            $service->service_desc      = $req['service_desc'];
+            $service->category_id       = $req['category_id'];
+            $service->desc              = $req['desc'];
             $service->price_per_unit    = $req['price_per_unit'];
             $service->unit_id           = $req['unit_id'];
             $service->amount            = $req['amount'];
