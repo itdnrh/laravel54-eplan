@@ -51,17 +51,17 @@
                                 <div class="form-group col-md-6">
                                     <label>ประเภท</label>
                                     <select
-                                        id="cboServiceType"
-                                        name="cboServiceType"
-                                        ng-model="cboServiceType"
+                                        id="cboCategory"
+                                        name="cboCategory"
+                                        ng-model="cboCategory"
                                         class="form-control"
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        @foreach($types as $type)
+                                        @foreach($categories as $category)
 
-                                            <option value="{{ $type->id }}">
-                                                {{ $type->name }}
+                                            <option value="{{ $category->id }}">
+                                                {{ $category->name }}
                                             </option>
 
                                         @endforeach

@@ -63,14 +63,14 @@
                                     <label>ประเภท :</label>
                                     <select id="category_id"
                                             name="category_id"
-                                            ng-model="service.service_type_id"
+                                            ng-model="service.category_id"
                                             class="form-control"
                                             tabindex="2">
 
-                                            @foreach($types as $type)
+                                            @foreach($categories as $category)
 
-                                                <option value="{{ $type->id }}">
-                                                    {{ $type->name }}
+                                                <option value="{{ $category->id }}">
+                                                    {{ $category->name }}
                                                 </option>
 
                                             @endforeach

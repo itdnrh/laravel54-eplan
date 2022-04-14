@@ -64,27 +64,27 @@
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'service_type_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'category_id')}"
                                 >
                                     <label>ประเภท :</label>
-                                    <select id="service_type_id"
-                                            name="service_type_id"
-                                            ng-model="service.service_type_id"
+                                    <select id="category_id"
+                                            name="category_id"
+                                            ng-model="service.category_id"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
 
-                                        @foreach($types as $type)
+                                        @foreach($categories as $category)
 
-                                            <option value="{{ $type->id }}">
-                                                {{ $type->name }}
+                                            <option value="{{ $category->id }}">
+                                                {{ $category->name }}
                                             </option>
 
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(service, 'service_type_id')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'category_id')">
                                         @{{ formError.errors.service_type_id[0] }}
                                     </span>
                                 </div>
