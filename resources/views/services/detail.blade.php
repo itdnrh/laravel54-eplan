@@ -5,12 +5,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนจ้างเหมาบริการ : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดแผนจ้างบริการ : เลขที่ ({{ $plan->plan_no }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดแผนจ้างเหมาบริการ</li>
+            <li class="breadcrumb-item active">รายละเอียดแผนจ้างบริการ</li>
         </ol>
     </section>
 
@@ -22,7 +22,7 @@
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนจ้างเหมาบริการ</h3>
+                        <h3 class="box-title">รายละเอียดแผนจ้างบริการ</h3>
                     </div>
 
                     <div class="box-body">

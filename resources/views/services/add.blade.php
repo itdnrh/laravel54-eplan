@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการจ้างเหมาบริการ
+            เพิ่มแผนจ้างบริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการจ้างเหมาบริการ</li>
+            <li class="breadcrumb-item active">เพิ่มแผนจ้างบริการ</li>
         </ol>
     </section>
 
@@ -30,7 +30,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการจ้างเหมาบริการ</h3>
+                        <h3 class="box-title">เพิ่มแผนจ้างบริการ</h3>
                     </div>
 
                     <form id="frmNewService" name="frmNewService" method="post" action="{{ url('/services/store') }}" role="form" enctype="multipart/form-data">
