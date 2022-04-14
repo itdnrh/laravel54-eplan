@@ -95,7 +95,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนก่อสร้าง */
     Route::post('constructs/validate', 'PlanConstructController@formValidate');
-    Route::get('constructs/search/{year}/{cate}/{status}/{menu}', 'PlanConstructController@search');
+    Route::get('constructs/search', 'PlanConstructController@search');
     Route::get('constructs/get-ajax-all', 'PlanConstructController@getAll');
     Route::get('constructs/get-ajax-byid/{id}', 'PlanConstructController@getById');
     Route::get('constructs/detail/{id}', 'PlanConstructController@detail');

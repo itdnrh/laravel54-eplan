@@ -138,7 +138,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/services/search?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/constructs/search?depart=${depart}`)
         .then(function(res) {
             $scope.setConstructs(res);
 
