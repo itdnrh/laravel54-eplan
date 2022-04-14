@@ -234,7 +234,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         });
 
         /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/materials/list`;
+        window.location.href = `${CONFIG.baseUrl}/plans/materials`;
     };
 
     $scope.showPoForm = function() {
@@ -259,7 +259,7 @@ app.controller('materialCtrl', function(CONFIG, $scope, $http, toaster, StringFo
         });
 
         /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/materials/list`;
+        window.location.href = `${CONFIG.baseUrl}/plans/materials`;
     };
 
     $scope.store = function(event, form) {
