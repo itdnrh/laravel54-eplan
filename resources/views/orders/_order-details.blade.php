@@ -30,8 +30,8 @@
                                     <p style="margin: 0;">@{{ detail.division.ward_name }}</p>
                                 </td>
                                 <td>
-                                    <p style="margin: 0;">@{{ detail.category.category_name }}</p>
-                                    @{{ detail.plan_no }} - @{{ detail.plan.desc }}
+                                    <p style="margin: 0;">@{{ detail.item.category.name }}</p>
+                                    @{{ detail.plan_no }} - @{{ detail.item.desc }}
                                 </td>
                                 <td style="text-align: center;">
                                     <span>@{{ detail.amount | currency:'':0 }}</span>

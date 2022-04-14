@@ -176,43 +176,37 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.setPlans = function(res, type) {
         const { data, ...pager } = res.data.plans;
 
-        if (type == '1') {
-            $scope.plans = data.map(plan => {
+        $scope.plans = data.map(plan => {
+            if (type == '1') {
                 const { asset, ...rest } = plan;
 
                 return {
                     ...rest,
                     item: asset
                 };
-            });
-        } else if (type == '2') {
-            $scope.plans = data.map(plan => {
+            } else if (type == '2') {
                 const { material, ...rest } = plan;
 
                 return {
                     ...rest,
                     item: material
                 };
-            });
-        } else if (type == '3') {
-            $scope.plans = data.map(plan => {
+            } else if (type == '3') {
                 const { service, ...rest } = plan;
 
                 return {
                     ...rest,
                     item: service
                 };
-            });
-        } else if (type == '4') {
-            $scope.plans = data.map(plan => {
+            } else if (type == '4') {
                 const { construct, ...rest } = plan;
 
                 return {
                     ...rest,
                     item: construct
                 };
-            });
-        }
+            }
+        });
 
         $scope.plans_pager = pager;
     };
@@ -241,14 +235,47 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.setOrders = function (res) {
+        let plans = [];
         const { data, ...pager } = res.data.orders;
 
-        $scope.orders = data.map(order => {
-            let newDetails = order.details.map(asset => {
-                let plan = res.data.plans.find(pl => pl.id === asset.plan_id);
-    
+        plans = res.data.plans.map(plan => {
+            if (plan.plan_type_id == '1') {
+                const { asset, ...rest } = plan;
+
                 return {
-                    ...asset,
+                    ...rest,
+                    item: asset
+                };
+            } else if (plan.plan_type_id == '2') {
+                const { material, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: material
+                };
+            } else if (plan.plan_type_id == '3') {
+                const { service, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: service
+                };
+            } else if (plan.plan_type_id == '4') {
+                const { construct, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: construct
+                };
+            }
+        });
+
+        $scope.orders = data.map(order => {
+            let newDetails = order.details.map(item => {
+                let plan = plans.find(pl => pl.id === item.plan_id);
+
+                return {
+                    ...item,
                     ...plan
                 };
             });
@@ -280,6 +307,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.showOrderDetails = (items) => {
         if (items) {
+            console.log(items);
             $scope.assets = items;
     
             $('#order-details').modal('show');
