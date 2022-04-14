@@ -47,12 +47,15 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนจัดซื้อจัดจ้าง */
     Route::get('plans/search', 'PlanController@search');
+    Route::get('plans/assets', 'PlanAssetController@index');
+    Route::get('plans/materials', 'MaterialController@index');
+    Route::get('plans/services', 'PlanServiceController@index');
+    Route::get('plans/constructs', 'PlanConstructController@index');
     Route::post('plans/create-po/{id}', 'PlanController@createPO');
     Route::post('plans/send-supported/{id}', 'PlanController@sendSupported');
 
     /** แผนครุภัณฑ์ */
     Route::post('assets/validate', 'PlanAssetController@formValidate');
-    Route::get('assets/list', 'PlanAssetController@index');
     Route::get('assets/search/{year}/{cate}/{status}/{menu}', 'PlanAssetController@search');
     Route::get('assets/get-ajax-all', 'PlanAssetController@getAll');
     Route::get('assets/get-ajax-byid/{id}', 'PlanAssetController@getById');
@@ -66,7 +69,6 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนวัสดุ */
     Route::post('materials/validate', 'MaterialController@formValidate');
-    Route::get('materials/list', 'MaterialController@index');
     Route::get('materials/search', 'MaterialController@search');
     Route::get('materials/get-ajax-all', 'MaterialController@getAll');
     Route::get('materials/get-ajax-byid/{id}', 'MaterialController@getById');
@@ -78,9 +80,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('materials/delete/{id}', 'MaterialController@delete');
     Route::get('materials/print/{id}', 'MaterialController@printLeaveForm');
 
-    /** แผนจ้างเหมา */
+    /** แผนจ้างบริการ */
     Route::post('services/validate', 'PlanServiceController@formValidate');
-    Route::get('services/list', 'PlanServiceController@index');
     Route::get('services/search/{year}/{cate}/{status}/{menu}', 'PlanServiceController@search');
     Route::get('services/get-ajax-all', 'PlanServiceController@getAll');
     Route::get('services/get-ajax-byid/{id}', 'PlanServiceController@getById');
@@ -92,9 +93,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('services/delete/{id}', 'PlanServiceController@delete');
     Route::get('services/print/{id}', 'PlanServiceController@printLeaveForm');
 
-    /** แผนจ้างเหมา */
+    /** แผนก่อสร้าง */
     Route::post('constructs/validate', 'PlanConstructController@formValidate');
-    Route::get('constructs/list', 'PlanConstructController@index');
     Route::get('constructs/search/{year}/{cate}/{status}/{menu}', 'PlanConstructController@search');
     Route::get('constructs/get-ajax-all', 'PlanConstructController@getAll');
     Route::get('constructs/get-ajax-byid/{id}', 'PlanConstructController@getById');

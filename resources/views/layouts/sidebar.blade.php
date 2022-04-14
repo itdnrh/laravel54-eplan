@@ -44,7 +44,7 @@
 						</a>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': ['assets','materials','services','constructs'].includes(menu) }">
+					<li class="treeview" ng-class="{ 'menu-open active': ['plans'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-calendar"></i>
 							<span>แผนจัดซื้อจัดจ้าง</span>
@@ -52,25 +52,25 @@
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
 						</a>
-						<ul class="treeview-menu" ng-style="{ 'display': ['assets','materials','services','constructs'].includes(menu) ? 'block' : 'none' }">
-							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/assets/list') }}">
+						<ul class="treeview-menu" ng-style="{ 'display': ['plans'].includes(menu) ? 'block' : 'none' }">
+							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/assets') }}">
 									<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/materials/list') }}">
+							<li ng-class="{ 'active': ['materials','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/materials') }}">
 									<i class="fa fa-circle-o"></i> แผนวัสดุ (นอกคลัง)
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/services/list') }}">
-									<i class="fa fa-circle-o"></i> แผนงานบริการ
+							<li ng-class="{ 'active': ['services','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/services') }}">
+									<i class="fa fa-circle-o"></i> แผนจ้างบริการ
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/constructs/list') }}">
-									<i class="fa fa-circle-o"></i> แผนงานก่อสร้าง
+							<li ng-class="{ 'active': ['constructs','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/constructs') }}">
+									<i class="fa fa-circle-o"></i> แผนก่อสร้าง
 								</a>
 							</li>
 						</ul>
@@ -84,7 +84,38 @@
 						Auth::user()->memberOf->duty_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
-						<li class="treeview" ng-class="{ 'menu-open active': ['assets','materials','services','constructs'].includes(menu) }">
+						<!-- <li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
+							<a href="#">
+								<i class="fa fa-server"></i>
+								<span>รายการย่อย</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
+								<li ng-class="{ 'active': ['reparations','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/plans/reparations') }}">
+										<i class="fa fa-circle-o"></i> จ้างซ่อมบำรุง
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'receive' }">
+									<a href="{{ url('materials/list') }}">
+										<i class="fa fa-circle-o"></i> วัสดุ (ในคลัง)
+									</a>
+								</li>
+							</ul>
+						</li> -->
+					@endif
+
+					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1309900322504' ||
+						Auth::user()->memberOf->duty_id == 1 ||
+						Auth::user()->memberOf->duty_id == 2 ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
 							<a href="#">
 								<i class="fa fa-check-square-o"></i>
 								<span>การอนุมัติ</span>
@@ -92,7 +123,7 @@
 									<i class="fa fa-angle-left pull-right"></i>
 								</span>
 							</a>
-							<ul class="treeview-menu" ng-style="{ 'display': ['assets','materials','services','constructs'].includes(menu) ? 'block' : 'none' }">
+							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
 								<!-- // Authorize เฉพาะหัวหน้ากลุ่มงาน -->
 								<li ng-class="{ 'active': submenu == 'comment' }">
 									<a href="{{ url('assets/list') }}">
@@ -110,14 +141,14 @@
 								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
 								<li ng-class="{ 'active': submenu == 'receive' }">
 									<a href="{{ url('services/list') }}">
-										<i class="fa fa-circle-o"></i> แผนงานบริการ
+										<i class="fa fa-circle-o"></i> แผนจ้างบริการ
 									</a>
 								</li>
 
 								<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ -->
 								<li ng-class="{ 'active': submenu == 'approve' }">
 									<a href="{{ url('constructs/list') }}">
-										<i class="fa fa-circle-o"></i> แผนงานก่อสร้าง
+										<i class="fa fa-circle-o"></i> แผนก่อสร้าง
 									</a>
 								</li>
 							</ul>
