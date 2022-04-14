@@ -68,17 +68,17 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('assets/print/{id}', 'PlanAssetController@printLeaveForm');
 
     /** แผนวัสดุ */
-    Route::post('materials/validate', 'MaterialController@formValidate');
-    Route::get('materials/search', 'MaterialController@search');
-    Route::get('materials/get-ajax-all', 'MaterialController@getAll');
-    Route::get('materials/get-ajax-byid/{id}', 'MaterialController@getById');
-    Route::get('materials/detail/{id}', 'MaterialController@detail');
-    Route::get('materials/add', 'MaterialController@add');
-    Route::post('materials/store', 'MaterialController@store');
-    Route::get('materials/edit/{id}', 'MaterialController@edit');
-    Route::post('materials/update', 'MaterialController@update');
-    Route::post('materials/delete/{id}', 'MaterialController@delete');
-    Route::get('materials/print/{id}', 'MaterialController@printLeaveForm');
+    Route::post('materials/validate', 'PlanMaterialController@formValidate');
+    Route::get('materials/search', 'PlanMaterialController@search');
+    Route::get('materials/get-ajax-all', 'PlanMaterialController@getAll');
+    Route::get('materials/get-ajax-byid/{id}', 'PlanMaterialController@getById');
+    Route::get('materials/detail/{id}', 'PlanMaterialController@detail');
+    Route::get('materials/add', 'PlanMaterialController@add');
+    Route::post('materials/store', 'PlanMaterialController@store');
+    Route::get('materials/edit/{id}', 'PlanMaterialController@edit');
+    Route::post('materials/update', 'PlanMaterialController@update');
+    Route::post('materials/delete/{id}', 'PlanMaterialController@delete');
+    Route::get('materials/print/{id}', 'PlanMaterialController@printLeaveForm');
 
     /** แผนจ้างบริการ */
     Route::post('services/validate', 'PlanServiceController@formValidate');
