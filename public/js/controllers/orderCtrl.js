@@ -145,7 +145,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}`)
         .then(function(res) {
-            $scope.setPlans(res);
+            $scope.setPlans(res, type);
 
             $scope.loading = false;
 
@@ -160,7 +160,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if (plan) {
             $scope.newItem = {
                 plan_no: plan.plan_no,
-                plan_detail: `${plan.desc} (${plan.asset.category.category_name})`,
+                plan_detail: `${plan.desc} (${plan.item.category.name})`,
                 plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
                 plan_id: plan.id,
                 price_per_unit: plan.price_per_unit,
@@ -173,10 +173,47 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#plans-list').modal('hide');
     };
 
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.assets;
+    $scope.setPlans = function(res, type) {
+        const { data, ...pager } = res.data.plans;
 
-        $scope.plans = data;
+        if (type == '1') {
+            $scope.plans = data.map(plan => {
+                const { asset, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: asset
+                };
+            });
+        } else if (type == '2') {
+            $scope.plans = data.map(plan => {
+                const { material, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: material
+                };
+            });
+        } else if (type == '3') {
+            $scope.plans = data.map(plan => {
+                const { service, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: service
+                };
+            });
+        } else if (type == '4') {
+            $scope.plans = data.map(plan => {
+                const { construct, ...rest } = plan;
+
+                return {
+                    ...rest,
+                    item: construct
+                };
+            });
+        }
+
         $scope.plans_pager = pager;
     };
 

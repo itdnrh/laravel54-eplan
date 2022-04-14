@@ -50,7 +50,7 @@
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <p style="margin: 0;">@{{ plan.asset.category.category_name }}</p>
+                                    <p style="margin: 0;">@{{ plan.item.category.category_name }}</p>
                                     @{{ plan.desc }} จำนวน 
                                     <span>@{{ plan.amount | currency:'':0 }}</span>
                                     <span>@{{ plan.unit.name }}</span>

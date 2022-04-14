@@ -109,10 +109,10 @@ class PlanController extends Controller
                     ->where('plan_type_id', $planType);
 
                     if ($planType == '1') {
-                        $plans->leftJoin('plan_materials', 'plans.id', '=', 'plan_materials.plan_id');
+                        $plans->leftJoin('plan_assets', 'plans.id', '=', 'plan_assets.plan_id');
                         $plans->with('asset','asset.unit','asset.category');
                     } else if ($planType == '2') {
-                        $plans->leftJoin('plan_assets', 'plans.id', '=', 'plan_assets.plan_id');
+                        $plans->leftJoin('plan_materials', 'plans.id', '=', 'plan_materials.plan_id');
                         $plans->with('material','material.unit','material.category');
                     }
 
