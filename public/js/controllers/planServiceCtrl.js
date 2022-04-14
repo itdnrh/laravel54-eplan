@@ -5,7 +5,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
                         ? (moment().year() + 544).toString()
                         : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
-    $scope.cboServiceType = "";
+    $scope.cboCategory = "";
     $scope.cboDepart = "";
     $scope.cboStatus = "";
     $scope.cboMenu = "";
@@ -45,8 +45,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         faction_id: '',
         depart_id: '',
         division_id: '',
-        service_type_id: '',
-        service_desc: '',
+        category_id: '',
+        desc: '',
         price_per_unit: '',
         unit_id: '',
         amount: '',
@@ -107,8 +107,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             faction_id: '',
             depart_id: '',
             division_id: '',
-            service_type_id: '',
-            service_desc: '',
+            category_id: '',
+            desc: '',
             price_per_unit: '',
             unit_id: '',
             amount: '',
@@ -132,13 +132,13 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.loading = true;
 
         let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let type    = $scope.cboServiceType === '' ? 0 : $scope.cboServiceType;
+        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/services/search/${year}/${type}/${status}/${menu}${query}?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/services/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
         .then(function(res) {
             $scope.setServices(res);
 
@@ -192,7 +192,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.service_id       = data.plan.id;
         $scope.service.year             = data.plan.year;
         $scope.service.plan_no          = data.plan.plan_no;
-        $scope.service.service_desc     = data.plan.service.service_desc;
+        $scope.service.desc             = data.plan.service.desc;
         $scope.service.price_per_unit   = data.plan.service.price_per_unit;
         $scope.service.amount           = data.plan.service.amount;
         $scope.service.sum_price        = data.plan.service.sum_price;
@@ -202,7 +202,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.status           = data.plan.status;
 
         /** Convert int value to string */
-        $scope.service.service_type_id  = data.plan.service.service_type_id.toString();
+        $scope.service.category_id      = data.plan.service.category_id.toString();
         $scope.service.unit_id          = data.plan.service.unit_id.toString();
         $scope.service.depart_id        = data.plan.depart_id.toString();
         $scope.service.division_id      = data.plan.division_id ? data.plan.division_id.toString() : '';
