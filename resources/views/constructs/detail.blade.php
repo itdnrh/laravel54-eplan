@@ -5,24 +5,24 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนจ้างบริการ : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดแผนก่อสร้าง : เลขที่ ({{ $plan->plan_no }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดแผนจ้างบริการ</li>
+            <li class="breadcrumb-item active">รายละเอียดแผนก่อสร้าง</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planServiceCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
+    <section class="content" ng-controller="planConstructCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
 
         <div class="row">
             <div class="col-md-12">
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนจ้างบริการ</h3>
+                        <h3 class="box-title">รายละเอียดแผนก่อสร้าง</h3>
                     </div>
 
                     <div class="box-body">

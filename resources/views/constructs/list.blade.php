@@ -5,20 +5,20 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนจ้างบริการ
+            แผนก่อสร้าง
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนจ้างบริการ</li>
+            <li class="breadcrumb-item active">แผนก่อสร้าง</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planServiceCtrl"
+        ng-controller="planConstructCtrl"
         ng-init="getAll(); initForms({ departs: {{ $departs }} });"
     >
 
@@ -116,7 +116,7 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">แผนจ้างบริการ</h3>
+                                <h3 class="box-title">แผนก่อสร้าง</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/services/add') }}" class="btn btn-primary pull-right">
