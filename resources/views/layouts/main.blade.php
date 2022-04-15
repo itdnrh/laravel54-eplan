@@ -66,16 +66,16 @@
 	<script type="text/javascript" src="{{ asset('/node_modules/select2/dist/js/select2.full.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/node_modules/daterangepicker/daterangepicker.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('/js/bootstrap-datepicker-custom.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/libraries/bootstrap-datepicker-custom.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.th.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('/js/jquery.knob.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('/js/fastclick.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('/js/thaibath.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/libraries/jquery.knob.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/libraries/fastclick.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/utils/thaibath.js') }}"></script>
 	<!-- Highcharts -->
 	<script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
 	<script type="text/javascript" src="http://code.highcharts.com/highcharts-more.js"></script>	
 	<!-- AdminLTE App -->
-	<script type="text/javascript" src="{{ asset('/js/adminlte.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/libraries/adminlte.min.js') }}"></script>
 	<!-- AngularJS Components -->
 	<script type="text/javascript" src="{{ asset('/js/main.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
