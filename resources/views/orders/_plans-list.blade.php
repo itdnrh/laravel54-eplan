@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
-                    <h5 class="modal-title">รายการครุภัณฑ์</h5>
+                    <h5 class="modal-title">รายการพัสดุ</h5>
                     <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
@@ -50,8 +50,8 @@
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <p style="margin: 0;">@{{ plan.item.category.category_name }}</p>
-                                    @{{ plan.desc }} จำนวน 
+                                    <p style="margin: 0;">@{{ plan.plan_item.item.category.name }}</p>
+                                    @{{ plan.plan_item.item.item_name }} จำนวน 
                                     <span>@{{ plan.amount | currency:'':0 }}</span>
                                     <span>@{{ plan.unit.name }}</span>
                                     <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"

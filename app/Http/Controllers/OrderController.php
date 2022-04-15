@@ -11,7 +11,7 @@ use App\Models\OrderDetail;
 use App\Models\Plan;
 use App\Models\PlanAsset;
 use App\Models\Supplier;
-use App\Models\AssetCategory;
+use App\Models\ItemCategory;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -87,7 +87,7 @@ class OrderController extends Controller
         return view('orders.detail', [
             "order"         => Order::find($id),
             "suppliers"     => Supplier::all(),
-            "categories"    => AssetCategory::all(),
+            "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -110,8 +110,8 @@ class OrderController extends Controller
     public function create()
     {
         return view('orders.add', [
-            "suppliers" => Supplier::all(),
-            "asset_categories"  => AssetCategory::all(),
+            "suppliers"     => Supplier::all(),
+            "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),

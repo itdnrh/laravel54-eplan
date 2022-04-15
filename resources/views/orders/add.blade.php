@@ -192,7 +192,7 @@
                                                             ng-model="newItem.plan_id"
                                                         />
                                                         <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-info btn-flat" ng-click="showAssetsList();">
+                                                            <button type="button" class="btn btn-info btn-flat" ng-click="showPlansList();">
                                                                 ...
                                                             </button>
                                                         </span>

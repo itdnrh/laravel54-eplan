@@ -104,17 +104,12 @@ class PlanController extends Controller
         // }
         // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
 
-        $plans = Plan::with('budget','depart','division')
+        $plans = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->with('budget','depart','division')
+                    ->with('planItem','planItem.unit')
+                    ->with('planItem.item','planItem.item.category')
                     ->where('status', '1')
-                    ->where('plan_type_id', $planType);
-
-                    if ($planType == '1') {
-                        $plans->leftJoin('plan_assets', 'plans.id', '=', 'plan_assets.plan_id');
-                        $plans->with('asset','asset.unit','asset.category');
-                    } else if ($planType == '2') {
-                        $plans->leftJoin('plan_materials', 'plans.id', '=', 'plan_materials.plan_id');
-                        $plans->with('material','material.unit','material.category');
-                    }
+                    ->where('plan_type_id', $planType)
 
                     // ->leftJoin('plan_services', 'plans.id', '=', 'plan_services.plan_id')
                     // ->leftJoin('plan_constructs', 'plans.id', '=', 'plan_constructs.plan_id')
@@ -128,10 +123,11 @@ class PlanController extends Controller
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
                     // })
-                    $plans->orderBy('plan_no', 'ASC');
+                    ->orderBy('plan_no', 'ASC')
+                    ->paginate(10);
 
         return [
-            'plans' => $plans->paginate(10),
+            'plans' => $plans,
         ];
     }
 

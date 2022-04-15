@@ -133,7 +133,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#total').val(total);
     };
 
-    $scope.showAssetsList = () => {
+    $scope.showPlansList = () => {
         $scope.assets = [];
         $scope.loading = true;
 
@@ -160,7 +160,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if (plan) {
             $scope.newItem = {
                 plan_no: plan.plan_no,
-                plan_detail: `${plan.desc} (${plan.item.category.name})`,
+                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
                 plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
                 plan_id: plan.id,
                 price_per_unit: plan.price_per_unit,
@@ -176,38 +176,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.setPlans = function(res, type) {
         const { data, ...pager } = res.data.plans;
 
-        $scope.plans = data.map(plan => {
-            if (type == '1') {
-                const { asset, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: asset
-                };
-            } else if (type == '2') {
-                const { material, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: material
-                };
-            } else if (type == '3') {
-                const { service, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: service
-                };
-            } else if (type == '4') {
-                const { construct, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: construct
-                };
-            }
-        });
-
+        $scope.plans = data;
         $scope.plans_pager = pager;
     };
 
