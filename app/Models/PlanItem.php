@@ -18,4 +18,14 @@ class PlanAsset extends Model
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
+
+    public function plan()
+    {
+        return $this->hasOne(Plan::class, 'plan_id', 'id');
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
 }
