@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th style="width: 5%; text-align: center;">#</th>
-            <th style="width: 8%; text-align: center;">เลขที่ PO</th>
-            <th style="width: 8%; text-align: center;">วันที่ PO</th>
+            <th style="width: 8%; text-align: center;">เลขที่ P/O</th>
+            <th style="width: 8%; text-align: center;">วันที่ P/O</th>
             <th>เจ้าหนี้</th>
             <th style="width: 6%; text-align: center;">ปีงบ</th>
             <th style="width: 6%; text-align: center;">จำนวนรายการ</th>

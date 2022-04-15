@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดใบ PO
+            รายละเอียดใบสั่งซื้อ (P/O)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดใบ PO</li>
+            <li class="breadcrumb-item active">รายละเอียดใบสั่งซื้อ (P/O)</li>
         </ol>
     </section>
 
@@ -27,7 +27,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดใบ PO</h3>
+                        <h3 class="box-title">รายละเอียดใบสั่งซื้อ (P/O)</h3>
                     </div>
 
                     <div class="box-body">
@@ -70,7 +70,7 @@
                                 class="form-group col-md-6"
                                 ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
                             >
-                                <label>เลขที่ PO :</label>
+                                <label>เลขที่ P/O :</label>
                                 <input  type="text"
                                         id="po_no"
                                         name="po_no"
@@ -83,7 +83,7 @@
                                 class="form-group col-md-6"
                                 ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
                             >
-                                <label>วันที่ใบ PO :</label>
+                                <label>วันที่ใบ P/O :</label>
                                 <input
                                     type="text"
                                     name="po_date"

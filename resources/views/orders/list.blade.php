@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการใบ PO
+            รายการใบสั่งซื้อ (P/O)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการใบ PO</li>
+            <li class="breadcrumb-item active">รายการใบสั่งซื้อ (P/O)</li>
         </ol>
     </section>
 
@@ -84,7 +84,7 @@
                                     <div class="col-md-6"></div>
                                     <div class="col-md-6">
                                         <a href="{{ url('/orders/add') }}" class="btn btn-primary pull-right">
-                                            เพิ่มใบ PO
+                                            เพิ่มใบสั่งซื้อ (P/O)
                                         </a>
                                     </div>
                                 </div>

@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มใบ PO
+            เพิ่มใบสั่งซื้อ (P/O)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มใบ PO</li>
+            <li class="breadcrumb-item active">เพิ่มใบสั่งซื้อ (P/O)</li>
         </ol>
     </section>
 
@@ -31,7 +31,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มใบ PO</h3>
+                        <h3 class="box-title">เพิ่มใบสั่งซื้อ (P/O)</h3>
                     </div>
 
                     <form id="frmNewPO" name="frmNewPO" method="post" action="{{ url('/orders/store') }}" role="form" enctype="multipart/form-data">
@@ -95,7 +95,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
                                 >
-                                    <label>เลขที่ PO :</label>
+                                    <label>เลขที่ P/O :</label>
                                     <input  type="text"
                                             id="po_no"
                                             name="po_no"
@@ -103,7 +103,7 @@
                                             class="form-control"
                                             tabindex="6">
                                     <span class="help-block" ng-show="checkValidate(order, 'po_no')">
-                                        กรุณาระบุเลขที่ PO
+                                        กรุณาระบุเลขที่ P/O
                                     </span>
                                 </div>
 
@@ -111,7 +111,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
                                 >
-                                    <label>วันที่ใบ PO :</label>
+                                    <label>วันที่ใบ P/O :</label>
                                     <input
                                         type="text"
                                         id="po_date"
@@ -120,7 +120,7 @@
                                         class="form-control pull-right"
                                         tabindex="1">
                                     <span class="help-block" ng-show="checkValidate(order, 'po_date')">
-                                        กรุณาระบุวันที่ใบ PO
+                                        กรุณาระบุวันที่ใบ P/O
                                     </span>
                                 </div>
                             </div>
