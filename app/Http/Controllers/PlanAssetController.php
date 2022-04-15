@@ -112,7 +112,8 @@ class PlanAssetController extends Controller
 
         $assets = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->with('budget','depart','division')
-                    ->with('planItem','planItem.unit','planItem.item')
+                    ->with('planItem','planItem.unit')
+                    ->with('planItem.item.category','planItem.item')
                     ->where('plan_type_id', '1')
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);

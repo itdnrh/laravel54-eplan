@@ -156,23 +156,25 @@
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <p style="margin: 0;">@{{ plan.asset.category.category_name }}</p>
-                                        @{{ plan.asset.desc }} จำนวน 
-                                        <span>@{{ plan.asset.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.asset.unit.name }}</span>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
+                                        <h4 style="margin: 0;">
+                                            @{{ plan.plan_item.item.category.name }}
+                                        </h4>
+                                        @{{ plan.plan_item.item.item_name }} จำนวน 
+                                        <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
+                                        <span>@{{ plan.plan_item.unit.name }}</span>
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ plan_item.attachment }}"
                                             class="btn btn-default btn-xs" 
                                             title="ไฟล์แนบ"
                                             target="_blank"
-                                            ng-show="asset.attachment">
+                                            ng-show="plan_item.attachment">
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.asset.price_per_unit | currency:'':0 }}
+                                        @{{ plan.plan_item.price_per_unit | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.asset.sum_price | currency:'':0 }}
+                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
