@@ -17,7 +17,7 @@
                                     style="margin-right: 1rem;"
                                     class="form-control"
                                     ng-model="cboPlanType"
-                                    ng-change="onFilterPerson(); getPlans();"
+                                    ng-change="onFilterCategories(cboPlanType); getPlans();"
                                 >
                                     <option value="">-- เลือกประเภทแผน --</option>
                                     @foreach($planTypes as $planType)
@@ -34,11 +34,9 @@
                                     ng-change="getPlans();"
                                 >
                                     <option value="">-- เลือกประเภทพัสดุ --</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
+                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div><!-- /.box-body -->

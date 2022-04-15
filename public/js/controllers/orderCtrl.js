@@ -45,6 +45,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         sum_price: ''
     };
 
+    $scope.forms = {
+        depart: [],
+        division: [],
+        categories: []
+    };
+
+    let tmpDeparts = [];
+    let tmpDivisions = [];
+    let tmpCategories = [];
+
     /** ============================== Init Form elements ============================== */
     let dtpOptions = {
         autoclose: true,
@@ -65,6 +75,19 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         .on('changeDate', function(event) {
             console.log(event.date);
         });
+
+    
+    $scope.initForms = (data) => {
+        if (data) {
+            tmpDeparts = data.departs ? data.departs : [];
+            tmpDivisions = data.divisions ? data.divisions : [];
+            tmpCategories = data.categories ? data.categories : [];
+        }
+    };
+
+    $scope.onFilterCategories = function(plan_type) {
+        $scope.forms.categories = tmpCategories.filter(cate => cate.plan_type_id === parseInt(plan_type));
+    };
 
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
