@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
-use App\Models\PlanAsset;
-use App\Models\AssetCategory;
+use App\Models\PlanItem;
+use App\Models\ItemCategory;
+use App\Models\Item;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -75,7 +76,7 @@ class PlanAssetController extends Controller
     public function index()
     {
         return view('assets.list', [
-            "categories"    => AssetCategory::all(),
+            "categories"    => ItemCategory::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);
@@ -158,7 +159,7 @@ class PlanAssetController extends Controller
     {
         return view('assets.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => AssetCategory::all(),
+            "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -169,7 +170,7 @@ class PlanAssetController extends Controller
     public function add()
     {
         return view('assets.add', [
-            "categories"    => AssetCategory::all(),
+            "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
