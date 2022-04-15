@@ -120,6 +120,7 @@
                                             class="form-control pull-right"
                                             tabindex="4"
                                         />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="asset.item_id" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-info btn-flat" ng-click="showItemsList()">
                                                 ...

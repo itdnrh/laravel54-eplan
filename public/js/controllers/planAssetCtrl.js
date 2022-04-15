@@ -49,6 +49,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         depart_id: '',
         division_id: '',
         category_id: '',
+        item_id: '',
         desc: '',
         spec: '',
         price_per_unit: '',
@@ -112,6 +113,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             depart_id: '',
             division_id: '',
             category_id: '',
+            item_id: '',
             desc: '',
             spec: '',
             price_per_unit: '',
@@ -192,6 +194,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
+            $scope.asset.item_id = item.id;
             $scope.asset.desc = item.item_name;
             $scope.asset.price_per_unit = item.latest_price;
             $scope.asset.unit_id = item.unit_id.toString();

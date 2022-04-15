@@ -10,7 +10,6 @@ use Illuminate\Support\MessageBag;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\ItemCategory;
-use App\Models\ItemGroup;
 use App\Models\Item;
 use App\Models\Unit;
 use App\Models\Person;
@@ -78,7 +77,6 @@ class PlanAssetController extends Controller
     {
         return view('assets.list', [
             "categories"    => ItemCategory::all(),
-            "groups"        => ItemGroup::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);
@@ -163,7 +161,6 @@ class PlanAssetController extends Controller
         return view('assets.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
-            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -175,7 +172,6 @@ class PlanAssetController extends Controller
     {
         return view('assets.add', [
             "categories"    => ItemCategory::all(),
-            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -207,8 +203,9 @@ class PlanAssetController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $asset = new PlanAsset();
+            $asset = new PlanItem();
             $asset->plan_id         = $planId;
+            $asset->item_id         = $req['item_id'];
             $asset->category_id     = $req['category_id'];
             $asset->desc            = $req['desc'];
             $asset->spec            = $req['spec'];
