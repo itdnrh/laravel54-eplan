@@ -28,7 +28,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     ];
 
     $scope.assets = [];
-    $scope.pager = [];
+    $scope.pager = null;
+
+    $scope.items = [];
+    $scope.items_pager = null;
 
     $scope.forms = {
         depart: [],
@@ -159,10 +162,43 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.pager = pager;
     };
 
-    $scope.setPersons = function(res) {
-        let { data, ...pager } = res.data.persons;
-        $scope.persons  = data;
-        $scope.pager    = pager;
+    $scope.showItemsList = function() {
+        $scope.items = [];
+        $scope.loading = true;
+
+        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
+        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
+
+        $http.get(`${CONFIG.baseUrl}/items/search?type=1&cate=${cate}&status=${status}`)
+        .then(function(res) {
+            $scope.setItems(res);
+
+            $scope.loading = false;
+
+            $('#items-list').modal('show');
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setItems = function(res) {
+        let { data, ...pager } = res.data.items;
+
+        console.log(data);
+        $scope.items = data;
+        $scope.items_pager = pager;
+    };
+
+    $scope.onSelectedItem = function(event, item) {
+        if (item) {
+            $scope.asset.desc = item.item_name;
+            $scope.asset.price_per_unit = item.latest_price;
+            $scope.asset.unit_id = item.unit_id.toString();
+            $scope.asset.category_id = item.category_id.toString();
+        }
+
+        $('#items-list').modal('hide');
     };
 
     $scope.getDataWithURL = function(e, URL, cb) {

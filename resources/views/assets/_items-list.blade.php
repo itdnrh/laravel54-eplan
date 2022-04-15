@@ -1,5 +1,5 @@
-<div class="modal fade" id="person-list" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="items-list" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 80%">
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
@@ -19,7 +19,7 @@
                                     ng-model="cboDepart"
                                     ng-change="onFilterPerson()"
                                 >
-                                    <option value="">--เลือกกลุ่มงาน--</option>
+                                    <option value="">--เลือกประเภทครุภัณฑ์--</option>
                                     @foreach($departs as $depart)
                                         <option value="{{ $depart->depart_id }}">{{ $depart->depart_name }}</option>
                                     @endforeach
@@ -35,28 +35,28 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%; text-align: center;">#</th>
-                                <th style="text-align: center;">ชื่อ-สกุล</th>
-                                <th style="width: 25%; text-align: center;">ตำแหน่ง</th>
-                                <th style="width: 30%;">สังกัด</th>
+                                <th>รายการ</th>
+                                <th style="width: 8%; text-align: center;">หน่วยนับ</th>
+                                <th style="width: 10%;">ราคาต่อหน่วย</th>
                                 <th style="width: 10%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, person) in persons">
+                            <tr ng-repeat="(index, item) in items">
                                 <td style="text-align: center;">
-                                    @{{ pager.from + index }}
+                                    @{{ items_pager.from + index }}
                                 </td>
                                 <td>
-                                    @{{ person.prefix.prefix_name + person.person_firstname + ' ' + person.person_lastname }}
+                                    @{{ item.item_name }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ person.position.position_name + person.academic.ac_name }}
+                                    @{{ item.unit.name }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ person.member_of.depart.depart_name }}
+                                    @{{ item.latest_price | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="#" class="btn btn-primary" ng-click="onSelectedPerson($event, person, personListsCallback)">
+                                    <a href="#" class="btn btn-primary" ng-click="onSelectedItem($event, item)">
                                         เลือก
                                     </a>
                                 </td>
@@ -75,45 +75,45 @@
                     <div class="row">
                         <div class="col-md-4">
                             <span class="pull-left" style="margin-top: 5px;">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }} | 
-                                จำนวน @{{ pager.total }} รายการ
+                                หน้า @{{ items_pager.current_page }} จาก @{{ items_pager.last_page }} | 
+                                จำนวน @{{ items_pager.total }} รายการ
                             </span>
                         </div>
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
-                                <li ng-if="pager.current_page !== 1">
-                                    <a ng-click="getDataWithURL($event, pager.path+ '?page=1', setPersons)" aria-label="Previous">
+                                <li ng-if="items_pager.current_page !== 1">
+                                    <a ng-click="getDataWithURL($event, items_pager.path+ '?page=1', setItems)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
-                                <li ng-class="{'disabled': (pager.current_page==1)}">
-                                    <a ng-click="getDataWithURL($event, pager.prev_page_url, setPersons)" aria-label="Prev">
+                                <li ng-class="{'disabled': (items_pager.current_page==1)}">
+                                    <a ng-click="getDataWithURL($event, items_pager.prev_page_url, setItems)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
 
-                                <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                    <a href="@{{ pager.url(pager.current_page + 10) }}">
+                                <!-- <li ng-if="items_pager.current_page < items_pager.last_page && (items_pager.last_page - items_pager.current_page) > 10">
+                                    <a href="@{{ items_pager.url(items_pager.current_page + 10) }}">
                                         ...
                                     </a>
                                 </li> -->
 
-                                <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                    <a ng-click="getDataWithURL($event, pager.next_page_url, setPersons)" aria-label="Next">
+                                <li ng-class="{'disabled': (items_pager.current_page==items_pager.last_page)}">
+                                    <a ng-click="getDataWithURL($event, items_pager.next_page_url, setItems)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
-                                <li ng-if="pager.current_page !== pager.last_page">
-                                    <a ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setPersons)" aria-label="Previous">
+                                <li ng-if="items_pager.current_page !== items_pager.last_page">
+                                    <a ng-click="getDataWithURL($event, items_pager.path+ '?page=' +items_pager.last_page, setItems)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger" ng-click="onSelectedPerson($event, null, personListsCallback)">
+                            <button type="button" class="btn btn-danger" ng-click="onSelectedItem($event, null)">
                                 ปิด
                             </button>
                         </div>

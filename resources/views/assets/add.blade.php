@@ -70,8 +70,7 @@
                                     <select id="category_id"
                                             name="category_id"
                                             ng-model="asset.category_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
+                                            class="form-control"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภทครุภัณฑ์ --</option>
 
@@ -112,13 +111,23 @@
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'desc')}"
                                 >
                                     <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        id="desc"
-                                        name="desc"
-                                        ng-model="asset.desc"
-                                        class="form-control pull-right"
-                                        tabindex="4">
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="desc"
+                                            name="desc"
+                                            ng-model="asset.desc"
+                                            class="form-control pull-right"
+                                            tabindex="4"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-info btn-flat" ng-click="showItemsList()">
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                    
                                     <span class="help-block" ng-show="checkValidate(asset, 'desc')">
                                         @{{ formError.errors.desc[0] }}
                                     </span>
@@ -171,8 +180,7 @@
                                     <select id="unit_id" 
                                             name="unit_id"
                                             ng-model="asset.unit_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
+                                            class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกหน่วย --</option>
 
@@ -384,6 +392,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('assets._items-list')
 
     </section>
 
