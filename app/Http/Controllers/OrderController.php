@@ -9,11 +9,12 @@ use Illuminate\Support\MessageBag;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Plan;
-use App\Models\PlanAsset;
+use App\Models\PlanItem;
 use App\Models\Supplier;
+use App\Models\Item;
 use App\Models\ItemCategory;
+use App\Models\PlanType;
 use App\Models\Unit;
-use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
@@ -111,6 +112,7 @@ class OrderController extends Controller
     {
         return view('orders.add', [
             "suppliers"     => Supplier::all(),
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),

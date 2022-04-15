@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
-                    <h5 class="modal-title">รายการพัสดุ</h5>
+                    <h5 class="modal-title">รายการแผน</h5>
                     <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
@@ -16,16 +16,30 @@
                                 <select
                                     style="margin-right: 1rem;"
                                     class="form-control"
-                                    ng-model="cboDepart"
-                                    ng-change="onFilterPerson()"
+                                    ng-model="cboPlanType"
+                                    ng-change="onFilterPerson(); getPlans();"
                                 >
-                                    <option value="">--เลือกกลุ่มงาน--</option>
-                                    @foreach($departs as $depart)
-                                        <option value="{{ $depart->depart_id }}">{{ $depart->depart_name }}</option>
+                                    <option value="">-- เลือกประเภทแผน --</option>
+                                    @foreach($planTypes as $planType)
+                                        <option value="{{ $planType->id }}">
+                                            {{ $planType->plan_type_name }}
+                                        </option>
                                     @endforeach
                                 </select>
         
-                                <input type="text" ng-model="searchKey" class="form-control" ng-keyup="onFilterPerson()">
+                                <select
+                                    style="margin-right: 1rem;"
+                                    class="form-control"
+                                    ng-model="cboCategory"
+                                    ng-change="getPlans();"
+                                >
+                                    <option value="">-- เลือกประเภทพัสดุ --</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div><!-- /.box-body -->
                     </div>
@@ -85,8 +99,10 @@
                     </table>
 
                     <!-- Loading (remove the following to stop the loading)-->
-                    <div ng-show="loading" class="overlay">
-                        <i class="fa fa-refresh fa-spin"></i>
+                    <div style="width: 100%; height: 50px; text-align: center;">
+                        <div ng-show="loading" class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
                     </div>
                     <!-- end loading -->
 

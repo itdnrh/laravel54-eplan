@@ -7,7 +7,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.cboMonth = moment().format('MM');
     $scope.cboCategory = "";
     $scope.cboStatus = "";
-    $scope.cboPlanType = "";
+    $scope.cboPlanType = "1";
     $scope.cboMenu = "";
     $scope.searchKeyword = "";
     $scope.cboQuery = "";
@@ -133,19 +133,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#total').val(total);
     };
 
-    $scope.showPlansList = () => {
-        $scope.assets = [];
+    $scope.getPlans = () => {
+        $scope.plans = [];
         $scope.loading = true;
 
-        let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
-        let type    = $scope.cboPlanType === '' ? 2 : $scope.cboPlanType;
-        let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
+        let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}`)
         .then(function(res) {
-            $scope.setPlans(res, type);
+            $scope.setPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.showPlansList = () => {
+        $scope.plans = [];
+        $scope.loading = true;
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=1`)
+        .then(function(res) {
+            $scope.setPlans(res);
 
             $scope.loading = false;
 
@@ -173,7 +185,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#plans-list').modal('hide');
     };
 
-    $scope.setPlans = function(res, type) {
+    $scope.setPlans = function(res) {
         const { data, ...pager } = res.data.plans;
 
         $scope.plans = data;
