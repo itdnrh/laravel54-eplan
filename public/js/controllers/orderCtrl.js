@@ -235,44 +235,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.setOrders = function (res) {
-        let plans = [];
         const { data, ...pager } = res.data.orders;
-
-        plans = res.data.plans.map(plan => {
-            if (plan.plan_type_id == '1') {
-                const { asset, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: asset
-                };
-            } else if (plan.plan_type_id == '2') {
-                const { material, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: material
-                };
-            } else if (plan.plan_type_id == '3') {
-                const { service, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: service
-                };
-            } else if (plan.plan_type_id == '4') {
-                const { construct, ...rest } = plan;
-
-                return {
-                    ...rest,
-                    item: construct
-                };
-            }
-        });
 
         $scope.orders = data.map(order => {
             let newDetails = order.details.map(item => {
-                let plan = plans.find(pl => pl.id === item.plan_id);
+                let plan = res.data.plans.find(pl => pl.id === item.plan_id);
 
                 return {
                     ...item,

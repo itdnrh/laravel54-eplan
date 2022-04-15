@@ -69,13 +69,11 @@ class OrderController extends Controller
     public function search(Request $req)
     {
         $orders = Order::with('supplier','details')
-                    ->with('details.unit')
+                    ->with('details.plan','details.unit','details.item')
                     ->paginate(10);
 
         $plans = Plan::with('depart','division')
                     ->where('status', '3')
-                    ->with('asset','asset.unit','asset.category')
-                    ->with('material','material.unit','material.category')
                     ->get();
 
         return [

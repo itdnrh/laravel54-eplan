@@ -17,4 +17,9 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Plan::class, 'plan_id', 'id');
     }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
 }

@@ -31,7 +31,7 @@
                                 </td>
                                 <td>
                                     <p style="margin: 0;">@{{ detail.item.category.name }}</p>
-                                    @{{ detail.plan_no }} - @{{ detail.item.desc }}
+                                    @{{ detail.plan.plan_no }} - @{{ detail.item.item_name }}
                                 </td>
                                 <td style="text-align: center;">
                                     <span>@{{ detail.amount | currency:'':0 }}</span>
