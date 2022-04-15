@@ -105,7 +105,11 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.forms.divisions = tmpDivisions.filter(div => div.depart_id == depart);
     };
 
-    $scope.clearLeaveObj = function() {
+    $scope.showNewItemForm = function() {
+        $('#item-form').modal('show');
+    };
+
+    $scope.clearAssetObj = function() {
         $scope.asset = {
             asset_id: '',
             plan_no: '',
