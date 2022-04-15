@@ -8,24 +8,9 @@ class Plan extends Model
 {
     protected $table = "plans";
 
-    public function asset()
+    public function planItem()
     {
-        return $this->hasOne(PlanAsset::class, 'plan_id', 'id');
-    }
-
-    public function material()
-    {
-        return $this->hasOne(Material::class, 'plan_id', 'id');
-    }
-
-    public function service()
-    {
-        return $this->hasOne(PlanService::class, 'plan_id', 'id');
-    }
-
-    public function construct()
-    {
-        return $this->hasOne(PlanConstruct::class, 'plan_id', 'id');
+        return $this->hasOne(PlanItem::class, 'plan_id', 'id');
     }
 
     public function type()

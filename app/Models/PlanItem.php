@@ -4,20 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PlanAsset extends Model
+class PlanItem extends Model
 {
-    protected $table = "plan_assets";
+    protected $table = "plan_items";
     protected $primaryKey = "plan_id";
-
-    public function category()
-    {
-        return $this->belongsTo(AssetCategory::class, 'category_id', 'id');
-    }
-
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class, 'unit_id', 'id');
-    }
 
     public function plan()
     {
@@ -27,5 +17,10 @@ class PlanAsset extends Model
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
 }

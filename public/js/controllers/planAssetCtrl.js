@@ -267,7 +267,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        $('#frmNewLeave').submit();
+        $(`#${form}`).submit();
     }
 
     $scope.edit = function(id) {

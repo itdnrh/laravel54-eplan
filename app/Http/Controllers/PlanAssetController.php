@@ -10,6 +10,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\ItemCategory;
+use App\Models\ItemGroup;
 use App\Models\Item;
 use App\Models\Unit;
 use App\Models\Person;
@@ -77,6 +78,7 @@ class PlanAssetController extends Controller
     {
         return view('assets.list', [
             "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);
@@ -108,9 +110,9 @@ class PlanAssetController extends Controller
         $depart     = $req->get('depart');
         $month      = $req->get('month');
 
-        $assets = Plan::join('plan_assets', 'plans.id', '=', 'plan_assets.plan_id')
+        $assets = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->with('budget','depart','division')
-                    ->with('asset','asset.unit','asset.category')
+                    ->with('planItem','planItem.unit','planItem.item')
                     ->where('plan_type_id', '1')
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
@@ -160,6 +162,7 @@ class PlanAssetController extends Controller
         return view('assets.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -171,6 +174,7 @@ class PlanAssetController extends Controller
     {
         return view('assets.add', [
             "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
