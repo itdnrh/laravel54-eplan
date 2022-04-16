@@ -91,13 +91,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="items_pager.current_page !== 1">
-                                    <a ng-click="getDataWithUrl($event, items_pager.path+ '?page=1', setItems)" aria-label="Previous">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.path+ '?page=1', setItems)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (items_pager.current_page==1)}">
-                                    <a ng-click="getDataWithUrl($event, items_pager.prev_page_url, setItems)" aria-label="Prev">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.prev_page_url, setItems)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -109,13 +109,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (items_pager.current_page==items_pager.last_page)}">
-                                    <a ng-click="getDataWithUrl($event, items_pager.next_page_url, setItems)" aria-label="Next">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.next_page_url, setItems)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="items_pager.current_page !== items_pager.last_page">
-                                    <a ng-click="getDataWithUrl($event, items_pager.path+ '?page=' +items_pager.last_page, setItems)" aria-label="Previous">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.path+ '?page=' +items_pager.last_page, setItems)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>
