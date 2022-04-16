@@ -170,9 +170,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
 
-        $http.get(`${CONFIG.baseUrl}/assets/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/assets/search?year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             $scope.setAssets(res);
 

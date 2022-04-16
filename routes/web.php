@@ -69,7 +69,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนครุภัณฑ์ */
     Route::post('assets/validate', 'PlanAssetController@formValidate');
-    Route::get('assets/search/{year}/{cate}/{status}/{menu}', 'PlanAssetController@search');
+    Route::get('assets/search', 'PlanAssetController@search');
     Route::get('assets/get-ajax-all', 'PlanAssetController@getAll');
     Route::get('assets/get-ajax-byid/{id}', 'PlanAssetController@getById');
     Route::get('assets/detail/{id}', 'PlanAssetController@detail');
