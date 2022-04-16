@@ -9,7 +9,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.cboDepart = "";
     $scope.cboStatus = "";
     $scope.cboMenu = "";
-    $scope.searchKeyword = "";
+    $scope.searchKey = "";
     $scope.cboQuery = "";
     $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
     $scope.monthLists = [
@@ -199,10 +199,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.items = [];
         $scope.loading = true;
 
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let name  = $scope.searchKey === '' ? '' : $scope.searchKey;
 
-        $http.get(`${CONFIG.baseUrl}/items/search?type=1&cate=${cate}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/items/search?type=1&cate=${cate}&name=${name}`)
         .then(function(res) {
             $scope.setItems(res);
 
@@ -218,7 +218,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.setItems = function(res) {
         let { data, ...pager } = res.data.items;
 
-        console.log(data);
         $scope.items = data;
         $scope.items_pager = pager;
     };
@@ -236,14 +235,17 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $('#items-list').modal('hide');
     };
 
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.items = [];
         $scope.loading = true;
 
-        $http.get(URL)
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let name  = $scope.searchKey === '' ? '' : $scope.searchKey;
+
+        $http.get(`${url}&type=1&cate=${cate}&name=${name}`)
         .then(function(res) {
             cb(res);
 

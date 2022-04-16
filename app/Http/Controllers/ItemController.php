@@ -67,44 +67,23 @@ class ItemController extends Controller
 
     public function search(Request $req)
     {
-        $matched = [];
-        $arrStatus = [];
-        $pattern = '/^\<|\>|\&|\-/i';
-        $conditions = [];
-
         /** Get params from query string */
-        $depart     = $req->get('depart');
-        $month      = $req->get('month');
-
-        // if($year != '0') array_push($conditions, ['year', '=', $year]);
-        // if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
-        // if($status != '-') {
-        //     if (preg_match($pattern, $status, $matched) == 1) {
-        //         $arrStatus = explode($matched[0], $status);
-
-        //         if ($matched[0] != '-' && $matched[0] != '&') {
-        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
-        //         }
-        //     } else {
-        //         array_push($conditions, ['status', '=', $status]);
-        //     }
-        // }
+        $type = $req->get('type');
+        $cate = $req->get('cate');
+        $name = $req->get('name');
 
         $items = Item::with('category','group','unit')
-                    ->where('plan_type_id', '1')
-                    ->when(count($conditions) > 0, function($q) use ($conditions) {
-                        $q->where($conditions);
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plan_type_id', $type);
                     })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
+                    ->when(!empty($cate), function($q) use ($cate) {
+                        $q->where('category_id', $cate);
                     })
-                    ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
-                        $q->whereIn('status', $arrStatus);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                        $q->whereBetween('status', $arrStatus);
+                    ->when(!empty($name), function($q) use ($name) {
+                        $q->where('item_name', 'like', '%'.$name.'%');
                     })
                     ->orderBy('category_id', 'ASC')
+                    ->orderBy('item_name', 'ASC')
                     ->paginate(10);
 
         return [
