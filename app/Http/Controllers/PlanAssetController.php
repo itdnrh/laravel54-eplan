@@ -210,8 +210,6 @@ class PlanAssetController extends Controller
             $asset = new PlanItem();
             $asset->plan_id         = $planId;
             $asset->item_id         = $req['item_id'];
-            $asset->category_id     = $req['category_id'];
-            $asset->desc            = $req['desc'];
             $asset->spec            = $req['spec'];
             $asset->price_per_unit  = $req['price_per_unit'];
             $asset->unit_id         = $req['unit_id'];
@@ -219,7 +217,7 @@ class PlanAssetController extends Controller
             $asset->sum_price       = $req['sum_price'];
             $asset->save();
 
-            return redirect('/assets/list');
+            return redirect('/plans/assets');
         }
     }
 

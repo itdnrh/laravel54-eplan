@@ -220,6 +220,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
+            $('#item_id').val(item.id);
             $scope.asset.item_id = item.id;
             $scope.asset.desc = item.item_name;
             $scope.asset.price_per_unit = item.price_per_unit;
