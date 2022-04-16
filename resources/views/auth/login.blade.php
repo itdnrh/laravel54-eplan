@@ -135,6 +135,6 @@
     <script src="{{ asset('/node_modules/jquery/dist/jquery.min.js') }}"></script>
 	<script src="{{ asset('/node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- AdminLTE App -->
-    <script src="{{ asset('/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('/js/libraries/adminlte.min.js') }}"></script>
 </body>
 </html>

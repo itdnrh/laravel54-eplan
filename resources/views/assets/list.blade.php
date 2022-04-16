@@ -19,7 +19,12 @@
     <section
         class="content"
         ng-controller="planAssetCtrl"
-        ng-init="getAll(); initForms({ departs: {{ $departs }} });"
+        ng-init="
+            getAll();
+            initForms({
+                departs: {{ $departs }},
+                categories: {{ $categories }}
+            });"
     >
 
         <div class="row">
@@ -58,13 +63,9 @@
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        @foreach($categories as $category)
-
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
-
-                                        @endforeach
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
                                     </select>
                                 </div><!-- /.form group -->
                             </div><!-- /.row -->

@@ -100,6 +100,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             tmpDivisions = data.divisions ? data.divisions : [];
             tmpCategories = data.categories ? data.categories : [];
             tmpGroups = data.groups ? data.groups : [];
+
+            $scope.forms.categories = data.categories
+                                        ? data.categories.filter(cate => cate.plan_type_id === 1)
+                                        : [];
         }
     };
 
@@ -165,11 +169,11 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.assets = [];
         $scope.loading = true;
 
-        let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
         $http.get(`${CONFIG.baseUrl}/assets/search?year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
