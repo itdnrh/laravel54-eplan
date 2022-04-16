@@ -161,7 +161,8 @@ class PlanAssetController extends Controller
         return [
             'plan' => Plan::where('id', $id)
                         ->with('budget','depart','division')
-                        ->with('asset','asset.unit','asset.category')
+                        ->with('planItem','planItem.unit')
+                        ->with('planItem.item','planItem.item.category')
                         ->first(),
         ];
     }
@@ -169,7 +170,7 @@ class PlanAssetController extends Controller
     public function detail($id)
     {
         return view('assets.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
+            "plan"          => Plan::with('planItem')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),

@@ -38,7 +38,7 @@
                                     />
                                 </div>
                                 <div style="text-align: center; margin-top: 10px;">
-                                    <a  ng-click="showApprovalDetail({{ $plan->id }})"
+                                    <a
                                         class="btn btn-default" 
                                         title="การอนุมัติ"
                                         target="_blank">
@@ -164,37 +164,37 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-6" ng-show="leave.leave_type != '6' && leave.leave_type != '7'">
+                                <div class="form-group col-md-6">
                                     <label>เหตุผล :</label>
                                     <textarea
-                                        id="leave_contact" 
-                                        name="leave_contact" 
-                                        ng-model="leave.leave_contact" 
+                                        id="reason" 
+                                        name="reason" 
+                                        ng-model="asset.reason" 
                                         class="form-control"
                                         tabindex="17"
                                     ></textarea>
                                 </div>
 
-                                <div class="form-group col-md-6" ng-show="leave.leave_type != '6' && leave.leave_type != '7'">
+                                <div class="form-group col-md-6">
                                     <label>หมายเหตุ :</label>
                                     <textarea
-                                        id="leave_contact" 
-                                        name="leave_contact" 
-                                        ng-model="leave.leave_contact" 
+                                        id="remark" 
+                                        name="remark" 
+                                        ng-model="asset.remark" 
                                         class="form-control"
                                         tabindex="17"
                                     ></textarea>
                                 </div>
                                 
                                 
-                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="leave.attachment">
+                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="asset.attachment">
                                     <label>เอกสารแนบ :</label>
                                     <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ leave.attachment }}"
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                             title="ไฟล์แนบ"
                                             target="_blank">
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                            @{{ leave.attachment }}
+                                            @{{ asset.attachment }}
                                         </a>
 
                                         <span style="margin-left: 10px;">
@@ -211,10 +211,12 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input  type="text"
-                                                value="@{{ asset.start_month }}"
-                                                class="form-control pull-right"
-                                                tabindex="5">
+                                        <input
+                                            type="text"
+                                            value="@{{ asset.start_month }}"
+                                            class="form-control pull-right"
+                                            tabindex="5"
+                                        />
                                     </div>
                                 </div>
 
