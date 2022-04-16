@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AssetType;
 use App\Models\AssetCategory;
 
-class AssetCategoryController extends Controller
+class ItemCategoryController extends Controller
 {
     public function formValidate (Request $request)
     {

@@ -22,6 +22,8 @@
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
+            categories: {{ $categories }},
+            groups: {{ $groups }}
         });"
     >
 

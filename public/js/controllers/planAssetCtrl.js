@@ -36,10 +36,14 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.forms = {
         depart: [],
         division: [],
+        categories: [],
+        groups: [],
     };
 
     let tmpDeparts = [];
     let tmpDivisions = [];
+    let tmpCategories = [];
+    let tmpGroups = [];
 
     $scope.asset = {
         asset_id: '',
@@ -60,6 +64,17 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         reason: '',
         remark: '',
         owner: '',
+    };
+
+    $scope.newItem = {
+        item_name: '',
+        plan_type_id: '',
+        category_id: '',
+        group_id: '',
+        latest_price: '',
+        unit_id: '',
+        in_stock: '',
+        remark: '',
     };
 
     /** ============================== Init Form elements ============================== */
@@ -107,6 +122,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.showNewItemForm = function() {
         $('#item-form').modal('show');
+    };
+
+    $scope.createNewItem = function() {
+
     };
 
     $scope.clearAssetObj = function() {
