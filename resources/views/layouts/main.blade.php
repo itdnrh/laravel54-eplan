@@ -34,6 +34,7 @@
 	<link rel="stylesheet" href="{{ asset('/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('/node_modules/ng-tags-input/build/ng-tags-input.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('/node_modules/angular-xeditable/dist/css/xeditable.css') }}">
+	<link rel="stylesheet" href="{{ asset('/css/main.css') }}">
 	<!-- Inline Style -->
 	<style type="text/css">
 		.has-error .select2-selection {

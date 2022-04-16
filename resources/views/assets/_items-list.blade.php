@@ -65,11 +65,13 @@
                         </tbody>
                     </table>
 
-                    <!-- Loading (remove the following to stop the loading)-->
-                    <div ng-show="loading" class="overlay">
-                        <i class="fa fa-refresh fa-spin"></i>
+                    <div class="loading-wrapper" ng-show="items.length === 0">
+                        <!-- Loading (remove the following to stop the loading)-->
+                        <div ng-show="loading" class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <!-- end loading -->
                     </div>
-                    <!-- end loading -->
 
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
