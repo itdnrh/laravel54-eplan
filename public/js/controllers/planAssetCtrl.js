@@ -190,6 +190,12 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.showItemsList = function() {
+        $scope.forms.categories = tmpCategories.filter(cate => cate.plan_type_id === 1);
+
+        $scope.getItems();
+    };
+
+    $scope.getItems = function() {
         $scope.items = [];
         $scope.loading = true;
 
@@ -234,6 +240,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
+        $scope.items = [];
         $scope.loading = true;
 
         $http.get(URL)

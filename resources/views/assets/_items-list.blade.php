@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
-                    <h5 class="modal-title">รายชื่อบุคลากร</h5>
+                    <h5 class="modal-title">รายการสินค้า/บริการ</h5>
                     <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
@@ -14,15 +14,16 @@
                         <div class="box-body">
                             <div style="display: flex; flex-direction: row;">
                                 <select
-                                    style="margin-right: 1rem;"
+                                    type="text"
+                                    id="cboCategory"
+                                    name="cboCategory"
+                                    ng-model="cboCategory"
                                     class="form-control"
-                                    ng-model="cboDepart"
-                                    ng-change="onFilterPerson()"
                                 >
-                                    <option value="">--เลือกประเภทครุภัณฑ์--</option>
-                                    @foreach($departs as $depart)
-                                        <option value="{{ $depart->depart_id }}">{{ $depart->depart_name }}</option>
-                                    @endforeach
+                                    <option value="">-- เลือกประเภทสินค้า/บริการ --</option>
+                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                        @{{ category.name }}
+                                    </option>
                                 </select>
         
                                 <input type="text" ng-model="searchKey" class="form-control" ng-keyup="onFilterPerson()">
