@@ -253,11 +253,24 @@ class PlanController extends Controller
 
     public function delete(Request $req, $id)
     {
-        $leave = Leave::find($id);
+        try {
+            $plan = Plan::find($id);
 
-        if($leave->delete()) {
-            return redirect('/leaves/list')->with('status', 'ลบใบลา ID: ' .$id. ' เรียบร้อยแล้ว !!');
+            if($plan->delete()) {
+                if (PlanItem::where('plan_id', $id)->delete()) {
+                    return [
+                        'status'    => 1,
+                        'message'   => 'Deletion successfully!!'
+                    ];
+                }
+            }
+        } catch (\Throwable $th) {
+            return [
+                'status'    => 0,
+                'message'   => 'Something went wrong!!'
+            ];
         }
+        
     }
 
     public function sendSupported(Request $req, $id) {

@@ -304,15 +304,6 @@ class PlanAssetController extends Controller
         }
     }
 
-    public function delete(Request $req, $id)
-    {
-        $leave = Leave::find($id);
-
-        if($leave->delete()) {
-            return redirect('/leaves/list')->with('status', 'ลบใบลา ID: ' .$id. ' เรียบร้อยแล้ว !!');
-        }
-    }
-
     public function printLeaveForm($id)
     {
         $pdfView = '';
