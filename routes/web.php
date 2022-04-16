@@ -53,6 +53,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('plans/constructs', 'PlanConstructController@index');
     Route::post('plans/create-po/{id}', 'PlanController@createPO');
     Route::post('plans/send-supported/{id}', 'PlanController@sendSupported');
+    Route::delete('plans/{id}', 'PlanController@delete');
 
     /** รายการสินค้า */
     Route::post('items/validate', 'ItemController@formValidate');

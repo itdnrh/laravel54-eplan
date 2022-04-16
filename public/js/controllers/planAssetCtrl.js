@@ -350,21 +350,13 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        const actionUrl = $('#frmDelete').attr('action');
-        $('#frmDelete').attr('action', `${actionUrl}/${id}`);
-
-        if(confirm(`คุณต้องลบใบลาเลขที่ ${id} ใช่หรือไม่?`)) {
-            $('#frmDelete').submit();
+        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
+            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+            .then(res => {
+                console.log(res);
+            }, err => {
+                console.log(err);
+            });
         }
-    };
-
-    $scope.approval = null;
-    $scope.showApprovalDetail = function(id) {
-        $scope.getById(id, function(data) {
-            console.log(data);
-            $scope.approval = data.leave;
-        });
-
-        $('#approval-detail').modal('show');
     };
 });
