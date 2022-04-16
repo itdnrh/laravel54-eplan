@@ -150,7 +150,7 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="createNewItem($event)"
+                        ng-click="createNewItem($event, onSelectedItem)"
                         class="btn btn-primary"
                     >
                         บันทึก
