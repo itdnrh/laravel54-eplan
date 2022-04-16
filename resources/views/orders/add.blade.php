@@ -192,6 +192,13 @@
                                                             class="form-control"
                                                             ng-model="newItem.plan_id"
                                                         />
+                                                        <input
+                                                            type="hidden"
+                                                            id="item_id"
+                                                            name="item_id"
+                                                            class="form-control"
+                                                            ng-model="newItem.item_id"
+                                                        />
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-info btn-flat" ng-click="showPlansList();">
                                                                 ...
