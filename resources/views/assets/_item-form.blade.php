@@ -1,13 +1,16 @@
 <div class="modal fade" id="item-form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form>
+            <form id="frmNewItem">
                 <div class="modal-header">
                     <h5 class="modal-title">เพิ่มรายการสินค้า/บริการ</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['plan_type_id']}"
+                        >
                             <label for="">ประเภทแผน</label>
                             <select
                                 type="text"
@@ -24,8 +27,14 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <span class="help-block" ng-show="newItem.error['plan_type_id']">
+                                @{{ newItem.error['plan_type_id'] }}
+                            </span>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['category_id']}"
+                        >
                             <label for="">ประเภทสินค้า/บริการ</label>
                             <select
                                 type="text"
@@ -39,8 +48,14 @@
                                     @{{ category.name }}
                                 </option>
                             </select>
+                            <span class="help-block" ng-show="newItem.error['category_id']">
+                                @{{ newItem.error['category_id'] }}
+                            </span>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['group_id']}"
+                        >
                             <label for="">กลุ่มสินค้า/บริการ</label>
                             <select
                                 type="text"
@@ -55,7 +70,10 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['item_name']}"
+                        >
                             <label for="">ชื่อสินค้า/บริการ</label>
                             <input
                                 type="text"
@@ -64,8 +82,14 @@
                                 ng-model="newItem.item_name"
                                 class="form-control"
                             />
+                            <span class="help-block" ng-show="newItem.error['item_name']">
+                                @{{ newItem.error['item_name'] }}
+                            </span>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['price_per_unit']}"
+                        >
                             <label for="">ราคา</label>
                             <input
                                 type="text"
@@ -74,14 +98,20 @@
                                 ng-model="newItem.price_per_unit"
                                 class="form-control"
                             />
+                            <span class="help-block" ng-show="newItem.error['price_per_unit']">
+                                @{{ newItem.error['price_per_unit'] }}
+                            </span>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['unit_id']}"
+                        >
                             <label for="">หน่วยนับ</label>
                             <select
                                 type="text"
-                                id="category_id"
-                                name="category_id"
-                                ng-model="newItem.category_id"
+                                id="unit_id"
+                                name="unit_id"
+                                ng-model="newItem.unit_id"
                                 class="form-control"
                             >
                                 <option value="">-- เลือกหน่วยนับ --</option>
@@ -91,15 +121,18 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <span class="help-block" ng-show="newItem.error['unit_id']">
+                                @{{ newItem.error['unit_id'] }}
+                            </span>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="">ใน/นอกคลัง</label>
                             <div style="display: flex; gap: 30px;">
                                 <div>
-                                    <input type="radio" ng-model="in_stock" ng-value="1" /> ในคลัง 
+                                    <input type="radio" ng-model="newItem.in_stock" ng-value="1" /> ในคลัง 
                                 </div>
                                 <div>
-                                    <input type="radio" ng-model="in_stock" ng-value="0" /> นอกคลัง
+                                    <input type="radio" ng-model="newItem.in_stock" ng-value="0" /> นอกคลัง
                                 </div>
                             </div>
                         </div>
@@ -119,8 +152,6 @@
                     <button
                         ng-click="createNewItem($event)"
                         class="btn btn-primary"
-                        data-dismiss="modal"
-                        aria-label="Save"
                     >
                         บันทึก
                     </button>

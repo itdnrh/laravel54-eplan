@@ -17,31 +17,19 @@ class ItemController extends Controller
     public function formValidate (Request $request)
     {
         $rules = [
-            'year'              => 'required',
-            'plan_no'           => 'required',
+            'plan_type_id'      => 'required',
             'category_id'       => 'required',
-            'desc'              => 'required',
+            'item_name'         => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
-            'amount'            => 'required',
-            'sum_price'         => 'required',
-            'depart_id'         => 'required',
-            // 'division_id'       => 'required',
-            'start_month'       => 'required',
-            // 'reason'            => 'required',
         ];
 
-        if ($request['leave_type'] == '1' || $request['leave_type'] == '2' || 
-            $request['leave_type'] == '3' || $request['leave_type'] == '4' ||
-            $request['leave_type'] == '5') {
-            $rules['leave_contact'] = 'required';
-        }
-
         $messages = [
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
+            'plan_type_id.required'     => 'กรุณาเลือกประเภทแผน',
+            'category_id.not_in'        => 'กรุณาเลือกประเภทสินค้า/บริการ',
+            'item_name.required'        => 'กรุณาระบุชื่อสินค้า/บริการ',
+            'price_per_unit.required'   => 'กรุณาระบุราคาต่อหน่วย',
+            'unit_id.required'          => 'กรุณาเลือกหน่วยนับ',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -167,40 +155,20 @@ class ItemController extends Controller
 
     public function store(Request $req)
     {
-        $plan = new Plan();
-        // $plan->year      = calcBudgetYear($req['year']);
-        $plan->year         = $req['year'];
-        $plan->plan_no      = $req['plan_no'];
-        $plan->plan_type_id = '1';
-        $plan->budget_id    = '1';
-        $plan->depart_id    = $req['depart_id'];
-        $plan->division_id  = $req['division_id'];
-        $plan->start_month  = $req['start_month'];
-        $plan->reason       = $req['reason'];
-        $plan->remark       = $req['remark'];
-        $plan->status       = '0';
+        $item = new Item();
+        $item->plan_type_id = $req['plan_type_id'];
+        $item->category_id  = $req['category_id'];
+        $item->group_id     = $req['group_id'];
+        $item->item_name    = $req['item_name'];
+        $item->price_per_unit  = $req['price_per_unit'];
+        $item->unit_id      = $req['unit_id'];
+        $item->in_stock     = $req['in_stock'];
+        $item->remark       = $req['remark'];
 
-        /** Upload attach file */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        // if (!empty($attachment)) {
-        //     $plan->attachment = $attachment;
-        // }
-
-        if($plan->save()) {
-            $planId = $plan->id;
-
-            $asset = new PlanAsset();
-            $asset->plan_id         = $planId;
-            $asset->category_id     = $req['category_id'];
-            $asset->desc            = $req['desc'];
-            $asset->spec            = $req['spec'];
-            $asset->price_per_unit  = $req['price_per_unit'];
-            $asset->unit_id         = $req['unit_id'];
-            $asset->amount          = $req['amount'];
-            $asset->sum_price       = $req['sum_price'];
-            $asset->save();
-
-            return redirect('/assets/list');
+        if($item->save()) {
+            return [
+                'item'  => $item
+            ];
         }
     }
 
