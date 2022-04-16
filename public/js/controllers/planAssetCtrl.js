@@ -200,7 +200,14 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         if (validateNewItem($scope.newItem)) {
             $http.post(`${CONFIG.baseUrl}/items/store`, $scope.newItem)
             .then(res => {
-                console.log(res);
+                /** ถ้าบันทึกสำเร็จให้เซตค่า desc และ item_id จาก responsed data  */
+                $scope.asset.item_id = res.data.item.id
+                $scope.asset.desc = res.data.item.item_name;
+                $scope.asset.price_per_unit = res.data.item.price_per_unit;
+                $scope.asset.unit_id = res.data.item.unit_id.toString();
+                $scope.asset.category_id = res.data.item.category_id.toString();
+
+                clearNewItem();
             }, err => {
                 console.log(err);
             })
@@ -209,7 +216,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         }
     };
 
-    $scope.clearAssetObj = function() {
+    const clearAssetObj = function() {
         $scope.asset = {
             asset_id: '',
             plan_no: '',
@@ -228,6 +235,20 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             reason: '',
             remark: '',
             owner: '',
+        };
+    };
+
+    const clearNewItem = function() {
+        $scope.newItem = {
+            item_name: '',
+            plan_type_id: '',
+            category_id: '',
+            group_id: '',
+            price_per_unit: '',
+            unit_id: '',
+            in_stock: '',
+            remark: '',
+            error: {}
         };
     };
 
@@ -300,7 +321,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         if (item) {
             $scope.asset.item_id = item.id;
             $scope.asset.desc = item.item_name;
-            $scope.asset.price_per_unit = item.latest_price;
+            $scope.asset.price_per_unit = item.price_per_unit;
             $scope.asset.unit_id = item.unit_id.toString();
             $scope.asset.category_id = item.category_id.toString();
         }
