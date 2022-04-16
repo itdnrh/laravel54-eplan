@@ -14,6 +14,7 @@
                                 id="plan_type_id"
                                 name="plan_type_id"
                                 ng-model="newItem.plan_type_id"
+                                ng-change="onPlanTypeSelected(newItem.plan_type_id)"
                                 class="form-control"
                             >
                                 <option value="">-- เลือกประเภทแผน --</option>
@@ -34,6 +35,9 @@
                                 class="form-control"
                             >
                                 <option value="">-- เลือกประเภทสินค้า/บริการ --</option>
+                                <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                    @{{ category.name }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
@@ -46,6 +50,9 @@
                                 class="form-control"
                             >
                                 <option value="">-- เลือกกลุ่มสินค้า/บริการ --</option>
+                                <option ng-repeat="group in forms.groups" value="@{{ group.id }}">
+                                    @{{ group.name }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
@@ -77,7 +84,12 @@
                                 ng-model="newItem.category_id"
                                 class="form-control"
                             >
-                                <option value=""></option>
+                                <option value="">-- เลือกหน่วยนับ --</option>
+                                @foreach($units as $unit)
+                                    <option value="{{ $unit->id }}">
+                                        {{ $unit->name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 form-group">

@@ -109,6 +109,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         if (data) {
             tmpDeparts = data.departs ? data.departs : [];
             tmpDivisions = data.divisions ? data.divisions : [];
+            tmpCategories = data.categories ? data.categories : [];
+            tmpGroups = data.groups ? data.groups : [];
         }
     };
 
@@ -120,11 +122,23 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.forms.divisions = tmpDivisions.filter(div => div.depart_id == depart);
     };
 
+    $scope.onPlanTypeSelected = function(type) {
+        $scope.forms.categories = tmpCategories.filter(cate => cate.plan_type_id === parseInt(type));
+
+        if ([3,4].includes(parseInt(type))) {
+            $scope.forms.groups = tmpGroups.filter(group => group.plan_type_id === parseInt(type));
+
+            $('#group_id').attr('disabled', false)
+        } else {
+            $('#group_id').attr('disabled', true)
+        }
+    };
+
     $scope.showNewItemForm = function() {
         $('#item-form').modal('show');
     };
 
-    $scope.createNewItem = function() {
+    $scope.createNewItem = function(event) {
 
     };
 
