@@ -142,6 +142,7 @@ class OrderController extends Controller
                 $detail = new OrderDetail;
                 $detail->order_id       = $orderId;
                 $detail->plan_id        = $item['plan_id'];
+                $detail->item_id        = $item['item_id'];
                 $detail->price_per_unit = $item['price_per_unit'];
                 $detail->unit_id        = $item['unit_id'];
                 $detail->amount         = $item['amount'];

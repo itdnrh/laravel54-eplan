@@ -242,16 +242,19 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         const { data, ...pager } = res.data.orders;
 
         $scope.orders = data.map(order => {
-            let newDetails = order.details.map(item => {
-                let plan = res.data.plans.find(pl => pl.id === item.plan_id);
+            /** ถ้าเป็นรายการตามแผนพัสดุ ให้อัพเดต details property */
+            if (res.data.plans) {
+                let newDetails = order.details.map(item => {
+                    let plan = res.data.plans.find(pl => pl.id === item.plan_id);
 
-                return {
-                    ...item,
-                    ...plan
-                };
-            });
+                    return {
+                        ...item,
+                        ...plan
+                    };
+                });
 
-            order.details = newDetails;
+                order.details = newDetails;
+            }
 
             return order;
         });
@@ -278,7 +281,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.showOrderDetails = (items) => {
         if (items) {
-            console.log(items);
             $scope.assets = items;
     
             $('#order-details').modal('show');
