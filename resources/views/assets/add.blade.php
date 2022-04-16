@@ -44,6 +44,21 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'plan_no')}"
+                                >
+                                    <label>เลขที่ :</label>
+                                    <input  type="text"
+                                            id="plan_no"
+                                            name="plan_no"
+                                            ng-model="asset.plan_no"
+                                            class="form-control"
+                                            tabindex="3">
+                                    <span class="help-block" ng-show="checkValidate(asset, 'plan_no')">
+                                        @{{ formError.errors.plan_no[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
@@ -63,53 +78,11 @@
                                         @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
-
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'category_id')}"
-                                >
-                                    <label>ประเภทครุภัณฑ์ :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="asset.category_id"
-                                            class="form-control"
-                                            tabindex="2">
-                                        <option value="">-- เลือกประเภทครุภัณฑ์ --</option>
-
-                                        @foreach($categories as $category)
-
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(leave, 'category_id')">
-                                        @{{ formError.errors.category_id[0] }}
-                                    </span>
-                                </div>
                             </div>
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'plan_no')}"
-                                >
-                                    <label>เลขที่ :</label>
-                                    <input  type="text"
-                                            id="plan_no"
-                                            name="plan_no"
-                                            ng-model="asset.plan_no"
-                                            class="form-control"
-                                            tabindex="3">
-                                    <span class="help-block" ng-show="checkValidate(asset, 'plan_no')">
-                                        @{{ formError.errors.plan_no[0] }}
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'desc')}"
                                 >
                                     <label>รายการ :</label>
@@ -132,8 +105,6 @@
                                             </button>
                                         </span>
                                     </div>
-
-                                    
                                     <span class="help-block" ng-show="checkValidate(asset, 'desc')">
                                         @{{ formError.errors.desc[0] }}
                                     </span>

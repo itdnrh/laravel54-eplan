@@ -27,7 +27,6 @@ class PlanAssetController extends Controller
         $rules = [
             'year'              => 'required',
             'plan_no'           => 'required',
-            'category_id'       => 'required',
             'desc'              => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
