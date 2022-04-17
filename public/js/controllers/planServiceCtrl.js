@@ -99,13 +99,21 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.pager = pager;
     };
 
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
+        $scope.services = [];
+        $scope.pager = null;
 
-        $http.get(URL)
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
+
+        $http.get(`${url}&type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 
@@ -126,6 +134,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     }
 
     $scope.setEditControls = function(data) {
+        /** Global data */
+        $scope.planId                   = plan.id;
+        $scope.planType                 = 2;
+
+        /** ข้อมูลจ้างบริการ */
         $scope.service.service_id       = data.plan.id;
         $scope.service.year             = data.plan.year;
         $scope.service.plan_no          = data.plan.plan_no;
