@@ -110,13 +110,34 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.pager = pager;
     };
 
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.onSelectedItem = function(event, item) {
+        if (item) {
+            $('#item_id').val(item.id);
+            $scope.construct.item_id = item.id;
+            $scope.construct.desc = item.item_name;
+            $scope.construct.price_per_unit = item.price_per_unit;
+            $scope.construct.unit_id = item.unit_id.toString();
+            $scope.construct.category_id = item.category_id.toString();
+        }
+
+        $('#items-list').modal('hide');
+    };
+
+    $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
+        $scope.constructs = [];
+        $scope.pager = null;
 
-        $http.get(URL)
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
+
+        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 
@@ -128,7 +149,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/services/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.baseUrl}/constructs/get-ajax-byid/${id}`)
         .then(function(res) {
             cb(res.data);
         }, function(err) {
@@ -136,24 +157,29 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         });
     }
 
-    $scope.setEditControls = function(data) {
-        $scope.service.service_id       = data.plan.id;
-        $scope.service.year             = data.plan.year;
-        $scope.service.plan_no          = data.plan.plan_no;
-        $scope.service.desc             = data.plan.service.desc;
-        $scope.service.price_per_unit   = data.plan.service.price_per_unit;
-        $scope.service.amount           = data.plan.service.amount;
-        $scope.service.sum_price        = data.plan.service.sum_price;
-        $scope.service.start_month      = $scope.monthLists.find(m => m.id == data.plan.start_month).name;
-        $scope.service.reason           = data.plan.reason;
-        $scope.service.remark           = data.plan.remark;
-        $scope.service.status           = data.plan.status;
+    $scope.setEditControls = function(plan) {
+        /** Global data */
+        $scope.planId                   = plan.id;
+        $scope.planType                 = 1;
+
+        /** ข้อมูลงานก่อสร้าง */
+        $scope.construct.construct_id     = plan.id;
+        $scope.construct.year             = plan.year;
+        $scope.construct.plan_no          = plan.plan_no;
+        $scope.construct.desc             = plan.plan_item.item.item_name;
+        $scope.construct.price_per_unit   = plan.plan_item.price_per_unit;
+        $scope.construct.amount           = plan.plan_item.amount;
+        $scope.construct.sum_price        = plan.plan_item.sum_price;
+        $scope.construct.start_month      = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.construct.reason           = plan.reason;
+        $scope.construct.remark           = plan.remark;
+        $scope.construct.status           = plan.status;
 
         /** Convert int value to string */
-        $scope.service.category_id      = data.plan.service.category_id.toString();
-        $scope.service.unit_id          = data.plan.service.unit_id.toString();
-        $scope.service.depart_id        = data.plan.depart_id.toString();
-        $scope.service.division_id      = data.plan.division_id ? data.plan.division_id.toString() : '';
+        $scope.construct.category_id      = plan.plan_item.item.category_id.toString();
+        $scope.construct.unit_id          = plan.plan_item.unit_id.toString();
+        $scope.construct.depart_id        = plan.depart_id.toString();
+        $scope.construct.division_id      = plan.division_id ? plan.division_id.toString() : '';
 
         /** Convert db date to thai date. */            
         // $scope.service.service_date     = StringFormatService.convFromDbDate(data.plan.service.service_date);
