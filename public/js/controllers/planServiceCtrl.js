@@ -1,42 +1,8 @@
 app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = parseInt(moment().format('MM')) > 9
-                        ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
-    $scope.cboMonth = moment().format('MM');
-    $scope.cboCategory = "";
-    $scope.cboDepart = "";
-    $scope.cboStatus = "";
-    $scope.cboMenu = "";
-    $scope.searchKeyword = "";
-    $scope.cboQuery = "";
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
-    $scope.monthLists = [
-        { id: '01', name: 'มกราคม' },
-        { id: '02', name: 'กุมภาพันธ์' },
-        { id: '03', name: 'มีนาคม' },
-        { id: '04', name: 'เมษายน' },
-        { id: '05', name: 'พฤษภาคม' },
-        { id: '06', name: 'มิถุนายน' },
-        { id: '07', name: 'กรกฎาคม' },
-        { id: '08', name: 'สิงหาคม' },
-        { id: '09', name: 'กันยายน' },
-        { id: '10', name: 'ตุลาคม' },
-        { id: '11', name: 'พฤศจิกายน' },
-        { id: '12', name: 'ธันวาคม' },
-    ];
-
     $scope.services = [];
     $scope.pager = [];
-
-    $scope.forms = {
-        depart: [],
-        division: [],
-    };
-
-    let tmpDeparts = [];
-    let tmpDivisions = [];
 
     $scope.service = {
         service_id: '',
@@ -76,29 +42,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         //     });
         // });
 
-    $('#sent_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
-
-    $('#po_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
-
-    $scope.initForms = (data) => {
-        if (data) {
-            tmpDeparts = data.departs ? data.departs : [];
-            tmpDivisions = data.divisions ? data.divisions : [];
-        }
-    };
-
-    $scope.onFactionSelected = function(faction) {
-        $scope.forms.departs = tmpDeparts.filter(dep => dep.faction_id == faction);
-    };
-
-    $scope.onDepartSelected = function(depart) {
-        $scope.forms.divisions = tmpDivisions.filter(div => div.depart_id == depart);
-    };
-
     $scope.clearServiceObj = function() {
         $scope.service = {
             service_id: '',
@@ -128,17 +71,17 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     $scope.getAll = function(event) {
-        $scope.assets = [];
         $scope.loading = true;
+        $scope.services = [];
+        $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/services/search/${year}/${cate}/${status}/${menu}${query}?depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             $scope.setServices(res);
 
@@ -150,16 +93,10 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     $scope.setServices = function(res) {
-        const { data, ...pager } = res.data.services;
+        const { data, ...pager } = res.data.plans;
 
         $scope.services = data;
         $scope.pager = pager;
-    };
-
-    $scope.setPersons = function(res) {
-        let { data, ...pager } = res.data.persons;
-        $scope.persons  = data;
-        $scope.pager    = pager;
     };
 
     $scope.getDataWithURL = function(e, URL, cb) {

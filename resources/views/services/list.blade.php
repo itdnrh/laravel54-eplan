@@ -19,7 +19,13 @@
     <section
         class="content"
         ng-controller="planServiceCtrl"
-        ng-init="getAll(); initForms({ departs: {{ $departs }} });"
+        ng-init="
+            getAll();
+            initForms({
+                departs: {{ $departs }},
+                categories: {{ $categories }}
+            }, 3);
+        "
     >
 
         <div class="row">
