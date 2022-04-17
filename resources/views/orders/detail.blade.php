@@ -207,13 +207,19 @@
                             href="#"
                             class="btn btn-success"
                         >
-                            <i class="fa fa-print"></i> ตรวจรับพัสดุ
+                            <i class="fa fa-envelope-open-o"></i> ตรวจรับพัสดุ
                         </a>
                         <a
                             href="#"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-calculator"></i> ส่งเบิกเงิน
+                        </a>
+                        <a
+                            href="#"
+                            class="btn btn-danger"
+                        >
+                            <i class="fa fa-cubes"></i> ส่งคลังพัสดุ
                         </a>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->

@@ -197,6 +197,11 @@
 								</a>
 							</li>
 							<li ng-class="{ 'active': submenu == 'orders' }">
+								<a href="{{ url('orders/inventory') }}">
+									<i class="fa fa-circle-o"></i> ส่งคลังพัสดุ
+								</a>
+							</li>
+							<li ng-class="{ 'active': submenu == 'orders' }">
 								<a href="{{ url('orders/withdraw') }}">
 									<i class="fa fa-circle-o"></i> ส่งเบิกเงิน
 								</a>
