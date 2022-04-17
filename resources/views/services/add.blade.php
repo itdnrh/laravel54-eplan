@@ -64,35 +64,6 @@
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'category_id')}"
-                                >
-                                    <label>ประเภท :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="service.category_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
-                                        <option value="">-- เลือกประเภท --</option>
-
-                                        @foreach($categories as $category)
-
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(service, 'category_id')">
-                                        @{{ formError.errors.service_type_id[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'plan_no')}"
                                 >
                                     <label>เลขที่ :</label>
@@ -106,22 +77,33 @@
                                         @{{ formError.errors.plan_no[0] }}
                                     </span>
                                 </div>
+                            </div>
 
+                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'service_desc')}"
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(material, 'desc')}"
                                 >
                                     <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        id="service_desc"
-                                        name="service_desc"
-                                        ng-model="service.service_desc"
-                                        class="form-control pull-right"
-                                        tabindex="4">
-                                    <span class="help-block" ng-show="checkValidate(service, 'service_desc')">
-                                        @{{ formError.errors.desc[0] }}
-                                    </span>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="desc"
+                                            name="desc"
+                                            ng-model="material.desc"
+                                            class="form-control pull-right"
+                                            tabindex="4"
+                                        />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="material.item_id" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
+                                                ...
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-flat" ng-click="showNewItemForm()">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -365,6 +347,9 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._items-list')
+        @include('shared._item-form')
 
     </section>
 
