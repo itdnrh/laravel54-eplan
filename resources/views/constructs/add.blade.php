@@ -22,7 +22,9 @@
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
-        });"
+            categories: {{ $categories }},
+            groups: {{ $groups }}
+        }, 4);"
     >
 
         <div class="row">
@@ -64,61 +66,6 @@
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'category_id')}"
-                                >
-                                    <label>ประเภทงานก่อสร้าง :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="service.category_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
-                                        <option value="">-- เลือกประเภท --</option>
-
-                                        @foreach($categories as $category)
-
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(service, 'category_id')">
-                                        @{{ formError.errors.service_type_id[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'group_id')}"
-                                >
-                                    <label>กลุ่มงานก่อสร้าง :</label>
-                                    <select id="group_id"
-                                            name="group_id"
-                                            ng-model="service.group_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
-                                        <option value="">-- เลือกประเภท --</option>
-
-                                        @foreach($groups as $group)
-
-                                            <option value="{{ $group->id }}">
-                                                {{ $group->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(service, 'group_id')">
-                                        @{{ formError.errors.service_type_id[0] }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'plan_no')}"
                                 >
                                     <label>เลขที่ :</label>
@@ -130,6 +77,37 @@
                                             tabindex="3">
                                     <span class="help-block" ng-show="checkValidate(service, 'plan_no')">
                                         @{{ formError.errors.plan_no[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'desc')}"
+                                >
+                                    <label>รายการ :</label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="desc"
+                                            name="desc"
+                                            ng-model="construct.desc"
+                                            class="form-control pull-right"
+                                            tabindex="4"
+                                        />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="construct.item_id" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
+                                                ...
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-flat" ng-click="showNewItemForm()">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(construct, 'desc')">
+                                        @{{ formError.errors.desc[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -458,6 +436,9 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._items-list')
+        @include('shared._item-form')
 
     </section>
 
