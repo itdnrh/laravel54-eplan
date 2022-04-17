@@ -98,8 +98,9 @@ class PlanConstructController extends Controller
     public function add()
     {
         return view('constructs.add', [
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
-            "groups"        => ConstructGroup::all(),
+            "groups"        => ItemGroup::all(),
             "buildings"     => Building::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
