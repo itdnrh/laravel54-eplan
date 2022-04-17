@@ -322,4 +322,70 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         };
     };
 
+    $scope.planId = "";
+    $scope.showSupportedForm = function() {
+        $('#supported-from').modal('show');
+    };
+
+    $scope.sendSupportedDoc = (e, type, id) => {
+        e.preventDefault();
+
+        let data = {
+            doc_no: $('#doc_no').val(),
+            doc_date: $('#doc_date').val(),
+            sent_date: $('#sent_date').val(),
+            sent_user: $('#sent_user').val(),
+        };
+
+        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${id}`, data)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
+
+        /** Redirect to list view */
+        if (type == 1) {
+            window.location.href = `${CONFIG.baseUrl}/plans/assets`;
+        } else if (type == 2) {
+            window.location.href = `${CONFIG.baseUrl}/plans/materials`;
+        } else if (type == 3) {
+            window.location.href = `${CONFIG.baseUrl}/plans/services`;
+        } else if (type == 4) {
+            window.location.href = `${CONFIG.baseUrl}/plans/constructs`;
+        }
+    };
+
+    $scope.showPoForm = function() {
+        $('#po-form').modal('show');
+    };
+
+    $scope.createPO = (e, type, id) => {
+        e.preventDefault();
+
+        let data = {
+            po_no: $('#po_no').val(),
+            po_date: $('#po_date').val(),
+            po_net_total: $('#po_net_total').val(),
+            po_user: $('#po_user').val(),
+        };
+
+        $http.post(`${CONFIG.baseUrl}/plans/create-po/${id}`, data)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
+
+        /** Redirect to list view */
+        if (type == 1) {
+            window.location.href = `${CONFIG.baseUrl}/plans/assets`;
+        } else if (type == 2) {
+            window.location.href = `${CONFIG.baseUrl}/plans/materials`;
+        } else if (type == 3) {
+            window.location.href = `${CONFIG.baseUrl}/plans/services`;
+        } else if (type == 4) {
+            window.location.href = `${CONFIG.baseUrl}/plans/constructs`;
+        }
+    };
 });

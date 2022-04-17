@@ -144,6 +144,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     }
 
     $scope.setEditControls = function(plan) {
+        /** Global data */
+        $scope.planId                   = plan.id;
+        $scope.planType                 = 2;
+
+        /** ข้อมูลวัสดุ */
         $scope.material.material_id     = plan.id;
         $scope.material.year            = plan.year;
         $scope.material.plan_no         = plan.plan_no;

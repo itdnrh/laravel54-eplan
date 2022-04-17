@@ -175,56 +175,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };
 
-    $scope.showSupportedForm = function() {
-        $('#supported-from').modal('show');
-    };
-
-    $scope.sendSupportedDoc = (e) => {
-        e.preventDefault();
-
-        let data = {
-            doc_no: $('#doc_no').val(),
-            doc_date: $('#doc_date').val(),
-            sent_date: $('#sent_date').val(),
-            sent_user: $('#sent_user').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${$scope.asset.asset_id}`, data)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/assets/list`;
-    };
-
-    $scope.showPoForm = function() {
-        $('#po-form').modal('show');
-    };
-
-    $scope.createPO = (e) => {
-        e.preventDefault();
-
-        let data = {
-            po_no: $('#po_no').val(),
-            po_date: $('#po_date').val(),
-            po_net_total: $('#po_net_total').val(),
-            po_user: $('#po_user').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/plans/create-po/${$scope.asset.asset_id}`, data)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        /** Redirect to list view */
-        window.location.href = `${CONFIG.baseUrl}/assets/list`;
-    };
-
     $scope.store = function(event, form) {
         event.preventDefault();
 

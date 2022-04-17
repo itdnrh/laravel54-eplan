@@ -15,7 +15,11 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planMaterialCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
+    <section
+        class="content"
+        ng-controller="planMaterialCtrl"
+        ng-init="getById({{ $plan->id }}, setEditControls);"
+    >
 
         <div class="row">
             <div class="col-md-12">
@@ -175,8 +179,7 @@
                                         tabindex="17"
                                     ></textarea>
                                 </div>
-                                
-                                
+
                                 <div class="col-md-12" style="margin-bottom: 15px;" ng-show="material.attachment">
                                     <label>เอกสารแนบ :</label>
                                     <div style="display: flex; flex-direction: row; justify-content: flex-start;">

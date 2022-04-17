@@ -27,7 +27,7 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="sendSupportedDoc($event)"
+                        ng-click="sendSupportedDoc($event, planType, planId)"
                         class="btn btn-primary"
                         data-dismiss="modal"
                         aria-label="Save"

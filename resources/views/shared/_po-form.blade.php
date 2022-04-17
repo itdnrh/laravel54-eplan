@@ -27,7 +27,7 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="createPO($event)"
+                        ng-click="createPO($event, planType, planId)"
                         class="btn btn-primary"
                         data-dismiss="modal"
                         aria-label="Save"
