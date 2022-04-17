@@ -12,6 +12,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         depart_id: '',
         division_id: '',
         category_id: '',
+        item_id: '',
         desc: '',
         price_per_unit: '',
         unit_id: '',
@@ -51,6 +52,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             depart_id: '',
             division_id: '',
             category_id: '',
+            item_id: '',
             desc: '',
             price_per_unit: '',
             unit_id: '',
@@ -122,6 +124,18 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.onSelectedItem = function(event, item) {
+        if (item) {
+            $('#item_id').val(item.id);
+            $scope.service.item_id = item.id;
+            $scope.service.desc = item.item_name;
+            $scope.service.price_per_unit = item.price_per_unit;
+            $scope.service.unit_id = item.unit_id.toString();
+        }
+
+        $('#items-list').modal('hide');
     };
 
     $scope.getById = function(id, cb) {
