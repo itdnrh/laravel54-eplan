@@ -22,7 +22,9 @@
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
-        });"
+            categories: {{ $categories }},
+            groups: {{ $groups }}
+        }, 3);"
     >
 
         <div class="row">
@@ -90,11 +92,11 @@
                                             type="text"
                                             id="desc"
                                             name="desc"
-                                            ng-model="material.desc"
+                                            ng-model="service.desc"
                                             class="form-control pull-right"
                                             tabindex="4"
                                         />
-                                        <input type="hidden" id="item_id" name="item_id" ng-model="material.item_id" />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="service.item_id" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
                                                 ...
@@ -134,8 +136,7 @@
                                     <select id="unit_id" 
                                             name="unit_id"
                                             ng-model="service.unit_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
+                                            class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกหน่วย --</option>
 

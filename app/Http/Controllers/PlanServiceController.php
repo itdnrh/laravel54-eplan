@@ -131,17 +131,16 @@ class PlanServiceController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $service = new PlanService();
+            $service = new PlanItem();
             $service->plan_id           = $planId;
-            $service->category_id       = $req['category_id'];
-            $service->desc              = $req['desc'];
+            $service->item_id           = $req['item_id'];
             $service->price_per_unit    = $req['price_per_unit'];
             $service->unit_id           = $req['unit_id'];
             $service->amount            = $req['amount'];
             $service->sum_price         = $req['sum_price'];
             $service->save();
 
-            return redirect('/services/list');
+            return redirect('/plans/services');
         }
     }
 
