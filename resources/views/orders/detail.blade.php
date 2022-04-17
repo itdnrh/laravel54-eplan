@@ -202,13 +202,19 @@
 
                     </div><!-- /.box-body -->
 
-                    <div class="box-footer clearfix">
-                        <!-- <button
-                            ng-click="formValidate($event, '/orders/validate', order, 'frmNewPO', store)"
-                            class="btn btn-warning"
+                    <div class="box-footer clearfix" style="text-align: center;">
+                        <a
+                            href="#"
+                            class="btn btn-success"
                         >
-                            แก้ไข
-                        </button> -->
+                            <i class="fa fa-print"></i> ตรวจรับพัสดุ
+                        </a>
+                        <a
+                            href="#"
+                            class="btn btn-primary"
+                        >
+                            <i class="fa fa-calculator"></i> ส่งเบิกเงิน
+                        </a>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 
