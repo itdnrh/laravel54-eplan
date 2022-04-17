@@ -15,7 +15,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="materialCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
+    <section class="content" ng-controller="planMaterialCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
 
         <div class="row">
             <div class="col-md-12">
@@ -177,14 +177,14 @@
                                 </div>
                                 
                                 
-                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="leave.attachment">
+                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="material.attachment">
                                     <label>เอกสารแนบ :</label>
                                     <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ leave.attachment }}"
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ material.attachment }}"
                                             title="ไฟล์แนบ"
                                             target="_blank">
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                            @{{ leave.attachment }}
+                                            @{{ material.attachment }}
                                         </a>
 
                                         <span style="margin-left: 10px;">
@@ -280,8 +280,8 @@
 
                             </div>
 
-                            @include('materials._supported-form')
-                            @include('materials._po-form')
+                            @include('shared._supported-form')
+                            @include('shared._po-form')
 
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->

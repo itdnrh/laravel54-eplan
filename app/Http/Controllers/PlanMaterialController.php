@@ -85,7 +85,7 @@ class PlanMaterialController extends Controller
     public function detail($id)
     {
         return view('materials.detail', [
-            "plan"          => Plan::with('material')->where('id', $id)->first(),
+            "plan"          => Plan::with('planItem')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),

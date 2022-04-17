@@ -11,6 +11,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         faction_id: '',
         depart_id: '',
         division_id: '',
+        category_id: '',
         item_id: '',
         desc: '',
         price_per_unit: '',
@@ -50,6 +51,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             faction_id: '',
             depart_id: '',
             division_id: '',
+            category_id: '',
             item_id: '',
             desc: '',
             price_per_unit: '',
@@ -135,33 +137,32 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.getById = function(id, cb) {
         $http.get(`${CONFIG.baseUrl}/materials/get-ajax-byid/${id}`)
         .then(function(res) {
-            cb(res.data);
+            cb(res.data.plan);
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.setEditControls = function(data) {
-        $scope.material.material_id     = data.plan.id;
-        $scope.material.year            = data.plan.year;
-        $scope.material.plan_no         = data.plan.plan_no;
-        $scope.material.item_id         = data.plan.plan_item.item_id;
-        $scope.material.desc            = data.plan.plan_item.item.item_name;
-        $scope.material.spec            = data.plan.plan_item.spec;
-        $scope.material.price_per_unit  = data.plan.plan_item.price_per_unit;
-        $scope.material.amount          = data.plan.plan_item.amount;
-        $scope.material.sum_price       = data.plan.plan_item.sum_price;
-        $scope.material.start_month     = $scope.monthLists.find(m => m.id == data.plan.start_month).name;
-        $scope.material.reason          = data.plan.reason;
-        $scope.material.remark          = data.plan.remark;
-        $scope.material.status          = data.plan.status;
+    $scope.setEditControls = function(plan) {
+        $scope.material.material_id     = plan.id;
+        $scope.material.year            = plan.year;
+        $scope.material.plan_no         = plan.plan_no;
+        $scope.material.item_id         = plan.plan_item.item_id;
+        $scope.material.desc            = plan.plan_item.item.item_name;
+        $scope.material.spec            = plan.plan_item.spec;
+        $scope.material.price_per_unit  = plan.plan_item.price_per_unit;
+        $scope.material.amount          = plan.plan_item.amount;
+        $scope.material.sum_price       = plan.plan_item.sum_price;
+        $scope.material.start_month     = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.material.reason          = plan.reason;
+        $scope.material.remark          = plan.remark;
+        $scope.material.status          = plan.status;
 
         /** Convert int value to string */
-        $scope.material.unit_id         = data.plan.plan_item.unit_id.toString();
-        $scope.material.depart_id       = data.plan.depart_id.toString();
-        $scope.material.division_id     = data.plan.division_id ? data.plan.division_id.toString() : '';
-        /** Convert db date to thai date. */            
-        // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+        $scope.material.category_id     = plan.plan_item.item.category_id.toString();
+        $scope.material.unit_id         = plan.plan_item.unit_id.toString();
+        $scope.material.depart_id       = plan.depart_id.toString();
+        $scope.material.division_id     = plan.division_id ? plan.division_id.toString() : '';
     };
 
     $scope.store = function(event, form) {

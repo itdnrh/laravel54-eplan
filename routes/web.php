@@ -85,7 +85,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('materials/validate', 'PlanMaterialController@formValidate');
     Route::get('materials/search', 'PlanMaterialController@search');
     Route::get('materials/get-ajax-all', 'PlanMaterialController@getAll');
-    Route::get('materials/get-ajax-byid/{id}', 'PlanMaterialController@getById');
+    Route::get('materials/get-ajax-byid/{id}', 'PlanController@getById');
     Route::get('materials/detail/{id}', 'PlanMaterialController@detail');
     Route::get('materials/add', 'PlanMaterialController@add');
     Route::post('materials/store', 'PlanMaterialController@store');
