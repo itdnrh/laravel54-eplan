@@ -63,7 +63,7 @@
                                     @{{ item.latest_price | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="#" class="btn btn-primary" ng-click="onSelectedItem($event, item)">
+                                    <a href="#" class="btn btn-primary" ng-click="handleItemSelected($event, item, onSelectedItem)">
                                         เลือก
                                     </a>
                                 </td>
@@ -122,7 +122,7 @@
                             </ul>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger" ng-click="onSelectedItem($event, null)">
+                            <button type="button" class="btn btn-danger" ng-click="handleItemSelected($event, null, onSelectedItem)">
                                 ปิด
                             </button>
                         </div>

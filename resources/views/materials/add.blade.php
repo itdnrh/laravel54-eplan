@@ -18,11 +18,13 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="materialCtrl"
+        ng-controller="planMaterialCtrl"
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
-        });"
+            categories: {{ $categories }},
+            groups: {{ $groups }}
+        }, 2);"
     >
 
         <div class="row">
@@ -98,35 +100,6 @@
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(material, 'category_id')}"
-                                >
-                                    <label>ประเภทวัสดุ :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="material.category_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
-                                        <option value="">-- เลือกประเภทวัสดุ --</option>
-
-                                        @foreach($categories as $category)
-
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(material, 'category_id')">
-                                        @{{ formError.errors.category_id[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'plan_no')}"
                                     ng-show="material.in_stock == 0"
                                 >
@@ -141,22 +114,33 @@
                                         @{{ formError.errors.plan_no[0] }}
                                     </span>
                                 </div>
+                            </div>
 
+                            <div class="row">
                                 <div
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'desc')}"
                                 >
-                                    <label>ชื่อวัสดุ :</label>
-                                    <input
-                                        type="text"
-                                        id="desc"
-                                        name="desc"
-                                        ng-model="material.desc"
-                                        class="form-control pull-right"
-                                        tabindex="4">
-                                    <span class="help-block" ng-show="checkValidate(material, 'desc')">
-                                        @{{ formError.errors.desc[0] }}
-                                    </span>
+                                    <label>รายการ :</label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="desc"
+                                            name="desc"
+                                            ng-model="asset.desc"
+                                            class="form-control pull-right"
+                                            tabindex="4"
+                                        />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="asset.item_id" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
+                                                ...
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-flat" ng-click="showNewItemForm()">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -405,6 +389,9 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._items-list')
+        @include('shared._item-form')
 
     </section>
 

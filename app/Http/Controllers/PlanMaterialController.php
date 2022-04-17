@@ -9,7 +9,9 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
 use App\Models\PlanItem;
+use App\Models\PlanType;
 use App\Models\ItemCategory;
+use App\Models\ItemGroup;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -96,7 +98,9 @@ class PlanMaterialController extends Controller
     public function add()
     {
         return view('materials.add', [
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
