@@ -292,8 +292,8 @@
 
                             </div>
 
-                            @include('assets._supported-form')
-                            @include('assets._po-form')
+                            @include('shared._supported-form')
+                            @include('shared._po-form')
 
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
