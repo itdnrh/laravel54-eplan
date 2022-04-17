@@ -77,8 +77,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     /** TODO: Duplicated function */
     $scope.getAll = function(event) {
-        $scope.assets = [];
         $scope.loading = true;
+        $scope.assets = [];
+        $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
@@ -123,7 +124,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
         $scope.loading = true;
         $scope.assets = [];
-        $scope.pager = [];
+        $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;

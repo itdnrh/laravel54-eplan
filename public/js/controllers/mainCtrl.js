@@ -145,6 +145,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.planType = planType;
     };
 
+    $scope.handleInputChange = function(name, value) {
+        $scope[name] = value;
+    }
+
     $scope.onFactionSelected = function(faction) {
         $scope.forms.departs = $scope.temps.departs.filter(dep => dep.faction_id == faction);
     };
@@ -180,8 +184,9 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     };
 
     $scope.getItems = function() {
-        $scope.items = [];
         $scope.loading = true;
+        $scope.items = [];
+        $scope.items_pager = null;
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
@@ -211,8 +216,9 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
-        $scope.items = [];
         $scope.loading = true;
+        $scope.items = [];
+        $scope.items_pager = null;
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;

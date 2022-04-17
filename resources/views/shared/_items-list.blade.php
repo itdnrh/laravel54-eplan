@@ -18,7 +18,7 @@
                                     id="cboCategory"
                                     name="cboCategory"
                                     ng-model="cboCategory"
-                                    ng-change="getItems()"
+                                    ng-change="handleInputChange('cboCategory', cboCategory); getItems();"
                                     class="form-control"
                                 >
                                     <option value="">-- เลือกประเภทสินค้า/บริการ --</option>
@@ -31,7 +31,7 @@
                                     type="text"
                                     ng-model="searchKey"
                                     class="form-control"
-                                    ng-keyup="getItems()"
+                                    ng-keyup="handleInputChange('searchKey', searchKey); getItems();"
                                 />
                             </div>
                         </div><!-- /.box-body -->

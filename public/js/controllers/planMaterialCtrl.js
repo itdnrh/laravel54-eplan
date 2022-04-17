@@ -73,8 +73,9 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
     /** TODO: Duplicated function */
     $scope.getAll = function(event) {
-        $scope.materials = [];
         $scope.loading = true;
+        $scope.materials = [];
+        $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
@@ -106,7 +107,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
         $scope.loading = true;
         $scope.materials = [];
-        $scope.pager = [];
+        $scope.pager = null;
 
         $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
