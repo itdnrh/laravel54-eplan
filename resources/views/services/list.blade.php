@@ -64,13 +64,9 @@
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        @foreach($categories as $category)
-
-                                            <option value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
-
-                                        @endforeach
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
                                     </select>
                                 </div><!-- /.form group -->
                             </div><!-- /.row -->
@@ -162,10 +158,10 @@
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <h4 style="margin: 0;">@{{ plan.service.type.name }}</h4>
-                                        @{{ plan.service.desc }} จำนวน 
-                                        <span>@{{ plan.service.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.service.unit.name }}</span>
+                                        <h4 style="margin: 0;">@{{ plan.plan_item.item.category.name }}</h4>
+                                        @{{ plan.plan_item.item.item_name }} จำนวน 
+                                        <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
+                                        <span>@{{ plan.plan_item.unit.name }}</span>
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                             class="btn btn-default btn-xs" 
                                             title="ไฟล์แนบ"
@@ -175,10 +171,10 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.service.price_per_unit | currency:'':0 }}
+                                        @{{ plan.plan_item.price_per_unit | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.service.sum_price | currency:'':0 }}
+                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>

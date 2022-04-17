@@ -83,7 +83,7 @@ class PlanServiceController extends Controller
     public function detail($id)
     {
         return view('services.detail', [
-            "plan"          => Plan::with('service')->where('id', $id)->first(),
+            "plan"          => Plan::with('planItem')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
