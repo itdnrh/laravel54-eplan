@@ -33,10 +33,14 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.forms = {
         depart: [],
         division: [],
+        categories: [],
+        groups: [],
     };
 
     let tmpDeparts = [];
     let tmpDivisions = [];
+    let tmpCategories = [];
+    let tmpGroups = [];
 
     $scope.material = {
         material_id: '',
@@ -89,6 +93,12 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         if (data) {
             tmpDeparts = data.departs ? data.departs : [];
             tmpDivisions = data.divisions ? data.divisions : [];
+            tmpCategories = data.categories ? data.categories : [];
+            tmpGroups = data.groups ? data.groups : [];
+
+            $scope.forms.categories = data.categories
+                                        ? data.categories.filter(cate => cate.plan_type_id === 2)
+                                        : [];
         }
     };
 
@@ -132,14 +142,13 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.materials = [];
         $scope.loading = true;
 
-        let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? 0 : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '-' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/materials/search${query}?status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
             $scope.setMaterials(res);
 
@@ -151,7 +160,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     $scope.setMaterials = function(res) {
-        const { data, ...pager } = res.data.materials;
+        const { data, ...pager } = res.data.plans;
 
         $scope.materials = data;
         $scope.pager = pager;

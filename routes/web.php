@@ -48,7 +48,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** แผนจัดซื้อจัดจ้าง */
     Route::get('plans/search', 'PlanController@search');
     Route::get('plans/assets', 'PlanAssetController@index');
-    Route::get('plans/materials', 'MaterialController@index');
+    Route::get('plans/materials', 'PlanMaterialController@index');
     Route::get('plans/services', 'PlanServiceController@index');
     Route::get('plans/constructs', 'PlanConstructController@index');
     Route::post('plans/create-po/{id}', 'PlanController@createPO');

@@ -80,18 +80,22 @@ class PlanController extends Controller
         ]);
     }
 
+    
     public function search(Request $req)
     {
         $matched = [];
         $arrStatus = [];
-        $pattern = '/^\<|\>|\&|\-/i';
         $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
 
         /** Get params from query string */
-        $planType = $req->get('type');
+        $year   = $req->get('year');
+        $type   = $req->get('type');
+        $cate   = $req->get('cate');
+        $depart = $req->get('depart');
+        // $status      = $req->get('status');
+        // $menu      = $req->get('menu');
 
-        // if($year != '0') array_push($conditions, ['year', '=', $year]);
-        // if($cate != '0') array_push($conditions, ['plan_assets.category_id', $cate]);
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
         //         $arrStatus = explode($matched[0], $status);
@@ -104,25 +108,36 @@ class PlanController extends Controller
         //     }
         // }
         // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
+        $items = [];
+        if($cate != '0') {
+            $items = Item::where('category_id', $cate)->pluck('id');
+        }
 
-        $plans = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+        $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->with('budget','depart','division')
                     ->with('planItem','planItem.unit')
                     ->with('planItem.item','planItem.item.category')
-                    ->where('status', '1')
-                    ->where('plan_type_id', $planType)
-
-                    // ->leftJoin('plan_services', 'plans.id', '=', 'plan_services.plan_id')
-                    // ->leftJoin('plan_constructs', 'plans.id', '=', 'plan_constructs.plan_id')
-
-                    // ->when(count($conditions) > 0, function($q) use ($conditions) {
-                    //     $q->where($conditions);
-                    // })
+                    ->where('plan_type_id', $type)
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    ->when(count($items) > 0, function($q) use ($items) {
+                        $q->whereIn('plan_items.item_id', $items);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
+                    })
                     // ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
                     //     $q->whereIn('status', $arrStatus);
                     // })
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
+                    // })
+                    // ->when(!empty($month), function($q) use ($month) {
+                    //     $sdate = $month. '-01';
+                    //     $edate = date('Y-m-t', strtotime($sdate));
+
+                    //     $q->whereBetween('leave_date', [$sdate, $edate]);
                     // })
                     ->orderBy('plan_no', 'ASC')
                     ->paginate(10);
@@ -135,7 +150,11 @@ class PlanController extends Controller
     public function getAll()
     {
         return [
-            'assets' => PlanAsset::orderBy('plan_no')->get(),
+            'plans' => Plan::with('budget','depart','division')
+                            ->with('planItem','planItem.unit')
+                            ->with('planItem.item','planItem.item.category')
+                            ->orderBy('plan_no')
+                            ->get(),
         ];
     }
 
@@ -144,7 +163,8 @@ class PlanController extends Controller
         return [
             'plan' => Plan::where('id', $id)
                         ->with('budget','depart','division')
-                        ->with('asset','asset.unit','asset.category')
+                        ->with('planItem','planItem.unit')
+                        ->with('planItem.item','planItem.item.category')
                         ->first(),
         ];
     }
