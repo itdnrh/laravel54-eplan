@@ -71,6 +71,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $('#sum_price').val(price * amount);
     };
 
+    /** TODO: Duplicated function */
     $scope.getAll = function(event) {
         $scope.materials = [];
         $scope.loading = true;
@@ -99,13 +100,15 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.pager = pager;
     };
 
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
+        $scope.materials = [];
+        $scope.pager = [];
 
-        $http.get(URL)
+        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 

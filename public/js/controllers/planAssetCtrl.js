@@ -75,6 +75,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $('#sum_price').val(price * amount);
     };
 
+    /** TODO: Duplicated function */
     $scope.getAll = function(event) {
         $scope.assets = [];
         $scope.loading = true;
@@ -85,7 +86,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/assets/search?year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             $scope.setAssets(res);
 
@@ -97,7 +98,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.setAssets = function(res) {
-        const { data, ...pager } = res.data.assets;
+        const { data, ...pager } = res.data.plans;
 
         $scope.assets = data;
         $scope.pager = pager;
@@ -120,8 +121,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
-        $scope.assets = [];
         $scope.loading = true;
+        $scope.assets = [];
+        $scope.pager = [];
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
@@ -129,7 +131,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 
