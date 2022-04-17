@@ -24,7 +24,7 @@
             divisions: {{ $divisions }},
             categories: {{ $categories }},
             groups: {{ $groups }}
-        });"
+        }, 1);"
     >
 
         <div class="row">
@@ -370,8 +370,8 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('assets._items-list')
-        @include('assets._item-form')
+        @include('shared._items-list')
+        @include('shared._item-form')
 
     </section>
 
