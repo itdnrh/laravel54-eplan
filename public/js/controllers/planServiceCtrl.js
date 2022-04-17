@@ -150,7 +150,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.setEditControls = function(plan) {
         /** Global data */
         $scope.planId                   = plan.id;
-        $scope.planType                 = 2;
+        $scope.planType                 = 3;
 
         /** ข้อมูลจ้างบริการ */
         $scope.service.service_id       = plan.id;

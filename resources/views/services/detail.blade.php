@@ -82,7 +82,7 @@
                                     <label>รายการ :</label>
                                     <input
                                         type="text"
-                                        ng-model="service.service_desc"
+                                        ng-model="service.desc"
                                         class="form-control pull-right"
                                         tabindex="1" />
                                 </div>
@@ -279,8 +279,8 @@
 
                             </div>
 
-                            @include('services._supported-form')
-                            @include('services._po-form')
+                            @include('shared._supported-form')
+                            @include('shared._po-form')
 
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
