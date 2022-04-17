@@ -70,9 +70,8 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนครุภัณฑ์ */
     Route::post('assets/validate', 'PlanAssetController@formValidate');
-    Route::get('assets/search', 'PlanAssetController@search');
-    Route::get('assets/get-ajax-all', 'PlanAssetController@getAll');
-    Route::get('assets/get-ajax-byid/{id}', 'PlanAssetController@getById');
+    Route::get('assets/get-ajax-all', 'PlanController@getAll');
+    Route::get('assets/get-ajax-byid/{id}', 'PlanController@getById');
     Route::get('assets/detail/{id}', 'PlanAssetController@detail');
     Route::get('assets/add', 'PlanAssetController@add');
     Route::post('assets/store', 'PlanAssetController@store');
@@ -83,8 +82,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนวัสดุ */
     Route::post('materials/validate', 'PlanMaterialController@formValidate');
-    Route::get('materials/search', 'PlanMaterialController@search');
-    Route::get('materials/get-ajax-all', 'PlanMaterialController@getAll');
+    Route::get('materials/get-ajax-all', 'PlanController@getAll');
     Route::get('materials/get-ajax-byid/{id}', 'PlanController@getById');
     Route::get('materials/detail/{id}', 'PlanMaterialController@detail');
     Route::get('materials/add', 'PlanMaterialController@add');
@@ -96,9 +94,8 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนจ้างบริการ */
     Route::post('services/validate', 'PlanServiceController@formValidate');
-    Route::get('services/search/{year}/{cate}/{status}/{menu}', 'PlanServiceController@search');
-    Route::get('services/get-ajax-all', 'PlanServiceController@getAll');
-    Route::get('services/get-ajax-byid/{id}', 'PlanServiceController@getById');
+    Route::get('services/get-ajax-all', 'PlanController@getAll');
+    Route::get('services/get-ajax-byid/{id}', 'PlanController@getById');
     Route::get('services/detail/{id}', 'PlanServiceController@detail');
     Route::get('services/add', 'PlanServiceController@add');
     Route::post('services/store', 'PlanServiceController@store');
@@ -109,9 +106,8 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนก่อสร้าง */
     Route::post('constructs/validate', 'PlanConstructController@formValidate');
-    Route::get('constructs/search', 'PlanConstructController@search');
-    Route::get('constructs/get-ajax-all', 'PlanConstructController@getAll');
-    Route::get('constructs/get-ajax-byid/{id}', 'PlanConstructController@getById');
+    Route::get('constructs/get-ajax-all', 'PlanController@getAll');
+    Route::get('constructs/get-ajax-byid/{id}', 'PlanController@getById');
     Route::get('constructs/detail/{id}', 'PlanConstructController@detail');
     Route::get('constructs/add', 'PlanConstructController@add');
     Route::post('constructs/store', 'PlanConstructController@store');

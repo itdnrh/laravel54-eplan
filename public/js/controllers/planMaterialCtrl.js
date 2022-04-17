@@ -111,7 +111,13 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.materials = [];
         $scope.pager = null;
 
-        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
+
+        $http.get(`${url}&type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 

@@ -153,6 +153,11 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.setEditControls = function(plan) {
+        /** Global data */
+        $scope.planId                   = plan.id;
+        $scope.planType                 = 1;
+
+        /** ข้อมูลครุภัณฑ์ */
         $scope.asset.asset_id           = plan.id;
         $scope.asset.year               = plan.year;
         $scope.asset.plan_no            = plan.plan_no;
