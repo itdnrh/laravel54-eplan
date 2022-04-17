@@ -26,7 +26,6 @@ class PlanMaterialController extends Controller
         $rules = [
             'year'              => 'required',
             // 'plan_no'           => 'required',
-            'category_id'       => 'required',
             'desc'              => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
@@ -132,18 +131,16 @@ class PlanMaterialController extends Controller
         if($plan->save()) {
             $planId = $plan->id;
 
-            $asset = new PlanItem();
-            $asset->plan_id         = $planId;
-            $asset->category_id     = $req['category_id'];
-            $asset->desc            = $req['desc'];
-            $asset->price_per_unit  = $req['price_per_unit'];
-            $asset->unit_id         = $req['unit_id'];
-            $asset->amount          = $req['amount'];
-            $asset->sum_price       = $req['sum_price'];
-            $asset->in_stock        = $req['in_stock'];
-            $asset->save();
+            $material = new PlanItem();
+            $material->plan_id         = $planId;
+            $material->item_id         = $req['item_id'];
+            $material->price_per_unit  = $req['price_per_unit'];
+            $material->unit_id         = $req['unit_id'];
+            $material->amount          = $req['amount'];
+            $material->sum_price       = $req['sum_price'];
+            $material->save();
 
-            return redirect('/materials/list');
+            return redirect('/plans/materials');
         }
     }
 

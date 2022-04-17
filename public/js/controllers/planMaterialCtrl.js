@@ -121,15 +121,13 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     $scope.onSelectedItem = function(event, item) {
-        console.log(item);
-        // if (item) {
-        //     $('#item_id').val(item.id);
-        //     $scope.material.item_id = item.id;
-        //     $scope.material.desc = item.item_name;
-        //     $scope.material.price_per_unit = item.price_per_unit;
-        //     $scope.material.unit_id = item.unit_id.toString();
-        //     $scope.material.category_id = item.category_id.toString();
-        // }
+        if (item) {
+            $('#item_id').val(item.id);
+            $scope.material.item_id = item.id;
+            $scope.material.desc = item.item_name;
+            $scope.material.price_per_unit = item.price_per_unit;
+            $scope.material.unit_id = item.unit_id.toString();
+        }
 
         $('#items-list').modal('hide');
     };
@@ -159,7 +157,6 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material.status          = data.plan.status;
 
         /** Convert int value to string */
-        $scope.material.category_id     = data.plan.plan_item.item.category_id.toString();
         $scope.material.unit_id         = data.plan.plan_item.unit_id.toString();
         $scope.material.depart_id       = data.plan.depart_id.toString();
         $scope.material.division_id     = data.plan.division_id ? data.plan.division_id.toString() : '';

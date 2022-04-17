@@ -158,10 +158,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     };
 
     $scope.onPlanTypeSelected = function(type) {
-        $scope.forms.categories = tmpCategories.filter(cate => cate.plan_type_id === parseInt(type));
+        $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
 
         if ([3,4].includes(parseInt(type))) {
-            $scope.forms.groups = tmpGroups.filter(group => group.plan_type_id === parseInt(type));
+            $scope.forms.groups = $scope.temps.groups.filter(group => group.plan_type_id === parseInt(type));
 
             $('#group_id').attr('disabled', false)
         } else {

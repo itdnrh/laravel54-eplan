@@ -43,39 +43,6 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group"
-                                    ng-class="{
-                                        'col-md-12': material.in_stock == 0,
-                                        'col-md-6': material.in_stock == 1,
-                                        'has-error has-feedback': checkValidate(material, 'in_stock')
-                                    }"
-                                >
-                                    <label>วัสดุใน/นอกคลัง :</label>
-                                    <div style="display: flex; gap: 10px;">
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                id="in_stock"
-                                                name="in_stock"
-                                                ng-value="1"
-                                                ng-model="material.in_stock"
-                                            /> วัสดุในคลัง
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                id="in_stock"
-                                                name="in_stock"
-                                                ng-value="0"
-                                                ng-model="material.in_stock"
-                                            /> วัสดุนอกคลัง
-                                        </div>
-                                    </div>
-                                    <span class="help-block" ng-show="checkValidate(material, 'in_stock')">
-                                        @{{ formError.errors.in_stock[0] }}
-                                    </span>
-                                </div>
-                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'year')}"
                                     ng-show="material.in_stock == 0"
@@ -127,11 +94,11 @@
                                             type="text"
                                             id="desc"
                                             name="desc"
-                                            ng-model="asset.desc"
+                                            ng-model="material.desc"
                                             class="form-control pull-right"
                                             tabindex="4"
                                         />
-                                        <input type="hidden" id="item_id" name="item_id" ng-model="asset.item_id" />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="material.item_id" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
                                                 ...
@@ -168,11 +135,10 @@
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'unit_id')}"
                                 >
                                     <label>หน่วย :</label>
-                                    <select id="unit_id" 
+                                    <select id="unit_id"
                                             name="unit_id"
-                                            ng-model="material.unit_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
+                                            ng-model="material.unit_id"
+                                            class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกหน่วย --</option>
 
