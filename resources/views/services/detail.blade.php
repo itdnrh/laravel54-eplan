@@ -198,16 +198,22 @@
                                         <span class="label label-info" ng-show="service.status == 1">
                                             @{{ service.status }} ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="service.status == 2">
+                                        <span class="label bg-navy" ng-show="service.status == 2">
                                             @{{ service.status }} รับเอกสารแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="service.status == 3">
-                                            @{{ service.status }} ออกใบ PO แล้ว
+                                            @{{ service.status }} ออกใบสั้งซื้อแล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="service.status == 4">
+                                        <span class="label bg-maroon" ng-show="service.status == 4">
+                                            @{{ service.status }} ตรวจรับแล้ว
+                                        </span>
+                                        <span class="label label-warning" ng-show="service.status == 5">
+                                            @{{ service.status }} ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="service.status == 6">
                                             @{{ service.status }} ตั้งหนี้แล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="service.status == 9">
+                                        <span class="label label-default" ng-show="service.status == 9">
                                             @{{ service.status }} ยกเลิก
                                         </span>
                                     </div>

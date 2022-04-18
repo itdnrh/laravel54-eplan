@@ -211,16 +211,22 @@
                                         <span class="label label-info" ng-show="construct.status == 1">
                                             @{{ construct.status }} ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="construct.status == 2">
+                                        <span class="label bg-navy" ng-show="construct.status == 2">
                                             @{{ construct.status }} รับเอกสารแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="construct.status == 3">
-                                            @{{ construct.status }} ออกใบ PO แล้ว
+                                            @{{ construct.status }} ออกใบสั้งซื้อแล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="construct.status == 4">
+                                        <span class="label bg-maroon" ng-show="construct.status == 4">
+                                            @{{ construct.status }} ตรวจรับแล้ว
+                                        </span>
+                                        <span class="label label-warning" ng-show="construct.status == 5">
+                                            @{{ construct.status }} ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="construct.status == 6">
                                             @{{ construct.status }} ตั้งหนี้แล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="construct.status == 9">
+                                        <span class="label label-default" ng-show="construct.status == 9">
                                             @{{ construct.status }} ยกเลิก
                                         </span>
                                     </div>
