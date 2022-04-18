@@ -9,6 +9,13 @@
                     value="{{ Auth::user()->person_id }}"
                     class="form-control"
                 />
+                <input
+                    type="hidden"
+                    id="po_id"
+                    name="po_id"
+                    value="@{{ order.id }}"
+                    class="form-control"
+                />
                 <div class="modal-header">
                     <h5 class="modal-title">บันทึกการตรวจรับพัสดุ</h5>
                 </div>

@@ -147,6 +147,17 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('orders/receive', 'OrderController@doReceive');
     Route::get('orders/print/{id}', 'OrderController@printCancelForm');
 
+    /** ตรวจรับพัสดุ */
+    Route::post('inspections/validate', 'InspectionController@formValidate');
+    Route::get('inspections/list', 'InspectionController@index');
+    Route::get('inspections/search', 'InspectionController@search');
+    Route::get('inspections/add', 'InspectionController@create');
+    Route::post('inspections/store', 'InspectionController@store');
+    Route::get('inspections/edit/{id}', 'InspectionController@edit');
+    Route::get('inspections/detail/{id}', 'InspectionController@detail');
+    Route::post('inspections/update', 'InspectionController@update');
+    Route::post('inspections/delete/{id}', 'InspectionController@delete');
+
     /** เจ้าหนี้ */
     Route::get('suppliers', 'SupplierController@getAll');
 
