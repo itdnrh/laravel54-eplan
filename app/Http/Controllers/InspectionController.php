@@ -65,7 +65,9 @@ class InspectionController extends Controller
 
     public function search(Request $req)
     {
-        $inspections = Inspection::paginate(10);
+        $inspections = Inspection::with('order','order.details')
+                        ->with('order.details.item')
+                        ->paginate(10);
 
         return [
             "inspections" => $inspections
@@ -86,7 +88,7 @@ class InspectionController extends Controller
     public function store(Request $req)
     {
         $inspection = new Inspection;
-        $inspection->po_id          = $req['po_id'];
+        $inspection->order_id       = $req['po_id'];
         $inspection->deliver_seq    = $req['deliver_seq'];
         $inspection->deliver_no     = $req['deliver_no'];
         $inspection->inspect_sdate  = convThDateToDbDate($req['inspect_sdate']);

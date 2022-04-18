@@ -104,7 +104,7 @@
                                     <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th style="width: 5%; text-align: center;">งวดที่</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
-                                    <th style="width: 10%; text-align: center;">วันที่ตรวจรับ</th>
+                                    <th style="width: 15%; text-align: center;">วันที่ตรวจรับ</th>
                                     <th style="width: 8%; text-align: center;">ยอดเงิน</th>
                                     <th style="width: 12%; text-align: center;">ผลการตรวจรับ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
@@ -116,10 +116,18 @@
                                     <td style="text-align: center;">@{{ insp.deliver_no }}</td>
                                     <td style="text-align: center;">@{{ insp.deliver_seq }}</td>
                                     <td>
-                                        <h4 style="margin: 0;">@{{ insp.plan_item.item.category.name }}</h4>
-                                        @{{ insp.plan_item.item.item_name }} จำนวน 
-                                        <span>@{{ insp.plan_item.amount | currency:'':0 }}</span>
-                                        <span>@{{ insp.plan_item.unit.name }}</span>
+                                        <h5 style="margin: 0; font-size: 14px;">
+                                            เลขที่ @{{ insp.order.po_no }}
+                                            วันที่ @{{ insp.order.po_date | thdate }} 
+                                        </h5>
+                                        <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
+                                            <p style="margin: 0; text-decoration: underline;">รายการ</p>
+                                            <ul style="list-style: none; margin: 0px; padding: 0px;">
+                                                <li ng-repeat="(index, detail) in insp.order.details" style="margin: 2px;">
+                                                    @{{ index+1 }}. @{{ detail.item.item_name }}
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ insp.inspect_sdate | thdate }} - 
