@@ -104,7 +104,7 @@
                                     <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th style="width: 5%; text-align: center;">งวดที่</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
-                                    <th style="width: 15%; text-align: center;">วันที่ตรวจรับ</th>
+                                    <th style="width: 15%;">วันที่ตรวจรับ</th>
                                     <th style="width: 8%; text-align: center;">ยอดเงิน</th>
                                     <th style="width: 12%; text-align: center;">ผลการตรวจรับ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
@@ -129,7 +129,7 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td>
                                         @{{ insp.inspect_sdate | thdate }} - 
                                         @{{ insp.inspect_edate | thdate }}
                                     </td>
