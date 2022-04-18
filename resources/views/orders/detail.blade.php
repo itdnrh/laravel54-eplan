@@ -184,6 +184,7 @@
                         <a
                             href="#"
                             class="btn btn-success"
+                            ng-click="showInspectForm(order)"
                         >
                             <i class="fa fa-envelope-open-o"></i> ตรวจรับพัสดุ
                         </a>
@@ -204,6 +205,9 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._inspect-form')
+
     </section>
 
     <script>

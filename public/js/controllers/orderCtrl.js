@@ -46,16 +46,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         sum_price: ''
     };
 
-    $scope.forms = {
-        depart: [],
-        division: [],
-        categories: []
-    };
-
-    let tmpDeparts = [];
-    let tmpDivisions = [];
-    let tmpCategories = [];
-
     /** ============================== Init Form elements ============================== */
     let dtpOptions = {
         autoclose: true,
@@ -77,18 +67,19 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(event.date);
         });
 
-    
-    $scope.initForms = (data) => {
-        if (data) {
-            tmpDeparts = data.departs ? data.departs : [];
-            tmpDivisions = data.divisions ? data.divisions : [];
-            tmpCategories = data.categories ? data.categories : [];
-        }
-    };
+    $('#inspect_sdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
 
-    $scope.onFilterCategories = function(plan_type) {
-        $scope.forms.categories = tmpCategories.filter(cate => cate.plan_type_id === parseInt(plan_type));
-    };
+    $('#inspect_edate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
 
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
@@ -287,6 +278,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.assets = items;
     
             $('#order-details').modal('show');
+        }
+    };
+
+    $scope.showInspectForm = (order) => {
+        if (order) {    
+            $('#inspect-form').modal('show');
         }
     };
 
