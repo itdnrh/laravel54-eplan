@@ -206,7 +206,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('shared._inspect-form')
+        @include('orders._inspect-form')
 
     </section>
 

@@ -287,6 +287,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
+    $scope.onInspect = (e) => {
+        e.preventDefault();
+
+        let data = {
+            deliver_seq: $('#deliver_seq').val(),
+            deliver_no: $('#deliver_no').val(),
+            inspect_sdate: $('#inspect_sdate').val(),
+            inspect_edate: $('#inspect_edate').val(),
+            inspect_total: $('#inspect_total').val(),
+            inspect_result: $('#inspect_result').val(),
+            inspect_user: $('#inspect_user').val(),
+            remark: $('#remark').val(),
+        };
+        console.log(data);
+
+        // $http.post(`${CONFIG.baseUrl}/plans/send-supported/${id}`, data)
+        // .then(function(res) {
+        //     console.log(res.data);
+        // }, function(err) {
+        //     console.log(err);
+        // });
+
+        $('#inspect-form').modal('hide');
+    };
+
     $scope.store = function(event, form) {
         event.preventDefault();
 
