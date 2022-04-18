@@ -151,7 +151,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.getById = function(id, cb) {
         $http.get(`${CONFIG.baseUrl}/constructs/get-ajax-byid/${id}`)
         .then(function(res) {
-            cb(res.data);
+            cb(res.data.plan);
         }, function(err) {
             console.log(err);
         });
@@ -159,30 +159,34 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
     $scope.setEditControls = function(plan) {
         /** Global data */
-        $scope.planId                   = plan.id;
-        $scope.planType                 = 1;
+        $scope.planId                       = plan.id;
+        $scope.planType                     = 1;
 
         /** ข้อมูลงานก่อสร้าง */
-        $scope.construct.construct_id     = plan.id;
-        $scope.construct.year             = plan.year;
-        $scope.construct.plan_no          = plan.plan_no;
-        $scope.construct.desc             = plan.plan_item.item.item_name;
-        $scope.construct.price_per_unit   = plan.plan_item.price_per_unit;
-        $scope.construct.amount           = plan.plan_item.amount;
-        $scope.construct.sum_price        = plan.plan_item.sum_price;
-        $scope.construct.start_month      = $scope.monthLists.find(m => m.id == plan.start_month).name;
-        $scope.construct.reason           = plan.reason;
-        $scope.construct.remark           = plan.remark;
-        $scope.construct.status           = plan.status;
+        $scope.construct.construct_id       = plan.id;
+        $scope.construct.year               = plan.year;
+        $scope.construct.plan_no            = plan.plan_no;
+        $scope.construct.desc               = plan.plan_item.item.item_name;
+        $scope.construct.item_id            = plan.plan_item.item_id;
+        
+        $scope.construct.location           = plan.plan_item.location;
+        $scope.construct.building_id        = plan.plan_item.building ? plan.plan_item.building : '';
+        $scope.construct.boq_no             = plan.plan_item.boq_no;
+        $scope.construct.boq_file           = plan.plan_item.boq_file;
+        
+        $scope.construct.price_per_unit     = plan.plan_item.price_per_unit;
+        $scope.construct.amount             = plan.plan_item.amount;
+        $scope.construct.sum_price          = plan.plan_item.sum_price;
+        $scope.construct.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.construct.reason             = plan.reason;
+        $scope.construct.remark             = plan.remark;
+        $scope.construct.status             = plan.status;
 
         /** Convert int value to string */
-        $scope.construct.category_id      = plan.plan_item.item.category_id.toString();
-        $scope.construct.unit_id          = plan.plan_item.unit_id.toString();
-        $scope.construct.depart_id        = plan.depart_id.toString();
-        $scope.construct.division_id      = plan.division_id ? plan.division_id.toString() : '';
-
-        /** Convert db date to thai date. */            
-        // $scope.service.service_date     = StringFormatService.convFromDbDate(data.plan.service.service_date);
+        $scope.construct.category_id        = plan.plan_item.item.category_id.toString();
+        $scope.construct.unit_id            = plan.plan_item.unit_id.toString();
+        $scope.construct.depart_id          = plan.depart_id.toString();
+        $scope.construct.division_id        = plan.division_id ? plan.division_id.toString() : '';
     };
 
     $scope.store = function(event, form) {

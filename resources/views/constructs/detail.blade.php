@@ -15,7 +15,11 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planConstructCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
+    <section 
+        class="content"
+        ng-controller="planConstructCtrl"
+        ng-init="getById({{ $plan->id }}, setEditControls);"
+    >
 
         <div class="row">
             <div class="col-md-12">
@@ -38,7 +42,7 @@
                                     />
                                 </div>
                                 <div style="text-align: center; margin-top: 10px;">
-                                    <a  ng-click="showApprovalDetail({{ $plan->id }})"
+                                    <a
                                         class="btn btn-default" 
                                         title="การอนุมัติ"
                                         target="_blank">
@@ -53,7 +57,7 @@
                                     <input type="text"
                                             id="year" 
                                             name="year"
-                                            ng-model="service.year"
+                                            ng-model="construct.year"
                                             class="form-control"
                                             tabindex="2">
                                     </inp>
@@ -63,7 +67,7 @@
                                     <label>ประเภท :</label>
                                     <select id="category_id"
                                             name="category_id"
-                                            ng-model="service.category_id"
+                                            ng-model="construct.category_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -82,7 +86,16 @@
                                     <label>รายการ :</label>
                                     <input
                                         type="text"
-                                        ng-model="service.service_desc"
+                                        ng-model="construct.desc"
+                                        class="form-control pull-right"
+                                        tabindex="1" />
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label>สถานที่ :</label>
+                                    <input
+                                        type="text"
+                                        ng-model="construct.location"
                                         class="form-control pull-right"
                                         tabindex="1" />
                                 </div>
@@ -92,7 +105,7 @@
                                     <input  type="text"
                                             id="price_per_unit"
                                             name="price_per_unit"
-                                            ng-model="service.price_per_unit"
+                                            ng-model="construct.price_per_unit"
                                             class="form-control"
                                             tabindex="6" />
                                 </div>
@@ -101,7 +114,7 @@
                                     <label>หน่วย :</label>
                                     <select id="unit_id"
                                             name="unit_id"
-                                            ng-model="service.unit_id"
+                                            ng-model="construct.unit_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -120,7 +133,7 @@
                                     <label>กลุ่มงาน :</label>
                                     <select id="depart_id"
                                             name="depart_id"
-                                            ng-model="service.depart_id"
+                                            ng-model="construct.depart_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -139,7 +152,7 @@
                                     <label>งาน :</label>
                                     <select id="division_id"
                                             name="division_id"
-                                            ng-model="service.division_id"
+                                            ng-model="construct.division_id"
                                             class="form-control"
                                             tabindex="2">
 
@@ -159,7 +172,7 @@
                                     <textarea
                                         id="reason" 
                                         name="reason" 
-                                        ng-model="service.reason" 
+                                        ng-model="construct.reason" 
                                         class="form-control"
                                         tabindex="17"
                                     ></textarea>
@@ -170,7 +183,7 @@
                                     <textarea
                                         id="remark" 
                                         name="remark" 
-                                        ng-model="service.remark" 
+                                        ng-model="construct.remark" 
                                         class="form-control"
                                         tabindex="17"
                                     ></textarea>
@@ -183,7 +196,7 @@
                                             <i class="fa fa-clock-o"></i>
                                         </div>
                                         <input  type="text"
-                                                value="@{{ service.start_month }}"
+                                                value="@{{ construct.start_month }}"
                                                 class="form-control pull-right"
                                                 tabindex="5">
                                     </div>
@@ -192,35 +205,35 @@
                                 <div class="form-group col-md-6">
                                     <label>สถานะ :</label>
                                     <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
-                                        <span class="label label-primary" ng-show="service.status == 0">
-                                            @{{ service.status }} อยู่ระหว่างดำเนินการ
+                                        <span class="label label-primary" ng-show="construct.status == 0">
+                                            @{{ construct.status }} อยู่ระหว่างดำเนินการ
                                         </span>
-                                        <span class="label label-info" ng-show="service.status == 1">
-                                            @{{ service.status }} ส่งเอกสารแล้ว
+                                        <span class="label label-info" ng-show="construct.status == 1">
+                                            @{{ construct.status }} ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="service.status == 2">
-                                            @{{ service.status }} รับเอกสารแล้ว
+                                        <span class="label label-info" ng-show="construct.status == 2">
+                                            @{{ construct.status }} รับเอกสารแล้ว
                                         </span>
-                                        <span class="label label-success" ng-show="service.status == 3">
-                                            @{{ service.status }} ออกใบ PO แล้ว
+                                        <span class="label label-success" ng-show="construct.status == 3">
+                                            @{{ construct.status }} ออกใบ PO แล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="service.status == 4">
-                                            @{{ service.status }} ตั้งหนี้แล้ว
+                                        <span class="label label-default" ng-show="construct.status == 4">
+                                            @{{ construct.status }} ตั้งหนี้แล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="service.status == 9">
-                                            @{{ service.status }} ยกเลิก
+                                        <span class="label label-danger" ng-show="construct.status == 9">
+                                            @{{ construct.status }} ยกเลิก
                                         </span>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="leave.attachment">
+                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="construct.boq_file">
                                     <label>เอกสารแนบ :</label>
                                     <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ leave.attachment }}"
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ construct.boq_file }}"
                                             title="ไฟล์แนบ"
                                             target="_blank">
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                            @{{ leave.attachment }}
+                                            @{{ construct.boq_file }}
                                         </a>
 
                                         <span style="margin-left: 10px;">
@@ -237,7 +250,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-success"
-                                        ng-show="[0].includes(service.status)"
+                                        ng-show="[0].includes(construct.status)"
                                         ng-click="showSupportedForm()"
                                     >
                                         <i class="fa fa-print"></i> บันทึกขอสนับสนุน
@@ -245,15 +258,15 @@
                                     <a
                                         href="#"
                                         class="btn btn-primary"
-                                        ng-show="[1].includes(service.status)"
+                                        ng-show="[1].includes(construct.status)"
                                         ng-click="showPoForm()"
                                     >
                                         <i class="fa fa-calculator"></i> บันทึกใบ PO
                                     </a>
                                     <a
                                         href="#"
-                                        ng-click="edit(service.service_id)"
-                                        ng-show="[0,1].includes(service.status)"
+                                        ng-click="edit(construct.construct_id)"
+                                        ng-show="[0,1].includes(construct.status)"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
@@ -261,14 +274,14 @@
                                     <form
                                         id="frmDelete"
                                         method="POST"
-                                        action="{{ url('/services/delete') }}"
-                                        ng-show="[0,1].includes(service.status)"
+                                        action="{{ url('/constructs/delete') }}"
+                                        ng-show="[0,1].includes(construct.status)"
                                     >
-                                        <input type="hidden" id="id" name="id" value="@{{ service.service_id }}" />
+                                        <input type="hidden" id="id" name="id" value="@{{ construct.construct_id }}" />
                                         {{ csrf_field() }}
                                         <button
                                             type="submit"
-                                            ng-click="delete($event, service.service_id)"
+                                            ng-click="delete($event, construct.construct_id)"
                                             class="btn btn-danger btn-block"
                                         >
                                             <i class="fa fa-trash"></i> ลบ
@@ -279,8 +292,8 @@
 
                             </div>
 
-                            @include('services._supported-form')
-                            @include('services._po-form')
+                            @include('shared._supported-form')
+                            @include('shared._po-form')
 
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->

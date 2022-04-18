@@ -86,7 +86,7 @@ class PlanConstructController extends Controller
     public function detail($id)
     {
         return view('constructs.detail', [
-            "plan"          => Plan::with('construct')->where('id', $id)->first(),
+            "plan"          => Plan::with('planItem')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
@@ -134,11 +134,16 @@ class PlanConstructController extends Controller
             $planId = $plan->id;
 
             $construct = new PlanItem();
-            $construct->plan_id           = $planId;
-            $construct->price_per_unit    = $req['price_per_unit'];
-            $construct->unit_id           = $req['unit_id'];
-            $construct->amount            = $req['amount'];
-            $construct->sum_price         = $req['sum_price'];
+            $construct->plan_id         = $planId;
+            $construct->item_id         = $req['item_id'];
+            $construct->location        = $req['location'];
+            $construct->building_id     = $req['building_id'];
+            $construct->boq_no          = $req['boq_no'];
+            $construct->boq_file        = $req['boq_file'];
+            $construct->price_per_unit  = $req['price_per_unit'];
+            $construct->unit_id         = $req['unit_id'];
+            $construct->amount          = $req['amount'];
+            $construct->sum_price       = $req['sum_price'];
             $construct->save();
 
             return redirect('/plans/constructs');
