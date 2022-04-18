@@ -93,7 +93,7 @@ class PlanController extends Controller
         $type   = $req->get('type');
         $cate   = $req->get('cate');
         $depart = $req->get('depart');
-        // $status      = $req->get('status');
+        $status = $req->get('status');
         // $menu      = $req->get('menu');
 
         // if($status != '-') {
@@ -127,9 +127,9 @@ class PlanController extends Controller
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
                     })
-                    // ->when(count($matched) > 0 && $matched[0] == '&', function($q) use ($arrStatus) {
-                    //     $q->whereIn('status', $arrStatus);
-                    // })
+                    ->when(!empty($status), function($q) use ($status) {
+                        $q->where('status', $status);
+                    })
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
                     // })

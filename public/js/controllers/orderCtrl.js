@@ -16,10 +16,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.editRow = false;
 
     $scope.orders = [];
-    $scope.pager = [];
+    $scope.pager = null;
 
     $scope.plans = [];
-    $scope.plans_pager = [];
+    $scope.plans_pager = null;
 
     $scope.order = {
         year: '',
@@ -153,8 +153,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans = [];
         $scope.loading = true;
 
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
+        let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let type = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}`)
         .then(function(res) {
@@ -168,10 +168,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.showPlansList = () => {
-        $scope.plans = [];
         $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&status=1`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -321,6 +322,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }, err => {
             console.log(err);
         });
+
+        window.location.href = `${CONFIG.baseUrl}/orders/list`;
     }
 
     $scope.edit = function(id) {
