@@ -92,7 +92,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=4&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             $scope.setConstructs(res);
 
@@ -137,7 +137,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=4&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 
@@ -192,7 +192,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/services/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/constructs/edit/${id}`;
     };
 
     $scope.update = function(event) {
