@@ -188,16 +188,22 @@
                                         <span class="label label-info" ng-show="plan.status == 1">
                                             ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="plan.status == 2">
+                                        <span class="label bg-navy" ng-show="plan.status == 2">
                                             รับเอกสารแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="plan.status == 3">
-                                            ออกใบ PO แล้ว
+                                            ออกใบสั้งซื้อแล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="plan.status == 4">
+                                        <span class="label bg-maroon" ng-show="plan.status == 4">
+                                            ตรวจรับแล้ว
+                                        </span>
+                                        <span class="label label-warning" ng-show="plan.status == 5">
+                                            ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="plan.status == 6">
                                             ตั้งหนี้แล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="plan.status == 9">
+                                        <span class="label label-default" ng-show="plan.status == 9">
                                             ยกเลิก
                                         </span>
                                     </td>

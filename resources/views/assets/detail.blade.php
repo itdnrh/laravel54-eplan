@@ -229,16 +229,22 @@
                                         <span class="label label-info" ng-show="asset.status == 1">
                                             @{{ asset.status }} ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-info" ng-show="asset.status == 2">
+                                        <span class="label bg-navy" ng-show="asset.status == 2">
                                             @{{ asset.status }} รับเอกสารแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="asset.status == 3">
-                                            @{{ asset.status }} ออกใบ PO แล้ว
+                                            @{{ asset.status }} ออกใบสั้งซื้อแล้ว
                                         </span>
-                                        <span class="label label-default" ng-show="asset.status == 4">
+                                        <span class="label bg-maroon" ng-show="asset.status == 4">
+                                            @{{ asset.status }} ตรวจรับแล้ว
+                                        </span>
+                                        <span class="label label-warning" ng-show="asset.status == 5">
+                                            @{{ asset.status }} ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="asset.status == 6">
                                             @{{ asset.status }} ตั้งหนี้แล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="asset.status == 9">
+                                        <span class="label label-default" ng-show="asset.status == 9">
                                             @{{ asset.status }} ยกเลิก
                                         </span>
                                     </div>
