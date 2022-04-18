@@ -111,7 +111,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center">ลำดับ</th>
@@ -148,57 +148,35 @@
                                 </table>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-8"></div>
                             <div class="col-md-4">
-                                <div
-                                    class="form-group"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'total')}"
-                                >
-                                    <label>รวมเป็นเงิน :</label>
-                                    <input  type="text"
-                                            id="total"
-                                            name="total"
-                                            ng-model="order.total"
-                                            class="form-control"
-                                            style="text-align: right;"
-                                            tabindex="5" />
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <th style="width:50%">รวมเป็นเงิน:</th>
+                                            <td style="text-align: right">
+                                                @{{ order.total | currency:'':2 }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>ภาษีมูลค่าเพิ่ม (@{{ order.vat_rate }})</th>
+                                            <td style="text-align: right">
+                                                @{{ order.vat | currency:'':2 }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>ยอดสุทธิ:</th>
+                                            <td style="text-align: right">
+                                                @{{ order.net_total | currency:'':2 }}
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-                                <div
-                                    class="form-group"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'vat')}"
-                                >
-                                    <label>ภาษีมูลค่าเพิ่ม :</label>
-                                    <div style="display: flex">
-                                        <input id="vat_rate"
-                                                name="vat_rate"
-                                                ng-model="order.vat_rate"
-                                                style="text-align: center;"
-                                                class="form-control" />
-                                        <input  type="text"
-                                                id="vat"
-                                                name="vat"
-                                                ng-model="order.vat"
-                                                class="form-control"
-                                                style="text-align: right;"
-                                                tabindex="5" />
-                                    </div>
-                                </div>
-                                <div
-                                    class="form-group"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'net_total')}"
-                                >
-                                    <label>ยอดสุทธิ :</label>
-                                    <input  type="text"
-                                            id="net_total"
-                                            name="net_total"
-                                            ng-model="order.net_total"
-                                            class="form-control"
-                                            style="text-align: right;"
-                                            tabindex="5" />
-                                </div>
+
                             </div>
-                        </div>
+                        </div><!-- /.row -->
 
                     </div><!-- /.box-body -->
 
