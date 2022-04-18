@@ -10,6 +10,8 @@ use App\Models\Inspection;
 use App\Models\Plan;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Faction;
+use App\Models\Depart;
 
 class InspectionController extends Controller
 {
@@ -55,29 +57,29 @@ class InspectionController extends Controller
     public function index()
     {
         return view('inspections.list', [
-            // "suppliers" => Supplier::all()
+            // "suppliers" => Supplier::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 
     public function search(Request $req)
     {
-        $orders = Order::with('supplier','details')
-                    ->with('details.unit','details.plan')
-                    ->paginate(10);
+        $inspections = Inspection::paginate(10);
 
         return [
-            "orders" => $orders
+            "inspections" => $inspections
         ];
     }
 
     public function create()
     {
         return view('inspections.add', [
-            "suppliers" => Supplier::all(),
-            "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
+            // "suppliers"     => Supplier::all(),
+            // "units"         => Unit::all(),
+            // "factions"      => Faction::all(),
+            // "departs"       => Depart::all(),
+            // "divisions"     => Division::all(),
         ]);
     }
 

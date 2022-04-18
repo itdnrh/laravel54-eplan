@@ -22,8 +22,7 @@
         ng-init="
             getAll();
             initForms({
-                departs: {{ $departs }},
-                categories: {{ $categories }}
+                departs: {{ $departs }}
             }, 3);
         "
     >
@@ -53,7 +52,7 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>ประเภท</label>
                                     <select
@@ -68,47 +67,7 @@
                                             @{{ category.name }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.row -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>กลุ่มภารกิจ</label>
-                                        <select
-                                            id="cboFaction"
-                                            name="cboFaction"
-                                            ng-model="cboFaction"
-                                            class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
-                                        >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            @foreach($factions as $faction)
-
-                                                <option value="{{ $faction->faction_id }}">
-                                                    {{ $faction->faction_name }}
-                                                </option>
-
-                                            @endforeach
-                                        </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>กลุ่มงาน</label>
-                                        <select
-                                            id="cboDepart"
-                                            name="cboDepart"
-                                            ng-model="cboDepart"
-                                            class="form-control select2"
-                                            ng-change="getAll($event)"
-                                        >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
-                                                @{{ dep.depart_name }}
-                                            </option>
-                                        </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                </div>
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
@@ -121,7 +80,7 @@
                                 <h3 class="box-title">รายการตรวจรับพัสดุ</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/services/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/inspections/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
@@ -142,79 +101,52 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่แผน</th>
-                                    <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                    <th>รายการ</th>
-                                    <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
-                                    <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
-                                    <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                    <th style="width: 12%; text-align: center;">สถานะ</th>
+                                    <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
+                                    <th style="width: 5%; text-align: center;">งวดที่</th>
+                                    <th>รายละเอียดใบสั่งซื้อ</th>
+                                    <th style="width: 10%; text-align: center;">วันที่ตรวจรับ</th>
+                                    <th style="width: 8%; text-align: center;">ยอดเงิน</th>
+                                    <th style="width: 12%; text-align: center;">ผลการตรวจรับ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in services">
+                                <tr ng-repeat="(index, insp) in inspections">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ plan.plan_no }}</td>
-                                    <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
+                                    <td style="text-align: center;">@{{ insp.deliver_no }}</td>
+                                    <td style="text-align: center;">@{{ insp.deliver_seq }}</td>
                                     <td>
-                                        <h4 style="margin: 0;">@{{ plan.plan_item.item.category.name }}</h4>
-                                        @{{ plan.plan_item.item.item_name }} จำนวน 
-                                        <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.plan_item.unit.name }}</span>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
-                                            class="btn btn-default btn-xs" 
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="asset.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
+                                        <h4 style="margin: 0;">@{{ insp.plan_item.item.category.name }}</h4>
+                                        @{{ insp.plan_item.item.item_name }} จำนวน 
+                                        <span>@{{ insp.plan_item.amount | currency:'':0 }}</span>
+                                        <span>@{{ insp.plan_item.unit.name }}</span>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.price_per_unit | currency:'':0 }}
+                                        @{{ insp.inspect_sdate | thdate }} - 
+                                        @{{ insp.inspect_edate | thdate }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
+                                        @{{ insp.inspect_total | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
-                                        <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="plan.status == 0">
-                                            อยู่ระหว่างดำเนินการ
+                                        <span class="label label-success" ng-show="insp.inspect_result == 1">
+                                            ถูกต้องทั้งหมดและรับไว้ทั้งหมด
                                         </span>
-                                        <span class="label label-info" ng-show="plan.status == 1">
-                                            ส่งเอกสารแล้ว
+                                        <span class="label label-warning" ng-show="insp.inspect_result == 2">
+                                            ถูกต้องบางส่วนและรับไว้เฉพาะที่ถูกต้อง
                                         </span>
-                                        <span class="label bg-navy" ng-show="plan.status == 2">
-                                            รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="plan.status == 3">
-                                            ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="plan.status == 4">
-                                            ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="plan.status == 5">
-                                            ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="plan.status == 6">
-                                            ตั้งหนี้แล้ว
-                                        </span>
-                                        <span class="label label-default" ng-show="plan.status == 9">
-                                            ยกเลิก
+                                        <span class="label bg-danger" ng-show="insp.inspect_result == 3">
+                                            ยังถือว่าไม่ส่งมอบตามสัญญา
                                         </span>
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/services/detail') }}/@{{ plan.id }}"
+                                            <a  href="{{ url('/inspections/detail') }}/@{{ insp.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(plan.id)"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                            <a  ng-click="edit(insp.id)"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -222,13 +154,12 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/services/delete') }}"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                action="{{ url('/inspections/delete') }}"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
                                                     type="submit"
-                                                    ng-click="delete($event, plan.id)"
+                                                    ng-click="delete($event, insp.id)"
                                                     class="btn btn-danger btn-xs"
                                                 >
                                                     <i class="fa fa-trash"></i>

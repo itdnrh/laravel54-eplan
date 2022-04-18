@@ -196,9 +196,9 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         // let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         // let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
         
-        $http.get(`${CONFIG.baseUrl}/orders/search`)
+        $http.get(`${CONFIG.baseUrl}/inspections/search`)
         .then(function(res) {
-            $scope.setOrders(res);
+            $scope.setInspections(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -207,27 +207,10 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
-    $scope.setOrders = function (res) {
-        const { data, ...pager } = res.data.orders;
+    $scope.setInspections = function (res) {
+        const { data, ...pager } = res.data.inspections;
 
-        $scope.orders = data.map(order => {
-            /** ถ้าเป็นรายการตามแผนพัสดุ ให้อัพเดต details property */
-            if (res.data.plans) {
-                let newDetails = order.details.map(item => {
-                    let plan = res.data.plans.find(pl => pl.id === item.plan_id);
-
-                    return {
-                        ...item,
-                        ...plan
-                    };
-                });
-
-                order.details = newDetails;
-            }
-
-            return order;
-        });
-
+        $scope.inspections = data;
         $scope.pager = pager;
     };
 

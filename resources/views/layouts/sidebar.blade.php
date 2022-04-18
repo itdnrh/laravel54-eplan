@@ -196,16 +196,16 @@
 									<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'inventory' }">
-								<a href="{{ url('orders/inventory') }}">
-									<i class="fa fa-circle-o"></i> ส่งคลังพัสดุ
-								</a>
-							</li>
 							<li ng-class="{ 'active': submenu == 'withdraw' }">
 								<a href="{{ url('orders/withdraw') }}">
 									<i class="fa fa-circle-o"></i> ส่งเบิกเงิน
 								</a>
 							</li>
+							<!-- <li ng-class="{ 'active': submenu == 'inventory' }">
+								<a href="{{ url('orders/inventory') }}">
+									<i class="fa fa-circle-o"></i> ส่งคลังพัสดุ
+								</a>
+							</li> -->
 						</ul>
 					</li>
 

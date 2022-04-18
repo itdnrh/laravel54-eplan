@@ -149,7 +149,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** ตรวจรับพัสดุ */
     Route::post('inspections/validate', 'InspectionController@formValidate');
-    Route::get('inspections/list', 'InspectionController@index');
+    Route::get('orders/inspect', 'InspectionController@index');
     Route::get('inspections/search', 'InspectionController@search');
     Route::get('inspections/add', 'InspectionController@create');
     Route::post('inspections/store', 'InspectionController@store');
