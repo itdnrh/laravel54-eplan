@@ -35,16 +35,13 @@
                     อยู่ระหว่างดำเนินการ
                 </span>
                 <span class="label label-info" ng-show="order.status == 2">
-                    รับเอกสารแล้ว
+                    อนุมัติ
                 </span>
                 <span class="label label-success" ng-show="order.status == 3">
-                    ผ่านการอนุมัติ
+                    ตรวจรับแล้ว
                 </span>
-                <span class="label label-default" ng-show="order.status == 4">
-                    ไม่ผ่านการอนุมัติ
-                </span>
-                <span class="label label-warning" ng-show="order.status == 5">
-                    อยู่ระหว่างการยกเลิก
+                <span class="label label-warning" ng-show="order.status == 4">
+                    ส่งเบิกเงินแล้ว
                 </span>
                 <span class="label label-danger" ng-show="order.status == 9">
                     ยกเลิก

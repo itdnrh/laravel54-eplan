@@ -74,7 +74,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#approved-list" data-toggle="tab">
                                 <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
-                                รายการใบ OP
+                                รายการใบสั่งซื้อ (P/O)
                                 <span class="badge badge-light">@{{ leaves.length }}</span>
                             </a></li>
                         </ul>
