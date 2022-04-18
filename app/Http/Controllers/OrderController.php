@@ -135,6 +135,7 @@ class OrderController extends Controller
         $order->vat_rate        = $req['vat_rate'];
         $order->vat             = $req['vat'];
         $order->net_total       = $req['net_total'];
+        $order->status          = '1';
         // $order->user_id         = $req['user_id'];
 
         if ($order->save()) {
