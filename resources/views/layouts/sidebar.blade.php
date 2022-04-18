@@ -169,11 +169,6 @@
 									<i class="fa fa-circle-o"></i> รายการขอสนับสนุน
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'receive' }">
-								<a href="{{ url('supports/receive') }}">
-									<i class="fa fa-circle-o"></i> รับใบขอสนับสนุน
-								</a>
-							</li>
 						</ul>
 					</li>
 
@@ -186,22 +181,27 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li ng-class="{ 'active': submenu == 'orders' }">
+							<li ng-class="{ 'active': submenu == 'request' }">
+								<a href="{{ url('orders/request') }}">
+									<i class="fa fa-circle-o"></i> รับใบขอสนับสนุน
+								</a>
+							</li>
+							<li ng-class="{ 'active': submenu == 'list' }">
 								<a href="{{ url('orders/list') }}">
 									<i class="fa fa-circle-o"></i> ใบสั่งซื้อ (P/O)
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'orders' }">
+							<li ng-class="{ 'active': submenu == 'inspect' }">
 								<a href="{{ url('orders/inspect') }}">
 									<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'orders' }">
+							<li ng-class="{ 'active': submenu == 'inventory' }">
 								<a href="{{ url('orders/inventory') }}">
 									<i class="fa fa-circle-o"></i> ส่งคลังพัสดุ
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'orders' }">
+							<li ng-class="{ 'active': submenu == 'withdraw' }">
 								<a href="{{ url('orders/withdraw') }}">
 									<i class="fa fa-circle-o"></i> ส่งเบิกเงิน
 								</a>

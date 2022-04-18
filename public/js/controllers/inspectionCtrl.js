@@ -1,37 +1,22 @@
-app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = parseInt(moment().format('MM')) > 9
-                        ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
-    $scope.cboMonth = moment().format('MM');
-    $scope.cboCategory = "";
-    $scope.cboStatus = "";
-    $scope.cboPlanType = "1";
-    $scope.cboMenu = "";
-    $scope.searchKeyword = "";
-    $scope.cboQuery = "";
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
-    $scope.vatRates = [1,2,3,4,5,6,7,8,9,10];
-    $scope.editRow = false;
-
-    $scope.orders = [];
+    $scope.inspections = [];
     $scope.pager = [];
 
     $scope.plans = [];
     $scope.plans_pager = [];
 
-    $scope.order = {
-        year: '',
-        supplier_id: '',
-        po_no: '',
-        po_date: '',
+    $scope.inspection = {
+        po_id: '',
+        deliver_seq: '',
+        deliver_no: '',
+        inspect_sdate: '',
+        inspect_edate: '',
+        inspect_total: '',
+        inspect_result: '',
+        inspect_user: '',
         remark: '',
-        total: '',
-        vat_rate: '',
-        vat: '',
-        net_total: '',
-        details: [],
     };
 
     $scope.newItem = {
@@ -57,16 +42,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     /** ==================== Add form ==================== */
-    $('#po_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('show', function (e) {
-            console.log(e);
-        })
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
     $('#inspect_sdate')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
@@ -281,19 +256,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
-    $scope.showInspectForm = (order) => {
-        if (order) {    
-            $('#inspect-form').modal('show');
-        }
-    };
-
-    $scope.onInspect = (e) => {
-        e.preventDefault();
+    $scope.store = function(event, form) {
+        event.preventDefault();
 
         let data = {
-            po_id: $('#po_id').val(),
             deliver_seq: $('#deliver_seq').val(),
             deliver_no: $('#deliver_no').val(),
+            po_id: $('#po_id').val(),
             inspect_sdate: $('#inspect_sdate').val(),
             inspect_edate: $('#inspect_edate').val(),
             inspect_total: $('#inspect_total').val().replace(',', ''),
@@ -306,19 +275,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
-            console.log(err);
-        });
-
-        $('#inspect-form').modal('hide');
-    };
-
-    $scope.store = function(event, form) {
-        event.preventDefault();
-
-        $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
-        .then(res => {
-            console.log(res);
-        }, err => {
             console.log(err);
         });
     }
