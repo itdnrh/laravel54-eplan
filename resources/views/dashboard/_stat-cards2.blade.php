@@ -6,7 +6,23 @@
                     @{{ statCards[0].num }}
                     <span style="font-size: 14px;">บาท</span>
                 </h3>
-                <p><h4>แผนจ้างเหมาบริการ</h4></p>
+                <p><h4>แผนครุภัณฑ์</h4></p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-headphone"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-6 col-xs-12">
+        <div class="small-box bg-gray">
+            <div class="inner">
+                <h3>
+                    @{{ statCards[1].num }}
+                    <span style="font-size: 14px;">บาท</span>
+                    <!-- <sup style="font-size: 20px">%</sup> -->
+                </h3>
+                <p><h4>แผนวัสดุ (นอกคลัง)</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>
@@ -15,7 +31,22 @@
         </div>
     </div><!-- ./col -->
     <div class="col-lg-6 col-xs-12">
-        <div class="small-box bg-gray">
+        <div class="small-box bg-teal">
+            <div class="inner">
+                <h3>
+                    @{{ statCards[0].num }}
+                    <span style="font-size: 14px;">บาท</span>
+                </h3>
+                <p><h4>แผนจ้างบริการ</h4></p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-paperclip"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-6 col-xs-12">
+        <div class="small-box bg-purple">
             <div class="inner">
                 <h3>
                     @{{ statCards[1].num }}

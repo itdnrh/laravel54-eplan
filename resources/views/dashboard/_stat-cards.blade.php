@@ -6,7 +6,7 @@
                     @{{ statCards[0].num }}
                     <span style="font-size: 14px;">บาท</span>
                 </h3>
-                <p><h4>ยอดหนี้ทั้งหมด</h4></p>
+                <p><h4>แผนทั้งหมด</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-connection-bars"></i>
