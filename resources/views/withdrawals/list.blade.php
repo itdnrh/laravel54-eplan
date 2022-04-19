@@ -100,8 +100,8 @@
                         <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 20%; text-align: center;">หนังสือส่งเบิก</th>
+                                    <th style="width: 4%; text-align: center;">#</th>
+                                    <th style="width: 20%;">หนังสือส่งเบิก</th>
                                     <th style="width: 5%; text-align: center;">งวดที่</th>
                                     <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>

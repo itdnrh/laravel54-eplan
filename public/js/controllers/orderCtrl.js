@@ -408,6 +408,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.vat_rate = res.data.order.vat_rate+'%';
             $scope.order.vat = res.data.order.vat;
             $scope.order.net_total = res.data.order.net_total;
+            $scope.order.status = res.data.order.status;
             $scope.order.details = res.data.order.details;
 
             $('#po_date')

@@ -327,18 +327,18 @@
                                 <div class="col-md-8">
                                     <div
                                         class="form-group col-md-6"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'spec')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'remark')}"
                                     >
                                         <label>หมายเหตุ :</label>
                                         <textarea
-                                            id="spec"
-                                            name="spec"
-                                            ng-model="order.spec"
+                                            id="remark"
+                                            name="remark"
+                                            ng-model="order.remark"
                                             rows="4"
                                             class="form-control pull-right"
                                             tabindex="1"
                                         ></textarea>
-                                        <span class="help-block" ng-show="checkValidate(order, 'spec')">
+                                        <span class="help-block" ng-show="checkValidate(order, 'remark')">
                                             กรุณาระบุหมายเหตุ
                                         </span>
                                     </div>

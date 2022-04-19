@@ -150,7 +150,18 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-8"></div>
+                            <div class="col-md-8">
+                                <div class="form-group col-md-6">
+                                    <label>หมายเหตุ :</label>
+                                    <textarea
+                                        id="remark"
+                                        name="remark"
+                                        ng-model="order.remark"
+                                        rows="3"
+                                        class="form-control"
+                                    ></textarea>
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -185,6 +196,7 @@
                             href="#"
                             class="btn btn-success"
                             ng-click="showInspectForm(order)"
+                            ng-show="[1,2].includes(order.status)"
                         >
                             <i class="fa fa-envelope-open-o"></i> ตรวจรับพัสดุ
                         </a>
@@ -192,6 +204,7 @@
                             href="#"
                             class="btn btn-primary"
                             ng-click="showWithdrawForm(order)"
+                            ng-show="order.status == 3"
                         >
                             <i class="fa fa-calculator"></i> ส่งเบิกเงิน
                         </a>
