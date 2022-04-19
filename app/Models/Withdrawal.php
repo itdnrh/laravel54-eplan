@@ -12,4 +12,9 @@ class Withdrawal extends Model
     {
         return $this->belongsTo(Inspection::class, 'inspection_id', 'id');
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
+    }
 }

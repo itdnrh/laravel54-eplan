@@ -66,7 +66,7 @@ class WithdrawalController extends Controller
 
     public function search(Request $req)
     {
-        $withdrawals = Withdrawal::with('inspection','inspection.order')
+        $withdrawals = Withdrawal::with('inspection','supplier','inspection.order')
                         // ->with('inspection.order.details','order.details.item')
                         ->paginate(10);
 

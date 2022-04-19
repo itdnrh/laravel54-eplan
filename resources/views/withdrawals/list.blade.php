@@ -101,24 +101,31 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
+                                    <th style="width: 20%; text-align: center;">หนังสือส่งเบิก</th>
                                     <th style="width: 5%; text-align: center;">งวดที่</th>
+                                    <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
-                                    <th style="width: 15%;">วันที่ตรวจรับ</th>
-                                    <th style="width: 8%; text-align: center;">ยอดเงิน</th>
+                                    <th style="width: 10%; text-align: center;">ยอดเงิน</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, withdraw) in withdrawals">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ withdraw.inspection.deliver_no }}</td>
+                                    <td>
+                                        <p style="margin: 0px;">เลขที่: @{{ withdraw.withdraw_no }}</p>
+                                        <p style="margin: 0px;">วันที่: @{{ withdraw.withdraw_date | thdate }}</p>
+                                    </td>
                                     <td style="text-align: center;">@{{ withdraw.inspection.deliver_seq }}</td>
+                                    <td style="text-align: center;">@{{ withdraw.inspection.deliver_no }}</td>
                                     <td>
                                         <h5 style="margin: 0; font-size: 14px;">
                                             เลขที่ @{{ withdraw.inspection.order.po_no }}
                                             วันที่ @{{ withdraw.inspection.order.po_date | thdate }} 
                                         </h5>
+                                        <p style="margin: 0;">
+                                            @{{ withdraw.supplier.supplier_name }}
+                                        </p>
                                         <!-- <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
                                             <p style="margin: 0; text-decoration: underline;">รายการ</p>
                                             <ul style="list-style: none; margin: 0px; padding: 0px;">
@@ -127,9 +134,6 @@
                                                 </li>
                                             </ul>
                                         </div> -->
-                                    </td>
-                                    <td>
-                                        @{{ withdraw.withdraw_date | thdate }}
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ withdraw.net_total | currency:'':0 }}
