@@ -97,15 +97,13 @@ class WithdrawalController extends Controller
         // $withdrawal->user           = $req['user'];
 
         if ($withdrawal->save()) {
-            // $order = Order::where('id', $req['order_id'])->update(['status' => 3]);
+            $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
             
-            // $details = OrderDetail::where('order_id', $req['order_id'])->get();
-            // foreach($details as $item) {
-            //     $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
-
-            //     /** Update status of plan data */
-            //     $plan = Plan::where('id', $item->plan_id)->update(['status' => 4]);
-            // }
+            /** Update status of plan data */
+            $details = OrderDetail::where('order_id', $req['order_id'])->get();
+            foreach($details as $item) {
+                $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
+            }
 
             return [
                 'withdrawal' => $withdrawal
