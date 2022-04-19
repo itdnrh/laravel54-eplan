@@ -74,7 +74,7 @@ class OrderController extends Controller
                     ->paginate(10);
 
         $plans = Plan::with('depart','division')
-                    ->where('status', '3')
+                    ->where('status', '>=', '3')
                     ->get();
 
         return [
