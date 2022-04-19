@@ -43,6 +43,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         plan_id: '',
         item_id: '',
         price_per_unit: '',
+        unit: null,
         unit_id: '',
         amount: '',
         sum_price: ''
@@ -198,7 +199,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
                 price_per_unit: plan.price_per_unit,
-                unit_id: `${plan.unit_id}`,
+                unit_id: `${plan.plan_item.unit_id}`,
+                unit: plan.plan_item.unit,
                 amount: plan.amount,
                 sum_price: plan.sum_price
             };

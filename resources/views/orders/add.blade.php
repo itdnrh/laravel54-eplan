@@ -302,7 +302,7 @@
                                                     @{{ detail.price_per_unit | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.unit_id }}
+                                                    @{{ detail.unit.name }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.amount | currency:'':2 }}
