@@ -28,6 +28,8 @@ class OrderController extends Controller
             'po_no'         => 'required',
             'po_date'       => 'required',
             'supplier_id'   => 'required',
+            'delver_amt'    => 'required',
+            'plan_type_id'  => 'required',
             'total'         => 'required',
             'vat_rate'      => 'required',
             'vat'           => 'required',
@@ -130,6 +132,8 @@ class OrderController extends Controller
         $order->po_no           = $req['po_no'];
         $order->po_date         = convThDateToDbDate($req['po_date']);
         $order->supplier_id     = $req['supplier_id'];
+        $order->delver_amt      = $req['delver_amt'];
+        $order->plan_type_id    = $req['plan_type_id'];
         $order->remark          = $req['remark'];
         $order->total           = $req['total'];
         $order->vat_rate        = $req['vat_rate'];
