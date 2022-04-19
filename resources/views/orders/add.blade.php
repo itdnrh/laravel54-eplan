@@ -127,26 +127,47 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'spec')}"
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'delver_amt')}"
                                 >
-                                    <label>หมายเหตุ :</label>
+                                    <label>จำนวนงวดงาน :</label>
                                     <input
-                                        type="text"
-                                        id="spec"
-                                        name="spec"
-                                        ng-model="order.spec"
+                                        type="number"
+                                        id="delver_amt"
+                                        name="delver_amt"
+                                        ng-model="order.delver_amt"
                                         class="form-control pull-right"
                                         tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(order, 'spec')">
-                                        กรุณาระบุหมายเหตุ
+                                    <span class="help-block" ng-show="checkValidate(order, 'delver_amt')">
+                                        กรุณาระบุจำนวนงวดงาน
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
+                                >
+                                    <label>ประเภทพัสดุ :</label>
+                                    <select
+                                        id="plan_type_id"
+                                        name="plan_type_id"
+                                        ng-model="order.plan_type_id"
+                                        class="form-control pull-right"
+                                        tabindex="1"
+                                    >
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">{{ $planType->plan_type_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'plan_type_id')">
+                                        กรุณาเลือกประเภทพัสดุ
                                     </span>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="table table-bordered">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
@@ -300,7 +321,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-8"></div>
+                                <div class="col-md-8">
+                                    <div
+                                        class="form-group col-md-6"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'spec')}"
+                                    >
+                                        <label>หมายเหตุ :</label>
+                                        <textarea
+                                            id="spec"
+                                            name="spec"
+                                            ng-model="order.spec"
+                                            rows="4"
+                                            class="form-control pull-right"
+                                            tabindex="1"
+                                        ></textarea>
+                                        <span class="help-block" ng-show="checkValidate(order, 'spec')">
+                                            กรุณาระบุหมายเหตุ
+                                        </span>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div
                                         class="form-group"
