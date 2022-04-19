@@ -74,6 +74,18 @@ class InspectionController extends Controller
         ];
     }
 
+    public function getByOrder(Request $req, $orderId)
+    {
+        $inspections = Inspection::with('order','order.details')
+                        ->with('order.details.item')
+                        ->where('order_id', $orderId)
+                        ->get();
+
+        return [
+            "inspections" => $inspections
+        ];
+    }
+
     public function create()
     {
         return view('inspections.add', [

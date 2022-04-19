@@ -27,6 +27,7 @@
                                 type="text"
                                 id="withdraw_no"
                                 name="withdraw_no"
+                                ng-model="withdrawal.withdraw_no"
                                 class="form-control"
                             />
                         </div>
@@ -36,6 +37,7 @@
                                 type="text"
                                 id="withdraw_date"
                                 name="withdraw_date"
+                                ng-model="withdrawal.withdraw_date"
                                 class="form-control"
                             />
                         </div>
@@ -44,14 +46,14 @@
                             <select
                                 id="deliver_seq"
                                 name="deliver_seq"
+                                ng-model="withdrawal.deliver_seq"
                                 class="form-control"
+                                ng-change="onDeliverSeqSelected(withdrawal.deliver_seq)"
                             >
                                 <option value="">-- เลือกงวดงานที่ --</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option ng-repeat="insp in inspections" value="@{{ insp.deliver_seq }}">
+                                    @{{ insp.deliver_seq }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
@@ -60,6 +62,7 @@
                                 type="text"
                                 id="deliver_no"
                                 name="deliver_no"
+                                ng-model="withdrawal.deliver_no"
                                 class="form-control"
                             />
                         </div>
@@ -67,20 +70,21 @@
                             <label for="">ยอดเงิน</label>
                             <input
                                 type="text"
-                                id="inspect_total"
-                                name="inspect_total"
-                                value="@{{ order.net_total | currency:'':2 }}"
+                                id="total"
+                                name="total"
+                                value="@{{ withdrawal.total | currency:'':2 }}"
                                 class="form-control"
                             />
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-6 form-group">
                             <label for="">หมายเหตุ</label>
-                            <textarea
-                                rows=""
-                                id="withdraw_comment"
-                                name="withdraw_comment"
+                            <input
+                                type="text"
+                                id="remark"
+                                name="remark"
+                                ng-model="withdrawal.remark"
                                 class="form-control"
-                            ></textarea>
+                            />
                         </div>
                     </div>
                 </div><!-- /.modal-body -->
@@ -88,7 +92,6 @@
                     <button
                         ng-click="onWithdraw($event)"
                         class="btn btn-primary"
-                        data-dismiss="modal"
                         aria-label="Save"
                     >
                         บันทึก

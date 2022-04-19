@@ -320,26 +320,39 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#inspect-form').modal('hide');
     };
 
+    $scope.inspections = [];
+    $scope.withdrawal = {
+        withdraw_no: '',
+        withdraw_date: '',
+        deliver_seq: '',
+        deliver_no: '',
+        total: '',
+        remark: ''
+    };
     $scope.showWithdrawForm = (order) => {
-        if (order) {    
-            $('#withdraw-form').modal('show');
+        if (order) {
+            $http.get(`${CONFIG.baseUrl}/inspections/${order.id}/order`)
+            .then(function(res) {
+                $scope.inspections = res.data.inspections;
+
+                $('#withdraw-form').modal('show');
+            }, function(err) {
+                console.log(err);
+            });
         }
+    };
+
+    $scope.onDeliverSeqSelected = (seq) => {
+        const inspection = $scope.inspections.find(insp => insp.deliver_seq === parseInt(seq));
+
+        $scope.withdrawal.deliver_no = inspection.deliver_no;
+        $scope.withdrawal.total = inspection.inspect_total;
     };
 
     $scope.onWithdraw = (e) => {
         e.preventDefault();
 
-        let data = {
-            po_id: $('#po_id').val(),
-            deliver_seq: $('#deliver_seq').val(),
-            deliver_no: $('#deliver_no').val(),
-            inspect_sdate: $('#inspect_sdate').val(),
-            inspect_edate: $('#inspect_edate').val(),
-            inspect_total: $('#inspect_total').val().replace(',', ''),
-            inspect_result: $('#inspect_result').val(),
-            inspect_user: $('#inspect_user').val(),
-            remark: $('#remark').val(),
-        };
+        console.log($scope.withdrawal);
 
         // $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
         // .then(function(res) {
@@ -349,6 +362,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         // });
 
         // $('#inspect-form').modal('hide');
+
+        /** Clear withdrawal data */
+        $scope.withdrawal = {
+            withdraw_no: '',
+            withdraw_date: '',
+            deliver_seq: '',
+            deliver_no: '',
+            total: '',
+            remark: ''
+        };
     };
 
     $scope.store = function(event, form) {

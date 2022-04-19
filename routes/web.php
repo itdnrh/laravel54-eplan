@@ -151,6 +151,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('inspections/validate', 'InspectionController@formValidate');
     Route::get('orders/inspect', 'InspectionController@index');
     Route::get('inspections/search', 'InspectionController@search');
+    Route::get('inspections/{orderId}/order', 'InspectionController@getByOrder');
     Route::get('inspections/add', 'InspectionController@create');
     Route::post('inspections/store', 'InspectionController@store');
     Route::get('inspections/edit/{id}', 'InspectionController@edit');
