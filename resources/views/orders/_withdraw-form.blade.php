@@ -70,9 +70,9 @@
                             <label for="">ยอดเงิน</label>
                             <input
                                 type="text"
-                                id="total"
-                                name="total"
-                                value="@{{ withdrawal.total | currency:'':2 }}"
+                                id="net_total"
+                                name="net_total"
+                                value="@{{ withdrawal.net_total | currency:'':2 }}"
                                 class="form-control"
                             />
                         </div>

@@ -159,6 +159,17 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('inspections/update', 'InspectionController@update');
     Route::post('inspections/delete/{id}', 'InspectionController@delete');
 
+    /** การส่งเบิกเงิน */
+    Route::post('withdrawals/validate', 'WithdrawalController@formValidate');
+    Route::get('orders/withdraw', 'WithdrawalController@index');
+    Route::get('withdrawals/search', 'WithdrawalController@search');
+    Route::get('withdrawals/add', 'WithdrawalController@create');
+    Route::post('withdrawals/store', 'WithdrawalController@store');
+    Route::get('withdrawals/edit/{id}', 'WithdrawalController@edit');
+    Route::get('withdrawals/detail/{id}', 'WithdrawalController@detail');
+    Route::post('withdrawals/update', 'WithdrawalController@update');
+    Route::post('withdrawals/delete/{id}', 'WithdrawalController@delete');
+
     /** เจ้าหนี้ */
     Route::get('suppliers', 'SupplierController@getAll');
 

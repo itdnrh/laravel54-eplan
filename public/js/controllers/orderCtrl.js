@@ -324,9 +324,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.withdrawal = {
         withdraw_no: '',
         withdraw_date: '',
+        inspection_id: '',
+        order_id: '',
         deliver_seq: '',
         deliver_no: '',
-        total: '',
+        net_total: '',
         remark: ''
     };
     $scope.showWithdrawForm = (order) => {
@@ -345,8 +347,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.onDeliverSeqSelected = (seq) => {
         const inspection = $scope.inspections.find(insp => insp.deliver_seq === parseInt(seq));
 
+        $scope.withdrawal.inspection_id = inspection.id;
+        $scope.withdrawal.order_id = inspection.order_id;
         $scope.withdrawal.deliver_no = inspection.deliver_no;
-        $scope.withdrawal.total = inspection.inspect_total;
+        $scope.withdrawal.net_total = inspection.inspect_total;
     };
 
     $scope.onWithdraw = (e) => {
@@ -354,22 +358,24 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         console.log($scope.withdrawal);
 
-        // $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
-        // .then(function(res) {
-        //     console.log(res.data);
-        // }, function(err) {
-        //     console.log(err);
-        // });
+        $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
 
-        // $('#inspect-form').modal('hide');
+        $('#withdraw-form').modal('hide');
 
         /** Clear withdrawal data */
         $scope.withdrawal = {
             withdraw_no: '',
             withdraw_date: '',
+            inspection_id: '',
+            order_id: '',
             deliver_seq: '',
             deliver_no: '',
-            total: '',
+            net_total: '',
             remark: ''
         };
     };
