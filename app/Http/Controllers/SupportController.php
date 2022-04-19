@@ -8,8 +8,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Support;
 use App\Models\SupportDetail;
-use App\Models\Supplier;
-use App\Models\AssetCategory;
+use App\Models\PlanType;
+use App\Models\ItemCategory;
 use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
@@ -60,26 +60,25 @@ class SupportController extends Controller
     public function index()
     {
         return view('supports.list', [
-            // "suppliers" => Supplier::all()
+            "planTypes"     => PlanType::all(),
         ]);
     }
 
     public function search(Request $req)
     {
-        $orders = Order::with('supplier','details')
-                    ->with('details.unit','details.plan')
+        $supports = Support::with('planType','details')
                     ->paginate(10);
 
         return [
-            "orders" => $orders
+            "supports" => $supports
         ];
     }
 
     public function create()
     {
-        return view('orders.add', [
-            "suppliers" => Supplier::all(),
-            "asset_categories"  => AssetCategory::all(),
+        return view('supports.add', [
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),

@@ -166,7 +166,7 @@
 						<ul class="treeview-menu">
 							<li ng-class="{ 'active': submenu == 'list' }">
 								<a href="{{ url('supports/list') }}">
-									<i class="fa fa-circle-o"></i> รายการขอสนับสนุน
+									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
 						</ul>
@@ -183,7 +183,7 @@
 						<ul class="treeview-menu">
 							<li ng-class="{ 'active': submenu == 'request' }">
 								<a href="{{ url('orders/request') }}">
-									<i class="fa fa-circle-o"></i> รับใบขอสนับสนุน
+									<i class="fa fa-circle-o"></i> รับบันทึกขอสนับสนุน
 								</a>
 							</li>
 							<li ng-class="{ 'active': submenu == 'list' }">

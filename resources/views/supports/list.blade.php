@@ -5,18 +5,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการครุภัณฑ์
+            บันทึกขอสนับสนุน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการครุภัณฑ์</li>
+            <li class="breadcrumb-item active">บันทึกขอสนับสนุน</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="supportCtrl" ng-init="getAll()">
+    <section class="content" ng-controller="orderCtrl" ng-init="getAll();">
 
         <div class="row">
             <div class="col-md-12">
@@ -28,139 +28,197 @@
 
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <div class="col-md-6">
-                                <!-- Date and time range -->
-                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'year')}">
+                            <div class="row">
+
+                                <div class="form-group col-md-6">
                                     <label>ปีงบประมาณ</label>
-                                    <input  type="text" 
-                                            id="year" 
-                                            name="year" 
-                                            ng-model="asset.year"
-                                            class="form-control"
-                                            pattern="[0-9]{4}"
-                                            tabindex="16" required>
-                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'year')"></span>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'year')">กรุณาระบุปีงบประมาณ</span>
+                                    <select
+                                        id="cboYear"
+                                        name="cboYear"
+                                        ng-model="cboYear"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
                                 </div><!-- /.form group -->
-
-                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'cal_date')}">
-                                    <label>ณ วันที่ :</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input  type="text" 
-                                                id="cal_date" 
-                                                name="cal_date" 
-                                                ng-model="asset.cal_date" 
-                                                class="form-control pull-right"
-                                                tabindex="1" required>
-                                    </div>
-                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'cal_date')"></span>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'cal_date')">กรุณาเลือกวันที่รับเข้าระบบ</span>
-                                </div>
-
-                            </div><!-- /.col-md-6 -->                 
+                                <div class="form-group col-md-6">
+                                    <label>ประเภทพัสดุ</label>
+                                    <select
+                                        id="cboSupplier"
+                                        name="cboSupplier"
+                                        ng-model="cboSupplier"
+                                        ng-change="getAll($event)"
+                                        class="form-control select2"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div><!-- /.form group -->
+                            </div><!-- /.row -->
                         </div><!-- /.box-body -->
-
-                        <div class="box-footer">
-                            <a ng-click="deprecCalulate()" class="btn btn-primary">
-                                คำนวณค่าเสื่อม
-                            </a>
-                            
-                            <a ng-click="store()" class="btn btn-primary">
-                                บันทึกค่าเสื่อม
-                            </a>
-                        </div>
                     </form>
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">รายการครุภัณฑ์</h3>
-                    </div><!-- /.box-header -->
-
-                    <div class="box-body">
-                        <div class="form-group pull-right">
-                            <input  type="text" 
-                                    id="table_search" 
-                                    name="table_search"
-                                    ng-model="searchKeyword"
-                                    class="form-control pull-right" 
-                                    placeholder="ค้นหาเลขที่ใบส่งของ">                                       
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">บันทึกขอสนับสนุน</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ url('/supports/add') }}" class="btn btn-primary pull-right">
+                                    เพิ่มรายการ
+                                </a>
+                            </div>
                         </div>
-
-                        <table class="table table-bordered table-striped" style="font-size: 12px;">
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table table-bordered table-striped" style="font-size: 14px; margin: 10px auto;">
                             <thead>
                                 <tr>
-                                    <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 10%; text-align: center;">เลขครุภัณฑ์</th>
-                                    <th style="text-align: left;">ชื่อครุภัณฑ์</th>
-                                    <th style="width: 8%; text-align: center;">ราคาทุน</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ได้รับ</th>
-                                    <th style="width: 8%; text-align: center;">อายุการใช้งาน (ป)</th>
-                                    <th style="width: 8%; text-align: center;">อายุ (ป)</th>
-                                    <th style="width: 8%; text-align: center;">อายุ (ด)</th>
-                                    <th style="width: 8%; text-align: center;">ค่าเสื่อม/ปี</th>
-                                    <th style="width: 8%; text-align: center;">ค่าเสื่อมสะสม</th>
-                                    <th style="width: 8%; text-align: center;">มูลค่าสุทธิ</th>
+                                    <th style="width: 4%; text-align: center;">#</th>
+                                    <th style="width: 8%; text-align: center;">เลขที่บันทึก</th>
+                                    <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
+                                    <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
+                                    <th>หน่วยงาน</th>
+                                    <th style="width: 6%; text-align: center;">ปีงบ</th>
+                                    <th style="width: 6%; text-align: center;">จำนวนรายการ</th>
+                                    <th style="width: 10%; text-align: center;">ยอดขอสนับสนุน</th>
+                                    <th style="width: 10%; text-align: center;">สถานะ</th>
+                                    <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
+                                    <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, asset) in assets">
+                                <tr ng-repeat="(index, order) in orders">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ asset.asset_no }}</td>
-                                    <td style="text-align: left;">@{{ asset.asset_name }}</td>
-                                    <td style="text-align: right;">@{{ asset.unit_price | currency:"":0 }}</td>
-                                    <td style="text-align: center;">@{{ asset.date_in | thdate }}</td>
-                                    <td style="text-align: center;">@{{ asset.deprec_life_y }}</td>
-                                    <td style="text-align: center;">@{{ asset.age_y }}</td>
-                                    <td style="text-align: center;">@{{ asset.age_m }}</td>
-                                    <td style="text-align: right;">@{{ asset.deprec_year | currency:"":0 }}</td>             
-                                    <td style="text-align: right;">@{{ asset.deprec_collect | currency:"":0 }}</td>             
-                                    <td style="text-align: right;">@{{ asset.deprec_net | currency:"":0 }}</td>             
+                                    <td style="text-align: center;">@{{ order.po_no }}</td>
+                                    <td style="text-align: center;">@{{ order.po_date | thdate }}</td>
+                                    <td style="text-align: center;">@{{ order.plan_type.plan_type_name }}</td>
+                                    <td>@{{ order.supplier.supplier_name }}</td>
+                                    <td style="text-align: center;">@{{ order.year }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ order.details.length }}
+                                        <a  href="#"
+                                            ng-click="showOrderDetails(order.details)"
+                                            class="btn btn-default btn-xs" 
+                                            title="รายการ">
+                                            <i class="fa fa-clone"></i>
+                                        </a>
+                                    </td>
+                                    <td style="text-align: center;">@{{ order.net_total | currency:'':0 }}</td>
+                                    <td style="text-align: center;">
+                                        <span class="label label-primary" ng-show="order.status == 1">
+                                            อยู่ระหว่างดำเนินการ
+                                        </span>
+                                        <span class="label label-info" ng-show="order.status == 2">
+                                            อนุมัติ
+                                        </span>
+                                        <span class="label label-success" ng-show="order.status == 3">
+                                            ตรวจรับแล้ว
+                                        </span>
+                                        <span class="label label-warning" ng-show="order.status == 4">
+                                            ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="order.status == 9">
+                                            ยกเลิก
+                                        </span>
+                                    </td>
+                                    <!-- <td style="text-align: center;">
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
+                                            class="btn btn-default btn-xs"
+                                            title="ไฟล์แนบ"
+                                            target="_blank"
+                                            ng-show="order.attachment">
+                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                        </a>
+                                    </td> -->
+                                    <td style="text-align: center;">
+                                        <a  href="{{ url('/orders/detail') }}/@{{ order.id }}"
+                                            class="btn btn-primary btn-xs" 
+                                            title="รายละเอียด">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                        <a  href="{{ url('/orders/edit') }}/@{{ order.id }}"
+                                            class="btn btn-warning btn-xs"
+                                            title="แก้ไขรายการ">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <form
+                                            id="frmDelete"
+                                            method="POST"
+                                            action="{{ url('/orders/delete') }}"
+                                            style="display: inline;"
+                                        >
+                                            {{ csrf_field() }}
+                                            <button
+                                                type="submit"
+                                                ng-click="delete($event, order.id)"
+                                                class="btn btn-danger btn-xs"
+                                            >
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>             
                                 </tr>
                             </tbody>
                         </table>
 
-                        <ul class="pagination pagination-sm no-margin pull-right">
-                            <li ng-if="debtPager.current_page !== 1">
-                                <a href="#" ng-click="getDebtWithURL(debtPager.first_page_url)" aria-label="Previous">
-                                    <span aria-hidden="true">First</span>
-                                </a>
-                            </li>
-                        
-                            <li ng-class="{'disabled': (debtPager.current_page==1)}">
-                                <a href="#" ng-click="getDebtWithURL(debtPager.prev_page_url)" aria-label="Prev">
-                                    <span aria-hidden="true">Prev</span>
-                                </a>
-                            </li>
+                        <div class="row">
+                            <div class="col-md-4">
+                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
+                            </div>
+                            <div class="col-md-4" style="text-align: center;">
+                                จำนวน @{{ pager.total }} รายการ
+                            </div>
+                            <div class="col-md-4">
+                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
+                                    <li ng-if="pager.current_page !== 1">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setLeaves)" aria-label="Previous">
+                                            <span aria-hidden="true">First</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (pager.current_page==1)}">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setLeaves)" aria-label="Prev">
+                                            <span aria-hidden="true">Prev</span>
+                                        </a>
+                                    </li>
 
-                            <li ng-repeat="i in debtPages" ng-class="{'active': debtPager.current_page==i}">
-                                <a href="#" ng-click="getDebtWithURL(debtPager.path + '?page=' +i)">
-                                    @{{ i }}
-                                </a>
-                            </li>
-                           
-                            <!-- <li ng-if="debtPager.current_page < debtPager.last_page && (debtPager.last_page - debtPager.current_page) > 10">
-                                <a href="#" ng-click="debtPager.path">
-                                    ...
-                                </a>
-                            </li> -->
-                        
-                            <li ng-class="{'disabled': (debtPager.current_page==debtPager.last_page)}">
-                                <a href="#" ng-click="getDebtWithURL(debtPager.next_page_url)" aria-label="Next">
-                                    <span aria-hidden="true">Next</span>
-                                </a>
-                            </li>
+                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path + '?page=' +i, setLeaves)">
+                                            @{{ i }}
+                                        </a>
+                                    </li> -->
 
-                            <li ng-if="debtPager.current_page !== debtPager.last_page">
-                                <a href="#" ng-click="getDebtWithURL(debtPager.last_page_url)" aria-label="Previous">
-                                    <span aria-hidden="true">Last</span>
-                                </a>
-                            </li>
-                        </ul>
+                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
+                                        <a href="#" ng-click="pager.path">
+                                            ...
+                                        </a>
+                                    </li> -->
+
+                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setLeaves)" aria-label="Next">
+                                            <span aria-hidden="true">Next</span>
+                                        </a>
+                                    </li>
+
+                                    <li ng-if="pager.current_page !== pager.last_page">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setLeaves)" aria-label="Previous">
+                                            <span aria-hidden="true">Last</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div><!-- /.row -->
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
@@ -174,98 +232,14 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="dlgEditForm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="">เพิ่มชนิดครุภัณฑ์</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="">ชื่อสถานที่</label>
-                            <input type="text" id="locationName" name="locationName" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">ที่อยู่</label>
-                            <input type="text" id="locationAddress" name="locationAddress" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">ถนน</label>
-                            <input type="text" id="locationRoad" name="locationRoad" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="ID">จังหวัด</label>
-                            <select 
-                                id="chw_id"
-                                name="chw_id" 
-                                class="form-control" 
-                                ng-model="selectedChangwat" 
-                                ng-change="getAmphur($event, selectedChangwat)">
-                                <option value="">-- กรุณาเลือกจังหวัด --</option>
-                                <option value="@{{ c.chw_id }}" ng-repeat="c in changwats">
-                                    @{{ c.changwat }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ID">อำเภอ</label>
-                            <select 
-                                id="amp_id"
-                                name="amp_id" 
-                                class="form-control" 
-                                ng-model="selectedAmphur"
-                                ng-change="getTambon($event, selectedAmphur)">
-                                <option value="">-- กรุณาเลือกอำเภอ --</option>
-                                <option value="@{{ a.id }}" ng-repeat="a in amphurs">
-                                    @{{ a.amphur }}
-                                </option>
-                            </select>
-                        </div>                    
-
-                        <div class="form-group">
-                            <label for="ID">ตำบล</label>                    
-                            <select 
-                                id="tam_id"
-                                name="tam_id" 
-                                class="form-control" 
-                                ng-model="selectedTambon">
-                                <option value="">-- กรุณาเลือกตำบล --</option>
-                                <option value="@{{ t.id }}" ng-repeat="t in tambons">
-                                    @{{ t.tambon }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">รหัสไปรษณี</label>
-                            <input type="text" id="locationPostcode" name="locationPostcode" class="form-control">
-                        </div>              
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" ng-click="addNewLocation($event)">
-                            Save
-                        </button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal -->
+        @include('orders._order-details')
 
     </section>
 
     <script>
         $(function () {
-            $('#cal_date').datepicker({
-                autoclose: true,
-                language: 'th',
-                format: 'dd/mm/yyyy',
-                thaiyear: true
-            });
+            //Initialize Select2 Elements
+            $('.select2').select2();
         });
     </script>
 
