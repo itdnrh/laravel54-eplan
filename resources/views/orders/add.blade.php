@@ -39,57 +39,6 @@
                         {{ csrf_field() }}
 
                         <div class="box-body">
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
-                                >
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="year"
-                                        name="year"
-                                        ng-model="order.year"
-                                        class="form-control"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'year')">
-                                        กรุณาเลือกเขียนที่
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
-                                >
-                                    <label>เจ้าหนี้ :</label>
-                                    <select id="supplier_id"
-                                            name="supplier_id"
-                                            ng-model="order.supplier_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
-                                        <option value="">-- เลือกเจ้าหนี้ --</option>
-
-                                        @foreach($suppliers as $supplier)
-
-                                            <option value="{{ $supplier->supplier_id }}">
-                                                {{ $supplier->supplier_name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'supplier_id')">
-                                        กรุณาเลือกเจ้าหนี้
-                                    </span>
-                                </div>
-                            </div>
-
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
@@ -128,6 +77,52 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
+                                >
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="order.year"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'year')">
+                                        กรุณาเลือกเขียนที่
+                                    </span>
+                                </div>
+
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
+                                >
+                                    <label>เจ้าหนี้ :</label>
+                                    <select id="supplier_id"
+                                            name="supplier_id"
+                                            ng-model="order.supplier_id"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกเจ้าหนี้ --</option>
+                                        @foreach($suppliers as $supplier)
+                                            <option value="{{ $supplier->supplier_id }}">
+                                                {{ $supplier->supplier_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'supplier_id')">
+                                        กรุณาเลือกเจ้าหนี้
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'delver_amt')}"
                                 >
                                     <label>จำนวนงวดงาน :</label>
@@ -136,7 +131,7 @@
                                         id="delver_amt"
                                         name="delver_amt"
                                         ng-model="order.delver_amt"
-                                        class="form-control pull-right"
+                                        class="form-control"
                                         tabindex="1">
                                     <span class="help-block" ng-show="checkValidate(order, 'delver_amt')">
                                         กรุณาระบุจำนวนงวดงาน
@@ -151,7 +146,7 @@
                                         id="plan_type_id"
                                         name="plan_type_id"
                                         ng-model="order.plan_type_id"
-                                        class="form-control pull-right"
+                                        class="form-control"
                                         tabindex="1"
                                     >
                                         <option value="">-- เลือกประเภทพัสดุ --</option>
@@ -303,10 +298,18 @@
                                                     @{{ detail.plan_detail }}
                                                     <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                 </td>
-                                                <td style="text-align: center">@{{ detail.price_per_unit }}</td>
-                                                <td style="text-align: center">@{{ detail.unit_id }}</td>
-                                                <td style="text-align: center">@{{ detail.amount }}</td>
-                                                <td style="text-align: center">@{{ detail.sum_price }}</td>
+                                                <td style="text-align: center">
+                                                    @{{ detail.price_per_unit | currency:'':2 }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ detail.unit_id }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ detail.amount | currency:'':2 }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ detail.sum_price | currency:'':2 }}
+                                                </td>
                                                 <td style="text-align: center">
                                                     <a href="#" class="btn btn-warning btn-sm">
                                                         <i class="fa fa-edit"></i>
