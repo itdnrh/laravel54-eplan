@@ -87,6 +87,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/planServiceCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/planConstructCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/inspectionCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/withdrawalCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/supportCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/orderCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/personCtrl.js') }}"></script>
