@@ -81,6 +81,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(event.date);
         });
 
+    $('#withdraw_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
         let amount = parseFloat($(`#amount`).val());
@@ -311,6 +318,37 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
 
         $('#inspect-form').modal('hide');
+    };
+
+    $scope.showWithdrawForm = (order) => {
+        if (order) {    
+            $('#withdraw-form').modal('show');
+        }
+    };
+
+    $scope.onWithdraw = (e) => {
+        e.preventDefault();
+
+        let data = {
+            po_id: $('#po_id').val(),
+            deliver_seq: $('#deliver_seq').val(),
+            deliver_no: $('#deliver_no').val(),
+            inspect_sdate: $('#inspect_sdate').val(),
+            inspect_edate: $('#inspect_edate').val(),
+            inspect_total: $('#inspect_total').val().replace(',', ''),
+            inspect_result: $('#inspect_result').val(),
+            inspect_user: $('#inspect_user').val(),
+            remark: $('#remark').val(),
+        };
+
+        // $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
+        // .then(function(res) {
+        //     console.log(res.data);
+        // }, function(err) {
+        //     console.log(err);
+        // });
+
+        // $('#inspect-form').modal('hide');
     };
 
     $scope.store = function(event, form) {

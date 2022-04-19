@@ -191,6 +191,7 @@
                         <a
                             href="#"
                             class="btn btn-primary"
+                            ng-click="showWithdrawForm(order)"
                         >
                             <i class="fa fa-calculator"></i> ส่งเบิกเงิน
                         </a>
@@ -207,6 +208,7 @@
         </div><!-- /.row -->
 
         @include('orders._inspect-form')
+        @include('orders._withdraw-form')
 
     </section>
 
