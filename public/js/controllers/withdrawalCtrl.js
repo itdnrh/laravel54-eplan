@@ -1,8 +1,11 @@
 app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
-    $scope.inspections = [];
+    $scope.withdrawals = [];
     $scope.pager = [];
+
+    $scope.inspections = [];
+    $scope.inspections_pager = [];
 
     $scope.plans = [];
     $scope.plans_pager = [];
@@ -196,9 +199,9 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         // let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
         // let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
         
-        $http.get(`${CONFIG.baseUrl}/inspections/search`)
+        $http.get(`${CONFIG.baseUrl}/withdrawals/search`)
         .then(function(res) {
-            $scope.setInspections(res);
+            $scope.setWithdrawals(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -207,10 +210,10 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
-    $scope.setInspections = function (res) {
-        const { data, ...pager } = res.data.inspections;
+    $scope.setWithdrawals = function (res) {
+        const { data, ...pager } = res.data.withdrawals;
 
-        $scope.inspections = data;
+        $scope.withdrawals = data;
         $scope.pager = pager;
     };
 

@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="inspectionCtrl"
+        ng-controller="withdrawalCtrl"
         ng-init="
             getAll();
             initForms({
@@ -80,7 +80,7 @@
                                 <h3 class="box-title">รายการส่งเบิกเงิน</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/inspections/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/withdrawals/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
@@ -106,55 +106,42 @@
                                     <th>รายละเอียดใบสั่งซื้อ</th>
                                     <th style="width: 15%;">วันที่ตรวจรับ</th>
                                     <th style="width: 8%; text-align: center;">ยอดเงิน</th>
-                                    <th style="width: 12%; text-align: center;">ผลการตรวจรับ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, insp) in inspections">
+                                <tr ng-repeat="(index, withdraw) in withdrawals">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ insp.deliver_no }}</td>
-                                    <td style="text-align: center;">@{{ insp.deliver_seq }}</td>
+                                    <td style="text-align: center;">@{{ withdraw.inspection.deliver_no }}</td>
+                                    <td style="text-align: center;">@{{ withdraw.inspection.deliver_seq }}</td>
                                     <td>
                                         <h5 style="margin: 0; font-size: 14px;">
-                                            เลขที่ @{{ insp.order.po_no }}
-                                            วันที่ @{{ insp.order.po_date | thdate }} 
+                                            เลขที่ @{{ withdraw.inspection.order.po_no }}
+                                            วันที่ @{{ withdraw.inspection.order.po_date | thdate }} 
                                         </h5>
-                                        <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
+                                        <!-- <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
                                             <p style="margin: 0; text-decoration: underline;">รายการ</p>
                                             <ul style="list-style: none; margin: 0px; padding: 0px;">
-                                                <li ng-repeat="(index, detail) in insp.order.details" style="margin: 2px;">
+                                                <li ng-repeat="(index, detail) in withdraw.order.details" style="margin: 2px;">
                                                     @{{ index+1 }}. @{{ detail.item.item_name }}
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </td>
                                     <td>
-                                        @{{ insp.inspect_sdate | thdate }} - 
-                                        @{{ insp.inspect_edate | thdate }}
+                                        @{{ withdraw.withdraw_date | thdate }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ insp.inspect_total | currency:'':0 }}
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="label label-success" ng-show="insp.inspect_result == 1">
-                                            ถูกต้องทั้งหมดและรับไว้ทั้งหมด
-                                        </span>
-                                        <span class="label label-warning" ng-show="insp.inspect_result == 2">
-                                            ถูกต้องบางส่วนและรับไว้เฉพาะที่ถูกต้อง
-                                        </span>
-                                        <span class="label bg-danger" ng-show="insp.inspect_result == 3">
-                                            ยังถือว่าไม่ส่งมอบตามสัญญา
-                                        </span>
+                                        @{{ withdraw.net_total | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/inspections/detail') }}/@{{ insp.id }}"
+                                            <a  href="{{ url('/withdrawals/detail') }}/@{{ withdraw.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(insp.id)"
+                                            <a  ng-click="edit(withdraw.id)"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -162,12 +149,12 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/inspections/delete') }}"
+                                                action="{{ url('/withdrawals/delete') }}"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
                                                     type="submit"
-                                                    ng-click="delete($event, insp.id)"
+                                                    ng-click="delete($event, withdraw.id)"
                                                     class="btn btn-danger btn-xs"
                                                 >
                                                     <i class="fa fa-trash"></i>
