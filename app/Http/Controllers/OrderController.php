@@ -71,8 +71,17 @@ class OrderController extends Controller
 
     public function search(Request $req)
     {
+        $year = $req->get('year');
+        $supplier = $req->get('supplier');
+
         $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.unit','details.item')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    ->when(!empty($supplier), function($q) use ($supplier) {
+                        $q->where('supplier_id', $supplier);
+                    })
                     ->paginate(10);
 
         $plans = Plan::with('depart','division')

@@ -5,12 +5,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                         ? (moment().year() + 544).toString()
                         : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
-    $scope.cboCategory = "";
-    $scope.cboStatus = "";
-    $scope.cboPlanType = "1";
-    $scope.cboMenu = "";
-    $scope.searchKeyword = "";
-    $scope.cboQuery = "";
+    $scope.cboSupplier = "";
+    $scope.searchKey = "";
+
     $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
     $scope.vatRates = [1,2,3,4,5,6,7,8,9,10];
     $scope.editRow = false;
@@ -113,6 +110,17 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#net_total').val(net_total);
     };
 
+    $scope.calculateTotal = () => {
+        let total = 0;
+
+        total = $scope.order.details.reduce((sum, curVal) => {
+            return sum = sum + curVal.sum_price;
+        }, 0);
+
+        $scope.order.total = total;
+        $('#total').val(total);
+    };
+
     $scope.addOrderItem = () => {
         $scope.order.details.push({ ...$scope.newItem });
 
@@ -140,17 +148,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             sum_price: ''
         };
     }
-
-    $scope.calculateTotal = () => {
-        let total = 0;
-
-        total = $scope.order.details.reduce((sum, curVal) => {
-            return sum = sum + curVal.sum_price;
-        }, 0);
-
-        $scope.order.total = total;
-        $('#total').val(total);
-    };
 
     $scope.getPlans = () => {
         $scope.plans = [];
@@ -222,13 +219,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         
         $scope.loading = true;
         
-        // let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        // let type    = $scope.cboLeaveType === '' ? 0 : $scope.cboLeaveType;
-        // let status  = $scope.cboLeaveStatus === '' ? '-' : $scope.cboLeaveStatus;
-        // let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        // let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         
-        $http.get(`${CONFIG.baseUrl}/orders/search`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}`)
         .then(function(res) {
             $scope.setOrders(res);
 

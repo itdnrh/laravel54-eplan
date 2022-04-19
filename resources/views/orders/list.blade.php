@@ -37,7 +37,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="onCancelLoad($event)"
+                                        ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -51,8 +51,8 @@
                                         id="cboSupplier"
                                         name="cboSupplier"
                                         ng-model="cboSupplier"
-                                        class="form-control"
-                                        ng-change="onCancelLoad($event)"
+                                        ng-change="getAll($event)"
+                                        class="form-control select2"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         @foreach($suppliers as $supplier)
