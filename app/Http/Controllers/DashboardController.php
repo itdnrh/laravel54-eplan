@@ -61,12 +61,32 @@ class DashboardController extends Controller
         ];
     }
 
-    public function getStatYear($year)
+    public function getStat1($year)
     {
-        $sql = "SELECT l.leave_type, lt.name, COUNT(l.id) AS num
-                FROM leaves l LEFT JOIN leave_types lt ON (l.leave_type=lt.id)
-                WHERE (year='" .$year. "') 
-                GROUP BY l.leave_type, lt.name ";
+        $sql = "SELECT #p.plan_type_id, pt.plan_type_name,
+                sum(pi.sum_price) as sum_all,
+                sum(case when (p.status >= '3') then p.po_net_total end) as sum_po,
+                sum(case when (p.status >= '4') then p.po_net_total end) as sum_insp, #ตรวจรับแล้ว
+                sum(case when (p.status >= '5') then p.po_net_total end) as sum_with #ส่งเบิกเงินแล้ว
+                FROM eplan_db.plans p
+                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
+                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
+                #group by p.plan_type_id, pt.plan_type_name; ";
+
+        $stats = \DB::select($sql);
+
+        return [
+            'stats' => $stats
+        ];
+    }
+
+    public function getStat2($year)
+    {
+        $sql = "SELECT p.plan_type_id, pt.plan_type_name, sum(pi.sum_price) as sum_all
+                FROM eplan_db.plans p
+                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
+                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
+                group by p.plan_type_id, pt.plan_type_name; ";
 
         $stats = \DB::select($sql);
 

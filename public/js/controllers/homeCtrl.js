@@ -132,15 +132,34 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
         }, 0);
     };
 
-    $scope.statCards = [];
-    $scope.getStatYear = function () {
+    $scope.stat1Cards = [];
+    $scope.stat2Cards = [];
+    $scope.getStat1 = function () {
         $scope.loading = true;
 
         let year = '2565';
 
-        $http.get(`${CONFIG.baseUrl}/dashboard/stat/${year}`)
+        $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}`)
         .then(function(res) {
-            $scope.statCards = res.data.stats;
+            $scope.stat1Cards = res.data.stats;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getStat2 = function () {
+        $scope.loading = true;
+
+        let year = '2565';
+
+        $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}`)
+        .then(function(res) {
+            console.log(res);
+            $scope.stat2Cards = res.data.stats;
 
             $scope.loading = false;
         }, function(err) {
