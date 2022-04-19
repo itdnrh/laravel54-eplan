@@ -13,23 +13,13 @@ class Order extends Model
         return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
     }
 
+    public function planType()
+    {
+        return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');
+    }
+
     public function details()
     {
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
-
-    // public function ward()
-    // {
-    //     return $this->belongsTo(Ward::class, 'ward', 'ward');
-    // }
-
-    // public function pttype()
-    // {
-    //     return $this->belongsTo(Pttype::class, 'pttype', 'pttype');
-    // }
-
-    // public function admdoctor()
-    // {
-    //     return $this->belongsTo(Doctor::class, 'admdoctor', 'code');
-    // }
 }

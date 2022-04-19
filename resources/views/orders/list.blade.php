@@ -36,7 +36,7 @@
                                         id="cboYear"
                                         name="cboYear"
                                         ng-model="cboYear"
-                                        class="form-control select2"
+                                        class="form-control"
                                         ng-change="onCancelLoad($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -48,19 +48,17 @@
                                 <div class="form-group col-md-6">
                                     <label>เจ้าหนี้</label>
                                     <select
-                                        id="cboLeaveType"
-                                        name="cboLeaveType"
-                                        ng-model="cboLeaveType"
+                                        id="cboSupplier"
+                                        name="cboSupplier"
+                                        ng-model="cboSupplier"
                                         class="form-control"
                                         ng-change="onCancelLoad($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         @foreach($suppliers as $supplier)
-
                                             <option value="{{ $supplier->supplier_id }}">
                                                 {{ $supplier->supplier_name }}
                                             </option>
-
                                         @endforeach
                                     </select>
                                 </div><!-- /.form group -->

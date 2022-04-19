@@ -71,7 +71,7 @@ class OrderController extends Controller
 
     public function search(Request $req)
     {
-        $orders = Order::with('supplier','details')
+        $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.unit','details.item')
                     ->paginate(10);
 

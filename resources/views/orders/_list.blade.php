@@ -4,11 +4,12 @@
             <th style="width: 5%; text-align: center;">#</th>
             <th style="width: 8%; text-align: center;">เลขที่ P/O</th>
             <th style="width: 8%; text-align: center;">วันที่ P/O</th>
+            <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
             <th>เจ้าหนี้</th>
             <th style="width: 6%; text-align: center;">ปีงบ</th>
             <th style="width: 6%; text-align: center;">จำนวนรายการ</th>
             <th style="width: 10%; text-align: center;">ยอดจัดซื้อ</th>
-            <th style="width: 15%; text-align: center;">สถานะ</th>
+            <th style="width: 10%; text-align: center;">สถานะ</th>
             <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
             <th style="width: 10%; text-align: center;">Actions</th>
         </tr>
@@ -18,6 +19,7 @@
             <td style="text-align: center;">@{{ index+pager.from }}</td>
             <td style="text-align: center;">@{{ order.po_no }}</td>
             <td style="text-align: center;">@{{ order.po_date | thdate }}</td>
+            <td style="text-align: center;">@{{ order.plan_type.plan_type_name }}</td>
             <td>@{{ order.supplier.supplier_name }}</td>
             <td style="text-align: center;">@{{ order.year }}</td>
             <td style="text-align: center;">
