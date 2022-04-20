@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Support;
 use App\Models\SupportDetail;
+use App\Models\Plan;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\Unit;
@@ -97,21 +98,23 @@ class SupportController extends Controller
             $support = new Support;
             $support->doc_no            = $req['doc_no'];
             $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            // $support->topic            = $req['topic'];
             $support->year              = $req['year'];
             $support->depart_id         = $req['depart_id'];
-            $support->division_id       = $req['division_id'];
+            // $support->division_id       = $req['division_id'];
             $support->plan_type_id      = $req['plan_type_id'];
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
+            // $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
             // $support->user_id         = $req['user_id'];
-
+            
             if ($support->save()) {
                 $supportId = $support->id;
 
                 foreach($req['details'] as $item) {
                     $detail = new SupportDetail;
-                    $detail->support_id       = $supportId;
+                    $detail->support_id     = $supportId;
                     $detail->plan_id        = $item['plan_id'];
                     $detail->price_per_unit = $item['price_per_unit'];
                     $detail->unit_id        = $item['unit_id'];
@@ -121,40 +124,46 @@ class SupportController extends Controller
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */
-                foreach($req['spec_committee'] as $spec) {
-                    $comm = new Committee;
-                    $comm->support_id           = $supportId;
-                    $comm->committee_type_id    = 1;
-                    $comm->detail               = '';
-                    $comm->year                 = $req['year'];
-                    $comm->person_id            = $spec['person_id'];
-                    $comm->save();
+                if (count($req['spec_committee']) > 0) {
+                    foreach($req['spec_committee'] as $spec) {
+                        $comm = new Committee;
+                        $comm->support_id           = $supportId;
+                        $comm->committee_type_id    = 1;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $spec['person_id'];
+                        $comm->save();
+                    }
                 }
 
                 /** คณะกรรมการตรวจรับ */
-                foreach($req['insp_committee'] as $insp) {
-                    $comm = new Committee;
-                    $comm->support_id           = $supportId;
-                    $comm->committee_type_id    = 2;
-                    $comm->detail               = '';
-                    $comm->year                 = $req['year'];
-                    $comm->person_id            = $insp['person_id'];
-                    $comm->save();
+                if (count($req['insp_committee']) > 0) {
+                    foreach($req['insp_committee'] as $insp) {
+                        $comm = new Committee;
+                        $comm->support_id           = $supportId;
+                        $comm->committee_type_id    = 2;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $insp['person_id'];
+                        $comm->save();
+                    }
                 }
 
                 /** คณะกรรมการเปิดซอง/พิจารณาราคา */
-                // foreach($req['env_committee'] as $env) {
-                //     $comm = new Committee;
-                //     $comm->support_id           = $supportId;
-                //     $comm->committee_type_id    = 3;
-                //     $comm->detail               = '';
-                //     $comm->year                 = $req['year'];
-                //     $comm->person_id            = $env['person_id'];
-                //     $comm->save();
-                // }
+                if (count($req['env_committee']) > 0) {
+                    foreach($req['env_committee'] as $env) {
+                        $comm = new Committee;
+                        $comm->support_id           = $supportId;
+                        $comm->committee_type_id    = 3;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $env['person_id'];
+                        $comm->save();
+                    }
+                }
 
                 /** Update status of plan data */
-                // Plan::where('id', $item['plan_id'])->update(['status' => 1]);
+                Plan::where('id', $item['plan_id'])->update(['status' => 1]);
 
                 return [
                     'status' => 1,
