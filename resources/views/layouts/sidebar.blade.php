@@ -115,7 +115,7 @@
 						Auth::user()->memberOf->duty_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
-						<li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
+						<!-- <li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
 							<a href="#">
 								<i class="fa fa-check-square-o"></i>
 								<span>การอนุมัติ</span>
@@ -124,35 +124,28 @@
 								</span>
 							</a>
 							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
-								<!-- // Authorize เฉพาะหัวหน้ากลุ่มงาน -->
 								<li ng-class="{ 'active': submenu == 'comment' }">
 									<a href="{{ url('assets/list') }}">
 										<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
 									</a>
 								</li>
-
-								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
 								<li ng-class="{ 'active': submenu == 'receive' }">
 									<a href="{{ url('materials/list') }}">
 										<i class="fa fa-circle-o"></i> แผนวัสดุ (นอกคลัง)
 									</a>
 								</li>
-
-								<!-- // Authorize เฉพาะธุรการหรือเลขาฯกลุ่มภารกิจ -->
 								<li ng-class="{ 'active': submenu == 'receive' }">
 									<a href="{{ url('services/list') }}">
 										<i class="fa fa-circle-o"></i> แผนจ้างบริการ
 									</a>
 								</li>
-
-								<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ -->
 								<li ng-class="{ 'active': submenu == 'approve' }">
 									<a href="{{ url('constructs/list') }}">
 										<i class="fa fa-circle-o"></i> แผนก่อสร้าง
 									</a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 					@endif
 
 					<li class="treeview" ng-class="{ 'menu-open active': menu == 'supports' }">
