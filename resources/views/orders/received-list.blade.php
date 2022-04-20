@@ -138,10 +138,17 @@
                             <div class="col-md-6">
                                 <button
                                     type="button"
-                                    class="btn btn-primary pull-right"
+                                    class="btn btn-success pull-right"
+                                    style="margin-left: 5px;"
                                     ng-click="showPlansToReceives()"
                                 >
-                                    ลงรับเอกสาร
+                                    ลงรับเอกสารบางรายการ
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary pull-right"
+                                >
+                                    ลงรับเอกสารจากบันทึกขอสนับสนุน
                                 </button>
                             </div>
                         </div>
