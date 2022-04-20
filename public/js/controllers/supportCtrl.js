@@ -291,7 +291,6 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
     $scope.setPersons = function(res) {
         const { data, ...pager } = res.data.persons;
 
-        console.log(res.data.persons);
         $scope.persons = data;
         $scope.persons_pager = pager;
     };

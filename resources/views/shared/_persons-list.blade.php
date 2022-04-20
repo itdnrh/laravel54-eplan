@@ -17,7 +17,7 @@
                                     style="margin-right: 1rem;"
                                     class="form-control"
                                     ng-model="cboDepart"
-                                    ng-change="onFilterPerson()"
+                                    ng-change="getPersons()"
                                 >
                                     <option value="">--เลือกกลุ่มงาน--</option>
                                     @foreach($departs as $depart)
@@ -25,7 +25,7 @@
                                     @endforeach
                                 </select>
         
-                                <input type="text" ng-model="searchKey" class="form-control" ng-keyup="onFilterPerson()">
+                                <input type="text" ng-model="searchKey" class="form-control" ng-keyup="getPersons()">
                             </div>
                         </div><!-- /.box-body -->
                     </div>
