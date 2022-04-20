@@ -1,14 +1,6 @@
 app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = parseInt(moment().format('MM')) > 9
-                        ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
-    $scope.cboMonth = moment().format('MM');
-    $scope.cboSupplier = "";
-    $scope.searchKey = "";
-
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
     $scope.vatRates = [1,2,3,4,5,6,7,8,9,10];
     $scope.editRow = false;
 
@@ -156,24 +148,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         };
     }
 
-    $scope.getPlans = () => {
-        $scope.plans = [];
-        $scope.loading = true;
-
-        let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let type = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
     $scope.showPlansList = () => {
         $scope.loading = true;
         $scope.plans = [];
@@ -194,6 +168,69 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
     };
 
+    $scope.getPlans = (status, cb) => {
+        $scope.plans = [];
+        $scope.loading = true;
+
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&status=${status}&depart=${depart}`)
+        .then(function(res) {
+            console.log(res);
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.plans_pager = pager;
+    };
+
+    $scope.toReceiveList = [];
+    $scope.toReceiveList_pager = null;
+    $scope.showPlansToReceives = () => {
+        $scope.loading = true;
+        $scope.toReceiveList = [];
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=&status=1`)
+        .then(function(res) {
+            $scope.loading = false;
+
+            $scope.setPlansToReceives(res);
+
+            $('#receive-list').modal('show');
+        }, function(err) {
+            $scope.loading = false;
+            console.log(err);
+        });
+    };
+
+    $scope.setPlansToReceives = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.toReceiveList = data;
+        $scope.toReceiveList_pager = pager;
+    };
+
+    $scope.onReceived = function(e, plan) {
+        console.log(plan);
+        $http.post(`${CONFIG.baseUrl}/orders/received`, { id: plan.id })
+        .then(function(res) {
+            console.log(res);
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
             $scope.newItem = {
@@ -211,13 +248,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
 
         $('#plans-list').modal('hide');
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
     };
 
     $scope.getAll = function() {

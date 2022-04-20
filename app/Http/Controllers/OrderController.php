@@ -225,14 +225,24 @@ class OrderController extends Controller
     {
         return view('orders.received-list', [
             "categories"    => ItemCategory::all(),
+            "planTypes"     => PlanType::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);
     }
 
-    public function doReceived()
+    public function doReceived(Request $req)
     {
-
+        $plan = Plan::find($req['id']);
+        $plan->received_date = date('Y-m-d h:i:s');
+        $plan->received_user = 'test';
+        $plan->status = 2;
+    
+        if ($plan->save()) {
+            return [
+                'plan' => $plan,
+            ];
+        }
     }
 
     public function printCancelForm($id)

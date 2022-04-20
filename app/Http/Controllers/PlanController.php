@@ -117,7 +117,9 @@ class PlanController extends Controller
                     ->with('budget','depart','division')
                     ->with('planItem','planItem.unit')
                     ->with('planItem.item','planItem.item.category')
-                    ->where('plan_type_id', $type)
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plan_type_id', $type);
+                    })
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })

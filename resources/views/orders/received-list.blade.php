@@ -18,9 +18,9 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planAssetCtrl"
+        ng-controller="orderCtrl"
         ng-init="
-            getAll();
+            getPlans(2, setPlans);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -45,7 +45,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getPlans(2, setPlans)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -60,7 +60,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getPlans(2, setPlans)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -99,7 +99,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getPlans(2, setPlans)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -120,9 +120,13 @@
                                 <h3 class="box-title">รับเอกสารขอสนับสนุน</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
-                                    เพิ่มรายการ
-                                </a>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary pull-right"
+                                    ng-click="showPlansToReceives()"
+                                >
+                                    ลงรับเอกสาร
+                                </button>
                             </div>
                         </div>
                     </div><!-- /.box-header -->
@@ -152,8 +156,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in assets">
-                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
+                                <tr ng-repeat="(index, plan) in plans">
+                                    <td style="text-align: center;">@{{ index+plans_plans_pager.from }}</td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
@@ -243,45 +247,45 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
+                                หน้า @{{ plans_pager.current_page }} จาก @{{ plans_pager.last_page }}
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
+                                จำนวน @{{ plans_pager.total }} รายการ
                             </div>
                             <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                                    <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setAssets)" aria-label="Previous">
+                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="plans_pager.last_page > 1">
+                                    <li ng-if="plans_pager.current_page !== 1">
+                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.path+ '?page=1', setAssets)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
-                                    <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setAssets)" aria-label="Prev">
+                                    <li ng-class="{'disabled': (plans_pager.current_page==1)}">
+                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.prev_page_url, setAssets)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
-                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl(pager.path + '?page=' +i)">
+                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': plans_pager.current_page==i}">
+                                        <a href="#" ng-click="getDataWithUrl(plans_pager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
 
-                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                        <a href="#" ng-click="pager.path">
+                                    <!-- <li ng-if="plans_pager.current_page < plans_pager.last_page && (plans_pager.last_page - plans_pager.current_page) > 10">
+                                        <a href="#" ng-click="plans_pager.path">
                                             ...
                                         </a>
                                     </li> -->
 
-                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setAssets)" aria-label="Next">
+                                    <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
+                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.next_page_url, setAssets)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
-                                    <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setAssets)" aria-label="Previous">
+                                    <li ng-if="plans_pager.current_page !== plans_pager.last_page">
+                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, setAssets)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
@@ -300,6 +304,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('orders._receive-list')
 
     </section>
 

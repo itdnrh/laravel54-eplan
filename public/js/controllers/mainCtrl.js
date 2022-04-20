@@ -50,7 +50,8 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
                         ? (moment().year() + 544).toString()
                         : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
-    $scope.planType = "";
+    $scope.cboPlanType = "";
+    $scope.cboSupplier = "";
     $scope.cboCategory = "";
     $scope.cboDepart = "";
     $scope.cboStatus = "";
