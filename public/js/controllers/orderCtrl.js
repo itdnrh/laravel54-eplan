@@ -153,9 +153,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans = [];
         $scope.plans_pager = null;
 
-        let type = $scope.order.plan_type_id === '' ? 1 : $scope.order.plan_type_id;
+        let type = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&status=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&status=2`)
         .then(function(res) {
             $scope.setPlans(res);
 
