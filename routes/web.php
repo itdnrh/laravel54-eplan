@@ -144,8 +144,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('orders/getOrder/{id}', 'OrderController@getOrder');
     Route::post('orders/update', 'OrderController@update');
     Route::post('orders/delete/{id}', 'OrderController@delete');
-    Route::post('orders/approve', 'OrderController@doApprove');
-    Route::post('orders/receive', 'OrderController@doReceive');
+    Route::get('orders/received', 'OrderController@received');
+    Route::post('orders/received', 'OrderController@doReceived');
     Route::get('orders/print/{id}', 'OrderController@printCancelForm');
 
     /** ตรวจรับพัสดุ */

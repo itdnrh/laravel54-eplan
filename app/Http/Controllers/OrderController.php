@@ -221,6 +221,20 @@ class OrderController extends Controller
         }
     }
 
+    public function received()
+    {
+        return view('orders.received-list', [
+            "categories"    => ItemCategory::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+        ]);
+    }
+
+    public function doReceived()
+    {
+
+    }
+
     public function printCancelForm($id)
     {
         $leave      = Leave::where('id', $id)
