@@ -252,10 +252,10 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         $scope.persons = [];
         $scope.persons_pager = null;
 
-        let depart = $scope.cboDepart == '' ? 0 : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? 0 : $scope.searchKey;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
 
-        $http.get(`${CONFIG.baseUrl}/persons/search/${depart}/${keyword}`)
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
         .then(function(res) {
             $scope.setPersons(res);
 
@@ -266,7 +266,7 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         });
     };
 
-    $scope.getPersonsWithUrl = function(e, url, status, cb) {
+    $scope.getPersonsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -274,10 +274,10 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         $scope.persons = [];
         $scope.persons_pager = null;
 
-        let depart = $scope.cboDepart == '' ? 0 : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? 0 : $scope.searchKey;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
 
-        $http.get(`${url}`)
+        $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
         .then(function(res) {
             cb(res);
 
@@ -291,6 +291,7 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
     $scope.setPersons = function(res) {
         const { data, ...pager } = res.data.persons;
 
+        console.log(res.data.persons);
         $scope.persons = data;
         $scope.persons_pager = pager;
     };

@@ -20,11 +20,14 @@ class PersonController extends Controller
         ]);
     }
 
-    public function search($depart, $searchKey)
+    public function search(Request $req)
     {
+        $depart = $req->get('depart');
+        $searchKey = $req->get('searchKey');
+
         $persons = Person::whereNotIn('person_state', [6,7,8,9,99])
                     ->join('level', 'personal.person_id', '=', 'level.person_id')
-                    ->where('level.faction_id', '5')
+                    // ->where('level.faction_id', '5')
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('level.depart_id', $depart);
                     })

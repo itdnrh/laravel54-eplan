@@ -44,7 +44,7 @@
                         <tbody>
                             <tr ng-repeat="(index, person) in persons">
                                 <td style="text-align: center;">
-                                    @{{ pager.from + index }}
+                                    @{{ persons_pager.from + index }}
                                 </td>
                                 <td>
                                     @{{ person.prefix.prefix_name + person.person_firstname + ' ' + person.person_lastname }}
@@ -64,49 +64,51 @@
                         </tbody>
                     </table>
 
-                    <!-- Loading (remove the following to stop the loading)-->
-                    <div ng-show="loading" class="overlay">
-                        <i class="fa fa-refresh fa-spin"></i>
+                    <div class="loading-wrapper" ng-show="items.length === 0">
+                        <!-- Loading (remove the following to stop the loading)-->
+                        <div ng-show="loading" class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <!-- end loading -->
                     </div>
-                    <!-- end loading -->
 
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <div class="row">
                         <div class="col-md-4">
                             <span class="pull-left" style="margin-top: 5px;">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }} | 
-                                จำนวน @{{ pager.total }} รายการ
+                                หน้า @{{ persons_pager.current_page }} จาก @{{ persons_pager.last_page }} | 
+                                จำนวน @{{ persons_pager.total }} รายการ
                             </span>
                         </div>
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
-                                <li ng-if="pager.current_page !== 1">
-                                    <a ng-click="getDataWithURL($event, pager.path+ '?page=1', setPersons)" aria-label="Previous">
+                                <li ng-if="persons_pager.current_page !== 1">
+                                    <a ng-click="getPersonsWithUrl($event, persons_pager.path+ '?page=1', setPersons)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
-                                <li ng-class="{'disabled': (pager.current_page==1)}">
-                                    <a ng-click="getDataWithURL($event, pager.prev_page_url, setPersons)" aria-label="Prev">
+                                <li ng-class="{'disabled': (persons_pager.current_page==1)}">
+                                    <a ng-click="getPersonsWithUrl($event, persons_pager.prev_page_url, setPersons)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
 
-                                <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                    <a href="@{{ pager.url(pager.current_page + 10) }}">
+                                <!-- <li ng-if="persons_pager.current_page < persons_pager.last_page && (persons_pager.last_page - persons_pager.current_page) > 10">
+                                    <a href="@{{ persons_pager.url(persons_pager.current_page + 10) }}">
                                         ...
                                     </a>
                                 </li> -->
 
-                                <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                    <a ng-click="getDataWithURL($event, pager.next_page_url, setPersons)" aria-label="Next">
+                                <li ng-class="{'disabled': (persons_pager.current_page==persons_pager.last_page)}">
+                                    <a ng-click="getPersonsWithUrl($event, persons_pager.next_page_url, setPersons)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
-                                <li ng-if="pager.current_page !== pager.last_page">
-                                    <a ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setPersons)" aria-label="Previous">
+                                <li ng-if="persons_pager.current_page !== persons_pager.last_page">
+                                    <a ng-click="getPersonsWithUrl($event, persons_pager.path+ '?page=' +persons_pager.last_page, setPersons)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>
