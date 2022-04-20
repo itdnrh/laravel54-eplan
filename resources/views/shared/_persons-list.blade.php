@@ -56,7 +56,7 @@
                                     @{{ person.member_of.depart.depart_name }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="#" class="btn btn-primary" ng-click="onSelectedPerson($event, person, personListsCallback)">
+                                    <a href="#" class="btn btn-primary" ng-click="onSelectedPerson(selectedMode, person)">
                                         เลือก
                                     </a>
                                 </td>
@@ -113,7 +113,7 @@
                             </ul>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger" ng-click="onSelectedPerson($event, null, personListsCallback)">
+                            <button type="button" class="btn btn-danger" ng-click="onSelectedPerson(selectedMode, null)">
                                 ปิด
                             </button>
                         </div>

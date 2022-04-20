@@ -329,7 +329,7 @@
                                         <button
                                             type="button"
                                             class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList()"
+                                            ng-click="showPersonList(1)"
                                             style="margin-left: 5px;"
                                         >
                                             <i class="fa fa-plus"></i>
@@ -337,7 +337,7 @@
                                     </label>
                                     <div style="display: flex; min-height: 50px;">
                                         <ul style="width: 90%; margin: 4px 0; border: 1px solid: red;">
-                                            <li ng-repeat="person in support.insp_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="person in support.spec_committee" style="margin: 4px 0;">
                                                 <div style="display: flex; justify-content: space-between; padding: 2px;">
                                                     <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
                                                     <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
@@ -359,7 +359,7 @@
                                         <button
                                             type="button"
                                             class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList()"
+                                            ng-click="showPersonList(2)"
                                             style="margin-left: 5px;"
                                         >
                                             <i class="fa fa-plus"></i>
@@ -429,7 +429,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-info btn-flat"
-                                                ng-click="showPersonList()"
+                                                ng-click="showPersonList(3)"
                                             >
                                                 ...
                                             </button>

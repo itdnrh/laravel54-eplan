@@ -239,10 +239,12 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
 
     };
 
-    $scope.showPersonList = () => {
+    $scope.showPersonList = (_selectedMode) => {
         $('#persons-list').modal('show');
 
         $scope.getPersons();
+
+        $scope.selectedMode = _selectedMode;
     };
 
     $scope.getPersons = async () => {
@@ -255,7 +257,6 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
 
         $http.get(`${CONFIG.baseUrl}/persons/search/${depart}/${keyword}`)
         .then(function(res) {
-            console.log(res);
             $scope.setPersons(res);
 
             $scope.loading = false;
@@ -294,11 +295,12 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         $scope.persons_pager = pager;
     };
 
+    $scope.selectedMode = '';
     $scope.onSelectedPerson = (mode, person) => {
         if (person) {
-            if (mode === 1) {
+            if (parseInt(mode) === 1) {
                 $scope.support.spec_committee.push(person)
-            } else if (mode === 2) {
+            } else if (parseInt(mode) == 2) {
                 $scope.support.insp_committee.push(person)
             } else {
                 $scope.support.contact_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
@@ -307,5 +309,6 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         }
 
         $('#persons-list').modal('hide');
+        $scope.selectedMode = '';
     };
 });
