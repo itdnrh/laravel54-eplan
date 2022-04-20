@@ -1,23 +1,83 @@
 app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, PaginateService) {
 /** ################################################################################## */
-    $scope.leaves = [];
-    $scope.pager = [];
     $scope.loading = false;
-    $scope.cboLeaveType = '';
-    $scope.cboYear = parseInt(moment().format('MM')) > 9
-                        ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
-    $scope.histories = null;
-    $scope.vacation = null;
 
-    $scope.getSummary = function(personId) {
+    $scope.supports = [];
+    $scope.pager = [];
+
+    $scope.plans = [];
+    $scope.plans_pager = null;
+
+    $scope.support = {
+        doc_no: '',
+        doc_date: '',
+        year: '',
+        plan_type_id: '',
+        total: '',
+        contact_person: '',
+        remark: '',
+        details: [],
+        spec_committee: [],
+        insp_committee: [],
+    };
+
+    $scope.newItem = {
+        plan_no: '',
+        plan_detail: '',
+        plan_depart: '',
+        plan_id: '',
+        item_id: '',
+        price_per_unit: '',
+        unit: null,
+        unit_id: '',
+        amount: '',
+        sum_price: ''
+    };
+
+    /** ============================== Init Form elements ============================== */
+    let dtpOptions = {
+        autoclose: true,
+        language: 'th',
+        format: 'dd/mm/yyyy',
+        thaiyear: true,
+        todayBtn: true,
+        todayHighlight: true
+    };
+    $('#po_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            console.log(e);
+        })
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
+    $scope.clearNewItem = () => {
+        $scope.newItem = {
+            plan_no: '',
+            plan_detail: '',
+            plan_depart: '',
+            plan_id: '',
+            item_id: '',
+            price_per_unit: '',
+            unit_id: '',
+            amount: '',
+            sum_price: ''
+        };
+    };
+
+    $scope.getAll = function() {
         $scope.loading = true;
+        $scope.supports = [];
+        $scope.pager = null;
 
-        $http.get(`${CONFIG.baseUrl}/histories/stat/${personId}/${$scope.cboYear}`)
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+
+        $http.get(`${CONFIG.baseUrl}/supports/search?depart=${depart}$year=${year}`)
         .then(function(res) {
-            $scope.histories = res.data.histories;
-            $scope.vacation = res.data.vacation;
+            $scope.setSupports(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -26,45 +86,20 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         });
     }
 
-    $scope.getPersonHistories = function(personId) {
-        $scope.loading = true;
-
-        const type = $scope.cboLeaveType === '' ? '' : $scope.cboLeaveType;
-
-        $http.get(`${CONFIG.baseUrl}/histories/${personId}/${$scope.cboYear}/person?type=${type}`)
-        .then(function(res) {
-            $scope.loading = false;
-
-            $scope.setLeaves(res);
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setLeaves = function(res) {
-        const { data, ...pager } = res.data.leaves;
-
-        $scope.leaves = data;
-        $scope.pager = pager;
-    };
-
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.getDataWithUrl = function(e, url, cb) {
 		/** Check whether parent of clicked a tag is .disabled just do nothing */
 		if ($(e.currentTarget).parent().is('li.disabled')) return;
 
-        $scope.leaves = [];
-        $scope.pager = [];
-
         $scope.loading = true;
+        $scope.supports = [];
+        $scope.pager = null;
 
-        const type = $scope.cboLeaveType === '' ? '' : $scope.cboLeaveType;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        console.log(`${URL}&type=${type}`);
-
-        $http.get(`${URL}&type=${type}`)
+        $http.get(`${url}&depart=${depart}$year=${year}`)
         .then(function(res) {
-            $scope.setLeaves(res);
+            $scope.setSupports(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -73,20 +108,128 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         });
     };
 
-    $scope.arrearToExcel = function(URL) {
-        console.log($scope.debts);
+    $scope.setSupports = function(res) {
+        const { data, ...pager } = res.data.leaves;
 
-        if($scope.debts.length == 0) {
-            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
-        } else {
-            var debtDate = ($("#debtDate").val()).split(",");
-            var sDate = debtDate[0].trim();
-            var eDate = debtDate[1].trim();
-            var debtType = ($("#debtType").val() == '') ? '0' : $("#debtType").val();
-            var creditor = ($("#creditor").val() == '') ? '0' : $("#creditor").val();
-            var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+        $scope.supports = data;
+        $scope.pager = pager;
+    };
 
-            window.location.href = CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
+    $scope.showPlansList = () => {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0`)
+        .then(function(res) {
+            $scope.setPlans(res);
+
+            $scope.loading = false;
+
+            $('#plans-list').modal('show');
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlans = (type, status) => {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            $scope.setPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlansWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.plans_pager = pager;
+    };
+
+    $scope.onSelectedPlan = (e, plan) => {
+        if (plan) {
+            $scope.newItem = {
+                plan_no: plan.plan_no,
+                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
+                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
+                plan_id: plan.id,
+                item_id: plan.plan_item.item_id,
+                price_per_unit: plan.price_per_unit,
+                unit_id: `${plan.plan_item.unit_id}`,
+                unit: plan.plan_item.unit,
+                amount: plan.amount,
+                sum_price: plan.sum_price
+            };
         }
+
+        $('#plans-list').modal('hide');
+    };
+
+    $scope.calculateTotal = () => {
+        let total = 0;
+
+        total = $scope.support.details.reduce((sum, curVal) => {
+            return sum = sum + curVal.sum_price;
+        }, 0);
+
+        $scope.support.total = total;
+        $('#total').val(total);
+    };
+
+    $scope.addOrderItem = () => {
+        $scope.support.details.push({ ...$scope.newItem });
+
+        $scope.calculateTotal();
+        $scope.clearNewItem();
+    };
+
+    $scope.removeOrderItem = (index) => {
+        console.log(index);
+        // $scope.order.details.push({ ...$scope.newItem });
+
+        $scope.calculateTotal();
+    };
+
+    $scope.store = function() {
+
     };
 });

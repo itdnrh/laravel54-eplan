@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="orderCtrl"
+        ng-controller="supportCtrl"
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
@@ -34,41 +34,42 @@
                         <h3 class="box-title">เพิ่มบันทึกขอสนับสนุน</h3>
                     </div>
 
-                    <form id="frmNewPO" name="frmNewPO" method="post" action="{{ url('/orders/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewSupport" name="frmNewSupport" method="post" action="{{ url('/supports/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
+                        <input type="hidden" id="depart" name="depart" value="{{ Auth::user()->memberOf->depart_id }}">
                         {{ csrf_field() }}
 
                         <div class="box-body">
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_no')}"
                                 >
                                     <label>เลขที่บันทึก :</label>
                                     <input  type="text"
-                                            id="po_no"
-                                            name="po_no"
-                                            ng-model="order.po_no"
+                                            id="doc_no"
+                                            name="doc_no"
+                                            ng-model="support.doc_no"
                                             class="form-control"
                                             tabindex="6">
-                                    <span class="help-block" ng-show="checkValidate(order, 'po_no')">
+                                    <span class="help-block" ng-show="checkValidate(support, 'doc_no')">
                                         กรุณาระบุเลขที่บันทึก
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_date')}"
                                 >
                                     <label>วันที่บันทึก :</label>
                                     <input
                                         type="text"
-                                        id="po_date"
-                                        name="po_date"
-                                        ng-model="order.po_date"
+                                        id="doc_date"
+                                        name="doc_date"
+                                        ng-model="support.doc_date"
                                         class="form-control pull-right"
                                         tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(order, 'po_date')">
+                                    <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
                                         กรุณาระบุวันที่บันทึก
                                     </span>
                                 </div>
@@ -77,13 +78,13 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="year"
                                         name="year"
-                                        ng-model="order.year"
+                                        ng-model="support.year"
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -91,19 +92,19 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'year')">
+                                    <span class="help-block" ng-show="checkValidate(support, 'year')">
                                         กรุณาเลือกเขียนที่
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
                                 >
                                     <label>ประเภทพัสดุ :</label>
-                                    <select id="supplier_id"
-                                            name="supplier_id"
-                                            ng-model="order.supplier_id"
+                                    <select id="plan_type_id"
+                                            name="plan_type_id"
+                                            ng-model="support.plan_type_id"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
@@ -114,7 +115,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'supplier_id')">
+                                    <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
                                         กรุณาเลือกประเภทพัสดุ
                                     </span>
                                 </div>
@@ -176,7 +177,11 @@
                                                             ng-model="newItem.item_id"
                                                         />
                                                         <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-info btn-flat" ng-click="showPlansList();">
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-info btn-flat"
+                                                                ng-click="showPlansList();"
+                                                            >
                                                                 ...
                                                             </button>
                                                         </span>
@@ -251,7 +256,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr ng-repeat="(index, detail) in order.details">
+                                            <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan_no }}</td>
                                                 <td>
@@ -286,7 +291,7 @@
                                                         type="text"
                                                         id="total"
                                                         name="total"
-                                                        value="@{{ order.total | currency:'':2}}"
+                                                        value="@{{ support.total | currency:'':2}}"
                                                         class="form-control"
                                                         style="text-align: center;"
                                                         tabindex="5"
@@ -302,36 +307,54 @@
                                 <div class="col-md-6">
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'total')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(support, 'total')}"
                                     >
                                         <label>คณะกรรมการกำหนดคุณลักษณะ :</label>
-                                        <input  type="text"
-                                                id="total"
-                                                name="total"
-                                                ng-model="order.total"
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="contact_detail"
+                                                name="contact_detail"
                                                 class="form-control"
-                                                style="text-align: right;"
-                                                tabindex="5" />
-                                        <span class="help-block" ng-show="checkValidate(order, 'total')">
+                                                ng-model="newItem.contact_detail"
+                                                readonly
+                                            />
+                                            <input
+                                                type="hidden"
+                                                id="contact_person"
+                                                name="contact_person"
+                                                class="form-control"
+                                                ng-model="newItem.contact_person"
+                                            />
+                                            <span class="input-group-btn">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-info btn-flat"
+                                                >
+                                                    ...
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <span class="help-block" ng-show="checkValidate(support, 'total')">
                                             กรุณาระบุรวมเป็นเงิน
                                         </span>
                                     </div>
 
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'remark')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(support, 'remark')}"
                                     >
                                         <label>หมายเหตุ :</label>
                                         <input
                                             type="text"
                                             id="remark"
                                             name="remark"
-                                            ng-model="order.remark"
+                                            ng-model="support.remark"
                                             rows="3"
                                             class="form-control"
                                             tabindex="1"
                                         />
-                                        <span class="help-block" ng-show="checkValidate(order, 'remark')">
+                                        <span class="help-block" ng-show="checkValidate(support, 'remark')">
                                             กรุณาระบุหมายเหตุ
                                         </span>
                                     </div>
@@ -339,51 +362,65 @@
                                 <div class="col-md-6">
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'total')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(support, 'total')}"
                                     >
                                         <label>คณะกรรมการตรวจรับ :</label>
-                                        <input  type="text"
-                                                id="total"
-                                                name="total"
-                                                ng-model="order.total"
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="contact_detail"
+                                                name="contact_detail"
                                                 class="form-control"
-                                                style="text-align: right;"
-                                                tabindex="5" />
-                                        <span class="help-block" ng-show="checkValidate(order, 'total')">
+                                                ng-model="newItem.contact_detail"
+                                                readonly
+                                            />
+                                            <input
+                                                type="hidden"
+                                                id="contact_person"
+                                                name="contact_person"
+                                                class="form-control"
+                                                ng-model="newItem.contact_person"
+                                            />
+                                            <span class="input-group-btn">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-info btn-flat"
+                                                >
+                                                    ...
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <span class="help-block" ng-show="checkValidate(support, 'total')">
                                             กรุณาระบุรวมเป็นเงิน
                                         </span>
                                     </div>
 
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'total')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(support, 'contact_detail')}"
                                     >
                                         <label>ผู้ประสานงาน :</label>
                                         <div class="input-group">
                                             <input
                                                 type="text"
-                                                id="plan_detail"
-                                                name="plan_detail"
+                                                id="contact_detail"
+                                                name="contact_detail"
                                                 class="form-control"
-                                                ng-model="newItem.plan_detail"
+                                                ng-model="newItem.contact_detail"
                                                 readonly
                                             />
                                             <input
                                                 type="hidden"
-                                                id="plan_id"
-                                                name="plan_id"
+                                                id="contact_person"
+                                                name="contact_person"
                                                 class="form-control"
-                                                ng-model="newItem.plan_id"
-                                            />
-                                            <input
-                                                type="hidden"
-                                                id="item_id"
-                                                name="item_id"
-                                                class="form-control"
-                                                ng-model="newItem.item_id"
+                                                ng-model="newItem.contact_person"
                                             />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info btn-flat" ng-click="showPlansList();">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-info btn-flat"
+                                                >
                                                     ...
                                                 </button>
                                             </span>
@@ -396,7 +433,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/orders/validate', order, 'frmNewPO', store)"
+                                ng-click="formValidate($event, '/supports/validate', support, 'frmNewSupport', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก
@@ -409,7 +446,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('orders._plans-list')
+        @include('supports._plans-list')
 
     </section>
 

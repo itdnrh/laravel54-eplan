@@ -109,7 +109,7 @@ class PlanController extends Controller
         // }
         // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
         $items = [];
-        if($cate != '0') {
+        if(!empty($cate)) {
             $items = Item::where('category_id', $cate)->pluck('id');
         }
 
@@ -129,7 +129,7 @@ class PlanController extends Controller
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
                     })
-                    ->when(!empty($status), function($q) use ($status) {
+                    ->when($status != '', function($q) use ($status) {
                         $q->where('status', $status);
                     })
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
