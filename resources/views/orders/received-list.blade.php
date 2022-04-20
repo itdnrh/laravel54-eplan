@@ -38,7 +38,7 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -53,6 +53,22 @@
                                         </option>
                                     </select>
                                 </div><!-- /.form group -->
+                                <div class="form-group col-md-6">
+                                    <label>ประเภทพัสดุ</label>
+                                    <select
+                                        style="margin-right: 1rem;"
+                                        class="form-control"
+                                        ng-model="cboPlanType"
+                                        ng-change="onFilterCategories(cboPlanType); getPlans(2);"
+                                    >
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>ประเภทครุภัณฑ์</label>
                                     <select
