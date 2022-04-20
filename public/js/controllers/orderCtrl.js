@@ -172,8 +172,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans = [];
         $scope.loading = true;
 
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
@@ -223,8 +223,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.getPlansToReceives = function(res) {
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=&status=1`)
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=1`)
         .then(function(res) {
+            console.log(res);
             $scope.loading = false;
 
             $scope.setPlansToReceives(res);

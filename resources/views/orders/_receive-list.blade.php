@@ -12,32 +12,69 @@
                     <!-- // TODO: Filtering controls -->
                     <div class="box">
                         <div class="box-body">
-                            <div style="display: flex; flex-direction: row;">
-                                <select
-                                    style="margin-right: 1rem;"
-                                    class="form-control"
-                                    ng-model="cboPlanType"
-                                    ng-change="onFilterCategories(cboPlanType); getPlansToReceives();"
-                                >
-                                    <option value="">-- เลือกประเภทแผน --</option>
-                                    @foreach($planTypes as $planType)
-                                        <option value="{{ $planType->id }}">
-                                            {{ $planType->plan_type_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-        
-                                <select
-                                    style="margin-right: 1rem;"
-                                    class="form-control"
-                                    ng-model="cboCategory"
-                                    ng-change="getPlansToReceives();"
-                                >
-                                    <option value="">-- เลือกประเภทพัสดุ --</option>
-                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select
+                                        style="margin-right: 1rem;"
+                                        class="form-control"
+                                        ng-model="cboPlanType"
+                                        ng-change="onFilterCategories(cboPlanType); getPlansToReceives();"
+                                    >
+                                        <option value="">-- เลือกประเภทแผน --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select
+                                        style="margin-right: 1rem;"
+                                        class="form-control"
+                                        ng-model="cboCategory"
+                                        ng-change="getPlansToReceives();"
+                                    >
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
                                             @{{ category.name }}
-                                    </option>
-                                </select>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 5px;">
+                                <div class="col-md-6">
+                                    <select
+                                        id="cboFaction"
+                                        name="cboFaction"
+                                        ng-model="cboFaction"
+                                        class="form-control"
+                                        ng-change="onFactionSelected(cboFaction)"
+                                    >
+                                        <option value="">-- กลุ่มภารกิจ --</option>
+                                        @foreach($factions as $faction)
+
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select
+                                        id="cboDepart"
+                                        name="cboDepart"
+                                        ng-model="cboDepart"
+                                        ng-change="getPlansToReceives()"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- กลุ่มงาน --</option>
+                                        <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                                            @{{ dep.depart_name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div><!-- /.box-body -->
                     </div>

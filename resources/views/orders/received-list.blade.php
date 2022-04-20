@@ -24,7 +24,7 @@
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
-            }, 1);"
+            });"
     >
 
         <div class="row">

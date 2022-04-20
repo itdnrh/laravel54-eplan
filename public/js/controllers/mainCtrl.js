@@ -158,6 +158,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.forms.divisions = $scope.temps.divisions.filter(div => div.depart_id == depart);
     };
 
+    $scope.onFilterCategories = function(type) {
+        $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
+    };
+
     $scope.onPlanTypeSelected = function(type) {
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
 
