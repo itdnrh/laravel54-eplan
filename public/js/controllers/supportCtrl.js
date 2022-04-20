@@ -11,6 +11,8 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
     $scope.support = {
         doc_no: '',
         doc_date: '',
+        depart_id: '',
+        division_id: '',
         year: '',
         plan_type_id: '',
         total: '',

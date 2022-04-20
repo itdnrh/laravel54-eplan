@@ -35,8 +35,26 @@
                     </div>
 
                     <form id="frmNewSupport" name="frmNewSupport" method="post" action="{{ url('/supports/store') }}" role="form" enctype="multipart/form-data">
-                        <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
-                        <input type="hidden" id="depart" name="depart" value="{{ Auth::user()->memberOf->depart_id }}">
+                        <input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="depart"
+                            name="depart"
+                            value="{{ Auth::user()->memberOf->depart_id }}"
+                            ng-model="support.depart_id"
+                        />
+                        <input
+                            type="hidden"
+                            id="division"
+                            name="division"
+                            value="{{ Auth::user()->memberOf->division_id }}"
+                            ng-model="support.division_id"
+                        />
                         {{ csrf_field() }}
 
                         <div class="box-body">
