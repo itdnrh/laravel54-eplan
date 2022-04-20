@@ -321,128 +321,119 @@
                                     </table>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div
-                                        class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(support, 'total')}"
-                                    >
-                                        <label>คณะกรรมการกำหนดคุณลักษณะ :</label>
-                                        <div class="input-group">
-                                            <input
-                                                type="text"
-                                                id="contact_detail"
-                                                name="contact_detail"
-                                                class="form-control"
-                                                ng-model="newItem.contact_detail"
-                                                readonly
-                                            />
-                                            <input
-                                                type="hidden"
-                                                id="contact_person"
-                                                name="contact_person"
-                                                class="form-control"
-                                                ng-model="newItem.contact_person"
-                                            />
-                                            <span class="input-group-btn">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-info btn-flat"
-                                                >
-                                                    ...
-                                                </button>
-                                            </span>
-                                        </div>
-                                        <span class="help-block" ng-show="checkValidate(support, 'total')">
-                                            กรุณาระบุรวมเป็นเงิน
-                                        </span>
+                                    <label>
+                                        คณะกรรมการกำหนดคุณลักษณะ :
+                                        <button
+                                            type="button"
+                                            class="btn bg-maroon btn-sm"
+                                            ng-click="showPersonList()"
+                                            style="margin-left: 5px;"
+                                        >
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </label>
+                                    <div style="display: flex; min-height: 50px;">
+                                        <ul style="width: 90%; margin: 4px 0; border: 1px solid: red;">
+                                            <li ng-repeat="person in support.insp_committee" style="margin: 4px 0;">
+                                                <div style="display: flex; justify-content: space-between; padding: 2px;">
+                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <a href="" class="btn btn-danger btn-xs">
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'total')">
+                                        กรุณาระบุรวมเป็นเงิน
+                                    </span>
+                                </div>
 
-                                    <div
-                                        class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(support, 'remark')}"
-                                    >
-                                        <label>หมายเหตุ :</label>
+                                <div class="col-md-6">
+                                    <label>
+                                        คณะกรรมการตรวจรับ :
+                                        <button
+                                            type="button"
+                                            class="btn bg-maroon btn-sm"
+                                            ng-click="showPersonList()"
+                                            style="margin-left: 5px;"
+                                        >
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </label>
+                                    <div style="display: flex; min-height: 50px;">
+                                        <ul style="width: 90%; margin: 4px 0; border: 1px solid: red;">
+                                            <li ng-repeat="person in support.insp_committee" style="margin: 4px 0;">
+                                                <div style="display: flex; justify-content: space-between; padding: 2px;">
+                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <a href="" class="btn btn-danger btn-xs">
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'total')">
+                                        กรุณาระบุรวมเป็นเงิน
+                                    </span>
+                                </div>
+                            </div><br>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'remark')}"
+                                >
+                                    <label>หมายเหตุ :</label>
+                                    <input
+                                        type="text"
+                                        id="remark"
+                                        name="remark"
+                                        ng-model="support.remark"
+                                        rows="3"
+                                        class="form-control"
+                                        tabindex="1"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(support, 'remark')">
+                                        กรุณาระบุหมายเหตุ
+                                    </span>
+                                </div>
+
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'contact_detail')}"
+                                >
+                                    <label>ผู้ประสานงาน :</label>
+                                    <div class="input-group">
                                         <input
                                             type="text"
-                                            id="remark"
-                                            name="remark"
-                                            ng-model="support.remark"
-                                            rows="3"
+                                            id="contact_detail"
+                                            name="contact_detail"
                                             class="form-control"
-                                            tabindex="1"
+                                            ng-model="support.contact_detail"
+                                            readonly
                                         />
-                                        <span class="help-block" ng-show="checkValidate(support, 'remark')">
-                                            กรุณาระบุหมายเหตุ
+                                        <input
+                                            type="hidden"
+                                            id="contact_person"
+                                            name="contact_person"
+                                            class="form-control"
+                                            ng-model="support.contact_person"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showPersonList()"
+                                            >
+                                                ...
+                                            </button>
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div
-                                        class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(support, 'total')}"
-                                    >
-                                        <label>คณะกรรมการตรวจรับ :</label>
-                                        <div class="input-group">
-                                            <input
-                                                type="text"
-                                                id="contact_detail"
-                                                name="contact_detail"
-                                                class="form-control"
-                                                ng-model="newItem.contact_detail"
-                                                readonly
-                                            />
-                                            <input
-                                                type="hidden"
-                                                id="contact_person"
-                                                name="contact_person"
-                                                class="form-control"
-                                                ng-model="newItem.contact_person"
-                                            />
-                                            <span class="input-group-btn">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-info btn-flat"
-                                                >
-                                                    ...
-                                                </button>
-                                            </span>
-                                        </div>
-                                        <span class="help-block" ng-show="checkValidate(support, 'total')">
-                                            กรุณาระบุรวมเป็นเงิน
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(support, 'contact_detail')}"
-                                    >
-                                        <label>ผู้ประสานงาน :</label>
-                                        <div class="input-group">
-                                            <input
-                                                type="text"
-                                                id="contact_detail"
-                                                name="contact_detail"
-                                                class="form-control"
-                                                ng-model="newItem.contact_detail"
-                                                readonly
-                                            />
-                                            <input
-                                                type="hidden"
-                                                id="contact_person"
-                                                name="contact_person"
-                                                class="form-control"
-                                                ng-model="newItem.contact_person"
-                                            />
-                                            <span class="input-group-btn">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-info btn-flat"
-                                                >
-                                                    ...
-                                                </button>
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -465,6 +456,7 @@
         </div><!-- /.row -->
 
         @include('supports._plans-list')
+        @include('shared._persons-list')
 
     </section>
 

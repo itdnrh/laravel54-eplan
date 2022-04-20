@@ -8,6 +8,9 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
     $scope.plans = [];
     $scope.plans_pager = null;
 
+    $scope.persons = [];
+    $scope.persons_pager = null;
+
     $scope.support = {
         doc_no: '',
         doc_date: '',
@@ -16,6 +19,7 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         year: '',
         plan_type_id: '',
         total: '',
+        contact_detail: '',
         contact_person: '',
         remark: '',
         details: [],
@@ -233,5 +237,75 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
 
     $scope.store = function() {
 
+    };
+
+    $scope.showPersonList = () => {
+        $('#persons-list').modal('show');
+
+        $scope.getPersons();
+    };
+
+    $scope.getPersons = async () => {
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? 0 : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? 0 : $scope.searchKey;
+
+        $http.get(`${CONFIG.baseUrl}/persons/search/${depart}/${keyword}`)
+        .then(function(res) {
+            console.log(res);
+            $scope.setPersons(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPersonsWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? 0 : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? 0 : $scope.searchKey;
+
+        $http.get(`${url}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPersons = function(res) {
+        const { data, ...pager } = res.data.persons;
+
+        $scope.persons = data;
+        $scope.persons_pager = pager;
+    };
+
+    $scope.onSelectedPerson = (mode, person) => {
+        if (person) {
+            if (mode === 1) {
+                $scope.support.spec_committee.push(person)
+            } else if (mode === 2) {
+                $scope.support.insp_committee.push(person)
+            } else {
+                $scope.support.contact_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.support.contact_person = person.person_id;
+            }
+        }
+
+        $('#persons-list').modal('hide');
     };
 });
