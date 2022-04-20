@@ -1,4 +1,4 @@
-app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, PaginateService) {
+app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
 
@@ -24,6 +24,7 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         remark: '',
         details: [],
         spec_committee: [],
+        env_committee: [],
         insp_committee: [],
     };
 
@@ -235,10 +236,6 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         $scope.calculateTotal();
     };
 
-    $scope.store = function() {
-
-    };
-
     $scope.showPersonList = (_selectedMode) => {
         $('#persons-list').modal('show');
 
@@ -310,5 +307,45 @@ app.controller('supportCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
 
         $('#persons-list').modal('hide');
         $scope.selectedMode = '';
+    };
+
+    
+    $scope.removePersonItem = (mode, person) => {
+        console.log(person);
+        console.log(parseInt(mode));
+        if (parseInt(mode) === 1) {
+            $scope.support.spec_committee = $scope.support.spec_committee.filter(sc => {
+                return sc.person_id !== person.person_id
+            });
+        } else if (parseInt(mode) === 2) {
+            $scope.support.insp_committee = $scope.support.insp_committee.filter(ic => {
+                return ic.person_id !== person.person_id
+            });
+        } else {
+
+        }
+    };
+
+    $scope.onValidateForm = function(e) {
+        e.preventDefault();
+
+        $scope.support.depart_id = $('#depart_id').val();
+        $scope.support.division_id = $('#division_id').val();
+
+        $rootScope.formValidate(e, '/supports/validate', $scope.support, 'frmNewSupport', $scope.store)
+    };
+
+    $scope.store = function() {
+        console.log($scope.support);
+
+        $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
+        .then(function(res) {
+            console.log(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
     };
 });

@@ -11,6 +11,7 @@ use App\Models\SupportDetail;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\Unit;
+use App\Models\Committee;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -21,23 +22,27 @@ class SupportController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'year'          => 'required',
-            'doc_no'         => 'required',
-            'doc_date'       => 'required',
-            'supplier_id'   => 'required',
-            'total'         => 'required',
-            'vat_rate'      => 'required',
-            'vat'           => 'required',
-            'net_total'     => 'required',
+            'doc_no'            => 'required',
+            'doc_date'          => 'required',
+            'year'              => 'required',
+            'plan_type_id'      => 'required',
+            'depart_id'         => 'required',
+            'total'             => 'required',
+            'spec_committee'    => 'required',
+            'insp_committee'    => 'required',
+            'contact_person'    => 'required',
         ];
 
         $messages = [
-            'reason.required'       => 'กรุณาระบุเหตุผลการยกเลิก',
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_period.required'   => 'กรุณาเลือกช่วงเวลา',
+            'doc_no.required'           => 'กรุณาระบุเลขที่เอกสาร',
+            'doc_date.required'         => 'กรุณาเลือกวันที่เอกสาร',
+            'year.required'             => 'กรุณาเลือกปีงบประมาณ',
+            'plan_type_id.required'     => 'กรุณาเลือกประเภทพัสดุ',
+            'depart_id.required'        => 'กรุณาเลือกกลุ่มงาน',
+            'total.required'            => 'กรุณาเลือกถึงวันที่',
+            'spec_committee.required'   => 'กรุณาเลือกคณะกรรมการกำหนดคุณลักษณะ',
+            'insp_committee.required'   => 'กรุณาเลือกคณะกรรมการตรวจรับ',
+            'contact_person.required'   => 'กรุณาระบุผู้ประสานงาน',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -88,36 +93,79 @@ class SupportController extends Controller
 
     public function store(Request $req)
     {
-        $order = new Order;
-        $order->year            = $req['year'];
-        $order->po_no           = $req['po_no'];
-        $order->po_date         = convThDateToDbDate($req['po_date']);
-        $order->supplier_id     = $req['supplier_id'];
-        $order->remark          = $req['remark'];
-        $order->total           = $req['total'];
-        $order->vat_rate        = $req['vat_rate'];
-        $order->vat             = $req['vat'];
-        $order->net_total       = $req['net_total'];
-        // $order->user_id         = $req['user_id'];
+        try {
+            $support = new Support;
+            $support->doc_no            = $req['doc_no'];
+            $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            $support->year              = $req['year'];
+            $support->depart_id         = $req['depart_id'];
+            $support->division_id       = $req['division_id'];
+            $support->plan_type_id      = $req['plan_type_id'];
+            $support->total             = $req['total'];
+            $support->contact_person    = $req['contact_person'];
+            $support->remark            = $req['remark'];
+            // $support->user_id         = $req['user_id'];
 
-        if ($order->save()) {
-            $orderId = $order->id;
+            if ($support->save()) {
+                $supportId = $support->id;
 
-            foreach($req['details'] as $item) {
-                $detail = new OrderDetail;
-                $detail->order_id       = $orderId;
-                $detail->plan_id        = $item['plan_id'];
-                $detail->price_per_unit = $item['price_per_unit'];
-                $detail->unit_id        = $item['unit_id'];
-                $detail->amount         = $item['amount'];
-                $detail->sum_price      = $item['sum_price'];
+                foreach($req['details'] as $item) {
+                    $detail = new SupportDetail;
+                    $detail->support_id       = $supportId;
+                    $detail->plan_id        = $item['plan_id'];
+                    $detail->price_per_unit = $item['price_per_unit'];
+                    $detail->unit_id        = $item['unit_id'];
+                    $detail->amount         = $item['amount'];
+                    $detail->sum_price      = $item['sum_price'];
+                    $detail->save();
+                }
+                
+                /** คณะกรรมการกำหนดคุณลักษณะ */
+                foreach($req['spec_committee'] as $spec) {
+                    $comm = new Committee;
+                    $comm->support_id           = $supportId;
+                    $comm->committee_type_id    = 1;
+                    $comm->detail               = '';
+                    $comm->year                 = $req['year'];
+                    $comm->person_id            = $spec['person_id'];
+                    $comm->save();
+                }
 
-                $detail->save();
+                /** คณะกรรมการตรวจรับ */
+                foreach($req['insp_committee'] as $insp) {
+                    $comm = new Committee;
+                    $comm->support_id           = $supportId;
+                    $comm->committee_type_id    = 2;
+                    $comm->detail               = '';
+                    $comm->year                 = $req['year'];
+                    $comm->person_id            = $insp['person_id'];
+                    $comm->save();
+                }
+
+                /** คณะกรรมการเปิดซอง/พิจารณาราคา */
+                // foreach($req['env_committee'] as $env) {
+                //     $comm = new Committee;
+                //     $comm->support_id           = $supportId;
+                //     $comm->committee_type_id    = 3;
+                //     $comm->detail               = '';
+                //     $comm->year                 = $req['year'];
+                //     $comm->person_id            = $env['person_id'];
+                //     $comm->save();
+                // }
+
+                /** Update status of plan data */
+                // Plan::where('id', $item['plan_id'])->update(['status' => 1]);
+
+                return [
+                    'status' => 1,
+                    'message' => 'Insertion successfully'
+                ];
             }
-
-            /** Update status of plan data */
-
-            // return redirect('/orders/list');
+        } catch (\Throwable $th) {
+            return [
+                'status' => 0,
+                'message' => 'Something went wrong!!'
+            ];
         }
     }
 
@@ -188,108 +236,5 @@ class SupportController extends Controller
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
         return renderPdf('forms.form03', $data);
-    }
-
-    public function getByPerson(Request $req, $personId)
-    {
-        $year = $req->get('year');
-        $type = $req->get('type');
-
-        return [
-            'cancellations' => Leave::where('leave_person', $personId)
-                                ->whereIn('status', [5,8,9])
-                                ->when(!empty($year), function($q) use($year) {
-                                    $q->where('year', $year);
-                                })
-                                ->when(!empty($type), function($q) use($type) {
-                                    $q->where('leave_type', $type);
-                                })
-                                ->with('person', 'person.prefix', 'person.position', 'person.academic')
-                                ->with('person.memberOf', 'person.memberOf.depart')
-                                ->with('delegate','delegate.prefix','delegate.position','delegate.academic')
-                                ->with('type','cancellation')
-                                ->orderBy('leave_date', 'DESC')
-                                ->paginate(10),
-        ];
-    }
-
-    public function doApprove(Request $req)
-    {
-        try {
-            $cancel = Cancellation::find($req['_id']);
-            $cancel->approved_comment   = $req['comment'];
-            $cancel->approved_date      = date('Y-m-d');
-            $cancel->approved_by        = Auth::user()->person_id;
-
-            if ($cancel->save()) {
-                /** Update status of cancelled leave data */
-                $leave = Leave::find($req['leave_id']);
-                $leave->status = $leave->leave_days == $cancel->days ? '9' : '8';
-                $leave->save();
-
-                /** Update cancelled leave histories data */
-                $history = History::where('person_id', $leave->leave_person)->first();
-
-                /** Decrease leave days coordineted leave type */
-                if ($leave->leave_type == '1') {
-                    $history->ill_days -= (float)$cancel->days;     // ลาป่วย
-                } else if ($leave->leave_type == '2') {
-                    $history->per_days -= (float)$cancel->days;     // ลากิจส่วนตัว
-                } else if ($leave->leave_type == '3') {
-                    $history->vac_days -= (float)$cancel->days;     // ลาพักผ่อน
-                } else if ($leave->leave_type == '4') {
-                    $history->lab_days -= (float)$leave->leave_days; // ลาคลอด
-                } else if ($leave->leave_type == '5') {
-                    $history->hel_days -= (float)$leave->leave_days; // ลาเพื่อดูแลบุตรและภรรยาหลังคลอด
-                } else if ($leave->leave_type == '6') {
-                    $history->ord_days -= (float)$cancel->days;     // ลาอุปสมบท
-                }
-
-                $history->save();
-
-                return redirect('/approvals/approve')
-                        ->with('status', 'ลงนามอนุมัติการขอยกเลิกวันลา ID: ' .$req['_id']. ' เรียบร้อยแล้ว !!');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-
-    public function doComment(Request $req)
-    {
-        try {
-            $cancel = Cancellation::find($req['_id']);
-            $cancel->commented_text   = $req['comment'];
-            $cancel->commented_date   = date('Y-m-d');
-            $cancel->commented_by     = Auth::user()->person_id;
-
-            if ($cancel->save()) {
-                /** Update status of cancelled leave data */
-                $leave = Leave::find($req['leave_id']);
-                $leave->status = $req['approved'];
-                $leave->save();
-
-                return redirect('/approvals/comment')
-                        ->with('status', 'ลงความเห็นการขอยกเลิกวันลา ID: ' .$req['_id']. ' เรียบร้อยแล้ว !!');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-
-    public function doReceive(Request $req)
-    {
-        try {
-            $cancel = Cancellation::find($req['_id']);
-            $cancel->received_date  = date('Y-m-d H:i:s');
-            $cancel->received_by    = Auth::user()->person_id;
-
-            if ($cancel->save()) {
-                return redirect('/approvals/receive')
-                        ->with('status', 'ลงรับเอกสารการขอยกเลิกวันลา ID: ' .$req['_id']. ' เรียบร้อยแล้ว !!');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
     }
 }

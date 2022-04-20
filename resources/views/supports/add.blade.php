@@ -43,8 +43,8 @@
                         />
                         <input
                             type="hidden"
-                            id="depart"
-                            name="depart"
+                            id="depart_id"
+                            name="depart_id"
                             value="{{ Auth::user()->memberOf->depart_id }}"
                             ng-model="support.depart_id"
                         />
@@ -71,7 +71,7 @@
                                             class="form-control"
                                             tabindex="6">
                                     <span class="help-block" ng-show="checkValidate(support, 'doc_no')">
-                                        กรุณาระบุเลขที่บันทึก
+                                        @{{ formError.errors.doc_no[0] }}
                                     </span>
                                 </div>
 
@@ -88,7 +88,7 @@
                                         class="form-control pull-right"
                                         tabindex="1">
                                     <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
-                                        กรุณาระบุวันที่บันทึก
+                                        @{{ formError.errors.doc_date[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                         </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(support, 'year')">
-                                        กรุณาเลือกเขียนที่
+                                        @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
 
@@ -134,7 +134,7 @@
                                         @endforeach
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
-                                        กรุณาเลือกประเภทพัสดุ
+                                        @{{ formError.errors.plan_type_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -323,7 +323,10 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
+                                >
                                     <label>
                                         คณะกรรมการกำหนดคุณลักษณะ :
                                         <button
@@ -341,19 +344,22 @@
                                                 <div style="display: flex; justify-content: space-between; padding: 2px;">
                                                     <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
                                                     <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
-                                                    <a href="" class="btn btn-danger btn-xs">
+                                                    <a href="#" class="btn btn-danger btn-xs" ng-click="removePersonItem(1, person)">
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'total')">
-                                        กรุณาระบุรวมเป็นเงิน
+                                    <span class="help-block" ng-show="checkValidate(support, 'spec_committee')">
+                                        @{{ formError.errors.spec_committee[0] }}
                                     </span>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'insp_committee')}"
+                                >
                                     <label>
                                         คณะกรรมการตรวจรับ :
                                         <button
@@ -371,15 +377,15 @@
                                                 <div style="display: flex; justify-content: space-between; padding: 2px;">
                                                     <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
                                                     <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
-                                                    <a href="" class="btn btn-danger btn-xs">
+                                                    <a href="#" class="btn btn-danger btn-xs" ng-click="removePersonItem(2, person)">
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'total')">
-                                        กรุณาระบุรวมเป็นเงิน
+                                    <span class="help-block" ng-show="checkValidate(support, 'insp_committee')">
+                                        @{{ formError.errors.insp_committee[0] }}
                                     </span>
                                 </div>
                             </div><br>
@@ -400,13 +406,13 @@
                                         tabindex="1"
                                     />
                                     <span class="help-block" ng-show="checkValidate(support, 'remark')">
-                                        กรุณาระบุหมายเหตุ
+                                        @{{ formError.errors.remark[0] }}
                                     </span>
                                 </div>
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'contact_detail')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'contact_person')}"
                                 >
                                     <label>ผู้ประสานงาน :</label>
                                     <div class="input-group">
@@ -435,6 +441,9 @@
                                             </button>
                                         </span>
                                     </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'contact_person')">
+                                        @{{ formError.errors.contact_person[0] }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -442,7 +451,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/supports/validate', support, 'frmNewSupport', store)"
+                                ng-click="onValidateForm($event)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

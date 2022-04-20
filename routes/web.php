@@ -131,7 +131,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('supports/list', 'SupportController@index');
     Route::get('supports/search', 'SupportController@search');
     Route::get('supports/add', 'SupportController@create');
-    Route::get('supports/store', 'SupportController@store');
+    Route::post('supports/store', 'SupportController@store');
 
     /** จัดซื้อจัดจ้าง */
     Route::post('orders/validate', 'OrderController@formValidate');
