@@ -20,7 +20,7 @@
         class="content"
         ng-controller="orderCtrl"
         ng-init="
-            getPlans(2, setPlans);
+            getPlans(2);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -45,7 +45,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getPlans(2, setPlans)"
+                                        ng-change="getPlans(2)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -60,7 +60,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getPlans(2, setPlans)"
+                                        ng-change="getPlans(2)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -99,7 +99,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getPlans(2, setPlans)"
+                                            ng-change="getPlans(2)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">

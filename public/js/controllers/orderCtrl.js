@@ -168,7 +168,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
     };
 
-    $scope.getPlans = (status, cb) => {
+    $scope.getPlans = (status) => {
         $scope.plans = [];
         $scope.loading = true;
 
@@ -176,10 +176,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
-            console.log(res);
-            cb(res);
+            $scope.setPlans(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -195,12 +194,35 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans_pager = pager;
     };
 
+    $scope.onSelectedPlan = (e, plan) => {
+        if (plan) {
+            $scope.newItem = {
+                plan_no: plan.plan_no,
+                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
+                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
+                plan_id: plan.id,
+                item_id: plan.plan_item.item_id,
+                price_per_unit: plan.price_per_unit,
+                unit_id: `${plan.plan_item.unit_id}`,
+                unit: plan.plan_item.unit,
+                amount: plan.amount,
+                sum_price: plan.sum_price
+            };
+        }
+
+        $('#plans-list').modal('hide');
+    };
+
     $scope.toReceiveList = [];
     $scope.toReceiveList_pager = null;
     $scope.showPlansToReceives = () => {
         $scope.loading = true;
         $scope.toReceiveList = [];
 
+        $scope.getPlansToReceives();
+    };
+
+    $scope.getPlansToReceives = function(res) {
         $http.get(`${CONFIG.baseUrl}/plans/search?type=&status=1`)
         .then(function(res) {
             $scope.loading = false;
@@ -229,25 +251,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }, function(err) {
             console.log(err);
         });
-    };
-
-    $scope.onSelectedPlan = (e, plan) => {
-        if (plan) {
-            $scope.newItem = {
-                plan_no: plan.plan_no,
-                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
-                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
-                plan_id: plan.id,
-                item_id: plan.plan_item.item_id,
-                price_per_unit: plan.price_per_unit,
-                unit_id: `${plan.plan_item.unit_id}`,
-                unit: plan.plan_item.unit,
-                amount: plan.amount,
-                sum_price: plan.sum_price
-            };
-        }
-
-        $('#plans-list').modal('hide');
     };
 
     $scope.getAll = function() {
