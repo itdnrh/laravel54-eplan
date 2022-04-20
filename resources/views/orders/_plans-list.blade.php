@@ -116,13 +116,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="plans_pager.current_page !== 1">
-                                    <a ng-click="getDataWithURL($event, plans_pager.path+ '?page=1', setPlans)" aria-label="Previous">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1', 1, setPlans)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==1)}">
-                                    <a ng-click="getDataWithURL($event, plans_pager.prev_page_url, setPlans)" aria-label="Prev">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.prev_page_url, 1, setPlans)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -134,13 +134,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
-                                    <a ng-click="getDataWithURL($event, plans_pager.next_page_url, setPlans)" aria-label="Next">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.next_page_url, 1, setPlans)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="plans_pager.current_page !== plans_pager.last_page">
-                                    <a ng-click="getDataWithURL($event, plans_pager.path+ '?page=' +plans_pager.last_page, setPlans)" aria-label="Previous">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, 1, setPlans)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>

@@ -169,8 +169,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.getPlans = (status) => {
-        $scope.plans = [];
         $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
 
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
@@ -179,6 +180,29 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
             $scope.setPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlansWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            cb(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -216,13 +240,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.toReceiveList = [];
     $scope.toReceiveList_pager = null;
     $scope.showPlansToReceives = () => {
-        $scope.loading = true;
-        $scope.toReceiveList = [];
-
         $scope.getPlansToReceives();
     };
 
     $scope.getPlansToReceives = function(res) {
+        $scope.loading = true;
+        $scope.toReceiveList = [];
+        $scope.toReceiveList_pager = null;
+
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
@@ -238,6 +263,29 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }, function(err) {
             $scope.loading = false;
             console.log(err);
+        });
+    };
+
+    $scope.getPlansToReceivesWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.toReceiveList = [];
+        $scope.toReceiveList_pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=1`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
         });
     };
 
@@ -259,17 +307,38 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.getAll = function() {
+        $scope.loading = true;
         $scope.orders = [];
         $scope.pager = null;
-        
-        $scope.loading = true;
-        
+
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
-        
+
         $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}`)
         .then(function(res) {
             $scope.setOrders(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getAllWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.pager = null;
+
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
+
+        $http.get(`${url}&year=${year}&supplier=${supplier}`)
+        .then(function(res) {
+            cb(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -300,23 +369,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
 
         $scope.pager = pager;
-    };
-
-    $scope.getDataWithURL = function(e, URL, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-
-        $http.get(URL)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
     };
 
     $scope.showOrderDetails = (items) => {
