@@ -151,13 +151,14 @@
                                     <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                     <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                    <th style="width: 12%; text-align: center;">สถานะ</th>
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 10%; text-align: center;">วันที่รับเอกสาร</th>
+                                    <th style="width: 10%; text-align: center;">สถานะ</th>
+                                    <th style="width: 6%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, plan) in plans">
-                                    <td style="text-align: center;">@{{ index+plans_plans_pager.from }}</td>
+                                    <td style="text-align: center;">@{{ index+plans_pager.from }}</td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
@@ -184,6 +185,9 @@
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
                                         <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ plan.received_date }}
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="plan.status == 0">
@@ -213,22 +217,11 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/assets/detail') }}/@{{ plan.id }}"
-                                                class="btn btn-primary btn-xs" 
-                                                title="รายละเอียด">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                            <a  ng-click="edit(plan.id)"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
-                                                class="btn btn-warning btn-xs"
-                                                title="แก้ไขรายการ">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/assets/delete') }}"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                ng-show="plan.status == 2"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
@@ -236,7 +229,7 @@
                                                     ng-click="delete($event, plan.id)"
                                                     class="btn btn-danger btn-xs"
                                                 >
-                                                    <i class="fa fa-trash"></i>
+                                                    ยกเลิก
                                                 </button>
                                             </form>
                                         </div>
