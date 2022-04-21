@@ -76,16 +76,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'doc_date')}"
                                 >
                                     <label>วันที่บันทึก :</label>
-                                    <input
-                                        type="text"
-                                        id="doc_date"
-                                        name="doc_date"
-                                        ng-model="support.doc_date"
-                                        class="form-control"
-                                        tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
-                                        @{{ formError.errors.doc_date[0] }}
-                                    </span>
+                                    <div class="form-control">@{{ support.doc_date | thdate }}</div>
                                 </div>
                             </div>
 
@@ -223,18 +214,8 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'insp_committee')}"
                                 >
-                                    <label>
-                                        คณะกรรมการตรวจรับ :
-                                        <button
-                                            type="button"
-                                            class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList(2)"
-                                            style="margin-left: 5px;"
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </label>
-                                    <div class="table-responsive">
+                                    <label>คณะกรรมการตรวจรับ :</label>
+                                    <div class="table-responsive" style="margin: 0; padding: 0;">
                                         <table class="table table-striped" style="width: 80%;">
                                             <tr ng-repeat="(index, insp) in support.insp_committee">
                                                 <td>
@@ -244,21 +225,9 @@
                                                 <td>
                                                     ตำแหน่ง @{{ insp.person.position.position_name + insp.person.academic.ac_name }}
                                                 </td>
-                                                <td style="width: 5%; text-align: center;">
-                                                    <a
-                                                        href="#"
-                                                        class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(2, person)"
-                                                    >
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'insp_committee')">
-                                        @{{ formError.errors.insp_committee[0] }}
-                                    </span>
                                 </div>
                             </div>
 
@@ -268,19 +237,9 @@
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
                                     ng-show="support.total > 100000"
                                 >
-                                    <label>
-                                        คณะกรรมการกำหนดคุณลักษณะ :
-                                        <button
-                                            type="button"
-                                            class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList(1)"
-                                            style="margin-left: 5px;"
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </label>
+                                    <label>คณะกรรมการกำหนดคุณลักษณะ :</label>
                                     <div class="table-responsive">
-                                        <table class="table table-striped" style="width: 80%;">
+                                        <table class="table table-striped">
                                             <tr ng-repeat="(index, spec) in support.spec_committee">
                                                 <td>
                                                     @{{ index+1 }}. 
@@ -289,40 +248,18 @@
                                                 <td>
                                                     ตำแหน่ง @{{ spec.person.position.position_name + spec.person.academic.ac_name }}
                                                 </td>
-                                                <td style="width: 5%; text-align: center;">
-                                                    <a
-                                                        href="#"
-                                                        class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(2, person)"
-                                                    >
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'spec_committee')">
-                                        @{{ formError.errors.spec_committee[0] }}
-                                    </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'env_committee')}"
                                     ng-show="support.total > 500000"
                                 >
-                                    <label>
-                                        คณะกรรมการเปิดซอง/พิจารณาราคา :
-                                        <button
-                                            type="button"
-                                            class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList(1)"
-                                            style="margin-left: 5px;"
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </label>
+                                    <label>คณะกรรมการเปิดซอง/พิจารณาราคา :</label>
                                     <div class="table-responsive">
-                                        <table class="table table-striped" style="width: 80%;">
+                                        <table class="table table-striped">
                                             <tr ng-repeat="(index, env) in support.env_committee">
                                                 <td>
                                                     @{{ index+1 }}. 
@@ -331,29 +268,14 @@
                                                 <td>
                                                     ตำแหน่ง @{{ env.person.position.position_name + env.person.academic.ac_name }}
                                                 </td>
-                                                <td style="width: 5%; text-align: center;">
-                                                    <a
-                                                        href="#"
-                                                        class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(2, person)"
-                                                    >
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'env_committee')">
-                                        @{{ formError.errors.env_committee[0] }}
-                                    </span>
                                 </div>
-                            </div><br>
+                            </div>
 
                             <div class="row">
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'remark')}"
-                                >
+                                <div class="form-group col-md-6">
                                     <label>หมายเหตุ :</label>
                                     <input
                                         type="text"
@@ -363,56 +285,30 @@
                                         class="form-control"
                                         tabindex="1"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(support, 'remark')">
-                                        @{{ formError.errors.remark[0] }}
-                                    </span>
                                 </div>
 
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'contact_person')}"
-                                >
+                                <div class="form-group col-md-6">
                                     <label>ผู้ประสานงาน :</label>
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="contact_detail"
-                                            name="contact_detail"
-                                            class="form-control"
-                                            ng-model="support.contact_detail"
-                                            readonly
-                                        />
-                                        <input
-                                            type="hidden"
-                                            id="contact_person"
-                                            name="contact_person"
-                                            class="form-control"
-                                            ng-model="support.contact_person"
-                                        />
-                                        <span class="input-group-btn">
-                                            <button
-                                                type="button"
-                                                class="btn btn-info btn-flat"
-                                                ng-click="showPersonList(3)"
-                                            >
-                                                ...
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'contact_person')">
-                                        @{{ formError.errors.contact_person[0] }}
-                                    </span>
+                                    <input
+                                        type="text"
+                                        id="contact_detail"
+                                        name="contact_detail"
+                                        class="form-control"
+                                        ng-model="support.contact_detail"
+                                        readonly
+                                    />
                                 </div>
                             </div>
 
                         </div><!-- /.box-body -->
 
-                        <div class="box-footer clearfix">
+                        <div class="box-footer clearfix" style="text-align: center;">
                             <button
                                 ng-click="onValidateForm($event)"
-                                class="btn btn-success pull-right"
+                                class="btn btn-success"
                             >
-                                บันทึก
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                                พิมพ์บันทึกขอสนับสนุน
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
