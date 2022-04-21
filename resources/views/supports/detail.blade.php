@@ -234,7 +234,7 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </label>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive" style="margin: 0; padding: 0;">
                                         <table class="table table-striped" style="width: 80%;">
                                             <tr ng-repeat="(index, insp) in support.insp_committee">
                                                 <td>
@@ -280,7 +280,7 @@
                                         </button>
                                     </label>
                                     <div class="table-responsive">
-                                        <table class="table table-striped" style="width: 80%;">
+                                        <table class="table table-striped">
                                             <tr ng-repeat="(index, spec) in support.spec_committee">
                                                 <td>
                                                     @{{ index+1 }}. 
@@ -322,7 +322,7 @@
                                         </button>
                                     </label>
                                     <div class="table-responsive">
-                                        <table class="table table-striped" style="width: 80%;">
+                                        <table class="table table-striped">
                                             <tr ng-repeat="(index, env) in support.env_committee">
                                                 <td>
                                                     @{{ index+1 }}. 
@@ -347,7 +347,7 @@
                                         @{{ formError.errors.env_committee[0] }}
                                     </span>
                                 </div>
-                            </div><br>
+                            </div>
 
                             <div class="row">
                                 <div
@@ -407,12 +407,13 @@
 
                         </div><!-- /.box-body -->
 
-                        <div class="box-footer clearfix">
+                        <div class="box-footer clearfix" style="text-align: center;">
                             <button
                                 ng-click="onValidateForm($event)"
-                                class="btn btn-success pull-right"
+                                class="btn btn-success"
                             >
-                                บันทึก
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                                พิมพ์บันทึกขอสนับสนุน
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
