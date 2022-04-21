@@ -82,6 +82,11 @@ class SupportController extends Controller
         ]);
     }
 
+    public function timeline()
+    {
+        return view('supports.timeline');
+    }
+
     public function search(Request $req)
     {
         $supports = Support::with('planType','depart','division')

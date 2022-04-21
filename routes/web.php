@@ -129,6 +129,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** การขอสนับสนุน */
     Route::post('supports/validate', 'SupportController@formValidate');
     Route::get('supports/list', 'SupportController@index');
+    Route::get('supports/timeline', 'SupportController@timeline');
     Route::get('supports/search', 'SupportController@search');
     Route::get('supports/detail/{id}', 'SupportController@detail');
     Route::get('supports/get-ajax-byid/{id}', 'SupportController@getById');

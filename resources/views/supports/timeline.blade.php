@@ -16,202 +16,90 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="supportCtrl" ng-init="getAll();">
+    <section class="content" ng-controller="supportCtrl">
 
         <div class="row">
             <div class="col-md-12">
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">ค้นหาข้อมูล</h3>
-                    </div>
-
-                    <form id="frmSearch" name="frmSearch" role="form">
-                        <input
-                            type="hidden"
-                            id="user"
-                            name="user"
-                            value="{{ Auth::user()->person_id }}"
-                        />
-                        <input
-                            type="hidden"
-                            id="depart"
-                            name="depart"
-                            value="{{ Auth::user()->memberOf->depart_id }}"
-                        />
-
-                        <div class="box-body">
-                            <div class="row">
-
-                                <div class="form-group col-md-6">
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="cboYear"
-                                        name="cboYear"
-                                        ng-model="cboYear"
-                                        class="form-control"
-                                        ng-change="getAll($event)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                                <div class="form-group col-md-6">
-                                    <label>ประเภทพัสดุ</label>
-                                    <select
-                                        id="cboSupplier"
-                                        name="cboSupplier"
-                                        ng-model="cboSupplier"
-                                        ng-change="getAll($event)"
-                                        class="form-control select2"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        @foreach($planTypes as $planType)
-                                            <option value="{{ $planType->id }}">
-                                                {{ $planType->plan_type_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.row -->
-                        </div><!-- /.box-body -->
-                    </form>
-                </div><!-- /.box -->
-
-                <div class="box">
-                    <div class="box-header">
                         <h3 class="box-title">ติดตามพัสดุ</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" style="font-size: 14px; margin: 10px auto;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 12%; text-align: center;">เลขที่บันทึก</th>
-                                    <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
-                                    <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
-                                    <th>หน่วยงาน</th>
-                                    <th style="width: 8%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 8%; text-align: center;">จำนวนรายการ</th>
-                                    <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
-                                    <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
-                                    <th style="width: 10%; text-align: center;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="(index, support) in supports">
-                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_no }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ support.plan_type.plan_type_name }}
-                                    </td>
-                                    <td>
-                                        @{{ support.depart.depart_name }}
-                                        <p style="margin: 0;" ng-show="support.division">
-                                            @{{ support.division.ward_name }}
-                                        </p>
-                                    </td>
-                                    <td style="text-align: center;">@{{ support.year }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ support.details.length }}
-                                        <a  href="#"
-                                            ng-click="showSupportDetails(support.details)"
-                                            class="btn btn-default btn-xs" 
-                                            title="รายการ">
-                                            <i class="fa fa-clone"></i>
-                                        </a>
-                                    </td>
-                                    <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
-                                    <!-- <td style="text-align: center;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
-                                            class="btn btn-default btn-xs"
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="order.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
-                                    </td> -->
-                                    <td style="text-align: center;">
-                                        <a  href="{{ url('/supports/detail') }}/@{{ support.id }}"
-                                            class="btn btn-primary btn-xs" 
-                                            title="รายละเอียด">
-                                            <i class="fa fa-search"></i>
-                                        </a>
-                                        <a  href="{{ url('/supports/edit') }}/@{{ support.id }}"
-                                            class="btn btn-warning btn-xs"
-                                            title="แก้ไขรายการ">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <form
-                                            id="frmDelete"
-                                            method="POST"
-                                            action="{{ url('/supports/delete') }}"
-                                            style="display: inline;"
-                                        >
-                                            {{ csrf_field() }}
-                                            <button
-                                                type="submit"
-                                                ng-click="delete($event, support.id)"
-                                                class="btn btn-danger btn-xs"
-                                            >
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>             
-                                </tr>
-                            </tbody>
-                        </table>
+                        <ul class="timeline timeline-inverse">
+                            <li class="time-label">
+                                <span class="bg-red">
+                                    10 Feb. 2014
+                                </span>
+                            </li>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
-                            </div>
-                            <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
-                            </div>
-                            <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                                    <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
-                                            <span aria-hidden="true">First</span>
-                                        </a>
-                                    </li>
-                                
-                                    <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
-                                            <span aria-hidden="true">Prev</span>
-                                        </a>
-                                    </li>
+                            <li>
+                                <i class="fa fa-envelope bg-blue"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                                    <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+                                    <div class="timeline-body">
+                                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                        quora plaxo ideeli hulu weebly balihoo...
+                                    </div>
+                                    <div class="timeline-footer">
+                                        <a class="btn btn-primary btn-xs">Read more</a>
+                                        <a class="btn btn-danger btn-xs">Delete</a>
+                                    </div>
+                                </div>
+                            </li>
 
-                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setSupports)">
-                                            @{{ i }}
-                                        </a>
-                                    </li> -->
+                            <li>
+                                <i class="fa fa-user bg-aqua"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+                                    <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
+                                    </h3>
+                                </div>
+                            </li>
 
-                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                        <a href="#" ng-click="pager.path">
-                                            ...
-                                        </a>
-                                    </li> -->
+                            <li>
+                                <i class="fa fa-comments bg-yellow"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+                                    <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+                                    <div class="timeline-body">
+                                        Take me to your leader!
+                                        Switzerland is small and neutral!
+                                        We are more like Germany, ambitious and misunderstood!
+                                    </div>
+                                    <div class="timeline-footer">
+                                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                                    </div>
+                                </div>
+                            </li>
 
-                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
-                                            <span aria-hidden="true">Next</span>
-                                        </a>
-                                    </li>
+                            <li class="time-label">
+                                <span class="bg-green">
+                                    3 Jan. 2014
+                                </span>
+                            </li>
 
-                                    <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
-                                            <span aria-hidden="true">Last</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- /.row -->
+                            <li>
+                                <i class="fa fa-camera bg-purple"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
+                                    <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+                                    <div class="timeline-body">
+                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
@@ -224,8 +112,6 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
-
-        @include('supports._support-details')
 
     </section>
 
