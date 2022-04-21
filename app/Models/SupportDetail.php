@@ -15,6 +15,6 @@ class SupportDetail extends Model
 
     public function plan()
     {
-        return $this->belongsTo(PlanAsset::class, 'plan_id', 'id');
+        return $this->belongsTo(Plan::class, 'plan_id', 'id');
     }
 }

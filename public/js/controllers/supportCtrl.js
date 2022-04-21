@@ -8,6 +8,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.plans = [];
     $scope.plans_pager = null;
 
+    $scope.items = [];
+    $scope.items_pager = null;
+
     $scope.persons = [];
     $scope.persons_pager = null;
 
@@ -120,6 +123,14 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         $scope.supports = data;
         $scope.pager = pager;
+    };
+
+    $scope.showSupportDetails = function(details) {
+        if (details) {
+            $scope.items = details;
+
+            $('#support-details').modal('show');
+        }
     };
 
     $scope.showPlansList = () => {

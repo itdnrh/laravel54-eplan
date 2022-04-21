@@ -127,7 +127,7 @@
                                     <td style="text-align: center;">
                                         @{{ support.details.length }}
                                         <a  href="#"
-                                            ng-click="showsupportDetails(support.details)"
+                                            ng-click="showSupportDetails(support.details)"
                                             class="btn btn-default btn-xs" 
                                             title="รายการ">
                                             <i class="fa fa-clone"></i>
@@ -184,19 +184,19 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setLeaves)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setLeaves)" aria-label="Prev">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
                                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path + '?page=' +i, setLeaves)">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setSupports)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
@@ -208,13 +208,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setLeaves)" aria-label="Next">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setLeaves)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
@@ -234,7 +234,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('orders._order-details')
+        @include('supports._support-details')
 
     </section>
 

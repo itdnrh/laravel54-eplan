@@ -72,7 +72,9 @@ class SupportController extends Controller
 
     public function search(Request $req)
     {
-        $supports = Support::with('planType','depart','division','details')
+        $supports = Support::with('planType','depart','division')
+                    ->with('details','details.plan','details.plan.planItem.unit')
+                    ->with('details.plan.planItem','details.plan.planItem.item')
                     ->paginate(10);
 
         return [

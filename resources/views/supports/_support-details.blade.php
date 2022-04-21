@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
-                    <h5 class="modal-title">รายการครุภัณฑ์</h5>
+                    <h5 class="modal-title">รายการพัสดุ</h5>
                     <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
@@ -12,30 +12,22 @@
                     <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
                         <thead>
                             <tr>
-                                <th style="width: 3%; text-align: center;">#</th>
-                                <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                <th style="width: 30%;">หน่วยงาน</th>
+                                <th style="width: 4%; text-align: center;">#</th>
                                 <th>รายการ</th>
-                                <th style="width: 10%; text-align: center;">จำนวน</th>
-                                <th style="width: 10%; text-align: center;">ราคา</th>
-                                <th style="width: 10%; text-align: center;">เป็นเงิน</th>
+                                <th style="width: 12%; text-align: center;">จำนวน</th>
+                                <th style="width: 12%; text-align: center;">ราคา</th>
+                                <th style="width: 12%; text-align: center;">เป็นเงิน</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, detail) in assets">
+                            <tr ng-repeat="(index, detail) in items">
                                 <td style="text-align: center;">@{{ index+1 }}</td>
-                                <!-- <td style="text-align: center;">@{{ detail.year }}</td> -->
                                 <td>
-                                    <p style="margin: 0;">@{{ detail.depart.depart_name }}</p>
-                                    <p style="margin: 0;">@{{ detail.division.ward_name }}</p>
-                                </td>
-                                <td>
-                                    <p style="margin: 0;">@{{ detail.item.category.name }}</p>
-                                    @{{ detail.plan.plan_no }} - @{{ detail.item.item_name }}
+                                    @{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}
                                 </td>
                                 <td style="text-align: center;">
                                     <span>@{{ detail.amount | currency:'':0 }}</span>
-                                    <span>@{{ detail.unit.name }}</span>
+                                    <span>@{{ detail.plan.plan_item.unit.name }}</span>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ detail.price_per_unit | currency:'':0 }}
