@@ -328,7 +328,7 @@
                                                         type="text"
                                                         id="total"
                                                         name="total"
-                                                        value="@{{ support.total | currency:'':2}}"
+                                                        ng-model="support.total"
                                                         class="form-control"
                                                         style="text-align: center;"
                                                         tabindex="5"
@@ -362,40 +362,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
-                                >
-                                    <label>
-                                        คณะกรรมการกำหนดคุณลักษณะ :
-                                        <button
-                                            type="button"
-                                            class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList(1)"
-                                            style="margin-left: 5px;"
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </label>
-                                    <div style="display: flex; min-height: 50px;">
-                                        <ul style="width: 90%; margin: 4px 0; border: 1px solid: red;">
-                                            <li ng-repeat="person in support.spec_committee" style="margin: 4px 0;">
-                                                <div style="display: flex; justify-content: space-between; padding: 2px;">
-                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
-                                                    <a href="#" class="btn btn-danger btn-xs" ng-click="removePersonItem(1, person)">
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <span class="help-block" ng-show="checkValidate(support, 'spec_committee')">
-                                        @{{ formError.errors.spec_committee[0] }}
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'insp_committee')}"
                                 >
                                     <label>
@@ -409,13 +376,17 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </label>
-                                    <div style="display: flex; min-height: 50px;">
-                                        <ul style="width: 90%; margin: 4px 0; border: 1px solid: red;">
+                                    <div class="committee-wrapper">
+                                        <ul class="committee-lists">
                                             <li ng-repeat="person in support.insp_committee" style="margin: 4px 0;">
-                                                <div style="display: flex; justify-content: space-between; padding: 2px;">
+                                                <div class="committee-item">
                                                     <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
                                                     <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
-                                                    <a href="#" class="btn btn-danger btn-xs" ng-click="removePersonItem(2, person)">
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs" 
+                                                        ng-click="removePersonItem(2, person)"
+                                                    >
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -424,6 +395,83 @@
                                     </div>
                                     <span class="help-block" ng-show="checkValidate(support, 'insp_committee')">
                                         @{{ formError.errors.insp_committee[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
+                                    ng-show="support.total > 100000"
+                                >
+                                    <label>
+                                        คณะกรรมการกำหนดคุณลักษณะ :
+                                        <button
+                                            type="button"
+                                            class="btn bg-maroon btn-sm"
+                                            ng-click="showPersonList(1)"
+                                            style="margin-left: 5px;"
+                                        >
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </label>
+                                    <div class="committee-wrapper">
+                                        <ul class="committee-lists">
+                                            <li ng-repeat="person in support.spec_committee" style="margin: 4px 0;">
+                                                <div class="committee-item">
+                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs" 
+                                                        ng-click="removePersonItem(1, person)"
+                                                    >
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'spec_committee')">
+                                        @{{ formError.errors.spec_committee[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'env_committee')}"
+                                    ng-show="support.total > 500000"
+                                >
+                                    <label>
+                                        คณะกรรมการเปิดซอง/พิจารณาราคา :
+                                        <button
+                                            type="button"
+                                            class="btn bg-maroon btn-sm"
+                                            ng-click="showPersonList(1)"
+                                            style="margin-left: 5px;"
+                                        >
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </label>
+                                    <div class="committee-wrapper">
+                                        <ul class="committee-lists">
+                                            <li ng-repeat="person in support.env_committee" style="margin: 4px 0;">
+                                                <div class="committee-item">
+                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs" 
+                                                        ng-click="removePersonItem(1, person)"
+                                                    >
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'env_committee')">
+                                        @{{ formError.errors.env_committee[0] }}
                                     </span>
                                 </div>
                             </div><br>

@@ -6,3 +6,19 @@
     align-items: center; 
     justify-content: center;
 }
+
+.committee-wrapper {
+    display: flex;
+    min-height: 50px;
+}
+
+.committee-wrapper .committee-lists {
+    width: 90%;
+    margin: 4px 0;
+}
+
+.committee-lists .committee-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+}

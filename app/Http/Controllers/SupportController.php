@@ -25,24 +25,37 @@ class SupportController extends Controller
         $rules = [
             'doc_no'            => 'required',
             'doc_date'          => 'required',
+            'topic'             => 'required',
             'year'              => 'required',
             'plan_type_id'      => 'required',
             'depart_id'         => 'required',
             'total'             => 'required',
+            'reason'            => 'required',
             'spec_committee'    => 'required',
             'insp_committee'    => 'required',
             'contact_person'    => 'required',
         ];
 
+        if ($request['total'] > 100000) {
+            $rules['spec_committee'] = 'required';
+        }
+
+        if ($request['total'] > 500000) {
+            $rules['env_committee'] = 'required';
+        }
+
         $messages = [
             'doc_no.required'           => 'กรุณาระบุเลขที่เอกสาร',
             'doc_date.required'         => 'กรุณาเลือกวันที่เอกสาร',
+            'topic.required'            => 'กรุณาระบุเรื่องเอกสาร',
             'year.required'             => 'กรุณาเลือกปีงบประมาณ',
             'plan_type_id.required'     => 'กรุณาเลือกประเภทพัสดุ',
             'depart_id.required'        => 'กรุณาเลือกกลุ่มงาน',
             'total.required'            => 'กรุณาเลือกถึงวันที่',
+            'reason.required'           => 'กรุณาระบุเหตุผลการขอสนับสนุน',
             'spec_committee.required'   => 'กรุณาเลือกคณะกรรมการกำหนดคุณลักษณะ',
             'insp_committee.required'   => 'กรุณาเลือกคณะกรรมการตรวจรับ',
+            'env_committee.required'    => 'กรุณาเลือกคณะกรรมการเปิดซอง/พิจารณาราคา',
             'contact_person.required'   => 'กรุณาระบุผู้ประสานงาน',
         ];
 
@@ -100,7 +113,7 @@ class SupportController extends Controller
             $support = new Support;
             $support->doc_no            = $req['doc_no'];
             $support->doc_date          = convThDateToDbDate($req['doc_date']);
-            $support->topic            = $req['topic'];
+            $support->topic             = $req['topic'];
             $support->year              = $req['year'];
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];

@@ -38,12 +38,6 @@ class PlanAssetController extends Controller
             // 'reason'            => 'required',
         ];
 
-        if ($request['leave_type'] == '1' || $request['leave_type'] == '2' || 
-            $request['leave_type'] == '3' || $request['leave_type'] == '4' ||
-            $request['leave_type'] == '5') {
-            $rules['leave_contact'] = 'required';
-        }
-
         $messages = [
             'start_date.required'   => 'กรุณาเลือกจากวันที่',
             'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
