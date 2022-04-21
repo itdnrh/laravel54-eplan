@@ -214,7 +214,21 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'insp_committee')}"
                                 >
+<<<<<<< HEAD
                                     <label>คณะกรรมการตรวจรับ :</label>
+=======
+                                    <label>
+                                        คณะกรรมการตรวจรับ :
+                                        <button
+                                            type="button"
+                                            class="btn bg-maroon btn-sm"
+                                            ng-click="showPersonList(2)"
+                                            style="margin-left: 5px;"
+                                        >
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </label>
+>>>>>>> f2cc72da87bfa827e823640e49ad9e69473c0fa2
                                     <div class="table-responsive" style="margin: 0; padding: 0;">
                                         <table class="table table-striped" style="width: 80%;">
                                             <tr ng-repeat="(index, insp) in support.insp_committee">
