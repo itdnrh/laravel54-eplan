@@ -60,15 +60,14 @@
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'doc_no')}"
                                 >
                                     <label>เลขที่บันทึก :</label>
-                                    <input  type="text"
-                                            id="doc_no"
-                                            name="doc_no"
-                                            ng-model="support.doc_no"
-                                            class="form-control"
-                                            tabindex="6">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_no')">
-                                        @{{ formError.errors.doc_no[0] }}
-                                    </span>
+                                    <input  
+                                        type="text"
+                                        id="doc_no"
+                                        name="doc_no"
+                                        ng-model="support.doc_no"
+                                        class="form-control"
+                                        readonly
+                                    />
                                 </div>
 
                                 <div
@@ -92,33 +91,26 @@
                                         name="topic"
                                         ng-model="support.topic"
                                         class="form-control"
+                                        readonly
                                     />
-                                    <span class="help-block" ng-show="checkValidate(support, 'topic')">
-                                        @{{ formError.errors.topic[0] }}
-                                    </span>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
-                                >
+                                <div class="form-group col-md-6">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="year"
                                         name="year"
                                         ng-model="support.year"
                                         class="form-control"
+                                        readonly
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
                                             @{{ y }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(support, 'year')">
-                                        @{{ formError.errors.year[0] }}
-                                    </span>
                                 </div>
 
                                 <div
@@ -130,7 +122,7 @@
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
                                             class="form-control"
-                                            tabindex="2">
+                                            readonly>
                                         <option value="">-- เลือกประเภทพัสดุ --</option>
                                         @foreach($planTypes as $planType)
                                             <option value="{{ $planType->id }}">
@@ -138,9 +130,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
-                                        @{{ formError.errors.plan_type_id[0] }}
-                                    </span>
                                 </div>
                             </div>
 
@@ -191,10 +180,7 @@
                             </div>
 
                             <div class="row">
-                                <div
-                                    class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'reason')}"
-                                >
+                                <div class="form-group col-md-12">
                                     <label>เหตุผลการขอสนับสนุน :</label>
                                     <textarea
                                         rows="3"
@@ -202,10 +188,8 @@
                                         name="reason"
                                         ng-model="support.reason"
                                         class="form-control"
+                                        readonly
                                     ></textarea>
-                                    <span class="help-block" ng-show="checkValidate(support, 'reason')">
-                                        @{{ formError.errors.reason[0] }}
-                                    </span>
                                 </div>
                             </div>
 
@@ -297,7 +281,7 @@
                                         name="remark"
                                         ng-model="support.remark"
                                         class="form-control"
-                                        tabindex="1"
+                                        readonly
                                     />
                                 </div>
 
@@ -336,11 +320,5 @@
         @include('shared._persons-list')
 
     </section>
-
-    <script>
-        $(function () {
-            $('.select2').select2();
-        });
-    </script>
 
 @endsection
