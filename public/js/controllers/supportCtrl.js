@@ -313,7 +313,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             } else if (parseInt(mode) == 2) {
                 $scope.support.insp_committee.push(person)
             } else {
-                $scope.support.contact_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.support.contact_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
                 $scope.support.contact_person = person.person_id;
             }
         }
@@ -356,8 +356,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.doc_no = support.doc_no;
             $scope.support.doc_date = support.doc_date;
             $scope.support.topic = support.topic;
-            $scope.support.reason = support.reason;
             $scope.support.total = support.total;
+            $scope.support.reason = support.reason;
+            $scope.support.remark = support.remark;
+            $scope.support.contact_person = support.contact.person_id;
+            $scope.support.contact_detail = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
             $scope.support.details = support.details;
             
             $scope.support.year = support.year.toString();
@@ -365,7 +368,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.depart_id = support.depart_id.toString();
             $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
 
+            $scope.support.spec_committee = committees.filter(com => com.committee_type_id == 1);
             $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
+            $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
         }
 
         console.log($scope.support);
