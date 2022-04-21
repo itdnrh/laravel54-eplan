@@ -23,6 +23,11 @@ class Support extends Model
         return $this->belongsTo(Division::class, 'division_id', 'ward_id');
     }
 
+    public function contact()
+    {
+        return $this->belongsTo(Person::class, 'contact_person', 'person_id');
+    }
+
     public function details()
     {
         return $this->hasMany(SupportDetail::class, 'support_id', 'id');

@@ -96,7 +96,7 @@ class SupportController extends Controller
 
     public function getById($id)
     {
-        $support = Support::with('planType','depart','division')
+        $support = Support::with('planType','depart','division','contact')
                     ->with('details','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->find($id);
