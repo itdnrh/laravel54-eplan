@@ -157,7 +157,8 @@ class SupportController extends Controller
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
-            // $support->user_id         = $req['user_id'];
+            $support->status            = 0;
+            // $support->user_id        = $req['user_id'];
             
             if ($support->save()) {
                 $supportId = $support->id;

@@ -103,8 +103,9 @@
                                     <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
                                     <th>หน่วยงาน</th>
                                     <th style="width: 8%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 8%; text-align: center;">จำนวนรายการ</th>
+                                    <th style="width: 8%; text-align: center;">รายการ</th>
                                     <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
+                                    <th style="width: 8%; text-align: center;">สถานะ</th>
                                     <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
@@ -134,6 +135,17 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
+                                    <td style="text-align: center;">
+                                        <span class="label label-primary" ng-show="support.status == 0">
+                                            รอดำเนินการ
+                                        </span>
+                                        <span class="label label-success" ng-show="support.status == 1">
+                                            ส่งเอกสารแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="support.status == 2">
+                                            ยกเลิก
+                                        </span>
+                                    </td>
                                     <!-- <td style="text-align: center;">
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
                                             class="btn btn-default btn-xs"
