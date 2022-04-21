@@ -114,8 +114,15 @@
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ support.doc_no }}</td>
                                     <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
-                                    <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
-                                    <td>@{{ support.supplier.supplier_name }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ support.plan_type.plan_type_name }}
+                                    </td>
+                                    <td>
+                                        @{{ support.depart.depart_name }}
+                                        <p style="margin: 0;" ng-show="support.division">
+                                            @{{ support.division.ward_name }}
+                                        </p>
+                                    </td>
                                     <td style="text-align: center;">@{{ support.year }}</td>
                                     <td style="text-align: center;">
                                         @{{ support.details.length }}
