@@ -85,10 +85,29 @@
                                         id="doc_date"
                                         name="doc_date"
                                         ng-model="support.doc_date"
-                                        class="form-control pull-right"
+                                        class="form-control"
                                         tabindex="1">
                                     <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
                                         @{{ formError.errors.doc_date[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'topic')}"
+                                >
+                                    <label>เรื่อง :</label>
+                                    <input
+                                        type="text"
+                                        id="topic"
+                                        name="topic"
+                                        ng-model="support.topic"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(support, 'topic')">
+                                        @{{ formError.errors.topic[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -324,6 +343,25 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'reason')}"
+                                >
+                                    <label>เหตุผลการขอสนับสนุน :</label>
+                                    <textarea
+                                        rows="3"
+                                        id="reason"
+                                        name="reason"
+                                        ng-model="support.reason"
+                                        class="form-control"
+                                    ></textarea>
+                                    <span class="help-block" ng-show="checkValidate(support, 'reason')">
+                                        @{{ formError.errors.reason[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
                                 >
@@ -401,7 +439,6 @@
                                         id="remark"
                                         name="remark"
                                         ng-model="support.remark"
-                                        rows="3"
                                         class="form-control"
                                         tabindex="1"
                                     />

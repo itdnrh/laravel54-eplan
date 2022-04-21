@@ -100,14 +100,14 @@ class SupportController extends Controller
             $support = new Support;
             $support->doc_no            = $req['doc_no'];
             $support->doc_date          = convThDateToDbDate($req['doc_date']);
-            // $support->topic            = $req['topic'];
+            $support->topic            = $req['topic'];
             $support->year              = $req['year'];
             $support->depart_id         = $req['depart_id'];
-            // $support->division_id       = $req['division_id'];
+            $support->division_id       = $req['division_id'];
             $support->plan_type_id      = $req['plan_type_id'];
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
-            // $support->reason            = $req['reason'];
+            $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
             // $support->user_id         = $req['user_id'];
             

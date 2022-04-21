@@ -17,6 +17,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.support = {
         doc_no: '',
         doc_date: '',
+        topic: '',
         depart_id: '',
         division_id: '',
         year: '',
@@ -24,6 +25,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         total: '',
         contact_detail: '',
         contact_person: '',
+        reason: '',
         remark: '',
         details: [],
         spec_committee: [],
