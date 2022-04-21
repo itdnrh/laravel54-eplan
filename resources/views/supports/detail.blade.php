@@ -270,7 +270,7 @@
                             พิมพ์บันทึกขอสนับสนุน
                         </button>
                         <button
-                            ng-click="showSupportedForm()"
+                            ng-click="sendSupport($event)"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>

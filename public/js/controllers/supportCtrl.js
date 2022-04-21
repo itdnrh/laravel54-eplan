@@ -353,6 +353,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.setEditControls = function(support, committees) {
         if (support) {
+            $scope.support.id = support.id;
             $scope.support.doc_no = support.doc_no;
             $scope.support.doc_date = support.doc_date;
             $scope.support.topic = support.topic;
@@ -374,6 +375,19 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
+    $scope.sendSupport = function(e) {
+        console.log($scope.support);
+        $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
+        .then(function(res) {
+            console.log(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     $scope.onValidateForm = function(e) {
         e.preventDefault();
 
@@ -384,8 +398,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.store = function() {
-        console.log($scope.support);
-
         $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
         .then(function(res) {
             console.log(res);

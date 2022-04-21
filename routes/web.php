@@ -135,6 +135,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('supports/get-ajax-byid/{id}', 'SupportController@getById');
     Route::get('supports/add', 'SupportController@create');
     Route::post('supports/store', 'SupportController@store');
+    Route::post('supports/send', 'SupportController@send');
 
     /** จัดซื้อจัดจ้าง */
     Route::post('orders/validate', 'OrderController@formValidate');

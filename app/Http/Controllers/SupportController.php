@@ -266,6 +266,36 @@ class SupportController extends Controller
         }
     }
 
+    public function send(Request $req)
+    {
+        try {
+            $support = Support::find($req['id']);
+            $support->status = 1;
+
+            if ($support->save()) {
+                foreach($req['details'] as $detail) {
+                    Plan::where('id', $detail['plan_id'])->update([
+                        'doc_no'    => $support->doc_no,
+                        'doc_date'  => $support->doc_date,
+                        'sent_date' => date('Y-m-d'),
+                        'sent_user' => Auth::user()->person_id,
+                        'status'    => 1
+                    ]);
+                }
+
+                return [
+                    'status'    => 1,
+                    'support'   => $support
+                ];
+            }
+        } catch (\Throwable $th) {
+            return [
+                'status'    => 0,
+                'message'   => 'Something went wrong!!'
+            ];
+        }
+    }
+
     public function printCancelForm($id)
     {
         $leave      = Leave::where('id', $id)
