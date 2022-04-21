@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="orderCtrl" ng-init="getAll();">
+    <section class="content" ng-controller="supportCtrl" ng-init="getAll();">
 
         <div class="row">
             <div class="col-md-12">
@@ -27,6 +27,19 @@
                     </div>
 
                     <form id="frmSearch" name="frmSearch" role="form">
+                        <input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="depart"
+                            name="depart"
+                            value="{{ Auth::user()->memberOf->depart_id }}"
+                        />
+
                         <div class="box-body">
                             <div class="row">
 
@@ -85,55 +98,37 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่บันทึก</th>
+                                    <th style="width: 12%; text-align: center;">เลขที่บันทึก</th>
                                     <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
                                     <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
                                     <th>หน่วยงาน</th>
-                                    <th style="width: 6%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 6%; text-align: center;">จำนวนรายการ</th>
-                                    <th style="width: 10%; text-align: center;">ยอดขอสนับสนุน</th>
-                                    <th style="width: 10%; text-align: center;">สถานะ</th>
+                                    <th style="width: 8%; text-align: center;">ปีงบ</th>
+                                    <th style="width: 8%; text-align: center;">จำนวนรายการ</th>
+                                    <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
                                     <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, order) in orders">
+                                <tr ng-repeat="(index, support) in supports">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ order.po_no }}</td>
-                                    <td style="text-align: center;">@{{ order.po_date | thdate }}</td>
-                                    <td style="text-align: center;">@{{ order.plan_type.plan_type_name }}</td>
-                                    <td>@{{ order.supplier.supplier_name }}</td>
-                                    <td style="text-align: center;">@{{ order.year }}</td>
+                                    <td style="text-align: center;">@{{ support.doc_no }}</td>
+                                    <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
+                                    <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
+                                    <td>@{{ support.supplier.supplier_name }}</td>
+                                    <td style="text-align: center;">@{{ support.year }}</td>
                                     <td style="text-align: center;">
-                                        @{{ order.details.length }}
+                                        @{{ support.details.length }}
                                         <a  href="#"
-                                            ng-click="showOrderDetails(order.details)"
+                                            ng-click="showsupportDetails(support.details)"
                                             class="btn btn-default btn-xs" 
                                             title="รายการ">
                                             <i class="fa fa-clone"></i>
                                         </a>
                                     </td>
-                                    <td style="text-align: center;">@{{ order.net_total | currency:'':0 }}</td>
-                                    <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="order.status == 1">
-                                            อยู่ระหว่างดำเนินการ
-                                        </span>
-                                        <span class="label label-info" ng-show="order.status == 2">
-                                            อนุมัติ
-                                        </span>
-                                        <span class="label label-success" ng-show="order.status == 3">
-                                            ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="order.status == 4">
-                                            ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="order.status == 9">
-                                            ยกเลิก
-                                        </span>
-                                    </td>
+                                    <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
                                     <!-- <td style="text-align: center;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
                                             class="btn btn-default btn-xs"
                                             title="ไฟล์แนบ"
                                             target="_blank"

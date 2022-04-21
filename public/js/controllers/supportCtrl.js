@@ -116,7 +116,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.setSupports = function(res) {
-        const { data, ...pager } = res.data.leaves;
+        const { data, ...pager } = res.data.supports;
 
         $scope.supports = data;
         $scope.pager = pager;
