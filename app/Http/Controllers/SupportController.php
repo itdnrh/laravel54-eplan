@@ -164,9 +164,6 @@ class SupportController extends Controller
                     }
                 }
 
-                /** Update status of plan data */
-                Plan::where('id', $item['plan_id'])->update(['status' => 1]);
-
                 return [
                     'status' => 1,
                     'message' => 'Insertion successfully'
