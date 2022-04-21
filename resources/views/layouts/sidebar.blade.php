@@ -162,6 +162,11 @@
 									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
+							<li ng-class="{ 'active': submenu == 'list' }">
+								<a href="{{ url('supports/timeline') }}">
+									<i class="fa fa-circle-o"></i> ติดตามพัสดุ
+								</a>
+							</li>
 						</ul>
 					</li>
 
