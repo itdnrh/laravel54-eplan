@@ -372,8 +372,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
             $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
         }
-
-        console.log($scope.support);
     };
 
     $scope.onValidateForm = function(e) {
