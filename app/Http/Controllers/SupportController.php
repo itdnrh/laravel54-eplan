@@ -31,7 +31,6 @@ class SupportController extends Controller
             'depart_id'         => 'required',
             'total'             => 'required',
             'reason'            => 'required',
-            'spec_committee'    => 'required',
             'insp_committee'    => 'required',
             'contact_person'    => 'required',
         ];
@@ -93,6 +92,37 @@ class SupportController extends Controller
         return [
             "supports" => $supports
         ];
+    }
+
+    public function getById($id)
+    {
+        $support = Support::with('planType','depart','division')
+                    ->with('details','details.plan','details.plan.planItem.unit')
+                    ->with('details.plan.planItem','details.plan.planItem.item')
+                    ->find($id);
+
+        $committees = Committee::with('type','person','person.prefix')
+                        ->with('person.position','person.academic')
+                        ->where('support_id', $id)
+                        ->get();
+
+        return [
+            "support"       => $support,
+            "committees"    => $committees,
+        ];
+    }
+
+    public function detail($id)
+    {
+        return view('supports.detail', [
+            "support"       => Support::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
+        ]);
     }
 
     public function create()

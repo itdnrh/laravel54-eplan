@@ -130,6 +130,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('supports/validate', 'SupportController@formValidate');
     Route::get('supports/list', 'SupportController@index');
     Route::get('supports/search', 'SupportController@search');
+    Route::get('supports/detail/{id}', 'SupportController@detail');
+    Route::get('supports/get-ajax-byid/{id}', 'SupportController@getById');
     Route::get('supports/add', 'SupportController@create');
     Route::post('supports/store', 'SupportController@store');
 

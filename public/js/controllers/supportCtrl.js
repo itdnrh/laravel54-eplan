@@ -339,6 +339,38 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
+    $scope.getById = function(id, cb) {
+        $http.get(`${CONFIG.baseUrl}/supports/get-ajax-byid/${id}`)
+        .then(function(res) {
+            cb(res.data.support, res.data.committees);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setEditControls = function(support, committees) {
+        if (support) {
+            $scope.support.doc_no = support.doc_no;
+            $scope.support.doc_date = support.doc_date;
+            $scope.support.topic = support.topic;
+            $scope.support.reason = support.reason;
+            $scope.support.total = support.total;
+            $scope.support.details = support.details;
+            
+            $scope.support.year = support.year.toString();
+            $scope.support.plan_type_id = support.plan_type_id.toString();
+            $scope.support.depart_id = support.depart_id.toString();
+            $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
+
+            $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
+        }
+
+        console.log($scope.support);
+    };
+
     $scope.onValidateForm = function(e) {
         e.preventDefault();
 

@@ -15,7 +15,11 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planServiceCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
+    <section
+        class="content"
+        ng-controller="planServiceCtrl"
+        ng-init="getById({{ $plan->id }}, setEditControls);"
+    >
 
         <div class="row">
             <div class="col-md-12">

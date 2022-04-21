@@ -144,12 +144,12 @@
                                         </a>
                                     </td> -->
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/orders/detail') }}/@{{ order.id }}"
+                                        <a  href="{{ url('/supports/detail') }}/@{{ support.id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a  href="{{ url('/orders/edit') }}/@{{ order.id }}"
+                                        <a  href="{{ url('/supports/edit') }}/@{{ support.id }}"
                                             class="btn btn-warning btn-xs"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
@@ -157,13 +157,13 @@
                                         <form
                                             id="frmDelete"
                                             method="POST"
-                                            action="{{ url('/orders/delete') }}"
+                                            action="{{ url('/supports/delete') }}"
                                             style="display: inline;"
                                         >
                                             {{ csrf_field() }}
                                             <button
                                                 type="submit"
-                                                ng-click="delete($event, order.id)"
+                                                ng-click="delete($event, support.id)"
                                                 class="btn btn-danger btn-xs"
                                             >
                                                 <i class="fa fa-trash"></i>
