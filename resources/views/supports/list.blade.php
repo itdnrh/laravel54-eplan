@@ -106,6 +106,7 @@
                                     <th style="width: 8%; text-align: center;">รายการ</th>
                                     <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
                                     <th style="width: 8%; text-align: center;">สถานะ</th>
+                                    <th style="width: 8%; text-align: center;">วันที่ส่งเอกสาร</th>
                                     <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
@@ -146,6 +147,7 @@
                                             ยกเลิก
                                         </span>
                                     </td>
+                                    <td style="text-align: center;">@{{ support.sent_date }}</td>
                                     <!-- <td style="text-align: center;">
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
                                             class="btn btn-default btn-xs"
