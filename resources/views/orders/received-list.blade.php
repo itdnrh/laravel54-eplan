@@ -323,6 +323,7 @@
         </div><!-- /.row -->
 
         @include('orders._receive-list')
+        @include('orders._supports-receive')
 
     </section>
 

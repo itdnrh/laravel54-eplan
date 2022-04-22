@@ -306,16 +306,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     /** ============================================================================= */
-    $scope.toReceiveList = [];
-    $scope.toReceiveList_pager = null;
+    $scope.supportsToReceives = [];
+    $scope.supportsToReceives_pager = null;
     $scope.showSupportsToReceive = () => {
         $scope.getSupportsToReceive();
     };
 
     $scope.getSupportsToReceive = function(res) {
         $scope.loading = true;
-        $scope.toReceiveList = [];
-        $scope.toReceiveList_pager = null;
+        $scope.supportsToReceives = [];
+        $scope.supportsToReceives_pager = null;
 
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
@@ -323,11 +323,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=0`)
         .then(function(res) {
+            console.log(res);
             $scope.loading = false;
 
             $scope.setSupportsToReceive(res);
 
-            $('#receive-list').modal('show');
+            $('#supports-receive').modal('show');
         }, function(err) {
             $scope.loading = false;
             console.log(err);
@@ -339,8 +340,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.toReceiveList = [];
-        $scope.toReceiveList_pager = null;
+        $scope.supportsToReceives = [];
+        $scope.supportsToReceives_pager = null;
 
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
@@ -358,10 +359,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.setSupportsToReceive = function(res) {
-        const { data, ...pager } = res.data.plans;
+        const { data, ...pager } = res.data.supports;
 
-        $scope.toReceiveList = data;
-        $scope.toReceiveList_pager = pager;
+        $scope.supportsToReceives = data;
+        $scope.supportsToReceives_pager = pager;
     };
 
     // $scope.onReceived = function(e, plan) {
