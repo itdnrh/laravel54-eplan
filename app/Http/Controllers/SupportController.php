@@ -308,6 +308,8 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($req['id']);
+            $support->sent_date = date('Y-m-d');
+            $support->sent_user = Auth::user()->person_id;
             $support->status = 1;
 
             if ($support->save()) {

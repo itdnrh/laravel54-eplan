@@ -249,8 +249,8 @@ class OrderController extends Controller
                 }
             } else if ($mode == 2) {
                 $support = Support::find($req['id']);
-                $support->received_date = date('Y-m-d');; 
-                $support->received_user = Auth::user()->person_id; 
+                $support->received_date = date('Y-m-d');
+                $support->received_user = Auth::user()->person_id;
                 $support->status = 2; 
 
                 if ($support->save()) {
