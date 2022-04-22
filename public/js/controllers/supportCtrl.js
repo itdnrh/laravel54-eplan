@@ -84,10 +84,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.supports = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?depart=${depart}$year=${year}`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&depart=${depart}&status=0-1`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -401,11 +401,16 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
         .then(function(res) {
             console.log(res);
-
-            $scope.loading = false;
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            }
         }, function(err) {
-            console.log(err);
             $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
     };
 });
