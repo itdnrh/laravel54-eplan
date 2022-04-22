@@ -115,7 +115,7 @@
 						Auth::user()->memberOf->duty_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
-						<!-- <li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
+						<li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
 							<a href="#">
 								<i class="fa fa-check-square-o"></i>
 								<span>การอนุมัติ</span>
@@ -145,7 +145,7 @@
 									</a>
 								</li>
 							</ul>
-						</li> -->
+						</li>
 					@endif
 
 					<li class="treeview" ng-class="{ 'menu-open active': menu == 'supports' }">
