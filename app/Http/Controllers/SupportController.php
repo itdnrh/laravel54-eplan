@@ -89,9 +89,22 @@ class SupportController extends Controller
 
     public function search(Request $req)
     {
+        $type   = $req->get('type');
+        $depart = $req->get('depart');
+        $status = $req->get('status');
+
         $supports = Support::with('planType','depart','division')
                     ->with('details','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plan_type_id', $type);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
+                    })
+                    ->when(!empty($status), function($q) use ($status) {
+                        $q->where('status', $status);
+                    })
                     ->paginate(10);
 
         return [
