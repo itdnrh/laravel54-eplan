@@ -18,7 +18,7 @@
                                         style="margin-right: 1rem;"
                                         class="form-control"
                                         ng-model="cboPlanType"
-                                        ng-change="onFilterCategories(cboPlanType); getPlansToReceives();"
+                                        ng-change="onFilterCategories(cboPlanType); getPlansToReceive();"
                                     >
                                         <option value="">-- เลือกประเภทแผน --</option>
                                         @foreach($planTypes as $planType)
@@ -53,11 +53,9 @@
                                     >
                                         <option value="">-- กลุ่มภารกิจ --</option>
                                         @foreach($factions as $faction)
-
                                             <option value="{{ $faction->faction_id }}">
                                                 {{ $faction->faction_name }}
                                             </option>
-
                                         @endforeach
                                     </select>
                                 </div>
@@ -94,8 +92,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, plan) in toReceiveList">
-                                <td style="text-align: center;">@{{ index+toReceiveList_pager.from }}</td>
+                            <tr ng-repeat="(index, plan) in planToReceives">
+                                <td style="text-align: center;">@{{ index+planToReceives_pager.from }}</td>
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
@@ -123,7 +121,7 @@
                                 </td>
                                 <td style="text-align: center;">
                                     <a  href="#"
-                                        ng-click="onReceived($event, plan)"
+                                        ng-click="onReceivePlan($event, plan)"
                                         class="btn btn-primary btn-xs"
                                         title="รับเอกสาร">
                                         รับเอกสาร
@@ -134,7 +132,7 @@
                     </table>
 
                     <!-- Loading (remove the following to stop the loading)-->
-                    <div style="width: 100%; height: 50px; text-align: center;" ng-show="toReceiveList.length == 0">
+                    <div style="width: 100%; height: 50px; text-align: center;" ng-show="planToReceives.length == 0">
                         <div ng-show="loading" class="overlay">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
@@ -146,38 +144,38 @@
                     <div class="row">
                         <div class="col-md-4">
                             <span class="pull-left" style="margin-top: 5px;">
-                                หน้า @{{ toReceiveList_pager.current_page }} จาก @{{ toReceiveList_pager.last_page }} | 
-                                จำนวน @{{ toReceiveList_pager.total }} รายการ
+                                หน้า @{{ planToReceives_pager.current_page }} จาก @{{ planToReceives_pager.last_page }} | 
+                                จำนวน @{{ planToReceives_pager.total }} รายการ
                             </span>
                         </div>
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
-                                <li ng-if="toReceiveList_pager.current_page !== 1">
-                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.path+ '?page=1', setPlansToReceive)" aria-label="Previous">
+                                <li ng-if="planToReceives_pager.current_page !== 1">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, planToReceives_pager.path+ '?page=1', setPlansToReceive)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
-                                <li ng-class="{'disabled': (toReceiveList_pager.current_page==1)}">
-                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.prev_page_url, setPlansToReceive)" aria-label="Prev">
+                                <li ng-class="{'disabled': (planToReceives_pager.current_page==1)}">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, planToReceives_pager.prev_page_url, setPlansToReceive)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
 
-                                <!-- <li ng-if="toReceiveList_pager.current_page < toReceiveList_pager.last_page && (toReceiveList_pager.last_page - toReceiveList_pager.current_page) > 10">
-                                    <a href="@{{ toReceiveList_pager.url(toReceiveList_pager.current_page + 10) }}">
+                                <!-- <li ng-if="planToReceives_pager.current_page < planToReceives_pager.last_page && (planToReceives_pager.last_page - planToReceives_pager.current_page) > 10">
+                                    <a href="@{{ planToReceives_pager.url(planToReceives_pager.current_page + 10) }}">
                                         ...
                                     </a>
                                 </li> -->
 
-                                <li ng-class="{'disabled': (toReceiveList_pager.current_page==toReceiveList_pager.last_page)}">
-                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.next_page_url, setPlansToReceive)" aria-label="Next">
+                                <li ng-class="{'disabled': (planToReceives_pager.current_page==planToReceives_pager.last_page)}">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, planToReceives_pager.next_page_url, setPlansToReceive)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
-                                <li ng-if="toReceiveList_pager.current_page !== toReceiveList_pager.last_page">
-                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.path+ '?page=' +toReceiveList_pager.last_page, setPlansToReceive)" aria-label="Previous">
+                                <li ng-if="planToReceives_pager.current_page !== planToReceives_pager.last_page">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, planToReceives_pager.path+ '?page=' +planToReceives_pager.last_page, setPlansToReceive)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>

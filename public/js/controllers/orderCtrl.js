@@ -237,16 +237,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#plans-list').modal('hide');
     };
 
-    $scope.toReceiveList = [];
-    $scope.toReceiveList_pager = null;
+    $scope.planToReceives = [];
+    $scope.planToReceives_pager = null;
     $scope.showPlansToReceive = () => {
         $scope.getPlansToReceive();
     };
 
     $scope.getPlansToReceive = function(res) {
         $scope.loading = true;
-        $scope.toReceiveList = [];
-        $scope.toReceiveList_pager = null;
+        $scope.planToReceives = [];
+        $scope.planToReceives_pager = null;
 
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
@@ -270,8 +270,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.toReceiveList = [];
-        $scope.toReceiveList_pager = null;
+        $scope.planToReceives = [];
+        $scope.planToReceives_pager = null;
 
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
@@ -291,8 +291,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.setPlansToReceive = function(res) {
         const { data, ...pager } = res.data.plans;
 
-        $scope.toReceiveList = data;
-        $scope.toReceiveList_pager = pager;
+        $scope.planToReceives = data;
+        $scope.planToReceives_pager = pager;
     };
 
     $scope.onReceivePlan = function(e, plan) {
