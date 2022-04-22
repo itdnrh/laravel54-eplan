@@ -1,7 +1,7 @@
 app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
-    $scope.vatRates = [1,2,3,4,5,6,7,8,9,10];
+    $scope.vatRates = [0,7];
     $scope.editRow = false;
 
     $scope.orders = [];
@@ -11,17 +11,23 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.plans_pager = null;
 
     $scope.order = {
-        year: '',
-        supplier_id: '',
         po_no: '',
         po_date: '',
-        delver_amt: 1,
+        po_req_no: '',
+        po_req_date: '',
+        po_app_no: '',
+        po_app_date: '',
+        year: '',
+        supplier_id: '',
+        order_type_id: '',
         plan_type_id: '',
-        remark: '',
+        delver_amt: 1,
         total: '',
         vat_rate: '',
         vat: '',
         net_total: '',
+        budget_src_id: '',
+        remark: '',
         details: [],
     };
 
@@ -31,6 +37,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         plan_depart: '',
         plan_id: '',
         item_id: '',
+        spec: '',
         price_per_unit: '',
         unit: null,
         unit_id: '',
@@ -79,6 +86,21 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         .on('changeDate', function(event) {
             console.log(event.date);
         });
+
+    $scope.clearNewItem = () => {
+        $scope.newItem = {
+            plan_no: '',
+            plan_detail: '',
+            plan_depart: '',
+            plan_id: '',
+            item_id: '',
+            spec: '',
+            price_per_unit: '',
+            unit_id: '',
+            amount: '',
+            sum_price: ''
+        };
+    };
 
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
@@ -131,22 +153,27 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         console.log(index);
         // $scope.order.details.push({ ...$scope.newItem });
 
-        $scope.calculateTotal();
+        // $scope.calculateTotal();
     };
 
-    $scope.clearNewItem = () => {
-        $scope.newItem = {
-            plan_no: '',
-            plan_detail: '',
-            plan_depart: '',
-            plan_id: '',
-            item_id: '',
-            price_per_unit: '',
-            unit_id: '',
-            amount: '',
-            sum_price: ''
-        };
-    }
+    $scope.showSpecForm = function(detail) {
+        $scope.newItem.plan_id = detail.plan_id;
+        $scope.newItem.item_id = detail.item_id;
+
+        $('#spec-form').modal('show');
+    };
+
+    $scope.addSpec = function() {
+        $scope.order.details.map(detail => {
+            detail.spec = $('#spec').val();
+        });
+
+        $('#spec-form').modal('hide');
+    };
+
+    $scope.toggleEditRow = function() {
+        $scope.editRow = !$scope.editRow;
+    };
 
     $scope.showPlansList = () => {
         $scope.loading = true;
@@ -226,12 +253,15 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
+                spec: '',
                 price_per_unit: plan.price_per_unit,
                 unit_id: `${plan.plan_item.unit_id}`,
                 unit: plan.plan_item.unit,
                 amount: plan.amount,
                 sum_price: plan.sum_price
             };
+
+            $scope.addOrderItem();
         }
 
         $('#plans-list').modal('hide');
