@@ -33,7 +33,7 @@
                                         style="margin-right: 1rem;"
                                         class="form-control"
                                         ng-model="cboCategory"
-                                        ng-change="getPlansToReceives();"
+                                        ng-change="getPlansToReceive();"
                                     >
                                         <option value="">-- เลือกประเภทพัสดุ --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -66,7 +66,7 @@
                                         id="cboDepart"
                                         name="cboDepart"
                                         ng-model="cboDepart"
-                                        ng-change="getPlansToReceives()"
+                                        ng-change="getPlansToReceive()"
                                         class="form-control"
                                     >
                                         <option value="">-- กลุ่มงาน --</option>
@@ -153,13 +153,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="toReceiveList_pager.current_page !== 1">
-                                    <a ng-click="getPlansToReceivesWithUrl($event, toReceiveList_pager.path+ '?page=1', setPlansToReceives)" aria-label="Previous">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.path+ '?page=1', setPlansToReceive)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (toReceiveList_pager.current_page==1)}">
-                                    <a ng-click="getPlansToReceivesWithUrl($event, toReceiveList_pager.prev_page_url, setPlansToReceives)" aria-label="Prev">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.prev_page_url, setPlansToReceive)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -171,13 +171,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (toReceiveList_pager.current_page==toReceiveList_pager.last_page)}">
-                                    <a ng-click="getPlansToReceivesWithUrl($event, toReceiveList_pager.next_page_url, setPlansToReceives)" aria-label="Next">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.next_page_url, setPlansToReceive)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="toReceiveList_pager.current_page !== toReceiveList_pager.last_page">
-                                    <a ng-click="getPlansToReceivesWithUrl($event, toReceiveList_pager.path+ '?page=' +toReceiveList_pager.last_page, setPlansToReceives)" aria-label="Previous">
+                                    <a ng-click="getPlansToReceiveWithUrl($event, toReceiveList_pager.path+ '?page=' +toReceiveList_pager.last_page, setPlansToReceive)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>

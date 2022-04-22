@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รับเอกสารขอสนับสนุน
+            รับใบขอสนับสนุน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รับเอกสารขอสนับสนุน</li>
+            <li class="breadcrumb-item active">รับใบขอสนับสนุน</li>
         </ol>
     </section>
 
@@ -133,22 +133,23 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">รับเอกสารขอสนับสนุน</h3>
+                                <h3 class="box-title">รับใบขอสนับสนุน</h3>
                             </div>
                             <div class="col-md-6">
                                 <button
                                     type="button"
                                     class="btn btn-success pull-right"
                                     style="margin-left: 5px;"
-                                    ng-click="showPlansToReceives()"
+                                    ng-click="showPlansToReceive()"
                                 >
                                     ลงรับเอกสารบางรายการ
                                 </button>
                                 <button
                                     type="button"
                                     class="btn btn-primary pull-right"
+                                    ng-click="showSupportsToReceive()"
                                 >
-                                    ลงรับเอกสารจากบันทึกขอสนับสนุน
+                                    ลงรับจากใบขอสนับสนุน
                                 </button>
                             </div>
                         </div>

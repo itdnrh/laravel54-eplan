@@ -239,11 +239,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.toReceiveList = [];
     $scope.toReceiveList_pager = null;
-    $scope.showPlansToReceives = () => {
-        $scope.getPlansToReceives();
+    $scope.showPlansToReceive = () => {
+        $scope.getPlansToReceive();
     };
 
-    $scope.getPlansToReceives = function(res) {
+    $scope.getPlansToReceive = function(res) {
         $scope.loading = true;
         $scope.toReceiveList = [];
         $scope.toReceiveList_pager = null;
@@ -254,10 +254,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=1`)
         .then(function(res) {
-            console.log(res);
             $scope.loading = false;
 
-            $scope.setPlansToReceives(res);
+            $scope.setPlansToReceive(res);
 
             $('#receive-list').modal('show');
         }, function(err) {
@@ -266,7 +265,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
     };
 
-    $scope.getPlansToReceivesWithUrl = function(e, url, cb) {
+    $scope.getPlansToReceiveWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -289,7 +288,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
     };
 
-    $scope.setPlansToReceives = function(res) {
+    $scope.setPlansToReceive = function(res) {
         const { data, ...pager } = res.data.plans;
 
         $scope.toReceiveList = data;
@@ -305,6 +304,76 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(err);
         });
     };
+
+    /** ============================================================================= */
+    $scope.toReceiveList = [];
+    $scope.toReceiveList_pager = null;
+    $scope.showSupportsToReceive = () => {
+        $scope.getSupportsToReceive();
+    };
+
+    $scope.getSupportsToReceive = function(res) {
+        $scope.loading = true;
+        $scope.toReceiveList = [];
+        $scope.toReceiveList_pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=0`)
+        .then(function(res) {
+            $scope.loading = false;
+
+            $scope.setSupportsToReceive(res);
+
+            $('#receive-list').modal('show');
+        }, function(err) {
+            $scope.loading = false;
+            console.log(err);
+        });
+    };
+
+    $scope.getSupportsToReceiveWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.toReceiveList = [];
+        $scope.toReceiveList_pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${url}&type=${type}&depart=${depart}&status=0`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setSupportsToReceive = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.toReceiveList = data;
+        $scope.toReceiveList_pager = pager;
+    };
+
+    // $scope.onReceived = function(e, plan) {
+    //     console.log(plan);
+    //     $http.post(`${CONFIG.baseUrl}/orders/received`, { id: plan.id })
+    //     .then(function(res) {
+    //         console.log(res);
+    //     }, function(err) {
+    //         console.log(err);
+    //     });
+    // };
+    /** ============================================================================= */
 
     $scope.getAll = function() {
         $scope.loading = true;
