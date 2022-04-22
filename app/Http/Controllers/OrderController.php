@@ -237,7 +237,7 @@ class OrderController extends Controller
         try {
             if ($mode == 1) {
                 $plan = Plan::find($req['id']);
-                $plan->received_date = date('Y-m-d h:i:s');
+                $plan->received_date = date('Y-m-d');
                 $plan->received_user = Auth::user()->person_id;
                 $plan->status = 2;
             
@@ -249,12 +249,14 @@ class OrderController extends Controller
                 }
             } else if ($mode == 2) {
                 $support = Support::find($req['id']);
+                $support->received_date = date('Y-m-d');; 
+                $support->received_user = Auth::user()->person_id; 
                 $support->status = 2; 
 
                 if ($support->save()) {
                     foreach($req['details'] as $detail) {
                         $plan = Plan::find($detail['plan_id']);
-                        $plan->received_date = date('Y-m-d h:i:s');
+                        $plan->received_date = date('Y-m-d');
                         $plan->received_user = Auth::user()->person_id;
                         $plan->status = 2;
                         $plan->save();
