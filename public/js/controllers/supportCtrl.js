@@ -376,15 +376,24 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.sendSupport = function(e) {
+        $scope.loading = true;
         console.log($scope.support);
+
         $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
         .then(function(res) {
-            console.log(res);
+            $scope.loading = false;
 
-            $scope.loading = false;
+            console.log(res);
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+            }
         }, function(err) {
-            console.log(err);
             $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
         });
     };
 
@@ -398,8 +407,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.store = function() {
+        $scope.loading = true;
+
         $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
         .then(function(res) {
+            $scope.loading = false;
+
             console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
