@@ -25,16 +25,22 @@ class OrderController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'year'          => 'required',
             'po_no'         => 'required',
             'po_date'       => 'required',
+            'po_req_no'     => 'required',
+            'po_req_date'   => 'required',
+            'po_app_no'     => 'required',
+            'po_app_date'   => 'required',
+            'year'          => 'required',
             'supplier_id'   => 'required',
-            'delver_amt'    => 'required',
+            'order_type_id' => 'required',
             'plan_type_id'  => 'required',
+            'delver_amt'    => 'required',
             'total'         => 'required',
             'vat_rate'      => 'required',
             'vat'           => 'required',
             'net_total'     => 'required',
+            'budget_src_id' => 'required',
         ];
 
         $messages = [
