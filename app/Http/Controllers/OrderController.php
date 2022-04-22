@@ -234,34 +234,43 @@ class OrderController extends Controller
 
     public function doReceived(Request $req, $mode)
     {
-        if ($mode == 1) {
-            $plan = Plan::find($req['id']);
-            $plan->received_date = date('Y-m-d h:i:s');
-            $plan->received_user = Auth::user()->person_id;
-            $plan->status = 2;
-        
-            if ($plan->save()) {
-                return [
-                    'plan' => $plan,
-                ];
-            }
-        } else if ($mode == 2) {
-            $support = Support::find($req['id']);
-            $support->status = 2; 
-
-            if ($support->save()) {
-                foreach($req['details'] as $detail) {
-                    $plan = Plan::find($detail['plan_id']);
-                    $plan->received_date = date('Y-m-d h:i:s');
-                    $plan->received_user = Auth::user()->person_id;
-                    $plan->status = 2;
-                    $plan->save();
+        try {
+            if ($mode == 1) {
+                $plan = Plan::find($req['id']);
+                $plan->received_date = date('Y-m-d h:i:s');
+                $plan->received_user = Auth::user()->person_id;
+                $plan->status = 2;
+            
+                if ($plan->save()) {
+                    return [
+                        'status'    => 1,
+                        'plan'      => $plan,
+                    ];
                 }
+            } else if ($mode == 2) {
+                $support = Support::find($req['id']);
+                $support->status = 2; 
 
-                return [
-                    'support' => $support,
-                ];
+                if ($support->save()) {
+                    foreach($req['details'] as $detail) {
+                        $plan = Plan::find($detail['plan_id']);
+                        $plan->received_date = date('Y-m-d h:i:s');
+                        $plan->received_user = Auth::user()->person_id;
+                        $plan->status = 2;
+                        $plan->save();
+                    }
+
+                    return [
+                        'status'    => 1,
+                        'support'   => $support,
+                    ];
+                }
             }
+        } catch (\Throwable $th) {
+            return [
+                'status' => 0,
+                'error'  => 'Something went wrong!!'
+            ];
         }
     }
 
