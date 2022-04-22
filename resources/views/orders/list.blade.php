@@ -96,7 +96,7 @@
                                 @include('orders._order-details')
 
                             </div><!-- /.tab-pane -->
-
+                        </div><!-- /.tab-content -->
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
