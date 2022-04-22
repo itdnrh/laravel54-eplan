@@ -102,9 +102,9 @@
                                 <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
                                 <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
                                 <td>
-                                    <p style="margin: 0;">@{{ support.plan.plan_no }}</p>
                                     <ul style="margin: 0 5px; padding: 0 10px;">
                                         <li ng-repeat="(index, detail) in support.details">
+                                            <span>@{{ detail.plan.plan_no }}</span>
                                             <span>@{{ detail.plan.plan_item.item.item_name }} จำนวน </span>
                                             <span>@{{ detail.plan.plan_item.amount | currency:'':0 }}</span>
                                             <span>@{{ detail.plan.plan_item.unit.name }}</span>

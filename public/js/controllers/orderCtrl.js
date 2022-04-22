@@ -313,6 +313,56 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     /** ============================================================================= */
+    $scope.supports = [];
+    $scope.supports_pager = null;
+    $scope.getSupports = (status) => {
+        $scope.loading = true;
+        $scope.supports = [];
+        $scope.supports_pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            $scope.setSupports(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getSupportWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.supports = [];
+        $scope.supports_pager = null;
+
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+
+        $http.get(`${url}&type=${type}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setSupports = function(res) {
+        const { data, ...pager } = res.data.supports;
+
+        $scope.supports = data;
+        $scope.supports_pager = pager;
+    };
+
     $scope.supportsToReceives = [];
     $scope.supportsToReceives_pager = null;
     $scope.showSupportsToReceive = () => {

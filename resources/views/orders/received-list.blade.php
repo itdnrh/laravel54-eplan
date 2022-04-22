@@ -21,6 +21,7 @@
         ng-controller="orderCtrl"
         ng-init="
             getPlans(2);
+            getSupports(2);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -167,29 +168,29 @@
 
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#received-list" data-toggle="tab">
-                                    <i class="fa fa-pencil-square-o text-maroon" aria-hidden="true"></i>
-                                    รายการแผน
-                                    <span class="badge badge-light">@{{ leaves.length }}</span>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="#supported-list" data-toggle="tab">
                                     <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
                                     ใบขอสนับสนุน (O/D)
                                     <span class="badge badge-light">@{{ leaves.length }}</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="#received-list" data-toggle="tab">
+                                    <i class="fa fa-pencil-square-o text-maroon" aria-hidden="true"></i>
+                                    รายการแผน
+                                    <span class="badge badge-light">@{{ leaves.length }}</span>
+                                </a>
+                            </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="active tab-pane" id="received-list">
-
-                                @include('orders._received-list')
-
-                            </div><!-- /.tab-pane -->
-                            <div class="tab-pane" id="supported-list">
+                            <div class="active tab-pane" id="supported-list">
 
                                 @include('orders._supported-list')
+
+                            </div><!-- /.tab-pane -->
+                            <div class="tab-pane" id="received-list">
+
+                                @include('orders._received-list')
 
                             </div><!-- /.tab-pane -->
                         </div><!-- /.tab-content -->
