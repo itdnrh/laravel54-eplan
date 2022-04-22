@@ -295,9 +295,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.toReceiveList_pager = pager;
     };
 
-    $scope.onReceived = function(e, plan) {
-        console.log(plan);
-        $http.post(`${CONFIG.baseUrl}/orders/received`, { id: plan.id })
+    $scope.onReceivePlan = function(e, plan) {
+        $http.post(`${CONFIG.baseUrl}/orders/received/1`, { id: plan.id })
         .then(function(res) {
             console.log(res);
         }, function(err) {
@@ -321,7 +320,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=0`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=1`)
         .then(function(res) {
             console.log(res);
             $scope.loading = false;
@@ -347,7 +346,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${url}&type=${type}&depart=${depart}&status=0`)
+        $http.get(`${url}&type=${type}&depart=${depart}&status=1`)
         .then(function(res) {
             cb(res);
 
@@ -365,15 +364,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supportsToReceives_pager = pager;
     };
 
-    // $scope.onReceived = function(e, plan) {
-    //     console.log(plan);
-    //     $http.post(`${CONFIG.baseUrl}/orders/received`, { id: plan.id })
-    //     .then(function(res) {
-    //         console.log(res);
-    //     }, function(err) {
-    //         console.log(err);
-    //     });
-    // };
+    $scope.onReceiveSupport = function(e, support) {
+        $http.post(`${CONFIG.baseUrl}/orders/received/2`, support)
+        .then(function(res) {
+            console.log(res);
+        }, function(err) {
+            console.log(err);
+        });
+    };
     /** ============================================================================= */
 
     $scope.getAll = function() {

@@ -14,6 +14,7 @@ use App\Models\Supplier;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\PlanType;
+use App\Models\Support;
 use App\Models\Unit;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -231,17 +232,36 @@ class OrderController extends Controller
         ]);
     }
 
-    public function doReceived(Request $req)
+    public function doReceived(Request $req, $mode)
     {
-        $plan = Plan::find($req['id']);
-        $plan->received_date = date('Y-m-d h:i:s');
-        $plan->received_user = 'test';
-        $plan->status = 2;
-    
-        if ($plan->save()) {
-            return [
-                'plan' => $plan,
-            ];
+        if ($mode == 1) {
+            $plan = Plan::find($req['id']);
+            $plan->received_date = date('Y-m-d h:i:s');
+            $plan->received_user = Auth::user()->person_id;
+            $plan->status = 2;
+        
+            if ($plan->save()) {
+                return [
+                    'plan' => $plan,
+                ];
+            }
+        } else if ($mode == 2) {
+            $support = Support::find($req['id']);
+            $support->status = 2; 
+
+            if ($support->save()) {
+                foreach($req['details'] as $detail) {
+                    $plan = Plan::find($detail['plan_id']);
+                    $plan->received_date = date('Y-m-d h:i:s');
+                    $plan->received_user = Auth::user()->person_id;
+                    $plan->status = 2;
+                    $plan->save();
+                }
+
+                return [
+                    'support' => $support,
+                ];
+            }
         }
     }
 

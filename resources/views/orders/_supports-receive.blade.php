@@ -127,7 +127,7 @@
                                 </td>
                                 <td style="text-align: center;">
                                     <a  href="#"
-                                        ng-click="onReceived($event, support)"
+                                        ng-click="onReceiveSupport($event, support)"
                                         class="btn btn-primary btn-xs"
                                         title="รับเอกสาร">
                                         รับเอกสาร
