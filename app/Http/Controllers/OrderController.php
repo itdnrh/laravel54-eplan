@@ -19,6 +19,8 @@ use App\Models\Unit;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
+use App\Models\OrderType;
+use App\Models\BudgetSource;
 
 class OrderController extends Controller
 {
@@ -138,6 +140,8 @@ class OrderController extends Controller
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
+            "orderTypes"    => OrderType::all(),
+            "budgetSources" => BudgetSource::all(),
         ]);
     }
 

@@ -18,6 +18,16 @@ class Order extends Model
         return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');
     }
 
+    public function orderType()
+    {
+        return $this->belongsTo(OrderType::class, 'order_type_id', 'id');
+    }
+
+    public function budgetSource()
+    {
+        return $this->belongsTo(BudgetSource::class, 'budget_src_id', 'id');
+    }
+
     public function details()
     {
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');

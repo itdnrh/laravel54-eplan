@@ -200,8 +200,8 @@
                                         tabindex="1"
                                     >
                                         <option value="">-- เลือกประเภทขอซื้อ/จ้าง --</option>
-                                        @foreach($planTypes as $planType)
-                                            <option value="{{ $planType->id }}">{{ $planType->plan_type_name }}</option>
+                                        @foreach($orderTypes as $orderType)
+                                            <option value="{{ $orderType->id }}">{{ $orderType->name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(order, 'order_type_id')">
@@ -233,7 +233,7 @@
                                     class="form-group col-md-2"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'delver_amt')}"
                                 >
-                                    <label>จำนวนงวดงาน :</label>
+                                    <label>จำนวนงวดเงิน :</label>
                                     <input
                                         type="number"
                                         id="delver_amt"
@@ -242,7 +242,7 @@
                                         class="form-control"
                                         tabindex="1">
                                     <span class="help-block" ng-show="checkValidate(order, 'delver_amt')">
-                                        กรุณาระบุจำนวนงวดงาน
+                                        กรุณาระบุจำนวนงวดเงิน
                                     </span>
                                 </div>
                             </div>
@@ -430,8 +430,8 @@
                                             tabindex="1"
                                         >
                                             <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
-                                            @foreach($planTypes as $planType)
-                                                <option value="{{ $planType->id }}">{{ $planType->plan_type_name }}</option>
+                                            @foreach($budgetSources as $budgetSource)
+                                                <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
                                             @endforeach
                                         </select>
                                         <span class="help-block" ng-show="checkValidate(order, 'order_type_id')">
