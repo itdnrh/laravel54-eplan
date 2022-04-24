@@ -2,15 +2,15 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     /** ################################################################################## */
     $scope.loading = false;
     $scope.withdrawals = [];
-    $scope.pager = [];
+    $scope.pager = null;
 
     $scope.inspections = [];
-    $scope.inspections_pager = [];
+    $scope.inspections_pager = null;
 
-    $scope.plans = [];
-    $scope.plans_pager = [];
+    $scope.orders = [];
+    $scope.orders_pager = null;
 
-    $scope.inspection = {
+    $scope.withdrawals = {
         po_id: '',
         deliver_seq: '',
         deliver_no: '',
@@ -59,6 +59,20 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(event.date);
         });
 
+    $scope.clearNewItem = () => {
+        $scope.newItem = {
+            plan_no: '',
+            plan_detail: '',
+            plan_depart: '',
+            plan_id: '',
+            item_id: '',
+            price_per_unit: '',
+            unit_id: '',
+            amount: '',
+            sum_price: ''
+        };
+    };
+
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
         let amount = parseFloat($(`#amount`).val());
@@ -102,20 +116,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.calculateTotal();
     };
 
-    $scope.clearNewItem = () => {
-        $scope.newItem = {
-            plan_no: '',
-            plan_detail: '',
-            plan_depart: '',
-            plan_id: '',
-            item_id: '',
-            price_per_unit: '',
-            unit_id: '',
-            amount: '',
-            sum_price: ''
-        };
-    }
-
     $scope.calculateTotal = () => {
         let total = 0;
 
@@ -127,16 +127,35 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $('#total').val(total);
     };
 
-    $scope.getPlans = () => {
-        $scope.plans = [];
+    $scope.showOrdersList = (e) => {
         $scope.loading = true;
+        $scope.orders = [];
+        $scope.orders_pager = null;
+
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=1`)
+        .then(function(res) {
+            $scope.setOrder(res);
+
+            $scope.loading = false;
+
+            $('#orders-list').modal('show');
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getOrder = () => {
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.orders_pager = null;
 
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
         let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}`)
         .then(function(res) {
-            $scope.setPlans(res);
+            $scope.setorder(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -145,21 +164,12 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
-    $scope.showPlansList = () => {
-        $scope.plans = [];
-        $scope.loading = true;
+    $scope.setOrder = function(res) {
+        const { data, ...pager } = res.data.orders;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-
-            $('#plans-list').modal('show');
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
+        console.log(data);
+        $scope.orders = data;
+        $scope.orders_pager = pager;
     };
 
     $scope.onSelectedPlan = (e, plan) => {
@@ -177,14 +187,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             };
         }
 
-        $('#plans-list').modal('hide');
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
+        $('#orders-list').modal('hide');
     };
 
     $scope.getAll = function() {

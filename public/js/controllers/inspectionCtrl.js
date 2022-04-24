@@ -4,11 +4,12 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.inspections = [];
     $scope.pager = [];
 
-    $scope.plans = [];
-    $scope.plans_pager = [];
+    $scope.orders = [];
+    $scope.orders_pager = null;
 
     $scope.inspection = {
-        po_id: '',
+        order_id: '',
+        order: null,
         deliver_seq: '',
         deliver_no: '',
         inspect_sdate: '',
@@ -124,16 +125,35 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $('#total').val(total);
     };
 
-    $scope.getPlans = () => {
-        $scope.plans = [];
+    $scope.showOrdersList = (e) => {
         $scope.loading = true;
+        $scope.orders = [];
+        $scope.orders_pager = null;
+
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=1`)
+        .then(function(res) {
+            $scope.setOrder(res);
+
+            $scope.loading = false;
+
+            $('#orders-list').modal('show');
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getOrder = () => {
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.orders_pager = null;
 
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
         let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}`)
         .then(function(res) {
-            $scope.setPlans(res);
+            $scope.setorder(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -142,46 +162,25 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
-    $scope.showPlansList = () => {
-        $scope.plans = [];
-        $scope.loading = true;
+    $scope.setOrder = function(res) {
+        const { data, ...pager } = res.data.orders;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-
-            $('#plans-list').modal('show');
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
+        console.log(data);
+        $scope.orders = data;
+        $scope.orders_pager = pager;
     };
 
-    $scope.onSelectedPlan = (e, plan) => {
-        if (plan) {
-            $scope.newItem = {
-                plan_no: plan.plan_no,
-                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
-                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
-                plan_id: plan.id,
-                item_id: plan.plan_item.item_id,
-                price_per_unit: plan.price_per_unit,
-                unit_id: `${plan.unit_id}`,
-                amount: plan.amount,
-                sum_price: plan.sum_price
+    $scope.onSelectedOrder = (e, order) => {
+        console.log(order);
+        if (order) {
+            $scope.inspection = {
+                order: order,
+                order_id: order.id,
+                inspect_total: order.net_total
             };
         }
 
-        $('#plans-list').modal('hide');
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
+        $('#orders-list').modal('hide');
     };
 
     $scope.getAll = function() {

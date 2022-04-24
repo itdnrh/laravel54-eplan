@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Inspection;
 use App\Models\Plan;
+use App\Models\PlanType;
+use App\Models\ItemCategory;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Faction;
@@ -89,6 +91,8 @@ class InspectionController extends Controller
     public function create()
     {
         return view('inspections.add', [
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
             // "suppliers"     => Supplier::all(),
             // "units"         => Unit::all(),
             // "factions"      => Faction::all(),
