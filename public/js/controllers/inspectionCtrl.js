@@ -12,11 +12,11 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         order: null,
         deliver_seq: '',
         deliver_no: '',
+        deliver_doc_id: '',
         inspect_sdate: '',
         inspect_edate: '',
         inspect_total: '',
         inspect_result: '',
-        inspect_user: '',
         remark: '',
     };
 

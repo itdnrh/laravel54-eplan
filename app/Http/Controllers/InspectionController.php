@@ -20,14 +20,15 @@ class InspectionController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'year'          => 'required',
-            'doc_no'         => 'required',
-            'doc_date'       => 'required',
-            'supplier_id'   => 'required',
-            'total'         => 'required',
-            'vat_rate'      => 'required',
-            'vat'           => 'required',
-            'net_total'     => 'required',
+            'order_id'          => 'required',
+            'deliver_seq'       => 'required',
+            'deliver_no'        => 'required',
+            'deliver_doc_id'    => 'required',
+            'inspect_sdate'     => 'required',
+            'inspect_edate'     => 'required',
+            'inspect_total'     => 'required',
+            'inspect_result'    => 'required',
+            'reamark'           => 'required',
         ];
 
         $messages = [
@@ -107,11 +108,12 @@ class InspectionController extends Controller
         $inspection->order_id       = $req['po_id'];
         $inspection->deliver_seq    = $req['deliver_seq'];
         $inspection->deliver_no     = $req['deliver_no'];
+        $inspection->deliver_doc_id = $req['deliver_doc_id'];
         $inspection->inspect_sdate  = convThDateToDbDate($req['inspect_sdate']);
         $inspection->inspect_edate  = convThDateToDbDate($req['inspect_edate']);
         $inspection->inspect_total  = $req['inspect_total'];
         $inspection->inspect_result = $req['inspect_result'];
-        $inspection->inspect_user   = $req['inspect_user'];
+        $inspection->inspect_user   = Auth::user()->person_id;
         $inspection->remark         = $req['remark'];
 
         if ($inspection->save()) {

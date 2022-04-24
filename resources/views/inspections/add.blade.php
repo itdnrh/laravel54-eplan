@@ -94,16 +94,16 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
                                 >
-                                    <label for="">งวดงานที่</label>
+                                    <label for="">งวดที่</label>
                                     <select
                                         id="deliver_seq"
                                         name="deliver_seq"
                                         class="form-control"
                                     >
-                                        <option value="">-- เลือกงวดงานที่ --</option>
+                                        <option value="">-- เลือกงวดที่ --</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -115,7 +115,26 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'deliver_doc_id')}"
+                                >
+                                    <label for="">ประเภทเอกสารส่งมอบ</label>
+                                    <select
+                                        id="deliver_doc_id"
+                                        name="deliver_doc_id"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- เลือกประเภทเอกสารส่งมอบ --</option>
+                                        <option value="1">ใบวางบิล/ใบแจ้งหนี้</option>
+                                        <option value="2">ใบแจ้งหนี้/ใบวางบิล</option>
+                                        <option value="3">ใบสำคัญรับเงิน</option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(service, 'deliver_doc_id')">
+                                        @{{ formError.errors.spec_committee[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
@@ -190,7 +209,6 @@
                                         @{{ formError.errors.spec_committee[0] }}
                                     </span>
                                 </div>
-
                                 <div
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
