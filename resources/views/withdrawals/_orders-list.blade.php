@@ -47,47 +47,67 @@
                         <thead>
                             <tr>
                                 <th style="width: 3%; text-align: center;">#</th>
-                                <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
+                                <th style="width: 8%; text-align: center;">ปีงบ</th>
                                 <th style="width: 12%; text-align: center;">ใบสั่งซื้อ</th>
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">ยอดเงิน</th>
-                                <th style="width: 20%; text-align: center;">หน่วยงาน</th>
+                                <th style="width: 20%; text-align: center;">วันที่ตรวจรับ</th>
                                 <th style="width: 5%; text-align: center;">สถานะ</th>
-                                <th style="width: 10%; text-align: center;">Actions</th>
+                                <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="(index, order) in orders">
                                 <td style="text-align: center;">@{{ index+orders_pager.from }}</td>
-                                <!-- <td style="text-align: center;">@{{ order.year }}</td> -->
+                                <td style="text-align: center;">@{{ order.year }}</td>
                                 <td>
                                     <p style="margin: 0;">เลขที่ @{{ order.po_no }}</p>
                                     <p style="margin: 0;">วันที่ @{{ order.po_date | thdate }}</p>
                                 </td>
                                 <td>
-                                    <p style="margin: 0;">@{{ order.plan_item.item.category.name }}</p>
-                                    @{{ order.plan_item.item.item_name }} จำนวน 
-                                    <span>@{{ order.amount | currency:'':0 }}</span>
-                                    <span>@{{ order.unit.name }}</span>
-                                    <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
-                                        class="btn btn-default btn-xs" 
-                                        title="ไฟล์แนบ"
-                                        target="_blank"
-                                        ng-show="order.attachment">
-                                        <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                    </a>
+                                    <h4 style="margin: 0;">@{{ order.supplier.supplier_name }}</h4>
+                                    <ul style="margin: 0 5px; padding: 0 10px;">
+                                        <li ng-repeat="(index, detail) in order.details">
+                                            <p style="margin: 0;">@{{ detail.item.category.name }}</p>
+                                            <p style="margin: 0;">
+                                                @{{ detail.item.item_name }} จำนวน 
+                                                <span>@{{ detail.amount | currency:'':0 }}</span>
+                                                <span>@{{ detail.unit.name }}</span>
+                                                <span>รวมเป็นเงิน @{{ detail.sum_price | currency:'':2 }} บาท</span>
+                                                <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
+                                                    class="btn btn-default btn-xs" 
+                                                    title="ไฟล์แนบ"
+                                                    target="_blank"
+                                                    ng-show="order.attachment">
+                                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                                </a> -->
+                                            </p>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ order.net_total | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <p style="margin: 0;">@{{ order.depart.depart_name }}</p>
-                                    <p style="margin: 0;">@{{ order.division.ward_name }}</p>
+                                    @{{ order.inspection[0].inspect_sdate | thdate }} - @{{ order.inspection[0].inspect_edate | thdate }}
                                 </td>
-                                <td>@{{ order.status }}</td>
+                                <td>
+                                    <span class="label label-primary" ng-show="order.status == 0">
+                                        รอดำเนินการ
+                                    </span>
+                                    <span class="label bg-navy" ng-show="order.status == 1">
+                                        ตรวจรับแล้ว
+                                    </span>
+                                    <span class="label label-success" ng-show="order.status == 2">
+                                        ส่งเบิกเงินแล้ว
+                                    </span>
+                                    <span class="label label-success" ng-show="order.status == 9">
+                                        ยกเลิก
+                                    </span>
+                                </td>
                                 <td style="text-align: center;">
                                         <a  href="#"
-                                            ng-click="onSelectedPlan($event, plan)"
+                                            ng-click="onSelectedOrder($event, order)"
                                             class="btn btn-primary btn-xs"
                                             title="เลือก">
                                             เลือก
@@ -148,7 +168,7 @@
                             </ul>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger" ng-click="onSelectedPlan($event, null)">
+                            <button type="button" class="btn btn-danger" ng-click="onSelectedOrder($event, null)">
                                 ปิด
                             </button>
                         </div>

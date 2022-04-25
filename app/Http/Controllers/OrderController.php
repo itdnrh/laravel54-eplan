@@ -88,6 +88,7 @@ class OrderController extends Controller
 
         $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.unit','details.item')
+                    ->with('inspections')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })

@@ -32,4 +32,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
+
+    public function inspections()
+    {
+        return $this->hasMany(Inspection::class, 'order_id', 'id');
+    }
 }

@@ -11,27 +11,16 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.orders_pager = null;
 
     $scope.withdrawals = {
-        po_id: '',
+        order: null,
+        order_id: '',
+        withdraw_no: '',
+        withdraw_date: '',
+        inspection_id: '',
+        inspections: [],
         deliver_seq: '',
-        deliver_no: '',
-        inspect_sdate: '',
-        inspect_edate: '',
-        inspect_total: '',
-        inspect_result: '',
-        inspect_user: '',
+        supplier_id: '',
+        net_total: '',
         remark: '',
-    };
-
-    $scope.newItem = {
-        plan_no: '',
-        plan_detail: '',
-        plan_depart: '',
-        plan_id: '',
-        item_id: '',
-        price_per_unit: '',
-        unit_id: '',
-        amount: '',
-        sum_price: ''
     };
 
     /** ============================== Init Form elements ============================== */
@@ -58,20 +47,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         .on('changeDate', function(event) {
             console.log(event.date);
         });
-
-    $scope.clearNewItem = () => {
-        $scope.newItem = {
-            plan_no: '',
-            plan_detail: '',
-            plan_depart: '',
-            plan_id: '',
-            item_id: '',
-            price_per_unit: '',
-            unit_id: '',
-            amount: '',
-            sum_price: ''
-        };
-    };
 
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
@@ -132,7 +107,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders = [];
         $scope.orders_pager = null;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=1`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?status=1`)
         .then(function(res) {
             $scope.setOrder(res);
 
@@ -153,9 +128,9 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
         let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=1`)
         .then(function(res) {
-            $scope.setorder(res);
+            $scope.setOrder(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -172,22 +147,25 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders_pager = pager;
     };
 
-    $scope.onSelectedPlan = (e, plan) => {
-        if (plan) {
-            $scope.newItem = {
-                plan_no: plan.plan_no,
-                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
-                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
-                plan_id: plan.id,
-                item_id: plan.plan_item.item_id,
-                price_per_unit: plan.price_per_unit,
-                unit_id: `${plan.unit_id}`,
-                amount: plan.amount,
-                sum_price: plan.sum_price
+    $scope.onSelectedOrder = (e, order) => {
+        if (order) {
+            $scope.withdrawal = {
+                order: order,
+                order_id: order.id,
+                inspections: order.inspections
             };
         }
 
         $('#orders-list').modal('hide');
+    };
+
+    $scope.onDeliverSeqSelected = function(seq) {
+        const inspection = $scope.withdrawal.inspections.find(insp => insp.deliver_seq === parseInt(seq));
+        console.log(inspection);
+
+        // $scope.withdrawal.inspection_id = inspection.id;
+        // $scope.withdrawal.deliver_no = inspection.deliver_no;
+        // $scope.withdrawal.net_total = inspection.inspect_total;
     };
 
     $scope.getAll = function() {

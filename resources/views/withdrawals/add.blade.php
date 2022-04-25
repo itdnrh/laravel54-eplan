@@ -37,7 +37,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
                                 >
                                     <label>เลขที่ P/O :</label>
@@ -46,7 +46,7 @@
                                             type="text"
                                             id="po_no"
                                             name="po_no"
-                                            ng-model="order.po_no"
+                                            ng-model="withdrawal.order.po_no"
                                             class="form-control"
                                             tabindex="6"
                                         />
@@ -62,6 +62,16 @@
                                     </span>
                                 </div>
                                 <div class="form-group col-md-6"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul>
+                                        <li ng-repeat="insp in withdrawal.inspections">
+                                            @{{ insp }}
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -104,7 +114,7 @@
                                         ng-change="onDeliverSeqSelected(withdrawal.deliver_seq)"
                                     >
                                         <option value="">-- เลือกงวดงานที่ --</option>
-                                        <option ng-repeat="insp in inspections" value="@{{ insp.deliver_seq }}">
+                                        <option ng-repeat="insp in withdrawal.inspections" value="@{{ insp.deliver_seq }}">
                                             @{{ insp.deliver_seq }}
                                         </option>
                                     </select>
