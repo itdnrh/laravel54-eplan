@@ -130,7 +130,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders = [];
         $scope.orders_pager = null;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=1`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?status=0`)
         .then(function(res) {
             $scope.setOrder(res);
 
@@ -148,10 +148,10 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders = [];
         $scope.orders_pager = null;
 
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=0`)
         .then(function(res) {
             $scope.setorder(res);
 

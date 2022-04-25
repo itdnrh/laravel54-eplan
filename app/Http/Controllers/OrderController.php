@@ -82,6 +82,9 @@ class OrderController extends Controller
     {
         $year = $req->get('year');
         $supplier = $req->get('supplier');
+        $type = $req->get('type');
+        $cate = $req->get('cate');
+        $status = $req->get('status');
 
         $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.unit','details.item')
@@ -90,6 +93,12 @@ class OrderController extends Controller
                     })
                     ->when(!empty($supplier), function($q) use ($supplier) {
                         $q->where('supplier_id', $supplier);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plan_type_id', $type);
+                    })
+                    ->when($status != '', function($q) use ($status) {
+                        $q->where('status', $status);
                     })
                     ->paginate(10);
 

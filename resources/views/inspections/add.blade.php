@@ -104,11 +104,9 @@
                                         class="form-control"
                                     >
                                         <option value="">-- เลือกงวดที่ --</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
+                                        <option ng-repeat="seq in range(inspection.order.deliver_amt)" value="@{{ seq+1 }}">
+                                            @{{ seq+1 }}
+                                        </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(service, 'remark')">
                                         @{{ formError.errors.spec_committee[0] }}
