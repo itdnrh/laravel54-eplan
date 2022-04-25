@@ -43,7 +43,7 @@
                                     <label>เลขที่ P/O :</label>
                                     <div class="input-group">
                                         <div class="form-control">
-                                            @{{ inspection.order.po_date | thdate }}
+                                            @{{ inspection.order.po_no }}
                                         </div>
                                         <input
                                             type="hidden"
