@@ -47,7 +47,7 @@
 					<li class="treeview" ng-class="{ 'menu-open active': ['plans'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-calendar"></i>
-							<span>แผนจัดซื้อจัดจ้าง</span>
+							<span>คำขอประจำปี</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
@@ -76,6 +76,32 @@
 						</ul>
 					</li>
 
+					<li class="treeview" ng-class="{ 'menu-open active': ['plans'].includes(menu) }">
+						<a href="#">
+							<i class="fa fa-bolt"></i>
+							<span>ค่าสาธารณูปโภค</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu" ng-style="{ 'display': ['plans'].includes(menu) ? 'block' : 'none' }">
+							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/assets') }}">
+									<i class="fa fa-circle-o"></i> ค่าไฟฟ้า
+								</a>
+							</li>
+							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/assets') }}">
+									<i class="fa fa-circle-o"></i> ค่าน้ำประปา
+								</a>
+							</li>
+							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/assets') }}">
+									<i class="fa fa-circle-o"></i> ค่าโทรศัพท์
+								</a>
+							</li>
+						</ul>
+					</li>
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
