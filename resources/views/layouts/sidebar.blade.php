@@ -55,28 +55,28 @@
 						<ul class="treeview-menu" ng-style="{ 'display': ['plans'].includes(menu) ? 'block' : 'none' }">
 							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/assets') }}">
-									<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
+									<i class="fa fa-circle-o"></i> ครุภัณฑ์
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['materials','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/materials') }}">
-									<i class="fa fa-circle-o"></i> แผนวัสดุ (นอกคลัง)
+									<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['services','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/services') }}">
-									<i class="fa fa-circle-o"></i> แผนจ้างบริการ
+									<i class="fa fa-circle-o"></i> จ้างบริการ
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['constructs','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/constructs') }}">
-									<i class="fa fa-circle-o"></i> แผนก่อสร้าง
+									<i class="fa fa-circle-o"></i> ก่อสร้าง
 								</a>
 							</li>
 						</ul>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': ['plans'].includes(menu) }">
+					<li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-bolt"></i>
 							<span>ค่าสาธารณูปโภค</span>
@@ -84,19 +84,19 @@
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
 						</a>
-						<ul class="treeview-menu" ng-style="{ 'display': ['plans'].includes(menu) ? 'block' : 'none' }">
+						<ul class="treeview-menu" ng-style="{ 'display': ['utilities'].includes(menu) ? 'block' : 'none' }">
 							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/assets') }}">
+								<a href="{{ url('/utilities/electricity') }}">
 									<i class="fa fa-circle-o"></i> ค่าไฟฟ้า
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/assets') }}">
+								<a href="{{ url('/utilities/plumbing') }}">
 									<i class="fa fa-circle-o"></i> ค่าน้ำประปา
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/assets') }}">
+								<a href="{{ url('/utilities/telephone') }}">
 									<i class="fa fa-circle-o"></i> ค่าโทรศัพท์
 								</a>
 							</li>
