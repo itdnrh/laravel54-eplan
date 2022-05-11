@@ -336,31 +336,38 @@ class SupportController extends Controller
         }
     }
 
-    public function printCancelForm($id)
+    public function printForm($id)
     {
-        $leave      = Leave::where('id', $id)
-                        ->with('person', 'person.prefix', 'person.position', 'person.academic')
-                        ->with('person.memberOf', 'person.memberOf.depart', 'type')
-                        ->with('delegate', 'delegate.prefix', 'delegate.position', 'delegate.academic')
-                        ->first();
+        $support = Support::with('planType','depart','division','contact')
+                    ->with('details','details.plan','details.plan.planItem.unit')
+                    ->with('details.plan.planItem','details.plan.planItem.item')
+                    ->find($id);
 
-        $cancel     = Cancellation::where('leave_id', $leave->id)->first();
-
-        $places     = ['1' => 'โรงพยาบาลเทพรัตน์นครราชสีมา'];
-
-        $histories  = History::where([
-                            'person_id' => $leave->leave_person,
-                            'year'      => $leave->year
-                        ])->first();
+        $committees = Committee::with('type','person','person.prefix')
+                        ->with('person.position','person.academic')
+                        ->where('support_id', $id)
+                        ->get();
+        
+        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.faction_id', $support->depart->faction_id)
+                            ->where('level.duty_id', '1')
+                            ->with('prefix','position')
+                            ->first();
+        
+        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.depart_id', $support->depart_id)
+                            ->where('level.duty_id', '2')
+                            ->with('prefix','position')
+                            ->first();
 
         $data = [
-            'leave'     => $leave,
-            'cancel'    => $cancel,
-            'places'    => $places,
-            'histories' => $histories
+            "support"       => $support,
+            "committees"    => $committees,
+            "headOfFaction" => $headOfFaction,
+            "headOfDepart"  => $headOfDepart,
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.form03', $data);
+        return renderPdf('forms.support-form', $data);
     }
 }

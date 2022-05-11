@@ -4,18 +4,21 @@
   font-weight: normal;
   src: url("{{ asset('fonts/THSarabunNew.ttf') }}") format("truetype");
 }
+
 @font-face {
   font-family: "THSarabunNew";
   font-style: normal;
   font-weight: bold;
   src: url("{{ asset('fonts/THSarabunNew Bold.ttf') }}") format("truetype");
 }
+
 @font-face {
   font-family: "THSarabunNew";
   font-style: italic;
   font-weight: normal;
   src: url("{{ asset('fonts/THSarabunNew Italic.ttf') }}") format("truetype");
 }
+
 @font-face {
   font-family: "THSarabunNew";
   font-style: italic;
@@ -23,73 +26,81 @@
   src: url("{{ asset('fonts/THSarabunNew BoldItalic.ttf') }}")
     format("truetype");
 }
+
 html {
   margin: 0px;
 }
+
 body {
   font-family: "THSarabunNew";
   font-size: 14pt;
-  margin: 0px 60px;
+  margin: 0 0;
+  /* border: 1px solid black; */
 }
-/* table {
-  border: 1px dashed black;
-} */
-th,
-td {
-  padding: 0;
-  margin: 0;
-  vertical-align: text-top;
-  padding-left: 2px;
-}
-td p {
-  padding: 0;
-  margin: 0;
-}
-.table {
-  border-collapse: collapse;
-}
-.table th,
-td {
-  padding: 0px;
-  margin: 0px;
-  vertical-align: text-top;
-  padding-left: 5px;
-}
-.dot {
-  padding: 0px;
-  margin: 0px;
-}
-span.text-val {
-  font-weight: bold;
-  text-decoration: underline;
-}
+
 .container {
   width: 100%;
-  padding: 0px;
-  margin: 0px 0px 0px 50px;
+  padding: 0;
+  margin: 0 20px 0 50px;
   /* background-image: url("assets/img/print_bg.png"); */
   background-repeat: repeat;
   background-position: center;
+  /* border: 1px dashed red; */
 }
+
 .header {
   padding: 5px;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
-.header-text h1,
-h2,
-h3,
-h4 {
+
+.header-text h1, h2, h3, h4 {
   margin: 0;
 }
+
 .content {
   display: flex;
   justify-content: center;
   min-height: 500px;
 }
-.leave-stat {
-  margin-top: 10px;
+
+/* table {
+  border: 1px dashed black;
+} */
+
+th, td {
+  padding: 0;
+  margin: 0;
+  vertical-align: text-top;
+  padding-left: 2px;
 }
+
+td p {
+  padding: 0;
+  margin: 0;
+}
+
+.table {
+  border-collapse: collapse;
+}
+
+.table th, td {
+  padding: 0px;
+  margin: 0px;
+  vertical-align: text-top;
+  padding-left: 5px;
+}
+
+.dot {
+  padding: 0px;
+  margin: 0px;
+}
+
+span.text-val {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .footer {
   display: flex;
   justify-content: center;
