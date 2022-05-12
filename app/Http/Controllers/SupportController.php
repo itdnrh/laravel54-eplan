@@ -338,7 +338,7 @@ class SupportController extends Controller
 
     public function printForm($id)
     {
-        $support = Support::with('planType','depart','division','contact')
+        $support = Support::with('planType','depart','division')
                     ->with('details','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->find($id);
@@ -348,6 +348,10 @@ class SupportController extends Controller
                         ->where('support_id', $id)
                         ->get();
         
+        $contact = Person::where('person_id', $support->contact_person)
+                            ->with('prefix','position')
+                            ->first();
+
         $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.faction_id', $support->depart->faction_id)
                             ->where('level.duty_id', '1')
@@ -362,6 +366,7 @@ class SupportController extends Controller
 
         $data = [
             "support"       => $support,
+            "contact"       => $contact,
             "committees"    => $committees,
             "headOfFaction" => $headOfFaction,
             "headOfDepart"  => $headOfDepart,
