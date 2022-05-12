@@ -59,7 +59,7 @@
                                 มีความประสงค์ขอให้ดำเนินการซื้อ/จ้าง ดังนี้
                             </p>
 
-                            <table style="width: 100%;" class="table" border="1">
+                            <table style="width: 95%;" class="table" border="1">
                                 <tr>
                                     <th style="width: 4%; text-align: center;">ลำดับ</th>
                                     <th style="text-align: center;">รายการ</th>
@@ -67,27 +67,32 @@
                                     <th style="width: 12%; text-align: center;">ราคาต่อหน่วย</th>
                                     <th style="width: 12%; text-align: center;">ราคารวม</th>
                                 </tr>
-                                <tr>
-                                    <td style="text-align: center; padding: 0;">1</td>
-                                    <td style=" padding: 0 5px;">
-                                        test
-                                    </td>
-                                    <td style="text-align: center; padding: 0;">
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: center; padding: 0;">
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: center; padding: 0;">
-                                        &nbsp;
-                                    </td>
-                                </tr>
+                                <?php $row = 0; ?>
+                                <?php $total = 0; ?>
+                                @foreach($support->details as $detail)
+                                    <?php $total += (float)$detail->sum_price; ?>
+                                    <tr>
+                                        <td style="text-align: center; padding: 0;">{{ ++$row }}</td>
+                                        <td style=" padding: 0 5px;">
+                                            {{ $detail->plan->planItem->item->item_name }}
+                                        </td>
+                                        <td style="text-align: center; padding: 0;">
+                                            {{ $detail->amount }}
+                                        </td>
+                                        <td style="text-align: center; padding: 0;">
+                                            {{ number_format($detail->price_per_unit) }}
+                                        </td>
+                                        <td style="text-align: center; padding: 0;">
+                                            {{ number_format($detail->sum_price) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 <tr>
                                     <td style="text-align: center; font-size: 20px; font-weight: bold;" colspan="4">
                                         รวมเป็นเงิน
                                     </td>
                                     <td style="text-align: center; font-size: 20px; font-weight: bold;">
-                                        &nbsp;
+                                        {{ number_format($total) }}
                                     </td>
                                 </tr>
                             </table>
