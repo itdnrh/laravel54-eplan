@@ -176,6 +176,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('withdrawals/detail/{id}', 'WithdrawalController@detail');
     Route::post('withdrawals/update', 'WithdrawalController@update');
     Route::post('withdrawals/delete/{id}', 'WithdrawalController@delete');
+    Route::get('withdrawals/{id}/print', 'WithdrawalController@printForm');
 
     /** เจ้าหนี้ */
     Route::get('suppliers', 'SupplierController@getAll');

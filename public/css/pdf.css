@@ -23,8 +23,7 @@
   font-family: "THSarabunNew";
   font-style: italic;
   font-weight: bold;
-  src: url("{{ asset('fonts/THSarabunNew BoldItalic.ttf') }}")
-    format("truetype");
+  src: url("{{ asset('fonts/THSarabunNew BoldItalic.ttf') }}") format("truetype");
 }
 
 html {
@@ -51,11 +50,30 @@ body {
   /* border: 1px dashed red; */
 }
 
+.memo-container {
+  width: 100%;
+  padding: 0;
+  margin: 0 75px 0 90px;
+  /* background-image: url("assets/img/print_bg.png"); */
+  /* background-repeat: repeat; */
+  /* background-position: center; */
+  /* border: 1px dashed red; */
+}
+
+.memo-paragraph {
+  width: 100%;
+  margin: 10px 0 0 0;
+  text-indent: 80px;
+  overflow-wrap: break-word;
+  text-align:justify;
+  /* border: 1px solid black; */
+}
+
 .header {
   margin: 0 0 0 0;
   padding: 5px 5px 0;
   text-align: center;
-  /* border: 1px dashed red; */
+  /* border: 1px dashed gray; */
 }
 
 .header p img {
@@ -159,12 +177,12 @@ ul.committee-lists {
 }
 
 .content-header {
+  width: 100%;
   margin: 0;
   padding: 0;
   line-height: 20px;
   display: flex;
   flex-direction: row;
-  /* border: 1px dashed blue; */
 }
 
 .content__header-topic {

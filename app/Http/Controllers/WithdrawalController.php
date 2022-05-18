@@ -15,6 +15,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Faction;
 use App\Models\Depart;
+use App\Models\Person;
 
 class WithdrawalController extends Controller
 {
@@ -174,5 +175,37 @@ class WithdrawalController extends Controller
 
             return redirect('/inspections/list')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
         }
+    }
+
+    
+    public function printForm($id)
+    {
+        $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
+                        ->with('inspection.order.details','inspection.order.details.item')
+                        ->with('inspection.order.budgetSource')
+                        ->find($id);
+
+        /** หัวหน้ากลุ่มงานพัสดุ */
+        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.depart_id', '2')
+                            ->where('level.duty_id', '2')
+                            ->with('prefix','position')
+                            ->first();
+        
+        /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
+        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.faction_id', '1')
+                            ->where('level.duty_id', '1')
+                            ->with('prefix','position')
+                            ->first();
+
+        $data = [
+            "withdrawal"       => $withdrawal,
+            "headOfDepart"  => $headOfDepart,
+            "headOfFaction" => $headOfFaction,
+        ];
+
+        /** Invoke helper function to return view of pdf instead of laravel's view to client */
+        return renderPdf('forms.withdrawal-form', $data);
     }
 }
