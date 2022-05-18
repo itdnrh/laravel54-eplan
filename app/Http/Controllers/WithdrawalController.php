@@ -77,6 +77,26 @@ class WithdrawalController extends Controller
         ];
     }
 
+    public function detail($id)
+    {
+        return view('withdrawals.detail', [
+            "withdrawal" => Withdrawal::find($id),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+        ]);
+    }
+
+    public function getById($id)
+    {
+        $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
+                        ->with('inspection.order.details','inspection.order.details.item')
+                        ->find($id);
+
+        return [
+            "withdrawal" => $withdrawal
+        ];
+    }
+
     public function create()
     {
         return view('withdrawals.add', [

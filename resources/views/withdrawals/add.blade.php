@@ -34,7 +34,6 @@
                         {{ csrf_field() }}
 
                         <div class="box-body">
-
                             <div class="row">
                                 <div
                                     class="form-group col-md-4"

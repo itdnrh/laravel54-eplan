@@ -10,15 +10,16 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.orders = [];
     $scope.orders_pager = null;
 
-    $scope.withdrawals = {
+    $scope.withdrawal = {
         order: null,
         order_id: '',
         withdraw_no: '',
         withdraw_date: '',
         inspection_id: '',
-        inspections: [],
+        inspection: null,
         deliver_seq: '',
         supplier_id: '',
+        supplier: null,
         net_total: '',
         remark: '',
     };
@@ -221,6 +222,29 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     
             $('#order-details').modal('show');
         }
+    };
+
+    $scope.getById = function(id) {
+        $scope.loading = true;
+
+        $http.get(`${CONFIG.baseUrl}/withdrawals/get-ajax-byid/${id}`)
+        .then(function(res) {
+            console.log(res);
+            const { inspection, supplier, ...withdrawal } = res.data.withdrawal;
+
+            $scope.withdrawal.order = inspection.order;
+            $scope.withdrawal.inspection = inspection;
+            $scope.withdrawal.withdraw_no = withdrawal.withdraw_no;
+            $scope.withdrawal.withdraw_date = withdrawal.withdraw_date;
+            $scope.withdrawal.net_total = withdrawal.net_total;
+            $scope.withdrawal.remark = withdrawal.remark;
+            $scope.withdrawal.supplier = supplier;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
     };
 
     $scope.store = function(event, form) {
