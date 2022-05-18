@@ -262,13 +262,13 @@
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
-                        <button
-                            ng-click="onPrint($event)"
+                        <a
+                            href="{{ url('/supports/'.$support->id.'/print') }}"
                             class="btn btn-success"
                         >
                             <i class="fa fa-print" aria-hidden="true"></i>
                             พิมพ์บันทึกขอสนับสนุน
-                        </button>
+                        </a>
                         <button
                             ng-click="sendSupport($event)"
                             class="btn btn-primary"
