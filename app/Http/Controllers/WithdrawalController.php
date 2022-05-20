@@ -185,6 +185,8 @@ class WithdrawalController extends Controller
                         ->with('inspection.order.budgetSource','inspection.order.orderType')
                         ->find($id);
 
+        $planType = PlanType::find($withdrawal->inspection->order->plan_type_id);
+
         /** หัวหน้ากลุ่มงานพัสดุ */
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.depart_id', '2')
@@ -200,9 +202,10 @@ class WithdrawalController extends Controller
                             ->first();
 
         $data = [
-            "withdrawal"       => $withdrawal,
-            "headOfDepart"  => $headOfDepart,
-            "headOfFaction" => $headOfFaction,
+            "withdrawal"        => $withdrawal,
+            "planType"          => $planType,
+            "headOfDepart"      => $headOfDepart,
+            "headOfFaction"     => $headOfFaction,
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */

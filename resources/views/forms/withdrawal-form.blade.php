@@ -61,7 +61,8 @@
                     <tr>
                         <td colspan="4">
                             <p class="memo-paragraph with-expanded">
-                                จังหวัดนครราชสีมา โดยโรงพยาบาลเทพรัตน์นครราชสีมา ได้ตกลง <span>{{ thainumDigit($withdrawal->inspection->order->desc) }}</span>
+                                จังหวัดนครราชสีมา โดยโรงพยาบาลเทพรัตน์นครราชสีมา ได้ตกลง<span>{{ $planType->plan_type_name }}</span>
+                                จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
                                 (<span>{{ $withdrawal->inspection->order->net_total_str }}</span>) กับ <span>{{ $withdrawal->supplier->supplier_name }}</span>
                                 โดยเบิกจ่ายจาก <span style="margin: 0;">{{ $withdrawal->inspection->order->budgetSource->name }}</span>โรงพยาบาลเทพรัตน์นครราชสีมา
@@ -76,7 +77,8 @@
                         <td colspan="4">
                             <p class="memo-paragraph with-expanded">
                                 บัดนี้ <span>{{ $withdrawal->supplier->supplier_name }}</span>
-                                ได้ดำเนินการส่งมอบ <span>{{ thainumDigit($withdrawal->inspection->order->desc) }}</span>
+                                ได้ดำเนินการส่งมอบ<span>{{ $planType->plan_type_name }}</span>
+                                จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
                                 (<span>{{ $withdrawal->inspection->order->net_total_str }}</span>)
                                 ดังกล่าวเรียบร้อยแล้ว และคณะกรรมการตรวจรับพัสดุได้ทำการตรวจรับ
@@ -215,8 +217,9 @@
                         <td colspan="4">
                             <p class="memo-paragraph with-expanded">
                                 <span>{{ $withdrawal->supplier->supplier_name }}</span>
-                                ได้ส่งมอบ <span>{{ thainumDigit($withdrawal->inspection->order->desc) }}</span> 
-                                และคณะกรรมการตรวจรับพัสดุได้ทำการตรวจรับ
+                                ได้ส่งมอบ <span>{{ $planType->plan_type_name }}</span>
+                                จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
+                                และคณะกรรมการตรวจรับพัสดุ ได้ทำการตรวจรับ
                                 ไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับแล้ว เมื่อวันที่
                                 <span>{{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->inspect_sdate)) }}</span>
                                 ดังรายละเอียดในใบส่งมอบงาน และใบตรวจรับพัสดุที่แนบมาพร้อมนี้
@@ -345,7 +348,8 @@
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 ตามบันทึก ที่ <span>{{ thainumDigit($withdrawal->inspection->order->po_req_no) }}</span>
                                 ลงวันที่ <span>{{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->order->po_req_date)) }}</span>
-                                จังหวัดนครราชสีมา ได้เห็นชอบให้<span>{{ thainumDigit($withdrawal->inspection->order->desc) }}</span>
+                                จังหวัดนครราชสีมา ได้เห็นชอบให้<span>{{ $planType->plan_type_name }}</span>
+                                จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 กับ <span>{{ $withdrawal->supplier->supplier_name }}</span>
                                 จำนวนเงิน <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
                                 (<span>{{ $withdrawal->inspection->order->net_total_str }}</span>)
@@ -373,7 +377,9 @@
                             <p class="memo-paragraph-content with-expanded">
                                 เพื่อให้การดำเนินการเป็นไปตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการ บริหารพัสดุภาครัฐ พ.ศ. <span>๒๕๖๐</span> 
                                 ข้อ <span>๑๖</span> จึงขอรายงานผลการพิจารณารายละเอียดวิธีการและขั้นตอนการจัดซื้อ-
-                                จัดจ้าง<span>{{ thainumDigit($withdrawal->inspection->order->desc) }}</span> พร้อมทั้งหลักฐานประกอบ ตามรายการดังต่อไปนี้
+                                จัดจ้าง<span>{{ $planType->plan_type_name }}</span>
+                                จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
+                                พร้อมทั้งหลักฐานประกอบ ตามรายการดังต่อไปนี้
                                 <p class="memo-paragraph-content">๑) บันทึกรายงานขอจ้าง</p>
                                 <p class="memo-paragraph-content">๒) <span>{{ $withdrawal->inspection->deliver_bill }}</span></p>
                                 <p class="memo-paragraph-content">๓) ใบตรวจรับพัสดุ</p>
