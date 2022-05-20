@@ -99,7 +99,7 @@ body {
   padding: 5px 5px 0;
   text-align: center;
   position: relative;
-  border: 1px dashed black;
+  /* border: 1px dashed black; */
 }
 
 .memo-header {
@@ -107,7 +107,7 @@ body {
   padding: 5px 5px 0;
   text-align: center;
   height: 3.6cm;
-  border: 1px dotted gray;
+  /* border: 1px dotted gray; */
 }
 
 .memo-header-narrow {
@@ -115,7 +115,7 @@ body {
   padding: 5px 5px 0;
   text-align: center;
   height: 2cm;
-  border: 1px dotted gray;
+  /* border: 1px dotted gray; */
 }
 
 .memo-header > h2 {
@@ -135,7 +135,7 @@ body {
   width: 1.6cm;
   height: 1.5cm;
   position: absolute;
-  top: 2.5cm;
+  top: 2.3cm;
   /* border: 1px solid red; */
 }
 
@@ -144,7 +144,7 @@ body {
   width: 1.6cm;
   height: 1.5cm;
   position: absolute;
-  top: 0.8cm;
+  top: 0.7cm;
   /* border: 1px solid red; */
 }
 
@@ -160,7 +160,7 @@ body {
 .content {
   padding: 0;
   min-height: 500px;
-  border: 1px dotted gray;
+  /* border: 1px dotted gray; */
 }
 
 .footer {
