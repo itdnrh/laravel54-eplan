@@ -249,10 +249,12 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         }, function(err) {
             console.log(err);
         });
+
+        window.location.href = `${CONFIG.baseUrl}/withdrawals/list`;
     }
 
     $scope.edit = function(id) {
-        $http.get(`${CONFIG.baseUrl}/orders/getOrder/${id}`)
+        $http.get(`${CONFIG.baseUrl}/withdrawals/getOrder/${id}`)
         .then(res => {
             $scope.order.id = res.data.order.id;
             $scope.order.year = res.data.order.year.toString();
