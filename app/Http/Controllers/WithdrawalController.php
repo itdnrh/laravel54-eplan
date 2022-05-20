@@ -22,23 +22,19 @@ class WithdrawalController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'year'          => 'required',
-            'doc_no'         => 'required',
-            'doc_date'       => 'required',
-            'supplier_id'   => 'required',
-            'total'         => 'required',
-            'vat_rate'      => 'required',
-            'vat'           => 'required',
+            'withdraw_no'   => 'required',
+            'withdraw_date' => 'required',
+            'order_id'      => 'required',
+            'deliver_seq'   => 'required',
             'net_total'     => 'required',
         ];
 
         $messages = [
-            'reason.required'       => 'กรุณาระบุเหตุผลการยกเลิก',
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_period.required'   => 'กรุณาเลือกช่วงเวลา',
+            'withdraw_no.required'      => 'กรุณาระบุเลขที่หนังสือส่งเบิกเงิน',
+            'withdraw_date.required'    => 'กรุณาเลือกวันที่หนังสือส่งเบิกเงิน',
+            'order_id.required'         => 'กรุณาระบุเลขที่ P/O',
+            'deliver_seq.required'      => 'กรุณาระบุงวดงานที่',
+            'net_total.required'        => 'กรุณาระบุยอดเงิน',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -114,9 +110,10 @@ class WithdrawalController extends Controller
     public function store(Request $req)
     {
         $withdrawal = new Withdrawal;
-        $withdrawal->withdraw_no    = $req['withdraw_no'];
+        $withdrawal->withdraw_no    = 'นม 0032.201.2/'.$req['withdraw_no'];
         $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
         $withdrawal->inspection_id  = $req['inspection_id'];
+        $withdrawal->supplier_id    = $req['supplier_id'];
         $withdrawal->net_total      = $req['net_total'];
         $withdrawal->remark         = $req['remark'];
         // $withdrawal->user           = $req['user'];

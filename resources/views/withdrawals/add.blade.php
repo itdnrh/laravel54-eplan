@@ -29,15 +29,15 @@
                         <h3 class="box-title">เพิ่มรายการส่งเบิกเงิน</h3>
                     </div>
 
-                    <form id="frmNewService" name="frmNewService" method="post" action="{{ url('/services/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewWithdrawal" name="frmNewWithdrawal" method="post" action="{{ url('/withdrawals/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
                         <div class="box-body">
                             <div class="row">
                                 <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
+                                    class="form-group col-md-3"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'order_id')}"
                                 >
                                     <label>เลขที่ P/O :</label>
                                     <div class="input-group">
@@ -49,6 +49,12 @@
                                             class="form-control"
                                             tabindex="6"
                                         />
+                                        <input
+                                            type="hidden"
+                                            id="order_id"
+                                            name="order_id"
+                                            ng-model="withdrawal.order_id"
+                                        />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-info btn-flat" ng-click="showOrdersList($event)">
                                                 ค้นหา
@@ -56,27 +62,41 @@
                                         </span>
                                     </div>
                                     
-                                    <span class="help-block" ng-show="checkValidate(order, 'po_no')">
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'order_id')">
                                         กรุณาระบุเลขที่ P/O
                                     </span>
                                 </div>
-                                <div class="form-group col-md-6"></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <ul>
-                                        <li ng-repeat="insp in withdrawal.inspections">
-                                            @{{ insp }}
-                                        </li>
-                                    </ul>
+                                <div class="form-group col-md-3">
+                                    <label for="">วันที่ใบสั่งซื้อ :</label>
+                                    <div class="form-control">@{{ withdrawal.order.po_date | thdate }}</div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="">เจ้าหนี้ :</label>
+                                    <div class="form-control">@{{ withdrawal.supplier.supplier_name }}</div>
+                                </div>
+                                <div class="form-group col-md-12" ng-show="withdrawal.order">
+                                    <div class="alert alert-success" style="margin: 0;">
+                                        <p style="margin: 0; text-decoration: underline; font-weight: bold;">
+                                            รายการสินค้า
+                                        </p>
+                                        <ul style="margin: 0; padding: 0; list-style: none;">
+                                            <li ng-repeat="(index, item) in withdrawal.order.details" style="margin: 5px 0;">
+                                                <p style="margin: 0;">
+                                                    @{{ index+1 }}.
+                                                    @{{ item.plan.plan_no }}
+                                                    @{{ item.item.item_name }}
+                                                    จำนวน @{{ item.amount | currency:'':0 }} @{{ item.unit.name }}
+                                                    รวมเป็นเงิน @{{ item.sum_price | currency:'':0 }} บาท
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'withdraw_no')}"
                                 >
                                     <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
                                     <input
@@ -86,10 +106,13 @@
                                         ng-model="withdrawal.withdraw_no"
                                         class="form-control"
                                     />
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'withdraw_no')">
+                                        @{{ formError.errors.withdraw_no[0] }}
+                                    </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'withdraw_date')}"
                                 >
                                     <label for="">ลงวันที่วันที่</label>
                                     <input
@@ -99,10 +122,16 @@
                                         ng-model="withdrawal.withdraw_date"
                                         class="form-control"
                                     />
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'withdraw_date')">
+                                        @{{ formError.errors.withdraw_date[0] }}
+                                    </span>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_seq')}"
                                 >
                                     <label for="">งวดงานที่</label>
                                     <select
@@ -117,10 +146,13 @@
                                             @{{ insp.deliver_seq }}
                                         </option>
                                     </select>
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'deliver_seq')">
+                                        @{{ formError.errors.deliver_seq[0] }}
+                                    </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_no')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
                                     <input
@@ -131,9 +163,12 @@
                                         class="form-control"
                                     />
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'net_total')}"
                                 >
                                     <label for="">ยอดเงิน</label>
                                     <input
@@ -143,10 +178,13 @@
                                         value="@{{ withdrawal.net_total | currency:'':2 }}"
                                         class="form-control"
                                     />
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'net_total')">
+                                        @{{ formError.errors.net_total[0] }}
+                                    </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'remark')}"
                                 >
                                     <label for="">หมายเหตุ</label>
                                     <input
@@ -156,8 +194,8 @@
                                         ng-model="withdrawal.remark"
                                         class="form-control"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(service, 'remark')">
-                                        @{{ formError.errors.spec_committee[0] }}
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'remark')">
+                                        @{{ formError.errors.remark[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -165,7 +203,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/services/validate', service, 'frmNewService', store)"
+                                ng-click="formValidate($event, '/withdrawals/validate', withdrawal, 'frmNewWithdrawal', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

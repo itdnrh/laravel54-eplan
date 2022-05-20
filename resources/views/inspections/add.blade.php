@@ -94,7 +94,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-2"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
                                 >
                                     <label for="">งวดที่</label>
@@ -113,7 +113,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-2"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'deliver_doc_id')}"
                                 >
                                     <label for="">ประเภทเอกสารส่งมอบ</label>
@@ -133,7 +133,7 @@
                                 </div>
                                 <div
                                     class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'deliver_no')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
                                     <input
@@ -142,13 +142,28 @@
                                         name="deliver_no"
                                         class="form-control"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(service, 'remark')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'deliver_no')">
+                                        @{{ formError.errors.spec_committee[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'deliver_date')}"
+                                >
+                                    <label for="">วันที่เอกสารส่งมอบงาน</label>
+                                    <input
+                                        type="text"
+                                        id="deliver_date"
+                                        name="deliver_date"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(service, 'deliver_date')">
                                         @{{ formError.errors.spec_committee[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'inspect_sdate')}"
                                 >
                                     <label for="">วันที่ตรวจรับ</label>
                                     <input
@@ -157,13 +172,13 @@
                                         name="inspect_sdate"
                                         class="form-control"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(service, 'remark')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'inspect_sdate')">
                                         @{{ formError.errors.spec_committee[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'inspect_edate')}"
                                 >
                                     <label for="">ถึงวันที่</label>
                                     <input
@@ -172,7 +187,7 @@
                                         name="inspect_edate"
                                         class="form-control"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(service, 'remark')">
+                                    <span class="help-block" ng-show="checkValidate(service, 'inspect_edate')">
                                         @{{ formError.errors.spec_committee[0] }}
                                     </span>
                                 </div>

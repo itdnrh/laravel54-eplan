@@ -35,14 +35,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     };
 
     /** ==================== Add form ==================== */
-    $('#inspect_sdate')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-    $('#inspect_edate')
+    $('#withdraw_date')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
@@ -143,7 +136,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.setOrder = function(res) {
         const { data, ...pager } = res.data.orders;
 
-        console.log(data);
         $scope.orders = data;
         $scope.orders_pager = pager;
     };
@@ -153,7 +145,9 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.withdrawal = {
                 order: order,
                 order_id: order.id,
-                inspections: order.inspections
+                inspections: order.inspections,
+                supplier_id: order.supplier.supplier_id,
+                supplier: order.supplier
             };
         }
 
@@ -162,11 +156,10 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.onDeliverSeqSelected = function(seq) {
         const inspection = $scope.withdrawal.inspections.find(insp => insp.deliver_seq === parseInt(seq));
-        console.log(inspection);
 
-        // $scope.withdrawal.inspection_id = inspection.id;
-        // $scope.withdrawal.deliver_no = inspection.deliver_no;
-        // $scope.withdrawal.net_total = inspection.inspect_total;
+        $scope.withdrawal.inspection_id = inspection.id;
+        $scope.withdrawal.deliver_no = inspection.deliver_no;
+        $scope.withdrawal.net_total = inspection.inspect_total;
     };
 
     $scope.getAll = function() {
@@ -250,19 +243,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        let data = {
-            deliver_seq: $('#deliver_seq').val(),
-            deliver_no: $('#deliver_no').val(),
-            po_id: $('#po_id').val(),
-            inspect_sdate: $('#inspect_sdate').val(),
-            inspect_edate: $('#inspect_edate').val(),
-            inspect_total: $('#inspect_total').val().replace(',', ''),
-            inspect_result: $('#inspect_result').val(),
-            inspect_user: $('#inspect_user').val(),
-            remark: $('#remark').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
+        $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
         .then(function(res) {
             console.log(res.data);
         }, function(err) {
