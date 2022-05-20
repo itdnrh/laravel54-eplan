@@ -26,6 +26,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         vat_rate: '',
         vat: '',
         net_total: '',
+        net_total_str: '',
         budget_src_id: '',
         remark: '',
         details: [],
@@ -140,8 +141,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let vat = parseFloat($(`#vat`).val());
 
         let net_total = total + vat;
-
         $scope.order.net_total = net_total;
+        $scope.order.net_total_str = StringFormatService.arabicNumberToText(net_total);
         $('#net_total').val(net_total);
     };
 

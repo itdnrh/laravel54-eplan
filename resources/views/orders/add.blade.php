@@ -419,13 +419,13 @@
                                 <div class="col-md-8">
                                     <div
                                         class="form-group col-md-8"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'order_type_id')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'budget_src_id')}"
                                     >
                                         <label>แหล่งเงินงบประมาณ :</label>
                                         <select
-                                            id="order_type_id"
-                                            name="order_type_id"
-                                            ng-model="order.order_type_id"
+                                            id="budget_src_id"
+                                            name="budget_src_id"
+                                            ng-model="order.budget_src_id"
                                             class="form-control"
                                             tabindex="1"
                                         >
@@ -434,7 +434,7 @@
                                                 <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
                                             @endforeach
                                         </select>
-                                        <span class="help-block" ng-show="checkValidate(order, 'order_type_id')">
+                                        <span class="help-block" ng-show="checkValidate(order, 'budget_src_id')">
                                             กรุณาเลือกแหล่งเงินงบประมาณ
                                         </span>
                                     </div>
@@ -516,6 +516,9 @@
                                         <span class="help-block" ng-show="checkValidate(order, 'net_total')">
                                             กรุณาระบุรวมเป็นเงิน
                                         </span>
+                                    </div>
+                                    <div style="text-align: center;" ng-show="order.net_total_str !== ''">
+                                        <h4>( @{{ order.net_total_str }} )</h4>
                                     </div>
                                 </div>
                             </div>

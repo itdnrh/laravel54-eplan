@@ -158,17 +158,24 @@ class OrderController extends Controller
     public function store(Request $req)
     {
         $order = new Order;
-        $order->year            = $req['year'];
         $order->po_no           = $req['po_no'];
         $order->po_date         = convThDateToDbDate($req['po_date']);
+        $order->po_req_no       = $req['po_req_no'];
+        $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
+        $order->po_app_no       = $req['po_app_no'];
+        $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
+        $order->year            = $req['year'];
         $order->supplier_id     = $req['supplier_id'];
-        $order->delver_amt      = $req['delver_amt'];
+        $order->order_type_id   = $req['order_type_id'];
         $order->plan_type_id    = $req['plan_type_id'];
+        $order->delver_amt      = $req['delver_amt'];
+        $order->budget_src_id   = $req['budget_src_id'];
         $order->remark          = $req['remark'];
         $order->total           = $req['total'];
         $order->vat_rate        = $req['vat_rate'];
         $order->vat             = $req['vat'];
         $order->net_total       = $req['net_total'];
+        $order->net_total_str   = $req['net_total_str'];
         $order->status          = '0';
         // $order->user_id         = $req['user_id'];
 
@@ -214,32 +221,12 @@ class OrderController extends Controller
 
     public function update(Request $req)
     {
-        $cancel = Cancellation::find($req['id']);
-        $cancel->reason         = $req['reason'];
-        $cancel->start_date     = convThDateToDbDate($req['start_date']);
-        $cancel->start_period   = '1';
-        $cancel->end_date       = convThDateToDbDate($req['end_date']);
-        $cancel->end_period     = $req['end_period'];
-        $cancel->days           = $req['days'];
-        $cancel->working_days   = $req['working_days'];
-
-        if ($cancel->save()) {
-            return redirect('/cancellations/cancel');
-        }
+        //
     }
 
     public function delete(Request $req, $id)
     {
-        $cancel = Cancellation::find($id);
-        $leaveId = $cancel->leave_id;
-
-        if ($cancel->delete()) {
-            $leave = Leave::find($cancel->leave_id);
-            $leave->status = 3;
-            $leave->save();
-
-            return redirect('/cancellations/cancel')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
-        }
+        //
     }
 
     public function received()
