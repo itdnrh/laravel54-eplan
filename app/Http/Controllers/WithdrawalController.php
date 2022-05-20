@@ -182,7 +182,7 @@ class WithdrawalController extends Controller
     {
         $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
                         ->with('inspection.order.details','inspection.order.details.item')
-                        ->with('inspection.order.budgetSource')
+                        ->with('inspection.order.budgetSource','inspection.order.orderType')
                         ->find($id);
 
         /** หัวหน้ากลุ่มงานพัสดุ */
