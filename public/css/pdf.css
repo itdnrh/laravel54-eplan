@@ -45,8 +45,8 @@ body {
   padding: 0;
   margin: 0 20px 0 50px;
   /* background-image: url("assets/img/print_bg.png"); */
-  background-repeat: repeat;
-  background-position: center;
+  /* background-repeat: repeat; */
+  /* background-position: center; */
   /* border: 1px dashed red; */
 }
 
@@ -99,7 +99,7 @@ body {
   padding: 5px 5px 0;
   text-align: center;
   position: relative;
-  /* border: 1px dashed black; */
+  border: 1px dotted gray;;
 }
 
 .memo-header {

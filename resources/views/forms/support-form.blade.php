@@ -6,10 +6,10 @@
     </head>
     <body>
         <div class="container">
-            <div class="header">
-                <p style="margin: 0px;">
+            <div class="memo-header-narrow">
+                <div class="logo-krut">
                     <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
-                </p>
+                </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
             <div class="content">
@@ -18,7 +18,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
-                                <div class="content__header-text w80" style="margin-left: 70px;">
+                                <div class="content__header-text" style="width: 77%; margin-left: 70px;">
                                     <span style="margin: 0 5px;">{{ $support->depart->depart_name }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     โทร <span style="margin: 0 5px;">{{ $support->depart->tel_no }}</span>
@@ -30,7 +30,7 @@
                         <td colspan="2" style="width: 50%;">
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
-                                <div class="content__header-text" style="width: 93%; margin-left: 12px;">
+                                <div class="content__header-text" style="width: 90%; margin-left: 12px;">
                                     <span style="margin: 0 5px;">{{ $support->doc_no }}</span>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                         <td colspan="2">
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
-                                <div class="content__header-text" style="width: 72%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 70%; margin-left: 28px;">
                                     <span style="margin: 0 10px;">{{ convDbDateToLongThDate($support->doc_date) }}</span>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 86%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 85%; margin-left: 28px;">
                                     <span>{{ $support->topic }}</span>
                                 </div>
                             </div>
