@@ -180,10 +180,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.orders = [];
-        $scope.pager = null;
+        $scope.plans = [];
+        $scope.plans_pager = null;
 
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 

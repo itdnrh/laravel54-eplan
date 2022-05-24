@@ -16,6 +16,17 @@
                                 <select
                                     style="margin-right: 1rem;"
                                     class="form-control"
+                                    ng-model="cboCategory"
+                                    ng-change="getPlans(cboPlanType, 0);"
+                                >
+                                    <option value="">-- เลือกประเภทพัสดุ --</option>
+                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                    </option>
+                                </select>
+                                <!-- <select
+                                    style="margin-right: 1rem;"
+                                    class="form-control"
                                     ng-model="cboPlanType"
                                     ng-change="onFilterCategories(cboPlanType); getPlans(cboPlanType, 0);"
                                 >
@@ -25,19 +36,7 @@
                                             {{ $planType->plan_type_name }}
                                         </option>
                                     @endforeach
-                                </select>
-        
-                                <select
-                                    style="margin-right: 1rem;"
-                                    class="form-control"
-                                    ng-model="cboCategory"
-                                    ng-change="getPlans(cboPlanType, 0);"
-                                >
-                                    <option value="">-- เลือกประเภทพัสดุ --</option>
-                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                    </option>
-                                </select>
+                                </select> -->
                             </div>
                         </div><!-- /.box-body -->
                     </div>
@@ -118,13 +117,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="plans_pager.current_page !== 1">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1', 1, setPlans)" aria-label="Previous">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1', 0, setPlans)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==1)}">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.prev_page_url, 1, setPlans)" aria-label="Prev">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.prev_page_url, 0, setPlans)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -136,13 +135,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.next_page_url, 1, setPlans)" aria-label="Next">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.next_page_url, 0, setPlans)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="plans_pager.current_page !== plans_pager.last_page">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, 1, setPlans)" aria-label="Previous">
+                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, 0, setPlans)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>
