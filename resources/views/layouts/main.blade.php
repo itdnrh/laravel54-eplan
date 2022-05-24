@@ -69,6 +69,7 @@
 	<script type="text/javascript" src="{{ asset('/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/libraries/bootstrap-datepicker-custom.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.th.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/node_modules/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/libraries/jquery.knob.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/libraries/fastclick.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/utils/thaibath.js') }}"></script>

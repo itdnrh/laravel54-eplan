@@ -57,6 +57,32 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(event.date);
         });
 
+    $scope.showPopup = false;
+    $scope.deliverBillsList = [
+        'ใบวางบิล/ใบแจ้งหนี้',
+        'ใบแจ้งหนี้/ใบวางบิล',
+        'ใบสำคัญรับเงิน',
+        'ใบกำกับภาษี'
+    ];
+
+    $scope.fetchDeliverBills = function() {
+        // $http.get()
+        // .then((res) => {
+            // console.log(res);
+
+            $scope.showPopup = true;
+        // }, (err) => {
+        //     console.log(err);
+        // });
+    };
+
+    $scope.setDeliverBill = function(bill) {
+        $scope.showPopup = false;
+
+        console.log(bill);
+        $('#deliver_bill').val(bill);
+    };
+
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
         let amount = parseFloat($(`#amount`).val());

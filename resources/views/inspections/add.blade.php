@@ -114,20 +114,26 @@
                                 </div>
                                 <div
                                     class="form-group col-md-2"
-                                    ng-class="{'has-error has-feedback': checkValidate(service, 'deliver_doc_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'deliver_bill')}"
                                 >
                                     <label for="">ประเภทเอกสารส่งมอบ</label>
-                                    <select
-                                        id="deliver_doc_id"
-                                        name="deliver_doc_id"
+                                    <input
+                                        type="text"
+                                        id="deliver_bill"
+                                        name="deliver_bill"
                                         class="form-control"
-                                    >
-                                        <option value="">-- เลือกประเภทเอกสารส่งมอบ --</option>
-                                        <option value="1">ใบวางบิล/ใบแจ้งหนี้</option>
-                                        <option value="2">ใบแจ้งหนี้/ใบวางบิล</option>
-                                        <option value="3">ใบสำคัญรับเงิน</option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(service, 'deliver_doc_id')">
+                                        ng-keyup="fetchDeliverBills($event)"
+                                    />
+                                    <div ng-show="showPopup" class="list-group" style="width: auto; z-index: 10; position: absolute;">
+                                        <a
+                                            class="list-group-item"
+                                            ng-repeat="(index, bill) in deliverBillsList"
+                                            ng-click="setDeliverBill(bill)"
+                                        >
+                                            @{{ bill }}
+                                        </a>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(service, 'deliver_bill')">
                                         @{{ formError.errors.spec_committee[0] }}
                                     </span>
                                 </div>
