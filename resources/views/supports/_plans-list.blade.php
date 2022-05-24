@@ -62,17 +62,17 @@
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <p style="margin: 0;">@{{ plan.plan_item.item.category.name }}</p>
+                                    <h4 style="margin: 0;">@{{ plan.plan_item.item.category.name }}</h4>
                                     @{{ plan.plan_item.item.item_name }} จำนวน 
                                     <span>@{{ plan.amount | currency:'':0 }}</span>
-                                    <span>@{{ plan.unit.name }}</span>
-                                    <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
+                                    <span>@{{ plan.plan_item.unit.name }}</span>
+                                    <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                         class="btn btn-default btn-xs" 
                                         title="ไฟล์แนบ"
                                         target="_blank"
                                         ng-show="plan.attachment">
                                         <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                    </a>
+                                    </a> -->
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.price_per_unit | currency:'':0 }}

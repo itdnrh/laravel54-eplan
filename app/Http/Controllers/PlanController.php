@@ -92,7 +92,7 @@ class PlanController extends Controller
         $year   = $req->get('year');
         $type   = $req->get('type');
         $cate   = $req->get('cate');
-        $depart = $req->get('depart');
+        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
         // $menu      = $req->get('menu');
 

@@ -196,42 +196,50 @@
 						</ul>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': menu == 'orders' }">
-						<a href="#">
-							<i class="fa fa-laptop"></i>
-							<span>จัดซื้อจัดจ้าง</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li ng-class="{ 'active': submenu == 'received' }">
-								<a href="{{ url('orders/received') }}">
-									<i class="fa fa-circle-o"></i> รับใบขอสนับสนุน
-								</a>
-							</li>
-							<li ng-class="{ 'active': submenu == 'list' }">
-								<a href="{{ url('orders/list') }}">
-									<i class="fa fa-circle-o"></i> ใบสั่งซื้อ (P/O)
-								</a>
-							</li>
-							<li ng-class="{ 'active': submenu == 'inspect' }">
-								<a href="{{ url('orders/inspect') }}">
-									<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
-								</a>
-							</li>
-							<li ng-class="{ 'active': submenu == 'withdraw' }">
-								<a href="{{ url('orders/withdraw') }}">
-									<i class="fa fa-circle-o"></i> ส่งเบิกเงิน
-								</a>
-							</li>
-							<!-- <li ng-class="{ 'active': submenu == 'inventory' }">
-								<a href="{{ url('orders/inventory') }}">
-									<i class="fa fa-circle-o"></i> ส่งคลังพัสดุ
-								</a>
-							</li> -->
-						</ul>
-					</li>
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1309900322504' ||
+						Auth::user()->memberOf->duty_id == 1 ||
+						Auth::user()->memberOf->duty_id == 2 ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'orders' }">
+							<a href="#">
+								<i class="fa fa-laptop"></i>
+								<span>จัดซื้อจัดจ้าง</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li ng-class="{ 'active': submenu == 'received' }">
+									<a href="{{ url('orders/received') }}">
+										<i class="fa fa-circle-o"></i> รับใบขอสนับสนุน
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'list' }">
+									<a href="{{ url('orders/list') }}">
+										<i class="fa fa-circle-o"></i> ใบสั่งซื้อ (P/O)
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'inspect' }">
+									<a href="{{ url('orders/inspect') }}">
+										<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'withdraw' }">
+									<a href="{{ url('orders/withdraw') }}">
+										<i class="fa fa-circle-o"></i> ส่งเบิกเงิน
+									</a>
+								</li>
+								<!-- <li ng-class="{ 'active': submenu == 'inventory' }">
+									<a href="{{ url('orders/inventory') }}">
+										<i class="fa fa-circle-o"></i> ส่งคลังพัสดุ
+									</a>
+								</li> -->
+							</ul>
+						</li>
+					@endif
 
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
 					@if (
