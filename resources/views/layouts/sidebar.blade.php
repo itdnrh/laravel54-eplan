@@ -151,23 +151,23 @@
 							</a>
 							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
 								<li ng-class="{ 'active': submenu == 'comment' }">
-									<a href="{{ url('assets/list') }}">
-										<i class="fa fa-circle-o"></i> แผนครุภัณฑ์
+									<a href="{{ url('approvals/assets') }}">
+										<i class="fa fa-circle-o"></i> ครุภัณฑ์
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'receive' }">
-									<a href="{{ url('materials/list') }}">
-										<i class="fa fa-circle-o"></i> แผนวัสดุ (นอกคลัง)
+									<a href="{{ url('approvals/materials') }}">
+										<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'receive' }">
-									<a href="{{ url('services/list') }}">
-										<i class="fa fa-circle-o"></i> แผนจ้างบริการ
+									<a href="{{ url('approvals/services') }}">
+										<i class="fa fa-circle-o"></i> จ้างบริการ
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'approve' }">
-									<a href="{{ url('constructs/list') }}">
-										<i class="fa fa-circle-o"></i> แผนก่อสร้าง
+									<a href="{{ url('approvals/constructs') }}">
+										<i class="fa fa-circle-o"></i> ก่อสร้าง
 									</a>
 								</li>
 							</ul>

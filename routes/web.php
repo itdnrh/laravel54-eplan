@@ -118,13 +118,11 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('constructs/print/{id}', 'PlanConstructController@printLeaveForm');
 
     /** การอนุมัติ */
-    Route::get('approvals/comment', 'ApprovalController@getComment');
-    Route::post('approvals/comment', 'ApprovalController@doComment');
-    Route::get('approvals/receive', 'ApprovalController@getReceive');
-    Route::post('approvals/receive', 'ApprovalController@doReceive');
-    Route::get('approvals/approve', 'ApprovalController@getApprove');
+    Route::get('approvals/assets', 'ApprovalController@assets');
+    Route::get('approvals/materials', 'ApprovalController@materials');
+    Route::get('approvals/services', 'ApprovalController@services');
+    Route::get('approvals/constructs', 'ApprovalController@constructs');
     Route::post('approvals/approve', 'ApprovalController@doApprove');
-    Route::post('approvals/status', 'ApprovalController@setStatus');
     
     /** การขอสนับสนุน */
     Route::post('supports/validate', 'SupportController@formValidate');
