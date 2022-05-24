@@ -131,20 +131,20 @@
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">รับใบขอสนับสนุน</h3>
                             </div>
                             <div class="col-md-6">
-                                <button
+                                <!-- <button
                                     type="button"
                                     class="btn btn-success pull-right"
                                     style="margin-left: 5px;"
                                     ng-click="showPlansToReceive()"
                                 >
                                     ลงรับเอกสารบางรายการ
-                                </button>
+                                </button> -->
                                 <button
                                     type="button"
                                     class="btn btn-primary pull-right"
