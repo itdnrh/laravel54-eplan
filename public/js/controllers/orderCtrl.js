@@ -195,7 +195,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans = [];
         $scope.plans_pager = null;
 
-        let type = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
+        let type = $scope.order.plan_type_id === '' ? 1 : $scope.order.plan_type_id;
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&status=2`)
         .then(function(res) {
@@ -655,11 +655,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
         .then(res => {
             console.log(res);
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
+            }
         }, err => {
             console.log(err);
         });
 
-        window.location.href = `${CONFIG.baseUrl}/orders/list`;
+        // window.location.href = `${CONFIG.baseUrl}/orders/list`;
     }
 
     $scope.edit = function(id) {

@@ -41,7 +41,28 @@
                         <div class="box-body">
                             <div class="row">
                                 <div
-                                    class="form-group col-md-3"
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'order_type_id')}"
+                                >
+                                    <label>ประเภทใบขอซื้อ/จ้าง :</label>
+                                    <select
+                                        id="order_type_id"
+                                        name="order_type_id"
+                                        ng-model="order.order_type_id"
+                                        class="form-control"
+                                        tabindex="1"
+                                    >
+                                        <option value="">-- เลือกประเภทขอซื้อ/จ้าง --</option>
+                                        @foreach($orderTypes as $orderType)
+                                            <option value="{{ $orderType->id }}">{{ $orderType->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'order_type_id')">
+                                        กรุณาเลือกประเภทขอซื้อ/จ้าง
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
                                 >
                                     <label>เลขที่ P/O :</label>
@@ -57,7 +78,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-3"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
                                 >
                                     <label>วันที่ใบ P/O :</label>
@@ -105,9 +126,6 @@
                                         กรุณาระบุวันที่บันทึกรายงานขอซื้อ/จ้าง
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div
                                     class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_app_no')}"
@@ -125,7 +143,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-2"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_app_date')}"
                                 >
                                     <label>วันที่อนุมัติสั่งซื้อ/จ้าง :</label>
@@ -140,7 +158,9 @@
                                         กรุณาระบุวันที่อนุมัติสั่งซื้อ/จ้าง
                                     </span>
                                 </div>
+                            </div>
 
+                            <div class="row">
                                 <div
                                     class="form-group col-md-2"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
@@ -163,7 +183,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-5"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
                                 >
                                     <label>เจ้าหนี้ :</label>
@@ -184,32 +204,9 @@
                                         กรุณาเลือกเจ้าหนี้
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="row">
+                                
                                 <div
-                                    class="form-group col-md-5"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'order_type_id')}"
-                                >
-                                    <label>ประเภทใบขอซื้อ/จ้าง :</label>
-                                    <select
-                                        id="order_type_id"
-                                        name="order_type_id"
-                                        ng-model="order.order_type_id"
-                                        class="form-control"
-                                        tabindex="1"
-                                    >
-                                        <option value="">-- เลือกประเภทขอซื้อ/จ้าง --</option>
-                                        @foreach($orderTypes as $orderType)
-                                            <option value="{{ $orderType->id }}">{{ $orderType->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'order_type_id')">
-                                        กรุณาเลือกประเภทขอซื้อ/จ้าง
-                                    </span>
-                                </div>
-                                <div
-                                    class="form-group col-md-5"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
                                 >
                                     <label>ประเภทพัสดุ :</label>

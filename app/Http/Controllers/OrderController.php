@@ -157,53 +157,68 @@ class OrderController extends Controller
 
     public function store(Request $req)
     {
-        $order = new Order;
-        $order->po_no           = $req['po_no'];
-        $order->po_date         = convThDateToDbDate($req['po_date']);
-        $order->po_req_no       = $req['po_req_no'];
-        $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
-        $order->po_app_no       = $req['po_app_no'];
-        $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
-        $order->year            = $req['year'];
-        $order->supplier_id     = $req['supplier_id'];
-        $order->order_type_id   = $req['order_type_id'];
-        $order->plan_type_id    = $req['plan_type_id'];
-        $order->delver_amt      = $req['delver_amt'];
-        $order->budget_src_id   = $req['budget_src_id'];
-        $order->remark          = $req['remark'];
-        $order->total           = $req['total'];
-        $order->vat_rate        = $req['vat_rate'];
-        $order->vat             = $req['vat'];
-        $order->net_total       = $req['net_total'];
-        $order->net_total_str   = $req['net_total_str'];
-        $order->status          = '0';
-        // $order->user_id         = $req['user_id'];
+        try {
+            $order = new Order;
+            $order->po_no           = $req['po_no'];
+            $order->po_date         = convThDateToDbDate($req['po_date']);
+            $order->po_req_no       = $req['po_req_no'];
+            $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
+            $order->po_app_no       = $req['po_app_no'];
+            $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
+            $order->year            = $req['year'];
+            $order->supplier_id     = $req['supplier_id'];
+            $order->order_type_id   = $req['order_type_id'];
+            $order->plan_type_id    = $req['plan_type_id'];
+            $order->deliver_amt      = $req['deliver_amt'];
+            $order->budget_src_id   = $req['budget_src_id'];
+            $order->remark          = $req['remark'];
+            $order->total           = $req['total'];
+            $order->vat_rate        = $req['vat_rate'];
+            $order->vat             = $req['vat'];
+            $order->net_total       = $req['net_total'];
+            $order->net_total_str   = $req['net_total_str'];
+            $order->status          = '0';
+            // $order->user_id         = $req['user_id'];
 
-        if ($order->save()) {
-            $orderId = $order->id;
+            if ($order->save()) {
+                $orderId = $order->id;
 
-            foreach($req['details'] as $item) {
-                $detail = new OrderDetail;
-                $detail->order_id       = $orderId;
-                $detail->plan_id        = $item['plan_id'];
-                $detail->item_id        = $item['item_id'];
-                $detail->price_per_unit = $item['price_per_unit'];
-                $detail->unit_id        = $item['unit_id'];
-                $detail->amount         = $item['amount'];
-                $detail->sum_price      = $item['sum_price'];
-                $detail->save();
+                foreach($req['details'] as $item) {
+                    $detail = new OrderDetail;
+                    $detail->order_id       = $orderId;
+                    $detail->plan_id        = $item['plan_id'];
+                    $detail->item_id        = $item['item_id'];
+                    $detail->spec           = $item['spec'];
+                    $detail->price_per_unit = $item['price_per_unit'];
+                    $detail->unit_id        = $item['unit_id'];
+                    $detail->amount         = $item['amount'];
+                    $detail->sum_price      = $item['sum_price'];
+                    $detail->save();
 
-                /** Update plan data */
-                $plan = Plan::find($item['plan_id']);
-                $plan->po_no        = $req['po_no'];
-                $plan->po_date      = convThDateToDbDate($req['po_date']);
-                $plan->po_net_total = $req['net_total'];
-                $plan->status       = 3;
-                $plan->save();
+                    /** Update plan data */
+                    $plan = Plan::find($item['plan_id']);
+                    $plan->po_no        = $req['po_no'];
+                    $plan->po_date      = convThDateToDbDate($req['po_date']);
+                    $plan->po_net_total = $req['net_total'];
+                    $plan->status       = 3;
+                    $plan->save();
+                }
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'order'     => $order
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
+        } catch (\Exception $ex) {
             return [
-                'order' => $order
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }
