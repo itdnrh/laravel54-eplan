@@ -21,7 +21,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         supplier_id: '',
         order_type_id: '',
         plan_type_id: '',
-        delver_amt: 1,
+        deliver_amt: 1,
         total: '',
         vat_rate: '',
         vat: '',
@@ -675,7 +675,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.supplier_id = res.data.order.supplier.supplier_name;
             $scope.order.po_no = res.data.order.po_no;
             $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
-            $scope.order.delver_amt = res.data.order.delver_amt;
+            $scope.order.deliver_amt = res.data.order.deliver_amt;
             $scope.order.plan_type_id = res.data.order.plan_type_id;
             $scope.order.remark = res.data.order.remark;
             $scope.order.total = res.data.order.total;
