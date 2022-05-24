@@ -19,6 +19,7 @@
     <section
         class="content"
         ng-controller="inspectionCtrl"
+        ng-init="initForms({ categories: {{ $categories }} }, 0)"
     >
 
         <div class="row">

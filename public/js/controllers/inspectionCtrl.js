@@ -190,7 +190,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=0`)
         .then(function(res) {
-            $scope.setorder(res);
+            $scope.setOrder(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -202,13 +202,11 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.setOrder = function(res) {
         const { data, ...pager } = res.data.orders;
 
-        console.log(data);
         $scope.orders = data;
         $scope.orders_pager = pager;
     };
 
     $scope.onSelectedOrder = (e, order) => {
-        console.log(order);
         if (order) {
             $scope.inspection = {
                 order: order,

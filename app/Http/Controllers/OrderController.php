@@ -86,6 +86,13 @@ class OrderController extends Controller
         $cate = $req->get('cate');
         $status = $req->get('status');
 
+        $ordersList = Order::leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
+                        ->leftJoin('items', 'items.id', '=', 'order_details.item_id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->pluck('orders.id');
+
         $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.unit','details.item')
                     ->with('inspections')
@@ -100,6 +107,9 @@ class OrderController extends Controller
                     })
                     ->when($status != '', function($q) use ($status) {
                         $q->where('status', $status);
+                    })
+                    ->when(!empty($cate), function($q) use ($ordersList) {
+                        $q->whereIn('id', $ordersList);
                     })
                     ->paginate(10);
 
