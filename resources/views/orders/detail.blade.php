@@ -129,8 +129,11 @@
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>
                                                 <h4 style="margin: 0;">@{{ detail.plan.plan_item.item.category.name }}</h4>
-                                                <p style="margin: 0;">@{{ detail.plan.plan_item.item.item_name }}</p>
-                                                <p style="margin: 0;">@{{ detail.plan_depart }}</p>
+                                                <p style="margin: 0;">
+                                                    @{{ detail.plan.plan_item.item.item_name }}
+                                                    (@{{ detail.spec }})
+                                                </p>
+                                                <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
                                             </td>
                                             <td style="text-align: right">@{{ detail.price_per_unit | currency:'':0 }}</td>
                                             <td style="text-align: center">@{{ detail.unit.name }}</td>

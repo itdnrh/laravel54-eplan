@@ -130,7 +130,7 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $id)
                     ->with('supplier','details')
-                    ->with('details.unit','details.plan')
+                    ->with('details.unit','details.plan','details.plan.depart')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->with('details.plan.planItem.item.category')
                     ->first();
