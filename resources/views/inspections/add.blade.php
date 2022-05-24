@@ -129,6 +129,7 @@
                                             class="list-group-item"
                                             ng-repeat="(index, bill) in deliverBillsList"
                                             ng-click="setDeliverBill(bill)"
+                                            style="cursor: pointer;"
                                         >
                                             @{{ bill }}
                                         </a>

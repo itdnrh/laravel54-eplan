@@ -58,22 +58,23 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         });
 
     $scope.showPopup = false;
-    $scope.deliverBillsList = [
-        'ใบวางบิล/ใบแจ้งหนี้',
-        'ใบแจ้งหนี้/ใบวางบิล',
-        'ใบสำคัญรับเงิน',
-        'ใบกำกับภาษี'
-    ];
+    $scope.deliverBillsList = [];
 
-    $scope.fetchDeliverBills = function() {
-        // $http.get()
-        // .then((res) => {
-            // console.log(res);
+    $scope.fetchDeliverBills = function(e) {
+        let keyword = e.target.value;
+        
+        if (keyword != '') {
+            $http.get(`${CONFIG.baseUrl}/inspections/${keyword}/deliver-bills`)
+            .then((res) => {
+                if (res.data.deliver_bills.length > 0) {
+                    $scope.deliverBillsList = [ ...new Set(res.data.deliver_bills) ];
+                }
 
-            $scope.showPopup = true;
-        // }, (err) => {
-        //     console.log(err);
-        // });
+                $scope.showPopup = true;
+            }, (err) => {
+                console.log(err);
+            });
+        }
     };
 
     $scope.setDeliverBill = function(bill) {

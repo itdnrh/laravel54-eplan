@@ -89,6 +89,18 @@ class InspectionController extends Controller
         ];
     }
 
+    public function getDeliverBills(Request $req, $keyword)
+    {
+        $deliver_bills = Inspection::with('order','order.details')
+                        ->with('order.details.item')
+                        ->where('deliver_bill', 'LIKE', '%'.$keyword.'%')
+                        ->pluck('deliver_bill');
+
+        return [
+            "deliver_bills" => $deliver_bills
+        ];
+    }
+
     public function create()
     {
         return view('inspections.add', [
