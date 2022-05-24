@@ -11,8 +11,9 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         order_id: '',
         order: null,
         deliver_seq: '',
+        deliver_bill: '',
         deliver_no: '',
-        deliver_doc_id: '',
+        deliver_date: '',
         inspect_sdate: '',
         inspect_edate: '',
         inspect_total: '',
@@ -48,6 +49,9 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
+
+            $scope.inspection.edate = moment(event.date).format('YYYY-MM-DD');
+            $('#inspect_edate').datepicker('update', event.date)
         });
 
     $('#inspect_edate')
@@ -57,9 +61,15 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(event.date);
         });
 
+    $('#deliver_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
     $scope.showPopup = false;
     $scope.deliverBillsList = [];
-
     $scope.fetchDeliverBills = function(e) {
         let keyword = e.target.value;
         
@@ -268,21 +278,13 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        let data = {
-            deliver_seq: $('#deliver_seq').val(),
-            deliver_no: $('#deliver_no').val(),
-            po_id: $('#po_id').val(),
-            inspect_sdate: $('#inspect_sdate').val(),
-            inspect_edate: $('#inspect_edate').val(),
-            inspect_total: $('#inspect_total').val().replace(',', ''),
-            inspect_result: $('#inspect_result').val(),
-            inspect_user: $('#inspect_user').val(),
-            remark: $('#remark').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
+        $http.post(`${CONFIG.baseUrl}/inspections/store`, $scope.inspection)
         .then(function(res) {
-            console.log(res.data);
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+            }
         }, function(err) {
             console.log(err);
         });

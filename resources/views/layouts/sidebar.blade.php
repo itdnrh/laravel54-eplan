@@ -76,7 +76,7 @@
 						</ul>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
+					<!-- <li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-bolt"></i>
 							<span>ค่าสาธารณูปโภค</span>
@@ -101,7 +101,7 @@
 								</a>
 							</li>
 						</ul>
-					</li>
+					</li> -->
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||

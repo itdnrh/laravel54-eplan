@@ -22,13 +22,13 @@ class InspectionController extends Controller
         $rules = [
             'order_id'          => 'required',
             'deliver_seq'       => 'required',
+            'deliver_bill'      => 'required',
             'deliver_no'        => 'required',
-            'deliver_doc_id'    => 'required',
+            'deliver_date'      => 'required',
             'inspect_sdate'     => 'required',
             'inspect_edate'     => 'required',
             'inspect_total'     => 'required',
             'inspect_result'    => 'required',
-            'reamark'           => 'required',
         ];
 
         $messages = [
@@ -116,31 +116,46 @@ class InspectionController extends Controller
 
     public function store(Request $req)
     {
-        $inspection = new Inspection;
-        $inspection->order_id       = $req['po_id'];
-        $inspection->deliver_seq    = $req['deliver_seq'];
-        $inspection->deliver_no     = $req['deliver_no'];
-        $inspection->deliver_doc_id = $req['deliver_doc_id'];
-        $inspection->inspect_sdate  = convThDateToDbDate($req['inspect_sdate']);
-        $inspection->inspect_edate  = convThDateToDbDate($req['inspect_edate']);
-        $inspection->inspect_total  = $req['inspect_total'];
-        $inspection->inspect_result = $req['inspect_result'];
-        $inspection->inspect_user   = Auth::user()->person_id;
-        $inspection->remark         = $req['remark'];
+        try {
+            $inspection = new Inspection;
+            $inspection->order_id       = $req['order_id'];
+            $inspection->deliver_seq    = $req['deliver_seq'];
+            $inspection->deliver_bill   = $req['deliver_bill'];
+            $inspection->deliver_no     = $req['deliver_no'];
+            $inspection->deliver_date   = convThDateToDbDate($req['deliver_date']);
+            $inspection->inspect_sdate  = convThDateToDbDate($req['inspect_sdate']);
+            $inspection->inspect_edate  = convThDateToDbDate($req['inspect_edate']);
+            $inspection->inspect_total  = $req['inspect_total'];
+            $inspection->inspect_result = $req['inspect_result'];
+            $inspection->inspect_user   = Auth::user()->person_id;
+            $inspection->remark         = $req['remark'];
 
-        if ($inspection->save()) {
-            $order = Order::where('id', $req['po_id'])->update(['status' => 3]);
-            
-            $details = OrderDetail::where('order_id', $req['po_id'])->get();
-            foreach($details as $item) {
-                $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
+            if ($inspection->save()) {
+                $order = Order::where('id', $req['order_id'])->update(['status' => 3]);
+                
+                $details = OrderDetail::where('order_id', $req['order_id'])->get();
+                foreach($details as $item) {
+                    $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
 
-                /** Update status of plan data */
-                $plan = Plan::where('id', $item->plan_id)->update(['status' => 4]);
+                    /** Update status of plan data */
+                    $plan = Plan::where('id', $item->plan_id)->update(['status' => 4]);
+                }
+
+                return [
+                    'status'        => 1,
+                    'message'       => 'Insertion successfully!!',
+                    'inspection'    => $inspection
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
+        } catch (\Exception $ex) {
             return [
-                'inspection' => $inspection
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }

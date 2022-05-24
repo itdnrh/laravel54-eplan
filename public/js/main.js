@@ -31,6 +31,7 @@ app.run(function ($rootScope, $window, $http, toaster) {
 			.then(function (res) {
 				$rootScope.formError = res.data;
 				console.log($rootScope.formError);
+
 				if ($rootScope.formError.success === 0) {
 					toaster.pop('error', "", "คุณกรอกข้อมูลไม่ครบ !!!");
 				} else {
