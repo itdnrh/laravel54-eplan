@@ -18,9 +18,9 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planMaterialCtrl"
+        ng-controller="approvalCtrl"
         ng-init="
-            getAll();
+            getAll(2);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -46,7 +46,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll(2)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -61,7 +61,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll(2)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -79,7 +79,7 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
+                                            ng-change="onFactionSelected(cboFaction); getAll(2);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -100,7 +100,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll(2)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -121,10 +121,19 @@
                                 <h3 class="box-title">วัสดุ (นอกคลัง)</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
+                                <a
+                                    href="#"
+                                    class="btn btn-primary pull-right"
+                                    ng-click="approveAll()"
+                                >
                                     อนุมัติทั้งหมด
                                 </a>
-                                <a href="{{ url('/assets/add') }}" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                <a
+                                    href="#"
+                                    class="btn btn-success pull-right"
+                                    style="margin-right: 5px;"
+                                    ng-click="approveByList()"
+                                >
                                     อนุมัติรายการที่เลือก
                                 </a>
                             </div>
@@ -156,9 +165,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in materials">
+                                <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">
-                                        <input type="checkbox" name="" id="">
+                                        <input
+                                            type="checkbox"
+                                            ng-click="onSelectedCheckBox($event, plan)"
+                                            ng-show="!plan.approved"
+                                        />
                                     </td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
@@ -212,21 +225,14 @@
                                         </span>
                                     </td>
                                     <td style="text-align: center;">
-                                        <form
-                                            id="frmDelete"
-                                            method="POST"
-                                            action="{{ url('/assets/delete') }}"
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary btn-xs"
+                                            ng-click="approve($event, plan)"
                                             ng-show="!plan.approved"
                                         >
-                                            {{ csrf_field() }}
-                                            <button
-                                                type="submit"
-                                                ng-click="delete($event, plan.id)"
-                                                class="btn btn-primary btn-xs"
-                                            >
-                                                อนุมัติ
-                                            </button>
-                                        </form>
+                                            อนุมัติ
+                                        </button>
                                         <form
                                             id="frmDelete"
                                             method="POST"

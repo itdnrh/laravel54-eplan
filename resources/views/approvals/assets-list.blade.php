@@ -165,7 +165,11 @@
                             <tbody>
                                 <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">
-                                        <input type="checkbox" ng-click="onSelectedCheckBox($event, plan)" />
+                                        <input
+                                            type="checkbox"
+                                            ng-click="onSelectedCheckBox($event, plan)"
+                                            ng-show="!plan.approved"
+                                        />
                                     </td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->

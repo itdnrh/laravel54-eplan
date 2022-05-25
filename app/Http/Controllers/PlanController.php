@@ -92,6 +92,7 @@ class PlanController extends Controller
         $year   = $req->get('year');
         $type   = $req->get('type');
         $cate   = $req->get('cate');
+        $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
@@ -106,6 +107,7 @@ class PlanController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
         $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                         ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
@@ -129,6 +131,9 @@ class PlanController extends Controller
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
+                    })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
                     })
                     ->when($status != '', function($q) use ($status) {
                         $q->where('status', $status);

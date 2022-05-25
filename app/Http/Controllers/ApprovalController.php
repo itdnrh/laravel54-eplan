@@ -19,11 +19,18 @@ use App\Models\Division;
 
 class ApprovalController extends Controller
 {
+    protected $factions = [];
+
+    public function __construct()
+    {
+        $this->factions = Faction::whereNotIn('faction_id', [4, 6, 12])->get();
+    }
+
     public function assets()
     {
         return view('approvals.assets-list', [
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => $this->factions,
             "departs"       => Depart::all(),
         ]);
     }
@@ -32,7 +39,7 @@ class ApprovalController extends Controller
     {
         return view('approvals.materials-list', [
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => $this->factions,
             "departs"       => Depart::all(),
         ]);
     }
@@ -41,7 +48,7 @@ class ApprovalController extends Controller
     {
         return view('approvals.services-list', [
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => $this->factions,
             "departs"       => Depart::all(),
         ]);
     }
@@ -50,7 +57,7 @@ class ApprovalController extends Controller
     {
         return view('approvals.constructs-list', [
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => $this->factions,
             "departs"       => Depart::all(),
         ]);
     }

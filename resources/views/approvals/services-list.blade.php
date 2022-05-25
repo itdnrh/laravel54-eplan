@@ -18,9 +18,9 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planServiceCtrl"
+        ng-controller="approvalCtrl"
         ng-init="
-            getAll();
+            getAll(3);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -46,7 +46,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll(3)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -61,7 +61,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll(3)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -79,7 +79,7 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
+                                            ng-change="onFactionSelected(cboFaction); getAll(3)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -100,7 +100,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll(3)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -156,9 +156,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in services">
+                                <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">
-                                        <input type="checkbox" name="" id="">
+                                        <input
+                                            type="checkbox"
+                                            ng-click="onSelectedCheckBox($event, plan)"
+                                            ng-show="!plan.approved"
+                                        />
                                     </td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->

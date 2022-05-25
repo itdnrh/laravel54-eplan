@@ -3,7 +3,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.loading = false;
     $scope.plans = [];
     $scope.pager = null;
-    $scope.cboYear = "";
+    $scope.cboYear = (moment().year() + 543).toString();
     $scope.cboPlanType = "";
     $scope.cboCategory = "";
     $scope.cboFaction = "";
@@ -47,21 +47,27 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         e.preventDefault();
 
         if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.plan_no} ใช่หรือไม่?`)) {
-            // $http.post(`${CONFIG.baseUrl}/approvals`, { id: plan.id })
-            // .then(function(res) {
-            //     console.log(res);
+            $http.post(`${CONFIG.baseUrl}/approvals`, { id: plan.id })
+            .then((res) => {
+                console.log(res);
 
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
-            //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
-            //     }
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
 
-            //     $scope.loading = false;
-            // }, function(err) {
-            //     console.log(err);
-            //     $scope.loading = false;
-            // });
+                    $scope.plans.forEach(plan => {
+                        if (plan.id === res.data.plan.id) {
+                            plan.approved = res.data.plan.approved;
+                        }
+                    });
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, (err) => {
+                console.log(err);
+                $scope.loading = false;
+            });
         }
     };
 
@@ -95,10 +101,11 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction  = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}`)
         .then(function(res) {
             console.log(res);
             $scope.setPlans(res);
