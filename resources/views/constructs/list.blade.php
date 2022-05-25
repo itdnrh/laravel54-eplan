@@ -148,7 +148,8 @@
                                     <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                     <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                    <th style="width: 12%; text-align: center;">สถานะ</th>
+                                    <th style="width: 5%; text-align: center;">อนุมัติ</th>
+                                    <th style="width: 10%; text-align: center;">สถานะ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -181,6 +182,10 @@
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
                                         <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="plan.approved == 'A'"></i>
+                                        <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!plan.approved"></i>
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="plan.status == 0">
