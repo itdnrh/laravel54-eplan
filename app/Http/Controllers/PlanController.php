@@ -94,7 +94,6 @@ class PlanController extends Controller
         $cate   = $req->get('cate');
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
-        // $menu      = $req->get('menu');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -107,11 +106,13 @@ class PlanController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
-        // if($menu == '0') array_push($conditions, ['leave_person', \Auth::user()->person_id]);
-        $items = [];
-        if(!empty($cate)) {
-            $items = Item::where('category_id', $cate)->pluck('id');
-        }
+
+        $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                        ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->pluck('plans.id');
 
         $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->with('budget','depart','division')
@@ -120,11 +121,11 @@ class PlanController extends Controller
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plan_type_id', $type);
                     })
+                    ->when(!empty($cate), function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
-                    })
-                    ->when(count($items) > 0, function($q) use ($items) {
-                        $q->whereIn('plan_items.item_id', $items);
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);

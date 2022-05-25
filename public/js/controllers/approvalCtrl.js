@@ -1,90 +1,107 @@
 app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.leave = null;
-    $scope.leaves = [];
+    $scope.plans = [];
     $scope.pager = null;
-    $scope.cancellations = [];
-    $scope.cancelPager = [];
-    $scope.cboLeaveType = "";
-    $scope.cboLeaveStatus = "";
-    $scope.cboMenu = "";
-    $scope.searchKeyword = "";
-    $scope.cboQuery = "";
-    $scope.showAllApproves = false;
-    $scope.showAllCancels = false;
-    $scope.leave_date = '';
+    $scope.cboYear = "";
+    $scope.cboPlanType = "";
+    $scope.cboCategory = "";
+    $scope.cboFaction = "";
+    $scope.cboDepart = "";
+    $scope.cboStatus = "";
+    $scope.txtKeyword = "";
 
-    $('#leave_date').datepicker({
-        autoclose: true,
-        language: 'th',
-        format: 'mm/yyyy',
-        thaiyear: true,
-        viewMode: "months", 
-        minViewMode: "months",
-    }).datepicker('update', new Date())
+    $scope.toApprovesList = [];
+    $scope.onSelectedCheckBox = (e, plan) => {
+        let newList = [];
+        if (e.target.checked) {
+            newList = [...$scope.toApprovesList, plan.id];
+        } else {
+            newList = $scope.toApprovesList.filter(app => app !== plan.id);
+        }
 
-    $('#leave_date').change(function(e) {
-        let [month, year] = e.target.value.split('/');
+        $scope.toApprovesList = [...new Set(newList)];
+    };
 
-        $scope.cboQuery = `month=${parseInt(year) - 543}-${month}`;
-        $scope.cboYear = '2565';
-        $scope.cboLeaveStatus = $scope.showAllApproves ? '2&3&4&8&9' : '2';
-        $scope.cboMenu = "1";
+    $scope.approveAll = () => {
+        if (confirm('คุณต้องการอนุมัติทุกรายการที่หน่วยงานร้องขอใช่หรือไม่?')) {
+            // $http.post(`${CONFIG.baseUrl}/approvals/2565/year`, $scope.toApprovesList)
+            // .then(function(res) {
+            //     console.log(res);
 
-        $scope.getAll();
-        $scope.getCancellation(true);
-    });
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+            //     }
 
-    // TODO: Duplicated method
-    $scope.getAll = function(event) {
-        $scope.leaves = [];
+            //     $scope.loading = false;
+            // }, function(err) {
+            //     console.log(err);
+            //     $scope.loading = false;
+            // });
+        }
+    };
+
+    $scope.approve = (e, plan) => {
+        e.preventDefault();
+
+        if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.plan_no} ใช่หรือไม่?`)) {
+            // $http.post(`${CONFIG.baseUrl}/approvals`, { id: plan.id })
+            // .then(function(res) {
+            //     console.log(res);
+
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+            //     }
+
+            //     $scope.loading = false;
+            // }, function(err) {
+            //     console.log(err);
+            //     $scope.loading = false;
+            // });
+        }
+    };
+
+    $scope.approveByList = () => {
+        if ($scope.toApprovesList.length == 0) {
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกการอนุมัติได้ กรุณาเลือกรายการก่อน!!!");
+        } else {
+            console.log($scope.toApprovesList);
+            // $http.post(`${CONFIG.baseUrl}/approvals/lists`, $scope.toApprovesList)
+            // .then(function(res) {
+            //     console.log(res);
+
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+            //     }
+
+            //     $scope.loading = false;
+            // }, function(err) {
+            //     console.log(err);
+            //     $scope.loading = false;
+            // });
+        }
+    };
+
+    $scope.getAll = function(type) {
+        $scope.loading = true;
+        $scope.plans = [];
         $scope.pager = null;
-        $scope.loading = true;
 
-        let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let type    = $scope.cboLeaveType === '' ? 0 : $scope.cboLeaveType;
-        let status  = $scope.cboLeaveStatus === '' ? '-' : $scope.cboLeaveStatus;
-        let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/leaves/search/${year}/${type}/${status}/${menu}${query}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
-            $scope.setLeaves(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    }
-
-    // TODO: Duplicated method
-    $scope.getCancellation = function(isApproval=false) {
-        $scope.cancellations = [];
-        $scope.cancelPager = null;
-        $scope.loading = true;
-
-        let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let type    = $scope.cboLeaveType === '' ? 0 : $scope.cboLeaveType;
-        let status  = $scope.showAllCancels ? '5&8&9' : '5';
-        let query   = $scope.cboQuery !== '' ? `?${$scope.cboQuery}` : '';
-        let menu    = "1";
-
-        $http.get(`${CONFIG.baseUrl}/leaves/search/${year}/${type}/${status}/${menu}${query}`)
-        .then(function(res) {
-            const { data, ...pager } = res.data.leaves;
-
-            // TODO: Should fetch data with pagination from backend
-            if (isApproval) {
-                $scope.cancellations = data;
-            } else {
-                $scope.cancellations = data.filter(cancel => {
-                    return cancel.cancellation.every(c => c.received_date === null);
-                });
-            }
-
-            $scope.cancelPager = pager;
+            console.log(res);
+            $scope.setPlans(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -93,10 +110,10 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     };
 
-    // TODO: Duplicated method
-    $scope.setLeaves = function(res) {
-        const { data, ...pager } = res.data.leaves;
-        $scope.leaves = data;
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
         $scope.pager = pager;
     };
 
@@ -118,44 +135,6 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     };
 
-    $scope.onCommentLoad = function(depart, division='') {
-        $scope.cboYear = '2565';
-        $scope.cboLeaveStatus = $scope.showAllApproves ? '0&1&7' : '0';
-        $scope.cboMenu = "1";
-        $scope.cboQuery = `depart=${depart}&division=${division}`;
-
-        $scope.getAll();
-
-        $scope.getCancellation();
-    };
-
-    $scope.showCommentForm = function(leave, type) {
-        $scope.leave = leave;
-
-        if (type === 1) {
-            $('#comment-form').modal('show');
-        } else {
-            $('#cancel-comment-form').modal('show');
-        }
-    };
-
-    $scope.showApprovalDetail = function(leave) {
-        $scope.leave = leave;
-
-        $('#approval-detail').modal('show');
-    };
-
-    $scope.onReceiveLoad = function(e) {
-        $scope.cboYear = '2565';
-        $scope.cboLeaveStatus = $scope.showAllApproves ? '1&2' : '1';
-        $scope.cboQuery = "";
-        $scope.cboMenu = "1";
-
-        $scope.getAll();
-
-        $scope.getCancellation();
-    };
-
     $scope.onApproveLoad = function(e) {
         $scope.cboYear = '2565';
         $scope.cboLeaveStatus = $scope.showAllApproves ? '2&3&4&8&9' : '2';
@@ -174,16 +153,5 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         } else {
             $('#cancel-approval-form').modal('show');
         }
-    };
-
-    $scope.onSearchKeyChange = function(keyword) {
-        $scope.cboYear = '2565';
-        $scope.cboLeaveStatus = $scope.showAllApproves ? '1&2' : '1';
-        $scope.cboQuery = `name=${keyword}`;
-        $scope.cboMenu = "1";
-
-        $scope.getAll();
-
-        $scope.getCancellation();
     };
 });
