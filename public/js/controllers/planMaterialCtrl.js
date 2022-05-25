@@ -6,6 +6,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
     $scope.material = {
         material_id: '',
+        in_plan: 'I',
         year: '',
         plan_no: '',
         faction_id: '',
@@ -47,6 +48,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.clearMaterialObj = function() {
         $scope.material = {
             asset_id: '',
+            in_plan: 'I',
             plan_no: '',
             faction_id: '',
             depart_id: '',

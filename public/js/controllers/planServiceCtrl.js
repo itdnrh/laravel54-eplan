@@ -6,6 +6,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
     $scope.service = {
         service_id: '',
+        in_plan: 'I',
         year: '',
         plan_no: '',
         faction_id: '',
@@ -46,6 +47,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.clearServiceObj = function() {
         $scope.service = {
             service_id: '',
+            in_plan: 'I',
             year: '',
             plan_no: '',
             faction_id: '',

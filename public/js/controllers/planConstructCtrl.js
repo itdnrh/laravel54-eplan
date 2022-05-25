@@ -6,6 +6,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
     $scope.construct = {
         construct_id: '',
+        in_plan: 'I',
         year: '',
         plan_no: '',
         faction_id: '',
@@ -51,6 +52,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.clearConstructObj = function() {
         $scope.construct = {
             construct_id: '',
+            in_plan: 'I',
             year: '',
             plan_no: '',
             faction_id: '',
