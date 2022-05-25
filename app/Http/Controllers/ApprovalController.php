@@ -54,4 +54,77 @@ class ApprovalController extends Controller
             "departs"       => Depart::all(),
         ]);
     }
+
+    public function approve(Request $req)
+    {
+        try {
+            $plan = Plan::find($req['id']);
+            $plan->approved = 'A';
+
+            if ($plan->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function approveAll(Request $req)
+    {
+        try {
+            $plan = Plan::find($req['id']);
+            $plan->approved = 'A';
+
+            if ($plan->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function approveByList(Request $req)
+    {
+        try {
+            foreach($req['plans'] as $planToApprove) {
+                $plan = Plan::find($req['id']);
+                $plan->approved = 'A';
+                $plan->save();
+            }
+
+            return [
+                'status'    => 1,
+                'message'   => 'Insertion successfully!!',
+            ];
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
 }

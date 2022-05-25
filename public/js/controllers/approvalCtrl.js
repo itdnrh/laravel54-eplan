@@ -70,7 +70,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกการอนุมัติได้ กรุณาเลือกรายการก่อน!!!");
         } else {
             console.log($scope.toApprovesList);
-            // $http.post(`${CONFIG.baseUrl}/approvals/lists`, $scope.toApprovesList)
+            // $http.post(`${CONFIG.baseUrl}/approvals/lists`, { plans: $scope.toApprovesList })
             // .then(function(res) {
             //     console.log(res);
 

@@ -122,7 +122,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('approvals/materials', 'ApprovalController@materials');
     Route::get('approvals/services', 'ApprovalController@services');
     Route::get('approvals/constructs', 'ApprovalController@constructs');
-    Route::post('approvals/approve', 'ApprovalController@doApprove');
+    Route::post('approvals/approve', 'ApprovalController@approve');
+    Route::post('approvals/approve/{year}/year', 'ApprovalController@approveAll');
+    Route::post('approvals/approve/lists', 'ApprovalController@approveByList');
     
     /** การขอสนับสนุน */
     Route::post('supports/validate', 'SupportController@formValidate');
