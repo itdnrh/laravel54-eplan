@@ -158,8 +158,9 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
         /** ข้อมูลวัสดุ */
         $scope.material.material_id     = plan.id;
+        $scope.material.in_plan         = plan.in_plan;
         $scope.material.year            = plan.year;
-        $scope.material.plan_no         = plan.plan_no;
+        // $scope.material.plan_no         = plan.plan_no;
         $scope.material.item_id         = plan.plan_item.item_id;
         $scope.material.desc            = plan.plan_item.item.item_name;
         $scope.material.spec            = plan.plan_item.spec;

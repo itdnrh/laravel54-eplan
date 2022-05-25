@@ -156,8 +156,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
         /** ข้อมูลจ้างบริการ */
         $scope.service.service_id       = plan.id;
+        $scope.service.in_plan          = plan.in_plan;
         $scope.service.year             = plan.year;
-        $scope.service.plan_no          = plan.plan_no;
+        // $scope.service.plan_no          = plan.plan_no;
         $scope.service.desc             = plan.plan_item.item.item_name;
         $scope.service.price_per_unit   = plan.plan_item.price_per_unit;
         $scope.service.amount           = plan.plan_item.amount;

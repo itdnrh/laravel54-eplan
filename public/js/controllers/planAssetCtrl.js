@@ -162,8 +162,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
         /** ข้อมูลครุภัณฑ์ */
         $scope.asset.asset_id           = plan.id;
+        $scope.asset.in_plan            = plan.in_plan;
         $scope.asset.year               = plan.year;
-        $scope.asset.plan_no            = plan.plan_no;
+        // $scope.asset.plan_no            = plan.plan_no;
         $scope.asset.desc               = plan.plan_item.item.item_name;
         $scope.asset.spec               = plan.plan_item.spec;
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;

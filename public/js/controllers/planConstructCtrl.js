@@ -166,8 +166,9 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
         /** ข้อมูลงานก่อสร้าง */
         $scope.construct.construct_id       = plan.id;
+        $scope.construct.in_plan            = plan.in_plan;
         $scope.construct.year               = plan.year;
-        $scope.construct.plan_no            = plan.plan_no;
+        // $scope.construct.plan_no            = plan.plan_no;
         $scope.construct.desc               = plan.plan_item.item.item_name;
         $scope.construct.item_id            = plan.plan_item.item_id;
         
