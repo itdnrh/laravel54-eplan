@@ -107,8 +107,9 @@ class PlanAssetController extends Controller
     {
         $plan = new Plan();
         // $plan->year      = calcBudgetYear($req['year']);
+        $plan->in_plan      = $req['in_plan'];
         $plan->year         = $req['year'];
-        $plan->plan_no      = $req['plan_no'];
+        // $plan->plan_no      = $req['plan_no'];
         $plan->plan_type_id = '1';
         $plan->budget_id    = '1';
         $plan->depart_id    = $req['depart_id'];
@@ -116,7 +117,6 @@ class PlanAssetController extends Controller
         $plan->start_month  = $req['start_month'];
         $plan->reason       = $req['reason'];
         $plan->remark       = $req['remark'];
-        $plan->in_plan      = $req['in_plan'];
         $plan->status       = '0';
 
         /** Upload attach file */

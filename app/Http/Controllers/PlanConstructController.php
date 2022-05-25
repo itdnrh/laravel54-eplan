@@ -25,8 +25,9 @@ class PlanConstructController extends Controller
     public function formValidate (Request $request)
     {
         $rules = [
+            // 'plan_no'           => 'required',
+            'in_plan'           => 'required',
             'year'              => 'required',
-            'plan_no'           => 'required',
             'desc'              => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
@@ -113,8 +114,9 @@ class PlanConstructController extends Controller
     {
         $plan = new Plan();
         // $plan->year      = calcBudgetYear($req['year']);
+        $plan->in_plan      = $req['in_plan'];
         $plan->year         = $req['year'];
-        $plan->plan_no      = $req['plan_no'];
+        // $plan->plan_no      = $req['plan_no'];
         $plan->plan_type_id = '4';
         $plan->budget_id    = '1';
         $plan->depart_id    = $req['depart_id'];
