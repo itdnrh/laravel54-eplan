@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนวัสดุ (นอกคลัง)
+            วัสดุ (นอกคลัง)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนวัสดุ (นอกคลัง)</li>
+            <li class="breadcrumb-item active">วัสดุ (นอกคลัง)</li>
         </ol>
     </section>
 
@@ -118,11 +118,14 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">แผนวัสดุ (นอกคลัง)</h3>
+                                <h3 class="box-title">วัสดุ (นอกคลัง)</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/materials/add') }}" class="btn btn-primary pull-right">
-                                    เพิ่มรายการ
+                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
+                                    อนุมัติทั้งหมด
+                                </a>
+                                <a href="{{ url('/assets/add') }}" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    อนุมัติรายการที่เลือก
                                 </a>
                             </div>
                         </div>
@@ -149,12 +152,14 @@
                                     <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                                     <th style="width: 12%; text-align: center;">สถานะ</th>
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 4%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, plan) in materials">
-                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" name="" id="">
+                                    </td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
@@ -207,34 +212,36 @@
                                         </span>
                                     </td>
                                     <td style="text-align: center;">
-                                        <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/materials/detail') }}/@{{ plan.id }}"
-                                                class="btn btn-primary btn-xs" 
-                                                title="รายละเอียด">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                            <a  ng-click="edit(plan.id)"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
-                                                class="btn btn-warning btn-xs"
-                                                title="แก้ไขรายการ">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <form
-                                                id="frmDelete"
-                                                method="POST"
-                                                action="{{ url('/materials/delete') }}"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                        <form
+                                            id="frmDelete"
+                                            method="POST"
+                                            action="{{ url('/assets/delete') }}"
+                                            ng-show="!plan.approved"
+                                        >
+                                            {{ csrf_field() }}
+                                            <button
+                                                type="submit"
+                                                ng-click="delete($event, plan.id)"
+                                                class="btn btn-primary btn-xs"
                                             >
-                                                {{ csrf_field() }}
-                                                <button
-                                                    type="submit"
-                                                    ng-click="delete($event, plan.id)"
-                                                    class="btn btn-danger btn-xs"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                                อนุมัติ
+                                            </button>
+                                        </form>
+                                        <form
+                                            id="frmDelete"
+                                            method="POST"
+                                            action="{{ url('/assets/delete') }}"
+                                            ng-show="plan.approved == 'A'"
+                                        >
+                                            {{ csrf_field() }}
+                                            <button
+                                                type="submit"
+                                                ng-click="delete($event, plan.id)"
+                                                class="btn btn-danger btn-xs"
+                                            >
+                                                ยกเลิก
+                                            </button>
+                                        </form>
                                     </td>             
                                 </tr>
                             </tbody>
