@@ -150,22 +150,22 @@
 								</span>
 							</a>
 							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
-								<li ng-class="{ 'active': submenu == 'comment' }">
+								<li ng-class="{ 'active': submenu == 'assets' }">
 									<a href="{{ url('approvals/assets') }}">
 										<i class="fa fa-circle-o"></i> ครุภัณฑ์
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'receive' }">
+								<li ng-class="{ 'active': submenu == 'materials' }">
 									<a href="{{ url('approvals/materials') }}">
 										<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'receive' }">
+								<li ng-class="{ 'active': submenu == 'services' }">
 									<a href="{{ url('approvals/services') }}">
 										<i class="fa fa-circle-o"></i> จ้างบริการ
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'approve' }">
+								<li ng-class="{ 'active': submenu == 'constructs' }">
 									<a href="{{ url('approvals/constructs') }}">
 										<i class="fa fa-circle-o"></i> ก่อสร้าง
 									</a>

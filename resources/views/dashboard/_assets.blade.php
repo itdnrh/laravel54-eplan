@@ -1,4 +1,4 @@
-<div class="box" ng-init="getDepartLeaves()">
+<div class="box">
     <div class="box-header">
         <h3 class="box-title">สรุปแผนครุภัณฑ์ ประจำเดือน</h3>
         <div class="pull-right box-tools">
@@ -18,6 +18,7 @@
         <table class="table table-striped table-bordered">
             <tr>
                 <th>ประเภท</th>
+                <th style="width: 15%; text-align: center;">ประมาณการ</th>
                 <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
                 <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
                 <th style="width: 15%; text-align: center;">ส่งเอกสารเบิกเงิน</th>
@@ -25,6 +26,7 @@
             </tr>
             <tr ng-repeat="(index, asset) in assets">
                 <td>@{{ index+1 }}. @{{ asset.name }}</td>
+                <td style="text-align: center;"></td>
                 <td style="text-align: center;"></td>
                 <td style="text-align: center;"></td>
                 <td style="text-align: center;"></td>

@@ -158,7 +158,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
 
         $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}`)
         .then(function(res) {
-            console.log(res);
             $scope.stat2Cards = res.data.stats;
 
             $scope.loading = false;
