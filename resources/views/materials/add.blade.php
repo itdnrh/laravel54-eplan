@@ -44,6 +44,33 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'in_plan')}"
+                                >
+                                    <label>ในแผน/นอกแผน :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="I"
+                                                    ng-model="asset.in_plan"
+                                                    tabindex="3"> ในแผน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="O"
+                                                    ng-model="asset.in_plan"
+                                                    tabindex="3"> นอกแผน
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(asset, 'in_plan')">
+                                        @{{ formError.errors.in_plan[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'year')}"
                                     ng-show="material.in_stock == 0"
                                 >
@@ -64,8 +91,7 @@
                                         @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
-
-                                <div
+                                <!-- <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'plan_no')}"
                                     ng-show="material.in_stock == 0"
@@ -80,7 +106,7 @@
                                     <span class="help-block" ng-show="checkValidate(material, 'plan_no')">
                                         @{{ formError.errors.plan_no[0] }}
                                     </span>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="row">

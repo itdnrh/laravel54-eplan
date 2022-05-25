@@ -25,8 +25,9 @@ class PlanAssetController extends Controller
     public function formValidate (Request $request)
     {
         $rules = [
+            // 'plan_no'           => 'required',
+            'in_plan'           => 'required',
             'year'              => 'required',
-            'plan_no'           => 'required',
             'desc'              => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
@@ -115,6 +116,7 @@ class PlanAssetController extends Controller
         $plan->start_month  = $req['start_month'];
         $plan->reason       = $req['reason'];
         $plan->remark       = $req['remark'];
+        $plan->in_plan      = $req['in_plan'];
         $plan->status       = '0';
 
         /** Upload attach file */

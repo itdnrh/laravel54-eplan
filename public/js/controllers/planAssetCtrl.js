@@ -7,6 +7,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.asset = {
         asset_id: '',
         year: '',
+        in_plan: 'I',
         plan_no: '',
         faction_id: '',
         depart_id: '',
@@ -48,6 +49,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     const clearAssetObj = function() {
         $scope.asset = {
             asset_id: '',
+            year: '',
+            in_plan: 'I',
             plan_no: '',
             faction_id: '',
             depart_id: '',
