@@ -117,6 +117,18 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('constructs/delete/{id}', 'PlanConstructController@delete');
     Route::get('constructs/print/{id}', 'PlanConstructController@printLeaveForm');
 
+    /** แผนโครงการ */
+    Route::post('projects/validate', 'ProjectController@formValidate');
+    Route::get('projects/get-ajax-all', 'ProjectController@getAll');
+    Route::get('projects/get-ajax-byid/{id}', 'ProjectController@getById');
+    Route::get('projects/detail/{id}', 'ProjectController@detail');
+    Route::get('projects/add', 'ProjectController@add');
+    Route::post('projects/store', 'ProjectController@store');
+    Route::get('projects/edit/{id}', 'ProjectController@edit');
+    Route::post('projects/update', 'ProjectController@update');
+    Route::post('projects/delete/{id}', 'ProjectController@delete');
+    Route::get('projects/print/{id}', 'ProjectController@printLeaveForm');
+
     /** การอนุมัติ */
     Route::get('approvals/assets', 'ApprovalController@assets');
     Route::get('approvals/materials', 'ApprovalController@materials');

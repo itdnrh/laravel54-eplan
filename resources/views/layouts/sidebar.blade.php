@@ -73,6 +73,11 @@
 									<i class="fa fa-circle-o"></i> ก่อสร้าง
 								</a>
 							</li>
+							<li ng-class="{ 'active': ['projects','list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/plans/projects') }}">
+									<i class="fa fa-circle-o"></i> โครงการ
+								</a>
+							</li>
 						</ul>
 					</li>
 
@@ -168,6 +173,11 @@
 								<li ng-class="{ 'active': submenu == 'constructs' }">
 									<a href="{{ url('approvals/constructs') }}">
 										<i class="fa fa-circle-o"></i> ก่อสร้าง
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'projects' }">
+									<a href="{{ url('approvals/projects') }}">
+										<i class="fa fa-circle-o"></i> โครงการ
 									</a>
 								</li>
 							</ul>
