@@ -164,6 +164,16 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('orders/received/{mode}', 'OrderController@doReceived');
     Route::get('orders/print/{id}', 'OrderController@printCancelForm');
 
+    /** ควบคุมกำกับติดตาม */
+    Route::post('monthly/validate', 'MonthlyController@formValidate');
+    Route::get('monthly/list', 'MonthlyController@index');
+    Route::get('monthly/add', 'MonthlyController@create');
+    Route::post('monthly/store', 'MonthlyController@store');
+    Route::get('monthly/{id}/edit', 'MonthlyController@edit');
+    Route::get('monthly/{id}/detail', 'MonthlyController@detail');
+    Route::post('monthly/{id}/update', 'MonthlyController@update');
+    Route::post('monthly/{id}/delete', 'MonthlyController@delete');
+
     /** ตรวจรับพัสดุ */
     Route::post('inspections/validate', 'InspectionController@formValidate');
     Route::get('orders/inspect', 'InspectionController@index');

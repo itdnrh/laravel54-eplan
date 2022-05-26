@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
+use App\Models\Project;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\Item;
@@ -18,7 +19,7 @@ use App\Models\Depart;
 use App\Models\Division;
 use PDF;
 
-class PlanController extends Controller
+class MonthlyController extends Controller
 {
     public function formValidate (Request $request)
     {
@@ -75,8 +76,10 @@ class PlanController extends Controller
 
     public function index()
     {
-        return view('assets.list', [
-            "asset_categories"   => AssetCategory::all(),
+        return view('monthly.list', [
+            "categories"    => ItemCategory::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"       => Depart::all(),
         ]);
     }
 
@@ -107,37 +110,37 @@ class PlanController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
-        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+        // $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                        ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-                        ->when(!empty($cate), function($q) use ($cate) {
-                            $q->where('items.category_id', $cate);
-                        })
-                        ->pluck('plans.id');
+        // $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+        //                 ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+        //                 ->when(!empty($cate), function($q) use ($cate) {
+        //                     $q->where('items.category_id', $cate);
+        //                 })
+        //                 ->pluck('plans.id');
 
-        $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->with('budget','depart','division')
-                    ->with('planItem','planItem.unit')
-                    ->with('planItem.item','planItem.item.category')
-                    ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plan_type_id', $type);
-                    })
-                    ->when(!empty($cate), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
-                    })
-                    ->when(!empty($year), function($q) use ($year) {
-                        $q->where('year', $year);
-                    })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
-                    })
-                    ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('depart_id', $departsList);
-                    })
-                    ->when($status != '', function($q) use ($status) {
-                        $q->where('status', $status);
-                    })
+        // $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+        //             ->with('budget','depart','division')
+        //             ->with('planItem','planItem.unit')
+        //             ->with('planItem.item','planItem.item.category')
+        //             ->when(!empty($type), function($q) use ($type) {
+        //                 $q->where('plan_type_id', $type);
+        //             })
+        //             ->when(!empty($cate), function($q) use ($plansList) {
+        //                 $q->whereIn('id', $plansList);
+        //             })
+        //             ->when(!empty($year), function($q) use ($year) {
+        //                 $q->where('year', $year);
+        //             })
+        //             ->when(!empty($depart), function($q) use ($depart) {
+        //                 $q->where('depart_id', $depart);
+        //             })
+        //             ->when(!empty($faction), function($q) use ($departsList) {
+        //                 $q->whereIn('depart_id', $departsList);
+        //             })
+        //             ->when($status != '', function($q) use ($status) {
+        //                 $q->where('status', $status);
+        //             })
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
                     // })
@@ -148,21 +151,19 @@ class PlanController extends Controller
                     //     $q->whereBetween('leave_date', [$sdate, $edate]);
                     // })
                     // ->orderBy('plan_no', 'ASC')
-                    ->paginate(10);
+                    // ->paginate(10);
 
         return [
-            'plans' => $plans,
+            'projects' => $projects,
         ];
     }
 
     public function getAll()
     {
+        $projects = Project::with('kpi','depart','owner','budgetSrc')->paginate(10);
+
         return [
-            'plans' => Plan::with('budget','depart','division')
-                            ->with('planItem','planItem.unit')
-                            ->with('planItem.item','planItem.item.category')
-                            ->orderBy('plan_no')
-                            ->get(),
+            'projects' => $projects,
         ];
     }
 
@@ -179,7 +180,7 @@ class PlanController extends Controller
 
     public function detail($id)
     {
-        return view('assets.detail', [
+        return view('monthly.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "categories"    => AssetCategory::all(),
             "units"         => Unit::all(),
@@ -190,9 +191,9 @@ class PlanController extends Controller
         ]);
     }
 
-    public function add()
+    public function create()
     {
-        return view('assets.add', [
+        return view('monthly.add', [
             "categories"    => AssetCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
@@ -241,12 +242,8 @@ class PlanController extends Controller
 
     public function edit($id)
     {
-        return view('leaves.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
-            "periods"       => $this->periods,
+        return view('monthly.edit', [
+            //
         ]);
     }
 

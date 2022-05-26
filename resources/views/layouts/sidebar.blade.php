@@ -251,6 +251,36 @@
 						</li>
 					@endif
 
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1309900322504' ||
+						Auth::user()->memberOf->duty_id == 1 ||
+						Auth::user()->memberOf->duty_id == 2 ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'monthly' }">
+							<a href="#">
+								<i class="fa fa-line-chart" aria-hidden="true"></i>
+								<span>ควบคุมกำกับติดตาม</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li ng-class="{ 'active': submenu == 'list' }">
+									<a href="{{ url('monthly/list') }}">
+										<i class="fa fa-circle-o"></i> สรุปผลงาน
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'inspect' }">
+									<a href="{{ url('monthly/add') }}">
+										<i class="fa fa-circle-o"></i> บันทึกรายการ
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
+
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||

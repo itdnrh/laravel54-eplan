@@ -14,6 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'api'], function () {
+    /** โครงการ */
     Route::get('projects', 'ProjectController@getAll');
     Route::get('projects/{id}', 'ProjectController@getById');
+
+    /** ควบคุมกำกับติดตาม */
+    Route::get('monthly', 'MonthlyController@getAll');
+    Route::get('monthly/{id}', 'MonthlyController@getById');
 });
