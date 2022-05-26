@@ -225,21 +225,14 @@
                                         </span>
                                     </td>
                                     <td style="text-align: center;">
-                                        <form
-                                            id="frmDelete"
-                                            method="POST"
-                                            action="{{ url('/assets/delete') }}"
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary btn-xs"
+                                            ng-click="approve($event, plan)"
                                             ng-show="!plan.approved"
                                         >
-                                            {{ csrf_field() }}
-                                            <button
-                                                type="submit"
-                                                ng-click="delete($event, plan.id)"
-                                                class="btn btn-primary btn-xs"
-                                            >
-                                                อนุมัติ
-                                            </button>
-                                        </form>
+                                            อนุมัติ
+                                        </button>
                                         <form
                                             id="frmDelete"
                                             method="POST"
