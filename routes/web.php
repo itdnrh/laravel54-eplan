@@ -119,8 +119,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนโครงการ */
     Route::post('projects/validate', 'ProjectController@formValidate');
-    Route::get('projects/get-ajax-all', 'ProjectController@getAll');
-    Route::get('projects/get-ajax-byid/{id}', 'ProjectController@getById');
+    Route::get('projects/list', 'ProjectController@index');
     Route::get('projects/detail/{id}', 'ProjectController@detail');
     Route::get('projects/add', 'ProjectController@add');
     Route::post('projects/store', 'ProjectController@store');

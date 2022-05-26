@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planConstructCtrl"
+        ng-controller="projectCtrl"
         ng-init="
             getAll();
             initForms({
@@ -142,11 +142,11 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่แผน</th>
+                                    <th style="width: 8%; text-align: center;">เลขที่</th>
                                     <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
                                     <th>รายการ</th>
-                                    <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
-                                    <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
+                                    <th style="width: 8%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 8%; text-align: center;">แหล่งงบฯ</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                                     <th style="width: 5%; text-align: center;">อนุมัติ</th>
                                     <th style="width: 10%; text-align: center;">สถานะ</th>
@@ -154,16 +154,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in constructs">
+                                <tr ng-repeat="(index, plan) in projects">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ plan.plan_no }}</td>
+                                    <td style="text-align: center;">@{{ plan.project_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <h4 style="margin: 0;">@{{ plan.plan_item.item.category.name }}</h4>
+                                        <h5 style="margin: 0; font-weight: bold;">ตัวชี้วัด: @{{ plan.kpi.kpi_name }}</h5>
                                         <p style="margin: 0;">
-                                            @{{ plan.plan_item.item.item_name }} จำนวน 
-                                            <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
-                                            <span>@{{ plan.plan_item.unit.name }}</span>
+                                            @{{ plan.project_name }}
                                         </p>
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                             class="btn btn-default btn-xs" 
@@ -174,14 +172,14 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.price_per_unit | currency:'':0 }}
+                                        @{{ plan.total_budget | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
+                                        @{{ plan.budget_src.name }}
                                     </td>
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
-                                        <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
+                                        <p style="margin: 0;">@{{ plan.owner.person_firstname+ ' ' +plan.owner.person_lastname }}</p>
                                     </td>
                                     <td style="text-align: center;">
                                         <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="plan.approved == 'A'"></i>

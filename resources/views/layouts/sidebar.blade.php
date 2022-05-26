@@ -44,7 +44,7 @@
 						</a>
 					</li>
 
-					<li class="treeview" ng-class="{ 'menu-open active': ['plans'].includes(menu) }">
+					<li class="treeview" ng-class="{ 'menu-open active': ['plans','projects'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-calendar"></i>
 							<span>คำขอประจำปี</span>
@@ -73,8 +73,8 @@
 									<i class="fa fa-circle-o"></i> ก่อสร้าง
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['projects','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/projects') }}">
+							<li ng-class="{ 'active': ['list','add','edit','detail'].includes(submenu)}">
+								<a href="{{ url('/projects/list') }}">
 									<i class="fa fa-circle-o"></i> โครงการ
 								</a>
 							</li>

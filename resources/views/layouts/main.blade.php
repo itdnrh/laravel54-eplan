@@ -94,6 +94,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/personCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/supplierCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/projectCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/report.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/stringFormat.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/pagination.js') }}"></script>
