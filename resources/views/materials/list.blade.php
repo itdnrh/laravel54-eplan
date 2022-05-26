@@ -145,8 +145,8 @@
                                     <th style="width: 8%; text-align: center;">เลขที่แผน</th>
                                     <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
                                     <th>รายการ</th>
-                                    <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                     <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
+                                    <th style="width: 4%; text-align: center;">ในแผน</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                                     <th style="width: 5%; text-align: center;">อนุมัติ</th>
                                     <th style="width: 10%; text-align: center;">สถานะ</th>
@@ -163,6 +163,7 @@
                                         @{{ plan.plan_item.item.item_name }} จำนวน 
                                         <span>@{{ plan.plan_item.item.amount | currency:'':0 }}</span>
                                         <span>@{{ plan.plan_item.item.unit.name }}</span>
+                                        <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                             class="btn btn-default btn-xs" 
                                             title="ไฟล์แนบ"
@@ -172,10 +173,13 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.price_per_unit | currency:'':0 }}
+                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
+                                        <i class="fa fa-check-circle text-success" aria-hidden="true" ng-show="plan.in_plan == 'I'"></i>
+                                        <span class="btn btn-danger btn-xs" ng-show="plan.in_plan == 'O'">
+                                            นอกแผน
+                                        </span>
                                     </td>
                                     <td style="text-align: center;">
                                         <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>

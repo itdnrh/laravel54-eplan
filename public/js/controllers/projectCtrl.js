@@ -88,9 +88,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/api/projects?year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.baseUrl}/api/projects?year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
             console.log(res);
             $scope.setProjects(res);
