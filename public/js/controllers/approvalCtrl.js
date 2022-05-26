@@ -46,21 +46,22 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.approve = (e, plan) => {
         e.preventDefault();
 
-        if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.plan_no} ใช่หรือไม่?`)) {
+        if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.id} ใช่หรือไม่?`)) {
             $http.post(`${CONFIG.baseUrl}/approvals`, { id: plan.id })
             .then((res) => {
                 console.log(res);
 
                 if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+                    toaster.pop('success', "ผลการทำงาน", "อนุมัติรายการเรียบร้อย !!!");
 
                     $scope.plans.forEach(plan => {
                         if (plan.id === res.data.plan.id) {
+                            plan.plan_no = res.data.plan.plan_no;
                             plan.approved = res.data.plan.approved;
                         }
                     });
                 } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถอนุมัติรายการได้ !!!");
                 }
 
                 $scope.loading = false;
@@ -124,14 +125,21 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         $scope.pager = pager;
     };
 
-    // TODO: Duplicated method
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.getDataWithUrl = function(e, url, type, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
+        $scope.plans = [];
+        $scope.pager = null;
         $scope.loading = true;
 
-        $http.get(URL)
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction  = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+
+        $http.get(`${url}&type=${type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}`)
         .then(function(res) {
             cb(res);
 
@@ -140,25 +148,5 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
             console.log(err);
             $scope.loading = false;
         });
-    };
-
-    $scope.onApproveLoad = function(e) {
-        $scope.cboYear = '2565';
-        $scope.cboLeaveStatus = $scope.showAllApproves ? '2&3&4&8&9' : '2';
-        $scope.cboQuery = `month=${moment().format('YYYY-MM')}`;
-        $scope.cboMenu = "1";
-
-        $scope.getAll();
-        $scope.getCancellation(true);
-    };
-
-    $scope.showApproveForm = function(leave, type) {
-        $scope.leave = leave;
-
-        if (type === 1) {
-            $('#approve-form').modal('show');
-        } else {
-            $('#cancel-approval-form').modal('show');
-        }
     };
 });

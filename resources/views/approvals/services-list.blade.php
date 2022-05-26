@@ -270,13 +270,13 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', 3, setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setAssets)" aria-label="Prev">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, 3, setPlans)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -294,13 +294,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setAssets)" aria-label="Next">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, 3, setPlans)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, 3, setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

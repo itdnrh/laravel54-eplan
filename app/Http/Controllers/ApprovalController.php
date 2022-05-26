@@ -62,10 +62,26 @@ class ApprovalController extends Controller
         ]);
     }
 
+    protected function generatePlanNo(Plan $p)
+    {
+        $planNo = '';
+        $plan = Plan::where('year', $p->year)
+                    ->where('plan_type_id', $p->plan_type_id)
+                    ->where('approved', 'A')
+                    ->orderBy('plan_no', 'DESC')
+                    ->first();
+
+        $running = $plan ? (int)substr($plan->plan_no, 4) + 1 : 0001;
+        $planNo = substr($p->year, 2).sprintf("%'.02d", $p->plan_type_id).sprintf("%'.04d", $running);
+
+        return $planNo;
+    }
+
     public function approve(Request $req)
     {
         try {
             $plan = Plan::find($req['id']);
+            $plan->plan_no  = $this->generatePlanNo($plan);
             $plan->approved = 'A';
 
             if ($plan->save()) {
@@ -91,21 +107,23 @@ class ApprovalController extends Controller
     public function approveAll(Request $req)
     {
         try {
-            $plan = Plan::find($req['id']);
-            $plan->approved = 'A';
+            $plans = Plan::where('year', $req['year'])
+                        ->where('plan_type_id', $req['plan_type_id'])
+                        ->whereNull('approved')
+                        ->get();
 
-            if ($plan->save()) {
-                return [
-                    'status'    => 1,
-                    'message'   => 'Insertion successfully!!',
-                    'plan'      => $plan
-                ];
-            } else {
-                return [
-                    'status'    => 0,
-                    'message'   => 'Something went wrong!!'
-                ];
+            foreach($plans as $p) {
+                $plan = Plan::find($p->id);
+                $plan->plan_no  = $this->generatePlanNo($plan);
+                $plan->approved = 'A';
+                $plan->save();
             }
+
+            return [
+                'status'    => 1,
+                'message'   => 'Insertion successfully!!',
+                'plan'      => $plan
+            ];
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,
@@ -118,7 +136,8 @@ class ApprovalController extends Controller
     {
         try {
             foreach($req['plans'] as $planToApprove) {
-                $plan = Plan::find($req['id']);
+                $plan = Plan::find($planToApprove);
+                $plan->plan_no  = $this->generatePlanNo($plan);
                 $plan->approved = 'A';
                 $plan->save();
             }
