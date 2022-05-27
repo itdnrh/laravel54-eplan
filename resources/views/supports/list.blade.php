@@ -140,14 +140,17 @@
                                         <span class="label label-primary" ng-show="support.status == 0">
                                             รอดำเนินการ
                                         </span>
-                                        <span class="label label-success" ng-show="support.status == 1">
+                                        <span class="label label-warning" ng-show="support.status == 1">
                                             ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="support.status == 2">
+                                        <span class="label label-success" ng-show="support.status == 2">
+                                            รับเอกสารแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="support.status == 9">
                                             ยกเลิก
                                         </span>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.sent_date }}</td>
+                                    <td style="text-align: center;">@{{ support.sent_date | thdate }}</td>
                                     <!-- <td style="text-align: center;">
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
                                             class="btn btn-default btn-xs"
