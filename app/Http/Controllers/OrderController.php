@@ -80,12 +80,29 @@ class OrderController extends Controller
 
     public function search(Request $req)
     {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
         $year = $req->get('year');
         $supplier = $req->get('supplier');
         $type = $req->get('type');
         $cate = $req->get('cate');
         $status = $req->get('status');
         $poNo = $req->get('po_no');
+
+        if($status != '') {
+            if (preg_match($pattern, $status, $matched) == 1) {
+                $arrStatus = explode($matched[0], $status);
+
+                if ($matched[0] != '-' && $matched[0] != '&') {
+                    array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+                }
+            } else {
+                array_push($conditions, ['status', '=', $status]);
+            }
+        }
 
         $ordersList = Order::leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
                         ->leftJoin('items', 'items.id', '=', 'order_details.item_id')
@@ -106,14 +123,17 @@ class OrderController extends Controller
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plan_type_id', $type);
                     })
-                    ->when($status != '', function($q) use ($status) {
-                        $q->where('status', $status);
-                    })
                     ->when(!empty($cate), function($q) use ($ordersList) {
                         $q->whereIn('id', $ordersList);
                     })
                     ->when(!empty($poNo), function($q) use ($poNo) {
                         $q->where('po_no', 'like', '%' .$poNo. '%');
+                    })
+                    ->when(count($conditions) > 0, function($q) use ($conditions) {
+                        $q->where($conditions);
+                    })
+                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                        $q->whereBetween('status', $arrStatus);
                     })
                     ->paginate(10);
 
