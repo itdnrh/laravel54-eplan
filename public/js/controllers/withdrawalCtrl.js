@@ -233,6 +233,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.withdrawal.withdraw_date = withdrawal.withdraw_date;
             $scope.withdrawal.net_total = withdrawal.net_total;
             $scope.withdrawal.remark = withdrawal.remark;
+            $scope.withdrawal.completed = withdrawal.completed;
             $scope.withdrawal.supplier = supplier;
 
             $scope.loading = false;

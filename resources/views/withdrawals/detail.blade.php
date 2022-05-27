@@ -165,6 +165,7 @@
                             พิมพ์เอกสารขอเบิกจ่ายเงิน
                         </a>
                         <button
+                            ng-show="!withdrawal.completed"
                             ng-click="showWithdrawForm($event)"
                             class="btn btn-primary"
                         >
