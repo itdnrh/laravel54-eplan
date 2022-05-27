@@ -96,10 +96,13 @@
                                     <span class="label label-primary" ng-show="order.status == 0">
                                         รอดำเนินการ
                                     </span>
-                                    <span class="label bg-navy" ng-show="order.status == 1">
-                                        ตรวจรับแล้ว
+                                    <span class="label bg-maroon" ng-show="order.status == 2">
+                                        ตรวจรับแล้วบางงวด
                                     </span>
-                                    <span class="label label-success" ng-show="order.status == 2">
+                                    <span class="label bg-maroon" ng-show="order.status == 3">
+                                        ตรวจรับทั้งหมดแล้ว
+                                    </span>
+                                    <span class="label label-success" ng-show="order.status == 4">
                                         ส่งเบิกเงินแล้ว
                                     </span>
                                     <span class="label label-success" ng-show="order.status == 9">

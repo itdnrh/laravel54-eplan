@@ -101,7 +101,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders = [];
         $scope.orders_pager = null;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?status=1`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?status=2`)
         .then(function(res) {
             $scope.setOrder(res);
 
@@ -122,7 +122,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
         let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=1`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=2`)
         .then(function(res) {
             $scope.setOrder(res);
 
@@ -135,6 +135,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.setOrder = function(res) {
         const { data, ...pager } = res.data.orders;
+        console.log(data);
 
         $scope.orders = data;
         $scope.orders_pager = pager;

@@ -39,10 +39,13 @@
                 <span class="label label-info" ng-show="order.status == 1">
                     อนุมัติ
                 </span>
-                <span class="label label-success" ng-show="order.status == 2">
-                    ตรวจรับแล้ว
+                <span class="label bg-maroon" ng-show="order.status == 2">
+                    ตรวจรับแล้วบางงวด
                 </span>
-                <span class="label label-warning" ng-show="order.status == 3">
+                <span class="label bg-maroon" ng-show="order.status == 3">
+                    ตรวจรับทั้งหมดแล้ว
+                </span>
+                <span class="label label-warning" ng-show="order.status == 4">
                     ส่งเบิกเงินแล้ว
                 </span>
                 <span class="label label-danger" ng-show="order.status == 9">
