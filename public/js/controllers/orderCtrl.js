@@ -3,6 +3,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.loading = false;
     $scope.vatRates = [0,7];
     $scope.editRow = false;
+    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboSupplier = '';
+    $scope.txtPoNo = '';
 
     $scope.orders = [];
     $scope.pager = null;
@@ -488,8 +491,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
+        let po_no = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}&po_no=${po_no}`)
         .then(function(res) {
             $scope.setOrders(res);
 

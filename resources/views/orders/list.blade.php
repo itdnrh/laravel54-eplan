@@ -29,7 +29,6 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="row">
-
                                 <div class="form-group col-md-6">
                                     <label>ปีงบประมาณ</label>
                                     <select
@@ -44,7 +43,7 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>เจ้าหนี้</label>
                                     <select
@@ -61,7 +60,36 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
+                            </div><!-- /.row -->
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>เลขที่ใบ PO</label>
+                                    <input
+                                        id="txtPoNo"
+                                        name="txtPoNo"
+                                        ng-model="txtPoNo"
+                                        class="form-control"
+                                        ng-keyup="getAll($event)"
+                                    />
+                                </div>
+                                <!-- <div class="form-group col-md-6">
+                                    <label>วันที่ใบ PO</label>
+                                    <select
+                                        id="cboSupplier"
+                                        name="cboSupplier"
+                                        ng-model="cboSupplier"
+                                        ng-change="getAll($event)"
+                                        class="form-control select2"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($suppliers as $supplier)
+                                            <option value="{{ $supplier->supplier_id }}">
+                                                {{ $supplier->supplier_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div> -->
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>

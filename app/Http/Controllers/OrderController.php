@@ -85,6 +85,7 @@ class OrderController extends Controller
         $type = $req->get('type');
         $cate = $req->get('cate');
         $status = $req->get('status');
+        $poNo = $req->get('po_no');
 
         $ordersList = Order::leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
                         ->leftJoin('items', 'items.id', '=', 'order_details.item_id')
@@ -110,6 +111,9 @@ class OrderController extends Controller
                     })
                     ->when(!empty($cate), function($q) use ($ordersList) {
                         $q->whereIn('id', $ordersList);
+                    })
+                    ->when(!empty($poNo), function($q) use ($poNo) {
+                        $q->where('po_no', 'like', '%' .$poNo. '%');
                     })
                     ->paginate(10);
 
