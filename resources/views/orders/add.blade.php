@@ -228,17 +228,17 @@
                                 </div>
                                 <div
                                     class="form-group col-md-2"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'delver_amt')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'deliver_amt')}"
                                 >
                                     <label>จำนวนงวดเงิน :</label>
                                     <input
                                         type="number"
-                                        id="delver_amt"
-                                        name="delver_amt"
-                                        ng-model="order.delver_amt"
+                                        id="deliver_amt"
+                                        name="deliver_amt"
+                                        ng-model="order.deliver_amt"
                                         class="form-control"
                                         tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(order, 'delver_amt')">
+                                    <span class="help-block" ng-show="checkValidate(order, 'deliver_amt')">
                                         กรุณาระบุจำนวนงวดเงิน
                                     </span>
                                 </div>

@@ -37,7 +37,7 @@ class OrderController extends Controller
             'supplier_id'   => 'required',
             'order_type_id' => 'required',
             'plan_type_id'  => 'required',
-            'delver_amt'    => 'required',
+            'deliver_amt'    => 'required',
             'total'         => 'required',
             'vat_rate'      => 'required',
             'vat'           => 'required',

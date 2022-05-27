@@ -131,8 +131,10 @@ class InspectionController extends Controller
             $inspection->remark         = $req['remark'];
 
             if ($inspection->save()) {
-                $order = Order::where('id', $req['order_id'])->update(['status' => 2]);
-                
+                $order = Order::find($req['order_id']);
+                $order->status = ($order->deliver_amt > 1) ? 2 : 3; // 2=ตรวจรับแล้วบางงวด, 3=ตรวจรับทั้งหมดแล้ว
+                $order->save();
+
                 $details = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($details as $item) {
                     $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
