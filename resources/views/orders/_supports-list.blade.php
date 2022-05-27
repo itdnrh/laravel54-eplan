@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <!-- // TODO: Filtering controls -->
-    <div class="box" style="margin-top: 10px;">
+    <!-- <div class="box" style="margin-top: 10px;">
         <div class="box-body">
             <div class="row">
                 <div class="col-md-6">
@@ -66,8 +66,8 @@
                     </select>
                 </div>
             </div>
-        </div><!-- /.box-body -->
-    </div>
+        </div>
+    </div> -->
     <!-- // TODO: Filtering controls -->
 
     <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
