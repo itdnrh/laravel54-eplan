@@ -34,7 +34,7 @@
             <td style="text-align: center;">@{{ order.net_total | currency:'':0 }}</td>
             <td style="text-align: center;">
                 <span class="label label-primary" ng-show="order.status == 0">
-                    รอดำเนินการ
+                    อยู่ระหว่างดำเนินการ
                 </span>
                 <span class="label label-info" ng-show="order.status == 1">
                     อนุมัติ
@@ -66,7 +66,8 @@
                 </a>
                 <a  href="{{ url('/orders/edit') }}/@{{ order.id }}"
                     class="btn btn-warning btn-xs"
-                    title="แก้ไขรายการ">
+                    title="แก้ไขรายการ"
+                    ng-show="![2,3,9].includes(order.status)">
                     <i class="fa fa-edit"></i>
                 </a>
                 <form
@@ -74,6 +75,7 @@
                     method="POST"
                     action="{{ url('/orders/delete') }}"
                     style="display: inline;"
+                    ng-show="![2,3,9].includes(order.status)"
                 >
                     {{ csrf_field() }}
                     <button
