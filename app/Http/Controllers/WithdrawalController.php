@@ -22,8 +22,8 @@ class WithdrawalController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'withdraw_no'   => 'required',
-            'withdraw_date' => 'required',
+            // 'withdraw_no'   => 'required',
+            // 'withdraw_date' => 'required',
             'order_id'      => 'required',
             'deliver_seq'   => 'required',
             'net_total'     => 'required',

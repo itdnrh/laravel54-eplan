@@ -251,7 +251,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(err);
         });
 
-        window.location.href = `${CONFIG.baseUrl}/withdrawals/list`;
+        window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
     }
 
     $scope.edit = function(id) {

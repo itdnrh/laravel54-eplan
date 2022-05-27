@@ -39,7 +39,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
                                 <div class="content__header-text" style="width: 70%; margin-left: 28px;">
-                                    <span style="margin: 0 10px;">{{ thainumDigit(convDbDateToLongThDate($withdrawal->withdraw_date)) }}</span>
+                                    <span style="margin: 0 10px;">
+                                        {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($withdrawal->withdraw_month) }}
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -182,7 +184,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
                                 <div class="content__header-text" style="width: 70%; margin-left: 28px;">
-                                    <span style="margin: 0 10px;">{{ thainumDigit(convDbDateToLongThDate($withdrawal->withdraw_date)) }}</span>
+                                    <span style="margin: 0 10px;">
+                                        {{ $withdrawal->completed == '1' ? thainumDigit(convDbDateToLongThDate($withdrawal->withdraw_date)) : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($withdrawal->withdraw_month) }}
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -321,7 +325,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
                                 <div class="content__header-text" style="width: 70%; margin-left: 28px;">
-                                    <span style="margin: 0 10px;">{{ thainumDigit(convDbDateToLongThDate($withdrawal->withdraw_date)) }}</span>
+                                    <span style="margin: 0 10px;">
+                                        {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($withdrawal->withdraw_month) }}
+                                    </span>
                                 </div>
                             </div>
                         </td>
