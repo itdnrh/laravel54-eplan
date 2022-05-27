@@ -110,8 +110,10 @@ class WithdrawalController extends Controller
     public function store(Request $req)
     {
         $withdrawal = new Withdrawal;
-        $withdrawal->withdraw_no    = 'นม 0032.201.2/'.$req['withdraw_no'];
-        $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
+        // $withdrawal->withdraw_no    = 'นม 0032.201.2/'.$req['withdraw_no'];
+        // $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
+        $withdrawal->withdraw_no    = 'นม 0032.201.2/';
+        $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
         $withdrawal->inspection_id  = $req['inspection_id'];
         $withdrawal->supplier_id    = $req['supplier_id'];
         $withdrawal->net_total      = $req['net_total'];
