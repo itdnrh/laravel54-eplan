@@ -132,7 +132,7 @@ class InspectionController extends Controller
 
             if ($inspection->save()) {
                 $order = Order::find($req['order_id']);
-                $order->status = ($order->deliver_amt > 1) ? 2 : 3; // 2=ตรวจรับแล้วบางงวด, 3=ตรวจรับทั้งหมดแล้ว
+                $order->status = ($order->deliver_amt != $req['deliver_seq']) ? 2 : 3; // 2=ตรวจรับแล้วบางงวด, 3=ตรวจรับทั้งหมดแล้ว
                 $order->save();
 
                 $details = OrderDetail::where('order_id', $req['order_id'])->get();
