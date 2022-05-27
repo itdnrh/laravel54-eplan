@@ -96,41 +96,6 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'withdraw_no')}"
-                                >
-                                    <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
-                                    <input
-                                        type="text"
-                                        id="withdraw_no"
-                                        name="withdraw_no"
-                                        ng-model="withdrawal.withdraw_no"
-                                        class="form-control"
-                                    />
-                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'withdraw_no')">
-                                        @{{ formError.errors.withdraw_no[0] }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'withdraw_date')}"
-                                >
-                                    <label for="">ลงวันที่วันที่</label>
-                                    <input
-                                        type="text"
-                                        id="withdraw_date"
-                                        name="withdraw_date"
-                                        ng-model="withdrawal.withdraw_date"
-                                        class="form-control"
-                                    />
-                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'withdraw_date')">
-                                        @{{ formError.errors.withdraw_date[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_seq')}"
                                 >
                                     <label for="">งวดงานที่</label>

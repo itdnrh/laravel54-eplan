@@ -85,8 +85,6 @@
                                 <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
                                 <input
                                     type="text"
-                                    id="withdraw_no"
-                                    name="withdraw_no"
                                     ng-model="withdrawal.withdraw_no"
                                     class="form-control"
                                 />
@@ -98,8 +96,6 @@
                                 <label for="">ลงวันที่วันที่</label>
                                 <input
                                     type="text"
-                                    id="withdraw_date"
-                                    name="withdraw_date"
                                     ng-model="withdrawal.withdraw_date"
                                     class="form-control"
                                 />
@@ -169,7 +165,7 @@
                             พิมพ์เอกสารขอเบิกจ่ายเงิน
                         </a>
                         <button
-                            ng-click="sendSupport($event)"
+                            ng-click="showWithdrawForm($event)"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
@@ -180,6 +176,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('withdrawals._withdraw-form')
 
     </section>
 

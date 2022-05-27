@@ -223,7 +223,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $http.get(`${CONFIG.baseUrl}/withdrawals/get-ajax-byid/${id}`)
         .then(function(res) {
-            console.log(res);
             const { inspection, supplier, ...withdrawal } = res.data.withdrawal;
 
             $scope.withdrawal.order = inspection.order;
@@ -239,6 +238,43 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.showWithdrawForm = (e) => {
+        $('#withdraw-form').modal('show');
+    };
+
+    $scope.errors = {};
+    $scope.sendSupport = (e) => {
+        if ($('#withdraw_no').val() == '') {
+            $scope.errors = {
+                ...$scope.errors,
+                withdraw_no: ['กรุณาระบุเลขที่หนังสือส่งเบิกเงิน']
+            }
+        } else {
+            if ($scope.errors && $scope.errors.hasOwnProperty('withdraw_no')) {
+                const { withdraw_no, ...err } = $scope.errors;
+
+                $scope.errors = { ...err }
+            }
+        }
+
+        if ($('#withdraw_date').val() == '') {
+            $scope.errors = {
+                ...$scope.errors,
+                withdraw_date: ['วันที่หนังสือส่งเบิกเงิน']
+            }
+        } else {
+            if ($scope.errors && $scope.errors.hasOwnProperty('withdraw_date')) {
+                const { withdraw_date, ...err } = $scope.errors;
+    
+                $scope.errors = { ...err }
+            }
+        }
+
+        if (Object.keys($scope.errors).length == 0) {
+            console.log($scope.withdrawal);
+        }
     };
 
     $scope.store = function(event, form) {
