@@ -33,16 +33,16 @@
             </td>
             <td style="text-align: center;">@{{ order.net_total | currency:'':0 }}</td>
             <td style="text-align: center;">
-                <span class="label label-primary" ng-show="order.status == 1">
-                    อยู่ระหว่างดำเนินการ
+                <span class="label label-primary" ng-show="order.status == 0">
+                    รอดำเนินการ
                 </span>
-                <span class="label label-info" ng-show="order.status == 2">
+                <span class="label label-info" ng-show="order.status == 1">
                     อนุมัติ
                 </span>
-                <span class="label label-success" ng-show="order.status == 3">
+                <span class="label label-success" ng-show="order.status == 2">
                     ตรวจรับแล้ว
                 </span>
-                <span class="label label-warning" ng-show="order.status == 4">
+                <span class="label label-warning" ng-show="order.status == 3">
                     ส่งเบิกเงินแล้ว
                 </span>
                 <span class="label label-danger" ng-show="order.status == 9">

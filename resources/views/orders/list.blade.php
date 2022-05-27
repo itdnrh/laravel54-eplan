@@ -73,7 +73,7 @@
                             <li class="active"><a href="#approved-list" data-toggle="tab">
                                 <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
                                 รายการใบสั่งซื้อ (P/O)
-                                <span class="badge badge-light">@{{ leaves.length }}</span>
+                                <span class="badge badge-light">@{{ orders.length }}</span>
                             </a></li>
                         </ul>
                         <div class="tab-content">

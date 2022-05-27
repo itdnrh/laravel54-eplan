@@ -131,7 +131,7 @@ class InspectionController extends Controller
             $inspection->remark         = $req['remark'];
 
             if ($inspection->save()) {
-                $order = Order::where('id', $req['order_id'])->update(['status' => 3]);
+                $order = Order::where('id', $req['order_id'])->update(['status' => 2]);
                 
                 $details = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($details as $item) {

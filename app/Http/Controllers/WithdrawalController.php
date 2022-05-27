@@ -119,7 +119,7 @@ class WithdrawalController extends Controller
         // $withdrawal->user           = $req['user'];
 
         if ($withdrawal->save()) {
-            $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+            $order = Order::where('id', $req['order_id'])->update(['status' => 3]);
             
             /** Update status of plan data */
             $details = OrderDetail::where('order_id', $req['order_id'])->get();
