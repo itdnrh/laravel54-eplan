@@ -312,6 +312,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 $scope.support.spec_committee.push(person)
             } else if (parseInt(mode) == 2) {
                 $scope.support.insp_committee.push(person)
+            } else if (parseInt(mode) == 3) {
+                $scope.support.env_committee.push(person)
             } else {
                 $scope.support.contact_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
                 $scope.support.contact_person = person.person_id;
@@ -332,6 +334,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             });
         } else if (parseInt(mode) === 2) {
             $scope.support.insp_committee = $scope.support.insp_committee.filter(ic => {
+                return ic.person_id !== person.person_id
+            });
+        } else if (parseInt(mode) === 3) {
+            $scope.support.env_committee = $scope.support.env_committee.filter(ic => {
                 return ic.person_id !== person.person_id
             });
         } else {

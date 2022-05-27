@@ -447,7 +447,7 @@
                                         <button
                                             type="button"
                                             class="btn bg-maroon btn-sm"
-                                            ng-click="showPersonList(1)"
+                                            ng-click="showPersonList(3)"
                                             style="margin-left: 5px;"
                                         >
                                             <i class="fa fa-plus"></i>
@@ -462,7 +462,7 @@
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(1, person)"
+                                                        ng-click="removePersonItem(3, person)"
                                                     >
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
@@ -520,7 +520,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-info btn-flat"
-                                                ng-click="showPersonList(3)"
+                                                ng-click="showPersonList(4)"
                                             >
                                                 ...
                                             </button>
