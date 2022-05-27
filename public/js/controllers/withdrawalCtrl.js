@@ -11,6 +11,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.orders_pager = null;
 
     $scope.withdrawal = {
+        id: '',
         order: null,
         order_id: '',
         withdraw_no: '',
@@ -225,6 +226,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         .then(function(res) {
             const { inspection, supplier, ...withdrawal } = res.data.withdrawal;
 
+            $scope.withdrawal.id = withdrawal.id;
             $scope.withdrawal.order = inspection.order;
             $scope.withdrawal.inspection = inspection;
             $scope.withdrawal.withdraw_no = withdrawal.withdraw_no;
@@ -262,7 +264,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         if ($('#withdraw_date').val() == '') {
             $scope.errors = {
                 ...$scope.errors,
-                withdraw_date: ['วันที่หนังสือส่งเบิกเงิน']
+                withdraw_date: ['กรุณาระบุวันที่หนังสือส่งเบิกเงิน']
             }
         } else {
             if ($scope.errors && $scope.errors.hasOwnProperty('withdraw_date')) {
@@ -274,6 +276,23 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         if (Object.keys($scope.errors).length == 0) {
             console.log($scope.withdrawal);
+            let data = { withdraw_no: $('#withdraw_no').val(), withdraw_date: $('#withdraw_date').val() };
+
+            $http.put(`${CONFIG.apiUrl}/withdrawals/${$scope.withdrawal.id}`, data)
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                    $scope.withdrawal.withdraw_no = res.data.withdrawal.withdraw_no;
+                    $scope.withdrawal.withdraw_date = res.data.withdrawal.withdraw_date;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+                }
+            }, function(err) {
+                console.log(err);
+            });
+
+            $('#withdraw-form').modal('hide');
         }
     };
 

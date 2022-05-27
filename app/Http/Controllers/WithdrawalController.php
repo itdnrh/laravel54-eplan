@@ -110,8 +110,6 @@ class WithdrawalController extends Controller
     public function store(Request $req)
     {
         $withdrawal = new Withdrawal;
-        // $withdrawal->withdraw_no    = 'นม 0032.201.2/'.$req['withdraw_no'];
-        // $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
         $withdrawal->withdraw_no    = 'นม 0032.201.2/';
         $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
         $withdrawal->inspection_id  = $req['inspection_id'];
@@ -148,7 +146,7 @@ class WithdrawalController extends Controller
 
     public function update(Request $req)
     {
-        $cancel = Cancellation::find($req['id']);
+        $cancel = Withdrawal::find($req['id']);
         $cancel->reason         = $req['reason'];
         $cancel->start_date     = convThDateToDbDate($req['start_date']);
         $cancel->start_period   = '1';
@@ -159,6 +157,34 @@ class WithdrawalController extends Controller
 
         if ($cancel->save()) {
             return redirect('/cancellations/list');
+        }
+    }
+
+    public function withdraw(Request $req, $id)
+    {
+        try {
+            $withdrawal = Withdrawal::find($id);
+            $withdrawal->withdraw_no    = 'นม 0032.201.2/'.$req['withdraw_no'];
+            $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
+            $withdrawal->completed      = '1';
+    
+            if ($withdrawal->save()) {
+                return [
+                    'status'        => 1,
+                    'message'       => 'Send withdraw successfully!!',
+                    'withdrawal'    => $withdrawal
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 

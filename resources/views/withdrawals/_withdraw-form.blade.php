@@ -1,5 +1,5 @@
 <div class="modal fade" id="withdraw-form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width: 80%;">
+    <div class="modal-dialog">
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
@@ -11,7 +11,7 @@
                 <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
                         <div
-                            class="form-group col-md-6"
+                            class="form-group col-md-12"
                             ng-class="{'has-error has-feedback': errors.withdraw_no}"
                         >
                             <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
@@ -27,7 +27,7 @@
                             </span>
                         </div>
                         <div
-                            class="form-group col-md-6"
+                            class="form-group col-md-12"
                             ng-class="{'has-error has-feedback': errors.withdraw_date}"
                         >
                             <label for="">วันที่หนังสือส่งเบิกเงิน</label>

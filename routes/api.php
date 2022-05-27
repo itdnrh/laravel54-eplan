@@ -21,4 +21,7 @@ Route::group(['middleware' => 'api'], function () {
     /** ควบคุมกำกับติดตาม */
     Route::get('monthly', 'MonthlyController@getAll');
     Route::get('monthly/{id}', 'MonthlyController@getById');
+
+    /** การส่งเบิกเงิน */
+    Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');
 });
