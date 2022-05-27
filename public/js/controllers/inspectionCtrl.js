@@ -167,7 +167,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders = [];
         $scope.orders_pager = null;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?status=0`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?status=0-2`)
         .then(function(res) {
             $scope.setOrder(res);
 
@@ -188,7 +188,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=0`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=0-2`)
         .then(function(res) {
             $scope.setOrder(res);
 

@@ -100,25 +100,27 @@
                         <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 3%; text-align: center;">#</th>
+                                    <th style="width: 5%; text-align: center;">#</th>
                                     <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
-                                    <th style="width: 5%; text-align: center;">งวดที่</th>
+                                    <th style="width: 4%; text-align: center;">งวด</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
-                                    <th style="width: 15%;">วันที่ตรวจรับ</th>
+                                    <th style="width: 15%; text-align: center;">วันที่ตรวจรับ</th>
                                     <th style="width: 8%; text-align: center;">ยอดเงิน</th>
                                     <th style="width: 12%; text-align: center;">ผลการตรวจรับ</th>
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, insp) in inspections">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ insp.deliver_no }}</td>
-                                    <td style="text-align: center;">@{{ insp.deliver_seq }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ insp.deliver_seq }}/@{{ insp.order.deliver_amt }}
+                                    </td>
                                     <td>
-                                        <h5 style="margin: 0; font-size: 14px;">
+                                        <h5 style="margin: 0; font-weight: bold;">
                                             เลขที่ @{{ insp.order.po_no }}
-                                            วันที่ @{{ insp.order.po_date | thdate }} 
+                                            วันที่ @{{ insp.order.po_date | thdate }}
                                         </h5>
                                         <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
                                             <p style="margin: 0; text-decoration: underline;">รายการ</p>
@@ -129,7 +131,7 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         @{{ insp.inspect_sdate | thdate }} - 
                                         @{{ insp.inspect_edate | thdate }}
                                     </td>
@@ -143,7 +145,7 @@
                                         <span class="label label-warning" ng-show="insp.inspect_result == 2">
                                             ถูกต้องบางส่วนและรับไว้เฉพาะที่ถูกต้อง
                                         </span>
-                                        <span class="label bg-danger" ng-show="insp.inspect_result == 3">
+                                        <span class="label label-danger" ng-show="insp.inspect_result == 3">
                                             ยังถือว่าไม่ส่งมอบตามสัญญา
                                         </span>
                                     </td>
