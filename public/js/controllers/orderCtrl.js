@@ -469,10 +469,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
 
-                $scope.supportsToReceives = $scope.supportsToReceives.filter(el => {
-                    console.log(el.id, res.data.support.id);
-                    return el.id !== res.data.support.id;
-                });
+                /** Remove support data that has been received */
+                $scope.supportsToReceives = $scope.supportsToReceives.filter(el => el.id !== res.data.support.id);
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
             }
