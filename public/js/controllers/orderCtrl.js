@@ -410,10 +410,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.supportsToReceives = [];
     $scope.supportsToReceives_pager = null;
-    $scope.showSupportsToReceive = () => {
-        $scope.getSupportsToReceive();
-    };
-
     $scope.getSupportsToReceive = function(res) {
         $scope.loading = true;
         $scope.supportsToReceives = [];
@@ -425,7 +421,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=1`)
         .then(function(res) {
-            console.log(res);
             $scope.loading = false;
 
             $scope.setSupportsToReceive(res);
@@ -468,11 +463,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.onReceiveSupport = function(e, support) {
+        console.log(support);
         $http.post(`${CONFIG.baseUrl}/orders/received/2`, support)
         .then(function(res) {
-            console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
+
+                $scope.supportsToReceives = $scope.supportsToReceives.filter(el => {
+                    console.log(el.id, res.data.support.id);
+                    return el.id !== res.data.support.id;
+                });
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
             }
@@ -480,8 +480,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
         });
-
-        $('#supports-receive').modal('hide');
     };
     /** ============================================================================= */
 

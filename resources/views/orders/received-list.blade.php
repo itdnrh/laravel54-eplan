@@ -20,6 +20,7 @@
         class="content"
         ng-controller="orderCtrl"
         ng-init="
+            getSupportsToReceive();
             getPlans(2);
             getSupports(2);
             initForms({
@@ -136,23 +137,6 @@
                             <div class="col-md-6">
                                 <h3 class="box-title">รับใบขอสนับสนุน</h3>
                             </div>
-                            <div class="col-md-6">
-                                <!-- <button
-                                    type="button"
-                                    class="btn btn-success pull-right"
-                                    style="margin-left: 5px;"
-                                    ng-click="showPlansToReceive()"
-                                >
-                                    ลงรับเอกสารบางรายการ
-                                </button> -->
-                                <button
-                                    type="button"
-                                    class="btn btn-primary pull-right"
-                                    ng-click="showSupportsToReceive()"
-                                >
-                                    ลงรับจากใบขอสนับสนุน
-                                </button>
-                            </div>
                         </div>
                     </div><!-- /.box-header -->
 
@@ -160,7 +144,9 @@
 
                         @if (session('status'))
                             <div class="alert alert-success alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                    &times;
+                                </button>
                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                 {{ session('status') }}
                             </div>
@@ -168,9 +154,16 @@
 
                         <ul class="nav nav-tabs">
                             <li class="active">
+                                <a href="#supports-list" data-toggle="tab">
+                                    <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                    ใบขอสนับสนุนรอลงรับ
+                                    <span class="badge badge-light">@{{ supportsToReceives.length }}</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="#supported-list" data-toggle="tab">
                                     <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
-                                    ใบขอสนับสนุน (O/D)
+                                    ใบขอสนับสนุนลงรับแล้ว
                                     <span class="badge badge-light">@{{ leaves.length }}</span>
                                 </a>
                             </li>
@@ -182,8 +175,13 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="tab-content">
-                            <div class="active tab-pane" id="supported-list">
+                        <div class="tab-content tab__container-bordered">
+                            <div class="active tab-pane" id="supports-list">
+
+                                @include('orders._supports-list')
+
+                            </div><!-- /.tab-pane -->
+                            <div class="tab-pane" id="supported-list">
 
                                 @include('orders._supported-list')
 
@@ -208,7 +206,6 @@
         </div><!-- /.row -->
 
         @include('orders._receive-list')
-        @include('orders._supports-receive')
 
     </section>
 
