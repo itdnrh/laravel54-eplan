@@ -155,7 +155,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active">
                                 <a href="#supports-list" data-toggle="tab">
-                                    <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                    <i class="fa fa-history text-primary" aria-hidden="true"></i>
                                     ใบขอสนับสนุนรอลงรับ
                                     <span class="badge badge-light">@{{ supportsToReceives.length }}</span>
                                 </a>
@@ -170,7 +170,7 @@
                             <li>
                                 <a href="#received-list" data-toggle="tab">
                                     <i class="fa fa-pencil-square-o text-maroon" aria-hidden="true"></i>
-                                    รายการแผน
+                                    รายการแผนที่ลงรับแล้ว
                                     <span class="badge badge-light">@{{ leaves.length }}</span>
                                 </a>
                             </li>
