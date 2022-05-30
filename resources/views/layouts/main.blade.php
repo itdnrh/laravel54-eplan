@@ -99,6 +99,7 @@
 	<script type="text/javascript" src="{{ asset('/js/services/report.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/stringFormat.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/pagination.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/filters/thdate.js') }}"></script>
 	<!--<script type="text/javascript" src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
