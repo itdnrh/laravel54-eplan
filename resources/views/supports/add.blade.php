@@ -95,25 +95,6 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'topic')}"
-                                >
-                                    <label>เรื่อง :</label>
-                                    <input
-                                        type="text"
-                                        id="topic"
-                                        name="topic"
-                                        ng-model="support.topic"
-                                        class="form-control"
-                                    />
-                                    <span class="help-block" ng-show="checkValidate(support, 'topic')">
-                                        @{{ formError.errors.topic[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
@@ -142,6 +123,7 @@
                                     <select id="plan_type_id"
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
+                                            ng-change="setTopicByPlanType(support.plan_type_id)"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
@@ -154,6 +136,25 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
                                         @{{ formError.errors.plan_type_id[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'topic')}"
+                                >
+                                    <label>เรื่อง :</label>
+                                    <input
+                                        type="text"
+                                        id="topic"
+                                        name="topic"
+                                        ng-model="support.topic"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(support, 'topic')">
+                                        @{{ formError.errors.topic[0] }}
                                     </span>
                                 </div>
                             </div>

@@ -432,4 +432,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
     };
+
+    $scope.setTopicByPlanType = function(planType) {
+        console.log(planType);
+        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id').text()}`
+    };
 });
