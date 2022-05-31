@@ -42,7 +42,7 @@
                     </div>
                     <!-- // TODO: Filtering controls -->
 
-                    <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
+                    <table class="table table-bordered table-striped table-sm" style="font-size: 14px; margin-bottom: 10px;">
                         <thead>
                             <tr>
                                 <th style="width: 3%; text-align: center;">#</th>
@@ -62,7 +62,7 @@
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <h4 style="margin: 0;">@{{ plan.plan_item.item.category.name }}</h4>
+                                    <h5 style="margin: 0; font-weight: bold;">@{{ plan.plan_item.item.category.name }}</h5>
                                     @{{ plan.plan_item.item.item_name }} จำนวน 
                                     <span>@{{ plan.amount | currency:'':0 }}</span>
                                     <span>@{{ plan.plan_item.unit.name }}</span>
@@ -98,8 +98,8 @@
                     </table>
 
                     <!-- Loading (remove the following to stop the loading)-->
-                    <div style="width: 100%; height: 50px; text-align: center;">
-                        <div ng-show="loading" class="overlay">
+                    <div style="width: 100%; height: 50px; text-align: center;" ng-show="loading">
+                        <div class="overlay">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>

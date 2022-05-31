@@ -389,7 +389,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         .then(function(res) {
             $scope.loading = false;
 
-            console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
             } else {
@@ -434,7 +433,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.setTopicByPlanType = function(planType) {
-        console.log(planType);
-        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id').text()}`
+        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id option:selected').text().trim()}`;
     };
 });

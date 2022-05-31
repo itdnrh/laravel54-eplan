@@ -85,7 +85,7 @@
     </thead>
     <tbody>
         <tr ng-show="supportsToReceives.length === 0">
-            <td colspan="7" style="text-align: center; color: red;">-- ไม่มีรายการ --</td>
+            <td colspan="8" style="text-align: center; color: red;">-- ไม่มีรายการ --</td>
         </tr>
         <tr ng-repeat="(index, support) in supportsToReceives" ng-show="supportsToReceives.length > 0">
             <td style="text-align: center;">@{{ index+supportsToReceives_pager.from }}</td>
@@ -129,15 +129,15 @@
     </tbody>
 </table>
 
-<div class="row">
+<div class="row" ng-show="supportsToReceives_pager.last_page > 1">
     <div class="col-md-4">
-        <span class="pull-left" style="margin-top: 5px;">
-            หน้า @{{ supportsToReceives_pager.current_page }} จาก @{{ supportsToReceives_pager.last_page }} | 
-            จำนวน @{{ supportsToReceives_pager.total }} รายการ
-        </span>
+        หน้า @{{ supportsToReceives_pager.current_page }} จาก @{{ supportsToReceives_pager.last_page }}
+    </div>
+    <div class="col-md-4" style="text-align: center;">
+        จำนวน @{{ supportsToReceives_pager.total }} รายการ
     </div>
     <div class="col-md-4">
-        <ul class="pagination pagination-sm no-margin">
+        <ul class="pagination pagination-sm no-margin pull-right">
             <li ng-if="supportsToReceives_pager.current_page !== 1">
                 <a ng-click="getPlansToReceiveWithUrl($event, supportsToReceives_pager.path+ '?page=1', setPlansToReceive)" aria-label="Previous">
                     <span aria-hidden="true">First</span>
