@@ -23,7 +23,6 @@
             getAll();
             initForms({
                 departs: {{ $departs }},
-                categories: {{ $categories }}
             }, 4);
         "
     >
@@ -154,14 +153,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in projects">
+                                <tr ng-repeat="(index, project) in projects">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ plan.project_no }}</td>
-                                    <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
+                                    <td style="text-align: center;">@{{ project.project_no }}</td>
+                                    <!-- <td style="text-align: center;">@{{ project.year }}</td> -->
                                     <td>
-                                        <h5 style="margin: 0; font-weight: bold;">ตัวชี้วัด: @{{ plan.kpi.kpi_name }}</h5>
+                                        <h5 style="margin: 0; font-weight: bold;">ตัวชี้วัด: @{{ project.kpi.kpi_name }}</h5>
                                         <p style="margin: 0;">
-                                            @{{ plan.project_name }}
+                                            @{{ project.project_name }}
                                         </p>
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                             class="btn btn-default btn-xs" 
@@ -172,18 +171,18 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.total_budget | currency:'':0 }}
+                                        @{{ project.total_budget | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.budget_src.name }}
+                                        @{{ project.budget_src.name }}
                                     </td>
                                     <td style="text-align: center;">
-                                        <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
-                                        <p style="margin: 0;">@{{ plan.owner.person_firstname+ ' ' +plan.owner.person_lastname }}</p>
+                                        <p style="margin: 0;">@{{ project.depart.depart_name }}</p>
+                                        <p style="margin: 0;">@{{ project.owner.person_firstname+ ' ' +project.owner.person_lastname }}</p>
                                     </td>
                                     <td style="text-align: center;">
-                                        <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="plan.approved == 'A'"></i>
-                                        <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!plan.approved"></i>
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="project.approved == 'A'"></i>
+                                        <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!project.approved"></i>
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="plan.status == 0">
@@ -213,13 +212,13 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/constructs/detail') }}/@{{ plan.id }}"
+                                            <a  href="{{ url('/projects/detail') }}/@{{ project.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(plan.id)"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                            <a  ng-click="edit(project.id)"
+                                                ng-show="project.status == 0 || (project.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -227,13 +226,13 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/constructs/delete') }}"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                action="{{ url('/projects/delete') }}"
+                                                ng-show="project.status == 0 || (project.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
                                                     type="submit"
-                                                    ng-click="delete($event, plan.id)"
+                                                    ng-click="delete($event, project.id)"
                                                     class="btn btn-danger btn-xs"
                                                 >
                                                     <i class="fa fa-trash"></i>

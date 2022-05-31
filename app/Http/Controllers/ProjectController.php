@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Project;
-use App\Models\Plan;
-use App\Models\PlanItem;
-use App\Models\Item;
-use App\Models\ItemCategory;
-use App\Models\Unit;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -28,18 +23,18 @@ class ProjectController extends Controller
     public function formValidate (Request $request)
     {
         $rules = [
-            'year'              => 'required',
-            'plan_no'           => 'required',
-            'category_id'       => 'required',
-            'desc'              => 'required',
-            'price_per_unit'    => 'required',
-            'unit_id'           => 'required',
-            'amount'            => 'required',
-            'sum_price'         => 'required',
-            'depart_id'         => 'required',
-            // 'division_id'       => 'required',
-            'start_month'       => 'required',
-            // 'reason'            => 'required',
+            'year'          => 'required',
+            // 'project_no'    => 'required',
+            'project_name'  => 'required',
+            'strategic_id'  => 'required',
+            'strategy_id'   => 'required',
+            'kpi_id'        => 'required',
+            'total_budget'  => 'required',
+            'budget_src_id' => 'required',
+            'faction_id'    => 'required',
+            'owner_depart'  => 'required',
+            'owner_person'  => 'required',
+            'start_month'   => 'required',
         ];
 
         if ($request['leave_type'] == '1' || $request['leave_type'] == '2' || 
@@ -81,7 +76,6 @@ class ProjectController extends Controller
     public function index()
     {
         return view('projects.list', [
-            "categories"    => ItemCategory::all(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
@@ -173,25 +167,27 @@ class ProjectController extends Controller
 
     public function getById($id)
     {
+        $project = Project::where('id', $id)
+                    ->with('budgetSrc','depart','depart.faction')
+                    ->with('owner','owner.prefix','owner.position','owner.academic')
+                    ->with('kpi','kpi.strategy','kpi.strategy.strategic')
+                    ->first();
+
         return [
-            'plan' => Plan::where('id', $id)
-                        ->with('budget','depart','division')
-                        ->with('planItem','planItem.unit')
-                        ->with('planItem.item','planItem.item.category')
-                        ->first(),
+            'project' => $project,
         ];
     }
 
     public function detail($id)
     {
-        return view('assets.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => AssetCategory::all(),
-            "units"         => Unit::all(),
+        return view('projects.detail', [
+            "project"       => Project::find($id),
+            "budgets"       => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "strategies"    => Strategy::all(),
+            "kpis"          => Kpi::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
-            "periods"       => $this->periods,
         ]);
     }
 
@@ -209,16 +205,20 @@ class ProjectController extends Controller
 
     public function store(Request $req)
     {
-        $plan = new Plan();
-        // $plan->year      = calcBudgetYear($req['year']);
-        $plan->year         = $req['year'];
-        $plan->plan_no      = $req['plan_no'];
-        $plan->depart_id    = $req['depart_id'];
-        $plan->division_id  = $req['division_id'];
-        $plan->start_month  = $req['start_month'];
-        $plan->reason       = $req['reason'];
-        $plan->remark       = $req['remark'];
-        $plan->status       = '0';
+        $project = new Project();
+        $project->year              = $req['year'];
+        $project->project_no        = $req['project_no'];
+        $project->project_name      = $req['project_name'];
+        $project->kpi_id            = $req['kpi_id'];
+        $project->total_budget      = $req['total_budget'];
+        $project->budget_src_id     = $req['budget_src_id'];
+        $project->owner_depart      = $req['owner_depart'];
+        $project->owner_person      = $req['owner_person'];
+        $project->start_month       = $req['start_month'];
+        $project->remark            = $req['remark'];
+        $project->status            = '0';
+        $project->created_user      = Auth::user()->person_id;
+        $project->updated_user      = Auth::user()->person_id;
 
         /** Upload attach file */
         // $attachment = uploadFile($req->file('attachment'), 'uploads/');
@@ -226,27 +226,14 @@ class ProjectController extends Controller
         //     $plan->attachment = $attachment;
         // }
 
-        if($plan->save()) {
-            $planId = $plan->id;
-
-            $asset = new PlanAsset();
-            $asset->plan_id         = $planId;
-            $asset->category_id     = $req['category_id'];
-            $asset->desc            = $req['desc'];
-            $asset->spec            = $req['spec'];
-            $asset->price_per_unit  = $req['price_per_unit'];
-            $asset->unit_id         = $req['unit_id'];
-            $asset->amount          = $req['amount'];
-            $asset->sum_price       = $req['sum_price'];
-            $asset->save();
-
-            return redirect('/assets/list');
+        if($project->save()) {
+            return redirect('/projects/list');
         }
     }
 
     public function edit($id)
     {
-        return view('leaves.edit', [
+        return view('projects.edit', [
             "leave"         => Leave::find($id),
             "leave_types"   => LeaveType::all(),
             "positions"     => Position::all(),

@@ -3,6 +3,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.loading = false;
     $scope.projects = [];
     $scope.pager = null;
+    $scope.persons = [];
+    $scope.persons_pager = null;
 
     $scope.project = {
         project_id: '',
@@ -15,7 +17,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         total_budget: '',
         budget_src_id: '',
         faction_id: '',
-        depart_id: '',
+        owner_depart: '',
         owner_person: '',
         start_month: '',
         remark: '',
@@ -43,7 +45,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             total_budget: '',
             budget_src_id: '',
             faction_id: '',
-            depart_id: '',
+            owner_depart: '',
             owner_person: '',
             start_month: '',
             remark: '',
@@ -60,7 +62,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/api/projects?year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.apiUrl}/projects?year=${year}&depart=${depart}&status=${status}`)
         .then(function(res) {
             console.log(res);
             $scope.setProjects(res);
@@ -77,19 +79,6 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
         $scope.projects = data;
         $scope.pager = pager;
-    };
-
-    $scope.onSelectedItem = function(event, item) {
-        if (item) {
-            $('#item_id').val(item.id);
-            $scope.asset.item_id = item.id;
-            $scope.asset.desc = item.item_name;
-            $scope.asset.price_per_unit = item.price_per_unit;
-            $scope.asset.unit_id = item.unit_id.toString();
-            $scope.asset.category_id = item.category_id.toString();
-        }
-
-        $('#items-list').modal('hide');
     };
 
     $scope.getDataWithUrl = function(e, url, cb) {
@@ -173,52 +162,47 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.persons_pager = pager;
     };
 
-    $scope.onSelectedPerson = (mode, person) => {
+    $scope.onSelectedPerson = (person) => {
         if (person) {
             $scope.project.owner_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
             $scope.project.owner_person = person.person_id;
         }
 
         $('#persons-list').modal('hide');
-        $scope.selectedMode = '';
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/projects/${id}`)
         .then(function(res) {
-            cb(res.data.plan);
+            cb(res.data.project);
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.setEditControls = function(plan) {
-        /** Global data */
-        $scope.planId                   = plan.id;
-        $scope.planType                 = 1;
+    $scope.setEditControls = function(project) {
+        if (project) {
+            $scope.project.project_id       = project.id;
+            $scope.project.project_no       = project.project_no;
+            $scope.project.project_name     = project.project_name;
+            $scope.project.kpi              = project.kpi;
+            $scope.project.total_budget     = project.total_budget;
+            $scope.project.budget_src       = project.budget_src;
+            $scope.project.owner_depart     = project.owner_depart;
+            $scope.project.depart           = project.depart;
+            $scope.project.owner_person     = project.owner_person;
+            $scope.project.owner            = project.owner;
+            $scope.project.start_month      = $scope.monthLists.find(m => m.id == project.start_month).name;
+            $scope.project.remark           = project.remark;
+            $scope.project.approved         = project.approved;
+            $scope.project.status           = project.status;
 
-        /** ข้อมูลครุภัณฑ์ */
-        $scope.asset.asset_id           = plan.id;
-        $scope.asset.in_plan            = plan.in_plan;
-        $scope.asset.year               = plan.year;
-        // $scope.asset.plan_no            = plan.plan_no;
-        $scope.asset.desc               = plan.plan_item.item.item_name;
-        $scope.asset.spec               = plan.plan_item.spec;
-        $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
-        $scope.asset.amount             = plan.plan_item.amount;
-        $scope.asset.sum_price          = plan.plan_item.sum_price;
-        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
-        $scope.asset.reason             = plan.reason;
-        $scope.asset.remark             = plan.remark;
-        $scope.asset.status             = plan.status;
-
-        /** Convert int value to string */
-        $scope.asset.category_id        = plan.plan_item.item.category_id.toString();
-        $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
-        $scope.asset.depart_id          = plan.depart_id.toString();
-        $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';
-        /** Convert db date to thai date. */            
-        // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+            /** Convert int value to string */
+            $scope.project.year             = project.year.toString();
+            $scope.project.kpi_id           = project.kpi_id.toString();
+            $scope.project.budget_src_id    = project.budget_src_id.toString();
+            $scope.project.owner_depart     = project.owner_depart.toString();
+        }
     };
 
     $scope.store = function(event, form) {
@@ -228,22 +212,22 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/projects/edit/${id}`;
     };
 
-    $scope.update = function(event) {
-        event.preventDefault();
+    $scope.update = function(e) {
+        e.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.leave.leave_id} ใช่หรือไม่?`)) {
-            $('#frmEditLeave').submit();
+        if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.project_id} ใช่หรือไม่?`)) {
+            $('#frmEditProject').submit();
         }
     };
 
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+        if(confirm(`คุณต้องลบโครงการเลขที่ ${id} ใช่หรือไม่?`)) {
+            $http.delete(`${CONFIG.apiUrl}/projects/${id}`)
             .then(res => {
                 console.log(res);
             }, err => {

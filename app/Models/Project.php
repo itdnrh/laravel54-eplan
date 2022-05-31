@@ -27,9 +27,4 @@ class Project extends Model
     {
         return $this->belongsTo(Kpi::class, 'kpi_id', 'id');
     }
-
-    // public function division()
-    // {
-    //     return $this->belongsTo(Division::class, 'division_id', 'ward_id');
-    // }
 }

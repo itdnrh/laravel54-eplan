@@ -5,20 +5,20 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนก่อสร้าง : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดโครงการ : เลขที่ ({{ $project->project_no }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดแผนก่อสร้าง</li>
+            <li class="breadcrumb-item active">รายละเอียดโครงการ</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section 
         class="content"
-        ng-controller="planConstructCtrl"
-        ng-init="getById({{ $plan->id }}, setEditControls);"
+        ng-controller="projectCtrl"
+        ng-init="getById({{ $project->id }}, setEditControls);"
     >
 
         <div class="row">
@@ -26,281 +26,157 @@
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนก่อสร้าง</h3>
+                        <h3 class="box-title">รายละเอียดโครงการ</h3>
                     </div>
 
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <!-- TODO: to use css class instead of inline code -->
-                                <div style="border: 1px dotted grey; display: flex; justify-content: center; min-height: 240px; padding: 5px;">
-                                <?php $userAvatarUrl = (Auth::user()->person_photo != '') ? "http://192.168.20.4:3839/ps/PhotoPersonal/" .Auth::user()->person_photo : asset('img/user2-160x160.jpg'); ?>
-                                    <img
-                                        src="{{ $userAvatarUrl }}"
-                                        alt="user_image"
-                                        style="width: 98%;"
+                    <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'year')}"
+                                >
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="project.year"
+                                        class="form-control"
+                                        tabindex="1"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'strategic_id')}"
+                                >
+                                    <label>ยุทธศาสตร์ :</label>
+                                    <div class="form-control">
+                                        @{{ project.kpi.strategy.strategic.strategic_name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'strategy_id')}"
+                                >
+                                    <label>กลยุทธ์ :</label>
+                                    <div class="form-control">
+                                        @{{ project.kpi.strategy.strategy_name }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'kpi_id')}"
+                                >
+                                    <label>ตัวชี้วัด (KPI) :</label>
+                                    <div class="form-control">
+                                        @{{ project.kpi.kpi_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'project_name')}"
+                                >
+                                    <label>ชื่อโครงการ :</label>
+                                    <input
+                                        type="text"
+                                        id="project_name"
+                                        name="project_name"
+                                        ng-model="project.project_name"
+                                        class="form-control pull-right"
+                                        tabindex="4"
                                     />
                                 </div>
-                                <div style="text-align: center; margin-top: 10px;">
-                                    <a
-                                        class="btn btn-default" 
-                                        title="การอนุมัติ"
-                                        target="_blank">
-                                        ตรวจสอบผลการอนุมัติ
-                                    </a>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                                >
+                                    <label>งบประมาณ :</label>
+                                    <input
+                                        type="text"
+                                        id="total_budget"
+                                        name="total_budget"
+                                        ng-model="project.total_budget"
+                                        class="form-control pull-right"
+                                        tabindex="4">
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'budget_src_id')}"
+                                >
+                                    <label>แหล่งงบประมาณ :</label>
+                                    <select id="budget_src_id"
+                                            name="budget_src_id"
+                                            ng-model="project.budget_src_id"
+                                            class="form-control"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภท --</option>
+                                        @foreach($budgets as $budget)
+                                            <option value="{{ $budget->id }}">
+                                                {{ $budget->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
-                                <div class="form-group col-md-6">
-                                    <label>ปีงบ :</label>
-                                    <input type="text"
-                                            id="year" 
-                                            name="year"
-                                            ng-model="construct.year"
-                                            class="form-control"
-                                            tabindex="2">
-                                    </inp>
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'faction_id')}"
+                                >
+                                    <label>หน่วยงาน :</label>
+                                    <div class="form-control">
+                                        @{{ project.depart.faction.faction_name }}
+                                    </div>
                                 </div>
-
                                 <div class="form-group col-md-6">
-                                    <label>ประเภท :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="construct.category_id"
-                                            class="form-control"
-                                            tabindex="2">
-
-                                            @foreach($categories as $category)
-
-                                                <option value="{{ $category->id }}">
-                                                    {{ $category->name }}
-                                                </option>
-
-                                            @endforeach
-
-                                    </select>
+                                    <label>&nbsp;</label>
+                                    <div class="form-control">
+                                        @{{ project.depart.depart_name }}
+                                    </div>
                                 </div>
-
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>ผู้รับผิดชอบ :</label>
+                                    <div class="form-control">
+                                        @{{ project.owner.prefix.prefix_name+project.owner.person_firstname+ ' ' +project.owner.person_lastname }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
+                                >
+                                    <label>เริ่มเดือน :</label>
+                                    <div class="form-control">
+                                        @{{ project.start_month }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-md-12">
-                                    <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="construct.desc"
-                                        class="form-control pull-right"
-                                        tabindex="1" />
-                                </div>
-
-                                <div class="form-group col-md-12">
-                                    <label>สถานที่ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="construct.location"
-                                        class="form-control pull-right"
-                                        tabindex="1" />
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>ราคาต่อหน่วย :</label>
-                                    <input  type="text"
-                                            id="price_per_unit"
-                                            name="price_per_unit"
-                                            ng-model="construct.price_per_unit"
-                                            class="form-control"
-                                            tabindex="6" />
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>หน่วย :</label>
-                                    <select id="unit_id"
-                                            name="unit_id"
-                                            ng-model="construct.unit_id"
-                                            class="form-control"
-                                            tabindex="2">
-
-                                        @foreach($units as $unit)
-
-                                            <option value="{{ $unit->id }}">
-                                                {{ $unit->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>กลุ่มงาน :</label>
-                                    <select id="depart_id"
-                                            name="depart_id"
-                                            ng-model="construct.depart_id"
-                                            class="form-control"
-                                            tabindex="2">
-
-                                            @foreach($departs as $depart)
-
-                                                <option value="{{ $depart->depart_id }}">
-                                                    {{ $depart->depart_name }}
-                                                </option>
-
-                                            @endforeach
-
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>งาน :</label>
-                                    <select id="division_id"
-                                            name="division_id"
-                                            ng-model="construct.division_id"
-                                            class="form-control"
-                                            tabindex="2">
-
-                                            @foreach($divisions as $division)
-
-                                                <option value="{{ $division->ward_id }}">
-                                                    {{ $division->ward_name }}
-                                                </option>
-
-                                            @endforeach
-
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>เหตุผล :</label>
-                                    <textarea
-                                        id="reason" 
-                                        name="reason" 
-                                        ng-model="construct.reason" 
-                                        class="form-control"
-                                        tabindex="17"
-                                    ></textarea>
-                                </div>
-
-                                <div class="form-group col-md-6">
                                     <label>หมายเหตุ :</label>
                                     <textarea
-                                        id="remark" 
-                                        name="remark" 
-                                        ng-model="construct.remark" 
+                                        id="remark"
+                                        name="remark"
+                                        ng-model="project.remark"
                                         class="form-control"
-                                        tabindex="17"
+                                        tabindex="15"
                                     ></textarea>
                                 </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>เริ่มเดือน :</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input  type="text"
-                                                value="@{{ construct.start_month }}"
-                                                class="form-control pull-right"
-                                                tabindex="5">
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>สถานะ :</label>
-                                    <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
-                                        <span class="label label-primary" ng-show="construct.status == 0">
-                                            @{{ construct.status }} อยู่ระหว่างดำเนินการ
-                                        </span>
-                                        <span class="label label-info" ng-show="construct.status == 1">
-                                            @{{ construct.status }} ส่งเอกสารแล้ว
-                                        </span>
-                                        <span class="label bg-navy" ng-show="construct.status == 2">
-                                            @{{ construct.status }} รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="construct.status == 3">
-                                            @{{ construct.status }} ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="construct.status == 4">
-                                            @{{ construct.status }} ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="construct.status == 5">
-                                            @{{ construct.status }} ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="construct.status == 6">
-                                            @{{ construct.status }} ตั้งหนี้แล้ว
-                                        </span>
-                                        <span class="label label-default" ng-show="construct.status == 9">
-                                            @{{ construct.status }} ยกเลิก
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="construct.boq_file">
-                                    <label>เอกสารแนบ :</label>
-                                    <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ construct.boq_file }}"
-                                            title="ไฟล์แนบ"
-                                            target="_blank">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                            @{{ construct.boq_file }}
-                                        </a>
-
-                                        <span style="margin-left: 10px;">
-                                            <a href="#">
-                                                <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
                             </div>
-
-                            <div class="col-md-2">
-                                <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-show="[0].includes(construct.status)"
-                                        ng-click="showSupportedForm()"
-                                    >
-                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-primary"
-                                        ng-show="[1].includes(construct.status)"
-                                        ng-click="showPoForm()"
-                                    >
-                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
-                                    </a>
-                                    <a
-                                        href="#"
-                                        ng-click="edit(construct.construct_id)"
-                                        ng-show="[0,1].includes(construct.status)"
-                                        class="btn btn-warning"
-                                    >
-                                        <i class="fa fa-edit"></i> แก้ไข
-                                    </a>
-                                    <form
-                                        id="frmDelete"
-                                        method="POST"
-                                        action="{{ url('/constructs/delete') }}"
-                                        ng-show="[0,1].includes(construct.status)"
-                                    >
-                                        <input type="hidden" id="id" name="id" value="@{{ construct.construct_id }}" />
-                                        {{ csrf_field() }}
-                                        <button
-                                            type="submit"
-                                            ng-click="delete($event, construct.construct_id)"
-                                            class="btn btn-danger btn-block"
-                                        >
-                                            <i class="fa fa-trash"></i> ลบ
-                                        </button>
-                                    </form>
-                                </div>
-                                <!-- /** Action buttons container */ -->
-
-                            </div>
-
-                            @include('shared._supported-form')
-                            @include('shared._po-form')
-
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

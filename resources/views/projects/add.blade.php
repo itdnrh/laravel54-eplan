@@ -221,23 +221,23 @@
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(project, 'depart_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'owner_depart')}"
                                 >
                                     <label>&nbsp;</label>
-                                    <select id="depart_id" 
-                                            name="depart_id"
-                                            ng-model="project.depart_id" 
+                                    <select id="owner_depart" 
+                                            name="owner_depart"
+                                            ng-model="project.owner_depart" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="12"
-                                            ng-change="onDepartSelected(project.depart_id)">
+                                            ng-change="onDepartSelected(project.owner_depart)">
                                         <option value="">-- เลือกกลุ่มงาน --</option>
                                         <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
                                             @{{ depart.depart_name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(project, 'depart_id')">
-                                        @{{ formError.errors.depart_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'owner_depart')">
+                                        @{{ formError.errors.owner_depart[0] }}
                                     </span>
                                 </div>
                             </div>
