@@ -71,6 +71,45 @@
                                     </select>
                                 </div>
                             </div><!-- /.row -->
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>เลขที่เอกสารส่งมอบงาน</label>
+                                    <input
+                                        id="txtDeliverNo"
+                                        name="txtDeliverNo"
+                                        ng-model="txtDeliverNo"
+                                        class="form-control"
+                                        ng-keyup="getAll($event)"
+                                    />
+                                </div>
+                                <!-- <div class="form-group col-md-6">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        ng-change="getAll($event)"
+                                        class="form-control select2"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="0">
+                                            เฉพาะรายการที่อยู่ระหว่างดำเนินการ
+                                        </option>
+                                        <option value="2">
+                                            เฉพาะรายการที่ตรวจรับแล้วบางงวด
+                                        </option>
+                                        <option value="3">
+                                            เฉพาะรายการที่ตรวจรับทั้งหมดแล้ว
+                                        </option>
+                                        <option value="4">
+                                            เฉพาะรายการที่ส่งเบิกเงินแล้ว
+                                        </option>
+                                        <option value="9">
+                                            เฉพาะรายการที่ถูกยกเลิก
+                                        </option>
+                                    </select>
+                                </div> -->
+                            </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

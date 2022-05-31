@@ -3,6 +3,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.loading = false;
     $scope.cboYear = (moment().year() + 543).toString();
     $scope.cboSupplier = '';
+    $scope.txtDeliverNo = '';
     $scope.inspections = [];
     $scope.pager = [];
 
@@ -234,8 +235,9 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
+        let deliverNo = $scope.txtDeliverNo === '' ? '' : $scope.txtDeliverNo;
         
-        $http.get(`${CONFIG.baseUrl}/inspections/search?year=${year}&supplier=${supplier}`)
+        $http.get(`${CONFIG.baseUrl}/inspections/search?year=${year}&supplier=${supplier}&deliverNo=${deliverNo}`)
         .then(function(res) {
             $scope.setInspections(res);
 
