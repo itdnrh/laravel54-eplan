@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Faction;
 use App\Models\Depart;
+use App\Models\Supplier;
 
 class InspectionController extends Controller
 {
@@ -60,7 +61,7 @@ class InspectionController extends Controller
     public function index()
     {
         return view('inspections.list', [
-            // "suppliers" => Supplier::all(),
+            "suppliers"     => Supplier::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);
@@ -68,8 +69,19 @@ class InspectionController extends Controller
 
     public function search(Request $req)
     {
+        $year = $req->get('year');
+        $supplier = $req->get('supplier');
+
+        $ordersList = Order::where('supplier_id', $supplier)->pluck('id');
+
         $inspections = Inspection::with('order','order.supplier')
                         ->with('order.details','order.details.item')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($supplier), function($q) use ($ordersList) {
+                            $q->whereIn('order_id', $ordersList);
+                        })
                         ->orderBy('inspect_sdate', 'DESC')
                         ->paginate(10);
 

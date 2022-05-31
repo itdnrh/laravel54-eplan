@@ -1,6 +1,8 @@
 app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
+    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboSupplier = '';
     $scope.inspections = [];
     $scope.pager = [];
 
@@ -230,13 +232,10 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         
         $scope.loading = true;
         
-        // let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        // let type    = $scope.cboLeaveType === '' ? 0 : $scope.cboLeaveType;
-        // let status  = $scope.cboLeaveStatus === '' ? '-' : $scope.cboLeaveStatus;
-        // let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        // let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         
-        $http.get(`${CONFIG.baseUrl}/inspections/search`)
+        $http.get(`${CONFIG.baseUrl}/inspections/search?year=${year}&supplier=${supplier}`)
         .then(function(res) {
             $scope.setInspections(res);
 

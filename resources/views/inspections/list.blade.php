@@ -54,18 +54,20 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>ประเภท</label>
+                                    <label>เจ้าหนี้</label>
                                     <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
-                                        class="form-control"
+                                        id="cboSupplier"
+                                        name="cboSupplier"
+                                        ng-model="cboSupplier"
+                                        class="form-control select2"
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                        </option>
+                                        @foreach($suppliers as $supplier)
+                                            <option value="{{ $supplier->supplier_id }}">
+                                                {{ $supplier->supplier_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div><!-- /.row -->
