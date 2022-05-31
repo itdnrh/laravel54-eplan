@@ -71,6 +71,7 @@ class InspectionController extends Controller
     {
         $year = $req->get('year');
         $supplier = $req->get('supplier');
+        $deliverNo = $req->get('deliverNo');
 
         $ordersList = Order::where('supplier_id', $supplier)->pluck('id');
 
@@ -81,6 +82,9 @@ class InspectionController extends Controller
                         })
                         ->when(!empty($supplier), function($q) use ($ordersList) {
                             $q->whereIn('order_id', $ordersList);
+                        })
+                        ->when(!empty($deliverNo), function($q) use ($deliverNo) {
+                            $q->where('deliver_no', 'LIKE', $deliverNo.'%');
                         })
                         ->orderBy('inspect_sdate', 'DESC')
                         ->paginate(10);
