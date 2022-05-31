@@ -7,23 +7,18 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.project = {
         project_id: '',
         year: '',
-        in_plan: 'I',
-        plan_no: '',
+        strategic_id: '',
+        strategy_id: '',
+        kpi_id: '',
+        project_no: '',
+        project_name: '',
+        total_budget: '',
+        budget_src_id: '',
         faction_id: '',
         depart_id: '',
-        division_id: '',
-        category_id: '',
-        item_id: '',
-        desc: '',
-        spec: '',
-        price_per_unit: '',
-        unit_id: '',
-        amount: '',
-        sum_price: '',
+        owner_person: '',
         start_month: '',
-        reason: '',
         remark: '',
-        owner: '',
     };
 
     /** ============================== Init Form elements ============================== */
@@ -36,49 +31,25 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         todayHighlight: true
     };
 
-    $('#doc_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
-        // .on('show', function (e) {
-        //     $('.day').click(function(event) {
-        //         event.preventDefault();
-        //         event.stopPropagation();
-        //     });
-        // });
-
     const clearProjectObj = function() {
         $scope.project = {
             project_id: '',
             year: '',
-            in_plan: 'I',
-            plan_no: '',
+            strategic_id: '',
+            strategy_id: '',
+            kpi_id: '',
+            project_no: '',
+            project_name: '',
+            total_budget: '',
+            budget_src_id: '',
             faction_id: '',
             depart_id: '',
-            division_id: '',
-            category_id: '',
-            item_id: '',
-            desc: '',
-            spec: '',
-            price_per_unit: '',
-            unit_id: '',
-            amount: '',
-            sum_price: '',
+            owner_person: '',
             start_month: '',
-            reason: '',
             remark: '',
-            owner: '',
         };
     };
 
-    $scope.calculateSumPrice = async function() {
-        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
-        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
-
-        $scope.asset.sum_price = price * amount;
-        $('#sum_price').val(price * amount);
-    };
-
-    /** TODO: Duplicated function */
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.projects = [];
