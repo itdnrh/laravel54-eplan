@@ -125,7 +125,7 @@
                                 @{{ newItem.error['unit_id'] }}
                             </span>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group" ng-show="isMaterial(newItem.plan_type_id)">
                             <label for="">ใน/นอกคลัง</label>
                             <div style="display: flex; gap: 30px;">
                                 <div>
@@ -136,7 +136,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div
+                            class="form-group"
+                            ng-class="{
+                                'col-md-6': isMaterial(newItem.plan_type_id),
+                                'col-md-12': !isMaterial(newItem.plan_type_id)
+                            }"
+                        >
                             <label for="">หมายเหตุ</label>
                             <textarea
                                 rows=""

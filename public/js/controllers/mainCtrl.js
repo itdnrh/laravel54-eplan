@@ -337,6 +337,14 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         };
     };
 
+    $scope.isMaterial = function(planType) {
+        if ([2,6].includes(parseInt(planType))) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     $scope.planId = "";
     $scope.showSupportedForm = function() {
         $('#supported-from').modal('show');
