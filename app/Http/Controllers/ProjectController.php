@@ -17,6 +17,10 @@ use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
+use App\Models\BudgetSource;
+use App\Models\Strategic;
+use App\Models\Strategy;
+use App\Models\Kpi;
 use PDF;
 
 class ProjectController extends Controller
@@ -193,13 +197,13 @@ class ProjectController extends Controller
 
     public function add()
     {
-        return view('assets.add', [
-            "categories"    => AssetCategory::all(),
-            "units"         => Unit::all(),
+        return view('projects.add', [
+            "budgets"       => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "strategies"    => Strategy::all(),
+            "kpis"          => Kpi::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
-            "periods"       => $this->periods,
         ]);
     }
 
