@@ -141,9 +141,7 @@
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2 ||
+						Auth::user()->memberOf->depart_id == 4 ||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
@@ -208,9 +206,7 @@
 
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2 ||
+						Auth::user()->memberOf->depart_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'orders' }">
