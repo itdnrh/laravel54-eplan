@@ -71,8 +71,12 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.showPopup = false;
     $scope.deliverBillsList = [];
     $scope.fetchDeliverBills = function(e) {
+        if (e.keyCode === 27) {
+            $scope.showPopup = false;
+            return;
+        }
+
         let keyword = e.target.value;
-        
         if (keyword != '') {
             $http.get(`${CONFIG.baseUrl}/inspections/${keyword}/deliver-bills`)
             .then((res) => {
@@ -84,13 +88,14 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
             }, (err) => {
                 console.log(err);
             });
+        } else {
+            $scope.showPopup = false;
         }
     };
 
     $scope.setDeliverBill = function(bill) {
         $scope.showPopup = false;
 
-        console.log(bill);
         $('#deliver_bill').val(bill);
     };
 

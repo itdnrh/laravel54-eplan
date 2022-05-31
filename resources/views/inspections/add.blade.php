@@ -213,9 +213,14 @@
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'inspect_total')}"
                                 >
                                     <label for="">ยอดเงินตรวจรับ</label>
-                                    <div class="form-control">
+                                    <div class="form-control" ng-show="inspection.order.deliver_amt === inspection.deliver_seq">
                                         @{{ inspection.inspect_total | currency:'':2 }}
                                     </div>
+                                    <input
+                                        class="form-control"
+                                        ng-model="inspection.inspect_total"
+                                        ng-show="inspection.order.deliver_amt !== inspection.deliver_seq"
+                                    />
                                     <span class="help-block" ng-show="checkValidate(inspection, 'inspect_total')">
                                         @{{ formError.errors.inspect_total[0] }}
                                     </span>

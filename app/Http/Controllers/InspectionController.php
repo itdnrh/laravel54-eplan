@@ -70,6 +70,7 @@ class InspectionController extends Controller
     {
         $inspections = Inspection::with('order','order.details')
                         ->with('order.details.item')
+                        ->orderBy('inspect_sdate', 'DESC')
                         ->paginate(10);
 
         return [
