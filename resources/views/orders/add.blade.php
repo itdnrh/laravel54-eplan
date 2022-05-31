@@ -41,6 +41,26 @@
                         <div class="box-body">
                             <div class="row">
                                 <div
+                                    class="form-group col-md-2"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
+                                >
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="order.year"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'year')">
+                                        กรุณาเลือกเขียนที่
+                                    </span>
+                                </div>
+                                <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'order_type_id')}"
                                 >
@@ -49,6 +69,7 @@
                                         id="order_type_id"
                                         name="order_type_id"
                                         ng-model="order.order_type_id"
+                                        ng-change="getRunningNo(order.order_type_id)"
                                         class="form-control"
                                         tabindex="1"
                                     >
@@ -62,7 +83,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
                                 >
                                     <label>เลขที่ P/O :</label>
@@ -78,7 +99,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
                                 >
                                     <label>วันที่ใบ P/O :</label>
@@ -162,28 +183,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-2"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
-                                >
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="year"
-                                        name="year"
-                                        ng-model="order.year"
-                                        class="form-control"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'year')">
-                                        กรุณาเลือกเขียนที่
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
                                 >
                                     <label>เจ้าหนี้ :</label>

@@ -484,6 +484,29 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
     /** ============================================================================= */
 
+    $scope.getRunningNo = function(orderType) {
+        $scope.loading = true;
+
+        let docType = '';
+        if (orderType == '1') {
+            docType = '7';
+        } else if (orderType == '2') {
+            docType = '8';
+        } else if (orderType == '3') {
+            docType = '9';
+        }
+
+        $http.get(`${CONFIG.apiUrl}/runnings/${docType}/doc-type`)
+        .then(function(res) {
+            $scope.order.po_no = res.data.running+ '/' +$scope.order.year;showPlansList
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     $scope.getAll = function() {
         $scope.loading = true;
         $scope.orders = [];

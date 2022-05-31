@@ -24,4 +24,7 @@ Route::group(['middleware' => 'api'], function () {
 
     /** การส่งเบิกเงิน */
     Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');
+    
+    /** เลขที่เอกสาร */
+    Route::get('runnings/{docType}/doc-type', 'RunningController@getByDocType');
 });
