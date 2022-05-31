@@ -218,7 +218,7 @@
                                                             <button
                                                                 type="button"
                                                                 class="btn btn-info btn-flat"
-                                                                ng-click="showPlansList();"
+                                                                ng-click="showPlansList(); onFilterCategories(support.plan_type_id);"
                                                             >
                                                                 ...
                                                             </button>
