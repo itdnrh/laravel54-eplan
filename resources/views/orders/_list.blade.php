@@ -42,7 +42,7 @@
                 <span class="label bg-maroon" ng-show="order.status == 2">
                     ตรวจรับแล้วบางงวด
                 </span>
-                <span class="label bg-maroon" ng-show="order.status == 3">
+                <span class="label label-success" ng-show="order.status == 3">
                     ตรวจรับทั้งหมดแล้ว
                 </span>
                 <span class="label label-warning" ng-show="order.status == 4">

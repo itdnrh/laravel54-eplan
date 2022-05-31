@@ -515,8 +515,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         let po_no = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
+        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}&po_no=${po_no}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}&po_no=${po_no}&status=${status}`)
         .then(function(res) {
             $scope.setOrders(res);
 
