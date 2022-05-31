@@ -177,6 +177,16 @@
                                     ></textarea>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="padding: 0 20px;">
+                                        <h4>Timeline</h4>
+
+                                        @include('projects._processes-list')
+
+                                    </div>
+                                </div>
+                            </div>
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
