@@ -135,6 +135,7 @@ class OrderController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
+                    ->orderBy('po_date', 'DESC')
                     ->paginate(10);
 
         $plans = Plan::with('depart','division')
@@ -195,15 +196,15 @@ class OrderController extends Controller
             $order = new Order;
             $order->po_no           = $req['po_no'];
             $order->po_date         = convThDateToDbDate($req['po_date']);
-            $order->po_req_no       = $req['po_req_no'];
+            $order->po_req_no       = 'นม 0032.201.2/'.$req['po_req_no'];
             $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
-            $order->po_app_no       = $req['po_app_no'];
+            $order->po_app_no       = 'นม 0032.201.2/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
-            $order->deliver_amt      = $req['deliver_amt'];
+            $order->deliver_amt     = $req['deliver_amt'];
             $order->budget_src_id   = $req['budget_src_id'];
             $order->remark          = $req['remark'];
             $order->total           = $req['total'];
