@@ -18,10 +18,9 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="planConstructCtrl"
+        ng-controller="projectCtrl"
         ng-init="initForms({
             departs: {{ $departs }},
-            divisions: {{ $divisions }},
             strategics: {{ $strategics }},
             strategies: {{ $strategies }},
             kpis: {{ $kpis }},
@@ -36,7 +35,7 @@
                         <h3 class="box-title">เพิ่มโครงการ</h3>
                     </div>
 
-                    <form id="frmNewService" name="frmNewService" method="post" action="{{ url('/constructs/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewProject" name="frmNewProject" method="post" action="{{ url('/projects/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -45,13 +44,13 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'year')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="year"
                                         name="year"
-                                        ng-model="construct.year"
+                                        ng-model="project.year"
                                         class="form-control"
                                         tabindex="1"
                                     >
@@ -60,18 +59,19 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'year')">
+                                    <span class="help-block" ng-show="checkValidate(project, 'year')">
                                         @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'strategic_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'strategic_id')}"
                                 >
                                     <label>ยุทธศาสตร์ :</label>
                                     <select id="strategic_id" 
                                             name="strategic_id"
-                                            ng-model="construct.strategic_id" 
+                                            ng-model="project.strategic_id"
+                                            ng-change="onStrategicSelected(project.strategic_id);"
                                             class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกยุทธศาสตร์ --</option>
@@ -83,7 +83,7 @@
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'strategic_id')">
+                                    <span class="help-block" ng-show="checkValidate(project, 'strategic_id')">
                                         @{{ formError.errors.strategic_id[0] }}
                                     </span>
                                 </div>
@@ -92,69 +92,61 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'strategy_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'strategy_id')}"
                                 >
                                     <label>กลยุทธ์ :</label>
                                     <select id="strategy_id"
                                             name="strategy_id"
-                                            ng-model="construct.strategy_id"
+                                            ng-model="project.strategy_id"
+                                            ng-change="onStrategySelected(project.strategy_id);"
                                             class="form-control"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
-
-                                        @foreach($strategies as $strategy)
-
-                                            <option value="{{ $strategy->id }}">
-                                                {{ $strategy->strategy_name }}
-                                            </option>
-
-                                        @endforeach
-
+                                        <option ng-repeat="strategy in forms.strategies" value="@{{ strategy.id }}">
+                                            @{{ strategy.strategy_name }}
+                                        </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'strategy_id')">
-                                        @{{ formError.errors.construct_type_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'strategy_id')">
+                                        @{{ formError.errors.project_type_id[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'kpi_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'kpi_id')}"
                                 >
                                     <label>ตัวชี้วัด (KPI) :</label>
                                     <select id="kpi_id"
                                             name="kpi_id"
-                                            ng-model="construct.kpi_id"
+                                            ng-model="project.kpi_id"
                                             class="form-control"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
-
-                                        @foreach($kpis as $kpi)
-                                            <option value="{{ $kpi->id }}">
-                                                {{ $kpi->kpi_name }}
-                                            </option>
-                                        @endforeach
+                                        <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
+                                            @{{ kpi.kpi_name }}
+                                        </option>
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'kpi_id')">
-                                        @{{ formError.errors.construct_type_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'kpi_id')">
+                                        @{{ formError.errors.project_type_id[0] }}
                                     </span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div
                                     class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'desc')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'project_name')}"
                                 >
                                     <label>ชื่อโครงการ :</label>
                                     <input
                                         type="text"
-                                        id="desc"
-                                        name="desc"
-                                        ng-model="construct.desc"
+                                        id="project_name"
+                                        name="project_name"
+                                        ng-model="project.project_name"
                                         class="form-control pull-right"
                                         tabindex="4"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(construct, 'desc')">
-                                        @{{ formError.errors.desc[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'project_name')">
+                                        @{{ formError.errors.project_name[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -162,28 +154,28 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'location')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
                                 >
                                     <label>งบประมาณ :</label>
                                     <input
                                         type="text"
-                                        id="location"
-                                        name="location"
-                                        ng-model="construct.location"
+                                        id="total_budget"
+                                        name="total_budget"
+                                        ng-model="project.total_budget"
                                         class="form-control pull-right"
                                         tabindex="4">
-                                    <span class="help-block" ng-show="checkValidate(construct, 'location')">
-                                        @{{ formError.errors.desc[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
+                                        @{{ formError.errors.total_budget[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'boq_no')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'budget_src_id')}"
                                 >
                                     <label>แหล่งงบประมาณ :</label>
-                                    <select id="kpi_id"
-                                            name="kpi_id"
-                                            ng-model="construct.kpi_id"
+                                    <select id="budget_src_id"
+                                            name="budget_src_id"
+                                            ng-model="project.budget_src_id"
                                             class="form-control"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
@@ -195,7 +187,7 @@
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'boq_no')">
+                                    <span class="help-block" ng-show="checkValidate(project, 'budget_src_id')">
                                         @{{ formError.errors.desc[0] }}
                                     </span>
                                 </div>
@@ -204,16 +196,16 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'faction_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'faction_id')}"
                                 >
                                     <label>หน่วยงาน :</label>
                                     <select id="faction_id" 
                                             name="faction_id"
-                                            ng-model="construct.faction_id" 
+                                            ng-model="project.faction_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="11"
-                                            ng-change="onFactionSelected(construct.faction_id)">
+                                            ng-change="onFactionSelected(project.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
 
                                         @foreach($factions as $faction)
@@ -223,28 +215,28 @@
                                         @endforeach
 
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'depart_id')">
-                                        @{{ formError.errors.depart_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'faction_id')">
+                                        @{{ formError.errors.faction_id[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'faction_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'depart_id')}"
                                 >
                                     <label>&nbsp;</label>
                                     <select id="depart_id" 
                                             name="depart_id"
-                                            ng-model="construct.depart_id" 
+                                            ng-model="project.depart_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="12"
-                                            ng-change="onDepartSelected(construct.depart_id)">
+                                            ng-change="onDepartSelected(project.depart_id)">
                                         <option value="">-- เลือกกลุ่มงาน --</option>
                                         <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
                                             @{{ depart.depart_name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'depart_id')">
+                                    <span class="help-block" ng-show="checkValidate(project, 'depart_id')">
                                         @{{ formError.errors.depart_id[0] }}
                                     </span>
                                 </div>
@@ -252,38 +244,46 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'faction_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'owner_person')}"
                                 >
                                     <label>ผู้รับผิดชอบ :</label>
                                     <div class="input-group">
                                         <input
                                             type="text"
-                                            id="desc"
-                                            name="desc"
-                                            ng-model="construct.desc"
+                                            id="owner_detail"
+                                            name="owner_detail"
+                                            ng-model="project.owner_detail"
                                             class="form-control pull-right"
                                             tabindex="4"
                                         />
-                                        <input type="hidden" id="item_id" name="item_id" ng-model="construct.item_id" />
+                                        <input
+                                            type="hidden"
+                                            id="owner_person"
+                                            name="owner_person"
+                                            ng-model="project.owner_person"
+                                            class="form-control pull-right"
+                                            tabindex="4"
+                                        />
+                                        <input type="hidden" id="item_id" name="item_id" ng-model="project.item_id" />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-flat" ng-click="showPersonsList()">
+                                            <button type="button" class="btn btn-primary btn-flat" ng-click="showPersonList()">
                                                 ...
                                             </button>
                                         </span>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'faction_id')">
-                                        @{{ formError.errors.faction_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'owner_person')">
+                                        @{{ formError.errors.owner_person[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'start_month')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
                                 >
                                     <label>เริ่มเดือน :</label>
                                     <select
                                         id="start_month"
                                         name="start_month"
-                                        ng-model="construct.start_month"
+                                        ng-model="project.start_month"
                                         class="form-control"
                                         tabindex="10"
                                     >
@@ -292,7 +292,7 @@
                                             @{{ month.name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'start_month')">
+                                    <span class="help-block" ng-show="checkValidate(project, 'start_month')">
                                         @{{ formError.errors.start_month[0] }}
                                     </span>
                                 </div>
@@ -300,17 +300,17 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'remark')}"
                                 >
                                     <label>หมายเหตุ :</label>
                                     <textarea
                                         id="remark"
                                         name="remark"
-                                        ng-model="construct.remark"
+                                        ng-model="project.remark"
                                         class="form-control"
                                         tabindex="15"
                                     ></textarea>
-                                    <span class="help-block" ng-show="checkValidate(construct, 'remark')">
+                                    <span class="help-block" ng-show="checkValidate(project, 'remark')">
                                         กรุณาระบุหมายเหตุ
                                     </span>
                                 </div>
@@ -331,7 +331,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/constructs/validate', construct, 'frmNewService', store)"
+                                ng-click="formValidate($event, '/projects/validate', project, 'frmNewProject', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก
@@ -343,6 +343,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared/_persons-list')
 
     </section>
 

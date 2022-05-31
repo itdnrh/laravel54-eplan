@@ -117,6 +117,72 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
+    $scope.showPersonList = (_selectedMode) => {
+        $('#persons-list').modal('show');
+
+        $scope.getPersons();
+
+        $scope.selectedMode = _selectedMode;
+    };
+
+    $scope.getPersons = async () => {
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
+        .then(function(res) {
+            $scope.setPersons(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPersonsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+
+        $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPersons = function(res) {
+        const { data, ...pager } = res.data.persons;
+
+        $scope.persons = data;
+        $scope.persons_pager = pager;
+    };
+
+    $scope.onSelectedPerson = (mode, person) => {
+        if (person) {
+            $scope.project.owner_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
+            $scope.project.owner_person = person.person_id;
+        }
+
+        $('#persons-list').modal('hide');
+        $scope.selectedMode = '';
+    };
+
     $scope.getById = function(id, cb) {
         $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
         .then(function(res) {

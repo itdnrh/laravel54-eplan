@@ -324,7 +324,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.selectedMode = '';
     };
 
-    
     $scope.removePersonItem = (mode, person) => {
         console.log(person);
         console.log(parseInt(mode));

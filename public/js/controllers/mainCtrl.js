@@ -137,6 +137,9 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
             $scope.temps.divisions = data.divisions ? data.divisions : [];
             $scope.temps.categories = data.categories ? data.categories : [];
             $scope.temps.groups = data.groups ? data.groups : [];
+            $scope.temps.strategics = data.strategics ? data.strategics : [];
+            $scope.temps.strategies = data.strategies ? data.strategies : [];
+            $scope.temps.kpis = data.kpis ? data.kpis : [];
 
             $scope.forms.categories = data.categories
                                         ? data.categories.filter(cate => cate.plan_type_id === parseInt(planType))
@@ -150,10 +153,17 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope[name] = value;
     }
 
+    $scope.onStrategicSelected = function(strategic) {
+        $scope.forms.strategies = $scope.temps.strategies.filter(stg => stg.strategic_id == strategic);
+    };
+
+    $scope.onStrategySelected = function(strategy) {
+        $scope.forms.kpis = $scope.temps.kpis.filter(kpi => kpi.strategy_id == strategy);
+    };
+
     $scope.onFactionSelected = function(faction) {
         $scope.forms.departs = $scope.temps.departs.filter(dep => dep.faction_id == faction);
     };
-
     $scope.onDepartSelected = function(depart) {
         $scope.forms.divisions = $scope.temps.divisions.filter(div => div.depart_id == depart);
     };
