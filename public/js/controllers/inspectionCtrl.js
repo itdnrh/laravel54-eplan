@@ -97,6 +97,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.showPopup = false;
 
         $('#deliver_bill').val(bill);
+        $scope.inspection.deliver_bill = bill;
     };
 
     $scope.calculateSumPrice = function() {

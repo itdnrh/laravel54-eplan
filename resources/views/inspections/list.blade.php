@@ -127,6 +127,9 @@
                                             <ul style="list-style: none; margin: 0px; padding: 0px;">
                                                 <li ng-repeat="(index, detail) in insp.order.details" style="margin: 2px;">
                                                     @{{ index+1 }}. @{{ detail.item.item_name }}
+                                                    <span ng-show="insp.order.deliver_amt !== insp.deliver_seq">
+                                                        @{{ insp.remark }}
+                                                    </span>
                                                 </li>
                                             </ul>
                                         </div>
