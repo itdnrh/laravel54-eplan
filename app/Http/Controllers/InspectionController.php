@@ -68,8 +68,8 @@ class InspectionController extends Controller
 
     public function search(Request $req)
     {
-        $inspections = Inspection::with('order','order.details')
-                        ->with('order.details.item')
+        $inspections = Inspection::with('order','order.supplier')
+                        ->with('order.details','order.details.item')
                         ->orderBy('inspect_sdate', 'DESC')
                         ->paginate(10);
 

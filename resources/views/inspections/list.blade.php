@@ -122,6 +122,9 @@
                                             เลขที่ @{{ insp.order.po_no }}
                                             วันที่ @{{ insp.order.po_date | thdate }}
                                         </h5>
+                                        <h5 style="margin: 5px 0;">
+                                            เจ้าหนี้ @{{ insp.order.supplier.supplier_name }}
+                                        </h5>
                                         <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
                                             <p style="margin: 0; text-decoration: underline;">รายการ</p>
                                             <ul style="list-style: none; margin: 0px; padding: 0px;">
