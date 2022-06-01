@@ -143,7 +143,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -164,7 +164,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             $scope.setPlans(res);
 

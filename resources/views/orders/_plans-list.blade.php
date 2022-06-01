@@ -53,7 +53,7 @@
                                 <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                <th style="width: 10%; text-align: center;">Actions</th>
+                                <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,7 +62,9 @@
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <p style="margin: 0;">@{{ plan.plan_item.item.category.name }}</p>
+                                    <p style="margin: 0; font-weight: bold;">
+                                        @{{ plan.plan_item.item.category.name }}
+                                    </p>
                                     @{{ plan.plan_item.item.item_name }} จำนวน 
                                     <span>@{{ plan.amount | currency:'':0 }}</span>
                                     <span>@{{ plan.unit.name }}</span>

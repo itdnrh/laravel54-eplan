@@ -52,8 +52,8 @@
                                 <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                <th style="width: 5%; text-align: center;">สถานะ</th>
-                                <th style="width: 10%; text-align: center;">Actions</th>
+                                <!-- <th style="width: 5%; text-align: center;">สถานะ</th> -->
+                                <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,7 +84,7 @@
                                     <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
                                     <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
                                 </td>
-                                <td>@{{ plan.status }}</td>
+                                <!-- <td style="text-align: center;">@{{ plan.status }}</td> -->
                                 <td style="text-align: center;">
                                         <a  href="#"
                                             ng-click="onSelectedPlan($event, plan)"

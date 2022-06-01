@@ -95,6 +95,7 @@ class PlanController extends Controller
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
+        $approved = $req->get('approved');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -137,6 +138,9 @@ class PlanController extends Controller
                     })
                     ->when($status != '', function($q) use ($status) {
                         $q->where('status', $status);
+                    })
+                    ->when($approved != '', function($q) use ($approved) {
+                        $q->where('approved', $approved);
                     })
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
