@@ -110,8 +110,6 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $('#persons-list').modal('show');
 
         $scope.getPersons();
-
-        $scope.selectedMode = _selectedMode;
     };
 
     $scope.getPersons = async () => {
@@ -162,7 +160,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.persons_pager = pager;
     };
 
-    $scope.onSelectedPerson = (person) => {
+    $scope.onSelectedPerson = (mode, person) => {
         if (person) {
             $scope.project.owner_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
             $scope.project.owner_person = person.person_id;
