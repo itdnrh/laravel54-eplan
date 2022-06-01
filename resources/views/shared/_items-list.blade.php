@@ -60,7 +60,7 @@
                                     @{{ item.unit.name }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ item.latest_price | currency:'':2 }}
+                                    @{{ item.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
                                     <a href="#" class="btn btn-primary" ng-click="handleItemSelected($event, item, onSelectedItem)">
