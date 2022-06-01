@@ -13,7 +13,7 @@
                     <div class="box">
                         <div class="box-body">
                             <div style="display: flex; flex-direction: row;">
-                                <select
+                                <!-- <select
                                     style="margin-right: 1rem;"
                                     class="form-control"
                                     ng-model="cboPlanType"
@@ -25,7 +25,7 @@
                                             {{ $planType->plan_type_name }}
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> -->
         
                                 <select
                                     style="margin-right: 1rem;"

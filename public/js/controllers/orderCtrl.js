@@ -498,7 +498,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.apiUrl}/runnings/${docType}/doc-type`)
         .then(function(res) {
-            $scope.order.po_no = res.data.running+ '/' +$scope.order.year;showPlansList
+            $scope.order.po_no = res.data.running+ '/' +$scope.order.year;
 
             $scope.loading = false;
         }, function(err) {
