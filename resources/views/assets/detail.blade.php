@@ -16,46 +16,22 @@
 
     <!-- Main content -->
     <section class="content" ng-controller="planAssetCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
-
         <div class="row">
             <div class="col-md-12">
-
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">รายละเอียดแผนครุภัณฑ์</h3>
                     </div>
-
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-2">
-                                <!-- TODO: to use css class instead of inline code -->
-                                <div style="border: 1px dotted grey; display: flex; justify-content: center; min-height: 240px; padding: 5px;">
-                                <?php $userAvatarUrl = (Auth::user()->person_photo != '') ? "http://192.168.20.4:3839/ps/PhotoPersonal/" .Auth::user()->person_photo : asset('img/user2-160x160.jpg'); ?>
-                                    <img
-                                        src="{{ $userAvatarUrl }}"
-                                        alt="user_image"
-                                        style="width: 98%;"
-                                    />
-                                </div>
-                                <div style="text-align: center; margin-top: 10px;">
-                                    <a
-                                        class="btn btn-default" 
-                                        title="การอนุมัติ"
-                                        target="_blank">
-                                        ตรวจสอบผลการอนุมัติ
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
                                     <input type="text"
                                             id="year" 
                                             name="year"
                                             ng-model="asset.year"
-                                            class="form-control"
-                                            tabindex="2">
+                                            class="form-control">
                                     </inp>
                                 </div>
 
@@ -64,17 +40,12 @@
                                     <select id="category_id"
                                             name="category_id"
                                             ng-model="asset.category_id"
-                                            class="form-control"
-                                            tabindex="2">
-
+                                            class="form-control">
                                             @foreach($categories as $category)
-
                                                 <option value="{{ $category->id }}">
                                                     {{ $category->name }}
                                                 </option>
-
                                             @endforeach
-
                                     </select>
                                 </div>
 
@@ -83,8 +54,7 @@
                                     <input
                                         type="text"
                                         ng-model="asset.desc"
-                                        class="form-control pull-right"
-                                        tabindex="1" />
+                                        class="form-control" />
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -93,8 +63,7 @@
                                             id="spec"
                                             name="spec"
                                             ng-model="asset.spec"
-                                            class="form-control"
-                                            tabindex="6">
+                                            class="form-control">
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -103,27 +72,29 @@
                                             id="price_per_unit"
                                             name="price_per_unit"
                                             ng-model="asset.price_per_unit"
-                                            class="form-control"
-                                            tabindex="6" />
+                                            class="form-control" />
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>หน่วย :</label>
-                                    <select id="unit_id"
-                                            name="unit_id"
-                                            ng-model="asset.unit_id"
-                                            class="form-control"
-                                            tabindex="2">
+                                    <label>จำนวน :</label>
+                                    <div style="display: flex; gap: 5px;">
+                                        <input  type="text"
+                                                id="amount"
+                                                name="amount"
+                                                ng-model="asset.amount"
+                                                class="form-control" />
 
-                                        @foreach($units as $unit)
-
-                                            <option value="{{ $unit->id }}">
-                                                {{ $unit->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
+                                        <select id="unit_id"
+                                                name="unit_id"
+                                                ng-model="asset.unit_id"
+                                                class="form-control">
+                                            @foreach($units as $unit)
+                                                <option value="{{ $unit->id }}">
+                                                    {{ $unit->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -131,17 +102,12 @@
                                     <select id="depart_id"
                                             name="depart_id"
                                             ng-model="asset.depart_id"
-                                            class="form-control"
-                                            tabindex="2">
-
+                                            class="form-control">
                                             @foreach($departs as $depart)
-
                                                 <option value="{{ $depart->depart_id }}">
                                                     {{ $depart->depart_name }}
                                                 </option>
-
                                             @endforeach
-
                                     </select>
                                 </div>
 
@@ -150,17 +116,12 @@
                                     <select id="division_id"
                                             name="division_id"
                                             ng-model="asset.division_id"
-                                            class="form-control"
-                                            tabindex="2">
-
+                                            class="form-control">
                                             @foreach($divisions as $division)
-
                                                 <option value="{{ $division->ward_id }}">
                                                     {{ $division->ward_name }}
                                                 </option>
-
                                             @endforeach
-
                                     </select>
                                 </div>
 
@@ -171,7 +132,6 @@
                                         name="reason" 
                                         ng-model="asset.reason" 
                                         class="form-control"
-                                        tabindex="17"
                                     ></textarea>
                                 </div>
 
@@ -182,7 +142,6 @@
                                         name="remark" 
                                         ng-model="asset.remark" 
                                         class="form-control"
-                                        tabindex="17"
                                     ></textarea>
                                 </div>
                                 
@@ -215,7 +174,6 @@
                                             type="text"
                                             value="@{{ asset.start_month }}"
                                             class="form-control pull-right"
-                                            tabindex="5"
                                         />
                                     </div>
                                 </div>

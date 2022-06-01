@@ -31,27 +31,7 @@
 
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-2">
-                                <!-- TODO: to use css class instead of inline code -->
-                                <div style="border: 1px dotted grey; display: flex; justify-content: center; min-height: 240px; padding: 5px;">
-                                <?php $userAvatarUrl = (Auth::user()->person_photo != '') ? "http://192.168.20.4:3839/ps/PhotoPersonal/" .Auth::user()->person_photo : asset('img/user2-160x160.jpg'); ?>
-                                    <img
-                                        src="{{ $userAvatarUrl }}"
-                                        alt="user_image"
-                                        style="width: 98%;"
-                                    />
-                                </div>
-                                <div style="text-align: center; margin-top: 10px;">
-                                    <a
-                                        class="btn btn-default" 
-                                        title="การอนุมัติ"
-                                        target="_blank">
-                                        ตรวจสอบผลการอนุมัติ
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
                                     <input type="text"
@@ -70,15 +50,11 @@
                                             ng-model="construct.category_id"
                                             class="form-control"
                                             tabindex="2">
-
                                             @foreach($categories as $category)
-
                                                 <option value="{{ $category->id }}">
                                                     {{ $category->name }}
                                                 </option>
-
                                             @endforeach
-
                                     </select>
                                 </div>
 
@@ -111,22 +87,25 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>หน่วย :</label>
-                                    <select id="unit_id"
-                                            name="unit_id"
-                                            ng-model="construct.unit_id"
-                                            class="form-control"
-                                            tabindex="2">
+                                    <label>จำนวน :</label>
+                                    <div style="display: flex; gap: 5px;">
+                                        <input  type="text"
+                                                id="amount"
+                                                name="amount"
+                                                ng-model="construct.amount"
+                                                class="form-control" />
 
-                                        @foreach($units as $unit)
-
-                                            <option value="{{ $unit->id }}">
-                                                {{ $unit->name }}
-                                            </option>
-
-                                        @endforeach
-
-                                    </select>
+                                        <select id="unit_id"
+                                                name="unit_id"
+                                                ng-model="construct.unit_id"
+                                                class="form-control">
+                                            @foreach($units as $unit)
+                                                <option value="{{ $unit->id }}">
+                                                    {{ $unit->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -136,15 +115,11 @@
                                             ng-model="construct.depart_id"
                                             class="form-control"
                                             tabindex="2">
-
-                                            @foreach($departs as $depart)
-
-                                                <option value="{{ $depart->depart_id }}">
-                                                    {{ $depart->depart_name }}
-                                                </option>
-
-                                            @endforeach
-
+                                        @foreach($departs as $depart)
+                                            <option value="{{ $depart->depart_id }}">
+                                                {{ $depart->depart_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -155,15 +130,11 @@
                                             ng-model="construct.division_id"
                                             class="form-control"
                                             tabindex="2">
-
-                                            @foreach($divisions as $division)
-
-                                                <option value="{{ $division->ward_id }}">
-                                                    {{ $division->ward_name }}
-                                                </option>
-
-                                            @endforeach
-
+                                        @foreach($divisions as $division)
+                                            <option value="{{ $division->ward_id }}">
+                                                {{ $division->ward_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
 
