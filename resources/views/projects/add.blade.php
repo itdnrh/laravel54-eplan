@@ -248,14 +248,15 @@
                                 >
                                     <label>ผู้รับผิดชอบ :</label>
                                     <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="owner_detail"
-                                            name="owner_detail"
-                                            ng-model="project.owner_detail"
-                                            class="form-control pull-right"
-                                            tabindex="4"
-                                        />
+                                        <div class="form-control">
+                                            @{{ project.owner.prefix.prefix_name + project.owner.person_firstname +' '+ project.owner.person_lastname }}
+                                            <span style="margin-left: 10px;" ng-show="project.owner">
+                                                ตำแหน่ง @{{ project.owner.position.position_name }}
+                                            </span>
+                                            <!-- <span style="margin-left: 10px;" ng-show="project.owner">
+                                                โทร. @{{ project.owner.person_tel }}
+                                            </span> -->
+                                        </div>
                                         <input
                                             type="hidden"
                                             id="owner_person"

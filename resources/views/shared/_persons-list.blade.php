@@ -35,8 +35,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%; text-align: center;">#</th>
-                                <th style="text-align: center;">ชื่อ-สกุล</th>
-                                <th style="width: 25%; text-align: center;">ตำแหน่ง</th>
+                                <th>ชื่อ-สกุล</th>
+                                <th style="width: 25%;">ตำแหน่ง</th>
                                 <th style="width: 30%;">สังกัด</th>
                                 <th style="width: 10%; text-align: center;">Actions</th>
                             </tr>
@@ -49,10 +49,10 @@
                                 <td>
                                     @{{ person.prefix.prefix_name + person.person_firstname + ' ' + person.person_lastname }}
                                 </td>
-                                <td style="text-align: center;">
+                                <td>
                                     @{{ person.position.position_name + person.academic.ac_name }}
                                 </td>
-                                <td style="text-align: center;">
+                                <td>
                                     @{{ person.member_of.depart.depart_name }}
                                 </td>
                                 <td style="text-align: center;">
@@ -64,13 +64,13 @@
                         </tbody>
                     </table>
 
-                    <div class="loading-wrapper" ng-show="items.length === 0">
-                        <!-- Loading (remove the following to stop the loading)-->
-                        <div ng-show="loading" class="overlay">
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div class="loading-wrapper" ng-show="loading">
+                        <div class="overlay">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
-                        <!-- end loading -->
                     </div>
+                    <!-- end loading -->
 
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">

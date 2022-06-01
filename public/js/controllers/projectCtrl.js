@@ -162,8 +162,13 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.onSelectedPerson = (mode, person) => {
         if (person) {
-            $scope.project.owner_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
+            $scope.project.owner = person;
             $scope.project.owner_person = person.person_id;
+            $('#owner_person').val(person.person_id);
+        } else {
+            $scope.project.owner = null;
+            $scope.project.owner_person = '';
+            $('#owner_person').val('');
         }
 
         $('#persons-list').modal('hide');
