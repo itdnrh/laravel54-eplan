@@ -12,8 +12,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         item_name: '',
         price_per_unit: '',
         unit_id: '',
-        in_stock: 'I',
-        first_year: '',
+        in_stock: '0',
+        first_year: '2565',
         remark: '',
     };
 
@@ -39,25 +39,16 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
     const clearItemObj = function() {
         $scope.item = {
-            item_id: '',
-            year: '',
-            in_plan: 'I',
-            plan_no: '',
-            faction_id: '',
-            depart_id: '',
-            division_id: '',
+            Item_id: '',
+            plan_type_id: '',
             category_id: '',
-            item_id: '',
-            desc: '',
-            spec: '',
+            group_id: '',
+            item_name: '',
             price_per_unit: '',
             unit_id: '',
-            amount: '',
-            sum_price: '',
-            start_month: '',
-            reason: '',
+            in_stock: '0',
+            first_year: '2565',
             remark: '',
-            owner: '',
         };
     };
 

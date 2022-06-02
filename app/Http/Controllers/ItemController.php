@@ -151,19 +151,34 @@ class ItemController extends Controller
 
     public function store(Request $req)
     {
-        $item = new Item();
-        $item->plan_type_id = $req['plan_type_id'];
-        $item->category_id  = $req['category_id'];
-        $item->group_id     = $req['group_id'];
-        $item->item_name    = $req['item_name'];
-        $item->price_per_unit  = $req['price_per_unit'];
-        $item->unit_id      = $req['unit_id'];
-        $item->in_stock     = $req['in_stock'];
-        $item->remark       = $req['remark'];
+        try {
+            $item = new Item();
+            $item->plan_type_id = $req['plan_type_id'];
+            $item->category_id  = $req['category_id'];
+            $item->group_id     = $req['group_id'];
+            $item->item_name    = $req['item_name'];
+            $item->price_per_unit  = $req['price_per_unit'];
+            $item->unit_id      = $req['unit_id'];
+            $item->in_stock     = $req['in_stock'];
+            $item->first_year   = $req['first_year'];
+            $item->remark       = $req['remark'];
 
-        if($item->save()) {
+            if($item->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'item'     => $item
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
             return [
-                'item'  => $item
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }
