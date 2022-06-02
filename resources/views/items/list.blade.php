@@ -102,6 +102,18 @@
                                     </select>
                                 </div>
                             </div><!-- /.row -->
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>ชื่อสินค้า/บริการ</label>
+                                    <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keypress="getAll($event)"
+                                    />
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

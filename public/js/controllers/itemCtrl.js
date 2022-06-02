@@ -1,6 +1,12 @@
 app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
+    $scope.cboYear = '';
+    $scope.cboPlanType = '';
+    $scope.cboCategory = '';
+    $scope.cboGroup = '';
+    $scope.txtItemName = '';
+
     $scope.Items = [];
     $scope.pager = null;
 
@@ -28,9 +34,9 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         todayHighlight: true
     };
 
-    $('#doc_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
+    // $('#doc_date')
+    //     .datepicker(dtpOptions)
+    //     .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
         //         event.preventDefault();
@@ -54,14 +60,6 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         };
     };
 
-    $scope.calculateSumPrice = async function() {
-        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
-        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
-
-        $scope.asset.sum_price = price * amount;
-        $('#sum_price').val(price * amount);
-    };
-
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.items = [];
@@ -69,8 +67,9 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name  = $scope.txtItemName === '' ? '' : $scope.txtItemName;
 
-        $http.get(`${CONFIG.apiUrl}/items?type=1&cate=${cate}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/items?type=1&cate=${cate}&status=${status}&name=${name}`)
         .then(function(res) {
             $scope.setItems(res);
 
@@ -89,19 +88,6 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         $scope.pager = pager;
     };
 
-    $scope.onSelectedItem = function(event, item) {
-        if (item) {
-            $('#item_id').val(item.id);
-            $scope.item.item_id = item.id;
-            $scope.item.desc = item.item_name;
-            $scope.item.price_per_unit = item.price_per_unit;
-            $scope.item.unit_id = item.unit_id.toString();
-            $scope.item.category_id = item.category_id.toString();
-        }
-
-        $('#items-list').modal('hide');
-    };
-
     $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
@@ -112,8 +98,9 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name  = $scope.txtItemName === '' ? '' : $scope.txtItemName;
 
-        $http.get(`${url}&type=1&cate=${cate}&status=${status}`)
+        $http.get(`${url}&type=1&cate=${cate}&status=${status}&name=${name}`)
         .then(function(res) {
             cb(res);
 
