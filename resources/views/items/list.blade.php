@@ -110,7 +110,7 @@
                                         name="txtItemName"
                                         class="form-control"
                                         ng-model="txtItemName"
-                                        ng-keypress="getAll($event)"
+                                        ng-keyup="getAll($event)"
                                     />
                                 </div>
                             </div>

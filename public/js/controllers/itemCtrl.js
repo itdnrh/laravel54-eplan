@@ -82,7 +82,6 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
     $scope.setItems = function(res) {
         const { data, ...pager } = res.data.items;
-        console.log(data, pager);
 
         $scope.items = data;
         $scope.pager = pager;
