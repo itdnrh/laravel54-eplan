@@ -42,6 +42,22 @@
                             <div class="row">
                                 <div
                                     class="col-md-6 form-group"
+                                    ng-class="{'has-error has-feedback': checkValidate(item, 'parcel_no')}"
+                                >
+                                    <label for="">รหัสพัสดุ</label>
+                                    <input
+                                        type="text"
+                                        id="parcel_no"
+                                        name="parcel_no"
+                                        ng-model="item.parcel_no"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(item, 'parcel_no')">
+                                        @{{ formError.errors.parcel_no[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="col-md-6 form-group"
                                     ng-class="{'has-error has-feedback': checkValidate(item, 'plan_type_id')}"
                                 >
                                     <label for="">ประเภทแผน</label>
@@ -104,7 +120,7 @@
                                     </select>
                                 </div>
                                 <div
-                                    class="col-md-6 form-group"
+                                    class="col-md-12 form-group"
                                     ng-class="{'has-error has-feedback': checkValidate(item, 'item_name')}"
                                 >
                                     <label for="">ชื่อสินค้า/บริการ</label>

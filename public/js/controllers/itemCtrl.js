@@ -6,6 +6,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
     $scope.item = {
         Item_id: '',
+        parcel_no: '',
         plan_type_id: '',
         category_id: '',
         group_id: '',
@@ -40,6 +41,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     const clearItemObj = function() {
         $scope.item = {
             Item_id: '',
+            parcel_no: '',
             plan_type_id: '',
             category_id: '',
             group_id: '',
@@ -163,7 +165,25 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        $(`#${form}`).submit();
+        $scope.loading = true;
+
+        $http.post(`${CONFIG.apiUrl}/items`, $scope.item)
+        .then((res) => {
+            $scope.loading = false;
+
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            }
+        }, function(err) {
+            $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        });
+
+        window.location.href = `${CONFIG.baseUrl}/system/items`;
     }
 
     $scope.edit = function(id) {
