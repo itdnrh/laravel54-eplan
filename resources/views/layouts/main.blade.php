@@ -83,6 +83,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/homeCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/approvalCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/planAssetCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/itemCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/planMaterialCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/planServiceCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/planConstructCtrl.js') }}"></script>

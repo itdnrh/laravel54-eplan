@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'api'], function () {
+    /** รายการสินค้าและบริการ */
+    Route::get('items', 'ItemController@getAll');
+
     /** โครงการ */
     Route::get('projects', 'ProjectController@getAll');
     Route::get('projects/{id}', 'ProjectController@getById');

@@ -56,10 +56,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('plans/send-supported/{id}', 'PlanController@sendSupported');
     Route::delete('plans/{id}', 'PlanController@delete');
 
-    /** รายการสินค้า */
+    /** รายการสินค้าและบริการ */
     Route::post('items/validate', 'ItemController@formValidate');
     Route::get('items/search', 'ItemController@search');
-    Route::get('items/get-ajax-all', 'ItemController@getAll');
     Route::get('items/get-ajax-byid/{id}', 'ItemController@getById');
     Route::get('items/detail/{id}', 'ItemController@detail');
     Route::get('items/add', 'ItemController@add');
