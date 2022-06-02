@@ -57,11 +57,9 @@ class ItemController extends Controller
 
     public function index()
     {
-        return view('assets.list', [
+        return view('items.list', [
             "categories"    => ItemCategory::all(),
             "groups"        => ItemGroup::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
         ]);
     }
 
@@ -91,10 +89,28 @@ class ItemController extends Controller
         ];
     }
 
-    public function getAll()
+    public function getAll(Request $req)
     {
+        /** Get params from query string */
+        $type = $req->get('type');
+        $cate = $req->get('cate');
+        $name = $req->get('name');
+
+        $items = Item::with('category','group','unit')
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plan_type_id', $type);
+                    })
+                    ->when(!empty($cate), function($q) use ($cate) {
+                        $q->where('category_id', $cate);
+                    })
+                    ->when(!empty($name), function($q) use ($name) {
+                        $q->where('item_name', 'like', '%'.$name.'%');
+                    })
+                    ->orderBy('category_id', 'ASC')
+                    ->paginate(10);
+
         return [
-            'items' => Item::orderBy('category_id')->get(),
+            'items' => $items,
         ];
     }
 

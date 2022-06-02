@@ -1,4 +1,4 @@
-app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.Items = [];
@@ -80,18 +80,15 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.getAll = function(event) {
         $scope.loading = true;
-        $scope.assets = [];
+        $scope.items = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.apiUrl}/items?type=1&cate=${cate}&status=${status}`)
         .then(function(res) {
-            $scope.setAssets(res);
+            $scope.setItems(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -101,20 +98,21 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.setItems = function(res) {
-        const { data, ...pager } = res.data.plans;
+        const { data, ...pager } = res.data.items;
+        console.log(data, pager);
 
-        $scope.assets = data;
+        $scope.items = data;
         $scope.pager = pager;
     };
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
             $('#item_id').val(item.id);
-            $scope.asset.item_id = item.id;
-            $scope.asset.desc = item.item_name;
-            $scope.asset.price_per_unit = item.price_per_unit;
-            $scope.asset.unit_id = item.unit_id.toString();
-            $scope.asset.category_id = item.category_id.toString();
+            $scope.item.item_id = item.id;
+            $scope.item.desc = item.item_name;
+            $scope.item.price_per_unit = item.price_per_unit;
+            $scope.item.unit_id = item.unit_id.toString();
+            $scope.item.category_id = item.category_id.toString();
         }
 
         $('#items-list').modal('hide');
@@ -125,16 +123,13 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.assets = [];
+        $scope.items = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=1&cate=${cate}&status=${status}`)
         .then(function(res) {
             cb(res);
 

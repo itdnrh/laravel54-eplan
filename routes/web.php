@@ -58,6 +58,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** รายการสินค้าและบริการ */
     Route::post('items/validate', 'ItemController@formValidate');
+    Route::get('system/items', 'ItemController@index');
     Route::get('items/search', 'ItemController@search');
     Route::get('items/get-ajax-byid/{id}', 'ItemController@getById');
     Route::get('items/detail/{id}', 'ItemController@detail');

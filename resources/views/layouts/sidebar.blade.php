@@ -326,6 +326,11 @@
 										<i class="fa fa-circle-o"></i> ข้อมูลเจ้าหนี้
 									</a>
 								</li>
+								<li ng-class="{ 'active': submenu == 'items' }">
+									<a href="{{ url('/system/items') }}">
+										<i class="fa fa-circle-o"></i> สินค้าและบริการ
+									</a>
+								</li>
 								<li ng-class="{ 'active': submenu == 'categories' }">
 									<a href="{{ url('/system/categories') }}">
 										<i class="fa fa-circle-o"></i> ประเภทครุภัณฑ์
