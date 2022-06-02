@@ -10,6 +10,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\ItemGroup;
+use App\Models\PlanType;
 use App\Models\Unit;
 
 class ItemController extends Controller
@@ -58,6 +59,7 @@ class ItemController extends Controller
     public function index()
     {
         return view('items.list', [
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
             "groups"        => ItemGroup::all(),
         ]);
@@ -107,6 +109,7 @@ class ItemController extends Controller
                         $q->where('item_name', 'like', '%'.$name.'%');
                     })
                     ->orderBy('category_id', 'ASC')
+                    ->orderBy('item_name', 'ASC')
                     ->paginate(10);
 
         return [
@@ -125,7 +128,7 @@ class ItemController extends Controller
 
     public function detail($id)
     {
-        return view('assets.detail', [
+        return view('items.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
             "groups"        => ItemGroup::all(),
@@ -138,13 +141,11 @@ class ItemController extends Controller
 
     public function add()
     {
-        return view('assets.add', [
+        return view('items.add', [
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
             "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
         ]);
     }
 

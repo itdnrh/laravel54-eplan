@@ -22,7 +22,9 @@
         ng-init="
             getAll();
             initForms({
-                categories: {{ $categories }}
+                planTypes: {{ $planTypes }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
             }, 1);"
     >
 
