@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มสินค้าและบริการ
+            เพิ่มสินค้า/บริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มสินค้าและบริการ</li>
+            <li class="breadcrumb-item active">เพิ่มสินค้า/บริการ</li>
         </ol>
     </section>
 
@@ -31,7 +31,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มสินค้าและบริการ</h3>
+                        <h3 class="box-title">เพิ่มสินค้า/บริการ</h3>
                     </div>
 
                     <form id="frmNewItem" name="frmNewItem" method="post" action="{{ url('/items/store') }}" role="form" enctype="multipart/form-data">

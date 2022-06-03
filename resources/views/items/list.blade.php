@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            สินค้าและบริการ
+            สินค้า/บริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">สินค้าและบริการ</li>
+            <li class="breadcrumb-item active">สินค้า/บริการ</li>
         </ol>
     </section>
 
@@ -55,24 +55,26 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>ประเภท</label>
+                                    <label>ประเภทแผน</label>
                                     <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
+                                        id="cboPlanType"
+                                        name="cboPlanType"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-model="cboPlanType"
+                                        ng-change="onPlanTypeSelected(cboPlanType); getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                        </option>
+                                        @foreach($planTypes as $type)
+                                            <option value="{{ $type->id }}">
+                                                {{ $type->plan_type_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div><!-- /.row -->
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>ประเภท</label>
+                                    <label>ประเภทสินค้า/บริการ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"
@@ -87,7 +89,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>กลุ่ม</label>
+                                    <label>กลุ่มสินค้า/บริการ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"
@@ -122,7 +124,7 @@
                     <div class="box-header with-border">
                         <div class="row" style="display: flex; align-items: center;">
                             <div class="col-md-6">
-                                <h3 class="box-title">สินค้าและบริการ</h3>
+                                <h3 class="box-title">สินค้า/บริการ</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/items/add') }}" class="btn btn-primary pull-right">

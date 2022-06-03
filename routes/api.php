@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'api'], function () {
     /** รายการสินค้าและบริการ */
     Route::get('items', 'ItemController@getAll');
+    Route::post('items', 'ItemController@store');
 
     /** โครงการ */
     Route::get('projects', 'ProjectController@getAll');

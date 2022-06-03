@@ -157,7 +157,7 @@ class ItemController extends Controller
             $item->category_id  = $req['category_id'];
             $item->group_id     = $req['group_id'];
             $item->item_name    = $req['item_name'];
-            $item->price_per_unit  = $req['price_per_unit'];
+            $item->price_per_unit   = $req['price_per_unit'];
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
             $item->first_year   = $req['first_year'];
@@ -167,7 +167,7 @@ class ItemController extends Controller
                 return [
                     'status'    => 1,
                     'message'   => 'Insertion successfully!!',
-                    'item'     => $item
+                    'item'      => $item
                 ];
             } else {
                 return [

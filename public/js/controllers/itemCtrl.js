@@ -19,7 +19,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         item_name: '',
         price_per_unit: '',
         unit_id: '',
-        in_stock: '0',
+        in_stock: '',
         first_year: '2565',
         remark: '',
     };
@@ -54,7 +54,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             item_name: '',
             price_per_unit: '',
             unit_id: '',
-            in_stock: '0',
+            in_stock: '',
             first_year: '2565',
             remark: '',
         };
@@ -159,6 +159,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/system/items`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
@@ -168,8 +170,6 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
-
-        window.location.href = `${CONFIG.baseUrl}/system/items`;
     }
 
     $scope.edit = function(id) {
