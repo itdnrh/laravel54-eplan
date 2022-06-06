@@ -85,45 +85,45 @@
 
 <div class="row">
     <div class="col-md-4">
-        หน้า @{{ plans_pager.current_page }} จาก @{{ plans_pager.last_page }}
+        หน้า @{{ supports_pager.current_page }} จาก @{{ supports_pager.last_page }}
     </div>
     <div class="col-md-4" style="text-align: center;">
-        จำนวน @{{ plans_pager.total }} รายการ
+        จำนวน @{{ supports_pager.total }} รายการ
     </div>
     <div class="col-md-4">
-        <ul class="pagination pagination-sm no-margin pull-right" ng-show="plans_pager.last_page > 1">
-            <li ng-if="plans_pager.current_page !== 1">
-                <a href="#" ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1', 2, setPlans)" aria-label="Previous">
+        <ul class="pagination pagination-sm no-margin pull-right" ng-show="supports_pager.last_page > 1">
+            <li ng-if="supports_pager.current_page !== 1">
+                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.path+ '?page=1', 2, setSupports)" aria-label="Previous">
                     <span aria-hidden="true">First</span>
                 </a>
             </li>
         
-            <li ng-class="{'disabled': (plans_pager.current_page==1)}">
-                <a href="#" ng-click="getPlansWithUrl($event, plans_pager.prev_page_url, 2, setPlans)" aria-label="Prev">
+            <li ng-class="{'disabled': (supports_pager.current_page==1)}">
+                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.prev_page_url, 2, setSupports)" aria-label="Prev">
                     <span aria-hidden="true">Prev</span>
                 </a>
             </li>
 
-            <!-- <li ng-repeat="i in debtPages" ng-class="{'active': plans_pager.current_page==i}">
-                <a href="#" ng-click="getPlansWithUrl(plans_pager.path + '?page=' +i)">
+            <!-- <li ng-repeat="i in debtPages" ng-class="{'active': supports_pager.current_page==i}">
+                <a href="#" ng-click="getSupportWithUrl(supports_pager.path + '?page=' +i)">
                     @{{ i }}
                 </a>
             </li> -->
 
-            <!-- <li ng-if="plans_pager.current_page < plans_pager.last_page && (plans_pager.last_page - plans_pager.current_page) > 10">
-                <a href="#" ng-click="plans_pager.path">
+            <!-- <li ng-if="supports_pager.current_page < supports_pager.last_page && (supports_pager.last_page - supports_pager.current_page) > 10">
+                <a href="#" ng-click="supports_pager.path">
                     ...
                 </a>
             </li> -->
 
-            <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
-                <a href="#" ng-click="getPlansWithUrl($event, plans_pager.next_page_url, 2, setPlans)" aria-label="Next">
+            <li ng-class="{'disabled': (supports_pager.current_page==supports_pager.last_page)}">
+                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.next_page_url, 2, setSupports)" aria-label="Next">
                     <span aria-hidden="true">Next</span>
                 </a>
             </li>
 
-            <li ng-if="plans_pager.current_page !== plans_pager.last_page">
-                <a href="#" ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, 2, setPlans)" aria-label="Previous">
+            <li ng-if="supports_pager.current_page !== supports_pager.last_page">
+                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.path+ '?page=' +supports_pager.last_page, 2, setSupports)" aria-label="Previous">
                     <span aria-hidden="true">Last</span>
                 </a>
             </li>
