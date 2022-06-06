@@ -23,7 +23,10 @@
             getAll();
             initForms({
                 departs: {{ $departs }},
-            }, 4);
+                strategics: {{ $strategics }},
+                strategies: {{ $strategies }},
+                kpis: {{ $kpis }},
+            }, '');
         "
     >
 
@@ -54,20 +57,60 @@
                                     </select>
                                 </div><!-- /.form group -->
                                 <div class="form-group col-md-6">
-                                    <label>ประเภท</label>
+                                    <label>ยุทธศาสตร์</label>
                                     <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
+                                        id="cboStrategic"
+                                        name="cboStrategic"
+                                        ng-model="cboStrategic"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="onStrategicSelected(cboStrategic); getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                        </option>
+                                        @foreach($strategics as $strategic)
+
+                                            <option value="{{ $strategic->id }}">
+                                                {{ $strategic->strategic_name }}
+                                            </option>
+
+                                        @endforeach
                                     </select>
                                 </div><!-- /.form group -->
+                            </div><!-- /.row -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลยุทธ์</label>
+                                        <select
+                                            id="cboStrategy"
+                                            name="cboStrategy"
+                                            ng-model="cboStrategy"
+                                            class="form-control"
+                                            ng-change="onStrategySelected(cboStrategy); getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="strategy in forms.strategies" value="@{{ strategy.id }}">
+                                                @{{ strategy.strategy_name }}
+                                            </option>
+                                        </select>
+                                    </div><!-- /.form group -->
+                                </div><!-- /.col-md-6 -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ตัวชี้วัด</label>
+                                        <select
+                                            id="cboKpi"
+                                            name="cboKpi"
+                                            ng-model="cboKpi"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
+                                                @{{ kpi.kpi_name }}
+                                            </option>
+                                        </select>
+                                    </div><!-- /.form group -->
+                                </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
                             <div class="row">
                                 <div class="col-md-6">
@@ -106,6 +149,20 @@
                                                 @{{ dep.depart_name }}
                                             </option>
                                         </select>
+                                    </div><!-- /.form group -->
+                                </div><!-- /.col-md-6 -->
+                            </div><!-- /.row -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>ชื่อตัวชี้วัด</label>
+                                        <input
+                                            id="txtKeyword"
+                                            name="txtKeyword"
+                                            ng-model="txtKeyword"
+                                            class="form-control"
+                                            ng-keyup="getAll($event)"
+                                        >
                                     </div><!-- /.form group -->
                                 </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->

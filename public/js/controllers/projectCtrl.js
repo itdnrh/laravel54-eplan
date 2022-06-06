@@ -1,7 +1,14 @@
 app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
+
     $scope.projects = [];
+    $scope.cboStrategic = '';
+    $scope.cboStrategy = '';
+    $scope.cboKpi = '';
+    $scope.cboFaction = '';
+    $scope.cboDepart = '';
+    $scope.txtKeyword = '';
     $scope.pager = null;
     $scope.persons = [];
     $scope.persons_pager = null;
@@ -57,14 +64,17 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.projects = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+        let strategy = $scope.cboStrategy === '' ? '' : $scope.cboStrategy;
+        let kpi = $scope.cboKpi === '' ? '' : $scope.cboKpi;
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${CONFIG.apiUrl}/projects?year=${year}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/projects?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
         .then(function(res) {
-            console.log(res);
             $scope.setProjects(res);
 
             $scope.loading = false;
