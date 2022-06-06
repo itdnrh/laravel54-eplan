@@ -133,6 +133,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('approvals/materials', 'ApprovalController@materials');
     Route::get('approvals/services', 'ApprovalController@services');
     Route::get('approvals/constructs', 'ApprovalController@constructs');
+    Route::get('approvals/projects', 'ApprovalController@projects');
     Route::post('approvals', 'ApprovalController@approve');
     Route::post('approvals/{year}/year', 'ApprovalController@approveAll');
     Route::post('approvals/lists', 'ApprovalController@approveByList');

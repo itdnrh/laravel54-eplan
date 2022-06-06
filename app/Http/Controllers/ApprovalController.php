@@ -16,6 +16,11 @@ use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
+use App\Models\Project;
+use App\Models\BudgetSource;
+use App\Models\Strategic;
+use App\Models\Strategy;
+use App\Models\Kpi;
 
 class ApprovalController extends Controller
 {
@@ -57,6 +62,17 @@ class ApprovalController extends Controller
     {
         return view('approvals.constructs-list', [
             "categories"    => ItemCategory::all(),
+            "factions"      => $this->factions,
+            "departs"       => Depart::all(),
+        ]);
+    }
+
+    public function projects()
+    {
+        return view('approvals.projects-list', [
+            "strategics"    => Strategic::all(),
+            "strategies"    => Strategy::all(),
+            "kpis"          => Kpi::all(),
             "factions"      => $this->factions,
             "departs"       => Depart::all(),
         ]);
