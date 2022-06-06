@@ -1,10 +1,10 @@
 app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.projects = [];
+    $scope.plans = [];
     $scope.pager = null;
 
-    $scope.project = {
+    $scope.plan = {
         project_id: '',
         year: '',
         in_plan: 'I',
@@ -46,8 +46,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         //     });
         // });
 
-    const clearProjectObj = function() {
-        $scope.project = {
+    const clearPlanObj = function() {
+        $scope.plan = {
             project_id: '',
             year: '',
             in_plan: 'I',
@@ -70,15 +70,6 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         };
     };
 
-    $scope.calculateSumPrice = async function() {
-        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
-        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
-
-        $scope.asset.sum_price = price * amount;
-        $('#sum_price').val(price * amount);
-    };
-
-    /** TODO: Duplicated function */
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.projects = [];
@@ -91,7 +82,6 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
         $http.get(`${CONFIG.baseUrl}/api/projects?year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
-            console.log(res);
             $scope.setProjects(res);
 
             $scope.loading = false;
@@ -104,21 +94,30 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.setProjects = function(res) {
         const { data, ...pager } = res.data.projects;
 
-        $scope.projects = data;
+        // $scope.projects = data;
+        $scope.plans = [
+            {
+                id: 1,
+                name: 'ค่าพัฒนาบุคลากร, อบรม, ไปราชการ',
+                type: { id: 1, name: 'ค่าใช้จ่ายจากการดำเนินงาน' },
+                total: 1111,
+            },
+            {
+                id: 2,
+                name: 'ค่าใช้จ่ายตามโครงการ',
+                type: { id: 1, name: 'ค่าใช้จ่ายจากการดำเนินงาน' },
+                total: 1111,
+            },
+            {
+                id: 2,
+                name: 'ค่าจ้างเหมาทำความสะอาด',
+                type: { id: 2, name: 'ค่าจ้างเหมา' },
+                total: 1111,
+            },
+        ];
         $scope.pager = pager;
-    };
 
-    $scope.onSelectedItem = function(event, item) {
-        if (item) {
-            $('#item_id').val(item.id);
-            $scope.asset.item_id = item.id;
-            $scope.asset.desc = item.item_name;
-            $scope.asset.price_per_unit = item.price_per_unit;
-            $scope.asset.unit_id = item.unit_id.toString();
-            $scope.asset.category_id = item.category_id.toString();
-        }
-
-        $('#items-list').modal('hide');
+        console.log($scope.plans);
     };
 
     $scope.getDataWithUrl = function(e, url, cb) {
