@@ -172,13 +172,25 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                        <div class="row">
+                        <div class="row" style="display: flex; align-items: center;">
                             <div class="col-md-6">
                                 <h3 class="box-title">โครงการ</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/projects/add') }}" class="btn btn-primary pull-right">
-                                    เพิ่มโครงการ
+                                <a 
+                                    href="#"
+                                    class="btn btn-primary pull-right"
+                                    ng-click="approveAll()"
+                                >
+                                    อนุมัติทั้งหมด
+                                </a>
+                                <a
+                                    href="#"
+                                    class="btn btn-success pull-right"
+                                    style="margin-right: 5px;"
+                                    ng-click="approveByList()"
+                                >
+                                    อนุมัติรายการที่เลือก
                                 </a>
                             </div>
                         </div>
