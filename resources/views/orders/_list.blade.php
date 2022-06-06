@@ -34,10 +34,10 @@
             <td style="text-align: center;">@{{ order.net_total | currency:'':0 }}</td>
             <td style="text-align: center;">
                 <span class="label label-primary" ng-show="order.status == 0">
-                    อยู่ระหว่างดำเนินการ
+                    อยู่ระหว่างจัดซื้อจัดจ้าง
                 </span>
                 <span class="label label-info" ng-show="order.status == 1">
-                    อนุมัติ
+                    อนุมัติจัดซื้อจัดจ้าง
                 </span>
                 <span class="label bg-maroon" ng-show="order.status == 2">
                     ตรวจรับแล้วบางงวด
