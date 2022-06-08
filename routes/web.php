@@ -138,6 +138,15 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('approvals/{year}/year', 'ApprovalController@approveAll');
     Route::post('approvals/lists', 'ApprovalController@approveByList');
     
+    /** จ้างซ่อมแซม/บำรุงรักษา */
+    Route::post('repairs/validate', 'RepairController@formValidate');
+    Route::get('repairs/list', 'RepairController@index');
+    Route::get('repairs/detail/{id}', 'RepairController@detail');
+    Route::get('repairs/add', 'RepairController@create');
+    Route::post('repairs/store', 'RepairController@store');
+    Route::post('repairs/send', 'RepairController@send');
+    Route::get('repairs/{id}/print', 'RepairController@printForm');
+
     /** การขอสนับสนุน */
     Route::post('supports/validate', 'SupportController@formValidate');
     Route::get('supports/list', 'SupportController@index');

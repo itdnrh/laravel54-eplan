@@ -31,4 +31,8 @@ Route::group(['middleware' => 'api'], function () {
     
     /** เลขที่เอกสาร */
     Route::get('runnings/{docType}/doc-type', 'RunningController@getByDocType');
+
+    /** จ้างซ่อมแซม/บำรุงรักษา */
+    Route::get('repairs', 'RepairController@getAll');
+    Route::get('repairs/{id}', 'RepairController@getById');
 });
