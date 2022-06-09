@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="supportCtrl"
+        ng-controller="repairCtrl"
         ng-init="initForms({
             departs: {{ $departs }},
             divisions: {{ $divisions }},
@@ -165,30 +165,18 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
-                                                <th style="width: 8%; text-align: center">เลขที่</th>
                                                 <th>รายการ</th>
+                                                <th style="width: 4%; text-align: center">Spec</th>
                                                 <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
                                                 <th style="width: 12%; text-align: center">หน่วยนับ</th>
                                                 <th style="width: 8%; text-align: center">จำนวน</th>
                                                 <th style="width: 10%; text-align: center">รวมเป็นเงิน</th>
-                                                <th style="width: 8%; text-align: center">Actions</th>
+                                                <th style="width: 5%; text-align: center"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td style="text-align: center">#</td>
-                                                <td style="text-align: center">
-                                                    <!-- เลขที่ -->
-                                                    <input
-                                                        type="text"
-                                                        id="plan_no"
-                                                        name="plan_no"
-                                                        class="form-control"
-                                                        style="text-align: center"
-                                                        ng-model="newItem.plan_no"
-                                                        readonly
-                                                    />
-                                                </td>
                                                 <td>
                                                     <!-- รายการ -->
                                                     <div class="input-group">
@@ -226,6 +214,12 @@
                                                     </div>
                                                 </td>
                                                 <td style="text-align: center">
+                                                    <!-- spec -->
+                                                    <a href="#" class="btn bg-gray" ng-click="showSpecForm(detail)">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                                <td style="text-align: center">
                                                     <!-- ราคาต่อหน่วย -->
                                                     <input
                                                         type="text"
@@ -234,7 +228,7 @@
                                                         class="form-control"
                                                         style="text-align: center"
                                                         ng-model="newItem.price_per_unit"
-                                                        ng-change="calculateSumPrice()"
+                                                        ng-change="calculateSumPrice(newItem.price_per_unit)"
                                                     />
                                                 </td>
                                                 <td style="text-align: center">
@@ -262,7 +256,6 @@
                                                         class="form-control"
                                                         style="text-align: center"
                                                         ng-model="newItem.amount"
-                                                        ng-change="calculateSumPrice()"
                                                     />
                                                 </td>
                                                 <td style="text-align: center">
@@ -281,7 +274,7 @@
                                                         href="#"
                                                         class="btn btn-primary btn-sm"
                                                         ng-show="!editRow"
-                                                        ng-click="addOrderItem()"
+                                                        ng-click="addItem()"
                                                     >
                                                         <i class="fa fa-plus"></i>
                                                     </a>
@@ -296,9 +289,9 @@
                                             </tr>
                                             <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td style="text-align: center">@{{ detail.plan_no }}</td>
-                                                <td>
-                                                    @{{ detail.plan_detail }}
+                                                <td colspan="2">
+                                                    @{{ detail.desc }}
+                                                    <p style="margin: 0;">@{{ detail.plan_detail }}</p>
                                                     <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                 </td>
                                                 <td style="text-align: center">
@@ -323,7 +316,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="text-align: right;">รวมเป็นเงิน</td>
+                                                <td colspan="5" style="text-align: right;">รวมเป็นเงิน</td>
                                                 <td style="text-align: center;">
                                                     <input
                                                         type="text"
@@ -550,8 +543,9 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('supports._plans-list')
+        @include('repairs._plans-list')
         @include('shared._persons-list')
+        @include('repairs._spec-form')
 
     </section>
 

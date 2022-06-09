@@ -32,4 +32,9 @@ class Plan extends Model
     {
         return $this->belongsTo(Division::class, 'division_id', 'ward_id');
     }
+
+    public function subitems()
+    {
+        return $this->hasMany(SubItem::class, 'plan_id', 'id');
+    }
 }

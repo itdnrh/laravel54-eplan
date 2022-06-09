@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
+use App\Models\Support;
+use App\Models\SupportDetail;
 use App\Models\Plan;
 use App\Models\PlanType;
 use App\Models\SubItem;
@@ -162,7 +164,7 @@ class RepairController extends Controller
         ]);
     }
 
-    public function add()
+    public function create()
     {
         return view('repairs.add', [
             "planTypes"     => PlanType::all(),
@@ -199,11 +201,21 @@ class RepairController extends Controller
                     $detail = new SupportDetail;
                     $detail->support_id     = $supportId;
                     $detail->plan_id        = $item['plan_id'];
+                    $detail->desc           = $item['desc'];
                     $detail->price_per_unit = $item['price_per_unit'];
                     $detail->unit_id        = $item['unit_id'];
                     $detail->amount         = $item['amount'];
                     $detail->sum_price      = $item['sum_price'];
                     $detail->save();
+
+                    $subitem = new SubItem;
+                    $subitem->plan_id           = $item['plan_id'];
+                    $subitem->desc              = $item['desc'];
+                    $subitem->price_per_unit    = $item['price_per_unit'];
+                    $subitem->unit_id           = $item['unit_id'];
+                    $subitem->amount            = $item['amount'];
+                    $subitem->sum_price         = $item['sum_price'];
+                    $subitem->save();
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */

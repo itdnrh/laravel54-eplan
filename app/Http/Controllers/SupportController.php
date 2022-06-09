@@ -129,7 +129,7 @@ class SupportController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->paginate(10);
+                    ->paginate(20);
 
         return [
             "supports" => $supports
