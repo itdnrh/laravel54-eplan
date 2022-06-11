@@ -31,10 +31,11 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
         { id: '8', name: 'วัสดุการเกษตร' },
         { id: '9', name: 'วัสดุก่อสร้าง' },
         { id: '10', name: 'วัสดุวิทยาศาสตร์' },
-        { id: '11', name: 'วัสดุตีพิมพ์ แบบพิมพ์ ,สติ๊กเกอร์' },
+        { id: '11', name: 'วัสดุตีพิมพ์,แบบพิมพ์,สติ๊กเกอร์' },
         { id: '12', name: 'วัสดุผ้าและเครื่องแต่งกาย' },
         { id: '13', name: 'วัสดุซ่อมบำรุง' },
         { id: '14', name: 'เวชภัณฑ์มิใช่ยา' },
+        { id: '14', name: 'ยาและสมุนไพร' },
     ];
 
     $('#cboAssetDate').datepicker({

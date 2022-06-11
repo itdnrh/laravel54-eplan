@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="supportCtrl" ng-init="getAll();">
+    <section class="content" ng-controller="repairCtrl" ng-init="getAll();">
 
         <div class="row">
             <div class="col-md-12">

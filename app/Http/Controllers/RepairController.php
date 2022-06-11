@@ -9,6 +9,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Support;
 use App\Models\SupportDetail;
 use App\Models\Plan;
+use App\Models\PlanItem;
 use App\Models\PlanType;
 use App\Models\SubItem;
 use App\Models\Item;
@@ -93,7 +94,7 @@ class RepairController extends Controller
 
         $year   = $req->get('year');
         $type   = $req->get('type');
-        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        // $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
         if($status != '') {
@@ -108,18 +109,24 @@ class RepairController extends Controller
             }
         }
 
-        $supports = Support::with('planType','depart','division')
+        $plansList = PlanItem::join('plans','plans.id','=','plan_items.plan_id')
+                        ->where('plans.year', $year)
+                        ->where('plan_items.have_subitem', '1')
+                        ->pluck('plan_items.plan_id');
+
+        $supports = Support::leftJoin('support_details','support_details.support_id','=','supports.id')
+                    ->with('planType','depart','division')
                     ->with('details','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
+                    ->with('details.plan.subItems')
+                    ->whereIn('support_details.plan_id', $plansList)
+                    ->where('plan_type_id', '3')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
-                    ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plan_type_id', $type);
-                    })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
-                    })
+                    // ->when(!empty($depart), function($q) use ($depart) {
+                    //     $q->where('depart_id', $depart);
+                    // })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
