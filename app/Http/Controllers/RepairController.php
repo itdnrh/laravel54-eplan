@@ -85,6 +85,61 @@ class RepairController extends Controller
         ]);
     }
 
+    public function search(Request $req)
+    {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
+        $year   = $req->get('year');
+        $type   = $req->get('type');
+        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $status = $req->get('status');
+
+        if($status != '') {
+            if (preg_match($pattern, $status, $matched) == 1) {
+                $arrStatus = explode($matched[0], $status);
+
+                if ($matched[0] != '-' && $matched[0] != '&') {
+                    array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+                }
+            } else {
+                array_push($conditions, ['status', '=', $status]);
+            }
+        }
+
+        $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
+                        ->join('plans','plans.id','=','plan_items.plan_id')
+                        ->where('plans.year', $year)
+                        ->where('plan_items.have_subitem', '1')
+                        ->pluck('support_details.support_id');
+
+        $supports = Support::with('planType','depart','division')
+                    ->with('details','details.plan','details.plan.planItem.unit')
+                    ->with('details.plan.planItem','details.plan.planItem.item')
+                    ->with('details.plan.subItems')
+                    ->where('plan_type_id', '3')
+                    ->whereIn('id', $supportsList)
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    // ->when(!empty($depart), function($q) use ($depart) {
+                    //     $q->where('depart_id', $depart);
+                    // })
+                    ->when(count($conditions) > 0, function($q) use ($conditions) {
+                        $q->where($conditions);
+                    })
+                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                        $q->whereBetween('status', $arrStatus);
+                    })
+                    ->paginate(10);
+
+        return [
+            "supports" => $supports
+        ];
+    }
+
     public function getAll(Request $req)
     {
         $matched = [];
@@ -109,18 +164,18 @@ class RepairController extends Controller
             }
         }
 
-        $plansList = PlanItem::join('plans','plans.id','=','plan_items.plan_id')
+        $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
+                        ->join('plans','plans.id','=','plan_items.plan_id')
                         ->where('plans.year', $year)
                         ->where('plan_items.have_subitem', '1')
-                        ->pluck('plan_items.plan_id');
+                        ->pluck('support_details.support_id');
 
-        $supports = Support::leftJoin('support_details','support_details.support_id','=','supports.id')
-                    ->with('planType','depart','division')
+        $supports = Support::with('planType','depart','division')
                     ->with('details','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->with('details.plan.subItems')
-                    ->whereIn('support_details.plan_id', $plansList)
                     ->where('plan_type_id', '3')
+                    ->whereIn('id', $supportsList)
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })

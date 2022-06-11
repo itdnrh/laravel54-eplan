@@ -251,7 +251,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('supports._support-details')
+        @include('repairs._support-details')
 
     </section>
 

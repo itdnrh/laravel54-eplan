@@ -141,6 +141,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** จ้างซ่อมแซม/บำรุงรักษา */
     Route::post('repairs/validate', 'RepairController@formValidate');
     Route::get('repairs/list', 'RepairController@index');
+    Route::get('repairs/search', 'RepairController@search');
     Route::get('repairs/detail/{id}', 'RepairController@detail');
     Route::get('repairs/add', 'RepairController@create');
     Route::post('repairs/store', 'RepairController@store');
