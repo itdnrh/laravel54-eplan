@@ -81,63 +81,6 @@
 						</ul>
 					</li>
 
-					<!-- <li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
-						<a href="#">
-							<i class="fa fa-bolt"></i>
-							<span>ค่าสาธารณูปโภค</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu" ng-style="{ 'display': ['utilities'].includes(menu) ? 'block' : 'none' }">
-							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/utilities/electricity') }}">
-									<i class="fa fa-circle-o"></i> ค่าไฟฟ้า
-								</a>
-							</li>
-							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/utilities/plumbing') }}">
-									<i class="fa fa-circle-o"></i> ค่าน้ำประปา
-								</a>
-							</li>
-							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/utilities/telephone') }}">
-									<i class="fa fa-circle-o"></i> ค่าโทรศัพท์
-								</a>
-							</li>
-						</ul>
-					</li> -->
-					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
-					@if (
-						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2 ||
-						count(Auth::user()->delegations) > 0
-					)
-						<!-- <li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
-							<a href="#">
-								<i class="fa fa-server"></i>
-								<span>รายการย่อย</span>
-								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
-								<li ng-class="{ 'active': ['reparations','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/plans/reparations') }}">
-										<i class="fa fa-circle-o"></i> จ้างซ่อมบำรุง
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'receive' }">
-									<a href="{{ url('materials/list') }}">
-										<i class="fa fa-circle-o"></i> วัสดุ (ในคลัง)
-									</a>
-								</li>
-							</ul>
-						</li> -->
-					@endif
-
 					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
@@ -282,7 +225,51 @@
 						</li>
 					@endif
 
-					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1309900322504' ||
+						Auth::user()->memberOf->duty_id == 1 ||
+						Auth::user()->memberOf->duty_id == 2 ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
+							<a href="#">
+								<i class="fa fa-bolt"></i>
+								<span>ค่าสาธารณูปโภค</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu" ng-style="{ 'display': ['utilities'].includes(menu) ? 'block' : 'none' }">
+								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/utilities/list/1') }}">
+										<i class="fa fa-circle-o"></i> ค่าไฟฟ้า
+									</a>
+								</li>
+								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/utilities/list/2') }}">
+										<i class="fa fa-circle-o"></i> ค่าน้ำประปา
+									</a>
+								</li>
+								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/utilities/list/3') }}">
+										<i class="fa fa-circle-o"></i> ค่าโทรศัพท์
+									</a>
+								</li>
+								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/utilities/list/4') }}">
+										<i class="fa fa-circle-o"></i> ค่าอินเตอร์เน็ต
+									</a>
+								</li>
+								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/utilities/list/5') }}">
+										<i class="fa fa-circle-o"></i> ค่าไฟฟ้าโซล่าเซลล์
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
+
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
 						Auth::user()->person_id == '1309900322504' ||

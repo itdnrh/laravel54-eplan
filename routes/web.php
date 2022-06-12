@@ -185,6 +185,17 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('monthly/{id}/update', 'MonthlyController@update');
     Route::post('monthly/{id}/delete', 'MonthlyController@delete');
 
+    /** ค่าสาธารณูปโภค */
+    Route::post('utilities/validate', 'UtilityController@formValidate');
+    Route::get('utilities/list/{type}', 'UtilityController@index');
+    Route::get('utilities/search', 'UtilityController@search');
+    Route::get('utilities/add', 'UtilityController@create');
+    Route::post('utilities/store', 'UtilityController@store');
+    Route::get('utilities/{id}/edit', 'UtilityController@edit');
+    Route::get('utilities/{id}/detail', 'UtilityController@detail');
+    Route::post('utilities/{id}/update', 'UtilityController@update');
+    Route::post('utilities/{id}/delete', 'UtilityController@delete');
+
     /** ตรวจรับพัสดุ */
     Route::post('inspections/validate', 'InspectionController@formValidate');
     Route::get('orders/inspect', 'InspectionController@index');
