@@ -4,6 +4,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.plans = [];
     $scope.pager = null;
 
+    $scope.summary = [];
+
     $scope.cboYear = (moment().year() + 543).toString();
     $scope.cboExpense = '';
     $scope.cboFaction = '';
@@ -68,6 +70,33 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&expense=${expense}&status=${status}&depart=${depart}`)
         .then(function(res) {
             $scope.setMonthlys(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getSummary = function(event) {
+        $scope.loading = true;
+        $scope.summary = [];
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let expense = $scope.cboExpense === '' ? '' : $scope.cboExpense;
+        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+
+        $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?expense=${expense}&status=${status}&depart=${depart}`)
+        .then(function(res) {
+            const { monthly, budget } = res.data;
+
+            $scope.summary = monthly.map(mon => {
+                const summary = budget.find(b => b.expense_id === mon.expense_id);
+                mon.budget = summary.budget;
+
+                return mon;
+            });
 
             $scope.loading = false;
         }, function(err) {

@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            สรุปผลงาน
+            สรุปผลการดำเนินงานแผนเงินบำรุง
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">สรุปผลงาน</li>
+            <li class="breadcrumb-item active">สรุปผลการดำเนินงานแผนเงินบำรุง</li>
         </ol>
     </section>
 
@@ -19,13 +19,7 @@
     <section
         class="content"
         ng-controller="monthlyCtrl"
-        ng-init="
-            getAll();
-            initForms({
-                departs: {{ $departs }},
-                categories: {{ $categories }}
-            }, 4);
-        "
+        ng-init="getSummary();"
     >
 
         <div class="row">
@@ -46,69 +40,35 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getSummary()"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
-                                <div class="form-group col-md-6">
-                                    <label>ประเภท</label>
-                                    <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
-                                        class="form-control"
-                                        ng-change="getAll($event)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.row -->
-                            <div class="row">
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>กลุ่มภารกิจ</label>
+                                        <label>รายการ</label>
                                         <select
-                                            id="cboFaction"
-                                            name="cboFaction"
-                                            ng-model="cboFaction"
+                                            id="cboExpense"
+                                            name="cboExpense"
+                                            ng-model="cboExpense"
+                                            ng-change="getAll()"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            @foreach($factions as $faction)
+                                            @foreach($expenses as $expense)
 
-                                                <option value="{{ $faction->faction_id }}">
-                                                    {{ $faction->faction_name }}
+                                                <option value="{{ $expense->id }}">
+                                                    {{ $expense->name }}
                                                 </option>
 
                                             @endforeach
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>กลุ่มงาน</label>
-                                        <select
-                                            id="cboDepart"
-                                            name="cboDepart"
-                                            ng-model="cboDepart"
-                                            class="form-control select2"
-                                            ng-change="getAll($event)"
-                                        >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
-                                                @{{ dep.depart_name }}
-                                            </option>
-                                        </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                    </div>
+                                </div>
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
@@ -118,10 +78,10 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">สรุปผลงาน</h3>
+                                <h3 class="box-title">สรุปผลการดำเนินงานแผนเงินบำรุง</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/constructs/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/monthly/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
@@ -147,7 +107,6 @@
                                     <th style="width: 8%; text-align: center;" colspan="13">ผลการดำเนินงาน</th>
                                     <th style="width: 5%; text-align: center;" rowspan="2">คงเหลือ</th>
                                     <th style="width: 5%; text-align: center;" rowspan="2">ใช้ไปร้อยละ</th>
-                                    <th style="width: 8%; text-align: center;" rowspan="2">Actions</th>
                                 </tr>
                                 <tr>
                                     <th style="width: 5%; text-align: center;">ต.ค.</th>
@@ -166,120 +125,60 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in plans">
-                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td>
-                                        <h5 style="margin: 0; font-weight: bold;">@{{ plan.type.name }}</h5>
-                                        <p style="margin: 0;">
-                                            @{{ plan.name }}
-                                        </p>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
-                                            class="btn btn-default btn-xs" 
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="asset.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
+                                <tr ng-repeat="(index, sum) in summary" style="font-size: 12px;">
+                                    <td style="text-align: center;">@{{ index+1 }}</td>
+                                    <td>@{{ sum.name }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.budget | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.total | currency:'':0 }}
+                                        @{{ sum.oct_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
                                     <td style="text-align: center;">
-                                        <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/constructs/detail') }}/@{{ plan.id }}"
-                                                class="btn btn-primary btn-xs" 
-                                                title="รายละเอียด">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                            <a  ng-click="edit(plan.id)"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
-                                                class="btn btn-warning btn-xs"
-                                                title="แก้ไขรายการ">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <form
-                                                id="frmDelete"
-                                                method="POST"
-                                                action="{{ url('/constructs/delete') }}"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
-                                            >
-                                                {{ csrf_field() }}
-                                                <button
-                                                    type="submit"
-                                                    ng-click="delete($event, plan.id)"
-                                                    class="btn btn-danger btn-xs"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>             
+                                        @{{ sum.nov_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.dec_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.jan_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.feb_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.mar_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.apr_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.may_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.jun_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.jul_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.aug_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.sep_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ sum.budget - sum.total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
-                            </div>
-                            <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
-                            </div>
-                            <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                                    <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setConstructs)" aria-label="Previous">
-                                            <span aria-hidden="true">First</span>
-                                        </a>
-                                    </li>
-                                
-                                    <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setConstructs)" aria-label="Prev">
-                                            <span aria-hidden="true">Prev</span>
-                                        </a>
-                                    </li>
-
-                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl(pager.path + '?page=' +i)">
-                                            @{{ i }}
-                                        </a>
-                                    </li> -->
-
-                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                        <a href="#" ng-click="pager.path">
-                                            ...
-                                        </a>
-                                    </li> -->
-
-                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setConstructs)" aria-label="Next">
-                                            <span aria-hidden="true">Next</span>
-                                        </a>
-                                    </li>
-
-                                    <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setConstructs)" aria-label="Previous">
-                                            <span aria-hidden="true">Last</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- /.row -->
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
