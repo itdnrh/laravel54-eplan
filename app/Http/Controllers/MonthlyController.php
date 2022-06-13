@@ -69,13 +69,19 @@ class MonthlyController extends Controller
     public function index()
     {
         return view('monthly.list', [
-            "categories"    => ItemCategory::all(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
 
-    
+    public function summary()
+    {
+        return view('monthly.summary', [
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"       => Depart::all(),
+        ]);
+    }
+
     public function search(Request $req)
     {
         $matched = [];

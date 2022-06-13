@@ -213,12 +213,12 @@
 							<ul class="treeview-menu">
 								<li ng-class="{ 'active': submenu == 'list' }">
 									<a href="{{ url('monthly/list') }}">
-										<i class="fa fa-circle-o"></i> สรุปผลงาน
+										<i class="fa fa-circle-o"></i> รายการ
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'inspect' }">
-									<a href="{{ url('monthly/add') }}">
-										<i class="fa fa-circle-o"></i> บันทึกรายการ
+								<li ng-class="{ 'active': submenu == 'summary' }">
+									<a href="{{ url('monthly/summary') }}">
+										<i class="fa fa-circle-o"></i> สรุปผลงาน
 									</a>
 								</li>
 							</ul>

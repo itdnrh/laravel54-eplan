@@ -178,6 +178,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** ควบคุมกำกับติดตาม */
     Route::post('monthly/validate', 'MonthlyController@formValidate');
     Route::get('monthly/list', 'MonthlyController@index');
+    Route::get('monthly/summary', 'MonthlyController@summary');
     Route::get('monthly/search', 'MonthlyController@search');
     Route::get('monthly/add', 'MonthlyController@create');
     Route::post('monthly/store', 'MonthlyController@store');
