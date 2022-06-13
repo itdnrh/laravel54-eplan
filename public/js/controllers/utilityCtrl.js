@@ -14,36 +14,17 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.persons = [];
     $scope.persons_pager = null;
 
-    $scope.support = {
-        doc_no: '',
-        doc_date: '',
-        topic: '',
-        depart_id: '',
-        division_id: '',
+    $scope.utility = {
+        bill_no: '',
+        bill_date: '',
+        supplier_id: '',
         year: '',
-        plan_type_id: '',
-        total: '',
-        contact_detail: '',
-        contact_person: '',
-        reason: '',
+        month: '',
+        utility_type_id: '',
+        desc: '',
+        quantity: '',
+        net_total: '',
         remark: '',
-        details: [],
-        spec_committee: [],
-        env_committee: [],
-        insp_committee: [],
-    };
-
-    $scope.newItem = {
-        plan_no: '',
-        plan_detail: '',
-        plan_depart: '',
-        plan_id: '',
-        item_id: '',
-        price_per_unit: '',
-        unit: null,
-        unit_id: '',
-        amount: '',
-        sum_price: ''
     };
 
     /** ============================== Init Form elements ============================== */
@@ -55,7 +36,7 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         todayBtn: true,
         todayHighlight: true
     };
-    $('#po_date')
+    $('#bill_date')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
         .on('show', function (e) {
@@ -65,17 +46,18 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             console.log(event.date);
         });
 
-    $scope.clearNewItem = () => {
-        $scope.newItem = {
-            plan_no: '',
-            plan_detail: '',
-            plan_depart: '',
-            plan_id: '',
-            item_id: '',
-            price_per_unit: '',
-            unit_id: '',
-            amount: '',
-            sum_price: ''
+    $scope.clearUtility = () => {
+        $scope.utility = {
+            bill_no: '',
+            bill_date: '',
+            supplier_id: '',
+            year: '',
+            month: '',
+            utility_type_id: '',
+            desc: '',
+            quantity: '',
+            net_total: '',
+            remark: '',
         };
     };
 
@@ -121,6 +103,7 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.setUtilities = function(res) {
         const { data, ...pager } = res.data.utilities;
+        console.log(data);
 
         $scope.utilities = data;
         $scope.pager = pager;
@@ -379,44 +362,13 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.sendSupport = function(e) {
-        $scope.loading = true;
-        console.log($scope.support);
-
-        $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
-        .then(function(res) {
-            $scope.loading = false;
-
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
-            } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
-            }
-        }, function(err) {
-            $scope.loading = false;
-
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
-        });
-    };
-
-    $scope.onValidateForm = function(e) {
-        e.preventDefault();
-
-        $scope.support.depart_id = $('#depart_id').val();
-        $scope.support.division_id = $('#division_id').val();
-
-        $rootScope.formValidate(e, '/supports/validate', $scope.support, 'frmNewSupport', $scope.store)
-    };
-
     $scope.store = function() {
         $scope.loading = true;
 
-        $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
+        $http.post(`${CONFIG.baseUrl}/utilities/store`, $scope.utility)
         .then(function(res) {
             $scope.loading = false;
 
-            console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
             } else {
@@ -428,9 +380,5 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
-    };
-
-    $scope.setTopicByPlanType = function(planType) {
-        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id option:selected').text().trim()}`;
     };
 });

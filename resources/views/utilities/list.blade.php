@@ -87,7 +87,7 @@
                                 <h3 class="box-title">ค่าสาธารณูปโภค</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/supports/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/utilities/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
@@ -98,75 +98,57 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 12%; text-align: center;">เลขที่บันทึก</th>
-                                    <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
-                                    <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
-                                    <th>หน่วยงาน</th>
-                                    <th style="width: 8%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 8%; text-align: center;">รายการ</th>
-                                    <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
-                                    <th style="width: 8%; text-align: center;">สถานะ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ส่งเอกสาร</th>
-                                    <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
+                                    <th style="width: 12%; text-align: center;">เลขที่บิล</th>
+                                    <th style="width: 8%; text-align: center;">วันที่บิล</th>
+                                    <th>เจ้าหนี้</th>
+                                    <th style="width: 12%; text-align: center;">ประเภท</th>
+                                    <th style="width: 20%;">รายละเอียด</th>
+                                    <th style="width: 10%; text-align: center;">ประจำเดือน</th>
+                                    <th style="width: 10%; text-align: center;">ยอดเงิน</th>
+                                    <!-- <th style="width: 8%; text-align: center;">สถานะ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, support) in supports">
+                                <tr ng-repeat="(index, utility) in utilities">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_no }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
+                                    <td style="text-align: center;">@{{ utility.bill_no }}</td>
+                                    <td style="text-align: center;">@{{ utility.bill_date | thdate }}</td>
+                                    <td>
+                                        @{{ utility.supplier.supplier_name }}
+                                    </td>
                                     <td style="text-align: center;">
-                                        @{{ support.plan_type.plan_type_name }}
+                                        @{{ utility.utility_type.name }}
                                     </td>
                                     <td>
-                                        @{{ support.depart.depart_name }}
-                                        <p style="margin: 0;" ng-show="support.division">
-                                            @{{ support.division.ward_name }}
+                                        @{{ utility.desc }}
+                                        <p ng-show="utility.quantity">
+                                            ปริมาณที่ใช้ @{{ utility.quantity | currency:'':0 }} หน่วย
                                         </p>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.year }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ support.details.length }}
-                                        <a  href="#"
-                                            ng-click="showSupportDetails(support.details)"
-                                            class="btn btn-default btn-xs" 
-                                            title="รายการ">
-                                            <i class="fa fa-clone"></i>
-                                        </a>
-                                    </td>
-                                    <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
-                                    <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="support.status == 0">
+                                    <td style="text-align: center;">@{{ utility.month }}/@{{ utility.year }}</td>
+                                    <td style="text-align: center;">@{{ utility.net_total | currency:'':0 }}</td>
+                                    <!-- <td style="text-align: center;">
+                                        <span class="label label-primary" ng-show="utility.status == 0">
                                             รอดำเนินการ
                                         </span>
-                                        <span class="label label-warning" ng-show="support.status == 1">
+                                        <span class="label label-warning" ng-show="utility.status == 1">
                                             ส่งเอกสารแล้ว
                                         </span>
-                                        <span class="label label-success" ng-show="support.status == 2">
+                                        <span class="label label-success" ng-show="utility.status == 2">
                                             รับเอกสารแล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="support.status == 9">
+                                        <span class="label label-danger" ng-show="utility.status == 9">
                                             ยกเลิก
                                         </span>
-                                    </td>
-                                    <td style="text-align: center;">@{{ support.sent_date | thdate }}</td>
-                                    <!-- <td style="text-align: center;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
-                                            class="btn btn-default btn-xs"
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="order.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
                                     </td> -->
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/supports/detail') }}/@{{ support.id }}"
+                                        <a  href="{{ url('/supports/detail') }}/@{{ utility.id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a  href="{{ url('/supports/edit') }}/@{{ support.id }}"
+                                        <a  href="{{ url('/supports/edit') }}/@{{ utility.id }}"
                                             class="btn btn-warning btn-xs"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
@@ -180,7 +162,7 @@
                                             {{ csrf_field() }}
                                             <button
                                                 type="submit"
-                                                ng-click="delete($event, support.id)"
+                                                ng-click="delete($event, utility.id)"
                                                 class="btn btn-danger btn-xs"
                                             >
                                                 <i class="fa fa-trash"></i>

@@ -12,45 +12,29 @@ use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
+use App\Models\Supplier;
 
 class UtilityController extends Controller
 {
     public function formValidate(Request $request)
     {
         $rules = [
-            'doc_no'            => 'required',
-            'doc_date'          => 'required',
-            'topic'             => 'required',
+            'bill_no'           => 'required',
+            'bill_date'         => 'required',
+            'supplier_id'       => 'required',
             'year'              => 'required',
-            'plan_type_id'      => 'required',
-            'depart_id'         => 'required',
-            'total'             => 'required',
-            'reason'            => 'required',
-            'insp_committee'    => 'required',
-            'contact_person'    => 'required',
+            'month'             => 'required',
+            'utility_type_id'   => 'required',
+            'net_total'         => 'required',
         ];
 
-        if ($request['total'] > 100000) {
-            $rules['spec_committee'] = 'required';
-        }
-
-        if ($request['total'] > 500000) {
-            $rules['env_committee'] = 'required';
-        }
-
         $messages = [
-            'doc_no.required'           => 'กรุณาระบุเลขที่เอกสาร',
-            'doc_date.required'         => 'กรุณาเลือกวันที่เอกสาร',
-            'topic.required'            => 'กรุณาระบุเรื่องเอกสาร',
-            'year.required'             => 'กรุณาเลือกปีงบประมาณ',
-            'plan_type_id.required'     => 'กรุณาเลือกประเภทพัสดุ',
-            'depart_id.required'        => 'กรุณาเลือกกลุ่มงาน',
-            'total.required'            => 'กรุณาเลือกถึงวันที่',
-            'reason.required'           => 'กรุณาระบุเหตุผลการขอสนับสนุน',
-            'spec_committee.required'   => 'กรุณาเลือกคณะกรรมการกำหนดคุณลักษณะ',
-            'insp_committee.required'   => 'กรุณาเลือกคณะกรรมการตรวจรับ',
-            'env_committee.required'    => 'กรุณาเลือกคณะกรรมการเปิดซอง/พิจารณาราคา',
-            'contact_person.required'   => 'กรุณาระบุผู้ประสานงาน',
+            'bill_no.required'          => 'กรุณาระบุเลขที่บิล',
+            'bill_date.required'        => 'กรุณาเลือกวันที่บิล',
+            'supplier_id.required'      => 'กรุณาเลือกเจ้าหนี้',
+            'year.required'             => 'กรุณาเลือกประจำเดือน',
+            'utility_type_id.required'  => 'กรุณาเลือกประเภท',
+            'net_total.required'        => 'กรุณาระบุยอดเงิน',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -85,8 +69,9 @@ class UtilityController extends Controller
         $conditions = [];
         $pattern = '/^\<|\>|\&|\-/i';
 
-        $year   = $req->get('year');
-        $type   = $req->get('type');
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $supplier   = $req->get('supplier');
         // $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         // $status = $req->get('status');
 
@@ -102,12 +87,15 @@ class UtilityController extends Controller
         //     }
         // }
 
-        $utilities = Utility::with('utilityType')
+        $utilities = Utility::with('utilityType','supplier')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('utility_type_id', $type);
+                    })
+                    ->when(!empty($supplier), function($q) use ($supplier) {
+                        $q->where('supplier_id', $supplier);
                     })
                     // ->when(!empty($depart), function($q) use ($depart) {
                     //     $q->where('depart_id', $depart);
@@ -200,9 +188,8 @@ class UtilityController extends Controller
     public function create()
     {
         return view('utilities.add', [
-            "planTypes"     => PlanType::all(),
-            "categories"    => ItemCategory::all(),
-            "units"         => Unit::all(),
+            "utilityTypes"  => UtilityType::all(),
+            "suppliers"     => Supplier::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
@@ -212,111 +199,83 @@ class UtilityController extends Controller
     public function store(Request $req)
     {
         try {
-            $support = new Support;
-            $support->doc_no            = $req['doc_no'];
-            $support->doc_date          = convThDateToDbDate($req['doc_date']);
-            $support->topic             = $req['topic'];
-            $support->year              = $req['year'];
-            $support->depart_id         = $req['depart_id'];
-            $support->division_id       = $req['division_id'];
-            $support->plan_type_id      = $req['plan_type_id'];
-            $support->total             = $req['total'];
-            $support->contact_person    = $req['contact_person'];
-            $support->reason            = $req['reason'];
-            $support->remark            = $req['remark'];
-            $support->status            = 0;
-            // $support->user_id        = $req['user_id'];
-            
-            if ($support->save()) {
-                $supportId = $support->id;
+            $utility = new Utility;
+            $utility->bill_no            = $req['bill_no'];
+            $utility->bill_date          = convThDateToDbDate($req['bill_date']);
+            $utility->year              = $req['year'];
+            $utility->month             = $req['month'];
+            $utility->supplier_id       = $req['supplier_id'];
+            $utility->utility_type_id   = $req['utility_type_id'];
+            $utility->net_total         = $req['net_total'];
+            $utility->desc              = $req['desc'];
+            $utility->quantity          = $req['quantity'];
+            $utility->remark            = $req['remark'];
+            $utility->status            = 0;
 
-                foreach($req['details'] as $item) {
-                    $detail = new SupportDetail;
-                    $detail->support_id     = $supportId;
-                    $detail->plan_id        = $item['plan_id'];
-                    $detail->price_per_unit = $item['price_per_unit'];
-                    $detail->unit_id        = $item['unit_id'];
-                    $detail->amount         = $item['amount'];
-                    $detail->sum_price      = $item['sum_price'];
-                    $detail->save();
-                }
-                
-                /** คณะกรรมการกำหนดคุณลักษณะ */
-                if (count($req['spec_committee']) > 0) {
-                    foreach($req['spec_committee'] as $spec) {
-                        $comm = new Committee;
-                        $comm->support_id           = $supportId;
-                        $comm->committee_type_id    = 1;
-                        $comm->detail               = '';
-                        $comm->year                 = $req['year'];
-                        $comm->person_id            = $spec['person_id'];
-                        $comm->save();
-                    }
-                }
-
-                /** คณะกรรมการตรวจรับ */
-                if (count($req['insp_committee']) > 0) {
-                    foreach($req['insp_committee'] as $insp) {
-                        $comm = new Committee;
-                        $comm->support_id           = $supportId;
-                        $comm->committee_type_id    = 2;
-                        $comm->detail               = '';
-                        $comm->year                 = $req['year'];
-                        $comm->person_id            = $insp['person_id'];
-                        $comm->save();
-                    }
-                }
-
-                /** คณะกรรมการเปิดซอง/พิจารณาราคา */
-                if (count($req['env_committee']) > 0) {
-                    foreach($req['env_committee'] as $env) {
-                        $comm = new Committee;
-                        $comm->support_id           = $supportId;
-                        $comm->committee_type_id    = 3;
-                        $comm->detail               = '';
-                        $comm->year                 = $req['year'];
-                        $comm->person_id            = $env['person_id'];
-                        $comm->save();
-                    }
-                }
-
+            if ($utility->save()) {
                 return [
-                    'status' => 1,
-                    'message' => 'Insertion successfully'
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully',
+                    'utility'   => $utility
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
                 ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'status' => 0,
-                'message' => 'Something went wrong!!'
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }
 
     public function edit($id)
     {
-        $order = order::with('supplier','details','details.unit')
+        $utility = Utility::with('supplier','utilityType')
                     ->where('id', $id)
                     ->first();
 
         return view('utilities.edit', [
-            "order" => $order
+            "utility" => $utility
         ]);
     }
 
     public function update(Request $req)
     {
-        $cancel = Cancellation::find($req['id']);
-        $cancel->reason         = $req['reason'];
-        $cancel->start_date     = convThDateToDbDate($req['start_date']);
-        $cancel->start_period   = '1';
-        $cancel->end_date       = convThDateToDbDate($req['end_date']);
-        $cancel->end_period     = $req['end_period'];
-        $cancel->days           = $req['days'];
-        $cancel->working_days   = $req['working_days'];
+        try {
+            $utility = new Utility;
+            $utility->bill_no            = $req['bill_no'];
+            $utility->bill_date          = convThDateToDbDate($req['bill_date']);
+            $utility->year              = $req['year'];
+            $utility->month             = $req['month'];
+            $utility->supplier_id       = $req['supplier_id'];
+            $utility->utility_type_id   = $req['utility_type_id'];
+            $utility->net_total         = $req['net_total'];
+            $utility->desc              = $req['desc'];
+            $utility->quantity          = $req['quantity'];
+            $utility->remark            = $req['remark'];
+            $utility->status            = 0;
 
-        if ($cancel->save()) {
-            return redirect('/utilities/cancel');
+            if ($utility->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully',
+                    'utility'   => $utility
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 

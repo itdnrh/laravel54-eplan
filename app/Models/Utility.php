@@ -12,4 +12,9 @@ class Utility extends Model
     {
         return $this->belongsTo(UtilityType::class, 'utility_type_id', 'id');
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
+    }
 }
