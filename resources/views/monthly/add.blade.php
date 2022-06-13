@@ -94,6 +94,7 @@
                                     <select
                                         id="expense_id"
                                         ng-model="monthly.expense_id"
+                                        ng-change="getPlanSummaryByExpense($event, monthly.year, monthly.expense_id)"
                                         class="form-control"
                                     >
                                         <option value="">เลือกรายการ</option>
@@ -121,7 +122,7 @@
                                             ng-model="monthly.total"
                                             class="form-control pull-right"
                                             tabindex="8"
-                                            ng-change="calculateSumPrice()" />
+                                            ng-change="calculateRemain(monthly.total)" />
                                     <span class="help-block" ng-show="checkValidate(monthly, 'total')">
                                         @{{ formError.errors.total[0] }}
                                     </span>

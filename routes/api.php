@@ -27,6 +27,11 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('monthly/{year}/summary', 'MonthlyController@getSummary');
     Route::get('monthly/{id}', 'MonthlyController@getById');
 
+    /** หมวดค่าใช้จ่าย */
+    Route::get('plan-summary', 'PlanSummaryController@getAll');
+    Route::get('plan-summary/{id}', 'PlanSummaryController@getById');
+    Route::get('plan-summary/{year}/{expense}', 'PlanSummaryController@getByExpense');
+
     /** การส่งเบิกเงิน */
     Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');
     

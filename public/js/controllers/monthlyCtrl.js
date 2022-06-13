@@ -11,6 +11,9 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.cboFaction = '';
     $scope.cboDepart = '';
 
+    $scope.expenseBudget = '';
+    $scope.expenseRemain = '';
+
     $scope.monthly = {
         monthly_id: '',
         year: '',
@@ -42,6 +45,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         //         event.stopPropagation();
         //     });
         // });
+
+    $('#remain').prop('disabled', true);
 
     const clearMonthly = function() {
         $scope.monthly = {
@@ -103,6 +108,27 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.getPlanSummaryByExpense = function(e, year, expense) {
+        $scope.loading = true;
+
+        $http.get(`${CONFIG.apiUrl}/plan-summary/${year}/${expense}`)
+        .then(function(res) {
+            $scope.expenseBudget = res.data.plan.budget;
+            $scope.expenseRemain = res.data.plan.remain;
+
+            $scope.monthly.remain = res.data.plan.remain;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.calculateRemain = function(total) {
+        $scope.monthly.remain = parseFloat($scope.expenseRemain) - parseFloat(total);
     };
 
     $scope.setMonthlys = function(res) {
