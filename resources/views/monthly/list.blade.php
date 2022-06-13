@@ -16,7 +16,15 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="monthlyCtrl" ng-init="getAll();">
+    <section
+        class="content"
+        ng-controller="monthlyCtrl"
+        ng-init="
+            getAll();
+            initForms({
+                departs: {{ $departs }}
+            }, '');
+        ">
 
         <div class="row">
             <div class="col-md-12">
@@ -58,6 +66,68 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>รายการ</label>
+                                        <select
+                                            id="cboExpense"
+                                            name="cboExpense"
+                                            ng-model="cboExpense"
+                                            ng-change="getAll()"
+                                            class="form-control"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($expenses as $expense)
+
+                                                <option value="{{ $expense->id }}">
+                                                    {{ $expense->name }}
+                                                </option>
+
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!-- /.row -->
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="cboFaction"
+                                            name="cboFaction"
+                                            ng-model="cboFaction"
+                                            class="form-control"
+                                            ng-change="onFactionSelected(cboFaction)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($factions as $faction)
+
+                                                <option value="{{ $faction->faction_id }}">
+                                                    {{ $faction->faction_name }}
+                                                </option>
+
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลุ่มงาน</label>
+                                        <select
+                                            id="cboDepart"
+                                            name="cboDepart"
+                                            ng-model="cboDepart"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                                                @{{ dep.depart_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
@@ -82,7 +152,7 @@
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">ประจำเดือน</th>
-                                    <th style="width: 12%; text-align: center;">ประเภท</th>
+                                    <th style="width: 15%; text-align: center;">ประเภท</th>
                                     <th>หน่วยงาน</th>
                                     <th style="width: 10%; text-align: center;">ยอดการใช้</th>
                                     <th style="width: 10%; text-align: center;">ยอดคงเหลือ</th>

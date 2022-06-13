@@ -4,6 +4,11 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.plans = [];
     $scope.pager = null;
 
+    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboExpense = '';
+    $scope.cboFaction = '';
+    $scope.cboDepart = '';
+
     $scope.monthly = {
         monthly_id: '',
         year: '',
@@ -56,11 +61,11 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let expense = $scope.cboExpense === '' ? '' : $scope.cboExpense;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&expense=${expense}&status=${status}&depart=${depart}`)
         .then(function(res) {
             $scope.setMonthlys(res);
 
