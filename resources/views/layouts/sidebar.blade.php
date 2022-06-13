@@ -173,7 +173,17 @@
 								</li>
 								<li ng-class="{ 'active': submenu == 'list' }">
 									<a href="{{ url('orders/list') }}">
-										<i class="fa fa-circle-o"></i> ใบสั่งซื้อ (P/O)
+										<i class="fa fa-circle-o"></i> ใบสั่งซื้อ/จ้าง
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'repairs-list' }">
+									<a href="{{ url('orders/repairs-list') }}">
+										<i class="fa fa-circle-o"></i> ใบสั่งจ้าง (งานซ่อม)
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'contracts-list' }">
+									<a href="{{ url('orders/contracts-list') }}">
+										<i class="fa fa-circle-o"></i> สัญญา
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'inspect' }">

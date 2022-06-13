@@ -92,7 +92,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?expense=${expense}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?expense=${expense}&depart=${depart}&status=${status}`)
         .then(function(res) {
             const { monthly, budget } = res.data;
 
