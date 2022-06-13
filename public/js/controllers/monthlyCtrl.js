@@ -4,26 +4,16 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.plans = [];
     $scope.pager = null;
 
-    $scope.plan = {
-        project_id: '',
+    $scope.monthly = {
+        monthly_id: '',
         year: '',
-        in_plan: 'I',
-        plan_no: '',
-        faction_id: '',
+        month: '',
+        expense_id: '',
+        total: '',
+        remain: '',
         depart_id: '',
-        division_id: '',
-        category_id: '',
-        item_id: '',
-        desc: '',
-        spec: '',
-        price_per_unit: '',
-        unit_id: '',
-        amount: '',
-        sum_price: '',
-        start_month: '',
-        reason: '',
+        reporter_id: '',
         remark: '',
-        owner: '',
     };
 
     /** ============================== Init Form elements ============================== */
@@ -46,27 +36,17 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         //     });
         // });
 
-    const clearPlanObj = function() {
-        $scope.plan = {
-            project_id: '',
+    const clearMonthly = function() {
+        $scope.monthly = {
+            monthly_id: '',
             year: '',
-            in_plan: 'I',
-            plan_no: '',
-            faction_id: '',
+            month: '',
+            expense_id: '',
+            total: '',
+            remain: '',
             depart_id: '',
-            division_id: '',
-            category_id: '',
-            item_id: '',
-            desc: '',
-            spec: '',
-            price_per_unit: '',
-            unit_id: '',
-            amount: '',
-            sum_price: '',
-            start_month: '',
-            reason: '',
+            reporter_id: '',
             remark: '',
-            owner: '',
         };
     };
 
@@ -186,7 +166,23 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.store = function(event, form) {
         event.preventDefault();
 
-        $(`#${form}`).submit();
+        $scope.loading = true;
+
+        $http.post(`${CONFIG.baseUrl}/monthly/store`, $scope.monthly)
+        .then(function(res) {
+            $scope.loading = false;
+
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            }
+        }, function(err) {
+            $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        });
     }
 
     $scope.edit = function(id) {
