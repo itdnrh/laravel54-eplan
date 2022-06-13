@@ -26,9 +26,9 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         todayHighlight: true
     };
 
-    $('#doc_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
+    // $('#doc_date')
+    //     .datepicker(dtpOptions)
+        // .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
         //         event.preventDefault();
@@ -52,7 +52,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.getAll = function(event) {
         $scope.loading = true;
-        $scope.projects = [];
+        $scope.plans = [];
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
@@ -60,9 +60,9 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/api/projects?year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
-            $scope.setProjects(res);
+            $scope.setMonthlys(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -71,33 +71,11 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
-    $scope.setProjects = function(res) {
-        const { data, ...pager } = res.data.projects;
+    $scope.setMonthlys = function(res) {
+        const { data, ...pager } = res.data.plans;
 
-        // $scope.projects = data;
-        $scope.plans = [
-            {
-                id: 1,
-                name: 'ค่าพัฒนาบุคลากร, อบรม, ไปราชการ',
-                type: { id: 1, name: 'ค่าใช้จ่ายจากการดำเนินงาน' },
-                total: 1111,
-            },
-            {
-                id: 2,
-                name: 'ค่าใช้จ่ายตามโครงการ',
-                type: { id: 1, name: 'ค่าใช้จ่ายจากการดำเนินงาน' },
-                total: 1111,
-            },
-            {
-                id: 2,
-                name: 'ค่าจ้างเหมาทำความสะอาด',
-                type: { id: 2, name: 'ค่าจ้างเหมา' },
-                total: 1111,
-            },
-        ];
+        $scope.plans = data;
         $scope.pager = pager;
-
-        console.log($scope.plans);
     };
 
     $scope.getDataWithUrl = function(e, url, cb) {
@@ -105,7 +83,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.projects = [];
+        $scope.plans = [];
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;

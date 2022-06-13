@@ -87,8 +87,8 @@ class MonthlyController extends Controller
         $year   = $req->get('year');
         $type   = $req->get('type');
         $cate   = $req->get('cate');
-        $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        // $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        // $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
         // if($status != '-') {
@@ -111,52 +111,40 @@ class MonthlyController extends Controller
         //                 })
         //                 ->pluck('plans.id');
 
-        // $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-        //             ->with('budget','depart','division')
-        //             ->with('planItem','planItem.unit')
-        //             ->with('planItem.item','planItem.item.category')
-        //             ->when(!empty($type), function($q) use ($type) {
-        //                 $q->where('plan_type_id', $type);
-        //             })
-        //             ->when(!empty($cate), function($q) use ($plansList) {
-        //                 $q->whereIn('id', $plansList);
-        //             })
-        //             ->when(!empty($year), function($q) use ($year) {
-        //                 $q->where('year', $year);
-        //             })
-        //             ->when(!empty($depart), function($q) use ($depart) {
-        //                 $q->where('depart_id', $depart);
-        //             })
-        //             ->when(!empty($faction), function($q) use ($departsList) {
-        //                 $q->whereIn('depart_id', $departsList);
-        //             })
-        //             ->when($status != '', function($q) use ($status) {
-        //                 $q->where('status', $status);
-        //             })
-                    // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                    //     $q->whereBetween('status', $arrStatus);
+        $plans = PlanMonthly::with('expense','depart')
+                    // ->when(!empty($type), function($q) use ($type) {
+                    //     $q->where('expense_id', $type);
                     // })
-                    // ->when(!empty($month), function($q) use ($month) {
-                    //     $sdate = $month. '-01';
-                    //     $edate = date('Y-m-t', strtotime($sdate));
-
-                    //     $q->whereBetween('leave_date', [$sdate, $edate]);
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    // ->when(!empty($depart), function($q) use ($depart) {
+                    //     $q->where('depart_id', $depart);
                     // })
+                    // ->when(!empty($faction), function($q) use ($departsList) {
+                    //     $q->whereIn('depart_id', $departsList);
+                    // })
+                    ->when($status != '', function($q) use ($status) {
+                        $q->where('status', $status);
+                    })
+                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                        $q->whereBetween('status', $arrStatus);
+                    })
                     // ->orderBy('plan_no', 'ASC')
-                    // ->paginate(10);
+                    ->paginate(10);
 
         return [
-            'projects' => $projects,
+            'plans' => $plans,
         ];
     }
 
     public function getAll()
     {
-        $projects = Project::with('kpi','depart','owner','budgetSrc')->paginate(10);
+        // $plans = PlanMonthly::with('kpi','depart','owner','budgetSrc')->paginate(10);
 
-        return [
-            'projects' => $projects,
-        ];
+        // return [
+        //     'plans' => $plans,
+        // ];
     }
 
     public function getById($id)
