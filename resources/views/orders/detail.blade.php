@@ -195,7 +195,7 @@
                     </div><!-- /.box-body -->
 
                     <div class="box-footer clearfix" style="text-align: center;">
-                        <a
+                        <!-- <a
                             href="#"
                             class="btn btn-success"
                             ng-click="showInspectForm(order)"
@@ -216,7 +216,7 @@
                             class="btn btn-danger"
                         >
                             <i class="fa fa-cubes"></i> ส่งคลังพัสดุ
-                        </a>
+                        </a> -->
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 
