@@ -234,7 +234,7 @@
                                                         class="form-control"
                                                         style="text-align: center"
                                                         ng-model="newItem.price_per_unit"
-                                                        ng-change="calculateSumPrice()"
+                                                        ng-change="calculateSumPrice(newItem.price_per_unit, newItem.amount)"
                                                     />
                                                 </td>
                                                 <td style="text-align: center">
@@ -262,7 +262,7 @@
                                                         class="form-control"
                                                         style="text-align: center"
                                                         ng-model="newItem.amount"
-                                                        ng-change="calculateSumPrice()"
+                                                        ng-change="calculateSumPrice(newItem.price_per_unit, newItem.amount)"
                                                     />
                                                 </td>
                                                 <td style="text-align: center">
@@ -314,10 +314,13 @@
                                                     @{{ detail.sum_price | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <a href="#" class="btn btn-warning btn-sm">
+                                                    <!-- <a href="#" class="btn btn-warning btn-sm">
                                                         <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a href="#" class="btn btn-danger btn-sm" ng-click="removeOrderItem(index)">
+                                                    </a> -->
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-sm"
+                                                        ng-click="removeAddedItem(detail.plan_id)">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>

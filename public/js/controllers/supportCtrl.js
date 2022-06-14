@@ -79,6 +79,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         };
     };
 
+    $scope.calculateSumPrice = function(price, amount) {
+        $scope.newItem.sum_price = parseFloat(price) * parseFloat(amount);
+    };
+
     $scope.getAll = function() {
         $scope.loading = true;
         $scope.supports = [];
@@ -242,9 +246,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.clearNewItem();
     };
 
-    $scope.removeOrderItem = (index) => {
-        console.log(index);
-        // $scope.order.details.push({ ...$scope.newItem });
+    $scope.removeAddedItem = (index) => {
+        $scope.support.details = $scope.support.details.filter(d => d.plan_id !== index);
 
         $scope.calculateTotal();
     };
