@@ -109,7 +109,7 @@
                                         class="form-control"
                                     >
                                         <option value="">-- เลือกงวดที่ --</option>
-                                        <option ng-repeat="seq in range(inspection.order.deliver_amt)" value="@{{ seq+1 }}">
+                                        <option ng-repeat="seq in range(inspectionsByOrder.length, inspection.order.deliver_amt)" value="@{{ seq+1 }}">
                                             @{{ seq+1 }}
                                         </option>
                                     </select>

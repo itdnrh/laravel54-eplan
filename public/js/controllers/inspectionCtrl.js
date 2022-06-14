@@ -215,6 +215,19 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.orders_pager = pager;
     };
 
+    $scope.inspectionsByOrder = [];
+    $scope.getInspectionByOrder = function(orderId) {
+        $http.get(`${CONFIG.baseUrl}/inspections/${orderId}/order`)
+        .then(function(res) {
+            $scope.inspectionsByOrder = res.data.inspections;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     $scope.onSelectedOrder = (e, order) => {
         if (order) {
             $scope.inspection = {
@@ -222,6 +235,8 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
                 order_id: order.id,
                 inspect_total: order.net_total
             };
+
+            $scope.getInspectionByOrder(order.id);
         }
 
         $('#orders-list').modal('hide');
