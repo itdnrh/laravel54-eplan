@@ -246,8 +246,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.clearNewItem();
     };
 
-    $scope.removeAddedItem = (index) => {
-        $scope.support.details = $scope.support.details.filter(d => d.plan_id !== index);
+    $scope.removeAddedItem = (planId) => {
+        $scope.support.details = $scope.support.details.filter(d => d.plan_id !== planId);
 
         $scope.calculateTotal();
     };

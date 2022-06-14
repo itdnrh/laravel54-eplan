@@ -375,7 +375,7 @@
                                                         <a
                                                             href="#"
                                                             class="btn btn-danger btn-xs"
-                                                            ng-click="removeOrderItem(detail)"
+                                                            ng-click="removeOrderItem(detail.plan_id)"
                                                             ng-show="!editRow"
                                                         >
                                                             <i class="fa fa-trash"></i>

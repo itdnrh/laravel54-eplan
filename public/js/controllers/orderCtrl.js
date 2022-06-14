@@ -167,11 +167,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.clearNewItem();
     };
 
-    $scope.removeOrderItem = (index) => {
-        console.log(index);
-        // $scope.order.details.push({ ...$scope.newItem });
+    $scope.removeOrderItem = (planId) => {
+        $scope.order.details = $scope.order.details.filter(d => d.plan_id !== planId);
 
-        // $scope.calculateTotal();
+        $scope.calculateTotal();
     };
 
     $scope.showSpecForm = function(detail) {
