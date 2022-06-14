@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Utility;
 use App\Models\UtilityType;
+use App\Models\PlanSummary;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -171,6 +172,45 @@ class UtilityController extends Controller
 
         return [
             "utility" => $utility,
+        ];
+    }
+
+    public function summary()
+    {
+        return view('utilities.summary', [
+            "utilityTypes"  => UtilityType::all(),
+        ]);
+    }
+
+    public function getSummary(Request $req, $year)
+    {
+        $monthly = \DB::table('utilities')
+                        ->select(
+                            'utilities.utility_type_id',
+                            'utility_types.name',
+                            'utility_types.expense_id',
+                            \DB::raw("sum(case when (utilities.month='10') then utilities.net_total end) as oct_total"),
+                            \DB::raw("sum(case when (utilities.month='11') then utilities.net_total end) as nov_total"),
+                            \DB::raw("sum(case when (utilities.month='12') then utilities.net_total end) as dec_total"),
+                            \DB::raw("sum(case when (utilities.month='01') then utilities.net_total end) as jan_total"),
+                            \DB::raw("sum(case when (utilities.month='02') then utilities.net_total end) as feb_total"),
+                            \DB::raw("sum(case when (utilities.month='03') then utilities.net_total end) as mar_total"),
+                            \DB::raw("sum(case when (utilities.month='04') then utilities.net_total end) as apr_total"),
+                            \DB::raw("sum(case when (utilities.month='05') then utilities.net_total end) as may_total"),
+                            \DB::raw("sum(case when (utilities.month='06') then utilities.net_total end) as jun_total"),
+                            \DB::raw("sum(case when (utilities.month='07') then utilities.net_total end) as jul_total"),
+                            \DB::raw("sum(case when (utilities.month='08') then utilities.net_total end) as aug_total"),
+                            \DB::raw("sum(case when (utilities.month='09') then utilities.net_total end) as sep_total"),
+                            \DB::raw("sum(utilities.net_total) as total")
+                        )
+                        ->leftJoin('utility_types', 'utilities.utility_type_id', '=', 'utility_types.id')
+                        ->groupBy('utilities.utility_type_id', 'utility_types.name', 'utility_types.expense_id')
+                        ->where('utilities.year', $year)
+                        ->get();
+
+        return [
+            'monthly'   => $monthly,
+            'budget'    => PlanSummary::where('year', $year)->get()
         ];
     }
 

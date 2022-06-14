@@ -76,13 +76,6 @@ class MonthlyController extends Controller
         ]);
     }
 
-    public function summary()
-    {
-        return view('monthly.summary', [
-            "expenses"  => Expense::all()
-        ]);
-    }
-
     public function search(Request $req)
     {
         $matched = [];
@@ -152,6 +145,13 @@ class MonthlyController extends Controller
         // return [
         //     'plans' => $plans,
         // ];
+    }
+
+    public function summary()
+    {
+        return view('monthly.summary', [
+            "expenses"  => Expense::all()
+        ]);
     }
 
     public function getSummary(Request $req, $year)

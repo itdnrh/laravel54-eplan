@@ -24,8 +24,10 @@ Route::group(['middleware' => 'api'], function () {
 
     /** ควบคุมกำกับติดตาม */
     Route::get('monthly', 'MonthlyController@getAll');
-    Route::get('monthly/{year}/summary', 'MonthlyController@getSummary');
     Route::get('monthly/{id}', 'MonthlyController@getById');
+    Route::get('monthly/{year}/summary', 'MonthlyController@getSummary');
+
+    Route::get('utilities/{year}/summary', 'UtilityController@getSummary');
 
     /** หมวดค่าใช้จ่าย */
     Route::get('plan-summary', 'PlanSummaryController@getAll');

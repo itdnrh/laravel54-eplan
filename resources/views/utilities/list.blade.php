@@ -57,9 +57,9 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทพัสดุ</label>
+                                    <label>ประเภท</label>
                                     <select
                                         id="cboSupplier"
                                         name="cboSupplier"
@@ -74,7 +74,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>

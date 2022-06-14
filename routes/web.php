@@ -190,6 +190,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** ค่าสาธารณูปโภค */
     Route::post('utilities/validate', 'UtilityController@formValidate');
     Route::get('utilities/list/{type}', 'UtilityController@index');
+    Route::get('utilities/summary', 'UtilityController@summary');
     Route::get('utilities/search', 'UtilityController@search');
     Route::get('utilities/add', 'UtilityController@create');
     Route::post('utilities/store', 'UtilityController@store');

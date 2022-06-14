@@ -251,6 +251,11 @@
 								</span>
 							</a>
 							<ul class="treeview-menu" ng-style="{ 'display': ['utilities'].includes(menu) ? 'block' : 'none' }">
+								<li ng-class="{ 'active': submenu == 'summary' }">
+									<a href="{{ url('utilities/summary') }}">
+										<i class="fa fa-circle-o"></i> สรุปผลงาน
+									</a>
+								</li>
 								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
 									<a href="{{ url('/utilities/list/1') }}">
 										<i class="fa fa-circle-o"></i> ค่าไฟฟ้า

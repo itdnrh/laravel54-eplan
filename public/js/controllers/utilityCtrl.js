@@ -338,6 +338,32 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
+    $scope.summary = [];
+    $scope.getSummary = function() {
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+
+        $http.get(`${CONFIG.apiUrl}/utilities/${year}/summary`)
+        .then(function(res) {
+            const { monthly, budget } = res.data;
+
+            $scope.summary = monthly.map(mon => {
+                const summary = budget.find(b => b.expense_id === mon.expense_id);
+                if (summary) {
+                    mon.budget = summary.budget;
+                } else {
+                    mon.budget = 0;
+                }
+
+                return mon;
+            });
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     $scope.setEditControls = function(support, committees) {
         if (support) {
             $scope.support.id = support.id;
