@@ -174,7 +174,7 @@
                                         @{{ formError.errors.unit_id[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-6 form-group" ng-show="isMaterial(item.in_stock)">
+                                <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
                                     <label for="">ใน/นอกคลัง</label>
                                     <div style="display: flex; gap: 30px;">
                                         <div>

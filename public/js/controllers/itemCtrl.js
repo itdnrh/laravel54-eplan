@@ -19,7 +19,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         item_name: '',
         price_per_unit: '',
         unit_id: '',
-        in_stock: '',
+        in_stock: '0',
         first_year: '2565',
         remark: '',
     };
@@ -44,7 +44,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         //     });
         // });
 
-    const clearItemObj = function() {
+    const clearItem = function() {
         $scope.item = {
             Item_id: '',
             parcel_no: '',
@@ -54,7 +54,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             item_name: '',
             price_per_unit: '',
             unit_id: '',
-            in_stock: '',
+            in_stock: '0',
             first_year: '2565',
             remark: '',
         };
@@ -65,11 +65,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         $scope.items = [];
         $scope.pager = null;
 
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let name  = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name = $scope.txtItemName === '' ? '' : $scope.txtItemName;
 
-        $http.get(`${CONFIG.apiUrl}/items?type=1&cate=${cate}&status=${status}&name=${name}`)
+        $http.get(`${CONFIG.apiUrl}/items?type=${type}&cate=${cate}&name=${name}&status=${status}`)
         .then(function(res) {
             $scope.setItems(res);
 

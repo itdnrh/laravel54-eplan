@@ -88,7 +88,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <!-- <div class="form-group col-md-6">
                                     <label>กลุ่มสินค้า/บริการ</label>
                                     <select
                                         id="cboCategory"
@@ -102,10 +102,10 @@
                                             @{{ category.name }}
                                         </option>
                                     </select>
-                                </div>
-                            </div><!-- /.row -->
-                            <div class="row">
-                                <div class="form-group col-md-12">
+                                </div> -->
+                            <!-- </div>
+                            <div class="row"> -->
+                                <div class="form-group col-md-6">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
                                         id="txtItemName"
@@ -148,11 +148,16 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">รหัสพัสดุ</th>
+                                    <th style="width: 15%; text-align: center;">ประเภทสินค้า/บริการ</th>
                                     <th>รายการ</th>
                                     <th style="width: 10%; text-align: center;">ราคาต่อหน่วย</th>
                                     <th style="width: 8%; text-align: center;">หน่วย</th>
-                                    <th style="width: 8%; text-align: center;">ซื้อปีแรก</th>
-                                    <th style="width: 10%; text-align: center;">สถานะ</th>
+                                    <th style="width: 8%; text-align: center;" ng-show="cboPlanType == 2">
+                                        ใน/นอกคลัง
+                                    </th>
+                                    <!-- <th style="width: 8%; text-align: center;">ซื้อปีแรก</th> -->
+                                    <!-- <th style="width: 10%; text-align: center;">สถานะ</th> -->
+                                    <th style="width: 10%; text-align: center;">หมายเหตุ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -160,22 +165,19 @@
                                 <tr ng-repeat="(index, item) in items">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;"></td>
-                                    <td>
-                                        <h5 style="margin: 0; font-weight: bold;">
-                                            @{{ item.category.name }}
-                                        </h5>
-                                        @{{ item.item_name }}
-                                    </td>
+                                    <td style="text-align: center;">@{{ item.category.name }}</td>
+                                    <td>@{{ item.item_name }}</td>
                                     <td style="text-align: center;">
                                         @{{ item.price_per_unit | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ item.unit.name }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        
+                                    <td style="text-align: center;" ng-show="cboPlanType == 2">
+                                        <span ng-show="item.in_stock == 1">ในคลัง</span>
+                                        <span ng-show="item.in_stock == 0">นอกคลัง</span>
                                     </td>
-                                    <td style="text-align: center;">
+                                    <!-- <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="item.status == 0">
                                             อยู่ระหว่างดำเนินการ
                                         </span>
@@ -200,6 +202,9 @@
                                         <span class="label label-default" ng-show="item.status == 9">
                                             ยกเลิก
                                         </span>
+                                    </td> -->
+                                    <td style="text-align: center; font-size: 12px;">
+                                        @{{ item.remark }}
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">

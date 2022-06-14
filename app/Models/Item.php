@@ -11,6 +11,11 @@ class Item extends Model
     // public $incrementing = false; // false = ไม่ใช้ options auto increment
     // public $timestamps = false; // false = ไม่ใช้ field updated_at และ created_at
 
+    public function planType()
+    {
+        return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');
+    }
+
     public function category()
     {
         return $this->belongsTo(ItemCategory::class, 'category_id', 'id');

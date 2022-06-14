@@ -72,7 +72,7 @@ class ItemController extends Controller
         $cate = $req->get('cate');
         $name = $req->get('name');
 
-        $items = Item::with('category','group','unit')
+        $items = Item::with('planType','category','group','unit')
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plan_type_id', $type);
                     })
@@ -98,7 +98,7 @@ class ItemController extends Controller
         $cate = $req->get('cate');
         $name = $req->get('name');
 
-        $items = Item::with('category','group','unit')
+        $items = Item::with('planType','category','group','unit')
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plan_type_id', $type);
                     })
