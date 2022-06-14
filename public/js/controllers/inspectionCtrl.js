@@ -243,9 +243,8 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     };
 
     $scope.getAll = function() {
-        $scope.orders = [];
+        $scope.inspections = [];
         $scope.pager = null;
-        
         $scope.loading = true;
         
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
@@ -270,13 +269,20 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.pager = pager;
     };
 
-    $scope.getDataWithURL = function(e, URL, cb) {
+    $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
+        $scope.inspections = [];
+        $scope.pager = null;
         $scope.loading = true;
 
-        $http.get(URL)
+                
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
+        let deliverNo = $scope.txtDeliverNo === '' ? '' : $scope.txtDeliverNo;
+
+        $http.get(`${url}&year=${year}&supplier=${supplier}&deliverNo=${deliverNo}`)
         .then(function(res) {
             cb(res);
 
