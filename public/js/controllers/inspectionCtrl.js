@@ -277,7 +277,6 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.pager = null;
         $scope.loading = true;
 
-                
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         let deliverNo = $scope.txtDeliverNo === '' ? '' : $scope.txtDeliverNo;

@@ -38,12 +38,14 @@
 				<ul class="sidebar-menu" data-widget="tree">
 					<li class="header">MAIN NAVIGATION</li>
 
+					<!-- Dashboard -->
 					<li ng-class="{ 'active': menu == 'home' }">
 						<a href="{{ url('/home') }}">
 							<i class="fa fa-dashboard"></i> <span>Dashboard</span>
 						</a>
 					</li>
 
+					<!-- คำขอประจำปี -->
 					<li class="treeview" ng-class="{ 'menu-open active': ['plans','projects'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-calendar"></i>
@@ -53,27 +55,27 @@
 							</span>
 						</a>
 						<ul class="treeview-menu" ng-style="{ 'display': ['plans'].includes(menu) ? 'block' : 'none' }">
-							<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['assets','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/assets') }}">
 									<i class="fa fa-circle-o"></i> ครุภัณฑ์
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['materials','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/materials') }}">
 									<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['services','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['services','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/services') }}">
 									<i class="fa fa-circle-o"></i> จ้างบริการ
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['constructs','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['constructs','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/constructs') }}">
 									<i class="fa fa-circle-o"></i> ก่อสร้าง
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['projects','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['projects','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/projects') }}">
 									<i class="fa fa-circle-o"></i> โครงการ
 								</a>
@@ -81,7 +83,7 @@
 						</ul>
 					</li>
 
-					<!-- // Authorize เฉพาะหัวหน้ากลุ่มภารกิจ/ธุรการหรือเลขาฯกลุ่มภารกิจ/หัวหน้ากลุ่มงาน -->
+					<!-- การอนุมัติ -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
 						Auth::user()->memberOf->depart_id == 4 ||
@@ -96,27 +98,27 @@
 								</span>
 							</a>
 							<ul class="treeview-menu" ng-style="{ 'display': ['approvals'].includes(menu) ? 'block' : 'none' }">
-								<li ng-class="{ 'active': submenu == 'assets' }">
+								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'assets' }">
 									<a href="{{ url('approvals/assets') }}">
 										<i class="fa fa-circle-o"></i> ครุภัณฑ์
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'materials' }">
+								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'materials' }">
 									<a href="{{ url('approvals/materials') }}">
 										<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'services' }">
+								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'services' }">
 									<a href="{{ url('approvals/services') }}">
 										<i class="fa fa-circle-o"></i> จ้างบริการ
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'constructs' }">
+								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'constructs' }">
 									<a href="{{ url('approvals/constructs') }}">
 										<i class="fa fa-circle-o"></i> ก่อสร้าง
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'projects' }">
+								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'projects' }">
 									<a href="{{ url('approvals/projects') }}">
 										<i class="fa fa-circle-o"></i> โครงการ
 									</a>
@@ -125,7 +127,8 @@
 						</li>
 					@endif
 
-					<li class="treeview" ng-class="{ 'menu-open active': menu == 'supports' }">
+					<!-- ขอสนับสนุน -->
+					<li class="treeview" ng-class="{ 'menu-open active': ['supports','repairs'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-handshake-o"></i>
 							<span>ขอสนับสนุน</span>
@@ -134,17 +137,17 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li ng-class="{ 'active': submenu == 'list' }">
+							<li ng-class="{ 'active': menu == 'supports' && submenu == 'list' }">
 								<a href="{{ url('supports/list') }}">
 									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'list' }">
+							<li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
 								<a href="{{ url('repairs/list') }}">
 									<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
 								</a>
 							</li>
-							<li ng-class="{ 'active': submenu == 'timeline' }">
+							<li ng-class="{ 'active': menu == 'supports' && submenu == 'timeline' }">
 								<a href="{{ url('supports/timeline') }}">
 									<i class="fa fa-circle-o"></i> ติดตามพัสดุ
 								</a>
@@ -152,6 +155,7 @@
 						</ul>
 					</li>
 
+					<!-- จัดซื้อจัดจ้าง -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
 						Auth::user()->memberOf->depart_id == 2 ||
@@ -181,11 +185,6 @@
 										<i class="fa fa-circle-o"></i> ใบสั่งจ้าง (งานซ่อม)
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'contracts-list' }">
-									<a href="{{ url('orders/contracts-list') }}">
-										<i class="fa fa-circle-o"></i> สัญญา
-									</a>
-								</li>
 								<li ng-class="{ 'active': submenu == 'inspect' }">
 									<a href="{{ url('orders/inspect') }}">
 										<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
@@ -205,17 +204,16 @@
 						</li>
 					@endif
 
+					<!-- บริหารสัญญา -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2 ||
+						Auth::user()->memberOf->depart_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'monthly' }">
 							<a href="#">
-								<i class="fa fa-line-chart" aria-hidden="true"></i>
-								<span>ควบคุมกำกับติดตาม</span>
+								<i class="fa fa-gavel" aria-hidden="true"></i>
+								<span>บริหารสัญญา</span>
 								<span class="pull-right-container">
 									<i class="fa fa-angle-left pull-right"></i>
 								</span>
@@ -223,23 +221,16 @@
 							<ul class="treeview-menu">
 								<li ng-class="{ 'active': submenu == 'list' }">
 									<a href="{{ url('monthly/list') }}">
-										<i class="fa fa-circle-o"></i> รายการ
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'summary' }">
-									<a href="{{ url('monthly/summary') }}">
-										<i class="fa fa-circle-o"></i> สรุปผลงาน
+										<i class="fa fa-circle-o"></i> รายการสัญญา
 									</a>
 								</li>
 							</ul>
 						</li>
 					@endif
 
+					<!-- ค่าสาธารณูปโภค -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
@@ -285,11 +276,38 @@
 						</li>
 					@endif
 
+					<!-- ควบคุมกำกับติดตาม -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						Auth::user()->person_id == '1309900322504' ||
-						Auth::user()->memberOf->duty_id == 1 ||
-						Auth::user()->memberOf->duty_id == 2
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'monthly' }">
+							<a href="#">
+								<i class="fa fa-line-chart" aria-hidden="true"></i>
+								<span>ควบคุมกำกับติดตาม</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li ng-class="{ 'active': submenu == 'list' }">
+									<a href="{{ url('monthly/list') }}">
+										<i class="fa fa-circle-o"></i> รายการ
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'summary' }">
+									<a href="{{ url('monthly/summary') }}">
+										<i class="fa fa-circle-o"></i> สรุปผลงาน
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
+
+					<!-- รายงาน -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						count(Auth::user()->delegations) > 0
 					)
 						<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
 							<a href="#">
@@ -319,7 +337,11 @@
 						</li> -->
 					@endif
 
-					@if (Auth::user()->person_id == '1300200009261')
+					<!-- ข้อมูลระบบ -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						count(Auth::user()->delegations) > 0
+					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'system' }">
 							<a href="#">
 								<i class="fa fa-gear"></i> <span>ข้อมูลระบบ</span>
