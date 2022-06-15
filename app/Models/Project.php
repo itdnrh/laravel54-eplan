@@ -27,4 +27,9 @@ class Project extends Model
     {
         return $this->belongsTo(Kpi::class, 'kpi_id', 'id');
     }
+
+    public function projectType()
+    {
+        return $this->belongsTo(ProjectType::class, 'project_type_id', 'id');
+    }
 }

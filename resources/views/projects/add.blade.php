@@ -154,18 +154,22 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'project_type_id')}"
                                 >
-                                    <label>งบประมาณ :</label>
-                                    <input
-                                        type="text"
-                                        id="total_budget"
-                                        name="total_budget"
-                                        ng-model="project.total_budget"
-                                        class="form-control pull-right"
-                                        tabindex="4">
-                                    <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
-                                        @{{ formError.errors.total_budget[0] }}
+                                    <label>ประเภทโครงการ :</label>
+                                    <select id="project_type_id"
+                                            name="project_type_id"
+                                            ng-model="project.project_type_id"
+                                            class="form-control"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภทโครงการ --</option>
+                                        <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
+                                            @{{ kpi.kpi_name }}
+                                        </option>
+
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(project, 'project_type_id')">
+                                        @{{ formError.errors.project_type_id[0] }}
                                     </span>
                                 </div>
                                 <div
@@ -189,6 +193,41 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'budget_src_id')">
                                         @{{ formError.errors.desc[0] }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                                >
+                                    <label>งบที่ขออนุมัติ :</label>
+                                    <input
+                                        type="text"
+                                        id="total_budget"
+                                        name="total_budget"
+                                        ng-model="project.total_budget"
+                                        class="form-control pull-right"
+                                        tabindex="4">
+                                    <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
+                                        @{{ formError.errors.total_budget[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                                >
+                                    <label>งบที่ดำเนินการ :</label>
+                                    <input
+                                        type="text"
+                                        id="total_budget"
+                                        name="total_budget"
+                                        ng-model="project.total_budget"
+                                        class="form-control pull-right"
+                                        tabindex="4">
+                                    <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
+                                        @{{ formError.errors.total_budget[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -280,7 +319,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
                                 >
-                                    <label>เริ่มเดือน :</label>
+                                    <label>ระยะเวลาดำเนินงาน :</label>
                                     <select
                                         id="start_month"
                                         name="start_month"
