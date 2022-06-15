@@ -243,25 +243,19 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="project.status == 0">
-                                            อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="project.status == 1">
-                                            ส่งเอกสารแล้ว
+                                            ส่งงานแผนแล้ว
                                         </span>
-                                        <span class="label bg-navy" ng-show="project.status == 2">
-                                            รับเอกสารแล้ว
+                                        <span class="label label-warning" ng-show="project.status == 2">
+                                            ส่งการเงินแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="project.status == 3">
-                                            ออกใบสั้งซื้อแล้ว
+                                            ผอ.อนุมัติแล้ว
                                         </span>
                                         <span class="label bg-maroon" ng-show="project.status == 4">
-                                            ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="project.status == 5">
-                                            ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="project.status == 6">
-                                            ตั้งหนี้แล้ว
+                                            ดำเนินโครงการแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="project.status == 9">
                                             ยกเลิก
@@ -275,7 +269,7 @@
                                                 <i class="fa fa-search"></i>
                                             </a>
                                             <a  ng-click="edit(project.id)"
-                                                ng-show="project.status == 0 || (project.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                ng-show="project.approved != 'A'"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -284,7 +278,7 @@
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/projects/delete') }}"
-                                                ng-show="project.status == 0 || (project.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                ng-show="project.approved != 'A'"
                                             >
                                                 {{ csrf_field() }}
                                                 <button

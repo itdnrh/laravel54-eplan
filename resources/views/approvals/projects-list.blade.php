@@ -261,25 +261,19 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="project.status == 0">
-                                            อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="project.status == 1">
-                                            ส่งเอกสารแล้ว
+                                            ส่งงานแผนแล้ว
                                         </span>
-                                        <span class="label bg-navy" ng-show="project.status == 2">
-                                            รับเอกสารแล้ว
+                                        <span class="label label-warning" ng-show="project.status == 2">
+                                            ส่งการเงินแล้ว
                                         </span>
                                         <span class="label label-success" ng-show="project.status == 3">
-                                            ออกใบสั้งซื้อแล้ว
+                                            ผอ.อนุมัติแล้ว
                                         </span>
                                         <span class="label bg-maroon" ng-show="project.status == 4">
-                                            ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="project.status == 5">
-                                            ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="project.status == 6">
-                                            ตั้งหนี้แล้ว
+                                            ดำเนินโครงการแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="project.status == 9">
                                             ยกเลิก
