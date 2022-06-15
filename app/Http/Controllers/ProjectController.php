@@ -10,6 +10,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\ProjectPayment;
+use App\Models\ProjectTimeline;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -232,7 +233,7 @@ class ProjectController extends Controller
         ];
     }
 
-    public function getProjectPayment($id)
+    public function getProjectPayments($id)
     {
         $project = Project::where('id', $id)
                     ->with('budgetSrc','depart','depart.faction')
@@ -247,6 +248,22 @@ class ProjectController extends Controller
         return [
             'project'   => $project,
             'payments'  => $payments,
+        ];
+    }
+
+    public function getProjectTimeline($id)
+    {
+        $project = Project::where('id', $id)
+                    ->with('budgetSrc','depart','depart.faction')
+                    ->with('owner','owner.prefix','owner.position','owner.academic')
+                    ->with('kpi','kpi.strategy','kpi.strategy.strategic')
+                    ->first();
+
+        $timeline = ProjectTimeline::where('project_id', $id)->get();
+
+        return [
+            'project'   => $project,
+            'timeline'  => $timeline,
         ];
     }
 

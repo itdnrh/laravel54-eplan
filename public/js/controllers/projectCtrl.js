@@ -246,17 +246,15 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
+    $scope.timeline = null;
     $scope.getTimlines = (id) => {
         $scope.payments = [];
         $scope.loading = true;
         
-        $http.get(`${CONFIG.apiUrl}/projects/${id}/timelines`)
+        $http.get(`${CONFIG.apiUrl}/projects/${id}/timeline`)
         .then(res => {
-            $scope.payments = res.data.payments;
-
-            $scope.totalPayment = res.data.payments.reduce((sum, pay) => {
-                return sum = sum + pay.net_total;
-            }, 0)
+            console.log(res);
+            $scope.timeline = res.data.timeline;
 
             $scope.loading = false;
         }, err => {

@@ -21,7 +21,7 @@
         ng-init="
             getById({{ $project->id }}, setEditControls);
             getPayments({{ $project->id }});
-            getTimlines({{ $project->id }});
+            getTimline({{ $project->id }});
         "
     >
 
