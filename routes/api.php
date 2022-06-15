@@ -21,6 +21,7 @@ Route::group(['middleware' => 'api'], function () {
     /** โครงการ */
     Route::get('projects', 'ProjectController@getAll');
     Route::get('projects/{id}', 'ProjectController@getById');
+    Route::get('projects/{id}/payments', 'ProjectController@getProjectPayment');
 
     /** ควบคุมกำกับติดตาม */
     Route::get('monthly', 'MonthlyController@getAll');

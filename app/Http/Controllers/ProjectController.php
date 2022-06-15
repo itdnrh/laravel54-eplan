@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Project;
 use App\Models\ProjectType;
+use App\Models\ProjectPayment;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -228,6 +229,22 @@ class ProjectController extends Controller
 
         return [
             'project' => $project,
+        ];
+    }
+
+    public function getProjectPayment($id)
+    {
+        $project = Project::where('id', $id)
+                    ->with('budgetSrc','depart','depart.faction')
+                    ->with('owner','owner.prefix','owner.position','owner.academic')
+                    ->with('kpi','kpi.strategy','kpi.strategy.strategic')
+                    ->first();
+
+        $payments = ProjectPayment::where('project_id', $id)->get();
+
+        return [
+            'project'   => $project,
+            'payments'  => $payments,
         ];
     }
 
