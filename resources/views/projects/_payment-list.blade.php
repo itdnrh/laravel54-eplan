@@ -47,7 +47,7 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;">รวมทั้งสิ้น</td>
-            <td style="text-align: center;">9,999.00</td>
+            <td style="text-align: center;">@{{ totalPayment | currency:'':2 }}</td>
             <td colspan="3"></td>
         </tr>
     </tbody>
