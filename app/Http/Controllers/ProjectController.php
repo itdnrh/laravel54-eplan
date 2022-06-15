@@ -366,32 +366,34 @@ class ProjectController extends Controller
         
     }
 
-    public function sendSupported(Request $req, $id) {
-        $plan = Plan::find($id);
-        $plan->doc_no       = $req['doc_no'];
-        $plan->doc_date     = convThDateToDbDate($req['doc_date']);
-        $plan->sent_date    = convThDateToDbDate($req['sent_date']);
-        $plan->sent_user    = $req['sent_user'];
-        $plan->status       = 1;
+    public function storePayment(Request $req, $id) {
+        try {
+            $payment = new ProjectPayment;
+            $payment->project_id    = $id;
+            $payment->pay_date      = convThDateToDbDate($req['pay_date']);
+            $payment->received_date = convThDateToDbDate($req['received_date']);
+            $payment->net_total     = $req['net_total'];
+            $payment->have_aar      = $req['have_aar'];
+            $payment->remark        = $req['remark'];
+            $payment->created_user  = $req['user'];
+            $payment->updated_user  = $req['user'];
 
-        if ($plan->save()) {
+            if ($payment->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'payments'  => ProjectPayment::where('project_id', $id)->get()
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
             return [
-                'plan' => $plan
-            ];
-        }
-    }
-
-    public function createPO(Request $req, $id) {
-        $plan = Plan::find($id);
-        $plan->po_no        = $req['po_no'];
-        $plan->po_date      = convThDateToDbDate($req['po_date']);
-        $plan->po_net_total = $req['po_net_total'];
-        $plan->po_user      = $req['po_user'];
-        $plan->status       = 3;
-
-        if ($plan->save()) {
-            return [
-                'plan' => $plan
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }

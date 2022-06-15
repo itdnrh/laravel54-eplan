@@ -43,6 +43,26 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         todayHighlight: true
     };
 
+    $('#received_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            console.log(e);
+        })
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+    
+    $('#pay_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            console.log(e);
+        })
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
     const clearProject = function() {
         $scope.project = {
             project_id: '',
@@ -201,7 +221,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.setEditControls = function(project) {
         if (project) {
-            $scope.project.project_id       = project.id;
+            $scope.project.id               = project.id;
             $scope.project.project_no       = project.project_no;
             $scope.project.project_name     = project.project_name;
             $scope.project.kpi              = project.kpi;
@@ -228,6 +248,15 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.payments = [];
     $scope.totalPayment = 0;
+    $scope.newPayment = {
+        project_id: '',
+        received_date: '',
+        pay_date: '',
+        net_total: '',
+        have_aar: '0',
+        remark: '',
+        user: ''
+    }
     $scope.getPayments = (id) => {
         $scope.payments = [];
         $scope.loading = true;
@@ -251,7 +280,21 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $('#payment-form').modal('show');
     };
 
-    $scope.createNewPayment = (e) => {
+    $scope.createNewPayment = (e, id) => {
+        $scope.newPayment.user = $('#user').val();
+
+        $http.post(`${CONFIG.baseUrl}/projects/${id}/payments`, $scope.newPayment)
+        .then(res => {
+            console.log(res);
+            $scope.payments = res.data.payments;
+
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+
         $('#payment-form').modal('hide');
     };
 

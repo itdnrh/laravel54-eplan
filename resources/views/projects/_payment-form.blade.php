@@ -1,7 +1,9 @@
 <div class="modal fade" id="payment-form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="frmNewItem">
+            <form id="frmNewPayment">
+                <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
+
                 <div class="modal-header">
                     <h5 class="modal-title">เพิ่มเพิ่มรายการเบิกจ่าย</h5>
                 </div>
@@ -9,127 +11,71 @@
                     <div class="row">
                         <div
                             class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': newItem.error['plan_type_id']}"
+                            ng-class="{'has-error has-feedback': newPayment.error['received_date']}"
                         >
-                            <label for="">ประเภทแผน</label>
+                            <label for="">วันที่รับเอกสาร</label>
                             <input
                                 type="text"
-                                id="plan_type_id"
-                                name="plan_type_id"
-                                ng-model="newItem.plan_type_id"
-                                ng-change="onPlanTypeSelected(newItem.plan_type_id)"
+                                id="received_date"
+                                name="received_date"
+                                ng-model="newPayment.received_date"
+                                ng-change="onPlanTypeSelected(newPayment.received_date)"
                                 class="form-control"
                             />
-                            <span class="help-block" ng-show="newItem.error['plan_type_id']">
-                                @{{ newItem.error['plan_type_id'] }}
+                            <span class="help-block" ng-show="newPayment.error['received_date']">
+                                @{{ newPayment.error['received_date'] }}
                             </span>
                         </div>
                         <div
                             class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': newItem.error['category_id']}"
+                            ng-class="{'has-error has-feedback': newPayment.error['pay_date']}"
                         >
-                            <label for="">ประเภทสินค้า/บริการ</label>
-                            <select
-                                type="text"
-                                id="category_id"
-                                name="category_id"
-                                ng-model="newItem.category_id"
-                                class="form-control"
-                            >
-                                <option value="">-- เลือกประเภทสินค้า/บริการ --</option>
-                                <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                    @{{ category.name }}
-                                </option>
-                            </select>
-                            <span class="help-block" ng-show="newItem.error['category_id']">
-                                @{{ newItem.error['category_id'] }}
-                            </span>
-                        </div>
-                        <div
-                            class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': newItem.error['group_id']}"
-                        >
-                            <label for="">กลุ่มสินค้า/บริการ</label>
+                            <label for="">วันที่เบิกจ่าย</label>
                             <input
                                 type="text"
-                                id="group_id"
-                                name="group_id"
-                                ng-model="newItem.group_id"
-                                class="form-control"
-                            >
-                        </div>
-                        <div
-                            class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': newItem.error['item_name']}"
-                        >
-                            <label for="">ชื่อสินค้า/บริการ</label>
-                            <input
-                                type="text"
-                                id="item_name"
-                                name="item_name"
-                                ng-model="newItem.item_name"
+                                id="pay_date"
+                                name="pay_date"
+                                ng-model="newPayment.pay_date"
                                 class="form-control"
                             />
-                            <span class="help-block" ng-show="newItem.error['item_name']">
-                                @{{ newItem.error['item_name'] }}
+                            <span class="help-block" ng-show="newPayment.error['pay_date']">
+                                @{{ newPayment.error['pay_date'] }}
                             </span>
                         </div>
                         <div
                             class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': newItem.error['price_per_unit']}"
+                            ng-class="{'has-error has-feedback': newPayment.error['net_total']}"
                         >
-                            <label for="">ราคา</label>
+                            <label for="">ยอดเบิกจ่าย</label>
                             <input
                                 type="text"
-                                id="price_per_unit"
-                                name="price_per_unit"
-                                ng-model="newItem.price_per_unit"
+                                id="net_total"
+                                name="net_total"
+                                ng-model="newPayment.net_total"
                                 class="form-control"
                             />
-                            <span class="help-block" ng-show="newItem.error['price_per_unit']">
-                                @{{ newItem.error['price_per_unit'] }}
+                            <span class="help-block" ng-show="newPayment.error['net_total']">
+                                @{{ newPayment.error['net_total'] }}
                             </span>
                         </div>
-                        <div
-                            class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': newItem.error['unit_id']}"
-                        >
-                            <label for="">หน่วยนับ</label>
-                            <input
-                                type="text"
-                                id="unit_id"
-                                name="unit_id"
-                                ng-model="newItem.unit_id"
-                                class="form-control"
-                            />
-                            <span class="help-block" ng-show="newItem.error['unit_id']">
-                                @{{ newItem.error['unit_id'] }}
-                            </span>
-                        </div>
-                        <div class="col-md-6 form-group" ng-show="isMaterial(newItem.plan_type_id)">
-                            <label for="">ใน/นอกคลัง</label>
+                        <div class="col-md-6 form-group">
+                            <label for="">มี AAR</label>
                             <div style="display: flex; gap: 30px;">
                                 <div>
-                                    <input type="radio" ng-model="newItem.in_stock" ng-value="1" /> ในคลัง 
+                                    <input type="radio" ng-model="newPayment.have_aar" ng-value="0" /> ไม่มี 
                                 </div>
                                 <div>
-                                    <input type="radio" ng-model="newItem.in_stock" ng-value="0" /> นอกคลัง
+                                    <input type="radio" ng-model="newPayment.have_aar" ng-value="1" /> มี
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="form-group"
-                            ng-class="{
-                                'col-md-6': isMaterial(newItem.plan_type_id),
-                                'col-md-12': !isMaterial(newItem.plan_type_id)
-                            }"
-                        >
+                        <div class="col-md-12 form-group">
                             <label for="">หมายเหตุ</label>
                             <textarea
                                 rows=""
                                 id="remark"
                                 name="remark"
-                                ng-model="newItem.remark"
+                                ng-model="newPayment.remark"
                                 class="form-control"
                             ></textarea>
                         </div>
@@ -137,7 +83,7 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="createNewPayment($event)"
+                        ng-click="createNewPayment($event, project.id)"
                         class="btn btn-primary"
                     >
                         บันทึก

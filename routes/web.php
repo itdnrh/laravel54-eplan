@@ -127,6 +127,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('projects/edit/{id}', 'ProjectController@edit');
     Route::post('projects/update', 'ProjectController@update');
     Route::post('projects/delete/{id}', 'ProjectController@delete');
+    Route::post('projects/{id}/payments', 'ProjectController@storePayment');
     Route::get('projects/print/{id}', 'ProjectController@printLeaveForm');
 
     /** การอนุมัติ */
