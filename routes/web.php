@@ -120,6 +120,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** แผนโครงการ */
     Route::post('projects/validate', 'ProjectController@formValidate');
     Route::get('plans/projects', 'ProjectController@index');
+    Route::get('projects/list', 'ProjectController@index');
     Route::get('projects/detail/{id}', 'ProjectController@detail');
     Route::get('projects/add', 'ProjectController@add');
     Route::post('projects/store', 'ProjectController@store');

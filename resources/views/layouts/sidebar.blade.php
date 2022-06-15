@@ -210,7 +210,7 @@
 						Auth::user()->memberOf->depart_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
-						<li class="treeview" ng-class="{ 'menu-open active': menu == 'monthly' }">
+						<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'monthly' }">
 							<a href="#">
 								<i class="fa fa-gavel" aria-hidden="true"></i>
 								<span>บริหารสัญญา</span>
@@ -222,6 +222,30 @@
 								<li ng-class="{ 'active': submenu == 'list' }">
 									<a href="{{ url('monthly/list') }}">
 										<i class="fa fa-circle-o"></i> รายการสัญญา
+									</a>
+								</li>
+							</ul>
+						</li> -->
+					@endif
+
+					<!-- บริหารโครงการ -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->memberOf->depart_id == 4 ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'projects' }">
+							<a href="#">
+								<i class="fa fa-users" aria-hidden="true"></i>
+								<span>บริหารโครงการ</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li ng-class="{ 'active': submenu == 'list' }">
+									<a href="{{ url('projects/list') }}">
+										<i class="fa fa-circle-o"></i> รายการโครงการ
 									</a>
 								</li>
 							</ul>
