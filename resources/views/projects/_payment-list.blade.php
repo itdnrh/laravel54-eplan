@@ -10,19 +10,20 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td style="text-align: center;">1</td>
-            <td style="text-align: center;">99/99/9999</td>
-            <td style="text-align: center;">9,999.00</td>
+        <tr ng-repeat="(index, payment) in payments">
+            <td style="text-align: center;">@{{ index+1 }}</td>
+            <td style="text-align: center;">@{{ payment.pay_date | thdate}}</td>
+            <td style="text-align: center;">@{{ payment.net_total | currency:'':2 }}</td>
             <td style="text-align: center;">
-                <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="plan.approved == 'A'"></i>
-                <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!plan.approved"></i>
+                <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="payment.have_aar == '1'"></i>
+                <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!payment.have_aar"></i>
             </td>
-            <td style="text-align: center;">99/99/9999</td>
+            <td style="text-align: center;">
+                @{{ payment.created_user }}
+            </td>
             <td style="text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 2px;">
-                    <a  ng-click="edit(project.id)"
-                        ng-show="project.status == 0 || (project.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                    <a  ng-click="edit(payment.id)"
                         class="btn btn-warning btn-xs"
                         title="แก้ไขรายการ">
                         <i class="fa fa-edit"></i>
@@ -31,12 +32,11 @@
                         id="frmDelete"
                         method="POST"
                         action="{{ url('/projects/delete') }}"
-                        ng-show="project.status == 0 || (project.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
                     >
                         {{ csrf_field() }}
                         <button
                             type="submit"
-                            ng-click="delete($event, project.id)"
+                            ng-click="delete($event, payment.id)"
                             class="btn btn-danger btn-xs"
                         >
                             <i class="fa fa-trash"></i>
