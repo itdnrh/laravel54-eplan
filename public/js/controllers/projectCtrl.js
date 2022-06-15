@@ -264,6 +264,22 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
+    $scope.updateTimeline = (id, fieldName) => {
+        console.log(id, fieldName);
+
+        $http.post(`${CONFIG.baseUrl}/projects/${id}/payments`, $scope.newPayment)
+        .then(res => {
+            console.log(res);
+            $scope.payments = res.data.payments;
+
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
     $scope.payments = [];
     $scope.totalPayment = 0;
     $scope.newPayment = {

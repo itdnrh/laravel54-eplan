@@ -10,19 +10,47 @@
     <tbody>
         <tr>
             <td style="text-align: center;">
-                <a href="#" class="btn btn-primary" ng-show="!timeline.sent_stg_date">บันทึกส่งงานแผน</a>
+                <a
+                    href="#"
+                    class="btn btn-primary"
+                    ng-show="!timeline.sent_stg_date"
+                    ng-click="updateTimeline(timeline.id, 'sent_stg_date')"
+                >
+                    บันทึกส่งงานแผน
+                </a>
                 <span ng-show="timeline.sent_stg_date">@{{ timeline.sent_stg_date | thdate }}</span>
             </td>
             <td style="text-align: center;">
-                <a href="#" class="btn btn-primary" ng-show="!timeline.sent_fin_date">บันทึกส่งการเงิน</a>
+                <a
+                    href="#"
+                    class="btn btn-primary"
+                    ng-show="!timeline.sent_fin_date"
+                    ng-click="updateTimeline(timeline.id, 'sent_fin_date')"
+                >
+                    บันทึกส่งการเงิน
+                </a>
                 <span ng-show="timeline.sent_fin_date">@{{ timeline.sent_fin_date | thdate }}</span>
             </td>
             <td style="text-align: center;">
-                <a href="#" class="btn btn-primary" ng-show="!timeline.approved_date">บันทึกผอ.อนุมัติ</a>
+                <a
+                    href="#"
+                    class="btn btn-primary"
+                    ng-show="!timeline.approved_date"
+                    ng-click="updateTimeline(timeline.id, 'approved_date')"
+                >
+                    บันทึกผอ.อนุมัติ
+                </a>
                 <span ng-show="timeline.approved_date">@{{ timeline.approved_date | thdate }}</span>
             </td>
             <td style="text-align: center;">
-                <a href="#" class="btn btn-primary" ng-show="!timeline.start_date">บันทึกดำเนินโครงการ</a>
+                <a
+                    href="#"
+                    class="btn btn-primary"
+                    ng-show="!timeline.start_date"
+                    ng-click="updateTimeline(timeline.id, 'start_date')"
+                >
+                    บันทึกดำเนินโครงการ
+                </a>
                 <span ng-show="timeline.start_date">@{{ timeline.start_date | thdate }}</span>
             </td>       
         </tr>
