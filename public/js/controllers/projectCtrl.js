@@ -246,6 +246,26 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
+    $scope.getTimlines = (id) => {
+        $scope.payments = [];
+        $scope.loading = true;
+        
+        $http.get(`${CONFIG.apiUrl}/projects/${id}/timelines`)
+        .then(res => {
+            $scope.payments = res.data.payments;
+
+            $scope.totalPayment = res.data.payments.reduce((sum, pay) => {
+                return sum = sum + pay.net_total;
+            }, 0)
+
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
     $scope.payments = [];
     $scope.totalPayment = 0;
     $scope.newPayment = {
@@ -256,7 +276,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         have_aar: '0',
         remark: '',
         user: ''
-    }
+    };
+
     $scope.getPayments = (id) => {
         $scope.payments = [];
         $scope.loading = true;
@@ -275,7 +296,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
             $scope.loading = false;
         });
-    }
+    };
+
     $scope.showPaymentForm = () => {
         $('#payment-form').modal('show');
     };

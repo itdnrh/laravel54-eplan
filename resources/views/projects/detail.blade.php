@@ -21,6 +21,7 @@
         ng-init="
             getById({{ $project->id }}, setEditControls);
             getPayments({{ $project->id }});
+            getTimlines({{ $project->id }});
         "
     >
 
@@ -186,11 +187,11 @@
                                     <div style="padding: 0 20px;">
                                         <h4>Timeline</h4>
 
-                                        @include('projects._processes-list')
+                                        @include('projects._timelines-list')
 
                                     </div>
                                 </div>
-                            </div>
+                            </div><br />
 
                             <!-- ================ Payment Section ================ -->
                             <div class="row">
