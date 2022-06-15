@@ -226,8 +226,8 @@
                                     <td style="text-align: center;">
                                         <input
                                             type="checkbox"
-                                            ng-click="onSelectedCheckBox($event, plan)"
-                                            ng-show="!plan.approved"
+                                            ng-click="onSelectedCheckBox($event, project)"
+                                            ng-show="project.approved != 'A'"
                                         />
                                     </td>
                                     <td style="text-align: center;">@{{ project.project_no }}</td>

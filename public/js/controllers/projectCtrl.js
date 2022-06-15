@@ -288,6 +288,12 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         user: ''
     };
 
+    $scope.calculateTotalPayment = (payments) => {
+        return payments.reduce((sum, pay) => {
+            return sum = sum + pay.net_total;
+        }, 0)
+    };
+
     $scope.getPayments = (id) => {
         $scope.payments = [];
         $scope.loading = true;
@@ -295,10 +301,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $http.get(`${CONFIG.apiUrl}/projects/${id}/payments`)
         .then(res => {
             $scope.payments = res.data.payments;
-
-            $scope.totalPayment = res.data.payments.reduce((sum, pay) => {
-                return sum = sum + pay.net_total;
-            }, 0)
+            $scope.totalPayment = calculateTotalPayment(res.data.payments);
 
             $scope.loading = false;
         }, err => {
@@ -319,6 +322,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         .then(res => {
             console.log(res);
             $scope.payments = res.data.payments;
+            $scope.totalPayment = calculateTotalPayment(res.data.payments);
 
             $scope.loading = false;
         }, err => {
