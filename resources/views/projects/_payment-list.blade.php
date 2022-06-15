@@ -19,7 +19,7 @@
                 <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!payment.have_aar"></i>
             </td>
             <td style="text-align: center;">
-                @{{ payment.created_user }}
+                @{{ payment.creator.prefix.prefix_name+payment.creator.person_firstname+ ' ' +payment.creator.person_lastname }}
             </td>
             <td style="text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 2px;">

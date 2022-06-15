@@ -240,7 +240,9 @@ class ProjectController extends Controller
                     ->with('kpi','kpi.strategy','kpi.strategy.strategic')
                     ->first();
 
-        $payments = ProjectPayment::where('project_id', $id)->get();
+        $payments = ProjectPayment::where('project_id', $id)
+                        ->with('creator','creator.prefix')
+                        ->get();
 
         return [
             'project'   => $project,
@@ -382,7 +384,9 @@ class ProjectController extends Controller
                 return [
                     'status'    => 1,
                     'message'   => 'Insertion successfully!!',
-                    'payments'  => ProjectPayment::where('project_id', $id)->get()
+                    'payments'  => ProjectPayment::where('project_id', $id)
+                                    ->with('creator','creator.prefix')
+                                    ->get()
                 ];
             } else {
                 return [
