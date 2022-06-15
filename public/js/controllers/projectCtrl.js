@@ -226,17 +226,26 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
-    $scope.getPayments = () => {
+    $scope.payments = [];
+    $scope.getPayments = (id) => {
         $scope.payments = [];
         $scope.loading = true;
-
         
+        $http.get(`${CONFIG.apiUrl}/projects/${id}/payments`)
+        .then(res => {
+            $scope.payments = res.data.payments;
+
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+
+            $scope.loading = false;
+        });
     }
     $scope.showPaymentForm = () => {
         $('#payment-form').modal('show');
     };
 
-    $scope.payments = [];
     $scope.createNewPayment = (e) => {
         $('#payment-form').modal('hide');
     };

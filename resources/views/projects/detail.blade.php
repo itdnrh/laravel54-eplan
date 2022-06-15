@@ -18,7 +18,10 @@
     <section 
         class="content"
         ng-controller="projectCtrl"
-        ng-init="getById({{ $project->id }}, setEditControls);"
+        ng-init="
+            getById({{ $project->id }}, setEditControls);
+            getPayments({{ $project->id }});
+        "
     >
 
         <div class="row">
