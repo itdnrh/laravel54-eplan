@@ -226,6 +226,21 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
+    $scope.getPayments = () => {
+        $scope.payments = [];
+        $scope.loading = true;
+
+        
+    }
+    $scope.showPaymentForm = () => {
+        $('#payment-form').modal('show');
+    };
+
+    $scope.payments = [];
+    $scope.createNewPayment = (e) => {
+        $('#payment-form').modal('hide');
+    };
+
     $scope.store = function(event, form) {
         event.preventDefault();
 
