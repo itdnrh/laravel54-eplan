@@ -212,13 +212,15 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             $scope.project.owner_person     = project.owner_person;
             $scope.project.owner            = project.owner;
             $scope.project.start_month      = $scope.monthLists.find(m => m.id == project.start_month).name;
-            $scope.project.remark           = project.remark;
             $scope.project.approved         = project.approved;
+            $scope.project.attachment       = project.attachment;
+            $scope.project.remark           = project.remark;
             $scope.project.status           = project.status;
 
             /** Convert int value to string */
             $scope.project.year             = project.year.toString();
             $scope.project.kpi_id           = project.kpi_id.toString();
+            $scope.project.project_type_id  = project.project_type_id.toString();
             $scope.project.budget_src_id    = project.budget_src_id.toString();
             $scope.project.owner_depart     = project.owner_depart.toString();
         }

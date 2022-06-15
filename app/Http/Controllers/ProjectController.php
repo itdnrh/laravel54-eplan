@@ -263,6 +263,7 @@ class ProjectController extends Controller
         $project->year              = $req['year'];
         $project->project_no        = $req['project_no'];
         $project->project_name      = $req['project_name'];
+        $project->project_type_id   = $req['project_type_id'];
         $project->kpi_id            = $req['kpi_id'];
         $project->total_budget      = $req['total_budget'];
         $project->budget_src_id     = $req['budget_src_id'];
@@ -275,7 +276,7 @@ class ProjectController extends Controller
         $project->updated_user      = Auth::user()->person_id;
 
         /** Upload attach file */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
+        // $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
         // if (!empty($attachment)) {
         //     $plan->attachment = $attachment;
         // }

@@ -216,18 +216,18 @@
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'total_actual')}"
                                 >
                                     <label>งบที่ดำเนินการ :</label>
                                     <input
                                         type="text"
-                                        id="total_budget"
-                                        name="total_budget"
-                                        ng-model="project.total_budget"
+                                        id="total_actual"
+                                        name="total_actual"
+                                        ng-model="project.total_actual"
                                         class="form-control pull-right"
                                         tabindex="4">
-                                    <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
-                                        @{{ formError.errors.total_budget[0] }}
+                                    <span class="help-block" ng-show="checkValidate(project, 'total_actual')">
+                                        @{{ formError.errors.total_actual[0] }}
                                     </span>
                                 </div>
                             </div>
