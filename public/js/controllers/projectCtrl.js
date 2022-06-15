@@ -253,7 +253,6 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         
         $http.get(`${CONFIG.apiUrl}/projects/${id}/timeline`)
         .then(res => {
-            console.log(res);
             $scope.timeline = res.data.timeline;
 
             $scope.loading = false;
@@ -264,13 +263,10 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
-    $scope.updateTimeline = (id, fieldName) => {
-        console.log(id, fieldName);
-
-        $http.post(`${CONFIG.baseUrl}/projects/${id}/payments`, $scope.newPayment)
+    $scope.updateTimeline = (id, projectId, fieldName) => {
+        $http.post(`${CONFIG.baseUrl}/projects/${projectId}/${id}/timeline`, { fieldName })
         .then(res => {
-            console.log(res);
-            $scope.payments = res.data.payments;
+            $scope.timeline = res.data.timeline;
 
             $scope.loading = false;
         }, err => {

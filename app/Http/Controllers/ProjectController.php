@@ -419,6 +419,73 @@ class ProjectController extends Controller
         }
     }
 
+    public function storeTimeline(Request $req, $id) {
+        try {
+            $timeline = new ProjectTimeline;
+            $timeline->project_id = $id;
+            $timeline->$req['fieldName'] = date('Y-m-d');
+
+            if ($timeline->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'timeline'  => ProjectPayment::where('project_id', $id)
+                                    ->with('creator','creator.prefix')
+                                    ->get()
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function updateTimeline(Request $req, $id, $timelineId) {
+        try {
+            $timeline = ProjectTimeline::find($timelineId);
+            $timeline->$req['fieldName'] = date('Y-m-d');
+
+            if ($timeline->save()) {
+                $project = Project::find($id);
+
+                if ($req['fieldName'] == 'sent_stg_date') {
+                    $project->status = '1';
+                } else if ($req['fieldName'] == 'sent_fin_date') {
+                    $project->status = '2';
+                } else if ($req['fieldName'] == 'approved_date') {
+                    $project->status = '3';
+                } else if ($req['fieldName'] == 'start_date') {
+                    $project->status = '4';
+                }
+
+                $project->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully!!',
+                    'timeline'  => $timeline
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function printLeaveForm($id)
     {
         $pdfView = '';
