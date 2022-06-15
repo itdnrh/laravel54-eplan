@@ -247,7 +247,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     };
 
     $scope.timeline = null;
-    $scope.getTimlines = (id) => {
+    $scope.getTimline = (id) => {
         $scope.payments = [];
         $scope.loading = true;
         

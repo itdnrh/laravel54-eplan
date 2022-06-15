@@ -259,7 +259,7 @@ class ProjectController extends Controller
                     ->with('kpi','kpi.strategy','kpi.strategy.strategic')
                     ->first();
 
-        $timeline = ProjectTimeline::where('project_id', $id)->get();
+        $timeline = ProjectTimeline::where('project_id', $id)->first();
 
         return [
             'project'   => $project,
