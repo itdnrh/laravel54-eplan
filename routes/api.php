@@ -17,6 +17,9 @@ Route::group(['middleware' => 'api'], function () {
     /** รายการสินค้าและบริการ */
     Route::get('items', 'ItemController@getAll');
     Route::post('items', 'ItemController@store');
+    
+    /** ตัวชี้วัด */
+    Route::get('kpis', 'KpiController@getAll');
 
     /** โครงการ */
     Route::get('projects', 'ProjectController@getAll');

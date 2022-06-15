@@ -132,6 +132,18 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('projects/{id}/{timelineId}/timeline', 'ProjectController@updateTimeline');
     Route::get('projects/print/{id}', 'ProjectController@printLeaveForm');
 
+    /** ตัวชี้วัด */
+    Route::post('kpis/validate', 'KpiController@formValidate');
+    Route::get('system/kpis', 'KpiController@index');
+    Route::get('kpis/list', 'KpiController@index');
+    Route::get('kpis/detail/{id}', 'KpiController@detail');
+    Route::get('kpis/add', 'KpiController@add');
+    Route::post('kpis/store', 'KpiController@store');
+    Route::get('kpis/edit/{id}', 'KpiController@edit');
+    Route::post('kpis/update/{id}', 'KpiController@update');
+    Route::post('kpis/delete/{id}', 'KpiController@delete');
+    Route::get('kpis/print/{id}', 'KpiController@printLeaveForm');
+
     /** การอนุมัติ */
     Route::get('approvals/assets', 'ApprovalController@assets');
     Route::get('approvals/materials', 'ApprovalController@materials');

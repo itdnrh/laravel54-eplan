@@ -13,23 +13,13 @@ class Kpi extends Model
         return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
     }
 
-    // public function patient()
-    // {
-    //     return $this->belongsTo(Patient::class, 'hn', 'hn');
-    // }
+    public function owner()
+    {
+        return $this->belongsTo(Person::class, 'owner_person', 'person_id');
+    }
 
-    // public function ward()
-    // {
-    //     return $this->belongsTo(Ward::class, 'ward', 'ward');
-    // }
-
-    // public function pttype()
-    // {
-    //     return $this->belongsTo(Pttype::class, 'pttype', 'pttype');
-    // }
-
-    // public function admdoctor()
-    // {
-    //     return $this->belongsTo(Doctor::class, 'admdoctor', 'code');
-    // }
+    public function depart()
+    {
+        return $this->belongsTo(Depart::class, 'owner_depart', 'depart_id');
+    }
 }

@@ -389,6 +389,11 @@
 										<i class="fa fa-circle-o"></i> ประเภทครุภัณฑ์
 									</a>
 								</li>
+								<li ng-class="{ 'active': submenu == 'kpis' }">
+									<a href="{{ url('/system/kpis') }}">
+										<i class="fa fa-circle-o"></i> ตัวชี้วัด (KPI)
+									</a>
+								</li>
 							</ul>
 						</li>
 					@endif

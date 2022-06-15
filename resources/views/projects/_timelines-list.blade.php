@@ -38,7 +38,7 @@
                     ng-show="!timeline.approved_date"
                     ng-click="updateTimeline(timeline.id, project.id, 'approved_date')"
                 >
-                    บันทึกผอ.อนุมัติ
+                    บันทึก ผอ.อนุมัติ
                 </a>
                 <span ng-show="timeline.approved_date">@{{ timeline.approved_date | thdate }}</span>
             </td>

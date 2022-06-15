@@ -5,27 +5,26 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            โครงการ
+            ตัวชี้วัด (KPI)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">โครงการ</li>
+            <li class="breadcrumb-item active">ตัวชี้วัด (KPI)</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="projectCtrl"
+        ng-controller="kpiCtrl"
         ng-init="
             getAll();
             initForms({
                 departs: {{ $departs }},
                 strategics: {{ $strategics }},
                 strategies: {{ $strategies }},
-                kpis: {{ $kpis }},
             }, '');
         "
     >
@@ -96,19 +95,14 @@
                                 </div><!-- /.col-md-6 -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>ตัวชี้วัด</label>
-                                        <select
-                                            id="cboKpi"
-                                            name="cboKpi"
-                                            ng-model="cboKpi"
-                                            class="form-control select2"
-                                            ng-change="getAll($event)"
+                                        <label>ชื่อตัวชี้วัด</label>
+                                        <input
+                                            id="txtKeyword"
+                                            name="txtKeyword"
+                                            ng-model="txtKeyword"
+                                            class="form-control"
+                                            ng-keyup="getAll($event)"
                                         >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
-                                                @{{ kpi.kpi_name }}
-                                            </option>
-                                        </select>
                                     </div><!-- /.form group -->
                                 </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
@@ -152,20 +146,6 @@
                                     </div><!-- /.form group -->
                                 </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>ชื่อโครงการ</label>
-                                        <input
-                                            id="txtKeyword"
-                                            name="txtKeyword"
-                                            ng-model="txtKeyword"
-                                            class="form-control"
-                                            ng-keyup="getAll($event)"
-                                        >
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
-                            </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -174,11 +154,11 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">โครงการ</h3>
+                                <h3 class="box-title">ตัวชี้วัด (KPI)</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/projects/add') }}" class="btn btn-primary pull-right">
-                                    เพิ่มโครงการ
+                                <a href="{{ url('/kpis/add') }}" class="btn btn-primary pull-right">
+                                    เพิ่มตัวชี้วัด
                                 </a>
                             </div>
                         </div>
@@ -198,27 +178,21 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่</th>
-                                    <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                    <th>รายการ</th>
-                                    <th style="width: 8%; text-align: center;">งบประมาณ</th>
-                                    <th style="width: 8%; text-align: center;">แหล่งงบฯ</th>
+                                    <th style="width: 5%; text-align: center;">ปีงบ</th>
+                                    <th>ตัวชี้วัด</th>
+                                    <th style="width: 40%; text-align: center;">ยุทธศาสตร์/กลยุทธ์</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                    <th style="width: 5%; text-align: center;">อนุมัติ</th>
-                                    <th style="width: 10%; text-align: center;">สถานะ</th>
+                                    <!-- <th style="width: 5%; text-align: center;">อนุมัติ</th> -->
+                                    <!-- <th style="width: 10%; text-align: center;">สถานะ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, project) in projects">
+                                <tr ng-repeat="(index, kpi) in kpis">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ project.project_no }}</td>
-                                    <!-- <td style="text-align: center;">@{{ project.year }}</td> -->
+                                    <td style="text-align: center;">@{{ kpi.year }}</td>
                                     <td>
-                                        <h5 style="margin: 0; font-weight: bold;">ตัวชี้วัด: @{{ project.kpi.kpi_name }}</h5>
-                                        <p style="margin: 0;">
-                                            @{{ project.project_name }}
-                                        </p>
+                                        @{{ kpi.kpi_no }}. @{{ kpi.kpi_name }}
                                         <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                             class="btn btn-default btn-xs" 
                                             title="ไฟล์แนบ"
@@ -228,20 +202,18 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ project.total_budget | currency:'':0 }}
+                                        <p style="font-weight: bold; margin: 0;">@{{ kpi.strategy.strategic.strategic_name }}</p>
+                                        <p style="margin: 0;">@{{ kpi.strategy_name }}</p>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ project.budget_src.name }}
+                                        <p style="margin: 0;">@{{ kpi.depart.depart_name }}</p>
+                                        <p style="margin: 0;">@{{ kpi.owner.person_firstname+ ' ' +kpi.owner.person_lastname }}</p>
                                     </td>
-                                    <td style="text-align: center;">
-                                        <p style="margin: 0;">@{{ project.depart.depart_name }}</p>
-                                        <p style="margin: 0;">@{{ project.owner.person_firstname+ ' ' +project.owner.person_lastname }}</p>
-                                    </td>
-                                    <td style="text-align: center;">
+                                    <!-- <td style="text-align: center;">
                                         <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="project.approved == 'A'"></i>
                                         <i class="fa fa-times text-danger" aria-hidden="true" ng-show="!project.approved"></i>
-                                    </td>
-                                    <td style="text-align: center;">
+                                    </td> -->
+                                    <!-- <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="project.status == 0">
                                             รอดำเนินการ
                                         </span>
@@ -255,12 +227,12 @@
                                             ผอ.อนุมัติแล้ว
                                         </span>
                                         <span class="label bg-maroon" ng-show="project.status == 4">
-                                            ดำเนินโครงการแล้ว
+                                            ดำเนินตัวชี้วัด (KPI)แล้ว
                                         </span>
                                         <span class="label label-default" ng-show="project.status == 9">
                                             ยกเลิก
                                         </span>
-                                    </td>
+                                    </td> -->
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
                                             <a  href="{{ url('/projects/detail') }}/@{{ project.id }}"
