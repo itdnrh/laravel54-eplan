@@ -120,14 +120,13 @@
                                             ng-model="project.kpi_id"
                                             class="form-control"
                                             tabindex="2">
-                                        <option value="">-- เลือกประเภท --</option>
+                                        <option value="">-- เลือกตัวชี้วัด --</option>
                                         <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
                                             @{{ kpi.kpi_name }}
                                         </option>
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'kpi_id')">
-                                        @{{ formError.errors.project_type_id[0] }}
+                                        @{{ formError.errors.kpi_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -163,10 +162,11 @@
                                             class="form-control"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภทโครงการ --</option>
-                                        <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
-                                            @{{ kpi.kpi_name }}
-                                        </option>
-
+                                        @foreach($projectTypes as $projectType)
+                                            <option value="{{ $projectType->id }}">
+                                                {{ $projectType->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'project_type_id')">
                                         @{{ formError.errors.project_type_id[0] }}
@@ -334,6 +334,23 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'start_month')">
                                         @{{ formError.errors.start_month[0] }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'attachment')}"
+                                >
+                                    <label>ไฟล์แนบ :</label>
+                                    <input
+                                        type="file"
+                                        id="attachment" 
+                                        name="attachment"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(project, 'attachment')">
+                                        @{{ formError.errors.attachment[0] }}
                                     </span>
                                 </div>
                             </div>

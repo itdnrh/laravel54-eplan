@@ -15,18 +15,21 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.project = {
         project_id: '',
+        project_no: '',
+        project_name: '',
+        project_type_id: '',
         year: '',
         strategic_id: '',
         strategy_id: '',
         kpi_id: '',
-        project_no: '',
-        project_name: '',
         total_budget: '',
-        budget_src_id: '',
+        total_actual: '',
+        budget_src_id: '1',
         faction_id: '',
         owner_depart: '',
         owner_person: '',
         start_month: '',
+        attachment: '',
         remark: '',
     };
 
@@ -40,21 +43,24 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         todayHighlight: true
     };
 
-    const clearProjectObj = function() {
+    const clearProject = function() {
         $scope.project = {
             project_id: '',
+            project_no: '',
+            project_name: '',
+            project_type_id: '',
             year: '',
             strategic_id: '',
             strategy_id: '',
             kpi_id: '',
-            project_no: '',
-            project_name: '',
             total_budget: '',
-            budget_src_id: '',
+            total_actual: '',
+            budget_src_id: '1',
             faction_id: '',
             owner_depart: '',
             owner_person: '',
             start_month: '',
+            attachment: '',
             remark: '',
         };
     };

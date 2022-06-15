@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Project;
+use App\Models\ProjectType;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -26,28 +27,35 @@ class ProjectController extends Controller
             'year'          => 'required',
             // 'project_no'    => 'required',
             'project_name'  => 'required',
+            'project_type_id' => 'required',
             'strategic_id'  => 'required',
             'strategy_id'   => 'required',
             'kpi_id'        => 'required',
             'total_budget'  => 'required',
             'budget_src_id' => 'required',
-            'faction_id'    => 'required',
             'owner_depart'  => 'required',
             'owner_person'  => 'required',
             'start_month'   => 'required',
         ];
 
-        if ($request['leave_type'] == '1' || $request['leave_type'] == '2' || 
-            $request['leave_type'] == '3' || $request['leave_type'] == '4' ||
-            $request['leave_type'] == '5') {
-            $rules['leave_contact'] = 'required';
-        }
+        // if ($request['leave_type'] == '1' || $request['leave_type'] == '2' || 
+        //     $request['leave_type'] == '3' || $request['leave_type'] == '4' ||
+        //     $request['leave_type'] == '5') {
+        //     $rules['leave_contact'] = 'required';
+        // }
 
         $messages = [
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
+            'year.required'             => 'กรุณาเลือกปีงบประมาณ',
+            'project_name.required'     => 'กรุณาระบุชื่อโครงการ',
+            'project_type_id.required'  => 'กรุณาเลือกประเภทโครงการ',
+            'strategic_id.required'     => 'กรุณาเลือกยุทธศาสตร์',
+            'strategy_id.required'      => 'กรุณาเลือกกลยุทธ์',
+            'kpi_id.required'           => 'กรุณาเลือกตัวชี้วัด',
+            'total_budget.required'     => 'กรุณาระบุงบที่ขออนุมัติ',
+            'budget_src_id.required'    => 'กรุณาเลือกแหล่งงบประมาณ',
+            'owner_depart.required'     => 'กรุณาเลือกหน่วยงาน',
+            'owner_person.required'     => 'กรุณาระบุผู้รับผิดชอบ',
+            'start_month.required'      => 'กรุณาเลือกระยะเวลาดำเนินงาน',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -239,7 +247,8 @@ class ProjectController extends Controller
     public function add()
     {
         return view('projects.add', [
-            "budgets"       => BudgetSource::all(),
+            "projectTypes"  => ProjectType::all(),
+            "budgets"       => BudgetSource::where('id', '1')->get(),
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::all(),
             "kpis"          => Kpi::all(),
