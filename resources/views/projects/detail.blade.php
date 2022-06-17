@@ -107,13 +107,7 @@
                                 ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
                             >
                                 <label>งบประมาณ :</label>
-                                <input
-                                    type="text"
-                                    id="total_budget"
-                                    name="total_budget"
-                                    ng-model="project.total_budget"
-                                    class="form-control pull-right"
-                                    tabindex="4">
+                                <div class="form-control">@{{ project.total_budget | currency:'':2 }}</div>
                             </div>
                             <div
                                 class="form-group col-md-6"
@@ -183,12 +177,14 @@
                         </div>
 
                         <!-- ================ Timeline Section ================ -->
-                        <div class="box">
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h4 style="margin: 0;">Timeline</h4>
+                            </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div style="padding: 0 20px;">
-                                            <h4>Timeline</h4>
 
                                             @include('projects._timelines-list')
 
@@ -196,20 +192,20 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><br />
+                        </div>
 
                         <!-- ================ Payment Section ================ -->
-                        <div class="box">
+                        <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <h4 style="margin: 0;">การเบิกจ่าย</h4>
+                            </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div style="padding: 0 20px;">
-                                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                                <h4 style="margin: 0;">การเบิกจ่าย</h4>
-                                                <a href="#" class="btn btn-primary" ng-click="showPaymentForm()">
+                                                <a href="#" class="btn btn-primary pull-right" style="margin-bottom: 10px;" ng-click="showPaymentForm()">
                                                     เพิ่มรายการเบิกจ่าย
                                                 </a>
-                                            </div>
     
                                             @include('projects._payment-list')
                                             @include('projects._payment-form')
