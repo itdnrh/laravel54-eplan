@@ -209,7 +209,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
                                 >
-                                    <label>ประเภทพัสดุ :</label>
+                                    <label>ประเภทแผน :</label>
                                     <select
                                         id="plan_type_id"
                                         name="plan_type_id"
@@ -217,13 +217,13 @@
                                         class="form-control"
                                         tabindex="1"
                                     >
-                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option value="">-- เลือกประเภทแผน --</option>
                                         @foreach($planTypes as $planType)
                                             <option value="{{ $planType->id }}">{{ $planType->plan_type_name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(order, 'plan_type_id')">
-                                        กรุณาเลือกประเภทพัสดุ
+                                        กรุณาเลือกประเภทแผน
                                     </span>
                                 </div>
                                 <div
@@ -403,7 +403,7 @@
                                             <a
                                                 href="#"
                                                 class="btn btn-primary btn-sm pull-right"
-                                                ng-click="onFilterCategories(order.plan_type_id); showPlansList();"
+                                                ng-click="onFilterCategories(order.plan_type_id); showPlansList(order.plan_type_id);"
                                             >
                                                 <i class="fa fa-plus"></i>
                                             </a>

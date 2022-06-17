@@ -192,24 +192,26 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.editRow = !$scope.editRow;
     };
 
-    $scope.showPlansList = () => {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let type = $scope.order.plan_type_id === '' ? 1 : $scope.order.plan_type_id;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&status=2`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-
-            $('#plans-list').modal('show');
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
+    $scope.showPlansList = (type) => {
+        if (type == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
+        } else {
+            $scope.loading = true;
+            $scope.plans = [];
+            $scope.plans_pager = null;
+    
+            $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&status=2`)
+            .then(function(res) {
+                $scope.setPlans(res);
+    
+                $scope.loading = false;
+    
+                $('#plans-list').modal('show');
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
     };
 
     $scope.getPlans = (status) => {
