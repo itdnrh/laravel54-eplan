@@ -301,7 +301,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $http.get(`${CONFIG.apiUrl}/projects/${id}/payments`)
         .then(res => {
             $scope.payments = res.data.payments;
-            $scope.totalPayment = calculateTotalPayment(res.data.payments);
+            $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
 
             $scope.loading = false;
         }, err => {
@@ -322,7 +322,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         .then(res => {
             console.log(res);
             $scope.payments = res.data.payments;
-            $scope.totalPayment = calculateTotalPayment(res.data.payments);
+            $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
 
             $scope.loading = false;
         }, err => {
@@ -332,6 +332,14 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
 
         $('#payment-form').modal('hide');
+    };
+    
+    $scope.showCloseProjectForm = () => {
+        $('#close-form').modal('show');
+    };
+
+    $scope.onCloseProject = () => {
+
     };
 
     $scope.store = function(event, form) {
