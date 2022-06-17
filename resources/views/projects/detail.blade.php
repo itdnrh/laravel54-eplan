@@ -181,32 +181,41 @@
                                     ></textarea>
                                 </div>
                             </div>
+
                             <!-- ================ Timeline Section ================ -->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div style="padding: 0 20px;">
-                                        <h4>Timeline</h4>
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="padding: 0 20px;">
+                                                <h4>Timeline</h4>
 
-                                        @include('projects._timelines-list')
+                                                @include('projects._timelines-list')
 
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div><br />
 
                             <!-- ================ Payment Section ================ -->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div style="padding: 0 20px;">
-                                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                            <h4 style="margin: 0;">การเบิกจ่าย</h4>
-                                            <a href="#" class="btn btn-primary" ng-click="showPaymentForm()">
-                                                เพิ่มรายการเบิกจ่าย
-                                            </a>
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="padding: 0 20px;">
+                                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                                    <h4 style="margin: 0;">การเบิกจ่าย</h4>
+                                                    <a href="#" class="btn btn-primary" ng-click="showPaymentForm()">
+                                                        เพิ่มรายการเบิกจ่าย
+                                                    </a>
+                                                </div>
+        
+                                                @include('projects._payment-list')
+                                                @include('projects._payment-form')
+        
+                                            </div>
                                         </div>
-
-                                        @include('projects._payment-list')
-                                        @include('projects._payment-form')
-
                                     </div>
                                 </div>
                             </div>
