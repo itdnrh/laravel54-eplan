@@ -21,6 +21,7 @@ use App\Models\Depart;
 use App\Models\Division;
 use App\Models\OrderType;
 use App\Models\BudgetSource;
+use App\Models\Running;
 
 class OrderController extends Controller
 {
@@ -306,6 +307,7 @@ class OrderController extends Controller
                 }
             } else if ($mode == 2) {
                 $support = Support::find($req['id']);
+                $support->received_no   = $this->getRunningByDocType('10');
                 $support->received_date = date('Y-m-d');
                 $support->received_user = Auth::user()->person_id;
                 $support->status = 2; 
@@ -359,108 +361,5 @@ class OrderController extends Controller
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
         return renderPdf('forms.form03', $data);
-    }
-
-    public function getByPerson(Request $req, $personId)
-    {
-        $year = $req->get('year');
-        $type = $req->get('type');
-
-        return [
-            'cancellations' => Leave::where('leave_person', $personId)
-                                ->whereIn('status', [5,8,9])
-                                ->when(!empty($year), function($q) use($year) {
-                                    $q->where('year', $year);
-                                })
-                                ->when(!empty($type), function($q) use($type) {
-                                    $q->where('leave_type', $type);
-                                })
-                                ->with('person', 'person.prefix', 'person.position', 'person.academic')
-                                ->with('person.memberOf', 'person.memberOf.depart')
-                                ->with('delegate','delegate.prefix','delegate.position','delegate.academic')
-                                ->with('type','cancellation')
-                                ->orderBy('leave_date', 'DESC')
-                                ->paginate(10),
-        ];
-    }
-
-    public function doApprove(Request $req)
-    {
-        try {
-            $cancel = Cancellation::find($req['_id']);
-            $cancel->approved_comment   = $req['comment'];
-            $cancel->approved_date      = date('Y-m-d');
-            $cancel->approved_by        = Auth::user()->person_id;
-
-            if ($cancel->save()) {
-                /** Update status of cancelled leave data */
-                $leave = Leave::find($req['leave_id']);
-                $leave->status = $leave->leave_days == $cancel->days ? '9' : '8';
-                $leave->save();
-
-                /** Update cancelled leave histories data */
-                $history = History::where('person_id', $leave->leave_person)->first();
-
-                /** Decrease leave days coordineted leave type */
-                if ($leave->leave_type == '1') {
-                    $history->ill_days -= (float)$cancel->days;     // ลาป่วย
-                } else if ($leave->leave_type == '2') {
-                    $history->per_days -= (float)$cancel->days;     // ลากิจส่วนตัว
-                } else if ($leave->leave_type == '3') {
-                    $history->vac_days -= (float)$cancel->days;     // ลาพักผ่อน
-                } else if ($leave->leave_type == '4') {
-                    $history->lab_days -= (float)$leave->leave_days; // ลาคลอด
-                } else if ($leave->leave_type == '5') {
-                    $history->hel_days -= (float)$leave->leave_days; // ลาเพื่อดูแลบุตรและภรรยาหลังคลอด
-                } else if ($leave->leave_type == '6') {
-                    $history->ord_days -= (float)$cancel->days;     // ลาอุปสมบท
-                }
-
-                $history->save();
-
-                return redirect('/approvals/approve')
-                        ->with('status', 'ลงนามอนุมัติการขอยกเลิกวันลา ID: ' .$req['_id']. ' เรียบร้อยแล้ว !!');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-
-    public function doComment(Request $req)
-    {
-        try {
-            $cancel = Cancellation::find($req['_id']);
-            $cancel->commented_text   = $req['comment'];
-            $cancel->commented_date   = date('Y-m-d');
-            $cancel->commented_by     = Auth::user()->person_id;
-
-            if ($cancel->save()) {
-                /** Update status of cancelled leave data */
-                $leave = Leave::find($req['leave_id']);
-                $leave->status = $req['approved'];
-                $leave->save();
-
-                return redirect('/approvals/comment')
-                        ->with('status', 'ลงความเห็นการขอยกเลิกวันลา ID: ' .$req['_id']. ' เรียบร้อยแล้ว !!');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-
-    public function doReceive(Request $req)
-    {
-        try {
-            $cancel = Cancellation::find($req['_id']);
-            $cancel->received_date  = date('Y-m-d H:i:s');
-            $cancel->received_by    = Auth::user()->person_id;
-
-            if ($cancel->save()) {
-                return redirect('/approvals/receive')
-                        ->with('status', 'ลงรับเอกสารการขอยกเลิกวันลา ID: ' .$req['_id']. ' เรียบร้อยแล้ว !!');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
     }
 }

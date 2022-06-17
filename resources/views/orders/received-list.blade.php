@@ -206,6 +206,7 @@
         </div><!-- /.row -->
 
         @include('orders._receive-list')
+        @include('orders._receive-form')
 
     </section>
 

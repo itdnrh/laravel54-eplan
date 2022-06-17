@@ -464,8 +464,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supportsToReceives_pager = pager;
     };
 
-    $scope.onReceiveSupport = function(e, support) {
+    $scope.ShowReceiveSupportForm = function(e, support) {
         console.log(support);
+        $('#receive-form').modal('show');
+    };
+
+    $scope.onReceiveSupport = function(e, support) {
         $http.post(`${CONFIG.baseUrl}/orders/received/2`, support)
         .then(function(res) {
             if (res.data.status == 1) {
