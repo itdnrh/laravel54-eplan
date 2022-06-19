@@ -159,7 +159,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'price_per_unit')}"
                                 >
                                     <label>ราคาต่อหน่วย :</label>
@@ -177,7 +177,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'unit_id')}"
                                 >
                                     <label>หน่วย :</label>
@@ -201,14 +201,12 @@
                                         @{{ formError.errors.unit_id[0] }}
                                     </span>
                                 </div>
-                            </div>
 
-                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'amount')}"
                                 >
-                                    <label>จำนวน :</label>
+                                    <label>จำนวนที่ขอ :</label>
                                     <input  type="text"
                                             id="amount"
                                             name="amount"
@@ -220,9 +218,11 @@
                                         @{{ formError.errors.amount[0] }}
                                     </span>
                                 </div>
+                            </div>
 
+                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'sum_price')}"
                                 >
                                     <label>รวมเป็นเงิน :</label>
@@ -236,14 +236,86 @@
                                         @{{ formError.errors.sum_price[0] }}
                                     </span>
                                 </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'request_cause')}"
+                                >
+                                    <label>สาเหตุที่ขอ :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="N"
+                                                    ng-model="asset.request_cause"
+                                                    tabindex="3"> ขอใหม่
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="R"
+                                                    ng-model="asset.request_cause"
+                                                    tabindex="3"> ทดแทน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="E"
+                                                    ng-model="asset.request_cause"
+                                                    tabindex="3"> ขยายงาน
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(asset, 'request_cause')">
+                                        @{{ formError.errors.in_plan[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'have_amount')}"
+                                >
+                                    <label>จำนวนเดิมที่มี :</label>
+                                    <input  type="text"
+                                            id="have_amount"
+                                            name="have_amount"
+                                            ng-model="asset.have_amount"
+                                            class="form-control pull-right"
+                                            tabindex="8"
+                                            ng-change="calculateSumPrice()" />
+                                    <span class="help-block" ng-show="checkValidate(asset, 'have_amount')">
+                                        @{{ formError.errors.have_amount[0] }}
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'budget_src_id')}"
+                                >
+                                    <label>แหล่งเงินงบประมาณ :</label>
+                                    <select
+                                        id="budget_src_id"
+                                        name="budget_src_id"
+                                        ng-model="order.budget_src_id"
+                                        class="form-control"
+                                        tabindex="1"
+                                    >
+                                        <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
+                                        @foreach($budgetSources as $budgetSource)
+                                            <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'budget_src_id')">
+                                        กรุณาเลือกแหล่งเงินงบประมาณ
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'start_month')}"
                                 >
-                                    <label>เริ่มเดือน :</label>
+                                    <label>เดือนที่จะดำเนินการ :</label>
                                     <select
                                         id="start_month"
                                         name="start_month"
@@ -260,8 +332,60 @@
                                         @{{ formError.errors.start_month[0] }}
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'strategic_id')}"
+                                >
+                                    <label>ยุทธศาสตร์ :</label>
+                                    <select id="strategic_id" 
+                                            name="strategic_id"
+                                            ng-model="project.strategic_id"
+                                            ng-change="onStrategicSelected(project.strategic_id);"
+                                            class="form-control"
+                                            tabindex="7">
+                                        <option value="">-- เลือกยุทธศาสตร์ --</option>
+
+                                        @foreach($strategics as $strategic)
+                                            <option value="{{ $strategic->id }}">
+                                                {{ $strategic->strategic_name }}
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(project, 'strategic_id')">
+                                        @{{ formError.errors.strategic_id[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'service_plan_id')}"
+                                >
+                                    <label>Service Plan :</label>
+                                    <select id="service_plan_id" 
+                                            name="service_plan_id"
+                                            ng-model="project.service_plan_id"
+                                            class="form-control"
+                                            tabindex="7">
+                                        <option value="">-- เลือก Service Plan --</option>
+
+                                        @foreach($strategics as $strategic)
+                                            <option value="{{ $strategic->id }}">
+                                                {{ $strategic->strategic_name }}
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(project, 'service_plan_id')">
+                                        @{{ formError.errors.service_plan_id[0] }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'faction_id')}"
                                 >
                                     <label>กลุ่มภารกิจ :</label>
@@ -287,11 +411,8 @@
                                         @{{ formError.errors.faction_id[0] }}
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'depart_id')}"
                                 >
                                     <label>กลุ่มงาน :</label>
@@ -312,7 +433,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'division_id')}"
                                 >
                                     <label>งาน :</label>

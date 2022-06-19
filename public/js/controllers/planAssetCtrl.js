@@ -20,6 +20,11 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         unit_id: '',
         amount: '',
         sum_price: '',
+        request_cause: '',
+        have_amount: '',
+        budget_src_id: '',
+        strategic_id: '',
+        service_plan_id: '',
         start_month: '',
         reason: '',
         remark: '',
@@ -63,6 +68,11 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             unit_id: '',
             amount: '',
             sum_price: '',
+            request_cause: '',
+            have_amount: '',
+            budget_src_id: '',
+            strategic_id: '',
+            service_plan_id: '',
             start_month: '',
             reason: '',
             remark: '',
@@ -159,27 +169,31 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         /** Global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 1;
-
         /** ข้อมูลครุภัณฑ์ */
         $scope.asset.asset_id           = plan.id;
         $scope.asset.in_plan            = plan.in_plan;
         $scope.asset.year               = plan.year;
-        // $scope.asset.plan_no            = plan.plan_no;
+        $scope.asset.plan_no            = plan.plan_no;
         $scope.asset.desc               = plan.plan_item.item.item_name;
         $scope.asset.spec               = plan.plan_item.spec;
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.asset.amount             = plan.plan_item.amount;
         $scope.asset.sum_price          = plan.plan_item.sum_price;
         $scope.asset.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.asset.request_cause      = plan.request_cause;
+        $scope.asset.have_amount        = plan.have_amount;
         $scope.asset.reason             = plan.reason;
         $scope.asset.remark             = plan.remark;
         $scope.asset.status             = plan.status;
-
+        
         /** Convert int value to string */
         $scope.asset.category_id        = plan.plan_item.item.category_id.toString();
         $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
         $scope.asset.depart_id          = plan.depart_id.toString();
         $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';
+        $scope.asset.budget_src_id      = plan.budget_src_id.toString();
+        $scope.asset.strategic_id       = plan.strategic_id.toString();
+        $scope.asset.service_plan_id    = plan.service_plan_id.toString();
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };

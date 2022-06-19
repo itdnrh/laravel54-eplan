@@ -416,27 +416,6 @@
                                 <div class="col-md-8">
                                     <div
                                         class="form-group col-md-8"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'budget_src_id')}"
-                                    >
-                                        <label>แหล่งเงินงบประมาณ :</label>
-                                        <select
-                                            id="budget_src_id"
-                                            name="budget_src_id"
-                                            ng-model="order.budget_src_id"
-                                            class="form-control"
-                                            tabindex="1"
-                                        >
-                                            <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
-                                            @foreach($budgetSources as $budgetSource)
-                                                <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="help-block" ng-show="checkValidate(order, 'budget_src_id')">
-                                            กรุณาเลือกแหล่งเงินงบประมาณ
-                                        </span>
-                                    </div>
-                                    <div
-                                        class="form-group col-md-8"
                                         ng-class="{'has-error has-feedback': checkValidate(order, 'remark')}"
                                     >
                                         <label>หมายเหตุ :</label>

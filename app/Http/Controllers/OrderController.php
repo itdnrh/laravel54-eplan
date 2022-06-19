@@ -187,7 +187,6 @@ class OrderController extends Controller
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
             "orderTypes"    => OrderType::all(),
-            "budgetSources" => BudgetSource::all(),
         ]);
     }
 
