@@ -20,7 +20,17 @@ class Plan extends Model
 
     public function budget()
     {
-        return $this->belongsTo(Budget::class, 'budget_id', 'id');
+        return $this->belongsTo(BudgetSource::class, 'budget_src_id', 'id');
+    }
+
+    public function strategic()
+    {
+        return $this->belongsTo(Strategic::class, 'strategic_id', 'id');
+    }
+
+    public function servicePlan()
+    {
+        return $this->belongsTo(ServicePlan::class, 'service_plan_id', 'id');
     }
 
     public function depart()
