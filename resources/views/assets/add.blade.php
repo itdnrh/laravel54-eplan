@@ -268,7 +268,7 @@
                                         </div>
                                     </div>
                                     <span class="help-block" ng-show="checkValidate(asset, 'request_cause')">
-                                        @{{ formError.errors.in_plan[0] }}
+                                        @{{ formError.errors.request_cause[0] }}
                                     </span>
                                 </div>
                                 <div
@@ -371,9 +371,9 @@
                                             tabindex="7">
                                         <option value="">-- เลือก Service Plan --</option>
 
-                                        @foreach($strategics as $strategic)
-                                            <option value="{{ $strategic->id }}">
-                                                {{ $strategic->strategic_name }}
+                                        @foreach($servicePlans as $servicePlan)
+                                            <option value="{{ $servicePlan->id }}">
+                                                {{ $servicePlan->name }}
                                             </option>
                                         @endforeach
 

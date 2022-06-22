@@ -16,6 +16,7 @@ use App\Models\PlanType;
 use App\Models\Unit;
 use App\Models\BudgetSource;
 use App\Models\Strategic;
+use App\Models\ServicePlan;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -38,8 +39,16 @@ class PlanAssetController extends Controller
             'depart_id'         => 'required',
             // 'division_id'       => 'required',
             'start_month'       => 'required',
-            // 'reason'            => 'required',
+            'reason'            => 'required',
+            'budget_src_id'     => 'required',
+            'request_cause'     => 'required',
+            'have_amount'       => 'required',
         ];
+
+        if ($request['strategic_id'] == '' && $request['service_plan_id'] == '') {
+            $rules['strategic_id']      = 'required';
+            $rules['service_plan_id']   = 'required';
+        }
 
         $messages = [
             'start_date.required'   => 'กรุณาเลือกจากวันที่',
@@ -101,6 +110,7 @@ class PlanAssetController extends Controller
             "units"         => Unit::all(),
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
+            "servicePlans"  => ServicePlan::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
@@ -115,7 +125,7 @@ class PlanAssetController extends Controller
         // $plan->year             = calcBudgetYear($req['year']);
         $plan->year             = $req['year'];
         $plan->plan_type_id     = '1';
-        $plan->budget_src_id    = '1';
+        $plan->budget_src_id    = $req['budget_src_id'];
         $plan->depart_id        = $req['depart_id'];
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
@@ -123,7 +133,7 @@ class PlanAssetController extends Controller
         $plan->request_cause    = $req['request_cause'];
         $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
-        $plan->service_plan     = $req['service_plan'];
+        $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
         $plan->status           = '0';
 
