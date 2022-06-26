@@ -6,7 +6,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
     $scope.material = {
         material_id: '',
-        in_plan: 'I',
+        in_plan: 'O',
         year: '',
         plan_no: '',
         faction_id: '',
@@ -15,10 +15,16 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         category_id: '',
         item_id: '',
         desc: '',
+        spec: '',
         price_per_unit: '',
         unit_id: '',
         amount: '',
         sum_price: '',
+        request_cause: '',
+        have_amount: '',
+        budget_src_id: '',
+        strategic_id: '',
+        service_plan_id: '',
         start_month: '',
         reason: '',
         remark: '',
@@ -45,10 +51,10 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         //     });
         // });
 
-    $scope.clearMaterialObj = function() {
+    $scope.clearMaterial = function() {
         $scope.material = {
             asset_id: '',
-            in_plan: 'I',
+            in_plan: 'O',
             plan_no: '',
             faction_id: '',
             depart_id: '',
@@ -56,11 +62,17 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             category_id: '',
             item_id: '',
             desc: '',
+            spec: '',
             price_per_unit: '',
             unit_id: '',
             amount: '',
             sum_price: '',
             start_month: '',
+            request_cause: '',
+            have_amount: '',
+            budget_src_id: '',
+            strategic_id: '',
+            service_plan_id: '',
             reason: '',
             remark: '',
             in_stock: '0',

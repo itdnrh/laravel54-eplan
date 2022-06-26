@@ -333,7 +333,7 @@
 						Auth::user()->person_id == '1300200009261' ||
 						count(Auth::user()->delegations) > 0
 					)
-						<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
 							<a href="#">
 								<i class="fa fa-pie-chart"></i>
 								<span>รายงาน</span>
@@ -352,13 +352,8 @@
 										<i class="fa fa-circle-o"></i> สรุปการลา
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'remain' }">
-									<a href="{{ url('reports/remain') }}">
-										<i class="fa fa-circle-o"></i> สรุปวันลาคงเหลือ
-									</a>
-								</li>
 							</ul>
-						</li> -->
+						</li>
 					@endif
 
 					<!-- ข้อมูลระบบ -->
