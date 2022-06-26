@@ -45,7 +45,7 @@
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                                 <th style="width: 10%;">ราคาต่อหน่วย</th>
-                                <th style="width: 10%; text-align: center;">Actions</th>
+                                <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

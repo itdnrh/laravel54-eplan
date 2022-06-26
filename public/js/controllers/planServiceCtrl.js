@@ -19,6 +19,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         unit_id: '',
         amount: '',
         sum_price: '',
+        request_cause: '',
+        have_amount: '',
+        budget_src_id: '',
+        strategic_id: '',
+        service_plan_id: '',
         start_month: '',
         reason: '',
         remark: ''
@@ -44,7 +49,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         //     });
         // });
 
-    $scope.clearServiceObj = function() {
+    $scope.clearService = function() {
         $scope.service = {
             service_id: '',
             in_plan: 'I',
@@ -60,6 +65,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             unit_id: '',
             amount: '',
             sum_price: '',
+            request_cause: '',
+            have_amount: '',
+            budget_src_id: '',
+            strategic_id: '',
+            service_plan_id: '',
             start_month: '',
             reason: '',
             remark: ''
