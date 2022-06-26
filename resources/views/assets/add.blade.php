@@ -35,7 +35,7 @@
                         <h3 class="box-title">เพิ่มรายการครุภัณฑ์</h3>
                     </div>
 
-                    <form id="frmNewAsset" name="frmNewAsset" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewLeave" name="frmNewLeave" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -506,7 +506,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewAsset', store)"
+                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewLeave', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

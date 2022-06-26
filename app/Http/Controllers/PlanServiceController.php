@@ -13,6 +13,9 @@ use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\ItemGroup;
 use App\Models\Unit;
+use App\Models\BudgetSource;
+use App\Models\Strategic;
+use App\Models\ServicePlan;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -102,6 +105,9 @@ class PlanServiceController extends Controller
             "categories"    => ItemCategory::all(),
             "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
+            "budgetSources" => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "servicePlans"  => ServicePlan::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
