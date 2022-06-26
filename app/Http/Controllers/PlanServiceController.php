@@ -38,13 +38,15 @@ class PlanServiceController extends Controller
             'depart_id'         => 'required',
             // 'division_id'       => 'required',
             'start_month'       => 'required',
-            // 'reason'            => 'required',
+            'reason'            => 'required',
+            'budget_src_id'     => 'required',
+            'request_cause'     => 'required',
+            'have_amount'       => 'required',
         ];
 
-        if ($request['leave_type'] == '1' || $request['leave_type'] == '2' || 
-            $request['leave_type'] == '3' || $request['leave_type'] == '4' ||
-            $request['leave_type'] == '5') {
-            $rules['leave_contact'] = 'required';
+        if ($request['strategic_id'] == '' && $request['service_plan_id'] == '') {
+            $rules['strategic_id']      = 'required';
+            $rules['service_plan_id']   = 'required';
         }
 
         $messages = [
