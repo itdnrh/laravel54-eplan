@@ -27,11 +27,15 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('projects/{id}/payments', 'ProjectController@getProjectPayments');
     Route::get('projects/{id}/timeline', 'ProjectController@getProjectTimeline');
 
+    /** แผนเงินบำรุง */
+    Route::get('plans/{itemId}/{year}/{depart}/existed', 'PlanController@isExisted');
+
     /** ควบคุมกำกับติดตาม */
     Route::get('monthly', 'MonthlyController@getAll');
     Route::get('monthly/{id}', 'MonthlyController@getById');
     Route::get('monthly/{year}/summary', 'MonthlyController@getSummary');
 
+    /** ค่าสาธารณูปโภค */
     Route::get('utilities/{year}/summary', 'UtilityController@getSummary');
 
     /** หมวดค่าใช้จ่าย */

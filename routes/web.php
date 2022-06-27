@@ -46,7 +46,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('holidays', 'HolidayController@getHolidays');
     Route::get('holidays/list', 'HolidayController@index');
 
-    /** แผนจัดซื้อจัดจ้าง */
+    /** แผนเงินบำรุง */
     Route::get('plans/search', 'PlanController@search');
     Route::get('plans/assets', 'PlanAssetController@index');
     Route::get('plans/materials', 'PlanMaterialController@index');

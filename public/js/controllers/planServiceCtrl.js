@@ -140,11 +140,23 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
-            $('#item_id').val(item.id);
-            $scope.service.item_id = item.id;
-            $scope.service.desc = item.item_name;
-            $scope.service.price_per_unit = item.price_per_unit;
-            $scope.service.unit_id = item.unit_id.toString();
+            /** TODO: Check existed data by depart */
+            let depart = $scope.service.depart_id === '' ? 0 : $scope.service.depart_id;
+
+            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.service.year}/${depart}/existed`)
+            .then(function(res) {
+                if (res.data.isExisted) {
+                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+                } else {
+                    $('#item_id').val(item.id);
+                    $scope.service.item_id = item.id;
+                    $scope.service.desc = item.item_name;
+                    $scope.service.price_per_unit = item.price_per_unit;
+                    $scope.service.unit_id = item.unit_id.toString();
+                }
+            }, function(err) {
+                console.log(err);
+            });
         }
 
         $('#items-list').modal('hide');
