@@ -12,7 +12,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         faction_id: '',
         depart_id: '',
         division_id: '',
-        category_id: '',
         item_id: '',
         desc: '',
         price_per_unit: '',
@@ -58,7 +57,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             faction_id: '',
             depart_id: '',
             division_id: '',
-            category_id: '',
             item_id: '',
             desc: '',
             price_per_unit: '',
@@ -163,7 +161,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/services/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/services/${id}`)
         .then(function(res) {
             cb(res.data.plan);
         }, function(err) {
@@ -179,22 +177,35 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         /** ข้อมูลจ้างบริการ */
         $scope.service.service_id       = plan.id;
         $scope.service.in_plan          = plan.in_plan;
-        $scope.service.year             = plan.year;
+        $scope.service.year             = plan.year.toString();
         // $scope.service.plan_no          = plan.plan_no;
         $scope.service.desc             = plan.plan_item.item.item_name;
+        $scope.service.item_id          = plan.plan_item.item_id;
+        $('#item_id').val(plan.plan_item.item_id);
+
         $scope.service.price_per_unit   = plan.plan_item.price_per_unit;
         $scope.service.amount           = plan.plan_item.amount;
         $scope.service.sum_price        = plan.plan_item.sum_price;
-        $scope.service.start_month      = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.service.start_month      = plan.start_month.toString();
+        $scope.service.request_cause    = plan.request_cause;
+        $scope.service.have_amount      = plan.have_amount;
         $scope.service.reason           = plan.reason;
         $scope.service.remark           = plan.remark;
+        $scope.service.approved         = plan.approved;
         $scope.service.status           = plan.status;
 
         /** Convert int value to string */
-        $scope.service.category_id      = plan.plan_item.item.category_id.toString();
         $scope.service.unit_id          = plan.plan_item.unit_id.toString();
+        $scope.service.faction_id       = plan.depart.faction_id.toString();
         $scope.service.depart_id        = plan.depart_id.toString();
         $scope.service.division_id      = plan.division_id ? plan.division_id.toString() : '';
+        $scope.service.budget_src_id    = plan.budget_src_id.toString();
+        $scope.service.strategic_id     = plan.strategic_id && plan.strategic_id.toString();
+        $scope.service.service_plan_id  = plan.service_plan_id && plan.service_plan_id.toString();
+
+        /** Generate departs and divisions data from plan */
+        $scope.onFactionSelected(plan.depart.faction_id);
+        $scope.onDepartSelected(plan.depart_id);
     };
 
     $scope.store = function(event, form) {

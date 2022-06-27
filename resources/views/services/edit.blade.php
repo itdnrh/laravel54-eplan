@@ -122,9 +122,7 @@
                                     <select id="faction_id" 
                                             name="faction_id"
                                             ng-model="service.faction_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="11"
+                                            class="form-control"
                                             ng-change="onFactionSelected(service.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
                                         @foreach($factions as $faction)
