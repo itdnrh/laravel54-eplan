@@ -162,10 +162,17 @@ class PlanMaterialController extends Controller
     public function edit($id)
     {
         return view('materials.edit', [
-            "material"      => Material::find($id),
-            "categories"    => MaterialCategory::all(),
+            "material"      => Plan::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
+            "units"         => Unit::all(),
+            "budgetSources" => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "servicePlans"  => ServicePlan::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 

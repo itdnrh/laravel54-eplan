@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการวัสดุ
+            แก้ไขรายการวัสดุ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการวัสดุ</li>
+            <li class="breadcrumb-item active">แก้ไขรายการวัสดุ</li>
         </ol>
     </section>
 
@@ -19,23 +19,26 @@
     <section
         class="content"
         ng-controller="planMaterialCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 2);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 2);
+            getById({{ $material->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการวัสดุ</h3>
+                        <h3 class="box-title">แก้ไขรายการวัสดุ</h3>
                     </div>
 
-                    <form id="frmNewMaterial" name="frmNewMaterial" method="post" action="{{ url('/materials/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditMaterial" name="frmEditMaterial" method="post" action="{{ url('/materials/update'.$material->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -496,10 +499,10 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/materials/validate', material, 'frmNewMaterial', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/materials/validate', material, 'frmEditMaterial', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

@@ -198,14 +198,14 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/materials/edit/${id}`;
     };
 
-    $scope.update = function(event) {
+    $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.leave.leave_id} ใช่หรือไม่?`)) {
-            $('#frmEditLeave').submit();
+        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.material.material_id} ใช่หรือไม่?`)) {
+            $(`#${form}`).submit();
         }
     };
 
