@@ -24,13 +24,18 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         unit_id: '',
         amount: '',
         sum_price: '',
+        request_cause: '',
+        have_amount: '',
+        budget_src_id: '',
+        strategic_id: '',
+        service_plan_id: '',
         start_month: '',
         reason: '',
         remark: ''
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -39,8 +44,21 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         todayHighlight: true
     };
 
+    let dtpMonthOptions = {
+        autoclose: true,
+        format: 'mm/yyyy',
+        viewMode: "months", 
+        minViewMode: "months",
+        language: 'th',
+        thaiyear: true
+    };
+
+    $('#start_month')
+        .datepicker(dtpMonthOptions)
+        .datepicker('update', new Date());
+
     $('#doc_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
@@ -49,7 +67,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         //     });
         // });
 
-    $scope.clearConstructObj = function() {
+    $scope.clearConstruct = function() {
         $scope.construct = {
             construct_id: '',
             in_plan: 'I',
@@ -71,6 +89,11 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             amount: '',
             sum_price: '',
             start_month: '',
+            request_cause: '',
+            have_amount: '',
+            budget_src_id: '',
+            strategic_id: '',
+            service_plan_id: '',
             reason: '',
             remark: ''
         };
