@@ -12,7 +12,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         faction_id: '',
         depart_id: '',
         division_id: '',
-        category_id: '',
         item_id: '',
         desc: '',
         spec: '',
@@ -51,7 +50,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         //     });
         // });
 
-    const clearAssetObj = function() {
+    const clearAsset = function() {
         $scope.asset = {
             asset_id: '',
             year: '',
@@ -60,7 +59,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             faction_id: '',
             depart_id: '',
             division_id: '',
-            category_id: '',
             item_id: '',
             desc: '',
             spec: '',
@@ -118,19 +116,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.pager = pager;
     };
 
-    $scope.onSelectedItem = function(event, item) {
-        if (item) {
-            $('#item_id').val(item.id);
-            $scope.asset.item_id = item.id;
-            $scope.asset.desc = item.item_name;
-            $scope.asset.price_per_unit = item.price_per_unit;
-            $scope.asset.unit_id = item.unit_id.toString();
-            $scope.asset.category_id = item.category_id.toString();
-        }
-
-        $('#items-list').modal('hide');
-    };
-
     $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
@@ -156,6 +141,38 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         });
     };
 
+    $scope.onShowItemsList = function() {
+        $('#item_id').val('');
+        $scope.asset.item_id = '';
+        $scope.asset.desc = '';
+        $scope.asset.price_per_unit = '';
+        $scope.asset.unit_id = '';
+    };
+
+    $scope.onSelectedItem = function(event, item) {
+        if (item) {
+            /** Check existed data by depart */
+            let depart = $scope.asset.depart_id === '' ? 0 : $scope.asset.depart_id;
+
+            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.asset.year}/${depart}/existed`)
+            .then(function(res) {
+                if (res.data.isExisted) {
+                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+                } else {
+                    $('#item_id').val(item.id);
+                    $scope.asset.item_id = item.id;
+                    $scope.asset.desc = item.item_name;
+                    $scope.asset.price_per_unit = item.price_per_unit;
+                    $scope.asset.unit_id = item.unit_id.toString();
+                }
+            }, function(err) {
+                console.log(err);
+            });
+        }
+
+        $('#items-list').modal('hide');
+    };
+
     $scope.getById = function(id, cb) {
         $http.get(`${CONFIG.apiUrl}/assets/${id}`)
         .then(function(res) {
@@ -166,14 +183,14 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.setEditControls = function(plan) {
-
+        console.log(plan);
         /** Global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 1;
         /** ข้อมูลครุภัณฑ์ */
         $scope.asset.asset_id           = plan.id;
         $scope.asset.in_plan            = plan.in_plan;
-        $scope.asset.year               = plan.year;
+        $scope.asset.year               = plan.year.toString();
         $scope.asset.plan_no            = plan.plan_no;
         $scope.asset.desc               = plan.plan_item.item.item_name;
         $scope.asset.spec               = plan.plan_item.spec;
@@ -188,13 +205,12 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.status             = plan.status;
         
         /** Convert int value to string */
-        $scope.asset.category_id        = plan.plan_item.item.category_id.toString();
         $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
         $scope.asset.depart_id          = plan.depart_id.toString();
         $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';
         $scope.asset.budget_src_id      = plan.budget_src_id.toString();
-        $scope.asset.strategic_id       = plan.strategic_id.toString();
-        $scope.asset.service_plan_id    = plan.service_plan_id.toString();
+        $scope.asset.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
+        $scope.asset.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };
@@ -206,14 +222,14 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/assets/edit/${id}`;
     };
 
     $scope.update = function(event) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.leave.leave_id} ใช่หรือไม่?`)) {
-            $('#frmEditLeave').submit();
+        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.asset.asset_id} ใช่หรือไม่?`)) {
+            $('#frmEditAsset').submit();
         }
     };
 

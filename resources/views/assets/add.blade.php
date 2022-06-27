@@ -190,7 +190,14 @@
                                         />
                                         <input type="hidden" id="item_id" name="item_id" ng-model="asset.item_id" />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-flat"
+                                                ng-click="
+                                                    onShowItemsList();
+                                                    showItemsList();
+                                                "
+                                            >
                                                 ...
                                             </button>
                                             <button type="button" class="btn btn-primary btn-flat" ng-click="showNewItemForm()">

@@ -38,7 +38,7 @@
                         <h3 class="box-title">แก้ไขรายการครุภัณฑ์</h3>
                     </div>
 
-                    <form id="frmNewLeave" name="frmNewLeave" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditAsset" name="frmEditAsset" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -193,7 +193,14 @@
                                         />
                                         <input type="hidden" id="item_id" name="item_id" ng-model="asset.item_id" />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-flat"
+                                                ng-click="
+                                                    onShowItemsList();
+                                                    showItemsList();
+                                                "
+                                            >
                                                 ...
                                             </button>
                                             <button type="button" class="btn btn-primary btn-flat" ng-click="showNewItemForm()">
@@ -462,7 +469,6 @@
                                         @{{ formError.errors.reason[0] }}
                                     </span>
                                 </div>
-
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'remark')}"
@@ -494,7 +500,7 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewLeave', update)"
+                                ng-click="formValidate($event, '/assets/validate', asset, 'frmEditAsset', update)"
                                 class="btn btn-success pull-right"
                             >
                                 แก้ไข
