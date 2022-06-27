@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มแผนจ้างบริการ
+            แก้ไขแผนจ้างบริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มแผนจ้างบริการ</li>
+            <li class="breadcrumb-item active">แก้ไขแผนจ้างบริการ</li>
         </ol>
     </section>
 
@@ -19,23 +19,29 @@
     <section
         class="content"
         ng-controller="planServiceCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 3);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 3);
+            getById({{ $service->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มแผนจ้างบริการ</h3>
+                        <h3 class="box-title">
+                            แก้ไขแผนจ้างบริการ
+                            <span ng-show="{{ $service->id }}">(ID : {{ $service->id }})</span>
+                        </h3>
                     </div>
 
-                    <form id="frmNewService" name="frmNewService" method="post" action="{{ url('/services/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditService" name="frmEditService" method="post" action="{{ url('/services/update/'.$service->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -453,10 +459,10 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/services/validate', service, 'frmNewService', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/services/validate', service, 'frmEditService', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

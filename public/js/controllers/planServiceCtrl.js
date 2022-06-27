@@ -207,11 +207,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         window.location.href = `${CONFIG.baseUrl}/services/edit/${id}`;
     };
 
-    $scope.update = function(event) {
+    $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.leave.leave_id} ใช่หรือไม่?`)) {
-            $('#frmEditLeave').submit();
+        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.service.services_id} ใช่หรือไม่?`)) {
+            $(`#${form}`).submit();
         }
     };
 });
