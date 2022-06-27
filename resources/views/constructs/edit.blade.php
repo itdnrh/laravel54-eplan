@@ -38,7 +38,7 @@
                         <h3 class="box-title">แก้ไขแผนก่อสร้าง</h3>
                     </div>
 
-                    <form id="frmNewConstruct" name="frmNewConstruct" method="post" action="{{ url('/constructs/update/'.$construct->id) }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditConstruct" name="frmEditConstruct" method="post" action="{{ url('/constructs/update/'.$construct->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -118,9 +118,7 @@
                                     <select id="faction_id" 
                                             name="faction_id"
                                             ng-model="construct.faction_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="11"
+                                            class="form-control"
                                             ng-change="onFactionSelected(construct.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
                                         @foreach($factions as $faction)
@@ -212,7 +210,7 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(construct, 'location')}"
                                 >
-                                    <label>สถานที่ :</label>
+                                    <label>สถานที่ (ระบุจุด) :</label>
                                     <input
                                         type="text"
                                         id="location"
@@ -235,9 +233,7 @@
                                     <select id="building_id"
                                             name="building_id"
                                             ng-model="construct.building_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
+                                            class="form-control">
                                         <option value="">-- เลือกประเภท --</option>
                                         @foreach($buildings as $building)
                                             <option value="{{ $building->id }}">
@@ -521,7 +517,7 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/constructs/validate', construct, 'frmNewConstruct', store)"
+                                ng-click="formValidate($event, '/constructs/validate', construct, 'frmEditConstruct', update)"
                                 class="btn btn-warning pull-right"
                             >
                                 แก้ไข

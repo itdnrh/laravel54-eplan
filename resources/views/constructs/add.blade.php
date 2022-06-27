@@ -209,7 +209,7 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(construct, 'location')}"
                                 >
-                                    <label>สถานที่ :</label>
+                                    <label>สถานที่ (ระบุจุด) :</label>
                                     <input
                                         type="text"
                                         id="location"

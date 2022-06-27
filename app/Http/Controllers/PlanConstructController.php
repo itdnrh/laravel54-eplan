@@ -137,6 +137,8 @@ class PlanConstructController extends Controller
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
         $plan->status           = '0';
+        $plan->created_user     = Auth::user()->person_id;
+        $plan->updated_user     = Auth::user()->person_id;
 
         /** Upload attach file */
         $boq_file = uploadFile($req->file('boq_file'), 'uploads/boqs');
@@ -166,11 +168,63 @@ class PlanConstructController extends Controller
 
     public function edit($id)
     {
-        return view('leaves.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
+        return view('constructs.edit', [
+            "construct"     => Plan::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
+            "buildings"     => Building::all(),
+            "units"         => Unit::all(),
+            "budgetSources" => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "servicePlans"  => ServicePlan::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
+    }
+    
+    public function update(Request $req, $id)
+    {
+        $plan = Plan::find($id);
+        // $plan->plan_no          = $req['plan_no'];
+        $plan->in_plan          = $req['in_plan'];
+        // $plan->year             = calcBudgetYear($req['year']);
+        $plan->year             = $req['year'];
+        $plan->plan_type_id     = '4';
+        $plan->budget_src_id    = $req['budget_src_id'];
+        $plan->depart_id        = $req['depart_id'];
+        $plan->division_id      = $req['division_id'];
+        $plan->start_month      = $req['start_month'];
+        $plan->reason           = $req['reason'];
+        $plan->request_cause    = $req['request_cause'];
+        // $plan->have_amount      = $req['have_amount'];
+        $plan->strategic_id     = $req['strategic_id'];
+        $plan->service_plan_id  = $req['service_plan_id'];
+        $plan->remark           = $req['remark'];
+        $plan->status           = '0';
+        $plan->updated_user     = Auth::user()->person_id;
+
+        /** Upload attach file */
+        $boq_file = uploadFile($req->file('boq_file'), 'uploads/boqs');
+        if (!empty($boq_file)) {
+            $plan->boq_file = $boq_file;
+        }
+
+        if($plan->save()) {
+            $construct = PlanItem::where('plan_id', $id)->first();
+            $construct->item_id         = $req['item_id'];
+            $construct->location        = $req['location'];
+            $construct->building_id     = $req['building_id'];
+            $construct->boq_no          = $req['boq_no'];
+            $construct->boq_file        = $req['boq_file'];
+            $construct->price_per_unit  = $req['price_per_unit'];
+            $construct->unit_id         = $req['unit_id'];
+            $construct->amount          = $req['amount'];
+            $construct->sum_price       = $req['sum_price'];
+            $construct->save();
+
+            return redirect('/plans/constructs');
+        }
     }
 }

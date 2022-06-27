@@ -177,7 +177,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/constructs/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/constructs/${id}`)
         .then(function(res) {
             cb(res.data.plan);
         }, function(err) {
@@ -193,29 +193,38 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         /** ข้อมูลงานก่อสร้าง */
         $scope.construct.construct_id       = plan.id;
         $scope.construct.in_plan            = plan.in_plan;
-        $scope.construct.year               = plan.year;
+        $scope.construct.year               = plan.year.toString();
         // $scope.construct.plan_no            = plan.plan_no;
         $scope.construct.desc               = plan.plan_item.item.item_name;
         $scope.construct.item_id            = plan.plan_item.item_id;
+        $('#item_id').val(plan.plan_item.item_id);
         
         $scope.construct.location           = plan.plan_item.location;
-        $scope.construct.building_id        = plan.plan_item.building ? plan.plan_item.building : '';
+        $scope.construct.building_id        = plan.plan_item.building_id ? plan.plan_item.building_id.toString() : '';
         $scope.construct.boq_no             = plan.plan_item.boq_no;
         $scope.construct.boq_file           = plan.plan_item.boq_file;
         
         $scope.construct.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.construct.amount             = plan.plan_item.amount;
         $scope.construct.sum_price          = plan.plan_item.sum_price;
-        $scope.construct.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.construct.start_month        = plan.start_month.toString();
+        $scope.construct.request_cause      = plan.request_cause;
         $scope.construct.reason             = plan.reason;
         $scope.construct.remark             = plan.remark;
         $scope.construct.status             = plan.status;
 
         /** Convert int value to string */
-        $scope.construct.category_id        = plan.plan_item.item.category_id.toString();
         $scope.construct.unit_id            = plan.plan_item.unit_id.toString();
+        $scope.construct.faction_id         = plan.depart.faction_id.toString();
         $scope.construct.depart_id          = plan.depart_id.toString();
         $scope.construct.division_id        = plan.division_id ? plan.division_id.toString() : '';
+        $scope.construct.budget_src_id      = plan.budget_src_id.toString();
+        $scope.construct.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
+        $scope.construct.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+
+        /** Generate departs and divisions data from plan */
+        $scope.onFactionSelected(plan.depart.faction_id);
+        $scope.onDepartSelected(plan.depart_id);
     };
 
     $scope.store = function(event, form) {
@@ -228,11 +237,11 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         window.location.href = `${CONFIG.baseUrl}/constructs/edit/${id}`;
     };
 
-    $scope.update = function(event) {
+    $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.leave.leave_id} ใช่หรือไม่?`)) {
-            $('#frmEditLeave').submit();
+        if(confirm(`คุณต้องแก้ไขแผนก่อสร้างรหัส ${$scope.construct.construct_id} ใช่หรือไม่?`)) {
+            $(`#${form}`).submit();
         }
     };
 
