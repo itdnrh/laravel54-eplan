@@ -267,6 +267,22 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'boq_file')}"
+                                >
+                                    <label>ไฟล์ BOQ :</label>
+                                    <input type="file"
+                                            id="boq_file" 
+                                            name="boq_file"
+                                            class="form-control" />
+                                    <span class="help-block" ng-show="checkValidate(construct, 'boq_file')">
+                                        กรุณาแนบไฟล์ BOQ
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(construct, 'price_per_unit')}"
                                 >
@@ -295,15 +311,11 @@
                                             class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกหน่วย --</option>
-
                                         @foreach($units as $unit)
-
                                             <option value="{{ $unit->id }}">
                                                 {{ $unit->name }}
                                             </option>
-
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(construct, 'unit_id')">
                                         @{{ formError.errors.unit_id[0] }}
@@ -407,14 +419,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(construct, 'start_month')}"
                                 >
                                     <label>เดือนที่จะดำเนินการ :</label>
-                                    <input
-                                        type="text"
-                                        id="start_month"
-                                        name="start_month"
-                                        ng-model="construct.start_month"
-                                        class="form-control"
-                                    />
-                                    <!-- <select
+                                    <select
                                         id="start_month"
                                         name="start_month"
                                         ng-model="construct.start_month"
@@ -425,7 +430,7 @@
                                         <option value="@{{ month.id }}" ng-repeat="month in monthLists">
                                             @{{ month.name }}
                                         </option>
-                                    </select> -->
+                                    </select>
                                     <span class="help-block" ng-show="checkValidate(construct, 'start_month')">
                                         @{{ formError.errors.start_month[0] }}
                                     </span>
@@ -510,17 +515,6 @@
                                     </span>
                                 </div>
                             </div>
-
-                            <!-- <div class="row">
-                                <div class="form-group col-md-12" ng-class="{'has-error has-feedback': checkValidate(construct, 'attachment')}">
-                                    <label>แนบเอกสาร :</label>
-                                    <input type="file"
-                                            id="attachment" 
-                                            name="attachment"
-                                            class="form-control" />
-                                    <span class="help-block" ng-show="checkValidate(construct, 'attachment')">กรุณาแนบเอกสาร</span>
-                                </div>
-                            </div> -->
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button

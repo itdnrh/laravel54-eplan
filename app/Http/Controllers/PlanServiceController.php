@@ -41,7 +41,6 @@ class PlanServiceController extends Controller
             'reason'            => 'required',
             'budget_src_id'     => 'required',
             'request_cause'     => 'required',
-            'have_amount'       => 'required',
         ];
 
         if ($request['strategic_id'] == '' && $request['service_plan_id'] == '') {
@@ -130,7 +129,7 @@ class PlanServiceController extends Controller
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
         $plan->request_cause    = $req['request_cause'];
-        $plan->have_amount      = $req['have_amount'];
+        // $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];

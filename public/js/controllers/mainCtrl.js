@@ -59,8 +59,11 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     $scope.cboQuery = "";
     $scope.cboMenu = "";
 
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
+    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,parseInt($scope.cboYear)+2];
     $scope.monthLists = [
+        { id: '10', name: 'ตุลาคม' },
+        { id: '11', name: 'พฤศจิกายน' },
+        { id: '12', name: 'ธันวาคม' },
         { id: '01', name: 'มกราคม' },
         { id: '02', name: 'กุมภาพันธ์' },
         { id: '03', name: 'มีนาคม' },
@@ -69,10 +72,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         { id: '06', name: 'มิถุนายน' },
         { id: '07', name: 'กรกฎาคม' },
         { id: '08', name: 'สิงหาคม' },
-        { id: '09', name: 'กันยายน' },
-        { id: '10', name: 'ตุลาคม' },
-        { id: '11', name: 'พฤศจิกายน' },
-        { id: '12', name: 'ธันวาคม' },
+        { id: '09', name: 'กันยายน' },        
     ];
 
     $scope.items = [];

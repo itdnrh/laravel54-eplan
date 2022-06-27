@@ -53,10 +53,6 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         thaiyear: true
     };
 
-    $('#start_month')
-        .datepicker(dtpMonthOptions)
-        .datepicker('update', new Date());
-
     $('#doc_date')
         .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
