@@ -221,10 +221,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.onDepartSelected(plan.depart_id);
     };
 
-    $scope.getMonthName = function(month) {
-        return $scope.monthLists.find(m => m.id == month).name;
-    }
-
     $scope.store = function(event, form) {
         event.preventDefault();
 

@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มแผนก่อสร้าง
+            แก้ไขแผนก่อสร้าง
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มแผนก่อสร้าง</li>
+            <li class="breadcrumb-item active">แก้ไขแผนก่อสร้าง</li>
         </ol>
     </section>
 
@@ -19,23 +19,26 @@
     <section
         class="content"
         ng-controller="planConstructCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 4);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 4);
+            getById({{ $construct->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มแผนก่อสร้าง</h3>
+                        <h3 class="box-title">แก้ไขแผนก่อสร้าง</h3>
                     </div>
 
-                    <form id="frmNewConstruct" name="frmNewConstruct" method="post" action="{{ url('/constructs/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewConstruct" name="frmNewConstruct" method="post" action="{{ url('/constructs/update/'.$construct->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -519,9 +522,9 @@
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="formValidate($event, '/constructs/validate', construct, 'frmNewConstruct', store)"
-                                class="btn btn-success pull-right"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

@@ -149,6 +149,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.planType = planType;
     };
 
+    $scope.getMonthName = function(month) {
+        return $scope.monthLists.find(m => m.id == month).name;
+    };
+
     $scope.handleInputChange = function(name, value) {
         $scope[name] = value;
     }
