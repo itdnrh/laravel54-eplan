@@ -218,7 +218,7 @@
                                         class="form-control pull-right"
                                         tabindex="4">
                                     <span class="help-block" ng-show="checkValidate(construct, 'location')">
-                                        @{{ formError.errors.desc[0] }}
+                                        @{{ formError.errors.location[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -236,18 +236,14 @@
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
-
                                         @foreach($buildings as $building)
-
                                             <option value="{{ $building->id }}">
                                                 {{ $building->building_name }}
                                             </option>
-
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(construct, 'building_id')">
-                                        @{{ formError.errors.construct_type_id[0] }}
+                                        @{{ formError.errors.building_id[0] }}
                                     </span>
                                 </div>
 
