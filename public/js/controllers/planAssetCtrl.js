@@ -157,7 +157,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/assets/${id}`)
         .then(function(res) {
             cb(res.data.plan);
         }, function(err) {
@@ -166,6 +166,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.setEditControls = function(plan) {
+
         /** Global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 1;

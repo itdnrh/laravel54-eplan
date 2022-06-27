@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการครุภัณฑ์
+            แก้ไขรายการครุภัณฑ์
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการครุภัณฑ์</li>
+            <li class="breadcrumb-item active">แก้ไขรายการครุภัณฑ์</li>
         </ol>
     </section>
 
@@ -19,12 +19,15 @@
     <section
         class="content"
         ng-controller="planAssetCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 1);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 1);
+            getById({{ $asset->id }}, setEditControls)
+        "
     >
 
         <div class="row">
@@ -32,7 +35,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการครุภัณฑ์</h3>
+                        <h3 class="box-title">แก้ไขรายการครุภัณฑ์</h3>
                     </div>
 
                     <form id="frmNewLeave" name="frmNewLeave" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
@@ -491,10 +494,10 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewLeave', store)"
+                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewLeave', update)"
                                 class="btn btn-success pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

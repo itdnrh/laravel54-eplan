@@ -162,11 +162,18 @@ class PlanAssetController extends Controller
 
     public function edit($id)
     {
-        return view('leaves.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
+        return view('assets.edit', [
+            "asset"         => Plan::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
+            "units"         => Unit::all(),
+            "budgetSources" => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "servicePlans"  => ServicePlan::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 

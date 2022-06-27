@@ -27,6 +27,22 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('projects/{id}/payments', 'ProjectController@getProjectPayments');
     Route::get('projects/{id}/timeline', 'ProjectController@getProjectTimeline');
 
+    /** แผนครุภัณฑ์ */
+    Route::get('assets', 'PlanController@getAll');
+    Route::get('assets/{id}', 'PlanController@getById');
+
+    /** แผนวัสดุ */
+    Route::get('materials', 'PlanController@getAll');
+    Route::get('materials/{id}', 'PlanController@getById');
+
+    /** แผนจ้างบริการ */
+    Route::get('services', 'PlanController@getAll');
+    Route::get('services/{id}', 'PlanController@getById');
+
+    /** แผนก่อสร้าง */
+    Route::get('constructs', 'PlanController@getAll');
+    Route::get('constructs/{id}', 'PlanController@getById');
+
     /** แผนเงินบำรุง */
     Route::get('plans/{itemId}/{year}/{depart}/existed', 'PlanController@isExisted');
 
