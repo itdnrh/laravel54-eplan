@@ -158,12 +158,9 @@
 
                                 <div class="form-group col-md-6">
                                     <label>ราคาต่อหน่วย :</label>
-                                    <input  type="text"
-                                            id="price_per_unit"
-                                            name="price_per_unit"
-                                            ng-model="construct.price_per_unit"
-                                            class="form-control"
-                                            tabindex="6" />
+                                    <div class="form-control">
+                                        @{{ construct.price_per_unit | currency:'':2 }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -193,15 +190,9 @@
                                     ng-class="{'has-error has-feedback': checkValidate(construct, 'sum_price')}"
                                 >
                                     <label>รวมเป็นเงิน :</label>
-                                    <input  type="text"
-                                            id="sum_price"
-                                            name="sum_price"
-                                            ng-model="construct.sum_price"
-                                            class="form-control pull-right"
-                                            tabindex="9" />
-                                    <span class="help-block" ng-show="checkValidate(construct, 'sum_price')">
-                                        @{{ formError.errors.sum_price[0] }}
-                                    </span>
+                                    <div class="form-control">
+                                        @{{ construct.sum_price | currency:'':2 }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
