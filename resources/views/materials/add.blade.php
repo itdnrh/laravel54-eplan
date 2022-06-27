@@ -110,6 +110,77 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group"
+                                    ng-class="{
+                                        'col-md-4': material.in_stock == 0,
+                                        'col-md-12': material.in_stock == 1,
+                                        'has-error has-feedback': checkValidate(material, 'faction_id')
+                                    }"
+                                >
+                                    <label>กลุ่มภารกิจ :</label>
+                                    <select id="faction_id" 
+                                            name="faction_id"
+                                            ng-model="material.faction_id" 
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="11"
+                                            ng-change="onFactionSelected(material.faction_id)">
+                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
+                                        @foreach($factions as $faction)
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(material, 'faction_id')">
+                                        @{{ formError.errors.faction_id[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(material, 'depart_id')}"
+                                >
+                                    <label>กลุ่มงาน :</label>
+                                    <select id="depart_id" 
+                                            name="depart_id"
+                                            ng-model="material.depart_id" 
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="12"
+                                            ng-change="onDepartSelected(material.depart_id)">
+                                        <option value="">-- เลือกกลุ่มงาน --</option>
+                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
+                                            @{{ depart.depart_name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(material, 'depart_id')">
+                                        @{{ formError.errors.depart_id[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(material, 'division_id')}"
+                                >
+                                    <label>งาน :</label>
+                                    <select id="division_id" 
+                                            name="division_id"
+                                            ng-model="material.division_id" 
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="13">
+                                        <option value="">-- เลือกงาน --</option>
+                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
+                                            @{{ division.ward_name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(material, 'division_id')">
+                                        @{{ formError.errors.division_id[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'desc')}"
                                 >
@@ -188,15 +259,11 @@
                                             class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกหน่วย --</option>
-
                                         @foreach($units as $unit)
-
                                             <option value="{{ $unit->id }}">
                                                 {{ $unit->name }}
                                             </option>
-
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(material, 'unit_id')">
                                         @{{ formError.errors.unit_id[0] }}
@@ -376,77 +443,6 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(material, 'service_plan_id')">
                                         @{{ formError.errors.service_plan_id[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group"
-                                    ng-class="{
-                                        'col-md-4': material.in_stock == 0,
-                                        'col-md-12': material.in_stock == 1,
-                                        'has-error has-feedback': checkValidate(material, 'faction_id')
-                                    }"
-                                >
-                                    <label>กลุ่มภารกิจ :</label>
-                                    <select id="faction_id" 
-                                            name="faction_id"
-                                            ng-model="material.faction_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="11"
-                                            ng-change="onFactionSelected(material.faction_id)">
-                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
-                                        @foreach($factions as $faction)
-                                            <option value="{{ $faction->faction_id }}">
-                                                {{ $faction->faction_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(material, 'faction_id')">
-                                        @{{ formError.errors.faction_id[0] }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(material, 'depart_id')}"
-                                >
-                                    <label>กลุ่มงาน :</label>
-                                    <select id="depart_id" 
-                                            name="depart_id"
-                                            ng-model="material.depart_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="12"
-                                            ng-change="onDepartSelected(material.depart_id)">
-                                        <option value="">-- เลือกกลุ่มงาน --</option>
-                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
-                                            @{{ depart.depart_name }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(material, 'depart_id')">
-                                        @{{ formError.errors.depart_id[0] }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(material, 'division_id')}"
-                                >
-                                    <label>งาน :</label>
-                                    <select id="division_id" 
-                                            name="division_id"
-                                            ng-model="material.division_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="13">
-                                        <option value="">-- เลือกงาน --</option>
-                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(material, 'division_id')">
-                                        @{{ formError.errors.division_id[0] }}
                                     </span>
                                 </div>
                             </div>

@@ -314,11 +314,8 @@
                                         @{{ formError.errors.request_cause[0] }}
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'budget_src_id')}"
                                 >
                                     <label>แหล่งเงินงบประมาณ :</label>
@@ -338,8 +335,11 @@
                                         กรุณาเลือกแหล่งเงินงบประมาณ
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'start_month')}"
                                 >
                                     <label>เดือนที่จะดำเนินการ :</label>
@@ -359,11 +359,8 @@
                                         @{{ formError.errors.start_month[0] }}
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'strategic_id')}"
                                 >
                                     <label>ยุทธศาสตร์ :</label>
@@ -385,7 +382,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'service_plan_id')}"
                                 >
                                     <label>Service Plan :</label>
@@ -453,9 +450,7 @@
                                     <span class="help-block" ng-show="checkValidate(leave, 'attachment')">กรุณาแนบเอกสาร</span>
                                 </div>
                             </div> -->
-
                         </div><!-- /.box-body -->
-
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="formValidate($event, '/services/validate', service, 'frmNewService', store)"
