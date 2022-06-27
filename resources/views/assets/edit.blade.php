@@ -319,24 +319,21 @@
                                                     id="request_cause"
                                                     name="request_cause"
                                                     value="N"
-                                                    ng-model="asset.request_cause"
-                                                    tabindex="3"> ขอใหม่
+                                                    ng-model="asset.request_cause"> ขอใหม่
                                         </div>
                                         <div class="checkbox-container">
                                             <input  type="radio"
                                                     id="request_cause"
                                                     name="request_cause"
                                                     value="R"
-                                                    ng-model="asset.request_cause"
-                                                    tabindex="3"> ทดแทน
+                                                    ng-model="asset.request_cause"> ทดแทน
                                         </div>
                                         <div class="checkbox-container">
                                             <input  type="radio"
                                                     id="request_cause"
                                                     name="request_cause"
                                                     value="E"
-                                                    ng-model="asset.request_cause"
-                                                    tabindex="3"> ขยายงาน
+                                                    ng-model="asset.request_cause"> ขยายงาน
                                         </div>
                                     </div>
                                     <span class="help-block" ng-show="checkValidate(asset, 'request_cause')">

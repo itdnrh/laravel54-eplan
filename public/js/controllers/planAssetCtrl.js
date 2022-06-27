@@ -197,7 +197,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.asset.amount             = plan.plan_item.amount;
         $scope.asset.sum_price          = plan.plan_item.sum_price;
-        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.asset.start_month        = plan.start_month.toString();
         $scope.asset.request_cause      = plan.request_cause;
         $scope.asset.have_amount        = plan.have_amount;
         $scope.asset.reason             = plan.reason;
@@ -214,6 +214,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
     };
+
+    $scope.getMonthName = function(month) {
+        return $scope.monthLists.find(m => m.id == month).name;
+    }
 
     $scope.store = function(event, form) {
         event.preventDefault();
