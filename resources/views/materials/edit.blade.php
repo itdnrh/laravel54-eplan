@@ -123,10 +123,8 @@
                                     <label>กลุ่มภารกิจ :</label>
                                     <select id="faction_id" 
                                             name="faction_id"
-                                            ng-model="material.faction_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="11"
+                                            class="form-control"
+                                            ng-model="material.faction_id"
                                             ng-change="onFactionSelected(material.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
                                         @foreach($factions as $faction)

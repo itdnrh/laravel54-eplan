@@ -155,13 +155,13 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/materials/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/materials/${id}`)
         .then(function(res) {
             cb(res.data.plan);
         }, function(err) {
             console.log(err);
         });
-    }
+    };
 
     $scope.setEditControls = function(plan) {
         /** Global data */
@@ -171,31 +171,43 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         /** ข้อมูลวัสดุ */
         $scope.material.material_id     = plan.id;
         $scope.material.in_plan         = plan.in_plan;
-        $scope.material.year            = plan.year;
+        $scope.material.year            = plan.year.toString();
         // $scope.material.plan_no         = plan.plan_no;
-        $scope.material.item_id         = plan.plan_item.item_id;
         $scope.material.desc            = plan.plan_item.item.item_name;
+        $scope.material.item_id         = plan.plan_item.item_id;
+        $('#item_id').val(plan.plan_item.item_id);
+
         $scope.material.spec            = plan.plan_item.spec;
         $scope.material.price_per_unit  = plan.plan_item.price_per_unit;
         $scope.material.amount          = plan.plan_item.amount;
         $scope.material.sum_price       = plan.plan_item.sum_price;
-        $scope.material.start_month     = $scope.monthLists.find(m => m.id == plan.start_month).name;
+        $scope.material.start_month     = plan.start_month.toString();
+        $scope.material.request_cause   = plan.request_cause;
+        $scope.material.have_amount     = plan.have_amount;
         $scope.material.reason          = plan.reason;
         $scope.material.remark          = plan.remark;
+        $scope.material.approved        = plan.approved;
         $scope.material.status          = plan.status;
 
         /** Convert int value to string */
-        $scope.material.category_id     = plan.plan_item.item.category_id.toString();
         $scope.material.unit_id         = plan.plan_item.unit_id.toString();
+        $scope.material.faction_id         = plan.depart.faction_id.toString();
         $scope.material.depart_id       = plan.depart_id.toString();
         $scope.material.division_id     = plan.division_id ? plan.division_id.toString() : '';
+        $scope.material.budget_src_id      = plan.budget_src_id.toString();
+        $scope.material.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
+        $scope.material.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+
+        /** Generate departs and divisions data from plan */
+        $scope.onFactionSelected(plan.depart.faction_id);
+        $scope.onDepartSelected(plan.depart_id);
     };
 
     $scope.store = function(event, form) {
         event.preventDefault();
 
         $(`#${form}`).submit();
-    }
+    };
 
     $scope.edit = function(id) {
         window.location.href = `${CONFIG.baseUrl}/materials/edit/${id}`;
