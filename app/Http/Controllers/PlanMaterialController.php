@@ -135,6 +135,8 @@ class PlanMaterialController extends Controller
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
         $plan->status           = '0';
+        $plan->created_user     = Auth::user()->person_id;
+        $plan->updated_user     = Auth::user()->person_id;
 
         /** Upload attach file */
         // $attachment = uploadFile($req->file('attachment'), 'uploads/');
@@ -174,6 +176,47 @@ class PlanMaterialController extends Controller
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
+    }
+
+    public function update(Request $req, $id)
+    {
+        $plan = Plan::find($id);
+        // $plan->plan_no          = $req['plan_no'];
+        $plan->in_plan          = $req['in_plan'];
+        // $plan->year             = calcBudgetYear($req['year']);
+        $plan->year             = $req['year'];
+        $plan->plan_type_id     = '2';
+        $plan->budget_src_id    = $req['budget_src_id'];
+        $plan->depart_id        = $req['depart_id'];
+        $plan->division_id      = $req['division_id'];
+        $plan->start_month      = $req['start_month'];
+        $plan->reason           = $req['reason'];
+        $plan->request_cause    = $req['request_cause'];
+        $plan->have_amount      = $req['have_amount'];
+        $plan->strategic_id     = $req['strategic_id'];
+        $plan->service_plan_id  = $req['service_plan_id'];
+        $plan->remark           = $req['remark'];
+        $plan->status           = '0';
+        $plan->updated_user     = Auth::user()->person_id;
+
+        /** Upload attach file */
+        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
+        // if (!empty($attachment)) {
+        //     $plan->attachment = $attachment;
+        // }
+
+        if($plan->save()) {
+            $material = PlanItem::where('plan_id', $id)->first();
+            $material->item_id         = $req['item_id'];
+            $material->spec            = $req['spec'];
+            $material->price_per_unit  = $req['price_per_unit'];
+            $material->unit_id         = $req['unit_id'];
+            $material->amount          = $req['amount'];
+            $material->sum_price       = $req['sum_price'];
+            $material->save();
+
+            return redirect('/plans/materials');
+        }
     }
 
     public function printLeaveForm($id)
