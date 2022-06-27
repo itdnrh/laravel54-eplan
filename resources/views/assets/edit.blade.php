@@ -38,7 +38,7 @@
                         <h3 class="box-title">แก้ไขรายการครุภัณฑ์</h3>
                     </div>
 
-                    <form id="frmEditAsset" name="frmEditAsset" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditAsset" name="frmEditAsset" method="post" action="{{ url('/assets/update/'.$asset->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 

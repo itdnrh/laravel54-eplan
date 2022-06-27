@@ -183,7 +183,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.setEditControls = function(plan) {
-        console.log(plan);
         /** Global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 1;
@@ -235,11 +234,11 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         window.location.href = `${CONFIG.baseUrl}/assets/edit/${id}`;
     };
 
-    $scope.update = function(event) {
+    $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.asset.asset_id} ใช่หรือไม่?`)) {
-            $('#frmEditAsset').submit();
+        if(confirm(`คุณต้องแก้ไขแผนครุภัณฑ์รหัส ${$scope.asset.asset_id} ใช่หรือไม่?`)) {
+            $(`#${form}`).submit();
         }
     };
 

@@ -136,6 +136,8 @@ class PlanAssetController extends Controller
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
         $plan->status           = '0';
+        $plan->created_user     = Auth::user()->person_id;
+        $plan->updated_user     = Auth::user()->person_id;
 
         /** Upload attach file */
         // $attachment = uploadFile($req->file('attachment'), 'uploads/');
@@ -177,68 +179,36 @@ class PlanAssetController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        $leave = Leave::find($req['leave_id']);
-        $leave->leave_date      = convThDateToDbDate($req['leave_date']);
-        $leave->leave_place     = $req['leave_place'];
-        $leave->leave_topic     = $req['leave_topic'];
-        $leave->leave_to        = $req['leave_to'];
-        $leave->leave_person    = $req['leave_person'];
-        $leave->leave_type      = $req['leave_type'];
+        $plan = Plan::find($id);
+        $plan->in_plan          = $req['in_plan'];
+        $plan->year             = $req['year'];
+        $plan->plan_type_id     = '1';
+        $plan->budget_src_id    = $req['budget_src_id'];
+        $plan->depart_id        = $req['depart_id'];
+        $plan->division_id      = $req['division_id'];
+        $plan->start_month      = $req['start_month'];
+        $plan->reason           = $req['reason'];
+        $plan->request_cause    = $req['request_cause'];
+        $plan->have_amount      = $req['have_amount'];
+        $plan->strategic_id     = $req['strategic_id'];
+        $plan->service_plan_id  = $req['service_plan_id'];
+        $plan->remark           = $req['remark'];
+        $plan->status           = '0';
+        $plan->updated_user     = Auth::user()->person_id;
 
-        if ($req['leave_type'] == '1' || $req['leave_type'] == '2' || 
-            $req['leave_type'] == '3' || $req['leave_type'] == '4') {
-            $leave->leave_contact   = $req['leave_contact'];
-            $leave->leave_delegate  = $req['leave_delegate'];
-        }
+        if($plan->save()) {
+            $asset = PlanItem::where('plan_id', $id)->first();
+            $asset->item_id         = $req['item_id'];
+            $asset->spec            = $req['spec'];
+            $asset->price_per_unit  = $req['price_per_unit'];
+            $asset->unit_id         = $req['unit_id'];
+            $asset->amount          = $req['amount'];
+            $asset->sum_price       = $req['sum_price'];
+            $asset->save();
 
-        if ($req['leave_type'] == '5') {
-            $leave->leave_contact   = $req['leave_contact'];
-        }
-
-        if ($req['leave_type'] == '1' || $req['leave_type'] == '2' || 
-            $req['leave_type'] == '4' || $req['leave_type'] == '7') {
-            $leave->leave_reason    = $req['leave_reason'];
-        }
-
-        $leave->start_date      = convThDateToDbDate($req['start_date']);
-        $leave->start_period    = '1';
-        $leave->end_date        = convThDateToDbDate($req['end_date']);
-        $leave->end_period      = $req['end_period'];
-        $leave->leave_days      = $req['leave_days'];
-        $leave->working_days    = $req['working_days'];
-        $leave->year            = calcBudgetYear($req['start_date']);
-
-        /** Upload image */
-        $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        if (!empty($attachment)) {
-            $leave->attachment = $attachment;
-        }
-
-        if($leave->save()) {
-            /** Update detail data of some leave type */
-            if ($req['leave_type'] == '5') {
-                $hw = HelpedWife::find($req['hw_id']);
-                $hw->wife_name          = $req['wife_name'];
-                $hw->deliver_date       = convThDateToDbDate($req['deliver_date']);
-                $hw->wife_is_officer    = $req['wife_is_officer'] == true ? 1 : 0;
-                $hw->wife_id            = $req['wife_id'];
-                $hw->save();
-            }
-
-            if ($req['leave_type'] == '6') {
-                $ord = Ordinate::find($req['ord_id']);
-                $ord->have_ordain           = $req['have_ordain'];
-                $ord->ordain_date           = convThDateToDbDate($req['ordain_date']);
-                $ord->ordain_temple         = $req['ordain_temple'];
-                $ord->ordain_location       = $req['ordain_location'];
-                $ord->hibernate_temple      = $req['hibernate_temple'];
-                $ord->hibernate_location    = $req['hibernate_location'];
-                $ord->save();
-            }
-
-            return redirect('/leaves/list');
+            return redirect('/plans/assets');
         }
     }
 

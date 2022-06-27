@@ -75,7 +75,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('assets/add', 'PlanAssetController@add');
     Route::post('assets/store', 'PlanAssetController@store');
     Route::get('assets/edit/{id}', 'PlanAssetController@edit');
-    Route::post('assets/update', 'PlanAssetController@update');
+    Route::post('assets/update/{id}', 'PlanAssetController@update');
     Route::post('assets/delete/{id}', 'PlanAssetController@delete');
     Route::get('assets/print/{id}', 'PlanAssetController@printLeaveForm');
 
