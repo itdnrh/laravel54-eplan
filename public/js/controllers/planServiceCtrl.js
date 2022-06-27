@@ -140,7 +140,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
-            /** TODO: Check existed data by depart */
+            /** Check existed data by depart */
             let depart = $scope.service.depart_id === '' ? 0 : $scope.service.depart_id;
 
             $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.service.year}/${depart}/existed`)

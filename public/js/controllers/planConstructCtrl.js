@@ -12,8 +12,6 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         faction_id: '',
         depart_id: '',
         division_id: '',
-        category_id: '',
-        group_id: '',
         item_id: '',
         desc: '',
         location: '',
@@ -72,8 +70,6 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             faction_id: '',
             depart_id: '',
             division_id: '',
-            category_id: '',
-            group_id: '',
             item_id: '',
             desc: '',
             location: '',
@@ -133,12 +129,23 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
-            $('#item_id').val(item.id);
-            $scope.construct.item_id = item.id;
-            $scope.construct.desc = item.item_name;
-            $scope.construct.price_per_unit = item.price_per_unit;
-            $scope.construct.unit_id = item.unit_id.toString();
-            $scope.construct.category_id = item.category_id.toString();
+            /** Check existed data by depart */
+            let depart = $scope.construct.depart_id === '' ? 0 : $scope.construct.depart_id;
+
+            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.construct.year}/${depart}/existed`)
+            .then(function(res) {
+                if (res.data.isExisted) {
+                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+                } else {
+                    $('#item_id').val(item.id);
+                    $scope.construct.item_id = item.id;
+                    $scope.construct.desc = item.item_name;
+                    $scope.construct.price_per_unit = item.price_per_unit;
+                    $scope.construct.unit_id = item.unit_id.toString();
+                }
+            }, function(err) {
+                console.log(err);
+            });
         }
 
         $('#items-list').modal('hide');
