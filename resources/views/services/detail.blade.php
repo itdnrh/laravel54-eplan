@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนจ้างบริการ : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดแผนจ้างบริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
@@ -18,7 +18,13 @@
     <section
         class="content"
         ng-controller="planServiceCtrl"
-        ng-init="getById({{ $plan->id }}, setEditControls);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }}
+            }, 2);
+            getById({{ $plan->id }}, setEditControls);
+        "
     >
 
         <div class="row">
@@ -26,12 +32,37 @@
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนจ้างบริการ</h3>
+                        <h3 class="box-title">
+                            รายละเอียดแผนจ้างบริการ
+                            <span ng-show="{{ $plan->plan_no }}"> : เลขที่ ({{ $plan->plan_no }})</span>
+                        </h3>
                     </div>
 
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-10">
+                                <div class="form-group col-md-6">
+                                    <label>ในแผน/นอกแผน :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="I"
+                                                    ng-model="service.in_plan"
+                                                    tabindex="3"> ในแผน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="O"
+                                                    ng-model="service.in_plan"
+                                                    tabindex="3"> นอกแผน
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
                                     <input type="text"
@@ -43,18 +74,46 @@
                                     </inp>
                                 </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>ประเภท :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="service.category_id"
+                                <div class="form-group col-md-4">
+                                    <label>กลุ่มภารกิจ :</label>
+                                    <select id="faction_id" 
+                                            name="faction_id"
                                             class="form-control"
-                                            tabindex="2">
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
+                                            ng-model="service.faction_id"
+                                            ng-change="onFactionSelected(service.faction_id)">
+                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
+                                        @foreach($factions as $faction)
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>กลุ่มงาน :</label>
+                                    <select id="depart_id" 
+                                            name="depart_id"
+                                            ng-model="service.depart_id" 
+                                            class="form-control select2"
+                                            ng-change="onDepartSelected(service.depart_id)">
+                                        <option value="">-- เลือกกลุ่มงาน --</option>
+                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
+                                            @{{ depart.depart_name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>งาน :</label>
+                                    <select id="division_id" 
+                                            name="division_id"
+                                            ng-model="service.division_id" 
+                                            class="form-control select2">
+                                        <option value="">-- เลือกงาน --</option>
+                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
+                                            @{{ division.ward_name }}
+                                        </option>
                                     </select>
                                 </div>
 
@@ -69,16 +128,13 @@
 
                                 <div class="form-group col-md-6">
                                     <label>ราคาต่อหน่วย :</label>
-                                    <input  type="text"
-                                            id="price_per_unit"
-                                            name="price_per_unit"
-                                            ng-model="service.price_per_unit"
-                                            class="form-control"
-                                            tabindex="6" />
+                                    <div class="form-control">
+                                        @{{ service.price_per_unit | currency:'':2 }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>จำนวน :</label>
+                                    <label>จำนวนที่ขอ :</label>
                                     <div style="display: flex; gap: 5px;">
                                         <input  type="text"
                                                 id="amount"
@@ -99,33 +155,89 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>กลุ่มงาน :</label>
-                                    <select id="depart_id"
-                                            name="depart_id"
-                                            ng-model="service.depart_id"
-                                            class="form-control"
-                                            tabindex="2">
-                                            @foreach($departs as $depart)
-                                                <option value="{{ $depart->depart_id }}">
-                                                    {{ $depart->depart_name }}
-                                                </option>
-                                            @endforeach
+                                <div class="form-group col-md-4">
+                                    <label>รวมเป็นเงิน :</label>
+                                    <div class="form-control">
+                                        @{{ service.sum_price | currency:'':2 }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>สาเหตุที่ขอ :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="N"
+                                                    ng-model="service.request_cause"
+                                                    tabindex="3"> ขอใหม่
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="R"
+                                                    ng-model="service.request_cause"
+                                                    tabindex="3"> ทดแทน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="E"
+                                                    ng-model="service.request_cause"
+                                                    tabindex="3"> ขยายงาน
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>แหล่งเงินงบประมาณ :</label>
+                                    <select
+                                        id="budget_src_id"
+                                        name="budget_src_id"
+                                        ng-model="service.budget_src_id"
+                                        class="form-control"
+                                        tabindex="1"
+                                    >
+                                        <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
+                                        @foreach($budgetSources as $budgetSource)
+                                            <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>งาน :</label>
-                                    <select id="division_id"
-                                            name="division_id"
-                                            ng-model="service.division_id"
+                                    <label>ยุทธศาสตร์ :</label>
+                                    <select id="strategic_id" 
+                                            name="strategic_id"
+                                            ng-model="service.strategic_id"
+                                            ng-change="onStrategicSelected(service.strategic_id);"
                                             class="form-control"
-                                            tabindex="2">
-                                            @foreach($divisions as $division)
-                                                <option value="{{ $division->ward_id }}">
-                                                    {{ $division->ward_name }}
-                                                </option>
-                                            @endforeach
+                                            tabindex="7">
+                                        <option value="">-- เลือกยุทธศาสตร์ --</option>
+                                        @foreach($strategics as $strategic)
+                                            <option value="{{ $strategic->id }}">
+                                                {{ $strategic->strategic_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label>Service Plan :</label>
+                                    <select id="service_plan_id" 
+                                            name="service_plan_id"
+                                            ng-model="service.service_plan_id"
+                                            class="form-control"
+                                            tabindex="7">
+                                        <option value="">-- เลือก Service Plan --</option>
+                                        @foreach($servicePlans as $servicePlan)
+                                            <option value="{{ $servicePlan->id }}">
+                                                {{ $servicePlan->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -157,10 +269,9 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input  type="text"
-                                                value="@{{ service.start_month }}"
-                                                class="form-control pull-right"
-                                                tabindex="5">
+                                        <div class="form-control">
+                                            @{{ service.start_month && getMonthName(service.start_month) }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -218,7 +329,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-success"
-                                        ng-show="[0].includes(service.status)"
+                                        ng-show="false"
                                         ng-click="showSupportedForm()"
                                     >
                                         <i class="fa fa-print"></i> บันทึกขอสนับสนุน
@@ -226,7 +337,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-primary"
-                                        ng-show="[1].includes(service.status)"
+                                        ng-show="false"
                                         ng-click="showPoForm()"
                                     >
                                         <i class="fa fa-calculator"></i> บันทึกใบ PO
@@ -234,7 +345,7 @@
                                     <a
                                         href="#"
                                         ng-click="edit(service.service_id)"
-                                        ng-show="[0,1].includes(service.status)"
+                                        ng-show="!service.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
@@ -243,7 +354,7 @@
                                         id="frmDelete"
                                         method="POST"
                                         action="{{ url('/services/delete') }}"
-                                        ng-show="[0,1].includes(service.status)"
+                                        ng-show="!service.approved"
                                     >
                                         <input type="hidden" id="id" name="id" value="@{{ service.service_id }}" />
                                         {{ csrf_field() }}

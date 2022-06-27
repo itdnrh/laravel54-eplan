@@ -223,7 +223,7 @@
                                                 <i class="fa fa-search"></i>
                                             </a>
                                             <a  ng-click="edit(plan.id)"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                ng-show="!plan.approved"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -232,7 +232,7 @@
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/services/delete') }}"
-                                                ng-show="plan.status == 0 || (plan.status == 1 && {{ Auth::user()->person_id }} == '1300200009261')"
+                                                ng-show="!plan.approved"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
