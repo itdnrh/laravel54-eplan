@@ -33,7 +33,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
                         <h3 class="box-title">แก้ไขรายการครุภัณฑ์</h3>
                     </div>
@@ -496,7 +496,7 @@
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="formValidate($event, '/assets/validate', asset, 'frmEditAsset', update)"
-                                class="btn btn-success pull-right"
+                                class="btn btn-warning pull-right"
                             >
                                 แก้ไข
                             </button>

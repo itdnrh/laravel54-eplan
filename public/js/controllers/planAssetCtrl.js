@@ -191,6 +191,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.in_plan            = plan.in_plan;
         $scope.asset.year               = plan.year.toString();
         $scope.asset.plan_no            = plan.plan_no;
+        $scope.asset.item_id            = plan.plan_item.item_id;
         $scope.asset.desc               = plan.plan_item.item.item_name;
         $scope.asset.spec               = plan.plan_item.spec;
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;

@@ -65,7 +65,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('items/add', 'ItemController@add');
     Route::post('items/store', 'ItemController@store');
     Route::get('items/edit/{id}', 'ItemController@edit');
-    Route::post('items/update', 'ItemController@update');
+    Route::post('items/update/{id}', 'ItemController@update');
     Route::post('items/delete/{id}', 'ItemController@delete');
     Route::get('items/print/{id}', 'ItemController@printLeaveForm');
 
@@ -85,7 +85,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('materials/add', 'PlanMaterialController@add');
     Route::post('materials/store', 'PlanMaterialController@store');
     Route::get('materials/edit/{id}', 'PlanMaterialController@edit');
-    Route::post('materials/update', 'PlanMaterialController@update');
+    Route::post('materials/update/{id}', 'PlanMaterialController@update');
     Route::post('materials/delete/{id}', 'PlanMaterialController@delete');
     Route::get('materials/print/{id}', 'PlanMaterialController@printLeaveForm');
 
@@ -95,7 +95,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('services/add', 'PlanServiceController@add');
     Route::post('services/store', 'PlanServiceController@store');
     Route::get('services/edit/{id}', 'PlanServiceController@edit');
-    Route::post('services/update', 'PlanServiceController@update');
+    Route::post('services/update/{id}', 'PlanServiceController@update');
     Route::post('services/delete/{id}', 'PlanServiceController@delete');
     Route::get('services/print/{id}', 'PlanServiceController@printLeaveForm');
 
@@ -105,7 +105,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('constructs/add', 'PlanConstructController@add');
     Route::post('constructs/store', 'PlanConstructController@store');
     Route::get('constructs/edit/{id}', 'PlanConstructController@edit');
-    Route::post('constructs/update', 'PlanConstructController@update');
+    Route::post('constructs/update/{id}', 'PlanConstructController@update');
     Route::post('constructs/delete/{id}', 'PlanConstructController@delete');
     Route::get('constructs/print/{id}', 'PlanConstructController@printLeaveForm');
 
@@ -117,7 +117,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('projects/add', 'ProjectController@add');
     Route::post('projects/store', 'ProjectController@store');
     Route::get('projects/edit/{id}', 'ProjectController@edit');
-    Route::post('projects/update', 'ProjectController@update');
+    Route::post('projects/update/{id}', 'ProjectController@update');
     Route::post('projects/delete/{id}', 'ProjectController@delete');
     Route::post('projects/{id}/payments', 'ProjectController@storePayment');
     Route::post('projects/{id}/timeline', 'ProjectController@storeTimeline');
