@@ -191,12 +191,12 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
         /** Convert int value to string */
         $scope.material.unit_id         = plan.plan_item.unit_id.toString();
-        $scope.material.faction_id         = plan.depart.faction_id.toString();
+        $scope.material.faction_id      = plan.depart.faction_id.toString();
         $scope.material.depart_id       = plan.depart_id.toString();
         $scope.material.division_id     = plan.division_id ? plan.division_id.toString() : '';
-        $scope.material.budget_src_id      = plan.budget_src_id.toString();
-        $scope.material.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
-        $scope.material.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+        $scope.material.budget_src_id   = plan.budget_src_id.toString();
+        $scope.material.strategic_id    = plan.strategic_id && plan.strategic_id.toString();
+        $scope.material.service_plan_id = plan.service_plan_id && plan.service_plan_id.toString();
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

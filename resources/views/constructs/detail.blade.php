@@ -18,7 +18,13 @@
     <section 
         class="content"
         ng-controller="planConstructCtrl"
-        ng-init="getById({{ $plan->id }}, setEditControls);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }}
+            }, 4);
+            getById({{ $plan->id }}, setEditControls);
+        "
     >
 
         <div class="row">
@@ -85,30 +91,28 @@
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มงาน :</label>
-                                    <select id="depart_id"
+                                    <select id="depart_id" 
                                             name="depart_id"
-                                            ng-model="construct.depart_id"
-                                            class="form-control">
-                                        @foreach($departs as $depart)
-                                            <option value="{{ $depart->depart_id }}">
-                                                {{ $depart->depart_name }}
-                                            </option>
-                                        @endforeach
+                                            ng-model="construct.depart_id" 
+                                            class="form-control select2"
+                                            ng-change="onDepartSelected(construct.depart_id)">
+                                        <option value="">-- เลือกกลุ่มงาน --</option>
+                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
+                                            @{{ depart.depart_name }}
+                                        </option>
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>งาน :</label>
-                                    <select id="division_id"
+                                    <select id="division_id" 
                                             name="division_id"
-                                            ng-model="construct.division_id"
-                                            class="form-control">
+                                            ng-model="construct.division_id" 
+                                            class="form-control select2">
                                         <option value="">-- เลือกงาน --</option>
-                                        @foreach($divisions as $division)
-                                            <option value="{{ $division->ward_id }}">
-                                                {{ $division->ward_name }}
-                                            </option>
-                                        @endforeach
+                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
+                                            @{{ division.ward_name }}
+                                        </option>
                                     </select>
                                 </div>
 
@@ -376,5 +380,11 @@
         </div><!-- /.row -->
 
     </section>
+
+    <script>
+        $(function () {
+            $('.select2').select2();
+        });
+    </script>
 
 @endsection
