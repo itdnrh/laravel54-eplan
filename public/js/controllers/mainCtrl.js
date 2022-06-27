@@ -150,7 +150,9 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     };
 
     $scope.getMonthName = function(month) {
-        return $scope.monthLists.find(m => m.id == month).name;
+        const monthObj = $scope.monthLists.find(m => m.id == month);
+
+        return monthObj.name;
     };
 
     $scope.handleInputChange = function(name, value) {

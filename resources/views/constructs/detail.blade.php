@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนก่อสร้าง : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดแผนก่อสร้าง
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
@@ -26,35 +26,89 @@
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนก่อสร้าง</h3>
+                        <h3 class="box-title">
+                            รายละเอียดแผนก่อสร้าง
+                            <span ng-show="{{ $plan->plan_no }}"> : เลขที่ ({{ $plan->plan_no }})</span>
+                        </h3>
                     </div>
 
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="form-group col-md-6">
+                                    <label>ในแผน/นอกแผน :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="I"
+                                                    ng-model="construct.in_plan"
+                                                    tabindex="3"> ในแผน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="O"
+                                                    ng-model="construct.in_plan"
+                                                    tabindex="3"> นอกแผน
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
                                     <input type="text"
                                             id="year" 
                                             name="year"
                                             ng-model="construct.year"
-                                            class="form-control"
-                                            tabindex="2">
+                                            class="form-control">
                                     </inp>
                                 </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>ประเภท :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="construct.category_id"
+                                <div class="form-group col-md-4">
+                                    <label>กลุ่มภารกิจ :</label>
+                                    <select id="faction_id" 
+                                            name="faction_id"
+                                            ng-model="construct.faction_id" 
                                             class="form-control"
-                                            tabindex="2">
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
+                                            ng-change="onFactionSelected(construct.faction_id)">
+                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
+                                        @foreach($factions as $faction)
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>กลุ่มงาน :</label>
+                                    <select id="depart_id"
+                                            name="depart_id"
+                                            ng-model="construct.depart_id"
+                                            class="form-control">
+                                        @foreach($departs as $depart)
+                                            <option value="{{ $depart->depart_id }}">
+                                                {{ $depart->depart_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>งาน :</label>
+                                    <select id="division_id"
+                                            name="division_id"
+                                            ng-model="construct.division_id"
+                                            class="form-control">
+                                        <option value="">-- เลือกงาน --</option>
+                                        @foreach($divisions as $division)
+                                            <option value="{{ $division->ward_id }}">
+                                                {{ $division->ward_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -77,6 +131,32 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
+                                    <label>อาคาร :</label>
+                                    <select id="building_id"
+                                            name="building_id"
+                                            ng-model="construct.building_id"
+                                            class="form-control">
+                                        <option value="">-- เลือกประเภท --</option>
+                                        @foreach($buildings as $building)
+                                            <option value="{{ $building->id }}">
+                                                {{ $building->building_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label>เลขที่ BOQ :</label>
+                                    <input
+                                        type="text"
+                                        id="boq_no"
+                                        name="boq_no"
+                                        ng-model="construct.boq_no"
+                                        class="form-control pull-right"
+                                        tabindex="4">
+                                </div>
+
+                                <div class="form-group col-md-6">
                                     <label>ราคาต่อหน่วย :</label>
                                     <input  type="text"
                                             id="price_per_unit"
@@ -87,7 +167,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>จำนวน :</label>
+                                    <label>จำนวนที่ขอ :</label>
                                     <div style="display: flex; gap: 5px;">
                                         <input  type="text"
                                                 id="amount"
@@ -108,32 +188,60 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>กลุ่มงาน :</label>
-                                    <select id="depart_id"
-                                            name="depart_id"
-                                            ng-model="construct.depart_id"
-                                            class="form-control"
-                                            tabindex="2">
-                                        @foreach($departs as $depart)
-                                            <option value="{{ $depart->depart_id }}">
-                                                {{ $depart->depart_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(construct, 'sum_price')}"
+                                >
+                                    <label>รวมเป็นเงิน :</label>
+                                    <input  type="text"
+                                            id="sum_price"
+                                            name="sum_price"
+                                            ng-model="construct.sum_price"
+                                            class="form-control pull-right"
+                                            tabindex="9" />
+                                    <span class="help-block" ng-show="checkValidate(construct, 'sum_price')">
+                                        @{{ formError.errors.sum_price[0] }}
+                                    </span>
                                 </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>งาน :</label>
-                                    <select id="division_id"
-                                            name="division_id"
-                                            ng-model="construct.division_id"
-                                            class="form-control"
-                                            tabindex="2">
-                                        @foreach($divisions as $division)
-                                            <option value="{{ $division->ward_id }}">
-                                                {{ $division->ward_name }}
-                                            </option>
+                                <div class="form-group col-md-4">
+                                    <label>สาเหตุที่ขอ :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="N"
+                                                    ng-model="construct.request_cause"> ขอใหม่
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="R"
+                                                    ng-model="construct.request_cause"> ทดแทน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="E"
+                                                    ng-model="construct.request_cause"> ขยายงาน
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>แหล่งเงินงบประมาณ :</label>
+                                    <select
+                                        id="budget_src_id"
+                                        name="budget_src_id"
+                                        ng-model="construct.budget_src_id"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
+                                        @foreach($budgetSources as $budgetSource)
+                                            <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -145,7 +253,6 @@
                                         name="reason" 
                                         ng-model="construct.reason" 
                                         class="form-control"
-                                        tabindex="17"
                                     ></textarea>
                                 </div>
 
@@ -156,20 +263,18 @@
                                         name="remark" 
                                         ng-model="construct.remark" 
                                         class="form-control"
-                                        tabindex="17"
                                     ></textarea>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>เริ่มเดือน :</label>
+                                    <label>เดือนที่จะดำเนินการ :</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input  type="text"
-                                                value="@{{ construct.start_month }}"
-                                                class="form-control pull-right"
-                                                tabindex="5">
+                                        <div class="form-control">
+                                            @{{ construct.start_month && getMonthName(construct.start_month) }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -243,7 +348,7 @@
                                     <a
                                         href="#"
                                         ng-click="edit(construct.construct_id)"
-                                        ng-show="[0,1].includes(construct.status)"
+                                        ng-show="!construct.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
@@ -252,7 +357,7 @@
                                         id="frmDelete"
                                         method="POST"
                                         action="{{ url('/constructs/delete') }}"
-                                        ng-show="[0,1].includes(construct.status)"
+                                        ng-show="!construct.approved"
                                     >
                                         <input type="hidden" id="id" name="id" value="@{{ construct.construct_id }}" />
                                         {{ csrf_field() }}

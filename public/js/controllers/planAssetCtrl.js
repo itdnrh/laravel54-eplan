@@ -204,6 +204,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.have_amount        = plan.have_amount;
         $scope.asset.reason             = plan.reason;
         $scope.asset.remark             = plan.remark;
+        $scope.asset.approved           = plan.approved;
         $scope.asset.status             = plan.status;
 
         /** Convert int value to string */

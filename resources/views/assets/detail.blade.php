@@ -307,11 +307,9 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input
-                                            type="text"
-                                            value="@{{ getMonthName(asset.start_month) }}"
-                                            class="form-control pull-right"
-                                        />
+                                        <div class="form-control">
+                                            @{{ construct.start_month && getMonthName(construct.start_month) }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -367,7 +365,7 @@
                                     <a
                                         href="#"
                                         ng-click="edit(asset.asset_id)"
-                                        ng-show="[0,1].includes(asset.status)"
+                                        ng-show="!asset.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
@@ -376,7 +374,7 @@
                                         id="frmDelete"
                                         method="POST"
                                         action="{{ url('/asset/delete') }}"
-                                        ng-show="[0,1].includes(asset.status)"
+                                        ng-show="!asset.approved"
                                     >
                                         <input type="hidden" id="id" name="id" value="@{{ asset.asset_id }}" />
                                         {{ csrf_field() }}

@@ -94,7 +94,11 @@ class PlanConstructController extends Controller
         return view('constructs.detail', [
             "plan"          => Plan::with('planItem')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
+            "buildings"     => Building::all(),
             "units"         => Unit::all(),
+            "budgetSources" => BudgetSource::all(),
+            "strategics"    => Strategic::all(),
+            "servicePlans"  => ServicePlan::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),

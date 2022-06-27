@@ -198,12 +198,12 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.desc               = plan.plan_item.item.item_name;
         $scope.construct.item_id            = plan.plan_item.item_id;
         $('#item_id').val(plan.plan_item.item_id);
-        
+
         $scope.construct.location           = plan.plan_item.location;
         $scope.construct.building_id        = plan.plan_item.building_id ? plan.plan_item.building_id.toString() : '';
         $scope.construct.boq_no             = plan.plan_item.boq_no;
         $scope.construct.boq_file           = plan.plan_item.boq_file;
-        
+
         $scope.construct.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.construct.amount             = plan.plan_item.amount;
         $scope.construct.sum_price          = plan.plan_item.sum_price;
@@ -211,6 +211,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.request_cause      = plan.request_cause;
         $scope.construct.reason             = plan.reason;
         $scope.construct.remark             = plan.remark;
+        $scope.construct.approved           = plan.approved;
         $scope.construct.status             = plan.status;
 
         /** Convert int value to string */
