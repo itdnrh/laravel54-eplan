@@ -203,16 +203,22 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.reason             = plan.reason;
         $scope.asset.remark             = plan.remark;
         $scope.asset.status             = plan.status;
-        
+
         /** Convert int value to string */
         $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
+        $scope.asset.faction_id         = plan.depart.faction_id.toString();
         $scope.asset.depart_id          = plan.depart_id.toString();
         $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';
         $scope.asset.budget_src_id      = plan.budget_src_id.toString();
         $scope.asset.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
         $scope.asset.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+
+        /** Generate departs and divisions data from plan */
+        $scope.onFactionSelected(plan.depart.faction_id);
+        $scope.onDepartSelected(plan.depart_id);
     };
 
     $scope.getMonthName = function(month) {
