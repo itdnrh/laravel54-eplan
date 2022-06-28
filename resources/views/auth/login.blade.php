@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>E-Plan Management System</title>
+    <title>E-Plan</title>
 
     <link rel="stylesheet" href="{{ asset('/node_modules/bootstrap/dist/css/bootstrap.min.css') }}">
     <!-- Theme style -->
@@ -37,7 +37,7 @@
                     @endif
 
                     <div style="text-align: center;">
-                        <h1>E-Plan <b>MS<b></h1>
+                        <h1>E-<b>Plan<b></h1>
                     </div>
 
                     <div class="panel panel-default">
