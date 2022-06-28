@@ -14,6 +14,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.persons = [];
     $scope.persons_pager = null;
 
+    $scope.timelinePlan = null;
+    $scope.showTimeline = false;
+
     $scope.support = {
         doc_no: '',
         doc_date: '',
@@ -64,6 +67,16 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         .on('changeDate', function(event) {
             console.log(event.date);
         });
+
+    $scope.onShowTimeline = function(plan) {
+        if (plan) {
+            $scope.timelinePlan = plan;
+            $scope.showTimeline = true;
+        } else {
+            $scope.timelinePlan = null;
+            $scope.showTimeline = false;
+        }
+    };
 
     $scope.clearNewItem = () => {
         $scope.newItem = {

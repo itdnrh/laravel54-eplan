@@ -63,7 +63,7 @@
                                                         <span>@{{ detail.plan.plan_item.item.item_name }} จำนวน </span>
                                                         <span>@{{ detail.plan.plan_item.amount | currency:'':0 }}</span>
                                                         <span>@{{ detail.plan.plan_item.unit.name }}</span>
-                                                        <a href="#" class="text-aqua">
+                                                        <a href="#" class="text-aqua" ng-click="onShowTimeline(detail.plan)">
                                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                                         </a>
                                                     </li>
@@ -73,15 +73,22 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-4">
+
+                            <div class="col-md-4" ng-show="showTimeline">
                                 <div>
-                                    <h4 style="margin: 0;">เลขที่แผน ...</h4>
-                                    <p style="margin: 5px 0;">รายการ ... จำนวน...</p>
+                                    <h4 style="margin: 0;">
+                                        เลขที่แผน 
+                                        <span>@{{ timelinePlan.plan_no }}</span>
+                                    </h4>
+                                    <p style="margin: 5px 0;">
+                                        รายการ
+                                        <span>@{{ timelinePlan.plan_item.item.item_name }}</span>
+                                    </p>
                                 </div>
                                 <ul class="timeline timeline-inverse">
                                     <li class="time-label">
                                         <span class="bg-red">
-                                            01/04/2565
+                                            @{{ timelinePlan.sent_date | thdate }}
                                         </span>
                                     </li>
                                     <li>
@@ -93,11 +100,17 @@
                                             <div class="timeline-body">
                                                 ...
                                             </div>
-                                            <div class="timeline-footer">
+                                            <!-- <div class="timeline-footer">
                                                 <a class="btn btn-primary btn-xs">Read more</a>
                                                 <a class="btn btn-danger btn-xs">Delete</a>
-                                            </div>
+                                            </div> -->
                                         </div>
+                                    </li>
+
+                                    <li class="time-label">
+                                        <span class="bg-red">
+                                            @{{ timelinePlan.received_date | thdate }}
+                                        </span>
                                     </li>
                                     <li>
                                         <i class="fa fa-pencil-square-o bg-yellow"></i>
@@ -113,7 +126,7 @@
 
                                     <li class="time-label">
                                         <span class="bg-red">
-                                            05/04/2565
+                                            @{{ timelinePlan.po_date | thdate }}
                                         </span>
                                     </li>
                                     <li>
@@ -130,7 +143,7 @@
 
                                     <li class="time-label">
                                         <span class="bg-red">
-                                            20/04/2565
+                                            ...
                                         </span>
                                     </li>
                                     <li>
@@ -147,7 +160,7 @@
 
                                     <li class="time-label">
                                         <span class="bg-red">
-                                            22/04/2565
+                                            ...
                                         </span>
                                     </li>
                                     <li>
@@ -162,9 +175,9 @@
                                         </div>
                                     </li>
 
-                                    <li class="time-label">
+                                    <!-- <li class="time-label">
                                         <span class="bg-red">
-                                            ..../......./.....
+                                            ...
                                         </span>
                                     </li>
                                     <li>
@@ -181,7 +194,7 @@
 
                                     <li class="time-label">
                                         <span class="bg-red">
-                                            ..../......./.....
+                                            ...
                                         </span>
                                     </li>
                                     <li>
@@ -198,7 +211,7 @@
                                                 <a class="btn btn-danger btn-xs">Delete</a>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li> -->
 
                                     <li>
                                         <i class="fa fa-clock-o bg-gray"></i>
