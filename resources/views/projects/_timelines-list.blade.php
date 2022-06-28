@@ -13,7 +13,7 @@
                 <a
                     href="#"
                     class="btn btn-primary"
-                    ng-show="!timeline.sent_stg_date"
+                    ng-show="!timeline.sent_stg_date && {{ Auth::user()->memberOf->depart_id }} == '4'"
                     ng-click="updateTimeline(timeline.id, project.id, 'sent_stg_date')"
                 >
                     บันทึกส่งงานแผน
@@ -24,8 +24,9 @@
                 <a
                     href="#"
                     class="btn btn-primary"
-                    ng-show="!timeline.sent_fin_date"
+                    ng-show="!timeline.sent_fin_date && {{ Auth::user()->memberOf->depart_id }} == '4'"
                     ng-click="updateTimeline(timeline.id, project.id, 'sent_fin_date')"
+                    ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'"
                 >
                     บันทึกส่งการเงิน
                 </a>
@@ -35,7 +36,7 @@
                 <a
                     href="#"
                     class="btn btn-primary"
-                    ng-show="!timeline.approved_date"
+                    ng-show="!timeline.approved_date && {{ Auth::user()->memberOf->depart_id }} == '4'"
                     ng-click="updateTimeline(timeline.id, project.id, 'approved_date')"
                 >
                     บันทึก ผอ.อนุมัติ
@@ -46,7 +47,7 @@
                 <a
                     href="#"
                     class="btn btn-primary"
-                    ng-show="!timeline.start_date"
+                    ng-show="!timeline.start_date && {{ Auth::user()->memberOf->depart_id }} == '4'"
                     ng-click="updateTimeline(timeline.id, project.id, 'start_date')"
                 >
                     บันทึกดำเนินโครงการ

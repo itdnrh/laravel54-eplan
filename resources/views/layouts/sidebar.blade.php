@@ -309,7 +309,7 @@
 					<!-- ควบคุมกำกับติดตาม -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						in_array(Auth::user()->memberOf->depart_id, [1,2,3,4,16,17,18,39]) ||
+						in_array(Auth::user()->memberOf->depart_id, [1,2,3,4,16,17,18,39,41]) ||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'monthly' }">

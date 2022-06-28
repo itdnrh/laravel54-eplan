@@ -182,7 +182,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row" ng-show="project.attachment">
                             <div class="form-group col-md-12">
                                 <label>ไฟล์ 13 ช่อง :</label>
                                 <div class="form-control">
@@ -221,7 +221,13 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div style="padding: 0 20px;">
-                                                <a href="#" class="btn btn-primary pull-right" style="margin-bottom: 10px;" ng-click="showPaymentForm()">
+                                                <a
+                                                    href="#"
+                                                    class="btn btn-primary pull-right"
+                                                    style="margin-bottom: 10px;"
+                                                    ng-click="showPaymentForm()"
+                                                    ng-show="{{ Auth::user()->memberOf->depart_id }} == '3' || {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                                >
                                                     เพิ่มรายการเบิกจ่าย
                                                 </a>
     
@@ -236,7 +242,11 @@
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
-                        <button class="btn btn-danger" ng-click="showCloseProjectForm()">
+                        <button
+                            class="btn btn-danger"
+                            ng-click="showCloseProjectForm()"
+                            ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'"
+                        >
                             ปิดโครงการ
                         </button>
                     </div>
