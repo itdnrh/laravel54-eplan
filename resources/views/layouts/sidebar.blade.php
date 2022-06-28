@@ -293,6 +293,11 @@
 									</a>
 								</li>
 								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/utilities/list/7') }}">
+										<i class="fa fa-circle-o"></i> ค่าไปรษณย์
+									</a>
+								</li>
+								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
 									<a href="{{ url('/utilities/list/5') }}">
 										<i class="fa fa-circle-o"></i> ค่าไฟฟ้าโซล่าเซลล์
 									</a>

@@ -103,7 +103,6 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.setUtilities = function(res) {
         const { data, ...pager } = res.data.utilities;
-        console.log(data);
 
         $scope.utilities = data;
         $scope.pager = pager;
