@@ -312,10 +312,10 @@ class ProjectController extends Controller
         $project->updated_user      = Auth::user()->person_id;
 
         /** Upload attach file */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
-        // if (!empty($attachment)) {
-        //     $plan->attachment = $attachment;
-        // }
+        $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
+        if (!empty($attachment)) {
+            $plan->attachment = $attachment;
+        }
 
         if($project->save()) {
             return redirect('/projects/list');
@@ -325,41 +325,44 @@ class ProjectController extends Controller
     public function edit($id)
     {
         return view('projects.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
-            "periods"       => $this->periods,
+            "project"       => Project::find($id),
+            "projectTypes"  => ProjectType::all(),
+            "budgets"       => BudgetSource::where('id', '1')->get(),
+            "strategics"    => Strategic::all(),
+            "strategies"    => Strategy::all(),
+            "kpis"          => Kpi::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        $leave = Leave::find($req['leave_id']);
-        $leave->leave_date      = convThDateToDbDate($req['leave_date']);
-        $leave->leave_place     = $req['leave_place'];
-        $leave->leave_topic     = $req['leave_topic'];
-        $leave->leave_to        = $req['leave_to'];
-        $leave->leave_person    = $req['leave_person'];
-        $leave->leave_type      = $req['leave_type'];
-        $leave->start_date      = convThDateToDbDate($req['start_date']);
-        $leave->start_period    = '1';
-        $leave->end_date        = convThDateToDbDate($req['end_date']);
-        $leave->end_period      = $req['end_period'];
-        $leave->leave_days      = $req['leave_days'];
-        $leave->working_days    = $req['working_days'];
-        $leave->year            = calcBudgetYear($req['start_date']);
+        $project = Project::find($id);
+        $project->year              = $req['year'];
+        $project->project_no        = $req['project_no'];
+        $project->project_name      = $req['project_name'];
+        $project->project_type_id   = $req['project_type_id'];
+        $project->kpi_id            = $req['kpi_id'];
+        $project->total_budget      = $req['total_budget'];
+        $project->total_actual      = $req['total_actual'];
+        $project->budget_src_id     = $req['budget_src_id'];
+        $project->owner_depart      = $req['owner_depart'];
+        $project->owner_person      = $req['owner_person'];
+        $project->start_month       = $req['start_month'];
+        $project->remark            = $req['remark'];
+        $project->status            = '0';
+        $project->created_user      = Auth::user()->person_id;
+        $project->updated_user      = Auth::user()->person_id;
 
-        /** Upload image */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        // if (!empty($attachment)) {
-        //     $leave->attachment = $attachment;
-        // }
+        /** Upload attach file */
+        $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
+        if (!empty($attachment)) {
+            $project->attachment = $attachment;
+        }
 
-        if($leave->save()) {
-            /** Update detail data of some leave type */
-
-            return redirect('/leaves/list');
+        if($project->save()) {
+            return redirect('/projects/list');
         }
     }
 

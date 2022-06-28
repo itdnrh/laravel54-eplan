@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มโครงการ
+            แก้ไขโครงการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มโครงการ</li>
+            <li class="breadcrumb-item active">แก้ไขโครงการ</li>
         </ol>
     </section>
 
@@ -19,23 +19,29 @@
     <section
         class="content"
         ng-controller="projectCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            strategics: {{ $strategics }},
-            strategies: {{ $strategies }},
-            kpis: {{ $kpis }},
-        }, 4);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                strategics: {{ $strategics }},
+                strategies: {{ $strategies }},
+                kpis: {{ $kpis }},
+            }, 4);
+            getById({{ $project->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-success">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มโครงการ</h3>
+                        <h3 class="box-title">
+                            แก้ไขโครงการ
+                            <span>(ID : {{ $project->id }})</span>
+                        </h3>
                     </div>
 
-                    <form id="frmNewProject" name="frmNewProject" method="post" action="{{ url('/projects/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditProject" name="frmEditProject" method="post" action="{{ url('/projects/update/'.$project->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -75,13 +81,11 @@
                                             class="form-control"
                                             tabindex="7">
                                         <option value="">-- เลือกยุทธศาสตร์ --</option>
-
                                         @foreach($strategics as $strategic)
                                             <option value="{{ $strategic->id }}">
                                                 {{ $strategic->strategic_name }}
                                             </option>
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'strategic_id')">
                                         @{{ formError.errors.strategic_id[0] }}
@@ -183,13 +187,11 @@
                                             class="form-control"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
-
                                         @foreach($budgets as $budget)
                                             <option value="{{ $budget->id }}">
                                                 {{ $budget->name }}
                                             </option>
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'budget_src_id')">
                                         @{{ formError.errors.desc[0] }}
@@ -214,7 +216,7 @@
                                         @{{ formError.errors.total_budget[0] }}
                                     </span>
                                 </div>
-                                <!-- <div
+                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'total_actual')}"
                                 >
@@ -229,7 +231,7 @@
                                     <span class="help-block" ng-show="checkValidate(project, 'total_actual')">
                                         @{{ formError.errors.total_actual[0] }}
                                     </span>
-                                </div> -->
+                                </div>
                             </div>
 
                             <div class="row">
@@ -241,18 +243,14 @@
                                     <select id="faction_id" 
                                             name="faction_id"
                                             ng-model="project.faction_id" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="11"
+                                            class="form-control"
                                             ng-change="onFactionSelected(project.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
-
                                         @foreach($factions as $faction)
                                             <option value="{{ $faction->faction_id }}">
                                                 {{ $faction->faction_name }}
                                             </option>
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(project, 'faction_id')">
                                         @{{ formError.errors.faction_id[0] }}
@@ -388,10 +386,10 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/projects/validate', project, 'frmNewProject', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/projects/validate', project, 'frmEditProject', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

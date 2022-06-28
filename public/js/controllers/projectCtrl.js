@@ -226,12 +226,14 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             $scope.project.project_name     = project.project_name;
             $scope.project.kpi              = project.kpi;
             $scope.project.total_budget     = project.total_budget;
+            $scope.project.total_actual     = project.total_actual;
             $scope.project.budget_src       = project.budget_src;
             $scope.project.owner_depart     = project.owner_depart;
             $scope.project.depart           = project.depart;
             $scope.project.owner_person     = project.owner_person;
             $scope.project.owner            = project.owner;
-            $scope.project.start_month      = $scope.monthLists.find(m => m.id == project.start_month).name;
+            $('#owner_person').val(project.owner_person);
+
             $scope.project.approved         = project.approved;
             $scope.project.attachment       = project.attachment;
             $scope.project.remark           = project.remark;
@@ -239,10 +241,20 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
             /** Convert int value to string */
             $scope.project.year             = project.year.toString();
+            $scope.project.start_month      = project.start_month.toString();
+            $scope.project.strategic_id     = project.kpi.strategy.strategic_id.toString();
+            $scope.project.strategy_id      = project.kpi.strategy_id.toString();
             $scope.project.kpi_id           = project.kpi_id.toString();
             $scope.project.project_type_id  = project.project_type_id.toString();
             $scope.project.budget_src_id    = project.budget_src_id.toString();
             $scope.project.owner_depart     = project.owner_depart.toString();
+            $scope.project.faction_id       = project.depart.faction_id.toString();
+
+            /** Generate departs and divisions data from plan */
+            $scope.onStrategicSelected(project.kpi.strategy.strategic_id);
+            $scope.onStrategySelected(project.kpi.strategy_id);
+            $scope.onFactionSelected(project.depart.faction_id);
+            $scope.onDepartSelected(project.owner_depart);
         }
     };
 
@@ -352,11 +364,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         window.location.href = `${CONFIG.baseUrl}/projects/edit/${id}`;
     };
 
-    $scope.update = function(e) {
+    $scope.update = function(e, form) {
         e.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.project_id} ใช่หรือไม่?`)) {
-            $('#frmEditProject').submit();
+        if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.id} ใช่หรือไม่?`)) {
+            $(`#${form}`).submit();
         }
     };
 

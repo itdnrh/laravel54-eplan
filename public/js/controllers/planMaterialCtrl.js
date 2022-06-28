@@ -216,7 +216,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.material.material_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนวัสดุนอกคลังรหัส ${$scope.material.material_id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };

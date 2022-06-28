@@ -221,7 +221,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.service.service_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนจ้างบริการรหัส ${$scope.service.service_id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };

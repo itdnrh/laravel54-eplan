@@ -320,7 +320,7 @@
                                             <i class="fa fa-clock-o"></i>
                                         </div>
                                         <div class="form-control">
-                                            @{{ construct.start_month && getMonthName(construct.start_month) }}
+                                            @{{ asset.start_month && getMonthName(asset.start_month) }}
                                         </div>
                                     </div>
                                 </div>
