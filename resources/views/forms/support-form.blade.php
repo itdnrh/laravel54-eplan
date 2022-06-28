@@ -39,7 +39,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
                                 <div class="content__header-text" style="width: 70%; margin-left: 28px;">
-                                    <span style="margin: 0 10px;">{{ convDbDateToLongThDate($support->doc_date) }}</span>
+                                    <span style="margin: 0 10px;">{{ $support->doc_date == '' ? '&nbsp;' : convDbDateToLongThDate($support->doc_date) }}</span>
                                 </div>
                             </div>
                         </td>

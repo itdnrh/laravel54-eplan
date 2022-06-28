@@ -23,8 +23,8 @@ class SupportController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'doc_no'            => 'required',
-            'doc_date'          => 'required',
+            // 'doc_no'            => 'required',
+            // 'doc_date'          => 'required',
             'topic'             => 'required',
             'year'              => 'required',
             'plan_type_id'      => 'required',
@@ -182,6 +182,9 @@ class SupportController extends Controller
     public function store(Request $req)
     {
         try {
+            // $depart = Depart::where('depart_id', Auth::user()->memberOf->depart_id)->first();
+            // $doc_no_prefix => $depart->memo_no,
+
             $support = new Support;
             $support->doc_no            = $req['doc_no'];
             $support->doc_date          = convThDateToDbDate($req['doc_date']);
@@ -308,9 +311,11 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($req['id']);
+            $support->doc_no    = $req['doc_no'];
+            $support->doc_date  = convThDateToDbDate($req['doc_date']);
             $support->sent_date = date('Y-m-d');
             $support->sent_user = Auth::user()->person_id;
-            $support->status = 1;
+            $support->status    = 1;
 
             if ($support->save()) {
                 foreach($req['details'] as $detail) {

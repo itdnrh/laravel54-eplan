@@ -9,25 +9,37 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="">เลขที่บันทึกขอสนับสนุน</label>
-                            <input type="text" id="doc_no" name="doc_no" class="form-control" />
+                            <input
+                                type="text"
+                                id="doc_no"
+                                name="doc_no"
+                                ng-model="support.doc_no"
+                                class="form-control"
+                            />
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="">ลงวันที่</label>
-                            <input type="text" id="doc_date" name="doc_date" class="form-control" />
+                            <input
+                                type="text"
+                                id="doc_date"
+                                name="doc_date"
+                                ng-model="support.doc_date"
+                                class="form-control"
+                            />
                         </div>
-                        <div class="col-md-6 form-group">
+                        <!-- <div class="col-md-6 form-group">
                             <label for="">วันที่ส่งเอกสาร</label>
                             <input type="text" id="sent_date" name="sent_date" class="form-control" />
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="">ผู้ส่งเอกสาร</label>
                             <input type="text" id="sent_user" name="sent_user" class="form-control" />
-                        </div>
+                        </div> -->
                     </div>
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="sendSupportedDoc($event, planType, planId)"
+                        ng-click="sendSupport($event, planType, planId)"
                         class="btn btn-primary"
                         data-dismiss="modal"
                         aria-label="Save"

@@ -170,10 +170,7 @@
                         </div>
 
                         <div class="row">
-                            <div
-                                class="form-group col-md-12"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'insp_committee')}"
-                            >
+                            <div class="form-group col-md-12">
                                 <label>คณะกรรมการตรวจรับ :</label>
                                 <div class="table-responsive" style="margin: 0; padding: 0;">
                                     <table class="table table-striped" style="width: 80%;">
@@ -192,11 +189,7 @@
                         </div>
 
                         <div class="row">
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
-                                ng-show="support.total > 100000"
-                            >
+                            <div class="form-group col-md-6" ng-show="support.total > 100000">
                                 <label>คณะกรรมการกำหนดคุณลักษณะ :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -212,11 +205,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'env_committee')}"
-                                ng-show="support.total > 500000"
-                            >
+                            <div class="form-group col-md-6" g-show="support.total > 500000">
                                 <label>คณะกรรมการเปิดซอง/พิจารณาราคา :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -270,7 +259,7 @@
                             พิมพ์บันทึกขอสนับสนุน
                         </a>
                         <button
-                            ng-click="sendSupport($event)"
+                            ng-click="showSendSupportForm(support)"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
