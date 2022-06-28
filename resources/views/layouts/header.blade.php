@@ -151,7 +151,7 @@
 										<div class="pull-left">
 											<a 	href="#"
 												class="btn btn-default btn-flat"
-												ng-click="redirectTo($event, 'histories/profile/' + {{ Auth::user()->person_id }})"
+												ng-click="redirectTo($event, 'persons/detail/' + {{ Auth::user()->person_id }})"
 											>
 												ข้อมูลส่วนตัว
 											</a>
