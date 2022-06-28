@@ -323,6 +323,11 @@
 							<ul class="treeview-menu">
 								<li ng-class="{ 'active': submenu == 'list' }">
 									<a href="{{ url('monthly/list') }}">
+										<i class="fa fa-circle-o"></i> ประมาณการรายจ่าย
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'list' }">
+									<a href="{{ url('monthly/list') }}">
 										<i class="fa fa-circle-o"></i> รายการ
 									</a>
 								</li>
@@ -376,9 +381,14 @@
 										<i class="fa fa-circle-o"></i> สินค้า/บริการ
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'categories' }">
-									<a href="{{ url('/system/categories') }}">
-										<i class="fa fa-circle-o"></i> ประเภทครุภัณฑ์
+								<li ng-class="{ 'active': submenu == 'expenses' }">
+									<a href="{{ url('/system/expenses') }}">
+										<i class="fa fa-circle-o"></i> ค่าใช้จ่าย
+									</a>
+								</li>
+								<li ng-class="{ 'active': submenu == 'expense-types' }">
+									<a href="{{ url('/system/expense-types') }}">
+										<i class="fa fa-circle-o"></i> ประเภทค่าใช้จ่าย
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'kpis' }">
