@@ -336,27 +336,22 @@
 					@endif
 
 					<!-- รายงาน -->
-					@if (
-						Auth::user()->person_id == '1300200009261' ||
-						count(Auth::user()->delegations) > 0
-					)
-						<li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
-							<a href="#">
-								<i class="fa fa-pie-chart"></i>
-								<span>รายงาน</span>
-								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li ng-class="{ 'active': submenu == 'daily' }">
-									<a href="{{ url('reports/summary-depart') }}">
-										<i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
-									</a>
-								</li>
-							</ul>
-						</li>
-					@endif
+					<li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
+						<a href="#">
+							<i class="fa fa-pie-chart"></i>
+							<span>รายงาน</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li ng-class="{ 'active': submenu == 'daily' }">
+								<a href="{{ url('reports/summary-depart') }}">
+									<i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
+								</a>
+							</li>
+						</ul>
+					</li>
 
 					<!-- ข้อมูลระบบ -->
 					@if (
