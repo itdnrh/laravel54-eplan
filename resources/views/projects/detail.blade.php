@@ -19,6 +19,12 @@
         class="content"
         ng-controller="projectCtrl"
         ng-init="
+            initForms({
+                departs: {{ $departs }},
+                strategics: {{ $strategics }},
+                strategies: {{ $strategies }},
+                kpis: {{ $kpis }},
+            }, 4);
             getById({{ $project->id }}, setEditControls);
             getPayments({{ $project->id }});
             getTimline({{ $project->id }});
@@ -157,9 +163,9 @@
                                 class="form-group col-md-6"
                                 ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
                             >
-                                <label>เริ่มเดือน :</label>
+                                <label>ระยะเวลาดำเนินงาน :</label>
                                 <div class="form-control">
-                                    @{{ project.start_month }}
+                                    @{{ project.start_month && getMonthName(project.start_month) }}
                                 </div>
                             </div>
                         </div>
@@ -173,6 +179,18 @@
                                     class="form-control"
                                     tabindex="15"
                                 ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label>ไฟล์ 13 ช่อง :</label>
+                                <div class="form-control">
+                                    <a href="{{ url('/uploads/projects') }}/@{{ project.attachment }}" target="_blank">
+                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                        @{{ project.attachment }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
 

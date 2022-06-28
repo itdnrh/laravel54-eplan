@@ -347,6 +347,12 @@
                                         name="attachment"
                                         class="form-control"
                                     />
+                                    <div style="margin-top: 5px;" ng-show="project.attachment">
+                                        <a href="{{ url('/uploads/projects') }}/@{{ project.attachment }}" target="_blank">
+                                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                            @{{ project.attachment }}
+                                        </a>
+                                    </div>
                                     <span class="help-block" ng-show="checkValidate(project, 'attachment')">
                                         @{{ formError.errors.attachment[0] }}
                                     </span>
