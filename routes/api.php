@@ -68,4 +68,9 @@ Route::group(['middleware' => 'api'], function () {
     /** จ้างซ่อมแซม/บำรุงรักษา */
     Route::get('repairs', 'RepairController@getAll');
     Route::get('repairs/{id}', 'RepairController@getById');
+
+    /** รายงาน */
+    Route::get('reports/summary-depart', 'ReportController@getSummaryByDepart');
+    Route::get('reports/asset-depart', 'ReportController@getAssetByDepart');
+    Route::get('reports/material-depart', 'ReportController@getMaterialByDepart');
 });

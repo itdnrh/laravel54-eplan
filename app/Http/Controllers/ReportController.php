@@ -7,156 +7,150 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
-use App\Models\Leave;
-use App\Models\History;
 use App\Models\Person;
 
 class ReportController extends Controller
 {
-    public function daily()
+    public function summaryByDepart()
     {
         $depart = '';
         if (Auth::user()->memberOf->duty_id == 2) {
             $depart = Auth::user()->memberOf->depart_id;
         }
 
-        return view('reports.daily', [
+        return view('reports.summary-depart', [
             "factions"  => Faction::all(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
-            "divisions" => Division::when(!empty($depart), function($q) use ($depart) {
-                                $q->where('depart_id', $depart);
-                            })->get()
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
         ]);
     }
 
-    public function getDailyData(Request $req)
+    public function getSummaryByDepart(Request $req)
     {
         /** Get params from query string */
-        $faction    = Auth::user()->memberOf->duty_id == 2
-                        ? Auth::user()->memberOf->faction_id
-                        : $req->get('faction');
-        $depart     = Auth::user()->memberOf->duty_id == 2
-                        ? Auth::user()->memberOf->depart_id
-                        : $req->get('depart');
-        $division   = $req->get('division');
-        $date       = $req->get('date');
-        $name       = $req->get('name');
+        // $faction    = Auth::user()->memberOf->duty_id == 2
+        //                 ? Auth::user()->memberOf->faction_id
+        //                 : $req->get('faction');
+        $year = $req->get('year');
 
-        /** Generate list of person of depart from query params */
-        $personList = Person::leftJoin('level', 'level.person_id', '=', 'personal.person_id')
-                        ->where('level.faction_id', '5')
-                        // ->where('person_state', '1')
-                        ->when(!empty($depart), function($q) use ($depart) {
-                            $q->where('level.depart_id', $depart);
-                        })
-                        ->when(!empty($division), function($q) use ($division) {
-                            $wardLists = explode(",", $division);
-
-                            $q->whereIn('level.ward_id', $wardLists);
-                        })
-                        ->when(!empty($name), function($q) use ($name) {
-                            $q->where('person_firstname', 'like', $name.'%');
-                        })
-                        ->pluck('personal.person_id');
-
-        $leaves = Leave::with('person', 'person.prefix', 'person.position', 'person.academic')
-                    ->with('person.memberOf', 'person.memberOf.depart', 'person.memberOf.division')
-                    ->with('cancellation', 'type')
-                    ->whereIn('leave_person', $personList)
-                    ->when(!empty($date), function($q) use ($date) {
-                        $q->where('start_date', '<=', $date)->where('end_date', '>=', $date);
-                    })
-                    ->orderBy('leave_date', 'desc')
-                    ->orderBy('start_date', 'desc')
-                    ->paginate(10);
-
-        return [
-            'leaves' => $leaves,
-        ];
-    }
-
-    public function summary()
-    {
-        $depart = '';
-        if (Auth::user()->memberOf->duty_id == 2) {
-            $depart = Auth::user()->memberOf->depart_id;
-        }
-
-        return view('reports.summary', [
-            "factions"  => Faction::all(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
-            "divisions" => Division::when(!empty($depart), function($q) use ($depart) {
-                                $q->where('depart_id', $depart);
-                            })->get()
-        ]);
-    }
-
-    public function getSummaryData(Request $req)
-    {
-        $depart     = '';
-        $year       = $req->input('year');
-        $division   = $req->input('division');
-
-        if (Auth::user()->memberOf->duty_id == 1 || Auth::user()->person_id == '1300200009261') {
-            $depart = $req->input('depart');
-        } else if (Auth::user()->memberOf->duty_id == 2) {
-            $depart = Auth::user()->memberOf->depart_id;
-        }
-
-        $leaves = \DB::table('leaves')
+        $plans = \DB::table('plans')
                     ->select(
-                        'leave_person',
-                        \DB::raw("count(case when (leave_type='1') then id end) as ill_times"),
-                        \DB::raw("sum(case when (leave_type='1') then leave_days end) as ill_days"),
-                        \DB::raw("count(case when (leave_type='2') then id end) as per_times"),
-                        \DB::raw("sum(case when (leave_type='2') then leave_days end) as per_days"),
-                        \DB::raw("count(case when (leave_type='3') then id end) as vac_times"),
-                        \DB::raw("sum(case when (leave_type='3') then leave_days end) as vac_days"),
-                        \DB::raw("count(case when (leave_type='4') then id end) as lab_times"),
-                        \DB::raw("sum(case when (leave_type='4') then leave_days end) as lab_days"),
-                        \DB::raw("count(case when (leave_type='5') then id end) as hel_times"),
-                        \DB::raw("sum(case when (leave_type='5') then leave_days end) as hel_days"),
-                        \DB::raw("count(case when (leave_type='6') then id end) as ord_times"),
-                        \DB::raw("sum(case when (leave_type='6') then leave_days end) as ord_days")
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (plans.plan_type_id=1) then plan_items.sum_price end) as asset"),
+                        \DB::raw("sum(case when (plans.plan_type_id=2) then plan_items.sum_price end) as material"),
+                        \DB::raw("sum(case when (plans.plan_type_id=3) then plan_items.sum_price end) as service"),
+                        \DB::raw("sum(case when (plans.plan_type_id=4) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(plan_items.sum_price) as total")
                     )
-                    ->whereIn('status', [3,5,8,9])
-                    ->where('year', $year)
-                    ->groupBy('leave_person')->get();
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->groupBy('plans.depart_id')
+                    ->where('plans.year', $year)
+                    ->where('plans.approved', 'A')
+                    ->get();
 
         return [
-            'leaves'    => $leaves,
-            'persons'   => Person::join('level', 'personal.person_id', '=', 'level.person_id')
-                            ->where('level.faction_id', '5')
-                            ->where('person_state', '1')
-                            ->when(empty($depart), function($q) {
-                                $q->where('level.depart_id', '65');
-                            })
-                            ->when(!empty($depart), function($q) use ($depart) {
-                                $q->where('level.depart_id', $depart);
-                            })
-                            ->when(!empty($division), function($q) use ($division) {
-                                $q->where('level.ward_id', $division);
-                            })
-                            ->with('prefix','position','academic')
-                            ->with('memberOf', 'memberOf.depart')
-                            ->paginate(10),
-            'histories' => History::where('year', $year)->get()
+            'plans'     => $plans,
+            'departs'   => Depart::all()
         ];
     }
 
-    public function remain()
+    public function assetByDepart()
     {
         $depart = '';
         if (Auth::user()->memberOf->duty_id == 2) {
             $depart = Auth::user()->memberOf->depart_id;
         }
 
-        return view('reports.remain', [
+        return view('reports.asset-depart', [
             "factions"  => Faction::all(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
-            "divisions" => Division::when(!empty($depart), function($q) use ($depart) {
-                                $q->where('depart_id', $depart);
-                            })->get()
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
         ]);
+    }
+
+    public function getAssetByDepart(Request $req)
+    {
+        /** Get params from query string */
+        // $faction    = Auth::user()->memberOf->duty_id == 2
+        //                 ? Auth::user()->memberOf->faction_id
+        //                 : $req->get('faction');
+        $year = $req->get('year');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (items.category_id=1) then plan_items.sum_price end) as vehicle"),
+                        \DB::raw("sum(case when (items.category_id=2) then plan_items.sum_price end) as office"),
+                        \DB::raw("sum(case when (items.category_id=3) then plan_items.sum_price end) as computer"),
+                        \DB::raw("sum(case when (items.category_id=4) then plan_items.sum_price end) as medical"),
+                        \DB::raw("sum(case when (items.category_id=5) then plan_items.sum_price end) as home"),
+                        \DB::raw("sum(case when (items.category_id=6) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(case when (items.category_id=7) then plan_items.sum_price end) as agriculture"),
+                        \DB::raw("sum(case when (items.category_id=8) then plan_items.sum_price end) as ads"),
+                        \DB::raw("sum(case when (items.category_id=9) then plan_items.sum_price end) as electric"),
+                        \DB::raw("sum(case when (items.category_id between 1 and 9) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('plans.depart_id')
+                    ->where('plans.year', $year)
+                    ->where('plans.approved', 'A')
+                    ->get();
+
+        return [
+            'plans'     => $plans,
+            'departs'   => Depart::all()
+        ];
+    }
+
+    public function materialByDepart()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.material-depart', [
+            "factions"  => Faction::all(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getMaterialByDepart(Request $req)
+    {
+        /** Get params from query string */
+        // $faction    = Auth::user()->memberOf->duty_id == 2
+        //                 ? Auth::user()->memberOf->faction_id
+        //                 : $req->get('faction');
+        $year = $req->get('year');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (items.category_id=10) then plan_items.sum_price end) as medical"),
+                        \DB::raw("sum(case when (items.category_id=11) then plan_items.sum_price end) as science"),
+                        \DB::raw("sum(case when (items.category_id=12) then plan_items.sum_price end) as dent"),
+                        \DB::raw("sum(case when (items.category_id=13) then plan_items.sum_price end) as office"),
+                        \DB::raw("sum(case when (items.category_id=14) then plan_items.sum_price end) as computer"),
+                        \DB::raw("sum(case when (items.category_id=15) then plan_items.sum_price end) as home"),
+                        \DB::raw("sum(case when (items.category_id=16) then plan_items.sum_price end) as clothes"),
+                        \DB::raw("sum(case when (items.category_id=17) then plan_items.sum_price end) as fuel"),
+                        \DB::raw("sum(case when (items.category_id=18) then plan_items.sum_price end) as sticker"),
+                        \DB::raw("sum(case when (items.category_id=19) then plan_items.sum_price end) as electric"),
+                        \DB::raw("sum(case when (items.category_id=20) then plan_items.sum_price end) as vehicle"),
+                        \DB::raw("sum(case when (items.category_id=21) then plan_items.sum_price end) as ads"),
+                        \DB::raw("sum(case when (items.category_id=22) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(case when (items.category_id=23) then plan_items.sum_price end) as agriculture"),
+                        \DB::raw("sum(case when (items.category_id between 10 and 23) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('plans.depart_id')
+                    ->where('plans.year', $year)
+                    ->where('plans.approved', 'A')
+                    ->get();
+
+        return [
+            'plans'     => $plans,
+            'departs'   => Depart::all()
+        ];
     }
 }

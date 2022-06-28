@@ -44,18 +44,6 @@ app.controller(
             $scope.filteredDivisions = initValues.divisions;
         };
 
-        $scope.onSelectedFaction = function (faction) {
-            $scope.filteredDeparts = $scope.initFormValues.departs.filter(depart => {
-                return depart.faction_id === parseInt(faction);
-            });
-        };
-
-        $scope.onSelectedDepart = function (depart) {
-            $scope.filteredDivisions = $scope.initFormValues.divisions.filter(division => {
-                return division.depart_id === parseInt(depart);
-            });
-        };
-
         $scope.getDaily = function () {
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
@@ -78,7 +66,8 @@ app.controller(
             });
         };
 
-        $scope.getSummary = function () {
+        $scope.plans = [];
+        $scope.getSummaryByDepart = function () {
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
             let year = $scope.dtpYear === ''
@@ -87,37 +76,63 @@ app.controller(
                             : moment().year() + 543 
                         : $scope.dtpYear;
 
-            $http.get(`${CONFIG.baseUrl}/reports/summary-data?depart=${depart}&division=${division}&year=${year}`)
+            $http.get(`${CONFIG.apiUrl}/reports/summary-depart?year=${year}`)
             .then(function (res) {
-                const { leaves, histories, persons } = res.data;
-                const { data, ...pager } = persons;
+                $scope.plans = res.data.plans.map(plan => {
+                    let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
+                    plan.depart_name = dep.depart_name;
 
-                $scope.data = data;
-                $scope.pager = pager;
-
-                /** Set each history's days instead of leave_days value */
-                leaves.map(leave => {
-                    const leaveHistory = histories.find(history => history.person_id === leave.leave_person);
-
-                    leave['ill_days'] = leaveHistory['ill_days'];
-                    leave['per_days'] = leaveHistory['per_days'];
-                    leave['vac_days'] = leaveHistory['vac_days'];
-                    leave['lab_days'] = leaveHistory['lab_days'];
-                    leave['hel_days'] = leaveHistory['hel_days'];
-                    leave['ord_days'] = leaveHistory['ord_days'];
-
-                    return leave;
+                    return plan;
                 });
 
-                /** Append leave data to each person */
-                $scope.data = data.map(person => {
-                    const leave = leaves.find((leave) =>
-                        person.person_id === leave.leave_person
-                    );
-                    return {
-                        ...person,
-                        leave: leave,
-                    };
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getAssetByDepart = function () {
+            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
+            let year = $scope.dtpYear === ''
+                        ? $scope.dtpYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.dtpYear;
+
+            $http.get(`${CONFIG.apiUrl}/reports/asset-depart?year=${year}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans.map(plan => {
+                    let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
+                    plan.depart_name = dep.depart_name;
+
+                    return plan;
+                });
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getMaterialByDepart = function () {
+            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
+            let year = $scope.dtpYear === ''
+                        ? $scope.dtpYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.dtpYear;
+
+            $http.get(`${CONFIG.apiUrl}/reports/material-depart?year=${year}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans.map(plan => {
+                    let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
+                    plan.depart_name = dep.depart_name;
+
+                    return plan;
                 });
 
                 $scope.loading = false;

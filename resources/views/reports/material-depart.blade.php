@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายงานสรุปการลา
+            แผนวัสดุนอกคลังรายหน่วยงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายงานสรุปการลา</li>
+            <li class="breadcrumb-item active">แผนวัสดุนอกคลังรายหน่วยงาน</li>
         </ol>
     </section>
 
@@ -20,8 +20,11 @@
         class="content"
         ng-controller="reportCtrl"
         ng-init="
-            getSummary();
-            initForm({ factions: {{ $factions }}, departs: {{ $departs }}, divisions: {{ $divisions }} });
+            getMaterialByDepart();
+            initForm({ 
+                factions: {{ $factions }},
+                departs: {{ $departs }}
+            });
         "
     >
 
@@ -80,28 +83,6 @@
                                 </div><!-- /.form group -->
                             </div><!-- /.col -->
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>งาน</label>
-                                    <select
-                                        id="division"
-                                        name="division"
-                                        ng-model="cboDivision"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="getSummary()"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="division in filteredDivisions"
-                                            value="@{{ division.ward_id }}"
-                                        >
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -118,88 +99,64 @@
                                     </option>
                                 </select>
                             </div><!-- /.form group -->
-
-                            <div class="col-md-12">                            
-                                <div class="form-group">
-                                    <label>ค้นหาชื่อบุคลากร</label>
-                                    <input
-                                        type="text"
-                                        id="searchKeyword"
-                                        name="searchKeyword"
-                                        ng-model="searchKeyword"
-                                        ng-keyup="getSummary()"
-                                        class="form-control">
-                                </div><!-- /.form group -->
-                            </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานสรุปการลา ปีงบประมาณ @{{ dtpYear }}</h3>
+                        <h3 class="box-title">แผนวัสดุนอกคลังรายหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped">
                             <thead>
-                                <tr>
-                                    <th style="width: 3%; text-align: center;" rowspan="2">#</th>
-                                    <th style="text-align: left;" rowspan="2">ชื่อ-สกุล</th>
-                                    <th style="width: 20%; text-align: center;" rowspan="2">ตำแหน่ง</th>
-                                    <th style="text-align: center;" colspan="2">ลาป่วย</th>
-                                    <th style="text-align: center;" colspan="2">ลากิจ</th>
-                                    <th style="text-align: center;" colspan="2">ลาคลอด</th>
-                                    <th style="text-align: center;" colspan="2">ลาพักผ่อน</th>
-                                    <th style="text-align: center;" colspan="2">
-                                        ลาเพื่อดูแลบุตร<br>และภริยาที่คลอดบุตร
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        ลาอุปสมบท/<br>ประกอบพิธีฮัจย์
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th style="width: 4%; text-align: center;">ครั้ง</th>
-                                    <th style="width: 4%; text-align: center;">วัน</th>
-                                    <th style="width: 4%; text-align: center;">ครั้ง</th>
-                                    <th style="width: 4%; text-align: center;">วัน</th>
-                                    <th style="width: 4%; text-align: center;">ครั้ง</th>
-                                    <th style="width: 4%; text-align: center;">วัน</th>
-                                    <th style="width: 4%; text-align: center;">ครั้ง</th>
-                                    <th style="width: 4%; text-align: center;">วัน</th>
-                                    <th style="width: 5%; text-align: center;">ครั้ง</th>
-                                    <th style="width: 5%; text-align: center;">วัน</th>
-                                    <th style="width: 4%; text-align: center;">ครั้ง</th>
-                                    <th style="width: 4%; text-align: center;">วัน</th>
+                                <tr style="font-size: 12px;">
+                                    <th style="width: 3%; text-align: center;">#</th>
+                                    <th style="text-align: left;">หน่วยงาน</th>
+                                    <th style="width: 5%; text-align: center;">การแพทย์</th>
+                                    <th style="width: 5%; text-align: center;">วิทยาศาสตร์</th>
+                                    <th style="width: 5%; text-align: center;">ทันตกรรม</th>
+                                    <th style="width: 5%; text-align: center;">สำนักงาน</th>
+                                    <th style="width: 5%; text-align: center;">คอมพิวเตอร์</th>
+                                    <th style="width: 5%; text-align: center;">งานบ้านงานครัว</th>
+                                    <th style="width: 5%; text-align: center;">ผ้าฯ</th>
+                                    <th style="width: 5%; text-align: center;">เชื้อเพลิงฯ</th>
+                                    <th style="width: 5%; text-align: center;">แบบพิมพ์ฯ</th>
+                                    <th style="width: 5%; text-align: center;">ไฟฟ้าและวิทยุ</th>
+                                    <th style="width: 5%; text-align: center;">ยานพาหนะ</th>
+                                    <th style="width: 5%; text-align: center;">โฆษณาและเผยแพร่</th>
+                                    <th style="width: 5%; text-align: center;">ก่อสร้าง</th>
+                                    <th style="width: 5%; text-align: center;">การเกษตร</th>
+                                    <th style="width: 5%; text-align: center;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, person) in data">
-                                    <td style="text-align: center;">@{{ pager.from + index }}</td>
+                                <tr ng-repeat="(index, plan) in plans" style="font-size: 12px;">
+                                    <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>
-                                        @{{ person.prefix.prefix_name + person.person_firstname + ' ' + person.person_lastname }}
+                                        @{{ plan.depart_name }}
                                     </td>
-                                    <td>
-                                        @{{ person.position.position_name + person.academic.ac_name }}
-                                    </td>
-                                    <td style="text-align: center;">@{{ person.leave.ill_times }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.ill_days }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.per_times }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.per_days }}</td>
-                                    <td style="text-align: center;">@{{ person.person_sex == '1' ? '-' : person.leave.lab_times }}</td>
-                                    <td style="text-align: center;">@{{ person.person_sex == '1' ? '-' : person.leave.lab_days }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.vac_times }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.vac_days }}</td>
-                                    <td style="text-align: center;">@{{ person.person_sex == '2' ? '-' : person.leave.hel_times }}</td>
-                                    <td style="text-align: center;">@{{ person.person_sex == '2' ? '-' : person.leave.hel_days }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.ord_times }}</td>
-                                    <td style="text-align: center;">@{{ person.leave.ord_days }}</td>
+                                    <td style="text-align: right;">@{{ plan.medical | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.science | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.dent | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.office | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.computer | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.home | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.clothes | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.fuel | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.sticker | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.electric | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.vehicle | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.ads | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.agriculture | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
 
-                    <div class="box-footer clearfix">
+                    <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}

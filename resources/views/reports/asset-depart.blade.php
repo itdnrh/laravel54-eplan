@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายงานสรุปวันลาคงเหลือ
+            แผนครุภัณฑ์รายหน่วยงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายงานสรุปวันลาคงเหลือ</li>
+            <li class="breadcrumb-item active">แผนครุภัณฑ์รายหน่วยงาน</li>
         </ol>
     </section>
 
@@ -19,7 +19,13 @@
     <section
         class="content"
         ng-controller="reportCtrl"
-        ng-init="getSummary(); initForm({ factions: {{ $factions }}, departs: {{ $departs }}, divisions: {{ $divisions }} })"
+        ng-init="
+            getAssetByDepart();
+            initForm({ 
+                factions: {{ $factions }},
+                departs: {{ $departs }}
+            });
+        "
     >
 
         <div class="row">
@@ -77,28 +83,6 @@
                                 </div><!-- /.form group -->
                             </div><!-- /.col -->
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>งาน</label>
-                                    <select
-                                        id="division"
-                                        name="division"
-                                        ng-model="cboDivision"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="getSummary()"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="division in filteredDivisions"
-                                            value="@{{ division.ward_id }}"
-                                        >
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -115,67 +99,54 @@
                                     </option>
                                 </select>
                             </div><!-- /.form group -->
-
-                            <div class="col-md-12">                            
-                                <div class="form-group">
-                                    <label>ค้นหาชื่อบุคลากร</label>
-                                    <input
-                                        type="text"
-                                        id="searchKeyword"
-                                        name="searchKeyword"
-                                        ng-model="searchKeyword"
-                                        ng-keyup="getSummary()"
-                                        class="form-control">
-                                </div><!-- /.form group -->
-                            </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
 
                 <div class="box">
-
-                    <div class="box-header with-border">
-                        <h3 class="box-title">รายงานสรุปวันลาคงเหลือ ปีงบประมาณ @{{ dtpYear }}</h3>
+                    <div class="box-header with-border table-striped">
+                        <h3 class="box-title">แผนครุภัณฑ์รายหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
                     </div><!-- /.box-header -->
-
                     <div class="box-body">
                         <table class="table table-bordered table-striped">
                             <thead>
-                                <tr>
+                                <tr style="font-size: 12px;">
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="text-align: left;">ชื่อ-สกุล</th>
-                                    <th style="width: 20%; text-align: center;">ตำแหน่ง</th>
-                                    <th style="width: 8%; text-align: center;">ลาป่วย</th>
-                                    <th style="width: 8%; text-align: center;">ลากิจ</th>
-                                    <th style="width: 8%; text-align: center;">ลาคลอด</th>
-                                    <th style="width: 8%; text-align: center;">ลาพักผ่อน</th>
-                                    <th style="width: 10%; text-align: center;">ลาเพื่อดูแลบุตร<br>และภริยาที่คลอดบุตร</th>
-                                    <th style="width: 8%; text-align: center;">ลาอุปสมบท/<br>ประกอบพิธีฮัจย์</th>
+                                    <th style="text-align: left;">หน่วยงาน</th>
+                                    <th style="width: 8%; text-align: center;">ยานพาหนะ</th>
+                                    <th style="width: 8%; text-align: center;">สำนักงาน</th>
+                                    <th style="width: 8%; text-align: center;">คอมพิวเตอร์</th>
+                                    <th style="width: 8%; text-align: center;">การแพทย์</th>
+                                    <th style="width: 8%; text-align: center;">งานบ้านงานครัว</th>
+                                    <th style="width: 8%; text-align: center;">ก่อสร้าง</th>
+                                    <th style="width: 8%; text-align: center;">การเกษตร</th>
+                                    <th style="width: 8%; text-align: center;">โฆษณาและเผยแพร่</th>
+                                    <th style="width: 8%; text-align: center;">ไฟฟ้าและวิทยุ</th>
+                                    <th style="width: 8%; text-align: center;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, person) in data">
-                                    <td style="text-align: center;">@{{ pager.from + index }}</td>
+                                <tr ng-repeat="(index, plan) in plans">
+                                    <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>
-                                        @{{ person.prefix.prefix_name + person.person_firstname + ' ' + person.person_lastname }}
+                                        @{{ plan.depart_name }}
                                     </td>
-                                    <td>
-                                        @{{ person.position.position_name + person.academic.ac_name }}
-                                    </td>
-                                    <td style="text-align: center;">@{{ 60 - person.leave.ill_days }}</td>
-                                    <td style="text-align: center;">@{{ 45 - person.leave.per_days }}</td>
-                                    <td style="text-align: center;">@{{ person.person_sex == '1' ? '-' : 90 - person.leave.lab_days }}</td>
-                                    <!-- TODO: vacation remaining days should be retrieved from vacations table -->
-                                    <td style="text-align: center;">@{{ 10 - person.leave.vac_days }}</td>
-                                    <td style="text-align: center;">@{{ person.person_sex == '2' ? '-' : 15 - person.leave.lab_days }}</td>
-                                    <td style="text-align: center;">@{{ 120 - person.leave.ord_days }}</td>
+                                    <td style="text-align: right;">@{{ plan.vehicle | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.office | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.computer | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.medical | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.home | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.agriculture | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.ads | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.electric | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
 
-                    <div class="box-footer clearfix">
+                    <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
@@ -185,7 +156,6 @@
                             </div>
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right">
-
                                     <li ng-if="pager.current_page !== 1">
                                         <a ng-click="getDataWithURL(pager.path+ '?page=1')" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
@@ -197,7 +167,7 @@
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
-
+        
                                     <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
                                         <a href="@{{ pager.url(pager.current_page + 10) }}">
                                             ...
@@ -209,7 +179,7 @@
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
-
+        
                                     <li ng-if="pager.current_page !== pager.last_page">
                                         <a ng-click="getDataWithURL(pager.path+ '?page=' +pager.last_page)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>

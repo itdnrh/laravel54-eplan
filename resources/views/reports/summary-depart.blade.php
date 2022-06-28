@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายงานสรุปผู้ลาประจำวัน
+            แผนเงินบำรุงรายหน่วยงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายงานสรุปผู้ลาประจำวัน</li>
+            <li class="breadcrumb-item active">แผนเงินบำรุงรายหน่วยงาน</li>
         </ol>
     </section>
 
@@ -20,8 +20,11 @@
         class="content"
         ng-controller="reportCtrl"
         ng-init="
-            getDaily();
-            initForm({ factions: {{ $factions }}, departs: {{ $departs }}, divisions: {{ $divisions }} });
+            getSummaryByDepart();
+            initForm({ 
+                factions: {{ $factions }},
+                departs: {{ $departs }}
+            });
         "
     >
 
@@ -67,7 +70,7 @@
                                         ng-model="cboDepart"
                                         class="form-control select2"
                                         style="width: 100%; font-size: 12px;"
-                                        ng-change="getDaily(); onSelectedDepart(cboDepart);"
+                                        ng-change="getSummary(); onSelectedDepart(cboDepart);"
                                     >
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
                                         <option
@@ -80,122 +83,64 @@
                                 </div><!-- /.form group -->
                             </div><!-- /.col -->
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>งาน</label>
-                                    <select
-                                        id="division"
-                                        name="division"
-                                        ng-model="cboDivision"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="getDaily()"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="division in filteredDivisions"
-                                            value="@{{ division.ward_id }}"
-                                        >
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
-                                <label>ประจำวันที่</label>
-                                <input
-                                    id="dtpDate"
-                                    name="dtpDate"
-                                    ng-model="dtpDate"
+                                <label>ปีงบประมาณ</label>
+                                <select
+                                    id="dtpYear"
+                                    name="dtpYear"
+                                    ng-model="dtpYear"
                                     class="form-control"
-                                />
+                                    ng-change="getSummary()"
+                                >
+                                    <option value="">-- ทั้งหมด --</option>
+                                    <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                        @{{ y }}
+                                    </option>
+                                </select>
                             </div><!-- /.form group -->
-
-                            <div class="col-md-12">                            
-                                <div class="form-group">
-                                    <label>ค้นหาชื่อบุคลากร</label>
-                                    <input
-                                        type="text"
-                                        id="searchKeyword"
-                                        name="searchKeyword"
-                                        ng-model="searchKeyword"
-                                        ng-keyup="getDaily()"
-                                        class="form-control">
-                                </div><!-- /.form group -->
-                            </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">รายงานสรุปผู้ลาประจำวัน @{{ dtpDate }}</h3>
+                    <div class="box-header with-border table-striped">
+                        <h3 class="box-title">แผนเงินบำรุงรายหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th>ชื่อ-สกุล</th>
-                                    <th style="width: 15%;">ตำแหน่ง</th>
-                                    <th style="width: 22%;">สังกัด</th>
-                                    <th style="width: 12%; text-align: center;">ประเภทการลา</th>
-                                    <th style="width: 15%; text-align: center;">ระหว่างวันที่</th>
-                                    <th style="width: 5%; text-align: center;">มีกำหนด</th>
-                                    <th
-                                        style="width: 8%; text-align: center;"
-                                        ng-show="{{ Auth::user()->person_id }} == '1300200009261'"
-                                    >
-                                        สถานะ
+                                    <th style="text-align: left;">หน่วยงาน</th>
+                                    <th style="text-align: center;">
+                                        <a href="{{ url('/reports/asset-depart') }}">ครุภัณฑ์</a>
                                     </th>
+                                    <th style="text-align: center;">
+                                        <a href="{{ url('/reports/material-depart') }}">วัสดุนอกคลัง</a>
+                                    </th>
+                                    <th style="text-align: center;">จ้างบริการ</th>
+                                    <th style="text-align: center;">ก่อสร้าง</th>
+                                    <th style="text-align: center;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, leave) in data">
-                                    <td style="text-align: center;">@{{ pager.from + index }}</td>
+                                <tr ng-repeat="(index, plan) in plans">
+                                    <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>
-                                        @{{ leave.person.prefix.prefix_name + leave.person.person_firstname + ' ' + leave.person.person_lastname }}
+                                        @{{ plan.depart_name }}
                                     </td>
-                                    <td>
-                                        @{{ leave.person.position.position_name + leave.person.academic.ac_name }}
-                                    </td>
-                                    <td>
-                                        <span ng-show="{{ Auth::user()->person_id }} == '1300200009261' ||
-                                                    {{ Auth::user()->person_id }} == '1309900322504' ||
-                                                    {{ Auth::user()->memberOf->duty_id }} == 1">
-                                            @{{ leave.person.member_of.depart.depart_name }}
-                                        </span>
-                                        <span ng-show="{{ Auth::user()->memberOf->duty_id }} == 2">
-                                            @{{ leave.person.member_of.division.ward_name }}
-                                        </span>
-                                    </td>
-                                    <td style="text-align: center;">@{{ leave.type.name }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ leave.start_date | thdate }} - @{{ leave.end_date | thdate }}
-                                    </td>
-                                    <td style="text-align: center;">
-                                        @{{ leave.leave_days }} วัน
-                                    </td>
-                                    <td style="text-align: center;" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
-                                        <span ng-show="(leave.person.person_state == '1')">ปฏิบัติราชการ</span>
-										<span ng-show="(leave.person.person_state == '2')">มาช่วยราชการ</span>
-										<span ng-show="(leave.person.person_state == '3')">ไปช่วยราชการ</span>
-										<span ng-show="(leave.person.person_state == '4')">ลาศึกษาต่อ</span>
-										<span ng-show="(leave.person.person_state == '5')">เพิ่มพูนทักษะ</span>
-										<span ng-show="(leave.person.person_state == '6')">ลาออก</span>
-										<span ng-show="(leave.person.person_state == '7')">เกษียณอายุราชการ</span>
-										<span ng-show="(leave.person.person_state == '8')">โอน/ย้าย</span>
-										<span ng-show="(leave.person.person_state == '9')">ถูกให้ออก</span>
-										<span ng-show="(leave.person.person_state == '99')">ไม่ทราบสถานะ</span>
-                                    </td>
+                                    <td style="text-align: right;">@{{ plan.asset | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.material | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.service | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
-                    <div class="box-footer clearfix">
+
+                    <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
@@ -204,7 +149,7 @@
                                 จำนวน @{{ pager.total }} รายการ
                             </div>
                             <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
+                                <ul class="pagination pagination-sm no-margin pull-right">
                                     <li ng-if="pager.current_page !== 1">
                                         <a ng-click="getDataWithURL(pager.path+ '?page=1')" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
@@ -238,6 +183,7 @@
                             </div>
                         </div>
                     </div><!-- /.box-footer -->
+
                 </div><!-- /.box -->
 
             </div><!-- /.col -->

@@ -142,11 +142,11 @@
 									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
-							<li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
+							<!-- <li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
 								<a href="{{ url('repairs/list') }}">
 									<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
 								</a>
-							</li>
+							</li> -->
 							<li ng-class="{ 'active': menu == 'supports' && submenu == 'timeline' }">
 								<a href="{{ url('supports/timeline') }}">
 									<i class="fa fa-circle-o"></i> ติดตามพัสดุ
@@ -180,11 +180,11 @@
 										<i class="fa fa-circle-o"></i> ใบสั่งซื้อ/จ้าง
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'repairs-list' }">
+								<!-- <li ng-class="{ 'active': submenu == 'repairs-list' }">
 									<a href="{{ url('orders/repairs-list') }}">
 										<i class="fa fa-circle-o"></i> ใบสั่งจ้าง (งานซ่อม)
 									</a>
-								</li>
+								</li> -->
 								<li ng-class="{ 'active': submenu == 'inspect' }">
 									<a href="{{ url('orders/inspect') }}">
 										<i class="fa fa-circle-o"></i> ตรวจรับพัสดุ
@@ -343,13 +343,8 @@
 							</a>
 							<ul class="treeview-menu">
 								<li ng-class="{ 'active': submenu == 'daily' }">
-									<a href="{{ url('reports/daily') }}">
-										<i class="fa fa-circle-o"></i> สรุปผู้ลาประจำวัน
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'summary' }">
-									<a href="{{ url('reports/summary') }}">
-										<i class="fa fa-circle-o"></i> สรุปการลา
+									<a href="{{ url('reports/summary-depart') }}">
+										<i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
 									</a>
 								</li>
 							</ul>

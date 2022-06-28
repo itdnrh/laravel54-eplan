@@ -237,11 +237,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('suppliers', 'SupplierController@getAll');
 
     /** รายงาน */
-    Route::get('reports/daily', 'ReportController@daily');
-    Route::get('reports/daily-data', 'ReportController@getDailyData');
-    Route::get('reports/summary', 'ReportController@summary');
-    Route::get('reports/summary-data', 'ReportController@getSummaryData');
-    Route::get('reports/remain', 'ReportController@remain');
+    Route::get('reports/summary-depart', 'ReportController@summaryByDepart');
+    Route::get('reports/asset-depart', 'ReportController@assetByDepart');
+    Route::get('reports/material-depart', 'ReportController@materialByDepart');
     // Route::get('reports/remain-data', 'ReportController@getRemainData');
     // Route::get('reports/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');
     // Route::get('reports/debt-creditor-excel/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorExcel');     
