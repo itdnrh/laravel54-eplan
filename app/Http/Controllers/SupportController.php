@@ -218,6 +218,11 @@ class SupportController extends Controller
                     $detail->amount         = $item['amount'];
                     $detail->sum_price      = $item['sum_price'];
                     $detail->save();
+
+                    /** TODO: should update plan's status to 99=pending  */
+                    $plan = Plan::find($item['plan_id']);
+                    $plan->status = '99';
+                    $plan->save();
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */
@@ -260,13 +265,14 @@ class SupportController extends Controller
                 }
 
                 return [
-                    'status' => 1,
-                    'message' => 'Insertion successfully'
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully',
+                    'support'   => $support
                 ];
             } else {
                 return [
-                    'status' => 0,
-                    'message' => 'Something went wrong!!'
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
                 ];
             }
         } catch (\Exception $ex) {

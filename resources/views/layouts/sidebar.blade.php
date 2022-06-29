@@ -142,11 +142,11 @@
 									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
-							<!-- <li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
+							<li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
 								<a href="{{ url('repairs/list') }}">
 									<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
 								</a>
-							</li> -->
+							</li>
 							<li ng-class="{ 'active': menu == 'supports' && submenu == 'timeline' }">
 								<a href="{{ url('supports/timeline') }}">
 									<i class="fa fa-circle-o"></i> ติดตามพัสดุ

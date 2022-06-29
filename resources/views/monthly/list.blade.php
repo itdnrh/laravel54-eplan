@@ -187,12 +187,12 @@
                                         </span>
                                     </td> -->
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/supports/detail') }}/@{{ plan.id }}"
+                                        <a  href="{{ url('/monthly/detail') }}/@{{ plan.id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a  href="{{ url('/supports/edit') }}/@{{ plan.id }}"
+                                        <a  href="{{ url('/monthly/edit') }}/@{{ plan.id }}"
                                             class="btn btn-warning btn-xs"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
@@ -200,7 +200,7 @@
                                         <form
                                             id="frmDelete"
                                             method="POST"
-                                            action="{{ url('/supports/delete') }}"
+                                            action="{{ url('/monthly/delete') }}"
                                             style="display: inline;"
                                         >
                                             {{ csrf_field() }}
