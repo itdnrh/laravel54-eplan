@@ -190,10 +190,10 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('monthly/search', 'MonthlyController@search');
     Route::get('monthly/add', 'MonthlyController@create');
     Route::post('monthly/store', 'MonthlyController@store');
-    Route::get('monthly/{id}/edit', 'MonthlyController@edit');
-    Route::get('monthly/{id}/detail', 'MonthlyController@detail');
-    Route::post('monthly/{id}/update', 'MonthlyController@update');
-    Route::post('monthly/{id}/delete', 'MonthlyController@delete');
+    Route::get('monthly/edit/{id}', 'MonthlyController@edit');
+    Route::get('monthly/detail/{id}', 'MonthlyController@detail');
+    Route::post('monthly/update/{id}', 'MonthlyController@update');
+    Route::post('monthly/delete/{id}', 'MonthlyController@delete');
 
     /** ค่าสาธารณูปโภค */
     Route::post('utilities/validate', 'UtilityController@formValidate');
@@ -202,10 +202,10 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('utilities/search', 'UtilityController@search');
     Route::get('utilities/add', 'UtilityController@create');
     Route::post('utilities/store', 'UtilityController@store');
-    Route::get('utilities/{id}/edit', 'UtilityController@edit');
-    Route::get('utilities/{id}/detail', 'UtilityController@detail');
-    Route::post('utilities/{id}/update', 'UtilityController@update');
-    Route::post('utilities/{id}/delete', 'UtilityController@delete');
+    Route::get('utilities/edit/{id}', 'UtilityController@edit');
+    Route::get('utilities/detail/{id}', 'UtilityController@detail');
+    Route::post('utilities/update/{id}', 'UtilityController@update');
+    Route::post('utilities/delete/{id}', 'UtilityController@delete');
 
     /** ตรวจรับพัสดุ */
     Route::post('inspections/validate', 'InspectionController@formValidate');

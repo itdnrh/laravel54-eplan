@@ -188,11 +188,7 @@ class MonthlyController extends Controller
     public function getById($id)
     {
         return [
-            'plan' => Plan::where('id', $id)
-                        ->with('budget','depart','division')
-                        ->with('planItem','planItem.unit')
-                        ->with('planItem.item','planItem.item.category')
-                        ->first(),
+            'plan' => PlanMonthly::find($id),
         ];
     }
 
@@ -263,7 +259,11 @@ class MonthlyController extends Controller
     public function edit($id)
     {
         return view('monthly.edit', [
-            //
+            "monthly"   => PlanMonthly::find($id),
+            "expenses"  => Expense::all(),
+            "factions"  => Faction::all(),
+            "departs"   => Depart::all(),
+            "divisions" => Division::all(),
         ]);
     }
 

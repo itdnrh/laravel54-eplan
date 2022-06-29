@@ -164,7 +164,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/monthly/${id}`)
         .then(function(res) {
             cb(res.data.plan);
         }, function(err) {
@@ -178,27 +178,17 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.planType                 = 1;
 
         /** ข้อมูลครุภัณฑ์ */
-        $scope.asset.asset_id           = plan.id;
-        $scope.asset.in_plan            = plan.in_plan;
-        $scope.asset.year               = plan.year;
-        // $scope.asset.plan_no            = plan.plan_no;
-        $scope.asset.desc               = plan.plan_item.item.item_name;
-        $scope.asset.spec               = plan.plan_item.spec;
-        $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
-        $scope.asset.amount             = plan.plan_item.amount;
-        $scope.asset.sum_price          = plan.plan_item.sum_price;
-        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
-        $scope.asset.reason             = plan.reason;
-        $scope.asset.remark             = plan.remark;
-        $scope.asset.status             = plan.status;
-
+        $scope.monthly.monthly_id   = plan.id;
+        $scope.monthly.month        = plan.month;
+        $scope.monthly.total        = plan.total;
+        $scope.monthly.remain       = plan.remain;
+        $scope.monthly.depart_id    = plan.depart_id;
+        $scope.monthly.reporter_id  = plan.reporter_id;
+        $scope.monthly.remark       = plan.remark;
+        
         /** Convert int value to string */
-        $scope.asset.category_id        = plan.plan_item.item.category_id.toString();
-        $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
-        $scope.asset.depart_id          = plan.depart_id.toString();
-        $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';
-        /** Convert db date to thai date. */            
-        // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+        $scope.monthly.year         = plan.year.toString();
+        $scope.monthly.expense_id   = plan.expense_id.toString();
     };
 
     $scope.store = function(event, form) {
