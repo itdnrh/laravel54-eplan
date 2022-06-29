@@ -21,7 +21,7 @@
                                 <div class="content__header-text" style="width: 77%; margin-left: 70px;">
                                     <span style="margin: 0 5px;">{{ $support->depart->depart_name }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ $support->depart->tel_no }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit($support->depart->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -31,7 +31,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 90%; margin-left: 12px;">
-                                    <span style="margin: 0 5px;">{{ $support->doc_no }}</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($support->doc_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -39,7 +39,12 @@
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
                                 <div class="content__header-text" style="width: 70%; margin-left: 28px;">
-                                    <span style="margin: 0 10px;">{{ $support->doc_date == '' ? '&nbsp;' : convDbDateToLongThDate($support->doc_date) }}</span>
+                                    <span style="margin: 0 10px;">
+                                        {{ $support->doc_date == ''
+                                                ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit(convDbDateToLongThMonth(date('Y-m-d')))
+                                                : thainumDigit(convDbDateToLongThDate($support->doc_date))
+                                        }}
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -49,7 +54,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
                                 <div class="content__header-text" style="width: 85%; margin-left: 28px;">
-                                    <span>{{ $support->topic }}</span>
+                                    <span>{{ thainumDigit($support->topic) }}</span>
                                 </div>
                             </div>
                             <div style="margin: 0; padding: 0;">
@@ -80,16 +85,16 @@
                                     <tr>
                                         <td style="text-align: center; padding: 0;">{{ ++$row }}</td>
                                         <td style=" padding: 0 5px;">
-                                            {{ $detail->plan->planItem->item->item_name }}
+                                            {{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                         </td>
                                         <td style="text-align: center; padding: 0;">
-                                            {{ $detail->amount }}
+                                            {{ thainumDigit($detail->amount) }}
                                         </td>
                                         <td style="text-align: center; padding: 0;">
-                                            {{ number_format($detail->price_per_unit) }}
+                                            {{ thainumDigit(number_format($detail->price_per_unit)) }}
                                         </td>
                                         <td style="text-align: center; padding: 0;">
-                                            {{ number_format($detail->sum_price) }}
+                                            {{ thainumDigit(number_format($detail->sum_price)) }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -98,7 +103,7 @@
                                         รวมเป็นเงิน
                                     </td>
                                     <td style="text-align: center; font-size: 20px; font-weight: bold;">
-                                        {{ number_format($total) }}
+                                        {{ thainumDigit(number_format($total)) }}
                                     </td>
                                 </tr>
                             </table>
@@ -108,7 +113,7 @@
                         <td colspan="4">
                             <span>เหตุผลและความจำเป็น</span>
                             <span style="margin: 0 0 0 5px;" class="text-val-dot">
-                                {{ $support->reason }}
+                                {{ thainumDigit($support->reason) }}
                             </span>
                         </td>
                     </tr>
@@ -116,7 +121,7 @@
                         <td colspan="4">
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
                             <p style="margin: 0;">
-                                1. รายชื่อกรรมการกำหนดคุณลักษณะครุภัณฑ์(กรณีจัดซื้อ/จ้างวงเงินไม่เกิน 100,000 บาท) ***พร้อมแนบสำเนาบัตรประชาชน
+                                1. รายชื่อกรรมการกำหนดคุณลักษณะครุภัณฑ์(กรณีจัดซื้อ/จ้างวงเงินไม่เกิน ๑๐๐,๐๐๐ บาท) ***พร้อมแนบสำเนาบัตรประชาชน
                                 <ul class="committee-lists">
                                     <?php $c1 = 1; ?>
                                     @foreach($committees as $committee)
@@ -160,7 +165,7 @@
                                 <span style="margin: 0;">
                                     ชื่อ-สกุล <span class="text-val-dot p10">{{ $contact->prefix->prefix_name.$contact->person_firstname.' '.$contact->person_lastname }}</span>
                                     ตำแหน่ง <span class="text-val-dot p10">{{ $contact->position->position_name }}{{ $contact->academic ? $contact->academic->ac_name : '' }}</span> 
-                                    โทร <span class="text-val-dot p10">{{ $contact->person_tel }}</span>
+                                    โทร <span class="text-val-dot p10">{{ thainumDigit($contact->person_tel) }}</span>
                                 </span>
                             </p>
                             <p style="margin: 0 0 0 80px;">
