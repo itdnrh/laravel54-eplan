@@ -129,6 +129,7 @@ class SupportController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
+                    ->orderBy('id', 'DESC')
                     ->paginate(10);
 
         return [
@@ -183,7 +184,7 @@ class SupportController extends Controller
     {
         try {
             $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
-            $doc_no_prefix => $person->memberOf->depart->memo_no;
+            $doc_no_prefix = $person->memberOf->depart->memo_no;
 
             $support = new Support;
             $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];

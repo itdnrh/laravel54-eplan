@@ -127,7 +127,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${url}&depart=${depart}$year=${year}`)
+        $http.get(`${url}&year=${year}&depart=${depart}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
