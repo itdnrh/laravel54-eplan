@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการควบคุมกำกับติดตาม
+            แก้ไขรายการควบคุมกำกับติดตาม
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการควบคุมกำกับติดตาม</li>
+            <li class="breadcrumb-item active">แก้ไขรายการควบคุมกำกับติดตาม</li>
         </ol>
     </section>
 
@@ -31,13 +31,35 @@
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการควบคุมกำกับติดตาม</h3>
+                        <h3 class="box-title">
+                            แก้ไขรายการควบคุมกำกับติดตาม
+                            <span>(ID : {{ $monthly->id }})</span>
+                        </h3>
                     </div>
 
-                    <form id="frmNewMonthly" name="frmNewMonthly" method="post" action="{{ url('/constructs/store') }}" role="form" enctype="multipart/form-data">
-                        <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
+                    <form id="frmEditMonthly" name="frmEditMonthly" method="post" action="{{ url('/monthly/update/'.$monthly->id) }}" role="form" enctype="multipart/form-data">
+                        <input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="depart_id"
+                            name="depart_id"
+                            value="{{ Auth::user()->memberOf->depart_id }}"
+                            ng-model="support.depart_id"
+                        />
+                        <input
+                            type="hidden"
+                            id="division"
+                            name="division"
+                            value="{{ Auth::user()->memberOf->division_id }}"
+                            ng-model="support.division_id"
+                        />
                         {{ csrf_field() }}
 
                         <div class="box-body">
@@ -145,7 +167,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(monthly, 'faction_id')}"
@@ -159,15 +181,11 @@
                                             tabindex="11"
                                             ng-change="onFactionSelected(monthly.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
-
                                         @foreach($factions as $faction)
-
                                             <option value="{{ $faction->faction_id }}">
                                                 {{ $faction->faction_name }}
                                             </option>
-
                                         @endforeach
-
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(monthly, 'faction_id')">
                                         @{{ formError.errors.faction_id[0] }}
@@ -219,10 +237,10 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/monthly/validate', monthly, 'frmNewMonthly', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/monthly/validate', monthly, 'frmEditMonthly', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
