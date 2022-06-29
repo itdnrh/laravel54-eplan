@@ -129,7 +129,7 @@ class SupportController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->paginate(20);
+                    ->paginate(10);
 
         return [
             "supports" => $supports
@@ -182,12 +182,16 @@ class SupportController extends Controller
     public function store(Request $req)
     {
         try {
-            // $depart = Depart::where('depart_id', Auth::user()->memberOf->depart_id)->first();
-            // $doc_no_prefix => $depart->memo_no,
+            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
+            $doc_no_prefix => $person->memberOf->depart->memo_no;
 
             $support = new Support;
-            $support->doc_no            = $req['doc_no'];
-            $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
+
+            if (!empty($req['doc_date'])) {
+                $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            }
+
             $support->topic             = $req['topic'];
             $support->year              = $req['year'];
             $support->depart_id         = $req['depart_id'];
@@ -198,7 +202,8 @@ class SupportController extends Controller
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
             $support->status            = 0;
-            // $support->user_id        = $req['user_id'];
+            $support->created_user      = $req['user'];
+            $support->updated_user      = $req['user'];
             
             if ($support->save()) {
                 $supportId = $support->id;
@@ -257,11 +262,16 @@ class SupportController extends Controller
                     'status' => 1,
                     'message' => 'Insertion successfully'
                 ];
+            } else {
+                return [
+                    'status' => 0,
+                    'message' => 'Something went wrong!!'
+                ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'status' => 0,
-                'message' => 'Something went wrong!!'
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }

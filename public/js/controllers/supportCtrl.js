@@ -34,6 +34,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         spec_committee: [],
         env_committee: [],
         insp_committee: [],
+        user: null
     };
 
     $scope.newItem = {
@@ -433,6 +434,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.store = function() {
         $scope.loading = true;
+
+        /** Set user props of support model by logged in user */
+        $scope.support.user = $('#user').val();
 
         $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
         .then(function(res) {
