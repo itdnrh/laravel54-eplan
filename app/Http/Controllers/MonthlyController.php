@@ -87,8 +87,8 @@ class MonthlyController extends Controller
         $year = $req->get('year');
         $expense = $req->get('expense');
         $type = $req->get('type');
-        // $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        // $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
         // if($status != '-') {
@@ -102,7 +102,7 @@ class MonthlyController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
-        // $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
         // $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
         //                 ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
@@ -118,19 +118,19 @@ class MonthlyController extends Controller
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
-                    // ->when(!empty($depart), function($q) use ($depart) {
-                    //     $q->where('depart_id', $depart);
-                    // })
-                    // ->when(!empty($faction), function($q) use ($departsList) {
-                    //     $q->whereIn('depart_id', $departsList);
-                    // })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
+                    })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
+                    })
                     ->when($status != '', function($q) use ($status) {
                         $q->where('status', $status);
                     })
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    // ->orderBy('plan_no', 'ASC')
+                    ->orderBy('id', 'DESC')
                     ->paginate(10);
 
         return [
