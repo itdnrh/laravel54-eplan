@@ -24,6 +24,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         depart_id: '',
         reporter_id: '',
         remark: '',
+        user: '',
     };
 
     /** ============================== Init Form elements ============================== */
@@ -59,6 +60,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             depart_id: '',
             reporter_id: '',
             remark: '',
+            user: ''
         };
     };
 
@@ -195,6 +197,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         event.preventDefault();
 
         $scope.loading = true;
+        $scope.monthly.user = $('#user').val();
 
         $http.post(`${CONFIG.baseUrl}/monthly/store`, $scope.monthly)
         .then(function(res) {

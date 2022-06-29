@@ -136,7 +136,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(monthly, 'remain')}"
                                 >
                                     <label>ยอดคงเหลือ (บาท) :</label>
-                                    <div class="form-control">
+                                    <div class="form-control" disabled>
                                         @{{ monthly.remain | currency:'':2 }}
                                     </div>
                                     <span class="help-block" ng-show="checkValidate(monthly, 'remain')">

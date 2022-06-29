@@ -32,7 +32,7 @@ class MonthlyController extends Controller
             'expense_id'    => 'required',
             'total'         => 'required',
             'remain'        => 'required',
-            'depart_id'     => 'required',
+            // 'depart_id'     => 'required',
         ];
 
         $messages = [
@@ -207,8 +207,18 @@ class MonthlyController extends Controller
 
     public function create()
     {
+        $user = Auth::user();
+
+        if ($user->person_id == '1300200009261') {
+            $expenses = Expense::all();
+        } else {
+            $expenses = Expense::where('owner_depart', $user->memberOf->depart_id)
+                            ->orWhere('owner_depart', 0)
+                            ->get();
+        }
+
         return view('monthly.add', [
-            "expenses"      => Expense::all(),
+            "expenses"      => $expenses,
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
@@ -219,16 +229,25 @@ class MonthlyController extends Controller
     {
         try {
             $plan = new PlanMonthly();
-            // $plan->year      = calcBudgetYear($req['year']);
             $plan->year         = $req['year'];
             $plan->month        = $req['month'];
             $plan->expense_id   = $req['expense_id'];
             $plan->total        = $req['total'];
             $plan->remain       = $req['remain'];
-            $plan->depart_id    = $req['depart_id'];
-            $plan->reporter_id  = $req['reporter_id'];
+
+            /** Check whether user is admin or not */
+            if ($req['user'] == '1300200009261') {
+                $plan->depart_id = $req['depart_id'];
+            } else {
+                $person = Person::where('person_id', $req['user'])->with('memberOf')->first();
+                $plan->depart_id = $person->memberOf->depart_id;
+            }
+
+            $plan->reporter_id  = $req['user'];
             $plan->remark       = $req['remark'];
             $plan->status       = '0';
+            $plan->created_user = $req['user'];
+            $plan->updated_user = $req['user'];
 
             if($plan->save()) {
                 $planSum = PlanSummary::where('year', $req['year'])
