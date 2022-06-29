@@ -147,8 +147,9 @@ class RepairController extends Controller
         $conditions = [];
         $pattern = '/^\<|\>|\&|\-/i';
 
-        $year   = $req->get('year');
-        $type   = $req->get('type');
+        $year = $req->get('year');
+        $type = $req->get('type');
+        $supportType = $req->get('stype');
         // $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
@@ -178,6 +179,9 @@ class RepairController extends Controller
                     ->whereIn('id', $supportsList)
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
+                    })
+                    ->when(!empty($supportType), function($q) use ($supportType) {
+                        $q->where('support_type_id', $supportType);
                     })
                     // ->when(!empty($depart), function($q) use ($depart) {
                     //     $q->where('depart_id', $depart);
@@ -244,6 +248,7 @@ class RepairController extends Controller
             $support = new Support;
             $support->doc_no            = $req['doc_no'];
             $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            $support->support_type_id   = 2;
             $support->topic             = $req['topic'];
             $support->year              = $req['year'];
             $support->depart_id         = $req['depart_id'];
