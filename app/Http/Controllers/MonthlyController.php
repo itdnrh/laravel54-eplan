@@ -286,24 +286,40 @@ class MonthlyController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
         try {
-            $plan = new PlanMonthly();
+            $plan = PlanMonthly::find($id);
             $plan->year         = $req['year'];
             $plan->month        = $req['month'];
             $plan->expense_id   = $req['expense_id'];
             $plan->total        = $req['total'];
             $plan->remain       = $req['remain'];
-            $plan->depart_id    = $req['depart_id'];
-            $plan->reporter_id  = $req['reporter_id'];
+
+            /** Check whether user is admin or not */
+            if ($req['user'] == '1300200009261') {
+                $plan->depart_id = $req['depart_id'];
+            } else {
+                $person = Person::where('person_id', $req['user'])->with('memberOf')->first();
+                $plan->depart_id = $person->memberOf->depart_id;
+            }
+
+            $plan->reporter_id  = $req['user'];
             $plan->remark       = $req['remark'];
             $plan->status       = '0';
+            $plan->created_user = $req['user'];
+            $plan->updated_user = $req['user'];
 
             if($plan->save()) {
+                $planSum = PlanSummary::where('year', $req['year'])
+                            ->where('expense_id', $req['expense_id'])
+                            ->first();
+                $planSum->remain = (double)$planSum->remain - (double)$req['total'];
+                $planSum->save();
+
                 return [
                     'status'    => 1,
-                    'message'   => 'Insertion successfully',
+                    'message'   => 'Updating successfully',
                     'plan'      => $plan
                 ];
             } else {
@@ -323,20 +339,33 @@ class MonthlyController extends Controller
     public function delete(Request $req, $id)
     {
         try {
-            $plan = Plan::find($id);
+            $plan = PlanMonthly::find($id);
+            $old_total = $plan->total;
 
             if($plan->delete()) {
-                if (PlanItem::where('plan_id', $id)->delete()) {
-                    return [
-                        'status'    => 1,
-                        'message'   => 'Deletion successfully!!'
-                    ];
-                }
+                /** TODO: redo plan_summary's remain value to before 
+                 * by plus with deleted plan's total
+                 */
+                $planSum = PlanSummary::where('year', $req['year'])
+                            ->where('expense_id', $req['expense_id'])
+                            ->first();
+                $planSum->remain = (double)$planSum->remain + (double)$old_total;
+                $planSum->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
                 'status'    => 0,
-                'message'   => 'Something went wrong!!'
+                'message'   => $ex->getMessage()
             ];
         }
         
