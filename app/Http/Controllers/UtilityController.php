@@ -249,6 +249,8 @@ class UtilityController extends Controller
             $utility->quantity          = $req['quantity'];
             $utility->remark            = $req['remark'];
             $utility->status            = 0;
+            $utility->created_user      = $req['user'];
+            $utility->updated_user      = $req['user'];
 
             if ($utility->save()) {
                 return [
@@ -278,12 +280,12 @@ class UtilityController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
         try {
-            $utility = new Utility;
-            $utility->bill_no            = $req['bill_no'];
-            $utility->bill_date          = convThDateToDbDate($req['bill_date']);
+            $utility = Utility::find($id);
+            $utility->bill_no           = $req['bill_no'];
+            $utility->bill_date         = convThDateToDbDate($req['bill_date']);
             $utility->year              = $req['year'];
             $utility->month             = $req['month'];
             $utility->supplier_id       = $req['supplier_id'];
@@ -292,12 +294,12 @@ class UtilityController extends Controller
             $utility->desc              = $req['desc'];
             $utility->quantity          = $req['quantity'];
             $utility->remark            = $req['remark'];
-            $utility->status            = 0;
+            $utility->updated_user      = $req['user'];
 
             if ($utility->save()) {
                 return [
                     'status'    => 1,
-                    'message'   => 'Insertion successfully',
+                    'message'   => 'Updating successfully',
                     'utility'   => $utility
                 ];
             } else {
