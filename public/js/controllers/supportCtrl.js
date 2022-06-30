@@ -70,12 +70,13 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
 
     $scope.onShowTimeline = function(plan) {
+        $scope.showTimeline = false;
+        
         if (plan) {
             $scope.timelinePlan = plan;
             $scope.showTimeline = true;
         } else {
             $scope.timelinePlan = null;
-            $scope.showTimeline = false;
         }
     };
 
