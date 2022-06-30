@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="utilityCtrl" ng-init="getAll({{ $type }});">
+    <section class="content" ng-controller="utilityCtrl" ng-init="getAll();">
 
         <div class="row">
             <div class="col-md-12">
@@ -61,9 +61,9 @@
                                 <div class="form-group col-md-6">
                                     <label>ประเภท</label>
                                     <select
-                                        id="cboSupplier"
-                                        name="cboSupplier"
-                                        ng-model="cboSupplier"
+                                        id="cboUtilityType"
+                                        name="cboUtilityType"
+                                        ng-model="cboUtilityType"
                                         ng-change="getAll($event)"
                                         class="form-control select2"
                                     >

@@ -2,6 +2,8 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 /** ################################################################################## */
     $scope.loading = false;
 
+    $scope.cboUtilityType = '';
+
     $scope.utilities = [];
     $scope.pager = [];
 
@@ -61,12 +63,13 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         };
     };
 
-    $scope.getAll = function(type) {
+    $scope.getAll = function() {
         $scope.loading = true;
         $scope.utilities = [];
         $scope.pager = null;
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type = $scope.cboUtilityType === '' ? '' : $scope.cboUtilityType;
 
         $http.get(`${CONFIG.baseUrl}/utilities/search?year=${year}&type=${type}`)
         .then(function(res) {
