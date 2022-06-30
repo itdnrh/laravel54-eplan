@@ -273,33 +273,8 @@
 									</a>
 								</li>
 								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/utilities/list/1') }}">
-										<i class="fa fa-circle-o"></i> ค่าไฟฟ้า
-									</a>
-								</li>
-								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/utilities/list/2') }}">
-										<i class="fa fa-circle-o"></i> ค่าน้ำประปา
-									</a>
-								</li>
-								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/utilities/list/3') }}">
-										<i class="fa fa-circle-o"></i> ค่าโทรศัพท์
-									</a>
-								</li>
-								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/utilities/list/4') }}">
-										<i class="fa fa-circle-o"></i> ค่าอินเตอร์เน็ต
-									</a>
-								</li>
-								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/utilities/list/7') }}">
-										<i class="fa fa-circle-o"></i> ค่าไปรษณย์
-									</a>
-								</li>
-								<li ng-class="{ 'active': ['assets','list','add','edit','detail'].includes(submenu)}">
-									<a href="{{ url('/utilities/list/5') }}">
-										<i class="fa fa-circle-o"></i> ค่าไฟฟ้าโซล่าเซลล์
+									<a href="{{ url('/utilities/list') }}">
+										<i class="fa fa-circle-o"></i> รายการ
 									</a>
 								</li>
 							</ul>
@@ -321,9 +296,9 @@
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li ng-class="{ 'active': submenu == 'list' }">
-									<a href="{{ url('monthly/list') }}">
-										<i class="fa fa-circle-o"></i> ประมาณการรายจ่าย
+								<li ng-class="{ 'active': submenu == 'summary' }">
+									<a href="{{ url('monthly/summary') }}">
+										<i class="fa fa-circle-o"></i> สรุปผลงาน
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'list' }">
@@ -331,9 +306,9 @@
 										<i class="fa fa-circle-o"></i> รายการ
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'summary' }">
-									<a href="{{ url('monthly/summary') }}">
-										<i class="fa fa-circle-o"></i> สรุปผลงาน
+								<li ng-class="{ 'active': submenu == 'list' }">
+									<a href="{{ url('monthly/list') }}">
+										<i class="fa fa-circle-o"></i> ประมาณการรายจ่าย
 									</a>
 								</li>
 							</ul>
