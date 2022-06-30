@@ -1,4 +1,4 @@
-app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, ChartService) {
 /** ################################################################################## */
     $scope.loading = false;
 
@@ -134,11 +134,36 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 return mon;
             });
 
+            $scope.renderBarChartSummary($scope.summary);
+
             $scope.loading = false;
         }, function(err) {
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.renderBarChartSummary = function (data) {
+        console.log(data);
+        const remainData = data.map(util => parseFloat(util.budget) - parseFloat(util.total));
+        const totalData = data.map(util => parseFloat(util.total));
+        let categories = data.map(util => util.name);
+        let series = [
+            {
+                name: 'คงเหลือ',
+                data: remainData,
+                color: '#7ebc59',
+            }, {
+                name: 'ใช้ไป',
+                data: totalData,
+                color: '#F43E71',
+            }
+        ];
+
+        $scope.barOptions = ChartService.initPercentageChart("barChartContainer", "ร้อยละการใช้ค่าสาธารณูปโภค", categories, 'ร้อยละ');
+        $scope.barOptions.series = series;
+
+        let chart = new Highcharts.Chart($scope.barOptions);
     };
 
     $scope.suppliers = [];

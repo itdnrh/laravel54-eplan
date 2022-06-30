@@ -140,6 +140,14 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div id="barChartContainer" style="width: 100%; height: 400px; margin: 20px auto;"></div>
+
+                            </div>
+                        </div>
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
