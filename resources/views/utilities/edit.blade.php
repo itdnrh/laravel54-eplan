@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มค่าสาธารณูปโภค
+            แก้ไขค่าสาธารณูปโภค
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มค่าสาธารณูปโภค</li>
+            <li class="breadcrumb-item active">แก้ไขค่าสาธารณูปโภค</li>
         </ol>
     </section>
 
@@ -28,12 +28,12 @@
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-success">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มค่าสาธารณูปโภค</h3>
+                        <h3 class="box-title">แก้ไขค่าสาธารณูปโภค</h3>
                     </div>
 
-                    <form id="frmNewUtility" name="frmNewUtility" method="post" action="{{ url('/utilities/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditUtility" name="frmEditUtility" method="post" action="{{ url('/utilities/update/'.$utility->id) }}" role="form" enctype="multipart/form-data">
                         <input
                             type="hidden"
                             id="user"
@@ -259,10 +259,10 @@
 
                         <div class="box-footer clearfix">
                             <<button
-                                ng-click="formValidate($event, '/utilities/validate', utility, 'frmNewUtility', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/utilities/validate', utility, 'frmEditUtility', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
