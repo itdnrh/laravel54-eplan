@@ -53,6 +53,8 @@ Route::group(['middleware' => 'api'], function () {
 
     /** ค่าสาธารณูปโภค */
     Route::get('utilities/{year}/summary', 'UtilityController@getSummary');
+    Route::get('utilities', 'UtilityController@getAll');
+    Route::get('utilities/{id}', 'UtilityController@getById');
 
     /** หมวดค่าใช้จ่าย */
     Route::get('plan-summary', 'PlanSummaryController@getAll');

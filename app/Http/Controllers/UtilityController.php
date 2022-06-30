@@ -165,13 +165,11 @@ class UtilityController extends Controller
 
     public function getById($id)
     {
-        $support = Support::with('planType','depart','division','contact')
-                    ->with('details','details.plan','details.plan.planItem.unit')
-                    ->with('details.plan.planItem','details.plan.planItem.item')
-                    ->find($id);
+        $utility = Utility::with('utilityType','supplier')->find($id);
 
         return [
-            "utility" => $utility,
+            "utility"   => $utility,
+            "suppliers" => Supplier::all(),
         ];
     }
 
@@ -274,12 +272,9 @@ class UtilityController extends Controller
 
     public function edit($id)
     {
-        $utility = Utility::with('supplier','utilityType')
-                    ->where('id', $id)
-                    ->first();
-
         return view('utilities.edit', [
-            "utility" => $utility
+            "utility"       => Utility::find($id),
+            "utilityTypes"  => UtilityType::all(),
         ]);
     }
 

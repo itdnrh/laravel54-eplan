@@ -19,21 +19,17 @@
     <section
         class="content"
         ng-controller="utilityCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-        });"
+        ng-init="getById({{ $utility->id }}, setEditControls)"
     >
 
         <div class="row">
             <div class="col-md-12">
-
                 <div class="box box-warning">
                     <div class="box-header">
                         <h3 class="box-title">แก้ไขค่าสาธารณูปโภค</h3>
                     </div>
 
-                    <form id="frmEditUtility" name="frmEditUtility" method="post" action="{{ url('/utilities/update/'.$utility->id) }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditUtility" name="frmEditUtility" method="post" action="{{ url('/utilities/update/'.$utility->id) }}" role="form" enctype="multipart/form-data" ng-show="!loading">
                         <input
                             type="hidden"
                             id="user"
@@ -104,11 +100,9 @@
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภท --</option>
-                                        @foreach($suppliers as $supplier)
-                                            <option value="{{ $supplier->supplier_id }}">
-                                                {{ $supplier->supplier_name }}
-                                            </option>
-                                        @endforeach
+                                        <option ng-repeat="supplier in suppliers" value="@{{ supplier.supplier_id }}">
+                                            @{{ supplier.supplier_name }}
+                                        </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(utility, 'supplier_id')">
                                         @{{ formError.errors.supplier_id[0] }}
@@ -168,9 +162,7 @@
                                     <select id="utility_type_id"
                                             name="utility_type_id"
                                             ng-model="utility.utility_type_id"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
+                                            class="form-control">
                                         <option value="">-- เลือกประเภท --</option>
                                         @foreach($utilityTypes as $utilityType)
                                             <option value="{{ $utilityType->id }}">
@@ -254,11 +246,9 @@
                                     </span>
                                 </div>
                             </div>
-
                         </div><!-- /.box-body -->
-
                         <div class="box-footer clearfix">
-                            <<button
+                            <button
                                 ng-click="formValidate($event, '/utilities/validate', utility, 'frmEditUtility', update)"
                                 class="btn btn-warning pull-right"
                             >
@@ -266,6 +256,12 @@
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
+
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div ng-show="loading" class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <!-- end loading -->
 
                 </div><!-- /.box -->
 
