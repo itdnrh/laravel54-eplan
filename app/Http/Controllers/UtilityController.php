@@ -55,10 +55,9 @@ class UtilityController extends Controller
         }
     }
 
-    public function index($type)
+    public function index()
     {
         return view('utilities.list', [
-            "type"          => $type,
             "utilityTypes"  => UtilityType::all(),
         ]);
     }
