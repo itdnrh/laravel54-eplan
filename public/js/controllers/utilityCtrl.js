@@ -134,6 +134,30 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 return mon;
             });
 
+            const sola = $scope.summary.find(mon => mon.utility_type_id === 5);
+            $scope.summary = $scope.summary
+                .filter(mon => mon.utility_type_id !== 5)
+                .map(mon => {
+                    if (mon.utility_type_id === 1) {
+                        mon.budget = mon.budget + sola.budget;
+                        mon.total = mon.total + sola.total;
+                        mon.jan_total = mon.jan_total + sola.jan_total;
+                        mon.feb_total = mon.feb_total + sola.feb_total;
+                        mon.mar_total = mon.mar_total + sola.mar_total;
+                        mon.apr_total = mon.apr_total + sola.apr_total;
+                        mon.may_total = mon.may_total + sola.may_total;
+                        mon.jun_total = mon.jun_total + sola.jun_total;
+                        mon.jul_total = mon.jul_total + sola.jul_total;
+                        mon.aug_total = mon.aug_total + sola.aug_total;
+                        mon.sep_total = mon.sep_total + sola.sep_total;
+                        mon.oct_total = mon.oct_total + sola.oct_total
+                        mon.nov_total = mon.nov_total + sola.nov_total;
+                        mon.dec_total = mon.dec_total + sola.dec_total;
+                    }
+
+                    return mon;
+                });
+
             $scope.renderBarChartSummary($scope.summary);
 
             $scope.loading = false;
@@ -144,7 +168,6 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.renderBarChartSummary = function (data) {
-        console.log(data);
         const remainData = data.map(util => parseFloat(util.budget) - parseFloat(util.total));
         const totalData = data.map(util => parseFloat(util.total));
         let categories = data.map(util => util.name);
@@ -160,7 +183,7 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             }
         ];
 
-        $scope.barOptions = ChartService.initPercentageChart("barChartContainer", "ร้อยละการใช้ค่าสาธารณูปโภค", categories, 'ร้อยละ');
+        $scope.barOptions = ChartService.initPercentageChart("barChartContainer", "ร้อยละการใช้จ่ายค่าสาธารณูปโภค", categories, 'ร้อยละ');
         $scope.barOptions.series = series;
 
         let chart = new Highcharts.Chart($scope.barOptions);

@@ -89,50 +89,50 @@
                                 <tr ng-repeat="(index, sum) in summary" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>@{{ sum.name }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.budget | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.budget | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.oct_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.oct_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.nov_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.nov_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.dec_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.dec_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.jan_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.jan_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.feb_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.feb_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.mar_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.mar_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.apr_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.apr_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.may_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.may_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.jun_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.jun_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.jul_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.jul_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.aug_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.aug_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.sep_total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.sep_total | currency:'':0 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ sum.budget - sum.total | currency:'':2 }}
+                                    <td style="text-align: right;">
+                                        @{{ sum.budget - sum.total | currency:'':0 }}
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
