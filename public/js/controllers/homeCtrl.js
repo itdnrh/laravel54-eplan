@@ -160,6 +160,30 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
         });
     };
 
+    $scope.orders = [];
+    $scope.orders_pager = null;
+    $scope.getLatestOrders = function() {
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.orders_pager = null;
+
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&status=0&last=5`)
+        .then(function(res) {
+            const { data, ...pager } = res.data.orders;
+
+            $scope.orders = data;
+            $scope.order_pager = pager;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     $scope.getSumMonthData = function () {
         var month = '2018';
         console.log(month);
