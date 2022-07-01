@@ -24,10 +24,10 @@ app.run(function ($rootScope, $window, $http, toaster) {
 	$rootScope.range = _.range;
 	$rootScope.formError = null;
 
-	$rootScope.formValidate = function (event, URL, validData, form, callback) {
+	$rootScope.formValidate = function (event, path, validData, form, callback) {
 		event.preventDefault();
 
-		$http.post(env.baseUrl + URL, { ...validData })
+		$http.post(env.baseUrl + path, { ...validData })
 			.then(function (res) {
 				$rootScope.formError = res.data;
 				console.log($rootScope.formError);

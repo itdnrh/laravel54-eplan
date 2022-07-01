@@ -28,20 +28,16 @@ class PlanSummaryController extends Controller
     {
         $rules = [
             'year'          => 'required',
-            'month'         => 'required',
             'expense_id'    => 'required',
-            'total'         => 'required',
-            'remain'        => 'required',
-            'depart_id'     => 'required',
+            'budget'        => 'required',
+            'owner_depart'  => 'required',
         ];
 
         $messages = [
             'year.required'         => 'กรุณาเลือกปีงบประมาณ',
-            'month.required'        => 'กรุณาเลือกเดือน',
             'expense_id.required'   => 'กรุณาเลือกรายการ',
-            'total.required'        => 'กรุณาระบุยอดการใช้',
-            'remain.required'       => 'กรุณาระบุยอดคงเหลือ',
-            'depart_id.required'    => 'กรุณาเลือกกลุ่มงาน',
+            'budget.required'       => 'กรุณาระบุยอดประมาณการ',
+            'owner_depart.required' => 'กรุณาเลือกกลุ่มงาน',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -162,9 +158,8 @@ class PlanSummaryController extends Controller
 
     public function detail($id)
     {
-        return view('monthly.detail', [
+        return view('budgets.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => AssetCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
@@ -175,34 +170,30 @@ class PlanSummaryController extends Controller
 
     public function create()
     {
-        return view('monthly.add', [
+        return view('budgets.add', [
             "expenses"      => Expense::all(),
+            "expenseTypes"  => ExpenseType::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
         ]);
     }
 
     public function store(Request $req)
     {
         try {
-            $plan = new PlanMonthly();
-            // $plan->year      = calcBudgetYear($req['year']);
-            $plan->year         = $req['year'];
-            $plan->month        = $req['month'];
-            $plan->expense_id   = $req['expense_id'];
-            $plan->total        = $req['total'];
-            $plan->remain       = $req['remain'];
-            $plan->depart_id    = $req['depart_id'];
-            $plan->reporter_id  = $req['reporter_id'];
-            $plan->remark       = $req['remark'];
-            $plan->status       = '0';
+            $budget = new PlanSummary();
+            $budget->year         = $req['year'];
+            $budget->expense_id   = $req['expense_id'];
+            $budget->budget       = $req['budget'];
+            $budget->owner_depart = $req['owner_depart'];
+            $budget->remark       = $req['remark'];
+            $budget->status       = '0';
 
-            if($plan->save()) {
+            if($budget->save()) {
                 return [
                     'status'    => 1,
                     'message'   => 'Insertion successfully',
-                    'plan'      => $plan
+                    'budget'    => $budget
                 ];
             } else {
                 return [

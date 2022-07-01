@@ -138,7 +138,7 @@
                                 <h3 class="box-title">ประมาณการรายจ่าย</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/monthly/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/budgets/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>

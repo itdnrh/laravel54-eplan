@@ -15,14 +15,14 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     $scope.expenseRemain = '';
 
     $scope.budget = {
-        monthly_id: '',
+        id: '',
         year: '',
-        month: '',
+        expense_type_id: '',
         expense_id: '',
-        total: '',
+        budget: '',
         remain: '',
-        depart_id: '',
-        reporter_id: '',
+        faction_id: '',
+        owner_depart: '',
         remark: '',
         user: '',
     };
@@ -51,16 +51,16 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     const clearBudget = function() {
         $scope.budget = {
-            monthly_id: '',
+            id: '',
             year: '',
-            month: '',
+            expense_type_id: '',
             expense_id: '',
-            total: '',
+            budget: '',
             remain: '',
-            depart_id: '',
-            reporter_id: '',
+            faction_id: '',
+            owner_depart: '',
             remark: '',
-            user: ''
+            user: '',
         };
     };
 
@@ -93,7 +93,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
             $scope.expenseBudget = res.data.plan.budget;
             $scope.expenseRemain = res.data.plan.remain;
 
-            $scope.monthly.remain = res.data.plan.remain;
+            $scope.budget.remain = res.data.plan.remain;
 
             $scope.loading = false;
         }, function(err) {
@@ -145,40 +145,35 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.apiUrl}/monthly/${id}`)
+        $http.get(`${CONFIG.apiUrl}/budgets/${id}`)
         .then(function(res) {
-            cb(res.data.plan);
+            cb(res.data.budget);
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.setEditControls = function(plan) {
-        /** Global data */
-        $scope.planId                   = plan.id;
-        $scope.planType                 = 1;
-
-        /** ข้อมูลครุภัณฑ์ */
-        $scope.monthly.monthly_id   = plan.id;
-        $scope.monthly.month        = plan.month;
-        $scope.monthly.total        = plan.total;
-        $scope.monthly.remain       = plan.remain;
-        $scope.monthly.depart_id    = plan.depart_id;
-        $scope.monthly.reporter_id  = plan.reporter_id;
-        $scope.monthly.remark       = plan.remark;
+    $scope.setEditControls = function(budget) {
+        $scope.budget.id                = budget.id;
+        $scope.budget.budget            = budget.budget;
+        $scope.budget.remain            = budget.remain;
+        $scope.budget.remark            = budget.remark;
         
         /** Convert int value to string */
-        $scope.monthly.year         = plan.year.toString();
-        $scope.monthly.expense_id   = plan.expense_id.toString();
+        $scope.budget.year              = budget.year.toString();
+        $scope.budget.expense_id        = budget.expense_id.toString();
+        $scope.budget.expense_type_id   = budget.expense_type_id.toString();
+        $scope.budget.faction_id        = budget.faction_id;
+        $scope.budget.owner_depart      = budget.owner_depart;
     };
 
     $scope.store = function(event, form) {
         event.preventDefault();
 
         $scope.loading = true;
-        $scope.monthly.user = $('#user').val();
+        $scope.budget.user = $('#user').val();
 
-        $http.post(`${CONFIG.baseUrl}/monthly/store`, $scope.monthly)
+        $http.post(`${CONFIG.baseUrl}/budgets/store`, $scope.budget)
         .then(function(res) {
             $scope.loading = false;
 
@@ -196,16 +191,16 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/budgets/edit/${id}`;
     };
 
     $scope.update = function(event) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตามรหัส ${$scope.monthly.monthly_id} ใช่หรือไม่?`)) {
-            $scope.monthly.user = $('#user').val();
+        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตามรหัส ${$scope.budget.id} ใช่หรือไม่?`)) {
+            $scope.budget.user = $('#user').val();
 
-            $http.post(`${CONFIG.baseUrl}/monthly/update/${$scope.monthly.monthly_id}`, $scope.monthly)
+            $http.post(`${CONFIG.baseUrl}/budget/update/${$scope.budget.budget_id}`, $scope.budget)
             .then(function(res) {
                 $scope.loading = false;
 

@@ -95,6 +95,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         division: [],
         categories: [],
         groups: [],
+        expenses: [],
     };
 
     $scope.temps = {
@@ -102,6 +103,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         divisions: [],
         categories: [],
         groups: [],
+        expenses: [],
     }
 
     let dtpOptions = {
@@ -140,6 +142,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
             $scope.temps.strategics = data.strategics ? data.strategics : [];
             $scope.temps.strategies = data.strategies ? data.strategies : [];
             $scope.temps.kpis = data.kpis ? data.kpis : [];
+            $scope.temps.expenses = data.expenses ? data.expenses : [];
 
             $scope.forms.categories = data.categories
                                         ? data.categories.filter(cate => cate.plan_type_id === parseInt(planType))
@@ -176,6 +179,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
     $scope.onFilterCategories = function(type) {
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
+    };
+
+    $scope.onFilterExpenses = function(type) {
+        $scope.forms.expenses = $scope.temps.expenses.filter(ex => ex.expense_type_id === parseInt(type));
     };
 
     $scope.onPlanTypeSelected = function(type) {
