@@ -7,7 +7,9 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Person;
 use App\Models\Depart;
-use App\Models\Leave;
+use App\Models\PlanType;
+use App\Models\ItemCategory;
+use App\Models\PlanSummary;
 
 class DashboardController extends Controller
 {
@@ -16,48 +18,67 @@ class DashboardController extends Controller
         return view('suppliers.list');
     }
 
-    public function getHeadData($date)
+    public function getSummaryAssets(Request $req)
     {
-        $heads      = Person::join('level', 'level.person_id', '=', 'personal.person_id')
-                        ->with('leaves')
-                        ->whereNotIn('person_state', [6,7,8,9,99])
-                        ->where('level.faction_id', '5')
-                        ->whereIn('level.duty_id', [1,2,3])
-                        ->pluck('personal.person_id');
+        /** Get params from query string */
+        $year = $req->get('year');
 
-        $persons    = Person::join('level', 'level.person_id', '=', 'personal.person_id')
-                        ->with('leaves')
-                        ->whereNotIn('person_state', [6,7,8,9,99])
-                        ->where('level.faction_id', '5')
-                        ->whereIn('level.duty_id', [1,2,3])
-                        ->get();
-
-        $leaves     = Leave::whereIn('leave_person', $heads)
-                        ->with('type')
-                        ->where('start_date', '<=', $date)
-                        ->where('end_date', '>=', $date)
-                        // ->where('status', '3')
-                        ->paginate(20);
+        $plans = \DB::table('plans')
+                    ->select(
+                        'items.category_id',
+                        \DB::raw("sum(case when (plans.status=0) then plan_items.sum_price end) as pending"),
+                        \DB::raw("sum(case when (plans.status=1) then plan_items.sum_price end) as sent"),
+                        \DB::raw("sum(case when (plans.status=2) then plan_items.sum_price end) as received"),
+                        \DB::raw("sum(case when (plans.status=3) then plan_items.sum_price end) as po"),
+                        \DB::raw("sum(case when (plans.status=4) then plan_items.sum_price end) as inspect"),
+                        \DB::raw("sum(case when (plans.status=5) then plan_items.sum_price end) as withdraw"),
+                        \DB::raw("sum(case when (plans.status=6) then plan_items.sum_price end) as debt"),
+                        \DB::raw("sum(case when (plans.status in (0,1,2,3,4,5,6,99)) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('items.category_id')
+                    ->where('plans.year', $year)
+                    ->where('plans.plan_type_id', 1)
+                    ->where('plans.approved', 'A')
+                    ->get();
 
         return [
-            'leaves'    => $leaves,
-            'persons'   => $persons,
+            'plans'         => $plans,
+            'categories'    => ItemCategory::where('plan_type_id', 1)->get(),
+            'budget'        => PlanSummary::where('year', $year)->get()
         ];
     }
 
-    public function getDepartData($date)
+    public function getSummaryMaterials(Request $req)
     {
-        $departs      = Depart::where('faction_id', '5')->paginate(10);
+        /** Get params from query string */
+        $year = $req->get('year');
 
-        $leaves     = Leave::with('type','person','person.memberOf')
-                        ->where('start_date', '<=', $date)
-                        ->where('end_date', '>=', $date)
-                        // ->where('status', '3')
-                        ->get();
+        $plans = \DB::table('plans')
+                    ->select(
+                        'items.category_id',
+                        \DB::raw("sum(case when (plans.status=0) then plan_items.sum_price end) as pending"),
+                        \DB::raw("sum(case when (plans.status=1) then plan_items.sum_price end) as sent"),
+                        \DB::raw("sum(case when (plans.status=2) then plan_items.sum_price end) as received"),
+                        \DB::raw("sum(case when (plans.status=3) then plan_items.sum_price end) as po"),
+                        \DB::raw("sum(case when (plans.status=4) then plan_items.sum_price end) as inspect"),
+                        \DB::raw("sum(case when (plans.status=5) then plan_items.sum_price end) as withdraw"),
+                        \DB::raw("sum(case when (plans.status=6) then plan_items.sum_price end) as debt"),
+                        \DB::raw("sum(case when (plans.status in (0,1,2,3,4,5,6,99)) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('items.category_id')
+                    ->where('plans.year', $year)
+                    ->where('plans.plan_type_id', 2)
+                    ->where('plans.approved', 'A')
+                    ->get();
 
         return [
-            'leaves'    => $leaves,
-            'departs'   => $departs,
+            'plans'         => $plans,
+            'categories'    => ItemCategory::where('plan_type_id', 2)->get(),
+            'budget'        => PlanSummary::where('year', $year)->get()
         ];
     }
 

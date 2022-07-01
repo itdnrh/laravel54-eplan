@@ -1,7 +1,10 @@
-<div class="box">
+<div class="box" ng-init="getSummaryMaterials()">
     <div class="box-header">
-        <h3 class="box-title">สรุปแผนวัสดุ ประจำเดือน</h3>
-        <div class="pull-right box-tools">
+        <h3 class="box-title">
+            สรุปแผนวัสดุ
+            <!-- <span>ประจำเดือน</span> -->
+        </h3>
+        <!-- <div class="pull-right box-tools">
             <div class="row">
                 <div class="form-group col-md-12" style="margin-bottom: 0px;">
                     <input
@@ -12,30 +15,30 @@
                     />
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="box-body">
         <table class="table table-triped" style="margin-bottom: 1rem;" ng-show="!loading">
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: center;">ประมาณการ</th>
+                <th style="width: 15%; text-align: center;">ส่งเอกสาร</th>
                 <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
+                <th style="width: 15%; text-align: center;">ส่งเบิกเงิน</th>
                 <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
-                <th style="width: 15%; text-align: center;">ส่งเอกสารเบิกเงิน</th>
-                <th style="width: 15%; text-align: center;">เบิกจ่ายแล้ว</th>
             </tr>
-            <tr ng-repeat="(index, mat) in materials">
-                <td>@{{ index+1 }}. @{{ mat.name }}</td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
+            <tr ng-repeat="(index, material) in materials" style="font-size: 12px;">
+                <td>@{{ index+1 }}. @{{ material.category_name }}</td>
+                <td style="text-align: right;">@{{ material.budget | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ material.sent | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ material.po | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ material.withdraw | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ material.debt | currency:'':0 }}</td>
             </tr>
         </table>
     </div><!-- /.box-body -->
     <div class="box-footer">
-        <div class="row">
+        <div class="row" ng-show="false">
             <div class="col-md-4">
                 <span style="margin-top: 5px;" ng-show="pager.last_page > 0">
                     หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}

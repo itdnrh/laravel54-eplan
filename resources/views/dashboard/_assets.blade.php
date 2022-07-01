@@ -1,7 +1,10 @@
-<div class="box">
+<div class="box box-primary" ng-init="getSummaryAssets();">
     <div class="box-header">
-        <h3 class="box-title">สรุปแผนครุภัณฑ์ ประจำเดือน</h3>
-        <div class="pull-right box-tools">
+        <h3 class="box-title">
+            สรุปแผนครุภัณฑ์
+            <!-- <span>ประจำเดือน</span> -->
+        </h3>
+        <!-- <div class="pull-right box-tools">
             <div class="row">
                 <div class="form-group col-md-12" style="margin-bottom: 0px;">
                     <input
@@ -12,30 +15,30 @@
                     />
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="box-body">
         <table class="table table-striped table-bordered">
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: center;">ประมาณการ</th>
+                <th style="width: 15%; text-align: center;">ส่งเอกสาร</th>
                 <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
+                <th style="width: 15%; text-align: center;">ส่งเบิกเงิน</th>
                 <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
-                <th style="width: 15%; text-align: center;">ส่งเอกสารเบิกเงิน</th>
-                <th style="width: 15%; text-align: center;">เบิกจ่ายแล้ว</th>
             </tr>
-            <tr ng-repeat="(index, asset) in assets">
-                <td>@{{ index+1 }}. @{{ asset.name }}</td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
-                <td style="text-align: center;"></td>
+            <tr ng-repeat="(index, asset) in assets" style="font-size: 12px;">
+                <td>@{{ index+1 }}. @{{ asset.category_name }}</td>
+                <td style="text-align: right;">@{{ asset.budget | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ asset.sent | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ asset.po | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ asset.withdraw | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ asset.debt | currency:'':0 }}</td>
             </tr>
         </table>
     </div><!-- /.box-body -->
     <div class="box-footer">
-        <div class="row">
+        <div class="row" ng-show="false">
             <div class="col-md-4">
                 <span style="margin-top: 5px;" ng-show="departPager.last_page > 0">
                     หน้า @{{ departPager.current_page }} จาก @{{ departPager.last_page }}

@@ -8,36 +8,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
     $scope.departs = [];
     $scope.departPager = null;
 
-    $scope.assets = [
-        { id: '1', name: 'ครุภัณฑ์การแพทย์' },
-        { id: '2', name: 'ครุภัณฑ์สำนักงาน' },
-        { id: '3', name: 'ครุภัณฑ์คอมพิวเตอร์' },
-        { id: '4', name: 'ครุภัณฑ์โฆษณาและเผยแพร่' },
-        { id: '5', name: 'ครุภัณฑ์งานบ้านงานครัว' },
-        { id: '6', name: 'ครุภัณฑ์ไฟฟ้าและวิทยุ' },
-        { id: '7', name: 'ครุภัณฑ์ยานพาหนะ' },
-        { id: '8', name: 'ครุภัณฑ์การเกษตร' },
-        { id: '9', name: 'ครุภัณฑ์ก่อสร้าง' },
-    ];
-
-    $scope.materials = [
-        { id: '1', name: 'วัสดุการแพทย์' },
-        { id: '2', name: 'วัสดุสำนักงาน' },
-        { id: '3', name: 'วัสดุคอมพิวเตอร์' },
-        { id: '4', name: 'วัสดุโฆษณาและเผยแพร่' },
-        { id: '5', name: 'วัสดุงานบ้านงานครัว' },
-        { id: '6', name: 'วัสดุไฟฟ้าและวิทยุ' },
-        { id: '7', name: 'วัสดุยานพาหนะ' },
-        { id: '8', name: 'วัสดุการเกษตร' },
-        { id: '9', name: 'วัสดุก่อสร้าง' },
-        { id: '10', name: 'วัสดุวิทยาศาสตร์' },
-        // { id: '11', name: 'วัสดุตีพิมพ์,แบบพิมพ์,สติ๊กเกอร์' },
-        // { id: '12', name: 'วัสดุผ้าและเครื่องแต่งกาย' },
-        // { id: '13', name: 'วัสดุซ่อมบำรุง' },
-        { id: '14', name: 'เวชภัณฑ์มิใช่ยา' },
-        { id: '15', name: 'ยาและสมุนไพร' },
-    ];
-
     $('#cboAssetDate').datepicker({
         autoclose: true,
         format: 'mm/yyyy',
@@ -64,16 +34,34 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
         $scope.getHeadLeaves();
     });
 
-    $scope.getHeadLeaves = function() {
+    $scope.assets = [];
+    $scope.totalAsset = 0;
+    $scope.getSummaryAssets = function() {
         $scope.loading = true;
 
-        let date = $('#cboHeadDate').val() !== ''
-                    ? StringFormatService.convToDbDate($('#cboHeadDate').val())
-                    : moment().format('YYYY-MM-DD');
+        // let date = $('#cboAssetDate').val() !== ''
+        //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
+        //             : moment().format('YYYY-MM-DD');
+        let year = 2565
 
-        $http.get(`${CONFIG.baseUrl}/dashboard/head/${date}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}`)
         .then(function(res) {
-            $scope.setHeadLeaves(res);
+            const { plans, budget, categories } = res.data;
+
+            let cates = categories.map(cate => {
+                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                cate.budget = summary ? summary.budget : 0;
+
+                return cate;
+            });
+
+            $scope.assets = plans.map(plan => {
+                const cateInfo = cates.find(cate => cate.id === plan.category_id);
+                plan.category_name = cateInfo.name;
+                plan.budget = cateInfo.budget;
+
+                return plan;
+            });
 
             $scope.loading = false;
         }, function(err) {
@@ -82,55 +70,40 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
         });
     };
 
-    $scope.setHeadLeaves = function(res) {
-        let { data, ...pager } = res.data.leaves;
-
-        data.forEach(leave => {
-            leave.person = res.data.persons.find(person => person.person_id === leave.leave_person);
-        });
-
-        $scope.headLeaves = data;
-        $scope.pager = pager;
-    };
-
-    $scope.getDepartLeaves = function() {
+    $scope.materials = [];
+    $scope.totalMaterial = 0;
+    $scope.getSummaryMaterials = function() {
         $scope.loading = true;
 
-        let date = $('#cboDepartDate').val() !== ''
-                    ? StringFormatService.convToDbDate($('#cboDepartDate').val())
-                    : moment().format('YYYY-MM-DD');
+        // let date = $('#cboAssetDate').val() !== ''
+        //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
+        //             : moment().format('YYYY-MM-DD');
+        let year = 2565
 
-        $http.get(`${CONFIG.baseUrl}/dashboard/depart/${date}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}`)
         .then(function(res) {
-            $scope.setDepartLeaves(res);
+            const { plans, budget, categories } = res.data;
+
+            let cates = categories.map(cate => {
+                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                cate.budget = summary ? summary.budget : 0;
+
+                return cate;
+            });
+
+            $scope.materials = plans.map(plan => {
+                const cateInfo = cates.find(cate => cate.id === plan.category_id);
+                plan.category_name = cateInfo.name;
+                plan.budget = cateInfo.budget;
+
+                return plan;
+            });
 
             $scope.loading = false;
         }, function(err) {
             console.log(err);
             $scope.loading = false;
         });
-    };
-
-    $scope.departTotal = 0;
-    $scope.setDepartLeaves = function (res) {
-        let { data, ...pager } = res.data.departs;
-
-        data.forEach(depart => {
-            depart.sum_leave = res.data.leaves.reduce((sum, leave) => {
-                if (depart.depart_id == leave.person.member_of.depart_id) {
-                    sum++;
-                }
-
-                return sum;
-            }, 0);
-        });
-
-        $scope.departs = data;
-        $scope.departPager = pager;
-
-        $scope.departTotal = res.data.leaves.reduce((sum, leave) => {
-            return sum = sum + 1;
-        }, 0);
     };
 
     $scope.stat1Cards = [];

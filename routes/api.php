@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'api'], function () {
+    /** Dashboard */
+    Route::get('dashboard/summary-assets', 'DashboardController@getSummaryAssets');
+    Route::get('dashboard/summary-materials', 'DashboardController@getSummaryMaterials');
+
     /** รายการสินค้าและบริการ */
     Route::get('items', 'ItemController@getAll');
     Route::post('items', 'ItemController@store');

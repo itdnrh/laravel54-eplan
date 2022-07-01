@@ -43,7 +43,6 @@ class OrderController extends Controller
             'vat_rate'      => 'required',
             'vat'           => 'required',
             'net_total'     => 'required',
-            'budget_src_id' => 'required',
         ];
 
         $messages = [
