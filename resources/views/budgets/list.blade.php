@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="monthlyCtrl"
+        ng-controller="budgetCtrl"
         ng-init="
             getAll();
             initForms({
@@ -70,19 +70,17 @@
                                     <div class="form-group">
                                         <label>ประเภทรายจ่าย</label>
                                         <select
-                                            id="cboExpense"
-                                            name="cboExpense"
-                                            ng-model="cboExpense"
+                                            id="cboExpenseType"
+                                            name="cboExpenseType"
+                                            ng-model="cboExpenseType"
                                             ng-change="getAll()"
                                             class="form-control"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            @foreach($expenses as $expense)
-
-                                                <option value="{{ $expense->id }}">
-                                                    {{ $expense->name }}
+                                            @foreach($expenseTypes as $expenseType)
+                                                <option value="{{ $expenseType->id }}">
+                                                    {{ $expenseType->name }}
                                                 </option>
-
                                             @endforeach
                                         </select>
                                     </div>
@@ -147,75 +145,78 @@
                         </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" style="font-size: 14px; margin: 10px auto;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 10%; text-align: center;">ประจำเดือน</th>
-                                    <th style="width: 15%; text-align: center;">ประเภท</th>
-                                    <th>หน่วยงาน</th>
-                                    <th style="width: 10%; text-align: center;">ยอดการใช้</th>
-                                    <th style="width: 10%; text-align: center;">ยอดคงเหลือ</th>
-                                    <!-- <th style="width: 8%; text-align: center;">สถานะ</th> -->
-                                    <th style="width: 10%; text-align: center;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="(index, plan) in plans">
-                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ plan.month }}/@{{ plan.year }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ plan.expense.name }}
-                                    </td>
-                                    <td>
-                                        @{{ plan.depart.depart_name }}
-                                    </td>
-                                    <td style="text-align: center;">@{{ plan.total | currency:'':0 }}</td>
-                                    <td style="text-align: center;">@{{ plan.remain | currency:'':0 }}</td>
-                                    <!-- <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="plan.status == 0">
-                                            รอดำเนินการ
-                                        </span>
-                                        <span class="label label-warning" ng-show="plan.status == 1">
-                                            ส่งเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="plan.status == 2">
-                                            รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="plan.status == 9">
-                                            ยกเลิก
-                                        </span>
-                                    </td> -->
-                                    <td style="text-align: center;">
-                                        <a  href="{{ url('/monthly/detail') }}/@{{ plan.id }}"
-                                            class="btn btn-primary btn-xs" 
-                                            title="รายละเอียด">
-                                            <i class="fa fa-search"></i>
-                                        </a>
-                                        <a  href="{{ url('/monthly/edit') }}/@{{ plan.id }}"
-                                            class="btn btn-warning btn-xs"
-                                            title="แก้ไขรายการ">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <form
-                                            id="frmDelete"
-                                            method="POST"
-                                            action="{{ url('/monthly/delete') }}"
-                                            style="display: inline;"
-                                        >
-                                            {{ csrf_field() }}
-                                            <button
-                                                type="submit"
-                                                ng-click="delete($event, plan.id)"
-                                                class="btn btn-danger btn-xs"
+                        <div ng-repeat="expenseType in expenseTypes">
+                            <h4 ng-show="expenseType.budgets.length > 0">@{{ expenseType.name }}</h4>
+                            <table
+                                class="table table-bordered table-striped"
+                                style="font-size: 14px; margin: 10px auto;"
+                                ng-show="expenseType.budgets.length > 0"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th style="width: 4%; text-align: center;">#</th>
+                                        <th style="width: 10%; text-align: center;">ปีงบประมาณ</th>
+                                        <th>ประเภท</th>
+                                        <th style="width: 12%; text-align: center;">ยอดประมาณการ</th>
+                                        <th style="width: 12%; text-align: center;">ยอดคงเหลือ</th>
+                                        <!-- <th style="width: 8%; text-align: center;">สถานะ</th> -->
+                                        <th style="width: 15%;">หน่วยงาน</th>
+                                        <th style="width: 10%; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(index, budget) in expenseType.budgets">
+                                        <td style="text-align: center;">@{{ index+1 }}</td>
+                                        <td style="text-align: center;">@{{ budget.year }}</td>
+                                        <td>@{{ budget.expense.name }}</td>
+                                        <td style="text-align: right;">@{{ budget.budget | currency:'':0 }}</td>
+                                        <td style="text-align: right;">@{{ budget.remain | currency:'':0 }}</td>
+                                        <!-- <td style="text-align: center;">
+                                            <span class="label label-primary" ng-show="budget.status == 0">
+                                                รอดำเนินการ
+                                            </span>
+                                            <span class="label label-warning" ng-show="budget.status == 1">
+                                                ส่งเอกสารแล้ว
+                                            </span>
+                                            <span class="label label-success" ng-show="budget.status == 2">
+                                                รับเอกสารแล้ว
+                                            </span>
+                                            <span class="label label-danger" ng-show="budget.status == 9">
+                                                ยกเลิก
+                                            </span>
+                                        </td> -->
+                                        <td>@{{ budget.depart.depart_name }}</td>
+                                        <td style="text-align: center;">
+                                            <a  href="{{ url('/monthly/detail') }}/@{{ budget.id }}"
+                                                class="btn btn-primary btn-xs" 
+                                                title="รายละเอียด">
+                                                <i class="fa fa-search"></i>
+                                            </a>
+                                            <a  href="{{ url('/monthly/edit') }}/@{{ budget.id }}"
+                                                class="btn btn-warning btn-xs"
+                                                title="แก้ไขรายการ">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <form
+                                                id="frmDelete"
+                                                method="POST"
+                                                action="{{ url('/monthly/delete') }}"
+                                                style="display: inline;"
                                             >
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>             
-                                </tr>
-                            </tbody>
-                        </table>
+                                                {{ csrf_field() }}
+                                                <button
+                                                    type="submit"
+                                                    ng-click="delete($event, budget.id)"
+                                                    class="btn btn-danger btn-xs"
+                                                >
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>             
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-4">
@@ -227,19 +228,19 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setMonthlys)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setBudgets)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setMonthlys)" aria-label="Prev">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setBudgets)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
                                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setMonthlys)">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setBudgets)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
@@ -251,13 +252,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setMonthlys)" aria-label="Next">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setBudgets)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setMonthlys)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setBudgets)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
@@ -276,9 +277,6 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
-
-        @include('supports._support-details')
-
     </section>
 
     <script>

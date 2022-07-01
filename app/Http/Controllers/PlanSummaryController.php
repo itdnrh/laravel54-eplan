@@ -70,9 +70,9 @@ class PlanSummaryController extends Controller
     public function index()
     {
         return view('budgets.list', [
-            "expenses"  => Expense::all(),
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
-            "departs"   => Depart::all(),
+            "expenseTypes"  => ExpenseType::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"       => Depart::all(),
         ]);
     }
 
@@ -85,10 +85,9 @@ class PlanSummaryController extends Controller
 
         /** Get params from query string */
         $year = $req->get('year');
-        $expense = $req->get('expense');
         $type = $req->get('type');
-        // $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        // $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $faction = $req->get('faction');
+        $depart = $req->get('depart');
         $status = $req->get('status');
 
         // if($status != '-') {
@@ -102,59 +101,55 @@ class PlanSummaryController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
-        // $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        // $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-        //                 ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-        //                 ->when(!empty($cate), function($q) use ($cate) {
-        //                     $q->where('items.category_id', $cate);
-        //                 })
-        //                 ->pluck('plans.id');
+        $expensesList = Expense::where('expense_type_id', $type)->pluck('id');
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        $plans = PlanMonthly::with('expense','depart')
-                    ->when(!empty($expense), function($q) use ($expense) {
-                        $q->where('expense_id', $expense);
-                    })
+        $budgets = PlanSummary::with('expense','depart')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
-                    // ->when(!empty($depart), function($q) use ($depart) {
-                    //     $q->where('depart_id', $depart);
-                    // })
-                    // ->when(!empty($faction), function($q) use ($departsList) {
-                    //     $q->whereIn('depart_id', $departsList);
-                    // })
-                    ->when($status != '', function($q) use ($status) {
-                        $q->where('status', $status);
+                    ->when(!empty($type), function($q) use ($expensesList) {
+                        $q->whereIn('expense_id', $expensesList);
                     })
-                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                        $q->whereBetween('status', $arrStatus);
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
                     })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
+                    })
+                    // ->when($status != '', function($q) use ($status) {
+                    //     $q->where('status', $status);
+                    // })
+                    // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                    //     $q->whereBetween('status', $arrStatus);
+                    // })
                     // ->orderBy('plan_no', 'ASC')
-                    ->paginate(10);
+                    ->get();
 
         return [
-            'plans' => $plans,
+            'budgets' => $budgets,
+            "expenseTypes"  => ExpenseType::all(),
         ];
     }
 
     public function getAll()
     {
-        // $plans = PlanMonthly::with('kpi','depart','owner','budgetSrc')->paginate(10);
+        // $budgets = PlanMonthly::with('kpi','depart','owner','budgetSrc')->paginate(10);
 
         // return [
-        //     'plans' => $plans,
+        //     'budgets' => $budgets,
         // ];
     }
 
     public function getById($id)
     {
         return [
-            'plan' => Plan::where('id', $id)
-                        ->with('budget','depart','division')
-                        ->with('planItem','planItem.unit')
-                        ->with('planItem.item','planItem.item.category')
-                        ->first(),
+            'budget' => PlanSummary::where('id', $id)
+                            ->with('budget','depart','division')
+                            ->with('planItem','planItem.unit')
+                            ->with('planItem.item','planItem.item.category')
+                            ->first(),
         ];
     }
 

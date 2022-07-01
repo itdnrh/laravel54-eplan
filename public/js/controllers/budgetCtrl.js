@@ -1,20 +1,20 @@
 app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.plans = [];
+    $scope.budgets = [];
     $scope.pager = null;
 
     $scope.summary = [];
 
     $scope.cboYear = (moment().year() + 543).toString();
-    $scope.cboExpense = '';
+    $scope.cboExpenseType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
 
     $scope.expenseBudget = '';
     $scope.expenseRemain = '';
 
-    $scope.monthly = {
+    $scope.budget = {
         monthly_id: '',
         year: '',
         month: '',
@@ -49,8 +49,8 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     $('#remain').prop('disabled', true);
 
-    const clearMonthly = function() {
-        $scope.monthly = {
+    const clearBudget = function() {
+        $scope.budget = {
             monthly_id: '',
             year: '',
             month: '',
@@ -66,44 +66,17 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     $scope.getAll = function(event) {
         $scope.loading = true;
-        $scope.plans = [];
+        $scope.budgets = [];
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let expense = $scope.cboExpense === '' ? '' : $scope.cboExpense;
+        let type = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&expense=${expense}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/budgets/search?year=${year}&type=${type}&depart=${depart}&status=${status}`)
         .then(function(res) {
-            $scope.setMonthlys(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getSummary = function(event) {
-        $scope.loading = true;
-        $scope.summary = [];
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let expense = $scope.cboExpense === '' ? '' : $scope.cboExpense;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-
-        $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?expense=${expense}&depart=${depart}&status=${status}`)
-        .then(function(res) {
-            const { monthly, budget } = res.data;
-
-            $scope.summary = monthly.map(mon => {
-                const summary = budget.find(b => b.expense_id === mon.expense_id);
-                mon.budget = summary.budget;
-
-                return mon;
-            });
+            $scope.setBudgets(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -133,11 +106,19 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         $scope.monthly.remain = parseFloat($scope.expenseRemain) - parseFloat(total);
     };
 
-    $scope.setMonthlys = function(res) {
-        const { data, ...pager } = res.data.plans;
+    $scope.expenseTypes = [];
+    $scope.setBudgets = function(res) {
+        // const { data, ...pager } = res.data.budgets;
 
-        $scope.plans = data;
-        $scope.pager = pager;
+        $scope.expenseTypes = res.data.expenseTypes.map(type => {
+            const budgetsList = res.data.budgets.filter(budget => budget.expense.expense_type_id === type.id);
+            type.budgets = budgetsList ? budgetsList : [];
+
+            return type;
+        });
+
+        console.log($scope.expenseTypes);
+        // $scope.pager = pager;
     };
 
     $scope.getDataWithUrl = function(e, url, cb) {
@@ -145,16 +126,14 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.plans = [];
+        $scope.budgets = [];
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&year=${year}&status=${status}&depart=${depart}`)
         .then(function(res) {
             cb(res);
 

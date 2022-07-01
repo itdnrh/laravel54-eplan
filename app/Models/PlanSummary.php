@@ -12,4 +12,9 @@ class PlanSummary extends Model
     {
         return $this->belongsTo(Expense::class, 'expense_id', 'id');
     }
+
+    public function depart()
+    {
+        return $this->belongsTo(Depart::class, 'owner_depart', 'depart_id');
+    }
 }
