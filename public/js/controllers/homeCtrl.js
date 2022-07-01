@@ -1,4 +1,4 @@
-app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) {
+app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, ChartService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.pieOptions = {};
@@ -134,6 +134,8 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
         .then(function(res) {
             $scope.stat2Cards = res.data.stats;
 
+            $scope.getPlanTypeRatio(res.data.stats);
+
             $scope.loading = false;
         }, function(err) {
             console.log(err);
@@ -175,13 +177,23 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
             const { data, ...pager } = res.data.orders;
 
             $scope.orders = data;
-            $scope.order_pager = pager;
+            $scope.orders_pager = pager;
 
             $scope.loading = false;
         }, function(err) {
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.getPlanTypeRatio = function (data) {
+        $scope.pieOptions = ChartService.initPieChart("pieChartContainer", "สัดส่วนสัดส่วนแผนงบลงทุน", "บาท", "สัดส่วนแผนงบลงทุน");
+        $scope.pieOptions.series[0].data.push({ name: 'ครุุภัณฑ์', y: parseInt(data[0].sum_all) });
+        $scope.pieOptions.series[0].data.push({ name: 'วัสดุนอกคลัง', y: parseInt(data[1].sum_all) });
+        $scope.pieOptions.series[0].data.push({ name: 'จ้างบริการ', y: parseInt(data[2].sum_all) });
+        $scope.pieOptions.series[0].data.push({ name: 'ก่อสร้าง', y: parseInt(data[3].sum_all) });
+
+        var chart = new Highcharts.Chart($scope.pieOptions);
     };
 
     $scope.getSumMonthData = function () {
@@ -301,99 +313,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService) 
             }, {
                 name: '16.00-00.00น.',
                 data: eSeries
-            });
-
-            var chart = new Highcharts.Chart($scope.barOptions);
-        }, function(err) {
-            console.log(err);
-        });
-    };
-
-    $scope.getDepartData = function () {
-        var selectMonth = document.getElementById('selectMonth').value;
-        var month = (selectMonth == '') ? moment().format('YYYY-MM') : selectMonth;
-        console.log(month);
-
-        ReportService.getSeriesData('/report/depart-chart/', month)
-        .then(function(res) {
-            console.log(res);
-            var dataSeries = [];
-
-            $scope.pieOptions = ReportService.initPieChart("pieContainer", "รายงานการให้บริการ ตามหน่วยงาน");
-            angular.forEach(res.data, function(value, key) {
-                $scope.pieOptions.series[0].data.push({name: value.depart, y: value.request});
-            });
-
-            var chart = new Highcharts.Chart($scope.pieOptions);
-        }, function(err) {
-            console.log(err);
-        });
-    };
-
-    $scope.getReferData = function () {
-        var selectMonth = document.getElementById('selectMonth').value;
-        var month = (selectMonth == '') ? moment().format('YYYY-MM') : selectMonth;
-        console.log(month);
-
-        ReportService.getSeriesData('/report/refer-chart/', month)
-        .then(function(res) {
-            console.log(res);
-            var nSeries = [];
-            var mSeries = [];
-            var aSeries = [];
-            var eSeries = [];
-            var categories = [];
-
-            angular.forEach(res.data, function(value, key) {
-                categories.push(value.d)
-                nSeries.push(value.n);
-                mSeries.push(value.m);
-                aSeries.push(value.a);
-            });
-
-            $scope.barOptions = ReportService.initStackChart("barContainer", "รายงานการให้บริการให้บริการรับ-ส่งต่อผู้ป่วย", categories, 'จำนวน Refer');
-            $scope.barOptions.series.push({
-                name: 'เวรดึก',
-                data: nSeries
-            }, {
-                name: 'เวรเช้า',
-                data: mSeries
-            }, {
-                name: 'เวรบ่าย',
-                data: aSeries
-            });
-
-            var chart = new Highcharts.Chart($scope.barOptions);
-        }, function(err) {
-            console.log(err);
-        });
-    };
-
-    $scope.getFuelDayData = function () {
-        var selectMonth = document.getElementById('selectMonth').value;
-        var month = (selectMonth == '') ? moment().format('YYYY-MM') : selectMonth;
-        console.log(month);
-
-        ReportService.getSeriesData('/report/fuel-day-chart/', month)
-        .then(function(res) {
-            console.log(res);
-            var nSeries = [];
-            var mSeries = [];
-            var categories = [];
-
-            angular.forEach(res.data, function(value, key) {
-                categories.push(value.bill_date)
-                nSeries.push(value.qty);
-                mSeries.push(value.net);
-            });
-
-            $scope.barOptions = ReportService.initBarChart("barContainer", "รายงานการใช้น้ำมันรวม รายวัน", categories, 'จำนวน');
-            $scope.barOptions.series.push({
-                name: 'ปริมาณ(ลิตร)',
-                data: nSeries
-            }, {
-                name: 'มูลค่า(บาท)',
-                data: mSeries
             });
 
             var chart = new Highcharts.Chart($scope.barOptions);
