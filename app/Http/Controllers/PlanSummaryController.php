@@ -69,7 +69,7 @@ class PlanSummaryController extends Controller
 
     public function index()
     {
-        return view('monthly.list', [
+        return view('budgets.list', [
             "expenses"  => Expense::all(),
             "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"   => Depart::all(),

@@ -193,6 +193,18 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('monthly/update/{id}', 'MonthlyController@update');
     Route::post('monthly/delete/{id}', 'MonthlyController@delete');
 
+    /** ประมาณการรายจ่าย */
+    Route::post('budgets/validate', 'PlanSummaryController@formValidate');
+    Route::get('budgets/list', 'PlanSummaryController@index');
+    Route::get('budgets/summary', 'PlanSummaryController@summary');
+    Route::get('budgets/search', 'PlanSummaryController@search');
+    Route::get('budgets/add', 'PlanSummaryController@create');
+    Route::post('budgets/store', 'PlanSummaryController@store');
+    Route::get('budgets/edit/{id}', 'PlanSummaryController@edit');
+    Route::get('budgets/detail/{id}', 'PlanSummaryController@detail');
+    Route::post('budgets/update/{id}', 'PlanSummaryController@update');
+    Route::post('budgets/delete/{id}', 'PlanSummaryController@delete');
+
     /** ค่าสาธารณูปโภค */
     Route::post('utilities/validate', 'UtilityController@formValidate');
     Route::get('utilities/list', 'UtilityController@index');

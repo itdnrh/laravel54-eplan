@@ -306,9 +306,28 @@
 										<i class="fa fa-circle-o"></i> รายการ
 									</a>
 								</li>
+							</ul>
+						</li>
+					@endif
+
+					<!-- ประมาณการรายจ่าย -->
+					@if (
+						Auth::user()->person_id == '1300200009261' ||
+						in_array(Auth::user()->memberOf->depart_id, [1,2,3,4,16,17,18,39,41]) ||
+						count(Auth::user()->delegations) > 0
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'budgets' }">
+							<a href="#">
+								<i class="fa fa-tags" aria-hidden="true"></i>
+								<span>ประมาณการรายจ่าย</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
 								<li ng-class="{ 'active': submenu == 'list' }">
-									<a href="{{ url('monthly/list') }}">
-										<i class="fa fa-circle-o"></i> ประมาณการรายจ่าย
+									<a href="{{ url('budgets/list') }}">
+										<i class="fa fa-circle-o"></i> รายการ
 									</a>
 								</li>
 							</ul>
