@@ -377,12 +377,12 @@
 								</li>
 								<li ng-class="{ 'active': submenu == 'expenses' }">
 									<a href="{{ url('/system/expenses') }}">
-										<i class="fa fa-circle-o"></i> ค่าใช้จ่าย
+										<i class="fa fa-circle-o"></i> รายจ่าย
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'expense-types' }">
 									<a href="{{ url('/system/expense-types') }}">
-										<i class="fa fa-circle-o"></i> ประเภทค่าใช้จ่าย
+										<i class="fa fa-circle-o"></i> ประเภทรายจ่าย
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'kpis' }">

@@ -100,6 +100,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/repairCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/utilityCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/budgetCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/expenseCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/report.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/stringFormat.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/pagination.js') }}"></script>

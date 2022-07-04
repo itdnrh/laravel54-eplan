@@ -12,4 +12,9 @@ class Expense extends Model
     {
         return $this->belongsTo(ExpenseType::class, 'expense_type_id', 'id');
     }
+
+    public function depart()
+    {
+        return $this->belongsTo(Depart::class, 'owner_depart', 'depart_id');
+    }
 }

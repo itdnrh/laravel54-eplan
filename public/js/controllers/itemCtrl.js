@@ -7,7 +7,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     $scope.cboGroup = '';
     $scope.txtItemName = '';
 
-    $scope.Items = [];
+    $scope.items = [];
     $scope.pager = null;
 
     $scope.item = {
@@ -19,7 +19,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         item_name: '',
         price_per_unit: '',
         unit_id: '',
-        in_stock: '0',
+        in_stock: 0,
         first_year: '2565',
         remark: '',
     };
@@ -54,7 +54,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             item_name: '',
             price_per_unit: '',
             unit_id: '',
-            in_stock: '0',
+            in_stock: 0,
             first_year: '2565',
             remark: '',
         };
@@ -96,11 +96,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         $scope.items = [];
         $scope.pager = null;
 
+        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let name  = $scope.txtItemName === '' ? '' : $scope.txtItemName;
 
-        $http.get(`${url}&type=1&cate=${cate}&status=${status}&name=${name}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&status=${status}&name=${name}`)
         .then(function(res) {
             cb(res);
 

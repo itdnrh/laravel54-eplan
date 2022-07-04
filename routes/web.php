@@ -243,6 +243,16 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('withdrawals/delete/{id}', 'WithdrawalController@delete');
     Route::get('withdrawals/{id}/print', 'WithdrawalController@printForm');
 
+    /** รายจ่าย */
+    Route::post('expenses/validate', 'ExpenseController@formValidate');
+    Route::get('system/expenses', 'ExpenseController@index');
+    Route::get('expenses/add', 'ExpenseController@create');
+    Route::post('expenses/store', 'ExpenseController@store');
+    Route::get('expenses/edit/{id}', 'ExpenseController@edit');
+    Route::get('expenses/detail/{id}', 'ExpenseController@detail');
+    Route::post('expenses/update/{id}', 'ExpenseController@update');
+    Route::post('expenses/delete/{id}', 'ExpenseController@delete');
+
     /** เจ้าหนี้ */
     Route::get('suppliers', 'SupplierController@getAll');
 

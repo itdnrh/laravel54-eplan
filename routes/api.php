@@ -67,7 +67,11 @@ Route::group(['middleware' => 'api'], function () {
 
     /** การส่งเบิกเงิน */
     Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');
-    
+
+    /** รายจ่าย */
+    Route::get('expenses', 'ExpenseController@search');
+    Route::get('expenses/{id}', 'ExpenseController@getById');
+
     /** เลขที่เอกสาร */
     Route::get('runnings/{docType}/doc-type', 'RunningController@getByDocType');
 

@@ -5,23 +5,23 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มประมาณการรายจ่าย
+            เพิ่มรายจ่าย
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มประมาณการรายจ่าย</li>
+            <li class="breadcrumb-item active">เพิ่มรายจ่าย</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="budgetCtrl"
+        ng-controller="expenseCtrl"
         ng-init="initForms({
             departs: {{ $departs }},
-            expenses: {{ $expenses }}
+            expenseTypes: {{ $expenseTypes }}
         }, 4);"
     >
 
@@ -30,10 +30,10 @@
 
                 <div class="box box-success">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มประมาณการรายจ่าย</h3>
+                        <h3 class="box-title">เพิ่มรายจ่าย</h3>
                     </div>
 
-                    <form id="frmNewBudget" name="frmNewBudget" method="post" action="{{ url('/budgets/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewExpense" name="frmNewExpense" method="post" action="{{ url('/expenses/store') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
                         <input
@@ -61,14 +61,14 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'expense_type_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'expense_type_id')}"
                                 >
                                     <label>รายจ่าย :</label>
                                     <select
                                         id="expense_type_id"
                                         name="expense_type_id"
-                                        ng-model="budget.expense_type_id"
-                                        ng-change="onFilterExpenses(budget.expense_type_id)"
+                                        ng-model="expense.expense_type_id"
+                                        ng-change="onFilterExpenses(expense.expense_type_id)"
                                         class="form-control select2"
                                     >
                                         <option value="">เลือกประเภทรายจ่าย</option>
@@ -78,100 +78,40 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(budget, 'expense_type_id')">
+                                    <span class="help-block" ng-show="checkValidate(expense, 'expense_type_id')">
                                         @{{ formError.errors.expense_type_id[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'expense_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'expense')}"
                                 >
-                                    <label>&nbsp;</label>
-                                    <select
-                                        id="expense_id"
-                                        name="expense_id"
-                                        ng-model="budget.expense_id"
-                                        class="form-control"
-                                    >
-                                        <option value="">เลือกรายจ่าย</option>
-                                        <option ng-repeat="expense in forms.expenses"value="@{{ expense.id }}">
-                                            @{{ expense.name }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(budget, 'expense_id')">
-                                        @{{ formError.errors.expense_id[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'year')}"
-                                >
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="year"
-                                        name="year"
-                                        ng-model="budget.year"
-                                        class="form-control"
-                                        tabindex="1"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(budget, 'year')">
-                                        @{{ formError.errors.year[0] }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'budget')}"
-                                >
-                                    <label>ยอดประมาณการ (บาท) :</label>
+                                    <label>ชื่อรายจ่าย :</label>
                                     <input  type="text"
-                                            id="budget"
-                                            name="budget"
-                                            ng-model="budget.budget"
+                                            id="expense"
+                                            name="expense"
+                                            ng-model="expense.expense"
                                             class="form-control pull-right"
                                             tabindex="8" />
-                                    <span class="help-block" ng-show="checkValidate(budget, 'budget')">
-                                        @{{ formError.errors.budget[0] }}
+                                    <span class="help-block" ng-show="checkValidate(expense, 'expense')">
+                                        @{{ formError.errors.expense[0] }}
                                     </span>
                                 </div>
-
-                                <!-- <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'remain')}"
-                                >
-                                    <label>ยอดคงเหลือ (บาท) :</label>
-                                    <input  type="text"
-                                            id="remain"
-                                            name="remain"
-                                            ng-model="budget.remain"
-                                            class="form-control pull-right"
-                                            tabindex="9" />
-                                    <span class="help-block" ng-show="checkValidate(budget, 'remain')">
-                                        @{{ formError.errors.remain[0] }}
-                                    </span>
-                                </div> -->
                             </div>
 
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'faction_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'faction_id')}"
                                 >
-                                    <label>หน่วยงานผู้รายงาน :</label>
+                                    <label>กลุ่มภารกิจ :</label>
                                     <select id="faction_id" 
                                             name="faction_id"
-                                            ng-model="budget.faction_id" 
+                                            ng-model="expense.faction_id" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="11"
-                                            ng-change="onFactionSelected(budget.faction_id)">
+                                            ng-change="onFactionSelected(expense.faction_id)">
                                         <option value="">-- เลือกกลุ่มภารกิจ --</option>
                                         @foreach($factions as $faction)
                                             <option value="{{ $faction->faction_id }}">
@@ -179,27 +119,28 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(budget, 'faction_id')">
+                                    <span class="help-block" ng-show="checkValidate(expense, 'faction_id')">
                                         @{{ formError.errors.faction_id[0] }}
                                     </span>
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'owner_depart')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'owner_depart')}"
                                 >
-                                    <label>&nbsp;</label>
+                                    <label>กลุ่มงาน :</label>
                                     <select id="owner_depart" 
                                             name="owner_depart"
-                                            ng-model="budget.owner_depart" 
+                                            ng-model="expense.owner_depart" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
-                                            tabindex="12">
+                                            tabindex="12"
+                                            ng-change="onDepartSelected(expense.owner_depart)">
                                         <option value="">-- เลือกกลุ่มงาน --</option>
                                         <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
                                             @{{ depart.depart_name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(budget, 'owner_depart')">
+                                    <span class="help-block" ng-show="checkValidate(expense, 'owner_depart')">
                                         @{{ formError.errors.owner_depart[0] }}
                                     </span>
                                 </div>
@@ -208,18 +149,18 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'remark')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'remark')}"
                                 >
                                     <label>หมายเหตุ :</label>
                                     <textarea
                                         id="remark"
                                         name="remark"
                                         row="4"
-                                        ng-model="budget.remark"
+                                        ng-model="expense.remark"
                                         class="form-control"
                                         tabindex="15"
                                     ></textarea>
-                                    <span class="help-block" ng-show="checkValidate(budget, 'remark')">
+                                    <span class="help-block" ng-show="checkValidate(expense, 'remark')">
                                         กรุณาระบุหมายเหตุ
                                     </span>
                                 </div>
@@ -228,7 +169,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/budgets/validate', budget, 'frmNewBudget', store)"
+                                ng-click="formValidate($event, '/expenses/validate', expense, 'frmNewExpense', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก
