@@ -22,6 +22,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         supplier_id: '',
         supplier: null,
         net_total: '',
+        year: '',
         remark: '',
     };
 

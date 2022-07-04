@@ -95,7 +95,7 @@
                             </div>
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_seq')}"
                                 >
                                     <label for="">งวดงานที่</label>
@@ -116,7 +116,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_no')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
@@ -127,6 +127,26 @@
                                         ng-model="withdrawal.deliver_no"
                                         class="form-control"
                                     />
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'year')}"
+                                >
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="withdrawal.year"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'year')">
+                                        @{{ formError.errors.year[0] }}
+                                    </span>
                                 </div>
                             </div>
 
