@@ -67,6 +67,7 @@ class WithdrawalController extends Controller
     {
         $withdrawals = Withdrawal::with('inspection','supplier','inspection.order')
                         // ->with('inspection.order.details','order.details.item')
+                        ->orderBy('withdraw_date', 'DESC')
                         ->paginate(10);
 
         return [
@@ -115,8 +116,10 @@ class WithdrawalController extends Controller
         $withdrawal->inspection_id  = $req['inspection_id'];
         $withdrawal->supplier_id    = $req['supplier_id'];
         $withdrawal->net_total      = $req['net_total'];
+        $withdrawal->year           = $req['year'];
         $withdrawal->remark         = $req['remark'];
-        // $withdrawal->user           = $req['user'];
+        $withdrawal->created_user   = $req['user'];
+        $withdrawal->updated_user   = $req['user'];
 
         if ($withdrawal->save()) {
             $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
@@ -147,16 +150,28 @@ class WithdrawalController extends Controller
     public function update(Request $req)
     {
         $cancel = Withdrawal::find($req['id']);
-        $cancel->reason         = $req['reason'];
-        $cancel->start_date     = convThDateToDbDate($req['start_date']);
-        $cancel->start_period   = '1';
-        $cancel->end_date       = convThDateToDbDate($req['end_date']);
-        $cancel->end_period     = $req['end_period'];
-        $cancel->days           = $req['days'];
-        $cancel->working_days   = $req['working_days'];
+        $withdrawal->withdraw_no    = 'นม 0032.201.2/';
+        $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
+        $withdrawal->inspection_id  = $req['inspection_id'];
+        $withdrawal->supplier_id    = $req['supplier_id'];
+        $withdrawal->net_total      = $req['net_total'];
+        $withdrawal->year           = $req['year'];
+        $withdrawal->remark         = $req['remark'];
+        $withdrawal->created_user   = $req['user'];
+        $withdrawal->updated_user   = $req['user'];
 
-        if ($cancel->save()) {
-            return redirect('/cancellations/list');
+        if ($withdrawal->save()) {
+            $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+            
+            /** Update status of plan data */
+            $details = OrderDetail::where('order_id', $req['order_id'])->get();
+            foreach($details as $item) {
+                $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
+            }
+
+            return [
+                'withdrawal' => $withdrawal
+            ];
         }
     }
 

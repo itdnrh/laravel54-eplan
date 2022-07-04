@@ -232,6 +232,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.withdrawal.withdraw_no = withdrawal.withdraw_no;
             $scope.withdrawal.withdraw_date = withdrawal.withdraw_date;
             $scope.withdrawal.net_total = withdrawal.net_total;
+            $scope.withdrawal.year = withdrawal.year;
             $scope.withdrawal.remark = withdrawal.remark;
             $scope.withdrawal.completed = withdrawal.completed;
             $scope.withdrawal.supplier = supplier;
@@ -248,7 +249,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     };
 
     $scope.errors = {};
-    $scope.sendSupport = (e) => {
+    $scope.withdraw = (e) => {
         if ($('#withdraw_no').val() == '') {
             $scope.errors = {
                 ...$scope.errors,
@@ -286,6 +287,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
                     $scope.withdrawal.withdraw_no = res.data.withdrawal.withdraw_no;
                     $scope.withdrawal.withdraw_date = res.data.withdrawal.withdraw_date;
+
+                    sendToDebt($scope.withdrawal);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
                 }
@@ -296,6 +299,32 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $('#withdraw-form').modal('hide');
         }
     };
+
+    const sendToDebt = function(withdrawal) {
+        const data = {
+            withdraw_id: withdrawal.id.id,
+            deliver_no: withdrawal.inspection.deliver_no,
+            deliver_date: withdrawal.inspection.deliver_date,
+            year: withdrawal.year,
+            supplier_id: withdrawal.supplier.supplier_id,
+            amount: withdrawal.order.total,
+            vatrate: withdrawal.order.vatrate,
+            vat: withdrawal.order.vat,
+            total: withdrawal.order.net_total,
+            remark: withdrawal.remark,
+        };
+
+        $http.post(`${CONFIG.accApiUrl}/tmp-debts`, data)
+        .then(function(res) {
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+            }
+        }, function(err) {
+            console.log(err);
+        });
+    }
 
     $scope.store = function(event, form) {
         event.preventDefault();

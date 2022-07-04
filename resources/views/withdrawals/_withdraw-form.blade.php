@@ -59,7 +59,7 @@
                             <button
                                 type="button"
                                 class="btn btn-primary"
-                                ng-click="sendSupport($event)"
+                                ng-click="withdraw($event)"
                             >
                                 บันทึก
                             </button>
