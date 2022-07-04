@@ -303,13 +303,16 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     const sendToDebt = function(withdrawal) {
         const data = {
-            withdraw_id: withdrawal.id.id,
+            withdraw_id: withdrawal.id,
             deliver_no: withdrawal.inspection.deliver_no,
             deliver_date: withdrawal.inspection.deliver_date,
             year: withdrawal.year,
             supplier_id: withdrawal.supplier.supplier_id,
+            desc: `${withdrawal.inspection.remark}`,
+            po: `ใบสั่งซื้อ/จ้างเลขที่ ${withdrawal.order.po_no} วันที่ ${withdrawal.order.po_date}`,
+            items: '',
             amount: withdrawal.order.total,
-            vatrate: withdrawal.order.vatrate,
+            vatrate: withdrawal.order.vat_rate,
             vat: withdrawal.order.vat,
             total: withdrawal.order.net_total,
             remark: withdrawal.remark,
