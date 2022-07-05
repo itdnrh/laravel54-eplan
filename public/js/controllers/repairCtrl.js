@@ -21,7 +21,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         depart_id: '',
         division_id: '',
         year: '',
-        plan_type_id: '',
+        plan_type_id: '3',
         total: '',
         contact_detail: '',
         contact_person: '',
