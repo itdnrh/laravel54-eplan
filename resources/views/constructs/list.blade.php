@@ -70,7 +70,7 @@
                                     </select>
                                 </div><!-- /.form group -->
                             </div><!-- /.row -->
-                            <div class="row">
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
