@@ -162,7 +162,7 @@ app.controller('expenseCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         if(confirm(`คุณต้องแก้ไขรายจ่าย รหัส ${$scope.expense.id} ใช่หรือไม่?`)) {
             $scope.expense.user = $('#user').val();
 
-            $http.post(`${CONFIG.apiUrl}/expenses`, $scope.expense)
+            $http.post(`${CONFIG.baseUrl}/expenses/update/${$scope.expense.id}`, $scope.expense)
             .then((res) => {
                 $scope.loading = false;
 
