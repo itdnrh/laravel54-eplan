@@ -56,12 +56,18 @@
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <strong><i class="fa fa-book margin-r-5"></i> การศึกษา</strong>
-                        <p class="text-muted" style="text-indent: 20px; border: 1px dotted grey; padding: 5px;">
-                            ระดับ {{ $educationLevels[$educations->edu_level] }}
-                            สาขา {{ $educations->edu_course }}
-                            จาก {{ $educations->edu_house }}
-                            เมื่อปี {{ $educations->edu_year }}
-                        </p>
+                        @if ($educations)
+                            <p class="text-muted" style="text-indent: 20px; border: 1px dotted grey; padding: 5px;">
+                                ระดับ {{ $educationLevels[$educations->edu_level] }}
+                                สาขา {{ $educations->edu_course }}
+                                จาก {{ $educations->edu_house }}
+                                เมื่อปี {{ $educations->edu_year }}
+                            </p>
+                        @else
+                            <p class="text-muted" style="text-indent: 20px; border: 1px dotted grey;">
+                                -
+                            </p>
+                        @endif
 
                         <hr>
 

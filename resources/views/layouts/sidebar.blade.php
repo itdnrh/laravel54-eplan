@@ -367,7 +367,7 @@
 							<ul class="treeview-menu">
 								<li ng-class="{ 'active': submenu == 'suppliers' }">
 									<a href="{{ url('/system/suppliers') }}">
-										<i class="fa fa-circle-o"></i> ข้อมูลเจ้าหนี้
+										<i class="fa fa-circle-o"></i> เจ้าหนี้
 									</a>
 								</li>
 								<li ng-class="{ 'active': submenu == 'items' }">

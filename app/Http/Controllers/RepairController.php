@@ -26,8 +26,8 @@ class RepairController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'doc_no'            => 'required',
-            'doc_date'          => 'required',
+            // 'doc_no'            => 'required',
+            // 'doc_date'          => 'required',
             'topic'             => 'required',
             'year'              => 'required',
             'plan_type_id'      => 'required',
@@ -245,9 +245,16 @@ class RepairController extends Controller
     public function store(Request $req)
     {
         try {
+            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
+            $doc_no_prefix = $person->memberOf->depart->memo_no;
+
             $support = new Support;
-            $support->doc_no            = $req['doc_no'];
-            $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
+
+            if (!empty($req['doc_date'])) {
+                $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            }
+
             $support->support_type_id   = 2;
             $support->topic             = $req['topic'];
             $support->year              = $req['year'];
@@ -259,7 +266,8 @@ class RepairController extends Controller
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
             $support->status            = 0;
-            // $support->user_id        = $req['user_id'];
+            $support->created_user      = $req['user'];
+            $support->updated_user      = $req['user'];
             
             if ($support->save()) {
                 $supportId = $support->id;
