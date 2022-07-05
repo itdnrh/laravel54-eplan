@@ -79,6 +79,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('repairs', 'RepairController@getAll');
     Route::get('repairs/{id}', 'RepairController@getById');
 
+    /** เจ้าหนี้ */    
+    Route::get('suppliers', 'SupplierController@getAll');
+    Route::get('suppliers/{id}', 'SupplierController@getById');
+
     /** รายงาน */
     Route::get('reports/summary-depart', 'ReportController@getSummaryByDepart');
     Route::get('reports/asset-depart', 'ReportController@getAssetByDepart');

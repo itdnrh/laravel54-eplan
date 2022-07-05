@@ -254,7 +254,13 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('expenses/delete/{id}', 'ExpenseController@delete');
 
     /** เจ้าหนี้ */
-    Route::get('suppliers', 'SupplierController@getAll');
+    Route::get('suppliers/validate', 'SupplierController@formValidate');
+    Route::get('system/suppliers', 'SupplierController@index');
+    Route::post('suppliers/store', 'SupplierController@store');
+    Route::get('suppliers/edit/{id}', 'SupplierController@edit');
+    Route::get('suppliers/detail/{id}', 'SupplierController@detail');
+    Route::post('suppliers/update/{id}', 'SupplierController@update');
+    Route::post('suppliers/delete/{id}', 'SupplierController@delete');
 
     /** รายงาน */
     Route::get('reports/summary-depart', 'ReportController@summaryByDepart');

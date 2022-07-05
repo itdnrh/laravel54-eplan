@@ -1,12 +1,11 @@
 app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboAssetCate = '';
-    $scope.searchKeyword = "";
+    $scope.txtKeyword = "";
 
-    $scope.pager = [];
-    $scope.types = [];
-    $scope.type = {
+    $scope.suppliers = [];
+    $scope.pager = null;
+    $scope.supplier = {
         type_id: '',
         type_no: '',
         type_name: '',
@@ -16,18 +15,19 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         cate_no: '0000',
     };
 
-    $scope.getData = function(event) {
-        $scope.types = [];
+    $scope.getAll = function(event) {
+        $scope.suppliers = [];
+        $scope.pager = null;
         $scope.loading = true;
+
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         
-        let assetCate = $scope.cboAssetCate === '' ? 0 : $scope.cboAssetCate;
-        let searchKey = $scope.searchKeyword === '' ? 0 : $scope.searchKeyword;
-        
-        $http.get(`${CONFIG.baseUrl}/asset-type/search/${assetCate}/${searchKey}`)
+        $http.get(`${CONFIG.apiUrl}/suppliers?name=${name}`)
         .then(function(res) {
-            console.log(res);
-            $scope.types = res.data.types.data;
-            $scope.pager = res.data.types;
+            const { data, ...pager } = res.data.suppliers;
+
+            $scope.suppliers = data;
+            $scope.pager = pager;
 
             $scope.loading = false;
         }, function(err) {
@@ -36,57 +36,42 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     }
 
-    $scope.getDataWithURL = function(URL) {
-        console.log(URL);
-        $scope.types = [];
+    $scope.getSuppliersWithUrl = function(e, url) {
+        $scope.suppliers = [];
+        $scope.pager = null;
         $scope.loading = true;
 
-    	$http.get(URL)
-    	.then(function(res) {
-    		console.log(res);
-            $scope.types = res.data.types.data;
-            $scope.pager = res.data.types;
+        let name = $scope.txtKeyword === '' ? 0 : $scope.txtKeyword;
 
-            $scope.loading = false;
-    	}, function(err) {
-    		console.log(err);
-            $scope.loading = false;
-    	});
-    }
-
-    $scope.getAssetType = function(typeId) {
-        $http.get(CONFIG.baseUrl + '/asset-type/get-ajax-byid/' +typeId)
+        $http.get(url+ `&name=${name}`)
         .then(function(res) {
-            console.log(res);
-            $scope.type = res.data.type;
+            const { data, ...pager } = res.data.suppliers;
 
-            let [cateNo, typeNo] = $scope.type.type_no.split('-');
-            $scope.type.cate_no = cateNo;
-            $scope.type.type_no = typeNo;
+            $scope.suppliers = data;
+            $scope.pager = pager;
+
+            $scope.loading = false;
         }, function(err) {
             console.log(err);
+            $scope.loading = false;
         });
     }
 
-    $scope.getAssetNo = (cateId) => {
+    $scope.getById = function(id) {
         $scope.loading = true;
 
-        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajax-no/' +cateId)
+        $http.get(`${CONFIG.baseUrl}/suppliers/${id}`)
         .then(function(res) {
             console.log(res);
-            let tmpNo = res.data.typeNo;
-            let [cate, no] = tmpNo.split('-');
-            let newNo = (parseInt(no)+1).toString().padStart(3, "0");
-            
-            $scope.type.cate_no = `${cate}`;
-            $scope.type.type_no = `${newNo}`;
+            $scope.supplier = res.data.supplier;
 
             $scope.loading = false;
         }, function(err) {
             console.log(err);
+
             $scope.loading = false;
         });
-    };
+    }
 
     $scope.edit = function(typeId) {
         console.log(typeId);

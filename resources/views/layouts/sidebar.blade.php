@@ -380,11 +380,11 @@
 										<i class="fa fa-circle-o"></i> รายจ่าย
 									</a>
 								</li>
-								<li ng-class="{ 'active': submenu == 'expense-types' }">
+								<!-- <li ng-class="{ 'active': submenu == 'expense-types' }">
 									<a href="{{ url('/system/expense-types') }}">
 										<i class="fa fa-circle-o"></i> ประเภทรายจ่าย
 									</a>
-								</li>
+								</li> -->
 								<li ng-class="{ 'active': submenu == 'kpis' }">
 									<a href="{{ url('/system/kpis') }}">
 										<i class="fa fa-circle-o"></i> ตัวชี้วัด (KPI)
