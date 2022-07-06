@@ -2,9 +2,9 @@
     <thead>
         <tr>
             <th style="width: 3%; text-align: center;">#</th>
+            <th style="width: 8%; text-align: center;">เลขที่รับ</th>
             <th style="width: 12%; text-align: center;">เลขที่เอกสาร</th>
             <th style="width: 8%; text-align: center;">วันที่เอกสาร</th>
-            <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
             <th>รายการ</th>
             <th style="width: 8%; text-align: center;">ยอดเงิน</th>
             <th style="width: 20%; text-align: center;">หน่วยงาน</th>
@@ -16,9 +16,9 @@
     <tbody>
         <tr ng-repeat="(index, support) in supports">
             <td style="text-align: center;">@{{ index+supports_pager.from }}</td>
+            <td style="text-align: center;">@{{ support.received_no }}</td>
             <td style="text-align: center;">@{{ support.doc_no }}</td>
             <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
-            <!-- <td style="text-align: center;">@{{ support.year }}</td> -->
             <td>
                 <ul style="margin: 0 5px; padding: 0 10px;">
                     <li ng-repeat="(index, detail) in support.details">

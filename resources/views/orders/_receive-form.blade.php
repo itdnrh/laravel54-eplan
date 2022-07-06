@@ -17,12 +17,12 @@
                     class="form-control"
                 />
                 <div class="modal-header">
-                    <h5 class="modal-title">บันทึกการส่งเบิกเงิน</h5>
+                    <h5 class="modal-title">บันทึกรับใบขอสนับสนุน</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
+                            <label for="">เลขที่ใบขอสนับสนุน</label>
                             <input
                                 type="text"
                                 id="withdraw_no"
@@ -42,22 +42,7 @@
                             />
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="">งวดงานที่</label>
-                            <select
-                                id="deliver_seq"
-                                name="deliver_seq"
-                                ng-model="withdrawal.deliver_seq"
-                                class="form-control"
-                                ng-change="onDeliverSeqSelected(withdrawal.deliver_seq)"
-                            >
-                                <option value="">-- เลือกงวดงานที่ --</option>
-                                <option ng-repeat="insp in inspections" value="@{{ insp.deliver_seq }}">
-                                    @{{ insp.deliver_seq }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label for="">เลขที่เอกสารส่งมอบงาน</label>
+                            <label for="">เลขที่รับ</label>
                             <input
                                 type="text"
                                 id="deliver_no"
@@ -76,7 +61,7 @@
                                 class="form-control"
                             />
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-12 form-group">
                             <label for="">หมายเหตุ</label>
                             <input
                                 type="text"
@@ -90,7 +75,7 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="onWithdraw($event)"
+                        ng-click="onReceiveSupport($event, support)"
                         class="btn btn-primary"
                         aria-label="Save"
                     >

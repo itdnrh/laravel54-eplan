@@ -311,6 +311,11 @@ class OrderController extends Controller
                 $support->status = 2; 
 
                 if ($support->save()) {
+                    /** Update running number table of doc_type_id = 10 */
+                    $running = Running::where('doc_type_id', '10')
+                                    ->where('year', $support->year)
+                                    ->update(['running_no' => $support->received_no]);
+
                     foreach($req['details'] as $detail) {
                         $plan = Plan::find($detail['plan_id']);
                         $plan->received_date = date('Y-m-d');

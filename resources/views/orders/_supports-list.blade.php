@@ -124,10 +124,18 @@
                     title="รับเอกสาร">
                     รับเอกสาร
                 </a>
+                <!-- <a  href="#"
+                    ng-click="ShowReceiveSupportForm($event, support)"
+                    class="btn btn-primary btn-xs"
+                    title="รับเอกสาร">
+                    รับเอกสาร
+                </a> -->
             </td>             
         </tr>
     </tbody>
 </table>
+
+@include('orders._receive-form')
 
 <div class="row" ng-show="supportsToReceives_pager.last_page > 1">
     <div class="col-md-4">
