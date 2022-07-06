@@ -19,7 +19,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 77%; margin-left: 70px;">
-                                    <span style="margin: 0 5px;">{{ $support->depart->depart_name }}</span>
+                                    <span style="margin: 0 5px; text-overflow: ellipsis; overflow: hidden; width: 160px; white-space: nowrap;">
+                                        {{ $support->depart->depart_name }}
+                                    </span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     โทร <span style="margin: 0 5px;">{{ thainumDigit($support->depart->tel_no) }}</span>
                                 </div>
@@ -88,7 +90,7 @@
                                             {{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                         </td>
                                         <td style="text-align: center; padding: 0;">
-                                            {{ thainumDigit($detail->amount) }}
+                                            {{ thainumDigit(number_format($detail->amount)) }}
                                         </td>
                                         <td style="text-align: center; padding: 0;">
                                             {{ thainumDigit(number_format($detail->price_per_unit)) }}

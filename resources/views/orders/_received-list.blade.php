@@ -73,23 +73,13 @@
                 </span>
             </td>
             <td style="text-align: center;">
-                <div style="display: flex; justify-content: center; gap: 2px;">
-                    <form
-                        id="frmDelete"
-                        method="POST"
-                        action="{{ url('/assets/delete') }}"
-                        ng-show="plan.status == 2"
-                    >
-                        {{ csrf_field() }}
-                        <button
-                            type="submit"
-                            ng-click="delete($event, plan.id)"
-                            class="btn btn-danger btn-xs"
-                        >
-                            ยกเลิก
-                        </button>
-                    </form>
-                </div>
+                <button
+                    type="button"
+                    ng-click="onCancelReceivePlan($event, plan)"
+                    class="btn btn-danger btn-xs"
+                >
+                    ยกเลิก
+                </button>
             </td>             
         </tr>
     </tbody>

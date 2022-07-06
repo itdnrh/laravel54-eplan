@@ -345,7 +345,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.onReceivePlan = function(e, plan) {
-        $http.post(`${CONFIG.baseUrl}/orders/received/1`, { id: plan.id })
+        $http.post(`${CONFIG.baseUrl}/orders/received/2`, { id: plan.id })
         .then(function(res) {
             console.log(res);
             if (res.data.status == 1) {
@@ -357,8 +357,24 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
         });
+    };
 
-        $('#receive-list').modal('hide');
+    $scope.onCancelReceivePlan = function(e, plan) {
+        console.log(plan);
+        if(confirm(`คุณต้องการยกเลิกรับเอกสารขอสนับสนุน รหัส ${$scope.cancellation.leave_id} ใช่หรือไม่?`)) {
+            // $http.post(`${CONFIG.baseUrl}/orders/received/2`, { id: plan.id })
+            // .then(function(res) {
+            //     console.log(res);
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
+            //     }
+            // }, function(err) {
+            //     console.log(err);
+            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
+            // });
+        }
     };
 
     /** ============================================================================= */
