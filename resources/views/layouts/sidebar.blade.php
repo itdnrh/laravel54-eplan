@@ -62,7 +62,7 @@
 							</li>
 							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/materials') }}">
-									<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
+									<i class="fa fa-circle-o"></i> วัสดุ
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['services','list','add','edit','detail'].includes(submenu)}">
@@ -105,7 +105,7 @@
 								</li>
 								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'materials' }">
 									<a href="{{ url('approvals/materials') }}">
-										<i class="fa fa-circle-o"></i> วัสดุ (นอกคลัง)
+										<i class="fa fa-circle-o"></i> วัสดุ
 									</a>
 								</li>
 								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'services' }">
@@ -142,11 +142,19 @@
 									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
-							<li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
-								<a href="{{ url('repairs/list') }}">
-									<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
-								</a>
-							</li>
+							@if (
+								Auth::user()->person_id == '1300200009261' ||
+								Auth::user()->memberOf->depart_id == 1 ||
+								Auth::user()->memberOf->depart_id == 39 ||
+								Auth::user()->memberOf->depart_id == 72 ||
+								count(Auth::user()->delegations) > 0
+							)
+								<li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
+									<a href="{{ url('repairs/list') }}">
+										<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
+									</a>
+								</li>
+							@endif
 							<li ng-class="{ 'active': menu == 'supports' && submenu == 'timeline' }">
 								<a href="{{ url('supports/timeline') }}">
 									<i class="fa fa-circle-o"></i> ติดตามพัสดุ
