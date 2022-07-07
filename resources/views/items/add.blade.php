@@ -161,7 +161,7 @@
                                         id="unit_id"
                                         name="unit_id"
                                         ng-model="item.unit_id"
-                                        class="form-control"
+                                        class="form-control select2"
                                     >
                                         <option value="">-- เลือกหน่วยนับ --</option>
                                         @foreach($units as $unit)

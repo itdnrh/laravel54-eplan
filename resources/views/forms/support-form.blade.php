@@ -19,8 +19,8 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 77%; margin-left: 70px;">
-                                    <span style="margin: 0 5px; text-overflow: ellipsis; overflow: hidden; width: 160px; white-space: nowrap;">
-                                        {{ $support->depart->depart_name }}
+                                    <span style="margin: 0 5px;">
+                                        {{ $support->depart_id != 37 ? $support->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
                                     </span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     โทร <span style="margin: 0 5px;">{{ thainumDigit($support->depart->tel_no) }}</span>
