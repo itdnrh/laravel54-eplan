@@ -159,7 +159,8 @@ class PlanMaterialController extends Controller
             $material->remain_amount   = $req['amount'];
             $material->remain_budget   = $req['sum_price'];
             // $material->request_cause   = $req['request_cause'];
-            $construct->have_amount     = $req['have_amount'];
+            $material->have_amount     = $req['have_amount'];
+            $material->calc_method     = 1;
             $material->save();
 
             return redirect('/plans/materials');
@@ -196,8 +197,6 @@ class PlanMaterialController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -218,6 +217,11 @@ class PlanMaterialController extends Controller
             $material->unit_id         = $req['unit_id'];
             $material->amount          = $req['amount'];
             $material->sum_price       = $req['sum_price'];
+            $material->remain_amount   = $req['amount'];
+            $material->remain_budget   = $req['sum_price'];
+            // $material->request_cause   = $req['request_cause'];
+            $material->have_amount     = $req['have_amount'];
+            $material->calc_method     = 1;
             $material->save();
 
             return redirect('/plans/materials');

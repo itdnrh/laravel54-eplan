@@ -303,7 +303,7 @@
                                         @{{ formError.errors.sum_price[0] }}
                                     </span>
                                 </div>
-                                <div
+                                <!-- <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'request_cause')}"
                                 >
@@ -337,7 +337,7 @@
                                     <span class="help-block" ng-show="checkValidate(material, 'request_cause')">
                                         @{{ formError.errors.request_cause[0] }}
                                     </span>
-                                </div>
+                                </div> -->
                                 <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'have_amount')}"

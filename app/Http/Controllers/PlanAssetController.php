@@ -161,6 +161,7 @@ class PlanAssetController extends Controller
             $asset->remain_budget   = $req['sum_price'];
             $asset->request_cause   = $req['request_cause'];
             $asset->have_amount     = $req['have_amount'];
+            $asset->calc_method     = 1;
             $asset->save();
 
             return redirect('/plans/assets');
@@ -213,6 +214,7 @@ class PlanAssetController extends Controller
             $asset->remain_budget   = $req['sum_price'];
             $asset->request_cause   = $req['request_cause'];
             $asset->have_amount     = $req['have_amount'];
+            $asset->calc_method     = 1;
             $asset->save();
 
             return redirect('/plans/assets');
