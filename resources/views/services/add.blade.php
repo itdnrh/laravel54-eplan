@@ -279,7 +279,7 @@
                                         @{{ formError.errors.sum_price[0] }}
                                     </span>
                                 </div>
-                                <div
+                                <!-- <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'request_cause')}"
                                 >
@@ -313,7 +313,7 @@
                                     <span class="help-block" ng-show="checkValidate(service, 'request_cause')">
                                         @{{ formError.errors.request_cause[0] }}
                                     </span>
-                                </div>
+                                </div> -->
                                 <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'budget_src_id')}"
@@ -333,6 +333,33 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(service, 'budget_src_id')">
                                         กรุณาเลือกแหล่งเงินงบประมาณ
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'request_cause')}"
+                                >
+                                    <label>ประเภทการตัดยอด :</label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="N"
+                                                    ng-model="service.request_cause"
+                                                    tabindex="3"> ตัดยอดตามจำนวน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="request_cause"
+                                                    name="request_cause"
+                                                    value="N"
+                                                    ng-model="service.request_cause"
+                                                    tabindex="3"> ตัดยอดตามยอดเงิน
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(service, 'request_cause')">
+                                        @{{ formError.errors.request_cause[0] }}
                                     </span>
                                 </div>
                             </div>

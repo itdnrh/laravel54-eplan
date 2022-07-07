@@ -125,7 +125,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=3&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
         .then(function(res) {
             cb(res);
 

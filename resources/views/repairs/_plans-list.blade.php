@@ -50,7 +50,8 @@
                                 <th style="width: 8%; text-align: center;">เลขที่แผน</th>
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
-                                <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
+                                <th style="width: 8%; text-align: center;">ยอดงบที่ขอ</th>
+                                <th style="width: 8%; text-align: center;">ยอดงบคงเหลือ</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                                 <!-- <th style="width: 5%; text-align: center;">สถานะ</th> -->
                                 <th style="width: 6%; text-align: center;">Actions</th>
@@ -79,6 +80,9 @@
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.sum_price | currency:'':0 }}
+                                </td>
+                                <td style="text-align: center;">
+                                    @{{ plan.remain_budget | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
                                     <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
