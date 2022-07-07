@@ -155,24 +155,28 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.showPlansList = () => {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
-        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-
-            $('#plans-list').modal('show');
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
+        if (!$scope.support.plan_type_id) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
+        } else {
+            $scope.loading = true;
+            $scope.plans = [];
+            $scope.plans_pager = null;
+    
+            let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+            let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+    
+            $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A`)
+            .then(function(res) {
+                $scope.setPlans(res);
+    
+                $scope.loading = false;
+    
+                $('#plans-list').modal('show');
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
     };
 
     $scope.getPlans = (type, status) => {

@@ -119,7 +119,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
                                 >
-                                    <label>ประเภทพัสดุ :</label>
+                                    <label>ประเภทแผน :</label>
                                     <select id="plan_type_id"
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
@@ -127,7 +127,7 @@
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
-                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option value="">-- เลือกประเภทแผน --</option>
                                         @foreach($planTypes as $planType)
                                             <option value="{{ $planType->id }}">
                                                 {{ $planType->plan_type_name }}

@@ -49,6 +49,7 @@
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
                                 <th style="width: 8%; text-align: center;">เลขที่แผน</th>
                                 <th>รายการ</th>
+                                <th style="width: 8%; text-align: center;">จน.คงเหลือ</th>
                                 <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
@@ -73,6 +74,9 @@
                                         ng-show="plan.attachment">
                                         <i class="fa fa-paperclip" aria-hidden="true"></i>
                                     </a> -->
+                                </td>
+                                <td style="text-align: center;">
+                                    @{{ plan.remain | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.price_per_unit | currency:'':0 }}

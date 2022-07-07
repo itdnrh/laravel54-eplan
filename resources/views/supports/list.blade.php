@@ -59,11 +59,11 @@
                                     </select>
                                 </div><!-- /.form group -->
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทพัสดุ</label>
+                                    <label>ประเภทแผน</label>
                                     <select
-                                        id="cboSupplier"
-                                        name="cboSupplier"
-                                        ng-model="cboSupplier"
+                                        id="cboPlanType"
+                                        name="cboPlanType"
+                                        ng-model="cboPlanType"
                                         ng-change="getAll($event)"
                                         class="form-control select2"
                                     >
@@ -100,7 +100,7 @@
                                     <th style="width: 4%; text-align: center;">#</th>
                                     <th style="width: 12%; text-align: center;">เลขที่บันทึก</th>
                                     <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
-                                    <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
+                                    <th style="width: 10%; text-align: center;">ประเภทแผน</th>
                                     <th>หน่วยงาน</th>
                                     <th style="width: 8%; text-align: center;">ปีงบ</th>
                                     <th style="width: 8%; text-align: center;">รายการ</th>

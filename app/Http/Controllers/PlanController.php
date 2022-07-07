@@ -151,12 +151,13 @@ class PlanController extends Controller
                     ->when(!empty($faction), function($q) use ($departsList) {
                         $q->whereIn('depart_id', $departsList);
                     })
-                    ->when($status != '', function($q) use ($status) {
-                        $q->where('status', $status);
-                    })
+                    // ->when($status != '', function($q) use ($status) {
+                    //     $q->where('status', $status);
+                    // })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('approved', $approved);
                     })
+                    ->where('plan_items.remain_amount', '>', 0)
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
                     // })

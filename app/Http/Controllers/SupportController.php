@@ -9,6 +9,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Support;
 use App\Models\SupportDetail;
 use App\Models\Plan;
+use App\Models\PlanItem;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\Unit;
@@ -225,9 +226,15 @@ class SupportController extends Controller
                     $detail->save();
 
                     /** TODO: should update plan's status to 99=pending  */
-                    $plan = Plan::find($item['plan_id']);
-                    $plan->status = '99';
-                    $plan->save();
+                    // $plan = Plan::find($item['plan_id']);
+                    // $plan->status = '99';
+                    // $plan->save();
+
+                    /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                    $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
+                    $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
+                    $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+                    $planItem->save();
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */
