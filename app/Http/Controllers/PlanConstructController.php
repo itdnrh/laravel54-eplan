@@ -43,6 +43,7 @@ class PlanConstructController extends Controller
             'reason'            => 'required',
             'budget_src_id'     => 'required',
             'request_cause'     => 'required',
+            // 'have_amount'       => 'required',
         ];
 
         if ($request['strategic_id'] == '' && $request['service_plan_id'] == '') {
@@ -135,8 +136,6 @@ class PlanConstructController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        // $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -164,6 +163,10 @@ class PlanConstructController extends Controller
             $construct->unit_id         = $req['unit_id'];
             $construct->amount          = $req['amount'];
             $construct->sum_price       = $req['sum_price'];
+            $construct->remain_amount   = $req['amount'];
+            $construct->remain_budget   = $req['sum_price'];
+            $construct->request_cause   = $req['request_cause'];
+            // $construct->have_amount     = $req['have_amount'];
             $construct->save();
 
             return redirect('/plans/constructs');
@@ -201,8 +204,6 @@ class PlanConstructController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        // $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -226,6 +227,10 @@ class PlanConstructController extends Controller
             $construct->unit_id         = $req['unit_id'];
             $construct->amount          = $req['amount'];
             $construct->sum_price       = $req['sum_price'];
+            $construct->remain_amount   = $req['amount'];
+            $construct->remain_budget   = $req['sum_price'];
+            $construct->request_cause   = $req['request_cause'];
+            // $construct->have_amount     = $req['have_amount'];
             $construct->save();
 
             return redirect('/plans/constructs');

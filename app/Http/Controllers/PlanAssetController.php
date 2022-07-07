@@ -133,8 +133,6 @@ class PlanAssetController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -159,6 +157,10 @@ class PlanAssetController extends Controller
             $asset->unit_id         = $req['unit_id'];
             $asset->amount          = $req['amount'];
             $asset->sum_price       = $req['sum_price'];
+            $asset->remain_amount   = $req['amount'];
+            $asset->remain_budget   = $req['sum_price'];
+            $asset->request_cause   = $req['request_cause'];
+            $asset->have_amount     = $req['have_amount'];
             $asset->save();
 
             return redirect('/plans/assets');
@@ -193,8 +195,6 @@ class PlanAssetController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -209,6 +209,10 @@ class PlanAssetController extends Controller
             $asset->unit_id         = $req['unit_id'];
             $asset->amount          = $req['amount'];
             $asset->sum_price       = $req['sum_price'];
+            $asset->remain_amount   = $req['amount'];
+            $asset->remain_budget   = $req['sum_price'];
+            $asset->request_cause   = $req['request_cause'];
+            $asset->have_amount     = $req['have_amount'];
             $asset->save();
 
             return redirect('/plans/assets');

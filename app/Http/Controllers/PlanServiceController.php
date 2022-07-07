@@ -40,7 +40,8 @@ class PlanServiceController extends Controller
             'start_month'       => 'required',
             'reason'            => 'required',
             'budget_src_id'     => 'required',
-            'request_cause'     => 'required',
+            // 'request_cause'     => 'required',
+            // 'have_amount'       => 'required',
         ];
 
         if ($request['strategic_id'] == '' && $request['service_plan_id'] == '') {
@@ -131,8 +132,6 @@ class PlanServiceController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        // $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -156,6 +155,10 @@ class PlanServiceController extends Controller
             $service->unit_id           = $req['unit_id'];
             $service->amount            = $req['amount'];
             $service->sum_price         = $req['sum_price'];
+            $service->remain_amount     = $req['amount'];
+            $service->remain_budget     = $req['sum_price'];
+            // $service->request_cause     = $req['request_cause'];
+            // $service->have_amount       = $req['have_amount'];
             $service->save();
 
             return redirect('/plans/services');
@@ -192,8 +195,6 @@ class PlanServiceController extends Controller
         $plan->division_id      = $req['division_id'];
         $plan->start_month      = $req['start_month'];
         $plan->reason           = $req['reason'];
-        $plan->request_cause    = $req['request_cause'];
-        // $plan->have_amount      = $req['have_amount'];
         $plan->strategic_id     = $req['strategic_id'];
         $plan->service_plan_id  = $req['service_plan_id'];
         $plan->remark           = $req['remark'];
@@ -213,6 +214,10 @@ class PlanServiceController extends Controller
             $service->unit_id           = $req['unit_id'];
             $service->amount            = $req['amount'];
             $service->sum_price         = $req['sum_price'];
+            $service->remain_amount     = $req['amount'];
+            $service->remain_budget     = $req['sum_price'];
+            // $service->request_cause     = $req['request_cause'];
+            // $service->have_amount       = $req['have_amount'];
             $service->save();
 
             return redirect('/plans/services');
