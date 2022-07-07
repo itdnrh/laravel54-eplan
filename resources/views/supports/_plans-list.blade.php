@@ -49,9 +49,10 @@
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
                                 <th style="width: 8%; text-align: center;">เลขที่แผน</th>
                                 <th>รายการ</th>
+                                <th style="width: 8%; text-align: center;">จำนวนที่ขอ</th>
+                                <th style="width: 8%; text-align: center;">ยอดงบที่ขอ</th>
                                 <th style="width: 8%; text-align: center;">จน.คงเหลือ</th>
-                                <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
-                                <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
+                                <th style="width: 8%; text-align: center;">ยอดงบคงเหลือ</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                                 <!-- <th style="width: 5%; text-align: center;">สถานะ</th> -->
                                 <th style="width: 6%; text-align: center;">Actions</th>
@@ -65,7 +66,7 @@
                                 <td>
                                     <h5 style="margin: 0; font-weight: bold;">@{{ plan.plan_item.item.category.name }}</h5>
                                     @{{ plan.plan_item.item.item_name }}
-                                    จำนวนทั้งหมด <span>@{{ plan.amount | currency:'':0 }}</span>
+                                    ราคาต่อหน่วย <span>@{{ plan.price_per_unit | currency:'':0 }}</span>
                                     <span>@{{ plan.plan_item.unit.name }}</span>
                                     <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                         class="btn btn-default btn-xs" 
@@ -76,13 +77,18 @@
                                     </a> -->
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.remain_amount | currency:'':0 }}
-                                </td>
-                                <td style="text-align: center;">
-                                    @{{ plan.price_per_unit | currency:'':0 }}
+                                    @{{ plan.amount | currency:'':0 }} 
+                                    <span>@{{ plan.plan_item.unit.name }}</span>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.sum_price | currency:'':0 }}
+                                </td>
+                                <td style="text-align: center;">
+                                    @{{ plan.remain_amount | currency:'':0 }}
+                                    <span>@{{ plan.plan_item.unit.name }}</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    @{{ plan.remain_budget | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
                                     <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
