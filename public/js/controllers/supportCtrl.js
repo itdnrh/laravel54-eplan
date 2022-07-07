@@ -1,6 +1,10 @@
 app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
+    $scope.cboYear = '';
+    $scope.cboPlanType = '';
+    $scope.cboFaction = '';
+    $scope.cboDepart = '';
 
     $scope.supports = [];
     $scope.pager = [];
@@ -104,9 +108,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = null;
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let depart = $('#user').val() == '1300200009261' ? $scope.cboDepart : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&depart=${depart}&status=0-3`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&depart=${depart}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 

@@ -52,7 +52,7 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>ประเภทครุภัณฑ์</label>
                                     <select
@@ -67,8 +67,9 @@
                                             @{{ category.name }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.row -->
+                                </div>
+                            </div>
+
                             <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -89,8 +90,8 @@
 
                                             @endforeach
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>กลุ่มงาน</label>
@@ -106,9 +107,9 @@
                                                 @{{ dep.depart_name }}
                                             </option>
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
-                            </div><!-- /.row -->
+                                    </div>
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

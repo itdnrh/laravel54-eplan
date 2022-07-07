@@ -80,6 +80,8 @@ class SupportController extends Controller
     {
         return view('supports.list', [
             "planTypes"     => PlanType::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 
