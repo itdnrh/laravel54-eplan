@@ -244,8 +244,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 price_per_unit: plan.price_per_unit,
                 unit_id: `${plan.plan_item.unit_id}`,
                 unit: plan.plan_item.unit,
-                amount: plan.amount,
-                sum_price: plan.sum_price
+                amount: plan.remain_amount,
+                sum_price: plan.remain_budget
             };
         }
 

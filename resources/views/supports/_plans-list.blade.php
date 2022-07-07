@@ -64,8 +64,8 @@
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
                                     <h5 style="margin: 0; font-weight: bold;">@{{ plan.plan_item.item.category.name }}</h5>
-                                    @{{ plan.plan_item.item.item_name }} จำนวน 
-                                    <span>@{{ plan.amount | currency:'':0 }}</span>
+                                    @{{ plan.plan_item.item.item_name }}
+                                    จำนวนทั้งหมด <span>@{{ plan.amount | currency:'':0 }}</span>
                                     <span>@{{ plan.plan_item.unit.name }}</span>
                                     <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                         class="btn btn-default btn-xs" 
@@ -76,7 +76,7 @@
                                     </a> -->
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.remain | currency:'':0 }}
+                                    @{{ plan.remain_amount | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.price_per_unit | currency:'':0 }}
