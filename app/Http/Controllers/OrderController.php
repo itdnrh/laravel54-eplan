@@ -137,6 +137,7 @@ class OrderController extends Controller
                         $q->whereBetween('status', $arrStatus);
                     })
                     ->orderBy('po_date', 'DESC')
+                    ->orderBy('po_no', 'DESC')
                     ->paginate(10);
 
         $plans = Plan::with('depart','division')
@@ -227,9 +228,10 @@ class OrderController extends Controller
                     $docTypeId = '9';
                 }
 
+                $poNoSplitted = explode('/', $order->po_no);
                 $running = Running::where('doc_type_id', $docTypeId)
                                 ->where('year', $order->year)
-                                ->update(['running_no' => $order->po_no]);
+                                ->update(['running_no' => $poNoSplitted[0]]);
 
                 $orderId = $order->id;
 
