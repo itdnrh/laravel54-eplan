@@ -156,8 +156,13 @@ class InspectionController extends Controller
                 foreach($details as $item) {
                     $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
 
-                    /** Update status of plan data */
-                    $plan = Plan::where('id', $item->plan_id)->update(['status' => 4]);
+                    /** Update status of plans to 4=ตรวจรับแล้ว */
+                    Plan::where('id', $item->plan_id)->update(['status' => 4]);
+
+                    /** Update support_details's status to 4=ตรวจรับแล้ว */
+                    SupportDetail::where('support_id', $item->support_id)
+                                        ->where('plan_id', $item->plan_id)
+                                        ->update(['status' => 4]);
                 }
 
                 return [

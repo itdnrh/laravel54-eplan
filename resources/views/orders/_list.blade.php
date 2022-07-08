@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th style="width: 5%; text-align: center;">#</th>
-            <th style="width: 12%; text-align: center;">ใบสั่งซื้อ/จ้าง</th>
+            <th style="width: 15%; text-align: center;">ใบสั่งซื้อ/จ้าง</th>
             <th style="width: 8%; text-align: center;">ประเภทแผน</th>
             <th>เจ้าหนี้</th>
             <th style="width: 6%; text-align: center;">ปีงบ</th>
