@@ -192,12 +192,14 @@ class OrderController extends Controller
     public function store(Request $req)
     {
         try {
+            $depart = Depart::where('depart_id', '2')->first();
+
             $order = new Order;
             $order->po_no           = $req['po_no'];
             $order->po_date         = convThDateToDbDate($req['po_date']);
-            $order->po_req_no       = 'นม 0032.201.2/'.$req['po_req_no'];
+            $order->po_req_no       = $depart->memo_no.'/'.$req['po_req_no'];
             $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
-            $order->po_app_no       = 'นม 0032.201.2/'.$req['po_app_no'];
+            $order->po_app_no       = $depart->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
             $order->supplier_id     = $req['supplier_id'];
@@ -215,11 +217,25 @@ class OrderController extends Controller
             // $order->user_id         = $req['user_id'];
 
             if ($order->save()) {
+                /** Update running number table of doc_type_id = 10 */
+                if ($order->order_type_id == 1) {
+                    $docTypeId = '7';
+                } else if ($order->order_type_id == 2) {
+                    $docTypeId = '8';
+                } else {
+                    $docTypeId = '9';
+                }
+
+                $running = Running::where('doc_type_id', $docTypeId)
+                                ->where('year', $order->year)
+                                ->update(['running_no' => $order->po_no]);
+
                 $orderId = $order->id;
 
                 foreach($req['details'] as $item) {
                     $detail = new OrderDetail;
                     $detail->order_id       = $orderId;
+                    $detail->support_id     = $item['support_id'];
                     $detail->plan_id        = $item['plan_id'];
                     $detail->item_id        = $item['item_id'];
                     $detail->spec           = $item['spec'];
