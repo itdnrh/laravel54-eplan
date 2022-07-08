@@ -15,6 +15,7 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\PlanType;
 use App\Models\Support;
+use App\Models\SupportDetail;
 use App\Models\Unit;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -113,7 +114,7 @@ class OrderController extends Controller
 
         $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.unit','details.item')
-                    ->with('inspections')
+                    ->with('inspections','orderType')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
@@ -247,11 +248,13 @@ class OrderController extends Controller
 
                     /** Update plan data */
                     $plan = Plan::find($item['plan_id']);
-                    $plan->po_no        = $req['po_no'];
-                    $plan->po_date      = convThDateToDbDate($req['po_date']);
-                    $plan->po_net_total = $req['net_total'];
-                    $plan->status       = 3;
+                    $plan->status = 3;
                     $plan->save();
+
+                    /** Update support_details's items */
+                    $supportDetail = SupportDetail::where('support_id', $detail->support_id)
+                                        ->where('plan_id', $detail->plan_id)
+                                        ->update(['status' => 3]);
                 }
 
                 return [

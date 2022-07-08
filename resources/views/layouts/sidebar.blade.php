@@ -321,7 +321,7 @@
 					<!-- ประมาณการรายจ่าย -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
-						in_array(Auth::user()->memberOf->depart_id, [1,2,3,4,16,17,18,39,41]) ||
+						Auth::user()->memberOf->depart_id == 4||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'budgets' }">

@@ -2,9 +2,8 @@
     <thead>
         <tr>
             <th style="width: 5%; text-align: center;">#</th>
-            <th style="width: 8%; text-align: center;">เลขที่ P/O</th>
-            <th style="width: 8%; text-align: center;">วันที่ P/O</th>
-            <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
+            <th style="width: 12%; text-align: center;">ใบสั่งซื้อ/จ้าง</th>
+            <th style="width: 8%; text-align: center;">ประเภทแผน</th>
             <th>เจ้าหนี้</th>
             <th style="width: 6%; text-align: center;">ปีงบ</th>
             <th style="width: 6%; text-align: center;">จำนวนรายการ</th>
@@ -17,8 +16,11 @@
     <tbody>
         <tr ng-repeat="(index, order) in orders">
             <td style="text-align: center;">@{{ index+pager.from }}</td>
-            <td style="text-align: center;">@{{ order.po_no }}</td>
-            <td style="text-align: center;">@{{ order.po_date | thdate }}</td>
+            <td style="text-align: center;">
+                @{{ order.order_type.name }}
+                เลขที่ @{{ order.po_no }}
+                <p style="margin: 0;">วันที่ @{{ order.po_date | thdate }}</p>
+            </td>
             <td style="text-align: center;">@{{ order.plan_type.plan_type_name }}</td>
             <td>@{{ order.supplier.supplier_name }}</td>
             <td style="text-align: center;">@{{ order.year }}</td>
