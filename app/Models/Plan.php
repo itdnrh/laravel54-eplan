@@ -8,6 +8,15 @@ class Plan extends Model
 {
     protected $table = "plans";
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'status',
+    ];
+
     public function planItem()
     {
         return $this->hasOne(PlanItem::class, 'plan_id', 'id');

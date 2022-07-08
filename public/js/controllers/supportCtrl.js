@@ -1,7 +1,7 @@
 app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = '';
+    $scope.cboYear = (moment().year() + 543).toString();
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';

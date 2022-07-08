@@ -8,6 +8,15 @@ class SupportDetail extends Model
 {
     protected $table = "support_details";
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'status',
+    ];
+
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');

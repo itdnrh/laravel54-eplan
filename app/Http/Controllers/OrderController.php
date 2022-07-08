@@ -336,11 +336,11 @@ class OrderController extends Controller
                                     ->update(['running_no' => $support->received_no]);
 
                     foreach($req['details'] as $detail) {
-                        $plan = Plan::find($detail['plan_id']);
-                        $plan->received_date = date('Y-m-d');
-                        $plan->received_user = Auth::user()->person_id;
-                        $plan->status = 2;
-                        $plan->save();
+                        /** Update support_details's status to 2=รับเอกสารแล้ว */
+                        SupportDetail::where('support_id', $req['id'])->update(['status' => 2]);
+
+                        /** Update plans's status to 2=รับเอกสารแล้ว */
+                        Plan::find($detail['plan_id'])->update(['status' => 2]);
                     }
 
                     return [

@@ -136,7 +136,7 @@ class SupportController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->orderBy('id', 'DESC')
+                    ->orderBy('received_no', 'DESC')
                     ->paginate(10);
 
         return [
@@ -172,6 +172,7 @@ class SupportController extends Controller
         $plans = SupportDetail::join('supports', 'supports.id', '=', 'support_details.support_id')
                     ->with('plan','plan.planItem','plan.planItem.item')
                     ->with('plan.planItem.item.category','support.depart','unit')
+                    ->where('support_details.status', '2')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('supports.year', $year);
                     })
@@ -250,10 +251,12 @@ class SupportController extends Controller
                     $detail = new SupportDetail;
                     $detail->support_id     = $supportId;
                     $detail->plan_id        = $item['plan_id'];
+                    // $detail->desc           = $item['desc'];
                     $detail->price_per_unit = $item['price_per_unit'];
                     $detail->unit_id        = $item['unit_id'];
                     $detail->amount         = $item['amount'];
                     $detail->sum_price      = $item['sum_price'];
+                    $detail->status         = 0;
                     $detail->save();
 
                     /** TODO: should update plan's status to 99=pending  */
@@ -349,7 +352,7 @@ class SupportController extends Controller
 
     public function update(Request $req)
     {
-        $cancel = Cancellation::find($req['id']);
+        $cancel = Support::find($req['id']);
         $cancel->reason         = $req['reason'];
         $cancel->start_date     = convThDateToDbDate($req['start_date']);
         $cancel->start_period   = '1';
@@ -365,15 +368,25 @@ class SupportController extends Controller
 
     public function delete(Request $req, $id)
     {
-        $cancel = Cancellation::find($id);
-        $leaveId = $cancel->leave_id;
+        $support = Support::find($id);
+        $deletedId = $support->id;
 
-        if ($cancel->delete()) {
-            $leave = Leave::find($cancel->leave_id);
-            $leave->status = 3;
-            $leave->save();
+        if ($support->delete()) {
+            $details = SupportDetail::where('support_id', $deletedId)->get();
 
-            return redirect('/cancellations/cancel')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
+            foreach($details as $item) {
+                /** Delete support_details */
+                SupportDetail::find($item->id)->delete();
+
+                /** Revert plan's data */
+                // Plan::find($item->plan_id)->update([
+                //     'remain_amount' => 0,
+                //     'remain_budget' => 0,
+                //     'status'        => 0
+                // ]);
+            }
+
+            return redirect('/suports/list')->with('status', 'ลบรายการขอสนับสนุน รหัส: ' .$id. ' เรียบร้อยแล้ว !!');;
         }
     }
 
@@ -389,13 +402,11 @@ class SupportController extends Controller
 
             if ($support->save()) {
                 foreach($req['details'] as $detail) {
-                    Plan::where('id', $detail['plan_id'])->update([
-                        'doc_no'    => $support->doc_no,
-                        'doc_date'  => $support->doc_date,
-                        'sent_date' => date('Y-m-d'),
-                        'sent_user' => Auth::user()->person_id,
-                        'status'    => 1
-                    ]);
+                    /** Update support_details's status to 1=ส่งเอกสารแล้ว */
+                    SupportDetail::where('support_id', $req['id'])->update(['status' => 1]);
+                    
+                    /** Update plans's status to 1=ส่งเอกสารแล้ว */
+                    Plan::where('id', $detail['plan_id'])->update(['status' => 1]);
                 }
 
                 return [
@@ -403,7 +414,7 @@ class SupportController extends Controller
                     'support'   => $support
                 ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $th) {
             return [
                 'status'    => 0,
                 'message'   => 'Something went wrong!!'
