@@ -161,10 +161,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.addOrderItem = () => {
-        $scope.order.details.push({ ...$scope.newItem });
-
-        $scope.calculateTotal();
-        $scope.clearNewItem();
+        if ($scope.order.details.some(od => od.plan_id === $scope.newItem.plan_id)) {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณเลือกรายการซ้ำ !!!");
+        } else {
+            $scope.order.details.push({ ...$scope.newItem });
+    
+            $scope.calculateTotal();
+            $scope.clearNewItem();
+        }
     };
 
     $scope.removeOrderItem = (planId) => {
@@ -200,7 +204,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.plans = [];
             $scope.plans_pager = null;
     
-            $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&status=2`)
+            $http.get(`${CONFIG.apiUrl}/supports/details/list?type=${type}&status=2`)
             .then(function(res) {
                 $scope.setPlans(res);
     
@@ -223,7 +227,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/supports/details/list?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -267,15 +271,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
             $scope.newItem = {
-                plan_no: plan.plan_no,
-                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
-                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
-                plan_id: plan.id,
-                item_id: plan.plan_item.item_id,
+                plan_no: plan.plan.plan_no,
+                plan_detail: `${plan.plan.plan_item.item.item_name} (${plan.plan.plan_item.item.category.name})`,
+                plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
+                plan_id: plan.plan.id,
+                item_id: plan.plan.plan_item.item_id,
+                support_id: plan.support.id,
                 spec: '',
                 price_per_unit: plan.price_per_unit,
-                unit_id: `${plan.plan_item.unit_id}`,
-                unit: plan.plan_item.unit,
+                unit_id: `${plan.unit.unit_id}`,
+                unit: plan.unit,
                 amount: plan.amount,
                 sum_price: plan.sum_price
             };

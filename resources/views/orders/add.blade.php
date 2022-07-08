@@ -403,7 +403,10 @@
                                             <a
                                                 href="#"
                                                 class="btn btn-primary btn-sm pull-right"
-                                                ng-click="onFilterCategories(order.plan_type_id); showPlansList(order.plan_type_id);"
+                                                ng-click="
+                                                    onFilterCategories(order.plan_type_id);
+                                                    showPlansList(order.plan_type_id);
+                                                "
                                             >
                                                 <i class="fa fa-plus"></i>
                                             </a>

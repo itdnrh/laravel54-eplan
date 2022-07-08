@@ -50,24 +50,23 @@
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
                                 <th style="width: 8%; text-align: center;">เลขที่แผน</th>
                                 <th>รายการ</th>
-                                <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
-                                <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
+                                <th style="width: 10%; text-align: center;">ราคาต่อหน่วย</th>
+                                <th style="width: 10%; text-align: center;">จำนวนที่ขอ</th>
+                                <th style="width: 10%; text-align: center;">รวมเป็นเงิน</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-                                <th style="width: 6%; text-align: center;">Actions</th>
+                                <th style="width: 5%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="(index, plan) in plans">
                                 <td style="text-align: center;">@{{ index+plans_pager.from }}</td>
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
-                                <td style="text-align: center;">@{{ plan.plan_no }}</td>
+                                <td style="text-align: center;">@{{ plan.plan.plan_no }}</td>
                                 <td>
                                     <p style="margin: 0; font-weight: bold;">
-                                        @{{ plan.plan_item.item.category.name }}
+                                        @{{ plan.plan.plan_item.item.category.name }}
                                     </p>
-                                    @{{ plan.plan_item.item.item_name }} จำนวน 
-                                    <span>@{{ plan.amount | currency:'':0 }}</span>
-                                    <span>@{{ plan.unit.name }}</span>
+                                    @{{ plan.plan.plan_item.item.item_name }}
                                     <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                         class="btn btn-default btn-xs" 
                                         title="ไฟล์แนบ"
@@ -80,11 +79,15 @@
                                     @{{ plan.price_per_unit | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
+                                    @{{ plan.amount | currency:'':0 }}
+                                    <span>@{{ plan.unit.name }}</span>
+                                </td>
+                                <td style="text-align: center;">
                                     @{{ plan.sum_price | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
-                                    <p style="margin: 0;">@{{ plan.division.ward_name }}</p>
+                                    <p style="margin: 0;">@{{ plan.support.depart.depart_name }}</p>
+                                    <p style="margin: 0;">@{{ plan.support.division.ward_name }}</p>
                                 </td>
                                 <td style="text-align: center;">
                                         <a  href="#"

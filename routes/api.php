@@ -75,6 +75,11 @@ Route::group(['middleware' => 'api'], function () {
     /** เลขที่เอกสาร */
     Route::get('runnings/{docType}/doc-type', 'RunningController@getByDocType');
 
+    /** การขอสนับสนุน */
+    Route::get('supports', 'SupportController@search');
+    Route::get('supports/{id}', 'SupportController@getById');
+    Route::get('supports/details/list', 'SupportController@getSupportDetails');
+
     /** จ้างซ่อมแซม/บำรุงรักษา */
     Route::get('repairs', 'RepairController@getAll');
     Route::get('repairs/{id}', 'RepairController@getById');

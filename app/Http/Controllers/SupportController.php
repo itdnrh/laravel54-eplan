@@ -162,6 +162,35 @@ class SupportController extends Controller
         ];
     }
 
+    public function getSupportDetails(Request $req)
+    {
+        $year = $req->get('year');
+        $type = $req->get('type');
+        $supportType = $req->get('supportType');
+        $status = $req->get('status');
+
+        $plans = SupportDetail::join('supports', 'supports.id', '=', 'support_details.support_id')
+                    ->with('plan','plan.planItem','plan.planItem.item')
+                    ->with('plan.planItem.item.category','support.depart','unit')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('supports.year', $year);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('supports.plan_type_id', $type);
+                    })
+                    ->when(!empty($supportType), function($q) use ($supportType) {
+                        $q->where('supports.support_type_id', $supportType);
+                    })
+                    ->when(!empty($status), function($q) use ($status) {
+                        $q->where('supports.status', $status);
+                    })
+                    ->paginate(10);
+
+        return [
+            "plans" => $plans
+        ];
+    }
+
     public function detail($id)
     {
         return view('supports.detail', [
