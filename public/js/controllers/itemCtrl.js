@@ -11,7 +11,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     $scope.pager = null;
 
     $scope.item = {
-        Item_id: '',
+        id: '',
         parcel_no: '',
         plan_type_id: '',
         category_id: '',
@@ -46,7 +46,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
     const clearItem = function() {
         $scope.item = {
-            Item_id: '',
+            id: '',
             parcel_no: '',
             plan_type_id: '',
             category_id: '',
@@ -113,41 +113,35 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/assets/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/items/${id}`)
         .then(function(res) {
-            cb(res.data.plan);
+            cb(res.data.item);
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.setEditControls = function(plan) {
-        /** Global data */
-        $scope.planId                   = plan.id;
-        $scope.planType                 = 1;
+    $scope.setEditControls = function(item) {
+        if (item) {
+            console.log(item);
+            $scope.item.id              = item.id;
+            $scope.item.parcel_no       = item.parcel_no;
+            $scope.item.item_name       = item.item_name;
+            $scope.item.price_per_unit  = item.price_per_unit;
+            $scope.item.in_stock        = item.in_stock;
+            $scope.item.first_year      = item.first_year;
+            $scope.item.remark          = item.remark;
+            $scope.item.status          = item.status;
+    
+            /** Convert int value to string */
+            $scope.item.plan_type_id    = item.plan_type_id.toString();
+            $scope.item.category_id     = item.category_id.toString();
+            $scope.item.group_id        = item.group_id ? plan.group_id.toString() : '';
+            $scope.item.unit_id         = item.unit_id.toString();
 
-        /** ข้อมูลครุภัณฑ์ */
-        $scope.asset.asset_id           = plan.id;
-        $scope.asset.in_plan            = plan.in_plan;
-        $scope.asset.year               = plan.year;
-        // $scope.asset.plan_no            = plan.plan_no;
-        $scope.asset.desc               = plan.plan_item.item.item_name;
-        $scope.asset.spec               = plan.plan_item.spec;
-        $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
-        $scope.asset.amount             = plan.plan_item.amount;
-        $scope.asset.sum_price          = plan.plan_item.sum_price;
-        $scope.asset.start_month        = $scope.monthLists.find(m => m.id == plan.start_month).name;
-        $scope.asset.reason             = plan.reason;
-        $scope.asset.remark             = plan.remark;
-        $scope.asset.status             = plan.status;
-
-        /** Convert int value to string */
-        $scope.asset.category_id        = plan.plan_item.item.category_id.toString();
-        $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
-        $scope.asset.depart_id          = plan.depart_id.toString();
-        $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';
-        /** Convert db date to thai date. */            
-        // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
+            /** */
+            $scope.onPlanTypeSelected(item.plan_type_id);
+        }
     };
 
     $scope.store = function(event, form) {
@@ -175,22 +169,40 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     }
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/items/edit/${id}`;
     };
 
     $scope.update = function(event) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขใบลาเลขที่ ${$scope.leave.leave_id} ใช่หรือไม่?`)) {
-            $('#frmEditLeave').submit();
+        if(confirm(`คุณต้องแก้ไขสินค้า/บริการ รหัส ${$scope.item.id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/items/update/${$scope.item.id}`, $scope.item)
+            .then((res) => {
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/system/items`;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            });
         }
     };
 
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+        if(confirm(`คุณต้องลบสินค้า/บริการ รหัส ${id} ใช่หรือไม่?`)) {
+            $http.delete(`${CONFIG.baseUrl}/items/${id}`)
             .then(res => {
                 console.log(res);
             }, err => {

@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มสินค้า/บริการ
+            แก้ไขสินค้า/บริการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มสินค้า/บริการ</li>
+            <li class="breadcrumb-item active">แก้ไขสินค้า/บริการ</li>
         </ol>
     </section>
 
@@ -19,22 +19,28 @@
     <section
         class="content"
         ng-controller="itemCtrl"
-        ng-init="initForms({
-            planTypes: {{ $planTypes }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 1);"
+        ng-init="
+            initForms({
+                planTypes: {{ $planTypes }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 1);
+            getById({{ $item->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มสินค้า/บริการ</h3>
+                        <h3 class="box-title">
+                            แก้ไขสินค้า/บริการ
+                            <span>ID: {{ $item->id }}</span>
+                        </h3>
                     </div>
 
-                    <form id="frmNewItem" name="frmNewItem" method="post" action="{{ url('/items/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditItem" name="frmEditItem" method="post" action="{{ url('/items/update'.$item->id) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -161,7 +167,7 @@
                                         id="unit_id"
                                         name="unit_id"
                                         ng-model="item.unit_id"
-                                        class="form-control select2"
+                                        class="form-control"
                                     >
                                         <option value="">-- เลือกหน่วยนับ --</option>
                                         @foreach($units as $unit)
@@ -210,10 +216,10 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/items/validate', item, 'frmNewItem', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/items/validate', item, 'frmEditItem', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

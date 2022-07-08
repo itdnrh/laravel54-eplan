@@ -120,9 +120,7 @@ class ItemController extends Controller
     public function getById($id)
     {
         return [
-            'items' => Item::where('id', $id)
-                        ->with('category','group','unit')
-                        ->first(),
+            'item' => Item::with('planType','category','group','unit')->find($id),
         ];
     }
 
@@ -185,76 +183,46 @@ class ItemController extends Controller
 
     public function edit($id)
     {
-        return view('leaves.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
+        return view('items.edit', [
+            "item"          => Item::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
+            "units"         => Unit::all(),
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        $leave = Leave::find($req['leave_id']);
-        $leave->leave_date      = convThDateToDbDate($req['leave_date']);
-        $leave->leave_place     = $req['leave_place'];
-        $leave->leave_topic     = $req['leave_topic'];
-        $leave->leave_to        = $req['leave_to'];
-        $leave->leave_person    = $req['leave_person'];
-        $leave->leave_type      = $req['leave_type'];
+        try {
+            $item = Item::find($id);
+            $item->plan_type_id = $req['plan_type_id'];
+            $item->category_id  = $req['category_id'];
+            $item->group_id     = $req['group_id'];
+            $item->item_name    = $req['item_name'];
+            $item->price_per_unit   = $req['price_per_unit'];
+            $item->unit_id      = $req['unit_id'];
+            $item->in_stock     = $req['in_stock'];
+            $item->first_year   = $req['first_year'];
+            $item->remark       = $req['remark'];
 
-        if ($req['leave_type'] == '1' || $req['leave_type'] == '2' || 
-            $req['leave_type'] == '3' || $req['leave_type'] == '4') {
-            $leave->leave_contact   = $req['leave_contact'];
-            $leave->leave_delegate  = $req['leave_delegate'];
-        }
-
-        if ($req['leave_type'] == '5') {
-            $leave->leave_contact   = $req['leave_contact'];
-        }
-
-        if ($req['leave_type'] == '1' || $req['leave_type'] == '2' || 
-            $req['leave_type'] == '4' || $req['leave_type'] == '7') {
-            $leave->leave_reason    = $req['leave_reason'];
-        }
-
-        $leave->start_date      = convThDateToDbDate($req['start_date']);
-        $leave->start_period    = '1';
-        $leave->end_date        = convThDateToDbDate($req['end_date']);
-        $leave->end_period      = $req['end_period'];
-        $leave->leave_days      = $req['leave_days'];
-        $leave->working_days    = $req['working_days'];
-        $leave->year            = calcBudgetYear($req['start_date']);
-
-        /** Upload image */
-        $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        if (!empty($attachment)) {
-            $leave->attachment = $attachment;
-        }
-
-        if($leave->save()) {
-            /** Update detail data of some leave type */
-            if ($req['leave_type'] == '5') {
-                $hw = HelpedWife::find($req['hw_id']);
-                $hw->wife_name          = $req['wife_name'];
-                $hw->deliver_date       = convThDateToDbDate($req['deliver_date']);
-                $hw->wife_is_officer    = $req['wife_is_officer'] == true ? 1 : 0;
-                $hw->wife_id            = $req['wife_id'];
-                $hw->save();
+            if($item->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully!!',
+                    'item'      => $item
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
-            if ($req['leave_type'] == '6') {
-                $ord = Ordinate::find($req['ord_id']);
-                $ord->have_ordain           = $req['have_ordain'];
-                $ord->ordain_date           = convThDateToDbDate($req['ordain_date']);
-                $ord->ordain_temple         = $req['ordain_temple'];
-                $ord->ordain_location       = $req['ordain_location'];
-                $ord->hibernate_temple      = $req['hibernate_temple'];
-                $ord->hibernate_location    = $req['hibernate_location'];
-                $ord->save();
-            }
-
-            return redirect('/leaves/list');
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 

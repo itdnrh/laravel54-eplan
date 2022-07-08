@@ -20,6 +20,7 @@ Route::group(['middleware' => 'api'], function () {
 
     /** รายการสินค้าและบริการ */
     Route::get('items', 'ItemController@getAll');
+    Route::get('items/{id}', 'ItemController@getById');
     Route::post('items', 'ItemController@store');
     
     /** ตัวชี้วัด */

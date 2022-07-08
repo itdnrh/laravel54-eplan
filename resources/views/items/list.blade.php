@@ -208,13 +208,12 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/assets/detail') }}/@{{ item.id }}"
+                                            <a  href="{{ url('/items/detail') }}/@{{ item.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
                                             <a  ng-click="edit(item.id)"
-                                                ng-show="!item.approved"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -222,8 +221,7 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/assets/delete') }}"
-                                                ng-show="!item.approved"
+                                                action="{{ url('/items/delete') }}"
                                             >
                                                 {{ csrf_field() }}
                                                 <button

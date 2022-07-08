@@ -58,7 +58,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('items/validate', 'ItemController@formValidate');
     Route::get('system/items', 'ItemController@index');
     Route::get('items/search', 'ItemController@search');
-    Route::get('items/get-ajax-byid/{id}', 'ItemController@getById');
     Route::get('items/detail/{id}', 'ItemController@detail');
     Route::get('items/add', 'ItemController@add');
     Route::post('items/store', 'ItemController@store');
