@@ -50,6 +50,9 @@
                 <span class="label label-warning" ng-show="order.status == 4">
                     ส่งเบิกเงินแล้ว
                 </span>
+                <span class="label bg-maroon" ng-show="order.status == 5">
+                    อยู่ระหว่างบริหารสัญญา
+                </span>
                 <span class="label label-danger" ng-show="order.status == 9">
                     ยกเลิก
                 </span>
