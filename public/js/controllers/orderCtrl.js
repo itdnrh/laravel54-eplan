@@ -179,6 +179,27 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.calculateTotal();
     };
 
+    $scope.onEditItem = (planId) => {
+        let detail = $scope.order.details.find(d => d.plan_id === planId);
+        console.log(detail);
+        $scope.newItem.price_per_unit = detail.price_per_unit;
+        $scope.newItem.unit_id = detail.unit_id.toString();
+        $scope.newItem.amount = detail.amount;
+        $scope.newItem.sum_price = detail.sum_price;
+    };
+
+    $scope.confirmEditedItem = (planId) => {
+        console.log($scope.newItem);
+        let detail = $scope.order.details.find(d => d.plan_id === planId);
+        console.log(detail);
+        $scope.order.details.price_per_unit = detail.price_per_unit;
+        $scope.order.details.unit_id = detail.unit_id;
+        $scope.order.details.amount = detail.amount;
+        $scope.order.details.sum_price = detail.sum_price;
+
+        $scope.calculateTotal();
+    };
+
     $scope.showSpecForm = function(detail) {
         $scope.newItem.plan_id = detail.plan_id;
         $scope.newItem.item_id = detail.item_id;
@@ -274,8 +295,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if (plan) {
             $scope.newItem = {
                 plan_no: plan.plan.plan_no,
-                plan_detail: `${plan.plan.plan_item.item.item_name} (${plan.plan.plan_item.item.category.name})`,
                 plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
+                plan_detail: `${plan.plan.plan_item.item.item_name} (${plan.plan.plan_item.item.category.name})`,
+                plan_desc: plan.desc,
                 plan_id: plan.plan.id,
                 item_id: plan.plan.plan_item.item_id,
                 support_id: plan.support.id,

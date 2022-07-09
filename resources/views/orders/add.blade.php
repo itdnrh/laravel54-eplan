@@ -287,6 +287,7 @@
                                                         <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                         <p style="margin: 0;">
                                                             @{{ detail.plan_detail }}
+                                                            <span>@{{ detail.plan_desc }}</span>
                                                             <span>@{{ detail.spec }}</span>
                                                         </p>
                                                     </td>
@@ -367,7 +368,7 @@
                                                         <a
                                                             href="#"
                                                             class="btn btn-warning btn-xs"
-                                                            ng-click="toggleEditRow()"
+                                                            ng-click="toggleEditRow(); onEditItem(detail.plan_id);"
                                                             ng-show="!editRow"
                                                         >
                                                             <i class="fa fa-edit"></i>
@@ -383,6 +384,7 @@
                                                         <a
                                                             href="#"
                                                             class="btn btn-success btn-xs"
+                                                            ng-click="confirmEditedItem(detail.plan_id); toggleEditRow();"
                                                             ng-show="editRow"
                                                         >
                                                             <i class="fa fa-floppy-o" aria-hidden="true"></i>

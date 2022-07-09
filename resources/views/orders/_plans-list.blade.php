@@ -67,6 +67,9 @@
                                         @{{ plan.plan.plan_item.item.category.name }}
                                     </p>
                                     @{{ plan.plan.plan_item.item.item_name }}
+                                    <p style="margin: 0; color: blue;">
+                                        @{{ plan.desc }}
+                                    </p>
                                     <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
                                         class="btn btn-default btn-xs" 
                                         title="ไฟล์แนบ"
