@@ -19,12 +19,19 @@
     <section
         class="content"
         ng-controller="planServiceCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 3);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 3);
+            setUserInfo({
+                user: {{ Auth::user()->person_id }},
+                faction: {{ Auth::user()->memberOf->faction_id }},
+                depart: {{ Auth::user()->memberOf->depart_id }},
+            });
+        "
     >
 
         <div class="row">

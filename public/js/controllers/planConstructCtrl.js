@@ -61,6 +61,15 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         //     });
         // });
 
+    $scope.setUserInfo = function(data) {
+        $scope.material.user = data.user ? data.user.toString() : '';
+        $scope.material.faction_id = data.faction ? data.faction.toString() : '';
+        $scope.material.depart_id = data.depart ? data.depart.toString() : '';
+
+        $scope.onFactionSelected(data.faction);
+        $scope.onDepartSelected(data.depart);
+    };
+
     $scope.clearConstruct = function() {
         $scope.construct = {
             construct_id: '',

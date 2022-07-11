@@ -27,6 +27,11 @@
                 groups: {{ $groups }}
             }, 2);
             setInStock({{ $in_stock }});
+            setUserInfo({
+                user: {{ Auth::user()->person_id }},
+                faction: {{ Auth::user()->memberOf->faction_id }},
+                depart: {{ Auth::user()->memberOf->depart_id }},
+            });
         "
     >
 
@@ -39,7 +44,12 @@
                     </div>
 
                     <form id="frmNewMaterial" name="frmNewMaterial" method="post" action="{{ url('/materials/store') }}" role="form" enctype="multipart/form-data">
-                        <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
+                        <input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
                         {{ csrf_field() }}
 
                         <div class="box-body">
@@ -74,7 +84,6 @@
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'year')}"
-                                    ng-show="material.in_stock == 0"
                                 >
                                     <label>ปีงบประมาณ</label>
                                     <select
@@ -113,14 +122,10 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group"
-                                    ng-class="{
-                                        'col-md-4': material.in_stock == 0,
-                                        'col-md-12': material.in_stock == 1,
-                                        'has-error has-feedback': checkValidate(material, 'faction_id')
-                                    }"
+                                    class="form-group col-md-4"
+                                    ng-class="{ 'has-error has-feedback': checkValidate(material, 'faction_id') }"
                                 >
-                                    <label>กลุ่มภารกิจ :</label>
+                                    <label>หน่วยงาน :</label>
                                     <select id="faction_id" 
                                             name="faction_id"
                                             ng-model="material.faction_id" 
@@ -143,7 +148,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'depart_id')}"
                                 >
-                                    <label>กลุ่มงาน :</label>
+                                    <label>&nbsp;</label>
                                     <select id="depart_id" 
                                             name="depart_id"
                                             ng-model="material.depart_id" 
@@ -164,7 +169,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'division_id')}"
                                 >
-                                    <label>งาน :</label>
+                                    <label>&nbsp;</label>
                                     <select id="division_id" 
                                             name="division_id"
                                             ng-model="material.division_id" 

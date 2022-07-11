@@ -7,12 +7,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.material = {
         material_id: '',
         in_plan: 'I',
-        year: '',
+        year: (moment().year() + 543).toString(),
         plan_no: '',
         faction_id: '',
         depart_id: '',
         division_id: '',
-        category_id: '',
         item_id: '',
         desc: '',
         spec: '',
@@ -22,13 +21,12 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         sum_price: '',
         request_cause: '',
         have_amount: '',
-        budget_src_id: '',
+        budget_src_id: '1',
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
         reason: '',
         remark: '',
-        in_stock: '0',
     };
 
     /** ============================== Init Form elements ============================== */
@@ -51,15 +49,24 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         //     });
         // });
 
+    $scope.setUserInfo = function(data) {
+        $scope.material.user = data.user ? data.user.toString() : '';
+        $scope.material.faction_id = data.faction ? data.faction.toString() : '';
+        $scope.material.depart_id = data.depart ? data.depart.toString() : '';
+
+        $scope.onFactionSelected(data.faction);
+        $scope.onDepartSelected(data.depart);
+    };
+
     $scope.clearMaterial = function() {
         $scope.material = {
-            asset_id: '',
+            material_id: '',
             in_plan: 'I',
+            year: (moment().year() + 543).toString(),
             plan_no: '',
             faction_id: '',
             depart_id: '',
             division_id: '',
-            category_id: '',
             item_id: '',
             desc: '',
             spec: '',
@@ -70,12 +77,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             start_month: '',
             request_cause: '',
             have_amount: '',
-            budget_src_id: '',
+            budget_src_id: '1',
             strategic_id: '',
             service_plan_id: '',
             reason: '',
             remark: '',
-            in_stock: '0',
         };
     };
 
@@ -87,7 +93,6 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $('#sum_price').val(price * amount);
     };
 
-    /** TODO: Duplicated function */
     $scope.getAll = function(inStock) {
         $scope.loading = true;
         $scope.materials = [];
@@ -97,7 +102,6 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&in_stock=${inStock}`)
         .then(function(res) {
@@ -117,7 +121,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.pager = pager;
     };
 
-    $scope.getDataWithUrl = function(e, url, cb) {
+    $scope.getDataWithUrl = function(e, url, inStock, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -129,9 +133,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&in_stock=${inStock}`)
         .then(function(res) {
             cb(res);
 

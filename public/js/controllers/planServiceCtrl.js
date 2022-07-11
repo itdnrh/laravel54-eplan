@@ -48,6 +48,15 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         //     });
         // });
 
+    $scope.setUserInfo = function(data) {
+        $scope.material.user = data.user ? data.user.toString() : '';
+        $scope.material.faction_id = data.faction ? data.faction.toString() : '';
+        $scope.material.depart_id = data.depart ? data.depart.toString() : '';
+
+        $scope.onFactionSelected(data.faction);
+        $scope.onDepartSelected(data.depart);
+    };
+
     $scope.clearService = function() {
         $scope.service = {
             service_id: '',
