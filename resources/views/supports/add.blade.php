@@ -328,15 +328,9 @@
                                             <tr>
                                                 <td colspan="6" style="text-align: right;">รวมเป็นเงิน</td>
                                                 <td style="text-align: center;">
-                                                    <input
-                                                        type="text"
-                                                        id="total"
-                                                        name="total"
-                                                        ng-model="support.total"
-                                                        class="form-control"
-                                                        style="text-align: center;"
-                                                        tabindex="5"
-                                                    />
+                                                    <div class="form-control" style="text-align: center;">
+                                                        @{{ support.total | currency:'':2 }}
+                                                    </div>
                                                 </td>
                                                 <td></td>
                                             </tr>

@@ -27,7 +27,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         topic: '',
         depart_id: '',
         division_id: '',
-        year: '',
+        year: (moment().year() + 543).toString(),
         plan_type_id: '',
         total: '',
         contact_detail: '',
