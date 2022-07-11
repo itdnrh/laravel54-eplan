@@ -7,7 +7,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.construct = {
         construct_id: '',
         in_plan: 'I',
-        year: '',
+        year: (moment().year() + 543).toString(),
         plan_no: '',
         faction_id: '',
         depart_id: '',
@@ -24,7 +24,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         sum_price: '',
         request_cause: '',
         have_amount: '',
-        budget_src_id: '',
+        budget_src_id: '1',
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
@@ -62,9 +62,9 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         // });
 
     $scope.setUserInfo = function(data) {
-        $scope.material.user = data.user ? data.user.toString() : '';
-        $scope.material.faction_id = data.faction ? data.faction.toString() : '';
-        $scope.material.depart_id = data.depart ? data.depart.toString() : '';
+        $scope.construct.user = data.user ? data.user.toString() : '';
+        $scope.construct.faction_id = data.faction ? data.faction.toString() : '';
+        $scope.construct.depart_id = data.depart ? data.depart.toString() : '';
 
         $scope.onFactionSelected(data.faction);
         $scope.onDepartSelected(data.depart);
@@ -74,7 +74,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct = {
             construct_id: '',
             in_plan: 'I',
-            year: '',
+            year: (moment().year() + 543).toString(),
             plan_no: '',
             faction_id: '',
             depart_id: '',
@@ -92,7 +92,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             start_month: '',
             request_cause: '',
             have_amount: '',
-            budget_src_id: '',
+            budget_src_id: '1',
             strategic_id: '',
             service_plan_id: '',
             reason: '',

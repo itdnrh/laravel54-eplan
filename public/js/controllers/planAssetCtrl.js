@@ -6,7 +6,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.asset = {
         asset_id: '',
-        year: '',
+        year: (moment().year() + 543).toString(),
         in_plan: 'I',
         plan_no: '',
         faction_id: '',
@@ -21,7 +21,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         sum_price: '',
         request_cause: '',
         have_amount: '',
-        budget_src_id: '',
+        budget_src_id: '1',
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
@@ -51,9 +51,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         // });
 
     $scope.setUserInfo = function(data) {
-        $scope.material.user = data.user ? data.user.toString() : '';
-        $scope.material.faction_id = data.faction ? data.faction.toString() : '';
-        $scope.material.depart_id = data.depart ? data.depart.toString() : '';
+        $scope.asset.user = data.user ? data.user.toString() : '';
+        $scope.asset.faction_id = data.faction ? data.faction.toString() : '';
+        $scope.asset.depart_id = data.depart ? data.depart.toString() : '';
 
         $scope.onFactionSelected(data.faction);
         $scope.onDepartSelected(data.depart);
@@ -62,7 +62,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     const clearAsset = function() {
         $scope.asset = {
             asset_id: '',
-            year: '',
+            year: (moment().year() + 543).toString(),
             in_plan: 'I',
             plan_no: '',
             faction_id: '',
@@ -78,7 +78,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             request_cause: '',
             have_amount: '',
             budget_src_id: '',
-            strategic_id: '',
+            strategic_id: '1',
             service_plan_id: '',
             start_month: '',
             reason: '',
