@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            วัสดุ (นอกคลัง)
+            แผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">วัสดุ (นอกคลัง)</li>
+            <li class="breadcrumb-item active">แผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</li>
         </ol>
     </section>
 
@@ -20,7 +20,7 @@
         class="content"
         ng-controller="approvalCtrl"
         ng-init="
-            getAll(2);
+            getAll(2, {{ $in_stock }});
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -46,7 +46,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll(2)"
+                                        ng-change="getAll(2, {{ $in_stock }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -61,7 +61,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll(2)"
+                                        ng-change="getAll(2, {{ $in_stock }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -79,15 +79,13 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction); getAll(2);"
+                                            ng-change="onFactionSelected(cboFaction); getAll(2, {{ $in_stock }});"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
-
                                                 <option value="{{ $faction->faction_id }}">
                                                     {{ $faction->faction_name }}
                                                 </option>
-
                                             @endforeach
                                         </select>
                                     </div><!-- /.form group -->
@@ -100,7 +98,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll(2)"
+                                            ng-change="getAll(2, {{ $in_stock }})"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -118,7 +116,7 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">วัสดุ (นอกคลัง)</h3>
+                                <h3 class="box-title">แผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                             </div>
                             <div class="col-md-6">
                                 <a
@@ -272,13 +270,13 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', 2, setPlans)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, 2, setPlans)" aria-label="Prev">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -296,13 +294,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, 2, setPlans)" aria-label="Next">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, 2, setPlans)" aria-label="Previous">
+                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

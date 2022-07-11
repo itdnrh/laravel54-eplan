@@ -115,8 +115,13 @@
 									</a>
 								</li>
 								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'materials' }">
-									<a href="{{ url('approvals/materials') }}">
-										<i class="fa fa-circle-o"></i> วัสดุ
+									<a href="{{ url('approvals/materials?in_stock=0') }}">
+										<i class="fa fa-circle-o"></i> วัสดุนอกคลัง
+									</a>
+								</li>
+								<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/approvals/materials?in_stock=1') }}">
+										<i class="fa fa-circle-o"></i> วัสดุในคลัง
 									</a>
 								</li>
 								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'services' }">

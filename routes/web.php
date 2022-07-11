@@ -121,18 +121,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('projects/{id}/{timelineId}/timeline', 'ProjectController@updateTimeline');
     Route::get('projects/print/{id}', 'ProjectController@printLeaveForm');
 
-    /** ตัวชี้วัด */
-    Route::post('kpis/validate', 'KpiController@formValidate');
-    Route::get('system/kpis', 'KpiController@index');
-    Route::get('kpis/list', 'KpiController@index');
-    Route::get('kpis/detail/{id}', 'KpiController@detail');
-    Route::get('kpis/add', 'KpiController@add');
-    Route::post('kpis/store', 'KpiController@store');
-    Route::get('kpis/edit/{id}', 'KpiController@edit');
-    Route::post('kpis/update/{id}', 'KpiController@update');
-    Route::post('kpis/delete/{id}', 'KpiController@delete');
-    Route::get('kpis/print/{id}', 'KpiController@printLeaveForm');
-
     /** การอนุมัติ */
     Route::get('approvals/assets', 'ApprovalController@assets');
     Route::get('approvals/materials', 'ApprovalController@materials');
@@ -142,18 +130,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('approvals', 'ApprovalController@approve');
     Route::post('approvals/{year}/year', 'ApprovalController@approveAll');
     Route::post('approvals/lists', 'ApprovalController@approveByList');
-    
-    /** จ้างซ่อมแซม/บำรุงรักษา */
-    Route::post('repairs/validate', 'RepairController@formValidate');
-    Route::get('repairs/list', 'RepairController@index');
-    Route::get('repairs/search', 'RepairController@search');
-    Route::get('repairs/detail/{id}', 'RepairController@detail');
-    Route::get('repairs/add', 'RepairController@create');
-    Route::post('repairs/store', 'RepairController@store');
-    Route::post('repairs/send', 'RepairController@send');
-    Route::get('repairs/{id}/print', 'RepairController@printForm');
 
-    /** การขอสนับสนุน */
+    /** การขอสนับสนุนทั่วไป */
     Route::post('supports/validate', 'SupportController@formValidate');
     Route::get('supports/list', 'SupportController@index');
     Route::get('supports/timeline', 'SupportController@timeline');
@@ -164,6 +142,16 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('supports/store', 'SupportController@store');
     Route::post('supports/send', 'SupportController@send');
     Route::get('supports/{id}/print', 'SupportController@printForm');
+
+    /** การขอสนับสนุนจ้างซ่อม */
+    Route::post('repairs/validate', 'RepairController@formValidate');
+    Route::get('repairs/list', 'RepairController@index');
+    Route::get('repairs/search', 'RepairController@search');
+    Route::get('repairs/detail/{id}', 'RepairController@detail');
+    Route::get('repairs/add', 'RepairController@create');
+    Route::post('repairs/store', 'RepairController@store');
+    Route::post('repairs/send', 'RepairController@send');
+    Route::get('repairs/{id}/print', 'RepairController@printForm');
 
     /** จัดซื้อจัดจ้าง */
     Route::post('orders/validate', 'OrderController@formValidate');
@@ -179,6 +167,32 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('orders/received', 'OrderController@received');
     Route::post('orders/received/{mode}', 'OrderController@doReceived');
     Route::get('orders/print/{id}', 'OrderController@printCancelForm');
+
+    /** ตรวจรับพัสดุ */
+    Route::post('inspections/validate', 'InspectionController@formValidate');
+    Route::get('orders/inspect', 'InspectionController@index');
+    Route::get('inspections/search', 'InspectionController@search');
+    Route::get('inspections/{orderId}/order', 'InspectionController@getByOrder');
+    Route::get('inspections/{keyword}/deliver-bills', 'InspectionController@getDeliverBills');
+    Route::get('inspections/add', 'InspectionController@create');
+    Route::post('inspections/store', 'InspectionController@store');
+    Route::get('inspections/edit/{id}', 'InspectionController@edit');
+    Route::get('inspections/detail/{id}', 'InspectionController@detail');
+    Route::post('inspections/update', 'InspectionController@update');
+    Route::post('inspections/delete/{id}', 'InspectionController@delete');
+
+    /** การส่งเบิกเงิน */
+    Route::post('withdrawals/validate', 'WithdrawalController@formValidate');
+    Route::get('orders/withdraw', 'WithdrawalController@index');
+    Route::get('withdrawals/search', 'WithdrawalController@search');
+    Route::get('withdrawals/get-ajax-byid/{id}', 'WithdrawalController@getById');
+    Route::get('withdrawals/add', 'WithdrawalController@create');
+    Route::post('withdrawals/store', 'WithdrawalController@store');
+    Route::get('withdrawals/edit/{id}', 'WithdrawalController@edit');
+    Route::get('withdrawals/detail/{id}', 'WithdrawalController@detail');
+    Route::post('withdrawals/update', 'WithdrawalController@update');
+    Route::post('withdrawals/delete/{id}', 'WithdrawalController@delete');
+    Route::get('withdrawals/{id}/print', 'WithdrawalController@printForm');
 
     /** ควบคุมกำกับติดตาม */
     Route::post('monthly/validate', 'MonthlyController@formValidate');
@@ -216,32 +230,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('utilities/update/{id}', 'UtilityController@update');
     Route::post('utilities/delete/{id}', 'UtilityController@delete');
 
-    /** ตรวจรับพัสดุ */
-    Route::post('inspections/validate', 'InspectionController@formValidate');
-    Route::get('orders/inspect', 'InspectionController@index');
-    Route::get('inspections/search', 'InspectionController@search');
-    Route::get('inspections/{orderId}/order', 'InspectionController@getByOrder');
-    Route::get('inspections/{keyword}/deliver-bills', 'InspectionController@getDeliverBills');
-    Route::get('inspections/add', 'InspectionController@create');
-    Route::post('inspections/store', 'InspectionController@store');
-    Route::get('inspections/edit/{id}', 'InspectionController@edit');
-    Route::get('inspections/detail/{id}', 'InspectionController@detail');
-    Route::post('inspections/update', 'InspectionController@update');
-    Route::post('inspections/delete/{id}', 'InspectionController@delete');
-
-    /** การส่งเบิกเงิน */
-    Route::post('withdrawals/validate', 'WithdrawalController@formValidate');
-    Route::get('orders/withdraw', 'WithdrawalController@index');
-    Route::get('withdrawals/search', 'WithdrawalController@search');
-    Route::get('withdrawals/get-ajax-byid/{id}', 'WithdrawalController@getById');
-    Route::get('withdrawals/add', 'WithdrawalController@create');
-    Route::post('withdrawals/store', 'WithdrawalController@store');
-    Route::get('withdrawals/edit/{id}', 'WithdrawalController@edit');
-    Route::get('withdrawals/detail/{id}', 'WithdrawalController@detail');
-    Route::post('withdrawals/update', 'WithdrawalController@update');
-    Route::post('withdrawals/delete/{id}', 'WithdrawalController@delete');
-    Route::get('withdrawals/{id}/print', 'WithdrawalController@printForm');
-
     /** รายจ่าย */
     Route::post('expenses/validate', 'ExpenseController@formValidate');
     Route::get('system/expenses', 'ExpenseController@index');
@@ -260,6 +248,18 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('suppliers/detail/{id}', 'SupplierController@detail');
     Route::post('suppliers/update/{id}', 'SupplierController@update');
     Route::post('suppliers/delete/{id}', 'SupplierController@delete');
+
+    /** ตัวชี้วัด */
+    Route::post('kpis/validate', 'KpiController@formValidate');
+    Route::get('system/kpis', 'KpiController@index');
+    Route::get('kpis/list', 'KpiController@index');
+    Route::get('kpis/detail/{id}', 'KpiController@detail');
+    Route::get('kpis/add', 'KpiController@add');
+    Route::post('kpis/store', 'KpiController@store');
+    Route::get('kpis/edit/{id}', 'KpiController@edit');
+    Route::post('kpis/update/{id}', 'KpiController@update');
+    Route::post('kpis/delete/{id}', 'KpiController@delete');
+    Route::get('kpis/print/{id}', 'KpiController@printLeaveForm');
 
     /** รายงาน */
     Route::get('reports/summary-depart', 'ReportController@summaryByDepart');

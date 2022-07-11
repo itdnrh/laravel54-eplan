@@ -95,7 +95,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         }
     };
 
-    $scope.getAll = function(type) {
+    $scope.getAll = function(type, inStock) {
         $scope.loading = true;
         $scope.plans = [];
         $scope.pager = null;
@@ -105,10 +105,10 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         let faction  = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}${in_stock}`)
         .then(function(res) {
-            console.log(res);
             $scope.setPlans(res);
 
             $scope.loading = false;
@@ -125,7 +125,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         $scope.pager = pager;
     };
 
-    $scope.getDataWithUrl = function(e, url, type, cb) {
+    $scope.getDataWithUrl = function(e, url, params, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -138,8 +138,9 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         let faction  = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let in_stock = params.inStock != undefined ? `&in_stock=${params.inStock}` : '';
 
-        $http.get(`${url}&type=${type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}`)
+        $http.get(`${url}&type=${params.type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}${in_stock}`)
         .then(function(res) {
             cb(res);
 

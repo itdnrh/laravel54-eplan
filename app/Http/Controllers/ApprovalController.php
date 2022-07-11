@@ -40,12 +40,15 @@ class ApprovalController extends Controller
         ]);
     }
 
-    public function materials()
+    public function materials(Request $req)
     {
+        $inStock = $req->get('in_stock');
+
         return view('approvals.materials-list', [
             "categories"    => ItemCategory::all(),
             "factions"      => $this->factions,
             "departs"       => Depart::all(),
+            "in_stock"      => $inStock,
         ]);
     }
 
