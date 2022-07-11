@@ -119,15 +119,14 @@ class PlanController extends Controller
         // }
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                        ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+        $plansList = PlanItem::leftJoin('items', 'items.id', '=', 'plan_items.item_id')
                         ->when(!empty($cate), function($q) use ($cate) {
                             $q->where('items.category_id', $cate);
                         })
-                        ->when(!empty($inStock), function($q) use ($inStock) {
+                        ->when($inStock != '', function($q) use ($inStock) {
                             $q->where('items.in_stock', $inStock);
                         })
-                        ->pluck('plans.id');
+                        ->pluck('plan_items.plan_id');
 
         $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->with('budget','depart','division')
@@ -139,7 +138,7 @@ class PlanController extends Controller
                     ->when(!empty($cate), function($q) use ($plansList) {
                         $q->whereIn('id', $plansList);
                     })
-                    ->when(!empty($inStock), function($q) use ($plansList) {
+                    ->when($inStock != '', function($q) use ($plansList) {
                         $q->whereIn('id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {

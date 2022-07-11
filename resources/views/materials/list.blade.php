@@ -46,7 +46,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll({{ $in_stock }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -61,7 +61,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll({{ $in_stock }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -79,15 +79,16 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
+                                            ng-change="
+                                                onFactionSelected(cboFaction);
+                                                getAll({{ $in_stock }});
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
-
                                                 <option value="{{ $faction->faction_id }}">
                                                     {{ $faction->faction_name }}
                                                 </option>
-
                                             @endforeach
                                         </select>
                                     </div><!-- /.form group -->
@@ -100,7 +101,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll({{ $in_stock }})"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
