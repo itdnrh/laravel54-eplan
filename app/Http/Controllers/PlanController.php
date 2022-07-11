@@ -73,13 +73,6 @@ class PlanController extends Controller
         }
     }
 
-    public function index()
-    {
-        return view('assets.list', [
-            "asset_categories"   => AssetCategory::all(),
-        ]);
-    }
-
     public function isExisted($itemId, $year, $depart)
     {
         $planCount = Plan::join('plan_items','plan_items.plan_id','=','plans.id')
@@ -111,6 +104,7 @@ class PlanController extends Controller
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
         $approved = $req->get('approved');
+        $inStock = $req->get('in_stock');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -130,6 +124,9 @@ class PlanController extends Controller
                         ->when(!empty($cate), function($q) use ($cate) {
                             $q->where('items.category_id', $cate);
                         })
+                        ->when(!empty($inStock), function($q) use ($inStock) {
+                            $q->where('items.in_stock', $inStock);
+                        })
                         ->pluck('plans.id');
 
         $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
@@ -140,6 +137,9 @@ class PlanController extends Controller
                         $q->where('plan_type_id', $type);
                     })
                     ->when(!empty($cate), function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when(!empty($inStock), function($q) use ($plansList) {
                         $q->whereIn('id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {
@@ -197,31 +197,6 @@ class PlanController extends Controller
         ];
     }
 
-    public function detail($id)
-    {
-        return view('assets.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => AssetCategory::all(),
-            "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
-            "periods"       => $this->periods,
-        ]);
-    }
-
-    public function add()
-    {
-        return view('assets.add', [
-            "categories"    => AssetCategory::all(),
-            "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
-            "periods"       => $this->periods,
-        ]);
-    }
-
     public function store(Request $req)
     {
         $plan = new Plan();
@@ -257,17 +232,6 @@ class PlanController extends Controller
 
             return redirect('/assets/list');
         }
-    }
-
-    public function edit($id)
-    {
-        return view('leaves.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
-            "periods"       => $this->periods,
-        ]);
     }
 
     public function update(Request $req)
@@ -320,36 +284,6 @@ class PlanController extends Controller
             ];
         }
         
-    }
-
-    public function sendSupported(Request $req, $id) {
-        $plan = Plan::find($id);
-        $plan->doc_no       = $req['doc_no'];
-        $plan->doc_date     = convThDateToDbDate($req['doc_date']);
-        $plan->sent_date    = convThDateToDbDate($req['sent_date']);
-        $plan->sent_user    = $req['sent_user'];
-        $plan->status       = 1;
-
-        if ($plan->save()) {
-            return [
-                'plan' => $plan
-            ];
-        }
-    }
-
-    public function createPO(Request $req, $id) {
-        $plan = Plan::find($id);
-        $plan->po_no        = $req['po_no'];
-        $plan->po_date      = convThDateToDbDate($req['po_date']);
-        $plan->po_net_total = $req['po_net_total'];
-        $plan->po_user      = $req['po_user'];
-        $plan->status       = 3;
-
-        if ($plan->save()) {
-            return [
-                'plan' => $plan
-            ];
-        }
     }
 
     public function printLeaveForm($id)

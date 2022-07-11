@@ -88,7 +88,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     /** TODO: Duplicated function */
-    $scope.getAll = function(event) {
+    $scope.getAll = function(inStock) {
         $scope.loading = true;
         $scope.materials = [];
         $scope.pager = null;
@@ -99,7 +99,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year${year}&cate=${cate}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&in_stock=${inStock}`)
         .then(function(res) {
             $scope.setMaterials(res);
 

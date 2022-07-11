@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนวัสดุ (นอกคลัง)
+            แผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนวัสดุ (นอกคลัง)</li>
+            <li class="breadcrumb-item active">แผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</li>
         </ol>
     </section>
 
@@ -20,7 +20,7 @@
         class="content"
         ng-controller="planMaterialCtrl"
         ng-init="
-            getAll();
+            getAll({{ $in_stock }});
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -55,7 +55,7 @@
                                     </select>
                                 </div><!-- /.form group -->
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทวัสดุ</label>
+                                    <label>ประเภทแผนวัสดุ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"
@@ -118,10 +118,10 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">แผนวัสดุ (นอกคลัง)</h3>
+                                <h3 class="box-title">วัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/materials/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>

@@ -71,6 +71,7 @@ class ItemController extends Controller
         $type = $req->get('type');
         $cate = $req->get('cate');
         $name = $req->get('name');
+        $inStock = $req->get('in_stock');
 
         $items = Item::with('planType','category','group','unit')
                     ->when(!empty($type), function($q) use ($type) {
@@ -78,6 +79,9 @@ class ItemController extends Controller
                     })
                     ->when(!empty($cate), function($q) use ($cate) {
                         $q->where('category_id', $cate);
+                    })
+                    ->when(!empty($inStock), function($q) use ($inStock) {
+                        $q->where('in_stock', $inStock);
                     })
                     ->when(!empty($name), function($q) use ($name) {
                         $q->where('item_name', 'like', '%'.$name.'%');

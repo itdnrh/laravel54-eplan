@@ -61,10 +61,21 @@
 								</a>
 							</li>
 							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
-								<a href="{{ url('/plans/materials') }}">
-									<i class="fa fa-circle-o"></i> วัสดุ
+								<a href="{{ url('/plans/materials?in_stock=0') }}">
+									<i class="fa fa-circle-o"></i> วัสดุนอกคลัง
 								</a>
 							</li>
+							@if (
+								Auth::user()->person_id == '1300200009261' ||
+								Auth::user()->memberOf->depart_id == 2 ||
+								count(Auth::user()->delegations) > 0
+							)
+								<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
+									<a href="{{ url('/plans/materials?in_stock=1') }}">
+										<i class="fa fa-circle-o"></i> วัสดุในคลัง
+									</a>
+								</li>
+							@endif
 							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['services','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/services') }}">
 									<i class="fa fa-circle-o"></i> จ้างบริการ

@@ -79,12 +79,15 @@ class PlanMaterialController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $req)
     {
+        $inStock = $req->get('in_stock');
+
         return view('materials.list', [
             "categories"    => ItemCategory::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
+            "in_stock"      => $inStock,
         ]);
     }
 
@@ -103,8 +106,10 @@ class PlanMaterialController extends Controller
         ]);
     }
 
-    public function add()
+    public function add(Request $req)
     {
+        $inStock = $req->get('in_stock');
+
         return view('materials.add', [
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
@@ -116,6 +121,7 @@ class PlanMaterialController extends Controller
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
+            "in_stock"      => $inStock,
         ]);
     }
 
@@ -167,8 +173,10 @@ class PlanMaterialController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
+        $inStock = $req->get('in_stock');
+
         return view('materials.edit', [
             "material"      => Plan::find($id),
             "planTypes"     => PlanType::all(),
@@ -181,6 +189,7 @@ class PlanMaterialController extends Controller
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
+            "in_stock"      => $inStock,
         ]);
     }
 

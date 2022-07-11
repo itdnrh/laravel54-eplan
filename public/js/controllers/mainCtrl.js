@@ -151,6 +151,11 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
         $scope.planType = planType;
     };
+    
+    $scope.inStock = 0;
+    $scope.setInStock = function(value) {
+        $scope.inStock = value;
+    };
 
     $scope.getMonthName = function(month) {
         const monthObj = $scope.monthLists.find(m => m.id == month);
@@ -219,8 +224,9 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let name = $scope.searchKey === '' ? '' : $scope.searchKey;
+        let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
-        $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&name=${name}`)
+        $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&name=${name}&in_stock=${in_stock}`)
         .then(function(res) {
             $scope.setItems(res);
 
@@ -251,8 +257,9 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let name = $scope.searchKey === '' ? '' : $scope.searchKey;
+        let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&name=${name}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&in_stock=${in_stock}`)
         .then(function(res) {
             cb(res);
 

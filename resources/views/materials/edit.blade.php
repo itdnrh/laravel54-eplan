@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แก้ไขรายการวัสดุ
+            แก้ไขแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แก้ไขรายการวัสดุ</li>
+            <li class="breadcrumb-item active">แก้ไขแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</li>
         </ol>
     </section>
 
@@ -26,6 +26,7 @@
                 categories: {{ $categories }},
                 groups: {{ $groups }}
             }, 2);
+            setInStock({{ $in_stock }});
             getById({{ $material->id }}, setEditControls);
         "
     >
@@ -35,7 +36,7 @@
 
                 <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">แก้ไขรายการวัสดุ</h3>
+                        <h3 class="box-title">แก้ไขแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                     </div>
 
                     <form id="frmEditMaterial" name="frmEditMaterial" method="post" action="{{ url('/materials/update/'.$material->id) }}" role="form" enctype="multipart/form-data">

@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการวัสดุ
+            เพิ่มแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการวัสดุ</li>
+            <li class="breadcrumb-item active">เพิ่มแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</li>
         </ol>
     </section>
 
@@ -19,12 +19,15 @@
     <section
         class="content"
         ng-controller="planMaterialCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }},
-            groups: {{ $groups }}
-        }, 2);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
+            }, 2);
+            setInStock({{ $in_stock }});
+        "
     >
 
         <div class="row">
@@ -32,7 +35,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการวัสดุ</h3>
+                        <h3 class="box-title">เพิ่มแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                     </div>
 
                     <form id="frmNewMaterial" name="frmNewMaterial" method="post" action="{{ url('/materials/store') }}" role="form" enctype="multipart/form-data">
