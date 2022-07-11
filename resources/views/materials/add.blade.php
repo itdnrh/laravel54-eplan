@@ -43,7 +43,7 @@
                         <h3 class="box-title">เพิ่มแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                     </div>
 
-                    <form id="frmNewMaterial" name="frmNewMaterial" method="post" action="{{ url('/materials/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmNewMaterial" name="frmNewMaterial" method="post" action="{{ url('/materials/store?in_stock='.$in_stock) }}" role="form" enctype="multipart/form-data">
                         <input
                             type="hidden"
                             id="user"

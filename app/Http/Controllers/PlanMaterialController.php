@@ -127,6 +127,8 @@ class PlanMaterialController extends Controller
 
     public function store(Request $req)
     {
+        $inStock = $req->get('in_stock');
+
         $plan = new Plan();
         // $plan->plan_no          = $req['plan_no'];
         // $plan->year             = calcBudgetYear($req['year']);
@@ -169,7 +171,7 @@ class PlanMaterialController extends Controller
             $material->calc_method     = 1;
             $material->save();
 
-            return redirect('/plans/materials');
+            return redirect('/plans/materials?in_stock='.$inStock);
         }
     }
 
