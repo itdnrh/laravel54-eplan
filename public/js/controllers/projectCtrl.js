@@ -99,7 +99,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${CONFIG.apiUrl}/projects?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
         .then(function(res) {
             $scope.setProjects(res);
 

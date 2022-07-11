@@ -256,7 +256,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let total = 0;
 
         total = $scope.support.details.reduce((sum, curVal) => {
-            return sum = sum + curVal.sum_price;
+            return sum = sum + parseFloat(curVal.sum_price);
         }, 0);
 
         $scope.support.total = total;

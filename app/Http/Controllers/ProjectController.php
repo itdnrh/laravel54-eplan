@@ -103,11 +103,12 @@ class ProjectController extends Controller
         $pattern = '/^\<|\>|\&|\-/i';
 
         /** Get params from query string */
-        $year   = $req->get('year');
-        $type   = $req->get('type');
-        $cate   = $req->get('cate');
+        $year = $req->get('year');
+        $strategic = $req->get('strategic');
+        $strategy = $req->get('strategy');
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $name = $req->get('name');
         $status = $req->get('status');
 
         // if($status != '-') {
@@ -121,48 +122,41 @@ class ProjectController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
-        // $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        // $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-        //                 ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-        //                 ->when(!empty($cate), function($q) use ($cate) {
-        //                     $q->where('items.category_id', $cate);
-        //                 })
-        //                 ->pluck('plans.id');
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        // $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-        //             ->with('budget','depart','division')
-        //             ->with('planItem','planItem.unit')
-        //             ->with('planItem.item','planItem.item.category')
-        //             ->when(!empty($type), function($q) use ($type) {
-        //                 $q->where('plan_type_id', $type);
-        //             })
-        //             ->when(!empty($cate), function($q) use ($plansList) {
-        //                 $q->whereIn('id', $plansList);
-        //             })
-        //             ->when(!empty($year), function($q) use ($year) {
-        //                 $q->where('year', $year);
-        //             })
-        //             ->when(!empty($depart), function($q) use ($depart) {
-        //                 $q->where('depart_id', $depart);
-        //             })
-        //             ->when(!empty($faction), function($q) use ($departsList) {
-        //                 $q->whereIn('depart_id', $departsList);
-        //             })
-        //             ->when($status != '', function($q) use ($status) {
-        //                 $q->where('status', $status);
-        //             })
-                    // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                    //     $q->whereBetween('status', $arrStatus);
-                    // })
-                    // ->when(!empty($month), function($q) use ($month) {
-                    //     $sdate = $month. '-01';
-                    //     $edate = date('Y-m-t', strtotime($sdate));
+        $kpisList = Kpi::leftJoin('strategies', 'strategies.id', '=', 'kpis.strategy_id')
+                        ->when(!empty($strategic), function($q) use ($strategic) {
+                            $q->where('strategies.strategic_id', $strategic);
+                        })
+                        ->when(!empty($strategy), function($q) use ($strategy) {
+                            $q->where('kpis.strategy_id', $strategy);
+                        })
+                        ->pluck('kpis.id');
 
-                    //     $q->whereBetween('leave_date', [$sdate, $edate]);
-                    // })
-                    // ->orderBy('plan_no', 'ASC')
-                    // ->paginate(10);
+        $projects = Project::with('kpi','depart','owner','budgetSrc')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($strategic), function($q) use ($kpisList) {
+                            $q->whereIn('kpi_id', $kpisList);
+                        })
+                        ->when(!empty($strategy), function($q) use ($kpisList) {
+                            $q->whereIn('kpi_id', $kpisList);
+                        })
+                        ->when(!empty($faction), function($q) use ($departsList) {
+                            $q->whereIn('owner_depart', $departsList);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('owner_depart', $depart);
+                        })
+                        // ->when($status != '', function($q) use ($status) {
+                        //     $q->where('status', $status);
+                        // })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where('project_name', 'Like', $name.'%');
+                        })
+                        ->paginate(10);
 
         return [
             'projects' => $projects,
