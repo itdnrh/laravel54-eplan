@@ -19,6 +19,7 @@
                                 ng-model="newItem.plan_type_id"
                                 ng-change="onPlanTypeSelected(newItem.plan_type_id)"
                                 class="form-control"
+                                disabled
                             >
                                 <option value="">-- เลือกประเภทแผน --</option>
                                 @foreach($planTypes as $planType)
@@ -129,10 +130,18 @@
                             <label for="">ใน/นอกคลัง</label>
                             <div style="display: flex; gap: 30px;">
                                 <div>
-                                    <input type="radio" ng-model="newItem.in_stock" ng-value="1" /> ในคลัง 
+                                    <input
+                                        type="radio"
+                                        ng-model="newItem.in_stock"
+                                        ng-value="1"
+                                        ng-disabled="inStock == 0" /> ในคลัง 
                                 </div>
                                 <div>
-                                    <input type="radio" ng-model="newItem.in_stock" ng-value="0" /> นอกคลัง
+                                    <input
+                                        type="radio"
+                                        ng-model="newItem.in_stock"
+                                        ng-value="0"
+                                        ng-disabled="inStock == 1" /> นอกคลัง
                                 </div>
                             </div>
                         </div>

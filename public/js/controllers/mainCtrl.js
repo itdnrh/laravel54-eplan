@@ -85,7 +85,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         group_id: '',
         price_per_unit: '',
         unit_id: '',
-        in_stock: '',
+        in_stock: 0,
         remark: '',
         error: {}
     };
@@ -200,14 +200,6 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         } else {
             $('#group_id').attr('disabled', true)
         }
-
-        if (parseInt(type) === 2) {
-            $scope.newItem.in_stock = 0;
-        } else if (parseInt(type) === 6) {
-            $scope.newItem.in_stock = 1;
-        } else {
-            $scope.newItem.in_stock = '';
-        }
     };
 
     $scope.showItemsList = function() {
@@ -275,6 +267,19 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     };
 
     $scope.showNewItemForm = function() {
+        $scope.newItem.plan_type_id = $scope.planType.toString();
+        $scope.newItem.in_stock = $scope.inStock;
+
+        // if (parseInt($scope.planType) === 2) {
+        //     $scope.newItem.in_stock = 0;
+        // } else if (parseInt($scope.planType) === 6) {
+        //     $scope.newItem.in_stock = 1;
+        // } else {
+        //     $scope.newItem.in_stock = '';
+        // }
+
+        $scope.onPlanTypeSelected($scope.planType);
+
         $('#item-form').modal('show');
     };
 
