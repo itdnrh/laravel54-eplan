@@ -18,6 +18,40 @@ class DashboardController extends Controller
         return view('suppliers.list');
     }
 
+    public function getStat1($year)
+    {
+        $sql = "SELECT #p.plan_type_id, pt.plan_type_name,
+                sum(pi.sum_price) as sum_all,
+                sum(case when (p.status >= '3') then p.po_net_total end) as sum_po,
+                sum(case when (p.status >= '4') then p.po_net_total end) as sum_insp, #ตรวจรับแล้ว
+                sum(case when (p.status >= '5') then p.po_net_total end) as sum_with #ส่งเบิกเงินแล้ว
+                FROM eplan_db.plans p
+                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
+                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
+                #group by p.plan_type_id, pt.plan_type_name; ";
+
+        $stats = \DB::select($sql);
+
+        return [
+            'stats' => $stats
+        ];
+    }
+
+    public function getStat2($year)
+    {
+        $sql = "SELECT p.plan_type_id, pt.plan_type_name, sum(pi.sum_price) as sum_all
+                FROM eplan_db.plans p
+                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
+                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
+                group by p.plan_type_id, pt.plan_type_name; ";
+
+        $stats = \DB::select($sql);
+
+        return [
+            'stats' => $stats
+        ];
+    }
+
     public function getSummaryAssets(Request $req)
     {
         /** Get params from query string */
@@ -79,40 +113,6 @@ class DashboardController extends Controller
             'plans'         => $plans,
             'categories'    => ItemCategory::where('plan_type_id', 2)->get(),
             'budget'        => PlanSummary::where('year', $year)->get()
-        ];
-    }
-
-    public function getStat1($year)
-    {
-        $sql = "SELECT #p.plan_type_id, pt.plan_type_name,
-                sum(pi.sum_price) as sum_all,
-                sum(case when (p.status >= '3') then p.po_net_total end) as sum_po,
-                sum(case when (p.status >= '4') then p.po_net_total end) as sum_insp, #ตรวจรับแล้ว
-                sum(case when (p.status >= '5') then p.po_net_total end) as sum_with #ส่งเบิกเงินแล้ว
-                FROM eplan_db.plans p
-                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
-                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
-                #group by p.plan_type_id, pt.plan_type_name; ";
-
-        $stats = \DB::select($sql);
-
-        return [
-            'stats' => $stats
-        ];
-    }
-
-    public function getStat2($year)
-    {
-        $sql = "SELECT p.plan_type_id, pt.plan_type_name, sum(pi.sum_price) as sum_all
-                FROM eplan_db.plans p
-                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
-                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
-                group by p.plan_type_id, pt.plan_type_name; ";
-
-        $stats = \DB::select($sql);
-
-        return [
-            'stats' => $stats
         ];
     }
 }

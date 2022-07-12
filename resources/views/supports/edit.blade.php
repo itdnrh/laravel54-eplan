@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มบันทึกขอสนับสนุน
+            แก้ไขบันทึกขอสนับสนุน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มบันทึกขอสนับสนุน</li>
+            <li class="breadcrumb-item active">แก้ไขบันทึกขอสนับสนุน</li>
         </ol>
     </section>
 
@@ -19,22 +19,28 @@
     <section
         class="content"
         ng-controller="supportCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }}
-        });"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }}
+            });
+            getById({{ $support->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-success">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มบันทึกขอสนับสนุน</h3>
+                        <h3 class="box-title">
+                            แก้ไขบันทึกขอสนับสนุน
+                            <span>(ID : {{ $support->id }})</span>
+                        </h3>
                     </div>
 
-                    <form id="frmNewSupport" name="frmNewSupport" method="post" action="{{ url('/supports/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditSupport" name="frmEditSupport" method="post" action="{{ url('/supports/update/'.$support->id) }}" role="form" enctype="multipart/form-data">
                         <input
                             type="hidden"
                             id="user"
@@ -124,9 +130,7 @@
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
                                             ng-change="setTopicByPlanType(support.plan_type_id)"
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2">
+                                            class="form-control">
                                         <option value="">-- เลือกประเภทแผน --</option>
                                         @foreach($planTypes as $planType)
                                             <option value="{{ $planType->id }}">
@@ -296,10 +300,10 @@
                                             </tr>
                                             <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td style="text-align: center">@{{ detail.plan_no }}</td>
+                                                <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td>
-                                                    @{{ detail.plan_detail }}
-                                                    <p style="margin: 0;">@{{ detail.plan_depart }}</p>
+                                                    @{{ detail.plan.plan_item.item.item_name }}
+                                                    <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.price_per_unit | currency:'':2 }}
@@ -376,10 +380,10 @@
                                     </label>
                                     <div class="committee-wrapper">
                                         <ul class="committee-lists">
-                                            <li ng-repeat="person in support.insp_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="committee in support.insp_committee" style="margin: 4px 0;">
                                                 <div class="committee-item">
-                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <span>@{{ committee.person.prefix.prefix_name + committee.person.person_firstname +' '+ committee.person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ committee.person.position.position_name + committee.person.academic.ac_name }}</span>
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
@@ -416,10 +420,10 @@
                                     </label>
                                     <div class="committee-wrapper">
                                         <ul class="committee-lists">
-                                            <li ng-repeat="person in support.spec_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="committee in support.spec_committee" style="margin: 4px 0;">
                                                 <div class="committee-item">
-                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <span>@{{ committee.person.prefix.prefix_name + committee.person.person_firstname +' '+ committee.person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ committee.person.position.position_name + committee.person.academic.ac_name }}</span>
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
@@ -453,10 +457,10 @@
                                     </label>
                                     <div class="committee-wrapper">
                                         <ul class="committee-lists">
-                                            <li ng-repeat="person in support.env_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="committee in support.env_committee" style="margin: 4px 0;">
                                                 <div class="committee-item">
-                                                    <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                    <span>@{{ committee.person.prefix.prefix_name + committee.person.person_firstname +' '+ committee.person.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ committee.person.position.position_name + committee.person.academic.ac_name }}</span>
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
@@ -535,9 +539,9 @@
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="onValidateForm($event)"
-                                class="btn btn-success pull-right"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

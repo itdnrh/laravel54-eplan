@@ -138,9 +138,11 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('supports/timeline', 'SupportController@timeline');
     Route::get('supports/search', 'SupportController@search');
     Route::get('supports/detail/{id}', 'SupportController@detail');
-    Route::get('supports/get-ajax-byid/{id}', 'SupportController@getById');
     Route::get('supports/add', 'SupportController@create');
     Route::post('supports/store', 'SupportController@store');
+    Route::get('supports/edit/{id}', 'SupportController@edit');
+    Route::post('supports/update/{id}', 'SupportController@update');
+    Route::post('supports/delete/{id}', 'SupportController@delete');
     Route::post('supports/send', 'SupportController@send');
     Route::get('supports/{id}/print', 'SupportController@printForm');
 

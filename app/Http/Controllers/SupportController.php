@@ -147,8 +147,8 @@ class SupportController extends Controller
     public function getById($id)
     {
         $support = Support::with('planType','depart','division','contact')
-                    ->with('details','details.plan','details.plan.planItem.unit')
-                    ->with('details.plan.planItem','details.plan.planItem.item')
+                    ->with('details','details.unit','details.plan','details.plan.depart')
+                    ->with('details.plan.planItem.unit','details.plan.planItem','details.plan.planItem.item')
                     ->find($id);
 
         $committees = Committee::with('type','person','person.prefix')
@@ -341,12 +341,14 @@ class SupportController extends Controller
 
     public function edit($id)
     {
-        $order = order::with('supplier','details','details.unit')
-                    ->where('id', $id)
-                    ->first();
-
-        return view('orders.edit', [
-            "order" => $order
+        return view('supports.edit', [
+            "support"       => Support::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 

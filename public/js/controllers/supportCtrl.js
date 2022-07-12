@@ -372,7 +372,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/supports/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/supports/${id}`)
         .then(function(res) {
             cb(res.data.support, res.data.committees);
 
