@@ -55,7 +55,7 @@
                                     </select>
                                 </div><!-- /.form group -->
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทแผนวัสดุ</label>
+                                    <label>ประเภทวัสดุ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"

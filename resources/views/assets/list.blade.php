@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            ครุภัณฑ์
+            แผนครุภัณฑ์
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">ครุภัณฑ์</li>
+            <li class="breadcrumb-item active">แผนครุภัณฑ์</li>
         </ol>
     </section>
 
@@ -118,7 +118,7 @@
                     <div class="box-header with-border">
                         <div class="row" style="display: flex; align-items: center;">
                             <div class="col-md-6">
-                                <h3 class="box-title">ครุภัณฑ์</h3>
+                                <h3 class="box-title">แผนครุภัณฑ์</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">

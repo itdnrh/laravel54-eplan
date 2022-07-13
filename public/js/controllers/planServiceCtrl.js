@@ -29,7 +29,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -39,7 +39,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     $('#doc_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
@@ -100,9 +100,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
             $scope.setServices(res);
 
@@ -132,9 +131,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&type=3&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=3&year=${year}&cate=${cate}&status=${status}&depart=${depart}`)
         .then(function(res) {
             cb(res);
 

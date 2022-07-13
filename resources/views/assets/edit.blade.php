@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แก้ไขรายการครุภัณฑ์
+            แก้ไขแผนครุภัณฑ์
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แก้ไขรายการครุภัณฑ์</li>
+            <li class="breadcrumb-item active">แก้ไขแผนครุภัณฑ์</li>
         </ol>
     </section>
 
@@ -35,7 +35,7 @@
 
                 <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">แก้ไขรายการครุภัณฑ์</h3>
+                        <h3 class="box-title">แก้ไขแผนครุภัณฑ์</h3>
                     </div>
 
                     <form id="frmEditAsset" name="frmEditAsset" method="post" action="{{ url('/assets/update/'.$asset->id) }}" role="form" enctype="multipart/form-data">

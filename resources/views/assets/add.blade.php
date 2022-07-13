@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการครุภัณฑ์
+            เพิ่มแผนครุภัณฑ์
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการครุภัณฑ์</li>
+            <li class="breadcrumb-item active">เพิ่มแผนครุภัณฑ์</li>
         </ol>
     </section>
 
@@ -39,7 +39,7 @@
 
                 <div class="box box-success">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการครุภัณฑ์</h3>
+                        <h3 class="box-title">เพิ่มแผนครุภัณฑ์</h3>
                     </div>
 
                     <form id="frmNewLeave" name="frmNewLeave" method="post" action="{{ url('/assets/store') }}" role="form" enctype="multipart/form-data">
