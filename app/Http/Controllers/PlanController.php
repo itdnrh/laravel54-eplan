@@ -105,6 +105,7 @@ class PlanController extends Controller
         $status = $req->get('status');
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
+        $showAll = $req->get('show_all');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -156,7 +157,10 @@ class PlanController extends Controller
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('approved', $approved);
                     })
-                    ->where('plan_items.remain_amount', '>', 0)
+                    ->when(empty($showAll), function($q) use ($showAll) {
+                        $q->where('plan_items.remain_amount', '>', 0);
+                    })
+                    
                     // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                     //     $q->whereBetween('status', $arrStatus);
                     // })

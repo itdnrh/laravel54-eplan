@@ -105,9 +105,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&show_all=1`)
         .then(function(res) {
             $scope.setAssets(res);
 
@@ -137,9 +136,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&show_all=1`)
         .then(function(res) {
             cb(res);
 
