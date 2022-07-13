@@ -383,37 +383,39 @@ class SupportController extends Controller
                 $supportId = $support->id;
 
                 foreach($req['details'] as $item) {
-                    $detail = new SupportDetail;
-                    $detail->support_id     = $supportId;
-                    $detail->plan_id        = $item['plan_id'];
-                    // $detail->desc           = $item['desc'];
-                    $detail->price_per_unit = $item['price_per_unit'];
-                    $detail->unit_id        = $item['unit_id'];
-                    $detail->amount         = $item['amount'];
-                    $detail->sum_price      = $item['sum_price'];
-                    $detail->status         = 0;
-                    $detail->save();
+                    if (!array_key_exists('id', $item)) {
+                        $detail = new SupportDetail;
+                        $detail->support_id     = $supportId;
+                        $detail->plan_id        = $item['plan_id'];
+                        // $detail->desc           = $item['desc'];
+                        $detail->price_per_unit = $item['price_per_unit'];
+                        $detail->unit_id        = $item['unit_id'];
+                        $detail->amount         = $item['amount'];
+                        $detail->sum_price      = $item['sum_price'];
+                        $detail->status         = 0;
+                        $detail->save();
 
-                    /** TODO: should update plan's status to 99=pending  */
-                    // $plan = Plan::find($item['plan_id']);
-                    // $plan->status = '99';
-                    // $plan->save();
-
-                    /** TODO: should update plan's remain_amount by decrease from req->amount  */
-                    $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
-                    // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
-                    if ($planItem->calc_method == 1) {
-                        $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
-                        $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
-                    } else {
-                        $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
-
-                        if ($planItem->remain_budget <= 0) {
-                            $planItem->remain_amount = 0;
+                        /** TODO: should update plan's status to 99=pending  */
+                        // $plan = Plan::find($item['plan_id']);
+                        // $plan->status = '99';
+                        // $plan->save();
+    
+                        /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                        $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
+                        // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
+                        if ($planItem->calc_method == 1) {
+                            $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
+                            $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+                        } else {
+                            $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+    
+                            if ($planItem->remain_budget <= 0) {
+                                $planItem->remain_amount = 0;
+                            }
                         }
+    
+                        $planItem->save();
                     }
-
-                    $planItem->save();
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */
@@ -457,7 +459,7 @@ class SupportController extends Controller
 
                 return [
                     'status'    => 1,
-                    'message'   => 'Insertion successfully',
+                    'message'   => 'Updation successfully',
                     'support'   => $support
                 ];
             } else {
@@ -486,13 +488,16 @@ class SupportController extends Controller
                 /** Delete support_details */
                 SupportDetail::find($item->id)->delete();
 
-                /** Revert plan's data */
+                /** TODO: Revert plans's status and plan_items's remain data */
                 // Plan::find($item->plan_id)->update([
                 //     'remain_amount' => 0,
                 //     'remain_budget' => 0,
                 //     'status'        => 0
                 // ]);
             }
+
+            /** TODO: Delete all committee of deleted support data */
+            // Committee::where('support_id', $deletedId)->delete();
 
             return redirect('/suports/list')->with('status', 'ลบรายการขอสนับสนุน รหัส: ' .$id. ' เรียบร้อยแล้ว !!');;
         }
