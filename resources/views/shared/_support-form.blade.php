@@ -1,4 +1,4 @@
-<div class="modal fade" id="supported-from" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal fade" id="support-from" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form>
@@ -39,7 +39,7 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="sendSupport($event, planType, planId)"
+                        ng-click="send($event, planType, planId)"
                         class="btn btn-primary"
                         data-dismiss="modal"
                         aria-label="Save"

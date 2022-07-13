@@ -413,13 +413,13 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.showSendSupportForm = function(support) {
+    $scope.showSendForm = function(support) {
         if (support) {
-            $('#supported-from').modal('show');
+            $('#support-from').modal('show');
         }
     };
 
-    $scope.sendSupport = function(e) {
+    $scope.send = function(e) {
         $scope.loading = true;
 
         $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)

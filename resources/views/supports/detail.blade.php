@@ -259,7 +259,7 @@
                             พิมพ์บันทึกขอสนับสนุน
                         </a>
                         <button
-                            ng-click="showSendSupportForm(support)"
+                            ng-click="showSendForm(support)"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
@@ -271,7 +271,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('shared._supported-form')
+        @include('shared._support-form')
 
     </section>
 
