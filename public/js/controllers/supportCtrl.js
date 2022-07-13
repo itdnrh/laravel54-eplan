@@ -42,9 +42,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.newItem = {
-        plan_no: '',
-        plan_detail: '',
-        plan_depart: '',
+        plan: null,
         plan_id: '',
         item_id: '',
         price_per_unit: '',
@@ -86,9 +84,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.clearNewItem = () => {
         $scope.newItem = {
-            plan_no: '',
-            plan_detail: '',
-            plan_depart: '',
+            plan: null,
             plan_id: '',
             item_id: '',
             price_per_unit: '',
@@ -261,11 +257,15 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#total').val(total);
     };
 
-    $scope.addOrderItem = () => {
-        $scope.support.details.push({ ...$scope.newItem });
-
-        $scope.calculateTotal();
-        $scope.clearNewItem();
+    $scope.addItem = () => {
+        if ($scope.newItem.plan_id !== '') {
+            $scope.support.details.push({ ...$scope.newItem });
+            
+            $scope.calculateTotal();
+            $scope.clearNewItem();
+        } else {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
+        }
     };
 
     $scope.removeAddedItem = (planId) => {

@@ -281,7 +281,7 @@
                                                         href="#"
                                                         class="btn btn-primary btn-sm"
                                                         ng-show="!editRow"
-                                                        ng-click="addOrderItem()"
+                                                        ng-click="addItem()"
                                                     >
                                                         <i class="fa fa-plus"></i>
                                                     </a>
