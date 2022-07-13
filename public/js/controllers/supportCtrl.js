@@ -466,6 +466,19 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
+    $scope.delete = function(e, id) {
+        e.preventDefault();
+
+        if(confirm(`คุณต้องลบบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.post(`${CONFIG.baseUrl}/supports/delete/${id}`)
+            .then(res => {
+                console.log(res);
+            }, err => {
+                console.log(err);
+            });
+        }
+    };
+
     $scope.setTopicByPlanType = function(planType) {
         $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id option:selected').text().trim()}`;
     };
