@@ -512,8 +512,14 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $http.post(`${CONFIG.baseUrl}/supports/delete/${id}`)
             .then(res => {
                 console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
             }, err => {
                 console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };
