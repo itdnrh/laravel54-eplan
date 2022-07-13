@@ -275,6 +275,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.showPersonList = (_selectedMode) => {
+        /** Set default depart of persons list to same user's depart */
+        $scope.cboDepart = $('#depart_id').val();
+
         $('#persons-list').modal('show');
 
         $scope.getPersons();
