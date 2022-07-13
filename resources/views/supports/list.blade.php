@@ -224,7 +224,7 @@
                                         <form
                                             id="frmDelete"
                                             method="POST"
-                                            action="{{ url('/supports/delete') }}/@{{ support.id }}"
+                                            action="{{ url('/supports/delete') }}"
                                             style="display: inline;"
                                         >
                                             {{ csrf_field() }}

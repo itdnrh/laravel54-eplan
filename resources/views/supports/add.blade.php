@@ -50,8 +50,8 @@
                         />
                         <input
                             type="hidden"
-                            id="division"
-                            name="division"
+                            id="division_id"
+                            name="division_id"
                             value="{{ Auth::user()->memberOf->division_id }}"
                             ng-model="support.division_id"
                         />
@@ -185,7 +185,7 @@
                                                         name="plan_no"
                                                         class="form-control"
                                                         style="text-align: center"
-                                                        ng-model="newItem.plan_no"
+                                                        ng-model="newItem.plan.plan_no"
                                                         readonly
                                                     />
                                                 </td>
@@ -197,7 +197,7 @@
                                                             id="plan_detail"
                                                             name="plan_detail"
                                                             class="form-control"
-                                                            ng-model="newItem.plan_detail"
+                                                            ng-model="newItem.plan.plan_item.item.item_name"
                                                             readonly
                                                         />
                                                         <input
@@ -296,10 +296,10 @@
                                             </tr>
                                             <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td style="text-align: center">@{{ detail.plan_no }}</td>
+                                                <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td>
-                                                    @{{ detail.plan_detail }}
-                                                    <p style="margin: 0;">@{{ detail.plan_depart }}</p>
+                                                    @{{ detail.plan.plan_item.item.item_name }}
+                                                    <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.price_per_unit | currency:'':2 }}

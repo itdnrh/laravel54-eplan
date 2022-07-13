@@ -55,7 +55,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -64,7 +64,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         todayHighlight: true
     };
     $('#po_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('show', function (e) {
             console.log(e);
@@ -236,9 +236,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
             $scope.newItem = {
-                plan_no: plan.plan_no,
-                plan_detail: `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`,
-                plan_depart: plan.division ? plan.division.ward_name : plan.depart.depart_name,
+                plan: plan,
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
                 price_per_unit: plan.price_per_unit,
@@ -372,6 +370,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.getById = function(id, cb) {
+        $scope.loading = true;
+        
         $http.get(`${CONFIG.apiUrl}/supports/${id}`)
         .then(function(res) {
             cb(res.data.support, res.data.committees);
@@ -385,8 +385,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.setEditControls = function(support, committees) {
         if (support) {
+            if (support.doc_no) {
+                const [prefix, doc_no] = support.doc_no.split("/");
+                $scope.support.doc_no = doc_no;
+            }
+
             $scope.support.id = support.id;
-            $scope.support.doc_no = support.doc_no;
             $scope.support.doc_date = support.doc_date;
             $scope.support.topic = support.topic;
             $scope.support.total = support.total;
@@ -404,6 +408,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.spec_committee = committees.filter(com => com.committee_type_id == 1);
             $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
             $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
+
+            $('#doc_date').datepicker(dtpDateOptions).datepicker('update', moment(support.doc_date).toDate());
         }
     };
 
@@ -433,7 +439,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
-    $scope.onValidateForm = function(e) {
+    $scope.onValidateForm = function(e, form, cb) {
         e.preventDefault();
 
         $scope.support.depart_id = $('#depart_id').val();
@@ -444,7 +450,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.store = function() {
         $scope.loading = true;
-
+        
         /** Set user props of support model by logged in user */
         $scope.support.user = $('#user').val();
 
@@ -464,6 +470,40 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
+    };
+
+    $scope.update = function(e, form) {
+        e.preventDefault();
+
+        if(confirm(`คุณต้องแก้ไขบันทึกขอสนับสนุน รหัส ${$scope.support.id} ใช่หรือไม่?`)) {
+            // $scope.loading = true;
+
+            /** Set only person data to all committee sets */
+            $scope.support.insp_committee = $scope.support.insp_committee.map(insp => insp.person);
+            $scope.support.env_committee = $scope.support.env_committee.map(env => env.person);
+            $scope.support.spec_committee = $scope.support.spec_committee.map(spec => spec.person);
+
+            /** Set user props of support model by logged in user */
+            console.log($scope.support);
+            $scope.support.user = $('#user').val();
+
+            // $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
+            // .then(function(res) {
+            //     $scope.loading = false;
+
+            //     console.log(res);
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            //     }
+            // }, function(err) {
+            //     $scope.loading = false;
+
+            //     console.log(err);
+            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            // });
+        }
     };
 
     $scope.delete = function(e, id) {

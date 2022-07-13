@@ -352,19 +352,125 @@ class SupportController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        $cancel = Support::find($req['id']);
-        $cancel->reason         = $req['reason'];
-        $cancel->start_date     = convThDateToDbDate($req['start_date']);
-        $cancel->start_period   = '1';
-        $cancel->end_date       = convThDateToDbDate($req['end_date']);
-        $cancel->end_period     = $req['end_period'];
-        $cancel->days           = $req['days'];
-        $cancel->working_days   = $req['working_days'];
+        try {
+            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
+            $doc_no_prefix = $person->memberOf->depart->memo_no;
 
-        if ($cancel->save()) {
-            return redirect('/cancellations/cancel');
+            $support = Support::find($id);
+            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
+
+            if (!empty($req['doc_date'])) {
+                $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            }
+
+            $support->topic             = $req['topic'];
+            $support->support_type_id   = 1;
+            $support->year              = $req['year'];
+            $support->depart_id         = $req['depart_id'];
+            $support->division_id       = $req['division_id'];
+            $support->plan_type_id      = $req['plan_type_id'];
+            $support->total             = $req['total'];
+            $support->contact_person    = $req['contact_person'];
+            $support->reason            = $req['reason'];
+            $support->remark            = $req['remark'];
+            $support->status            = 0;
+            $support->created_user      = $req['user'];
+            $support->updated_user      = $req['user'];
+            
+            if ($support->save()) {
+                $supportId = $support->id;
+
+                foreach($req['details'] as $item) {
+                    $detail = new SupportDetail;
+                    $detail->support_id     = $supportId;
+                    $detail->plan_id        = $item['plan_id'];
+                    // $detail->desc           = $item['desc'];
+                    $detail->price_per_unit = $item['price_per_unit'];
+                    $detail->unit_id        = $item['unit_id'];
+                    $detail->amount         = $item['amount'];
+                    $detail->sum_price      = $item['sum_price'];
+                    $detail->status         = 0;
+                    $detail->save();
+
+                    /** TODO: should update plan's status to 99=pending  */
+                    // $plan = Plan::find($item['plan_id']);
+                    // $plan->status = '99';
+                    // $plan->save();
+
+                    /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                    $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
+                    // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
+                    if ($planItem->calc_method == 1) {
+                        $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
+                        $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+                    } else {
+                        $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+
+                        if ($planItem->remain_budget <= 0) {
+                            $planItem->remain_amount = 0;
+                        }
+                    }
+
+                    $planItem->save();
+                }
+                
+                /** คณะกรรมการกำหนดคุณลักษณะ */
+                if (count($req['spec_committee']) > 0) {
+                    foreach($req['spec_committee'] as $spec) {
+                        $comm = new Committee;
+                        $comm->support_id           = $supportId;
+                        $comm->committee_type_id    = 1;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $spec['person_id'];
+                        $comm->save();
+                    }
+                }
+
+                /** คณะกรรมการตรวจรับ */
+                if (count($req['insp_committee']) > 0) {
+                    foreach($req['insp_committee'] as $insp) {
+                        $comm = new Committee;
+                        $comm->support_id           = $supportId;
+                        $comm->committee_type_id    = 2;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $insp['person_id'];
+                        $comm->save();
+                    }
+                }
+
+                /** คณะกรรมการเปิดซอง/พิจารณาราคา */
+                if (count($req['env_committee']) > 0) {
+                    foreach($req['env_committee'] as $env) {
+                        $comm = new Committee;
+                        $comm->support_id           = $supportId;
+                        $comm->committee_type_id    = 3;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $env['person_id'];
+                        $comm->save();
+                    }
+                }
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully',
+                    'support'   => $support
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 

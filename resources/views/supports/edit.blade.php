@@ -56,8 +56,8 @@
                         />
                         <input
                             type="hidden"
-                            id="division"
-                            name="division"
+                            id="division_id"
+                            name="division_id"
                             value="{{ Auth::user()->memberOf->division_id }}"
                             ng-model="support.division_id"
                         />
@@ -189,7 +189,7 @@
                                                         name="plan_no"
                                                         class="form-control"
                                                         style="text-align: center"
-                                                        ng-model="newItem.plan_no"
+                                                        ng-model="newItem.plan.plan_no"
                                                         readonly
                                                     />
                                                 </td>
@@ -201,7 +201,7 @@
                                                             id="plan_detail"
                                                             name="plan_detail"
                                                             class="form-control"
-                                                            ng-model="newItem.plan_detail"
+                                                            ng-model="newItem.plan.plan_item.item.item_name"
                                                             readonly
                                                         />
                                                         <input
@@ -538,13 +538,19 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="onValidateForm($event)"
+                                ng-click="formValidate($event, '/supports/validate', support, 'frmEditSupport', update)"
                                 class="btn btn-warning pull-right"
                             >
                                 แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
+
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div ng-show="loading" class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <!-- end loading -->
 
                 </div><!-- /.box -->
 
