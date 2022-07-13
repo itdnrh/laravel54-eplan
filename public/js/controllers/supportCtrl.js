@@ -493,6 +493,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset supports model */
+                    $scope.setSupports(res);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }
@@ -514,6 +517,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset supports model */
+                    $scope.setSupports(res);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
                 }

@@ -460,7 +460,14 @@ class SupportController extends Controller
                 return [
                     'status'    => 1,
                     'message'   => 'Updation successfully',
-                    'support'   => $support
+                    'supports'  => Support::with('planType','depart','division')
+                                    ->with('details','details.plan','details.plan.planItem.unit')
+                                    ->with('details.plan.planItem','details.plan.planItem.item')
+                                    ->where('year', $support->year)
+                                    ->where('depart_id', $support->depart_id)
+                                    ->where('support_type_id', '1')
+                                    ->orderBy('received_no', 'DESC')
+                                    ->paginate(10)
                 ];
             } else {
                 return [
@@ -480,29 +487,51 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($id);
-            $deletedId = $support->id;
+            $deleted  = $support;
 
             if ($support->delete()) {
-                $details = SupportDetail::where('support_id', $deletedId)->get();
+                $details = SupportDetail::where('support_id', $deleted->id)->get();
 
                 foreach($details as $item) {
-                    /** Delete support_details */
-                    SupportDetail::find($item->id)->delete();
+                    /** Fetch support_details data */
+                    $supportDetail = SupportDetail::find($item->id);
 
-                    /** TODO: Revert plans's status and plan_items's remain data */
-                    // Plan::find($item->plan_id)->update([
-                    //     'remain_amount' => 0,
-                    //     'remain_budget' => 0,
-                    //     'status'        => 0
-                    // ]);
+                    /** TODO: Revert plans's status to 0=รอดำเนินการ */
+                    // Plan::find($item->plan_id)->update(['status' => 0]);
+                    
+                    /** TODO: Revert plan_items's remain data */
+                    $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
+                    // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
+                    if ($planItem->calc_method == 1) {
+                        $planItem->remain_amount = (float)$planItem->remain_amount + (float)$supportDetail->amount;
+                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$supportDetail->sum_price;
+                    } else {
+                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$item['sum_price'];
+
+                        if ($planItem->remain_amount == 0) {
+                            $planItem->remain_amount = 1;
+                        }
+                    }
+                    $planItem->update();
+
+                    /** Delete support_details data */
+                    $supportDetail->delete();
                 }
 
                 /** TODO: Delete all committee of deleted support data */
-                // Committee::where('support_id', $deletedId)->delete();
+                // Committee::where('support_id', $deleted->id)->delete();
 
                 return [
                     'status'    => 1,
-                    'message'   => 'Deletion successfully'
+                    'message'   => 'Deletion successfully',
+                    'supports'  => Support::with('planType','depart','division')
+                                    ->with('details','details.plan','details.plan.planItem.unit')
+                                    ->with('details.plan.planItem','details.plan.planItem.item')
+                                    ->where('year', $deleted->year)
+                                    ->where('depart_id', $deleted->depart_id)
+                                    ->where('support_type_id', '1')
+                                    ->orderBy('received_no', 'DESC')
+                                    ->paginate(10)
                 ];
             } else {
                 return [
