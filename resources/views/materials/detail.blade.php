@@ -314,28 +314,16 @@
                                     <label>สถานะ :</label>
                                     <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
                                         <span class="label label-primary" ng-show="material.status == 0">
-                                            @{{ material.status }} อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="material.status == 1">
-                                            @{{ material.status }} ส่งเอกสารแล้ว
+                                            ดำเนินการแล้วบางส่วน
                                         </span>
                                         <span class="label bg-navy" ng-show="material.status == 2">
-                                            @{{ material.status }} รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="material.status == 3">
-                                            @{{ material.status }} ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="material.status == 4">
-                                            @{{ material.status }} ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="material.status == 5">
-                                            @{{ material.status }} ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="material.status == 6">
-                                            @{{ material.status }} ตั้งหนี้แล้ว
+                                            ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="material.status == 9">
-                                            @{{ material.status }} ยกเลิก
+                                            ยกเลิก
                                         </span>
                                     </div>
                                 </div>
@@ -343,22 +331,6 @@
 
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-show="[0].includes(material.status)"
-                                        ng-click="showSupportedForm()"
-                                    >
-                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-primary"
-                                        ng-show="[1].includes(material.status)"
-                                        ng-click="showPoForm()"
-                                    >
-                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
-                                    </a>
                                     <a
                                         href="#"
                                         ng-click="edit(material.material_id)"
@@ -387,10 +359,6 @@
                                 <!-- /** Action buttons container */ -->
 
                             </div>
-
-                            @include('shared._supported-form')
-                            @include('shared._po-form')
-
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

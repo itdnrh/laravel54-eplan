@@ -279,40 +279,28 @@
                                     <label>สถานะ :</label>
                                     <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
                                         <span class="label label-primary" ng-show="service.status == 0">
-                                            @{{ service.status }} อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="service.status == 1">
-                                            @{{ service.status }} ส่งเอกสารแล้ว
+                                            ดำเนินการแล้วบางส่วน
                                         </span>
                                         <span class="label bg-navy" ng-show="service.status == 2">
-                                            @{{ service.status }} รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="service.status == 3">
-                                            @{{ service.status }} ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="service.status == 4">
-                                            @{{ service.status }} ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="service.status == 5">
-                                            @{{ service.status }} ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="service.status == 6">
-                                            @{{ service.status }} ตั้งหนี้แล้ว
+                                            ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="service.status == 9">
-                                            @{{ service.status }} ยกเลิก
+                                            ยกเลิก
                                         </span>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="leave.attachment">
+                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="service.attachment">
                                     <label>เอกสารแนบ :</label>
                                     <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ leave.attachment }}"
+                                        <a  href="{{ url('/'). '/uploads/' }}@{{ service.attachment }}"
                                             title="ไฟล์แนบ"
                                             target="_blank">
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                            @{{ leave.attachment }}
+                                            @{{ service.attachment }}
                                         </a>
 
                                         <span style="margin-left: 10px;">
@@ -326,22 +314,6 @@
 
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-show="false"
-                                        ng-click="showSupportedForm()"
-                                    >
-                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-primary"
-                                        ng-show="false"
-                                        ng-click="showPoForm()"
-                                    >
-                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
-                                    </a>
                                     <a
                                         href="#"
                                         ng-click="edit(service.service_id)"
@@ -370,10 +342,6 @@
                                 <!-- /** Action buttons container */ -->
 
                             </div>
-
-                            @include('shared._supported-form')
-                            @include('shared._po-form')
-
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

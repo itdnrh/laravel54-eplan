@@ -329,28 +329,16 @@
                                     <label>สถานะ :</label>
                                     <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
                                         <span class="label label-primary" ng-show="asset.status == 0">
-                                            @{{ asset.status }} อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="asset.status == 1">
-                                            @{{ asset.status }} ส่งเอกสารแล้ว
+                                            ดำเนินการแล้วบางส่วน
                                         </span>
                                         <span class="label bg-navy" ng-show="asset.status == 2">
-                                            @{{ asset.status }} รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="asset.status == 3">
-                                            @{{ asset.status }} ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="asset.status == 4">
-                                            @{{ asset.status }} ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="asset.status == 5">
-                                            @{{ asset.status }} ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="asset.status == 6">
-                                            @{{ asset.status }} ตั้งหนี้แล้ว
+                                            ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="asset.status == 9">
-                                            @{{ asset.status }} ยกเลิก
+                                            ยกเลิก
                                         </span>
                                     </div>
                                 </div>
@@ -358,22 +346,6 @@
 
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-show="false"
-                                        ng-click="showSupportedForm()"
-                                    >
-                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-primary"
-                                        ng-show="false"
-                                        ng-click="showPoForm()"
-                                    >
-                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
-                                    </a>
                                     <a
                                         href="#"
                                         ng-click="edit(asset.asset_id)"
@@ -402,10 +374,6 @@
                                 <!-- /** Action buttons container */ -->
 
                             </div>
-
-                            @include('shared._supported-form')
-                            @include('shared._po-form')
-
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

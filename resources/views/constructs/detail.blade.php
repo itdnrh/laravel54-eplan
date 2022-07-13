@@ -277,28 +277,16 @@
                                     <label>สถานะ :</label>
                                     <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
                                         <span class="label label-primary" ng-show="construct.status == 0">
-                                            @{{ construct.status }} อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="construct.status == 1">
-                                            @{{ construct.status }} ส่งเอกสารแล้ว
+                                            ดำเนินการแล้วบางส่วน
                                         </span>
                                         <span class="label bg-navy" ng-show="construct.status == 2">
-                                            @{{ construct.status }} รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="construct.status == 3">
-                                            @{{ construct.status }} ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="construct.status == 4">
-                                            @{{ construct.status }} ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="construct.status == 5">
-                                            @{{ construct.status }} ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="construct.status == 6">
-                                            @{{ construct.status }} ตั้งหนี้แล้ว
+                                            ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="construct.status == 9">
-                                            @{{ construct.status }} ยกเลิก
+                                            ยกเลิก
                                         </span>
                                     </div>
                                 </div>
@@ -324,22 +312,6 @@
 
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-show="[0].includes(construct.status)"
-                                        ng-click="showSupportedForm()"
-                                    >
-                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-primary"
-                                        ng-show="[1].includes(construct.status)"
-                                        ng-click="showPoForm()"
-                                    >
-                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
-                                    </a>
                                     <a
                                         href="#"
                                         ng-click="edit(construct.construct_id)"
@@ -368,10 +340,6 @@
                                 <!-- /** Action buttons container */ -->
 
                             </div>
-
-                            @include('shared._supported-form')
-                            @include('shared._po-form')
-
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
