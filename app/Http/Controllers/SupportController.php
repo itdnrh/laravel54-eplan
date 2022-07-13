@@ -478,28 +478,43 @@ class SupportController extends Controller
 
     public function delete(Request $req, $id)
     {
-        $support = Support::find($id);
-        $deletedId = $support->id;
+        try {
+            $support = Support::find($id);
+            $deletedId = $support->id;
 
-        if ($support->delete()) {
-            $details = SupportDetail::where('support_id', $deletedId)->get();
+            if ($support->delete()) {
+                $details = SupportDetail::where('support_id', $deletedId)->get();
 
-            foreach($details as $item) {
-                /** Delete support_details */
-                SupportDetail::find($item->id)->delete();
+                foreach($details as $item) {
+                    /** Delete support_details */
+                    SupportDetail::find($item->id)->delete();
 
-                /** TODO: Revert plans's status and plan_items's remain data */
-                // Plan::find($item->plan_id)->update([
-                //     'remain_amount' => 0,
-                //     'remain_budget' => 0,
-                //     'status'        => 0
-                // ]);
+                    /** TODO: Revert plans's status and plan_items's remain data */
+                    // Plan::find($item->plan_id)->update([
+                    //     'remain_amount' => 0,
+                    //     'remain_budget' => 0,
+                    //     'status'        => 0
+                    // ]);
+                }
+
+                /** TODO: Delete all committee of deleted support data */
+                // Committee::where('support_id', $deletedId)->delete();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
-            /** TODO: Delete all committee of deleted support data */
-            // Committee::where('support_id', $deletedId)->delete();
-
-            return redirect('/suports/list')->with('status', 'ลบรายการขอสนับสนุน รหัส: ' .$id. ' เรียบร้อยแล้ว !!');;
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 
@@ -524,13 +539,18 @@ class SupportController extends Controller
 
                 return [
                     'status'    => 1,
-                    'support'   => $support
+                    'message'   => 'Support have been sent!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
                 ];
             }
-        } catch (\Exception $th) {
+        } catch (\Exception $ex) {
             return [
                 'status'    => 0,
-                'message'   => 'Something went wrong!!'
+                'message'   => $ex->getMessage()
             ];
         }
     }
