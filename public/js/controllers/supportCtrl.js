@@ -484,25 +484,24 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.spec_committee = $scope.support.spec_committee.map(spec => spec.person);
 
             /** Set user props of support model by logged in user */
-            console.log($scope.support);
             $scope.support.user = $('#user').val();
 
-            // $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
-            // .then(function(res) {
-            //     $scope.loading = false;
+            $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
+            .then(function(res) {
+                $scope.loading = false;
 
-            //     console.log(res);
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
-            //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
-            //     }
-            // }, function(err) {
-            //     $scope.loading = false;
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
 
-            //     console.log(err);
-            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
-            // });
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            });
         }
     };
 

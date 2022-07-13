@@ -179,7 +179,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr ng-show="{{ $support->status }} == 0">
                                                 <td style="text-align: center">#</td>
                                                 <td style="text-align: center">
                                                     <!-- เลขที่ -->
@@ -318,13 +318,12 @@
                                                     @{{ detail.sum_price | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <!-- <a href="#" class="btn btn-warning btn-sm">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a> -->
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-sm"
-                                                        ng-click="removeAddedItem(detail.plan_id)">
+                                                        ng-click="removeAddedItem(detail.plan_id)"
+                                                        ng-disabled="detail.status != 0"
+                                                    >
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
