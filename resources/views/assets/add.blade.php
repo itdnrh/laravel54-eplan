@@ -67,7 +67,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'in_plan')}"
                                 >
-                                    <label>ในแผน/นอกแผน :</label>
+                                    <label>ในแผน/นอกแผน : <span class="required-field">*</span></label>
                                     <div class="form-control checkbox-groups">
                                         <div class="checkbox-container">
                                             <input  type="radio"
@@ -94,7 +94,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'year')}"
                                 >
-                                    <label>ปีงบประมาณ</label>
+                                    <label>ปีงบประมาณ : <span class="required-field">*</span></label>
                                     <select
                                         id="year"
                                         name="year"
@@ -118,7 +118,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'faction_id')}"
                                 >
-                                    <label>กลุ่มภารกิจ :</label>
+                                    <label>หน่วยงาน : <span class="required-field">*</span></label>
                                     <select id="faction_id" 
                                             name="faction_id"
                                             ng-model="asset.faction_id" 
@@ -141,7 +141,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'depart_id')}"
                                 >
-                                    <label>กลุ่มงาน :</label>
+                                    <label>&nbsp;</label>
                                     <select id="depart_id" 
                                             name="depart_id"
                                             ng-model="asset.depart_id" 
@@ -162,7 +162,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'division_id')}"
                                 >
-                                    <label>งาน :</label>
+                                    <label>&nbsp;</label>
                                     <select id="division_id" 
                                             name="division_id"
                                             ng-model="asset.division_id" 
@@ -185,7 +185,7 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'desc')}"
                                 >
-                                    <label>รายการ :</label>
+                                    <label>รายการ : <span class="required-field">*</span></label>
                                     <div class="input-group">
                                         <input
                                             type="text"
@@ -242,7 +242,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'price_per_unit')}"
                                 >
-                                    <label>ราคาต่อหน่วย :</label>
+                                    <label>ราคาต่อหน่วย : <span class="required-field">*</span></label>
                                     <input  type="text"
                                             id="price_per_unit"
                                             name="price_per_unit"
@@ -260,7 +260,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'unit_id')}"
                                 >
-                                    <label>หน่วย :</label>
+                                    <label>หน่วย : <span class="required-field">*</span></label>
                                     <select id="unit_id" 
                                             name="unit_id"
                                             ng-model="asset.unit_id" 
@@ -282,7 +282,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'amount')}"
                                 >
-                                    <label>จำนวนที่ขอ :</label>
+                                    <label>จำนวนที่ขอ : <span class="required-field">*</span></label>
                                     <input  type="text"
                                             id="amount"
                                             name="amount"
@@ -301,7 +301,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'sum_price')}"
                                 >
-                                    <label>รวมเป็นเงิน :</label>
+                                    <label>รวมเป็นเงิน : <span class="required-field">*</span></label>
                                     <input  type="text"
                                             id="sum_price"
                                             name="sum_price"
@@ -316,7 +316,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'request_cause')}"
                                 >
-                                    <label>สาเหตุที่ขอ :</label>
+                                    <label>สาเหตุที่ขอ : <span class="required-field">*</span></label>
                                     <div class="form-control checkbox-groups">
                                         <div class="checkbox-container">
                                             <input  type="radio"
@@ -351,7 +351,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'have_amount')}"
                                 >
-                                    <label>จำนวนเดิมที่มี :</label>
+                                    <label>จำนวนเดิมที่มี : <span class="required-field">*</span></label>
                                     <input  type="text"
                                             id="have_amount"
                                             name="have_amount"
@@ -370,7 +370,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'budget_src_id')}"
                                 >
-                                    <label>แหล่งเงินงบประมาณ :</label>
+                                    <label>แหล่งเงินงบประมาณ : <span class="required-field">*</span></label>
                                     <select
                                         id="budget_src_id"
                                         name="budget_src_id"
@@ -391,7 +391,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'start_month')}"
                                 >
-                                    <label>เดือนที่จะดำเนินการ :</label>
+                                    <label>เดือนที่จะดำเนินการ : <span class="required-field">*</span></label>
                                     <select
                                         id="start_month"
                                         name="start_month"
@@ -415,7 +415,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'strategic_id')}"
                                 >
-                                    <label>ยุทธศาสตร์ :</label>
+                                    <label>ยุทธศาสตร์ : <span class="required-field">*</span></label>
                                     <select id="strategic_id" 
                                             name="strategic_id"
                                             ng-model="asset.strategic_id"
@@ -461,7 +461,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'reason')}"
                                 >
-                                    <label>เหตุผล :</label>
+                                    <label>เหตุผล : <span class="required-field">*</span></label>
                                     <textarea
                                         id="reason" 
                                         name="reason" 

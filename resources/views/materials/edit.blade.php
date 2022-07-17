@@ -116,7 +116,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{ 'has-error has-feedback': checkValidate(material, 'faction_id') }"
                                 >
-                                    <label>กลุ่มภารกิจ : <span class="required-field">*</span></label>
+                                    <label>หน่วยงาน : <span class="required-field">*</span></label>
                                     <select id="faction_id" 
                                             name="faction_id"
                                             class="form-control"
@@ -137,7 +137,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'depart_id')}"
                                 >
-                                    <label>กลุ่มงาน : <span class="required-field">*</span></label>
+                                    <label>&nbsp;</label>
                                     <select id="depart_id" 
                                             name="depart_id"
                                             ng-model="material.depart_id" 
@@ -158,7 +158,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'division_id')}"
                                 >
-                                    <label>งาน :</label>
+                                    <label>&nbsp;</label>
                                     <select id="division_id" 
                                             name="division_id"
                                             ng-model="material.division_id" 
@@ -403,7 +403,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'strategic_id')}"
                                 >
-                                    <label>ยุทธศาสตร์ :</label>
+                                    <label>ยุทธศาสตร์ : <span class="required-field">*</span></label>
                                     <select id="strategic_id" 
                                             name="strategic_id"
                                             ng-model="material.strategic_id"

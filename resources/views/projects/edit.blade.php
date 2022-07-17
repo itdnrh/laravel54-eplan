@@ -52,7 +52,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'year')}"
                                 >
-                                    <label>ปีงบประมาณ</label>
+                                    <label>ปีงบประมาณ : <span class="required-field">*</span></label>
                                     <select
                                         id="year"
                                         name="year"
@@ -73,7 +73,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'strategic_id')}"
                                 >
-                                    <label>ยุทธศาสตร์ :</label>
+                                    <label>ยุทธศาสตร์ : <span class="required-field">*</span></label>
                                     <select id="strategic_id" 
                                             name="strategic_id"
                                             ng-model="project.strategic_id"
@@ -98,7 +98,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'strategy_id')}"
                                 >
-                                    <label>กลยุทธ์ :</label>
+                                    <label>กลยุทธ์ : <span class="required-field">*</span></label>
                                     <select id="strategy_id"
                                             name="strategy_id"
                                             ng-model="project.strategy_id"
@@ -118,7 +118,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'kpi_id')}"
                                 >
-                                    <label>ตัวชี้วัด (KPI) :</label>
+                                    <label>ตัวชี้วัด (KPI) : <span class="required-field">*</span></label>
                                     <select id="kpi_id"
                                             name="kpi_id"
                                             ng-model="project.kpi_id"
@@ -139,7 +139,7 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'project_name')}"
                                 >
-                                    <label>ชื่อโครงการ :</label>
+                                    <label>ชื่อโครงการ : <span class="required-field">*</span></label>
                                     <input
                                         type="text"
                                         id="project_name"
@@ -159,7 +159,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'project_type_id')}"
                                 >
-                                    <label>ประเภทโครงการ :</label>
+                                    <label>ประเภทโครงการ : <span class="required-field">*</span></label>
                                     <select id="project_type_id"
                                             name="project_type_id"
                                             ng-model="project.project_type_id"
@@ -180,7 +180,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'budget_src_id')}"
                                 >
-                                    <label>แหล่งงบประมาณ :</label>
+                                    <label>แหล่งงบประมาณ : <span class="required-field">*</span></label>
                                     <select id="budget_src_id"
                                             name="budget_src_id"
                                             ng-model="project.budget_src_id"
@@ -204,7 +204,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
                                 >
-                                    <label>งบที่ขออนุมัติ :</label>
+                                    <label>งบที่ขออนุมัติ : <span class="required-field">*</span></label>
                                     <input
                                         type="text"
                                         id="total_budget"
@@ -239,7 +239,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'faction_id')}"
                                 >
-                                    <label>หน่วยงาน :</label>
+                                    <label>หน่วยงาน : <span class="required-field">*</span></label>
                                     <select id="faction_id" 
                                             name="faction_id"
                                             ng-model="project.faction_id" 
@@ -283,7 +283,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'owner_person')}"
                                 >
-                                    <label>ผู้รับผิดชอบ :</label>
+                                    <label>ผู้รับผิดชอบ : <span class="required-field">*</span></label>
                                     <div class="input-group">
                                         <div class="form-control">
                                             @{{ project.owner.prefix.prefix_name + project.owner.person_firstname +' '+ project.owner.person_lastname }}
@@ -317,7 +317,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
                                 >
-                                    <label>ระยะเวลาดำเนินงาน :</label>
+                                    <label>ระยะเวลาดำเนินงาน : <span class="required-field">*</span></label>
                                     <select
                                         id="start_month"
                                         name="start_month"
