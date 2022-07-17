@@ -140,6 +140,23 @@
                                 </ul>
                             </p>
                             <p style="margin: 0;">
+                                2. รายชื่อคณะกรรมการเปิดซอง/พิจารณาราคา (กรณีวงเงินเกิน ๑๐๐,๐๐๐ บาท) ***พร้อมแนบสำเนาบัตรประชาชน
+                                <ul class="committee-lists">
+                                    <?php $c3 = 1; ?>
+                                    @foreach($committees as $committee)
+                                        @if($committee->committee_type_id == '3')
+                                            <li class="committee-list">
+                                                2.{{ $c3++ }}
+                                                {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
+                                                <span style="margin: 0 0 0 5px; padding: 0;">
+                                                    ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}
+                                                </span>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </p>
+                            <p style="margin: 0;">
                                 2. รายชื่อกรรมการตรวจรับ ***พร้อมแนบสำเนาบัตรประชาชน
                                 <ul class="committee-lists">
                                     <?php $c2 = 1; ?>
@@ -160,7 +177,11 @@
                                 3.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน...............................แผ่น
                             </p>
                             <p style="margin: 0;">
-                                4.  รายละเอียดคุณลักษณะพัสดุ/แบบแปลน/ใบปริมาณงาน
+                                4.  รายละเอียดคุณลักษณะพัสดุ/แบบแปลน/ใบปริมาณงาน 
+                                <span>(กรณีวงเงินสูงกว่า ๑๐๐,๐๐๐ บาท ) ตามที่แนบ</span>
+                            </p>
+                            <p style="margin: 0;">
+                                ๖.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
                             </p>
                             <p style="margin: 0 0 10px;">
                                 5.  รายชื่อผู้ประสานงาน
