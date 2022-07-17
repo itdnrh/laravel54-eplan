@@ -30,18 +30,19 @@ class PlanServiceController extends Controller
             // 'plan_no'           => 'required',
             'in_plan'           => 'required',
             'year'              => 'required',
+            'faction_id'        => 'required',
+            'depart_id'         => 'required',
+            // 'division_id'       => 'required',
             'desc'              => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
             'amount'            => 'required',
             'sum_price'         => 'required',
-            'depart_id'         => 'required',
-            // 'division_id'       => 'required',
-            'start_month'       => 'required',
-            'reason'            => 'required',
-            'budget_src_id'     => 'required',
             // 'request_cause'     => 'required',
             // 'have_amount'       => 'required',
+            'budget_src_id'     => 'required',
+            'start_month'       => 'required',
+            'reason'            => 'required',
         ];
 
         if ($request['strategic_id'] == '' && $request['service_plan_id'] == '') {
@@ -50,10 +51,23 @@ class PlanServiceController extends Controller
         }
 
         $messages = [
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
+            'in_plan.required'          => 'กรุณาเลือกในแผน/นอกแผน',
+            'year.required'             => 'กรุณาเลือกปีงบประมาณ',
+            'faction_id.required'       => 'กรุณาเลือกกลุ่มภารกิจ',
+            'depart_id.required'        => 'กรุณาเลือกกลุ่มงาน',
+            'division_id.required'      => 'กรุณาเลือกงาน',
+            'desc.required'             => 'กรุณาระบุรายการ',
+            'price_per_unit.required'   => 'กรุณาระบุราคาต่อหน่วย',
+            'unit_id.required'          => 'กรุณาเลือกหน่วย (สินค้า/บริการ)',
+            'amount.required'           => 'กรุณาระบุจำนวนที่ขอ',
+            'sum_price.required'        => 'กรุณาระบุรวมเป็นเงิน',
+            'request_cause.required'    => 'กรุณาเลือกสาเหตุที่ขอ',
+            'have_amount.required'      => 'กรุณาเลือกจำนวนเดิมที่มี',
+            'budget_src_id.required'    => 'กรุณาเลือกแหล่งเงินงบประมาณ',
+            'start_month.required'      => 'กรุณาระบุเดือนที่จะดำเนินการ',
+            'strategic_id.required'     => 'กรุณาเลือกยุทธศาสตร์',
+            'service_plan_id.required'  => 'กรุณาเลือก Service Plan',
+            'reason.required'           => 'กรุณาระบุเหตุผลที่ขอ',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
