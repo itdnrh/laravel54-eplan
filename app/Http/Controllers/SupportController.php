@@ -468,6 +468,7 @@ class SupportController extends Controller
                                     ->where('support_type_id', '1')
                                     ->orderBy('received_no', 'DESC')
                                     ->paginate(10)
+                                    ->setPath('search')
                 ];
             } else {
                 return [
@@ -532,6 +533,7 @@ class SupportController extends Controller
                                     ->where('support_type_id', '1')
                                     ->orderBy('received_no', 'DESC')
                                     ->paginate(10)
+                                    ->setPath('search')
                 ];
             } else {
                 return [

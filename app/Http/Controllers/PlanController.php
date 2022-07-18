@@ -239,54 +239,43 @@ class PlanController extends Controller
 
     public function update(Request $req)
     {
-        $leave = Leave::find($req['leave_id']);
-        $leave->leave_date      = convThDateToDbDate($req['leave_date']);
-        $leave->leave_place     = $req['leave_place'];
-        $leave->leave_topic     = $req['leave_topic'];
-        $leave->leave_to        = $req['leave_to'];
-        $leave->leave_person    = $req['leave_person'];
-        $leave->leave_type      = $req['leave_type'];
-        $leave->start_date      = convThDateToDbDate($req['start_date']);
-        $leave->start_period    = '1';
-        $leave->end_date        = convThDateToDbDate($req['end_date']);
-        $leave->end_period      = $req['end_period'];
-        $leave->leave_days      = $req['leave_days'];
-        $leave->working_days    = $req['working_days'];
-        $leave->year            = calcBudgetYear($req['start_date']);
-
-        /** Upload image */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        // if (!empty($attachment)) {
-        //     $leave->attachment = $attachment;
-        // }
-
-        if($leave->save()) {
-            /** Update detail data of some leave type */
-
-            return redirect('/leaves/list');
-        }
+        //
     }
 
     public function delete(Request $req, $id)
     {
         try {
             $plan = Plan::find($id);
+            $deleted = $plan;
 
             if($plan->delete()) {
                 if (PlanItem::where('plan_id', $id)->delete()) {
                     return [
                         'status'    => 1,
-                        'message'   => 'Deletion successfully!!'
+                        'message'   => 'Deletion successfully!!',
+                        'plans'     => Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                                        ->with('budget','depart','division')
+                                        ->with('planItem','planItem.unit')
+                                        ->with('planItem.item','planItem.item.category')
+                                        ->where('plan_type_id', '1')
+                                        ->where('year', $deleted->year)
+                                        ->where('depart_id', $deleted->depart_id)
+                                        ->paginate(10)
+                                        ->setPath('search')
                     ];
                 }
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
                 'status'    => 0,
-                'message'   => 'Something went wrong!!'
+                'message'   => $ex->getMessage()
             ];
         }
-        
     }
 
     public function printLeaveForm($id)

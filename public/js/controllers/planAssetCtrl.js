@@ -181,11 +181,17 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.getById = function(id, cb) {
+        $scope.loading = true;
+
         $http.get(`${CONFIG.apiUrl}/assets/${id}`)
         .then(function(res) {
             cb(res.data.plan);
+
+            $scope.loading = false;
         }, function(err) {
             console.log(err);
+
+            $scope.loading = false;
         });
     }
 
@@ -251,13 +257,27 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.delete = function(e, id) {
         e.preventDefault();
+        $scope.loading = true;
 
         if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
             .then(res => {
                 console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset assets model */
+                    $scope.setAssets(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
+
+                $scope.loading = false;
             }, err => {
                 console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };
