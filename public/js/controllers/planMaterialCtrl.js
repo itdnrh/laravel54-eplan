@@ -226,12 +226,28 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
     $scope.delete = function(e, id) {
         e.preventDefault();
-
-        const actionUrl = $('#frmDelete').attr('action');
-        $('#frmDelete').attr('action', `${actionUrl}/${id}`);
+        $scope.loading = true;
 
         if(confirm(`คุณต้องลบใบลาเลขที่ ${id} ใช่หรือไม่?`)) {
-            $('#frmDelete').submit();
+            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset material model */
+                    $scope.setMaterials(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+            });
         }
     };
 });

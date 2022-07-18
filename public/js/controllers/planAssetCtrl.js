@@ -266,7 +266,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
 
-                    /** TODO: Reset assets model */
+                    /** TODO: Reset asset model */
                     $scope.setAssets(res);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");

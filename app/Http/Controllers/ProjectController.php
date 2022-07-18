@@ -363,23 +363,31 @@ class ProjectController extends Controller
     public function delete(Request $req, $id)
     {
         try {
-            $plan = Plan::find($id);
+            $project = Project::find($id);
+            $deleted = $project;
 
-            if($plan->delete()) {
-                if (PlanItem::where('plan_id', $id)->delete()) {
-                    return [
-                        'status'    => 1,
-                        'message'   => 'Deletion successfully!!'
-                    ];
-                }
+            if($project->delete()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully!!',
+                    'projects'  => Project::with('kpi','depart','owner','budgetSrc')
+                                    ->where('year', $deleted->year)
+                                    ->where('owner_depart', $deleted->owner_depart)
+                                    ->paginate(10)
+                                    ->setPath('search')
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
                 'status'    => 0,
-                'message'   => 'Something went wrong!!'
+                'message'   => $ex->getMessage()
             ];
         }
-        
     }
 
     public function storePayment(Request $req, $id) {

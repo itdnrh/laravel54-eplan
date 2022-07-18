@@ -18,7 +18,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         project_no: '',
         project_name: '',
         project_type_id: '',
-        year: '',
+        year: (moment().year() + 543).toString(),
         strategic_id: '',
         strategy_id: '',
         kpi_id: '',
@@ -69,7 +69,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             project_no: '',
             project_name: '',
             project_type_id: '',
-            year: '',
+            year: (moment().year() + 543).toString(),
             strategic_id: '',
             strategy_id: '',
             kpi_id: '',
@@ -374,13 +374,27 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.delete = function(e, id) {
         e.preventDefault();
+        $scope.loading = true;
 
         if(confirm(`คุณต้องลบโครงการเลขที่ ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.apiUrl}/projects/${id}`)
             .then(res => {
                 console.log(res);
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset project model */
+                    $scope.setProjects(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
+
+                $scope.loading = false;
             }, err => {
                 console.log(err);
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };

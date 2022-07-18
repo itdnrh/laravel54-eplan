@@ -232,4 +232,31 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             $(`#${form}`).submit();
         }
     };
+
+    $scope.delete = function(e, id) {
+        e.preventDefault();
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
+            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset service model */
+                    $scope.setServices(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+            });
+        }
+    };
 });
