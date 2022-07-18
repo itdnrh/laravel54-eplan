@@ -120,7 +120,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('projects/{id}/payments', 'ProjectController@storePayment');
     Route::post('projects/{id}/timeline', 'ProjectController@storeTimeline');
     Route::post('projects/{id}/{timelineId}/timeline', 'ProjectController@updateTimeline');
-    Route::get('projects/print/{id}', 'ProjectController@printLeaveForm');
+    Route::get('projects/print/{id}', 'ProjectController@printForm');
 
     /** การอนุมัติ */
     Route::get('approvals/assets', 'ApprovalController@assets');

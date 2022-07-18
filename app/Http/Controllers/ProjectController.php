@@ -483,59 +483,33 @@ class ProjectController extends Controller
         }
     }
 
-    public function printLeaveForm($id)
+    public function printForm($id)
     {
-        $pdfView = '';
-        $leave      = Leave::where('id', $id)
-                        ->with('person', 'person.prefix', 'person.position', 'person.academic')
-                        ->with('person.memberOf', 'person.memberOf.depart', 'type')
-                        ->with('delegate', 'delegate.prefix', 'delegate.position', 'delegate.academic')
-                        ->with('cancellation')
-                        ->with('helpedWife','ordinate','oversea','oversea.country')
-                        ->first();
+        $project = Project::where('id', $id)
+                    ->with('budgetSrc','projectType','depart','depart.faction')
+                    ->with('owner','owner.prefix','owner.position','owner.academic')
+                    ->with('kpi','kpi.strategy','kpi.strategy.strategic')
+                    ->first();
 
-        $last       = Leave::whereIn('leave_type', [1,2,4,7])
-                        ->where('leave_person', $leave->leave_person)
-                        ->where('leave_type', $leave->leave_type)
-                        ->where('start_date', '<', $leave->start_date)
-                        ->with('type','cancellation')
-                        ->with('oversea','oversea.country')
-                        ->orderBy('start_date', 'desc')
-                        ->first();
+        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.depart_id', $project->owner_depart)
+                            ->where('level.duty_id', '2')
+                            ->with('prefix','position')
+                            ->first();
 
-        $places     = ['1' => 'โรงพยาบาลเทพรัตน์นครราชสีมา'];
-
-        $histories  = History::where([
-                            'person_id' => $leave->leave_person,
-                            'year'      => $leave->year
-                        ])->first();
-
-        $vacation   = Vacation::where([
-                            'person_id' => $leave->leave_person,
-                            'year'      => $leave->year
-                        ])->first();
+        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.faction_id', $project->depart->faction_id)
+                            ->where('level.duty_id', '1')
+                            ->with('prefix','position')
+                            ->first();
 
         $data = [
-            'leave'     => $leave,
-            'last'      => $last,
-            'places'    => $places,
-            'histories' => $histories,
-            'vacations' => $vacation
+            "project" => $project,
+            "headOfFaction" => $headOfFaction,
+            "headOfDepart"  => $headOfDepart,
         ];
 
-        if (in_array($leave->leave_type, [1,2,4])) { // ลาป่วย กิจ คลอด
-            $pdfView = 'forms.form01';
-        } else if ($leave->leave_type == 5) {       // ลาเพื่อดูแลบุตรและภรรยาหลังคลอด
-            $pdfView = 'forms.form05';
-        } else if ($leave->leave_type == 6) {       // ลาอุปสมบท/ไปประกอบพิธีฮัจย์
-            $pdfView = 'forms.form06';
-        } else if ($leave->leave_type == 7) {       // ลาไปต่างประเทศ
-            $pdfView = 'forms.form07';
-        } else {                                    // ลาพักผ่อน
-            $pdfView = 'forms.form02';
-        }
-
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf($pdfView, $data);
+        return renderPdf('forms.project-approve', $data);
     }
 }
