@@ -39,7 +39,7 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <!-- <div class="form-group col-md-6">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -53,7 +53,7 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="form-group col-md-6">
                                     <label>ประเภทแผน</label>
                                     <select
@@ -71,8 +71,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div><!-- /.row -->
-                            <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>ประเภทสินค้า/บริการ</label>
                                     <select
@@ -88,6 +86,8 @@
                                         </option>
                                     </select>
                                 </div>
+                            </div><!-- /.row -->
+                            <div class="row">
                                 <!-- <div class="form-group col-md-6">
                                     <label>กลุ่มสินค้า/บริการ</label>
                                     <select
@@ -105,7 +105,7 @@
                                 </div> -->
                             <!-- </div>
                             <div class="row"> -->
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
                                         id="txtItemName"
