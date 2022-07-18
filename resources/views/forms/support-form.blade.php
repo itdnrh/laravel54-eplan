@@ -123,7 +123,7 @@
                         <td colspan="4">
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
                             <p style="margin: 0;">
-                                1. รายชื่อกรรมการกำหนดคุณลักษณะครุภัณฑ์(กรณีจัดซื้อ/จ้างวงเงินไม่เกิน ๑๐๐,๐๐๐ บาท) ***พร้อมแนบสำเนาบัตรประชาชน
+                                ๑. รายชื่อกรรมการกำหนดคุณลักษณะครุภัณฑ์(กรณีจัดซื้อ/จ้างวงเงินไม่เกิน ๑๐๐,๐๐๐ บาท) ***พร้อมแนบสำเนาบัตรประชาชน
                                 <ul class="committee-lists">
                                     <?php $c1 = 1; ?>
                                     @foreach($committees as $committee)
@@ -139,25 +139,33 @@
                                     @endforeach
                                 </ul>
                             </p>
+
+                            @if((float)$total > 100000)
+                                <p style="margin: 0;">
+                                    ๒. รายชื่อคณะกรรมการเปิดซอง/พิจารณาราคา (กรณีวงเงินเกิน ๑๐๐,๐๐๐ บาท) ***พร้อมแนบสำเนาบัตรประชาชน
+                                    <ul class="committee-lists">
+                                        <?php $c3 = 1; ?>
+                                        @foreach($committees as $committee)
+                                            @if($committee->committee_type_id == '3')
+                                                <li class="committee-list">
+                                                    2.{{ $c3++ }}
+                                                    {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
+                                                    <span style="margin: 0 0 0 5px; padding: 0;">
+                                                        ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}
+                                                    </span>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </p>
+                            @endif
+
                             <p style="margin: 0;">
-                                2. รายชื่อคณะกรรมการเปิดซอง/พิจารณาราคา (กรณีวงเงินเกิน ๑๐๐,๐๐๐ บาท) ***พร้อมแนบสำเนาบัตรประชาชน
-                                <ul class="committee-lists">
-                                    <?php $c3 = 1; ?>
-                                    @foreach($committees as $committee)
-                                        @if($committee->committee_type_id == '3')
-                                            <li class="committee-list">
-                                                2.{{ $c3++ }}
-                                                {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
-                                                <span style="margin: 0 0 0 5px; padding: 0;">
-                                                    ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}
-                                                </span>
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                </ul>
-                            </p>
-                            <p style="margin: 0;">
-                                2. รายชื่อกรรมการตรวจรับ ***พร้อมแนบสำเนาบัตรประชาชน
+                                @if((float)$total > 100000)
+                                    ๓. รายชื่อกรรมการตรวจรับ ***พร้อมแนบสำเนาบัตรประชาชน
+                                @else
+                                    ๒. รายชื่อกรรมการตรวจรับ ***พร้อมแนบสำเนาบัตรประชาชน
+                                @endif
                                 <ul class="committee-lists">
                                     <?php $c2 = 1; ?>
                                     @foreach($committees as $committee)
@@ -174,17 +182,31 @@
                                 </ul>
                             </p>
                             <p style="margin: 0;">
-                                3.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน...............................แผ่น
+                                @if((float)$total > 100000)
+                                    ๔.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน...............................แผ่น
+                                @else
+                                    ๓.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน...............................แผ่น
+                                @endif
                             </p>
                             <p style="margin: 0;">
-                                4.  รายละเอียดคุณลักษณะพัสดุ/แบบแปลน/ใบปริมาณงาน 
-                                <span>(กรณีวงเงินสูงกว่า ๑๐๐,๐๐๐ บาท ) ตามที่แนบ</span>
+                                @if((float)$total > 100000)
+                                    ๕.  รายละเอียดคุณลักษณะพัสดุ/แบบแปลน/ใบปริมาณงาน 
+                                    <span>(กรณีวงเงินสูงกว่า ๑๐๐,๐๐๐ บาท ) ตามที่แนบ</span>
+                                @else
+                                    ๔.  รายละเอียดคุณลักษณะพัสดุ/แบบแปลน/ใบปริมาณงาน
+                                @endif
                             </p>
-                            <p style="margin: 0;">
-                                ๖.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
-                            </p>
+                            @if((float)$total > 100000)
+                                <p style="margin: 0;">
+                                    ๕.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
+                                </p>
+                            @endif
                             <p style="margin: 0 0 10px;">
-                                5.  รายชื่อผู้ประสานงาน
+                                @if((float)$total > 100000)
+                                    ๖.  รายชื่อผู้ประสานงาน
+                                @else
+                                    ๕.  รายชื่อผู้ประสานงาน
+                                @endif
                                 <span style="margin: 0;">
                                     ชื่อ-สกุล <span class="text-val-dot p10">{{ $contact->prefix->prefix_name.$contact->person_firstname.' '.$contact->person_lastname }}</span>
                                     ตำแหน่ง <span class="text-val-dot p10">{{ $contact->position->position_name }}{{ $contact->academic ? $contact->academic->ac_name : '' }}</span> 
@@ -220,7 +242,6 @@
                             </p>
                         </td>
                     </tr>
-                    <div class="page-break"></div>
                     <tr>
                         <td colspan="2"></td>
                         <td colspan="2" style="text-align: center; padding: 0;">
