@@ -361,6 +361,9 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.store = function(event, form) {
         event.preventDefault();
 
+        $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
+        $('#total_budget_str').val($scope.project.total_budget_str);
+
         $(`#${form}`).submit();
     }
 
@@ -381,7 +384,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.loading = true;
 
         if(confirm(`คุณต้องลบโครงการเลขที่ ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.apiUrl}/projects/${id}`)
+            $http.post(`${CONFIG.baseUrl}/projects/delete/${id}`)
             .then(res => {
                 console.log(res);
 

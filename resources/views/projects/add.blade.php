@@ -208,8 +208,13 @@
                                         id="total_budget"
                                         name="total_budget"
                                         ng-model="project.total_budget"
-                                        class="form-control pull-right"
+                                        class="form-control"
                                         tabindex="4">
+                                    <input
+                                        type="hidden"
+                                        id="total_budget_str"
+                                        name="total_budget_str"
+                                        ng-model="project.total_budget_str">
                                     <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
                                         @{{ formError.errors.total_budget[0] }}
                                     </span>
