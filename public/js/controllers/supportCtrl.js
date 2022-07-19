@@ -211,7 +211,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             cb(res);
 
@@ -272,6 +272,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.support.details = $scope.support.details.filter(d => d.plan_id !== planId);
 
         $scope.calculateTotal();
+    };
+
+    $scope.isSelected = function(planId) {
+        if ($scope.support.details.length == 0) return false;
+
+        return $scope.support.details.some(item => item.plan_id === planId);
     };
 
     $scope.showPersonList = (_selectedMode) => {
