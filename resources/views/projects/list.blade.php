@@ -268,12 +268,6 @@
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  href="{{ url('/projects/print') }}/@{{ project.id }}"
-                                                ng-show="project.approved == 'A'"
-                                                class="btn btn-success btn-xs" 
-                                                title="พิมพ์บันทึกข้อความ">
-                                                <i class="fa fa-print"></i>
-                                            </a>
                                             <a  ng-click="edit(project.id)"
                                                 ng-show="project.approved != 'A'"
                                                 class="btn btn-warning btn-xs"

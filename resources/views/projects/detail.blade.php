@@ -242,6 +242,13 @@
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
+                    
+                        <a  href="{{ url('/projects/print') }}/@{{ project.id }}"
+                            class="btn btn-success" 
+                            title="พิมพ์บันทึกข้อความ">
+                            <i class="fa fa-print"></i>
+                            พิมพ์บันทึกข้อความ
+                        </a>
                         <button
                             class="btn btn-danger"
                             ng-click="showCloseProjectForm()"
