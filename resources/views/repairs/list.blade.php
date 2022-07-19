@@ -167,6 +167,7 @@
                                         </a>
                                         <a  href="{{ url('/repairs/edit') }}/@{{ support.id }}"
                                             class="btn btn-warning btn-xs"
+                                            ng-show="support.status == 0"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
                                         </a>
@@ -175,6 +176,7 @@
                                             method="POST"
                                             action="{{ url('/repairs/delete') }}"
                                             style="display: inline;"
+                                            ng-show="support.status == 0"
                                         >
                                             {{ csrf_field() }}
                                             <button

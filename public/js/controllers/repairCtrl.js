@@ -412,15 +412,15 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             $scope.loading = false;
 
             if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอจ้างซ่อมเรียบร้อย !!!");
             } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอจ้างซ่อมได้ !!!");
             }
         }, function(err) {
             $scope.loading = false;
 
             console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอจ้างซ่อมได้ !!!");
         });
     };
 
@@ -452,6 +452,28 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
+    };
+
+    $scope.delete = function(e, id) {
+        e.preventDefault();
+
+        if(confirm(`คุณต้องลบบันทึกขอจ้างซ่อม รหัส ${id} ใช่หรือไม่?`)) {
+            $http.post(`${CONFIG.baseUrl}/supports/delete/${id}`)
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset supports model */
+                    $scope.setSupports(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
+            }, err => {
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+            });
+        }
     };
 
     $scope.setTopicByPlanType = function(planType) {

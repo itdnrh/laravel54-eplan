@@ -374,16 +374,7 @@ class RepairController extends Controller
 
     public function delete(Request $req, $id)
     {
-        $cancel = Cancellation::find($id);
-        $leaveId = $cancel->leave_id;
-
-        if ($cancel->delete()) {
-            $leave = Leave::find($cancel->leave_id);
-            $leave->status = 3;
-            $leave->save();
-
-            return redirect('/cancellations/cancel')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
-        }
+        //
     }
 
     public function send(Request $req)
