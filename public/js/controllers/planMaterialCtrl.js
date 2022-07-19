@@ -250,4 +250,10 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             });
         }
     };
+
+    $scope.addFromLastYear = function() {
+        if(confirm(`คุณต้องเพิ่มรายการจากปีที่แล้วใช่หรือไม่?`)) {
+            $('#progress-form').modal('show');
+        }
+    }
 });

@@ -125,6 +125,14 @@
                                 <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
+                                <a
+                                    href="#"
+                                    class="btn bg-maroon pull-right"
+                                    style="margin-right: 5px;"
+                                    ng-click="addFromLastYear()"
+                                >
+                                    เพิ่มรายการจากปีที่แล้ว
+                                </a>
                             </div>
                         </div>
                     </div><!-- /.box-header -->
@@ -296,6 +304,8 @@
                         <i class="fa fa-refresh fa-spin"></i>
                     </div>
                     <!-- end loading -->
+
+                    @include('materials._progress-form')
 
                 </div><!-- /.box -->
 
