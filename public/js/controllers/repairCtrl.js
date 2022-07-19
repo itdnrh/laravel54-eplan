@@ -48,7 +48,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -57,7 +57,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         todayHighlight: true
     };
     $('#po_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('show', function (e) {
             console.log(e);
@@ -393,12 +393,19 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             $scope.support.spec_committee = committees.filter(com => com.committee_type_id == 1);
             $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
             $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
+
+            $('#doc_date').datepicker(dtpDateOptions).datepicker('update', moment(support.doc_date).toDate());
         }
     };
 
-    $scope.sendSupport = function(e) {
+    $scope.showSendForm = function(support) {
+        if (support) {
+            $('#support-from').modal('show');
+        }
+    };
+
+    $scope.send = function(e) {
         $scope.loading = true;
-        console.log($scope.support);
 
         $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
         .then(function(res) {
