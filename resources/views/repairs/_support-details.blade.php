@@ -28,7 +28,7 @@
                                 </td>
                                 <td style="text-align: center;">
                                     <span>@{{ detail.amount | currency:'':0 }}</span>
-                                    <span>@{{ detail.plan.plan_item.unit.name }}</span>
+                                    <span>@{{ detail.unit.name }}</span>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ detail.price_per_unit | currency:'':0 }}

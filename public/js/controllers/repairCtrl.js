@@ -436,6 +436,9 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     $scope.store = function() {
         $scope.loading = true;
 
+        /** Set user props of support model by logged in user */
+        $scope.support.user = $('#user').val();
+
         $http.post(`${CONFIG.baseUrl}/repairs/store`, $scope.support)
         .then(function(res) {
             $scope.loading = false;

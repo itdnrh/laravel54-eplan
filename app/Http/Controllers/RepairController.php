@@ -116,7 +116,7 @@ class RepairController extends Controller
                         ->pluck('support_details.support_id');
 
         $supports = Support::with('planType','depart','division')
-                    ->with('details','details.plan','details.plan.planItem.unit')
+                    ->with('details','details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->with('details.plan.subItems')
                     ->where('plan_type_id', '3')
@@ -172,7 +172,7 @@ class RepairController extends Controller
                         ->pluck('support_details.support_id');
 
         $supports = Support::with('planType','depart','division')
-                    ->with('details','details.plan','details.plan.planItem.unit')
+                    ->with('details','details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->with('details.plan.subItems')
                     ->where('plan_type_id', '3')
