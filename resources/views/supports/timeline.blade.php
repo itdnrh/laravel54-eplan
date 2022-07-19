@@ -63,7 +63,7 @@
                                                         <span>@{{ detail.plan.plan_item.item.item_name }} จำนวน </span>
                                                         <span>@{{ detail.plan.plan_item.amount | currency:'':0 }}</span>
                                                         <span>@{{ detail.plan.plan_item.unit.name }}</span>
-                                                        <a href="#" class="text-aqua" ng-click="onShowTimeline(detail.plan)">
+                                                        <a href="#" class="text-aqua" ng-click="onShowTimeline(detail)">
                                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                                         </a>
                                                     </li>
@@ -72,26 +72,74 @@
                                         </tr>
                                     </tbody>
                                 </table>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
+                                    </div>
+                                    <div class="col-md-4" style="text-align: center;">
+                                        จำนวน @{{ pager.total }} รายการ
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
+                                            <li ng-if="pager.current_page !== 1">
+                                                <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
+                                                    <span aria-hidden="true">First</span>
+                                                </a>
+                                            </li>
+                                        
+                                            <li ng-class="{'disabled': (pager.current_page==1)}">
+                                                <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
+                                                    <span aria-hidden="true">Prev</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
+                                                <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setSupports)">
+                                                    @{{ i }}
+                                                </a>
+                                            </li> -->
+
+                                            <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
+                                                <a href="#" ng-click="pager.path">
+                                                    ...
+                                                </a>
+                                            </li> -->
+
+                                            <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
+                                                <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
+                                                    <span aria-hidden="true">Next</span>
+                                                </a>
+                                            </li>
+
+                                            <li ng-if="pager.current_page !== pager.last_page">
+                                                <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
+                                                    <span aria-hidden="true">Last</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!-- /.row -->
                             </div>
 
                             <div class="col-md-4" ng-show="showTimeline">
                                 <div>
                                     <h4 style="margin: 0;">
                                         เลขที่แผน 
-                                        <span>@{{ timelinePlan.plan_no }}</span>
+                                        <span>@{{ timelinePlan.plan.plan_no }}</span>
                                     </h4>
                                     <p style="margin: 5px 0;">
                                         รายการ
-                                        <span>@{{ timelinePlan.plan_item.item.item_name }}</span>
+                                        <span>@{{ timelinePlan.plan.plan_item.item.item_name }}</span>
                                     </p>
                                 </div>
                                 <ul class="timeline timeline-inverse">
-                                    <li class="time-label">
+                                    <!-- <li class="time-label" ng-show="timelinePlan.status >= 1">
                                         <span class="bg-red">
                                             @{{ timelinePlan.sent_date | thdate }}
                                         </span>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <li ng-show="timelinePlan.status >= 1">
                                         <i class="fa fa-envelope bg-blue"></i>
                                         <div class="timeline-item">
                                             <h3 class="timeline-header">
@@ -107,12 +155,12 @@
                                         </div>
                                     </li>
 
-                                    <li class="time-label">
+                                    <!-- <li class="time-label" ng-show="timelinePlan.status >= 2">
                                         <span class="bg-red">
                                             @{{ timelinePlan.received_date | thdate }}
                                         </span>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <li ng-show="timelinePlan.status >= 2">
                                         <i class="fa fa-pencil-square-o bg-yellow"></i>
                                         <div class="timeline-item">
                                             <h3 class="timeline-header">
@@ -124,12 +172,12 @@
                                         </div>
                                     </li>
 
-                                    <li class="time-label">
+                                    <!-- <li class="time-label" ng-show="timelinePlan.status >= 3">
                                         <span class="bg-red">
                                             @{{ timelinePlan.po_date | thdate }}
                                         </span>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <li ng-show="timelinePlan.status >= 3">
                                         <i class="fa fa-cart-plus bg-purple"></i>
                                         <div class="timeline-item">
                                             <h3 class="timeline-header">
@@ -141,12 +189,12 @@
                                         </div>
                                     </li>
 
-                                    <li class="time-label">
+                                    <!-- <li class="time-label" ng-show="timelinePlan.status >= 4">
                                         <span class="bg-red">
                                             ...
                                         </span>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <li ng-show="timelinePlan.status >= 4">
                                         <i class="fa fa-check-square-o bg-green"></i>
                                         <div class="timeline-item">
                                             <h3 class="timeline-header">
@@ -158,12 +206,12 @@
                                         </div>
                                     </li>
 
-                                    <li class="time-label">
+                                    <!-- <li class="time-label" ng-show="timelinePlan.status >= 5">
                                         <span class="bg-red">
                                             ...
                                         </span>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <li ng-show="timelinePlan.status >= 5">
                                         <i class="fa fa-paper-plane bg-aqua"></i>
                                         <div class="timeline-item">
                                             <h3 class="timeline-header">
@@ -175,16 +223,16 @@
                                         </div>
                                     </li>
 
-                                    <!-- <li class="time-label">
+                                    <!-- <li class="time-label" ng-show="timelinePlan.status >= 6">
                                         <span class="bg-red">
                                             ...
                                         </span>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <li ng-show="timelinePlan.status >= 6">
                                         <i class="fa fa-university bg-maroon"></i>
                                         <div class="timeline-item">
                                             <h3 class="timeline-header">
-                                                ตั้งหนี้แล้ว
+                                                อยู่ระหว่างบริหารสัญญา
                                             </h3>
                                             <div class="timeline-body">
                                                 ...
@@ -192,7 +240,7 @@
                                         </div>
                                     </li>
 
-                                    <li class="time-label">
+                                    <!-- <li class="time-label">
                                         <span class="bg-red">
                                             ...
                                         </span>
