@@ -219,7 +219,7 @@ class RepairController extends Controller
 
     public function detail($id)
     {
-        return view('supports.detail', [
+        return view('repairs.detail', [
             "support"       => Support::find($id),
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),

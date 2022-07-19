@@ -88,6 +88,11 @@
                                         <td style="text-align: center; padding: 0;">{{ ++$row }}</td>
                                         <td style=" padding: 0 5px;">
                                             {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                            @if($support->support_type_id == '2')
+                                                <p style="margin: 0;">
+                                                    - {{ thainumDigit($detail->desc) }}
+                                                </p>
+                                            @endif
                                         </td>
                                         <td style="text-align: center; padding: 0;">
                                             {{ thainumDigit(number_format($detail->amount)) }}
@@ -129,7 +134,7 @@
                                     @foreach($committees as $committee)
                                         @if($committee->committee_type_id == '1')
                                             <li class="committee-list">
-                                                1.{{ $c1++ }}
+                                                ๑.{{ thainumDigit($c1++) }}
                                                 {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
                                                 <span style="margin: 0 0 0 5px; padding: 0;">
                                                     ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}
@@ -148,7 +153,7 @@
                                         @foreach($committees as $committee)
                                             @if($committee->committee_type_id == '3')
                                                 <li class="committee-list">
-                                                    2.{{ $c3++ }}
+                                                    ๒.{{ thainumDigit($c3++) }}
                                                     {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
                                                     <span style="margin: 0 0 0 5px; padding: 0;">
                                                         ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}
@@ -171,7 +176,12 @@
                                     @foreach($committees as $committee)
                                         @if($committee->committee_type_id == '2')
                                             <li class="committee-list">
-                                                2.{{ $c2++ }}
+                                                @if((float)$total > 100000)
+                                                    ๓.{{ thainumDigit($c2++) }}
+                                                @else
+                                                    ๒.{{ thainumDigit($c2++) }}
+                                                @endif
+                                                
                                                 {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
                                                 <span style="margin: 0 0 0 5px; padding: 0;">
                                                     ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}

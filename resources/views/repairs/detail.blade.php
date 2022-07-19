@@ -5,20 +5,20 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดบันทึกขอสนับสนุน
+            รายละเอียดบันทึกขอจ้างซ่อม
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดบันทึกขอสนับสนุน</li>
+            <li class="breadcrumb-item active">รายละเอียดบันทึกขอจ้างซ่อม</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="supportCtrl"
+        ng-controller="repairCtrl"
         ng-init="getById({{ $support->id }}, setEditControls);"
     >
 
@@ -27,7 +27,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดบันทึกขอสนับสนุน</h3>
+                        <h3 class="box-title">รายละเอียดบันทึกขอจ้างซ่อม</h3>
                     </div>
                     <div class="box-body">
                         <div class="row">
@@ -129,13 +129,13 @@
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>
                                                 @{{ detail.plan.plan_item.item.item_name }}
-                                                <p style="margin: 0;">@{{ detail.plan_depart }}</p>
+                                                <p style="margin: 0;">- @{{ detail.desc }}</p>
                                             </td>
                                             <td style="text-align: center">
                                                 @{{ detail.price_per_unit | currency:'':2 }}
                                             </td>
                                             <td style="text-align: center">
-                                                @{{ detail.plan.plan_item.unit.name }}
+                                                @{{ detail.unit.name }}
                                             </td>
                                             <td style="text-align: center">
                                                 @{{ detail.amount | currency:'':0 }}
@@ -282,7 +282,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('shared._supported-form')
+        @include('shared._support-form')
 
     </section>
 

@@ -178,7 +178,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A&have_subitem=1`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -201,7 +201,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A&have_subitem=1`)
         .then(function(res) {
             cb(res);
 
@@ -358,8 +358,11 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.baseUrl}/supports/get-ajax-byid/${id}`)
+        $scope.loading = true;
+
+        $http.get(`${CONFIG.apiUrl}/supports/${id}`)
         .then(function(res) {
+            console.log(res);
             cb(res.data.support, res.data.committees);
 
             $scope.loading = false;
