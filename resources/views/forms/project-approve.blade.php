@@ -72,7 +72,12 @@
                             </p>
                             <p>
                                 ได้รับอนุมัติให้จัดทำโครงการ <span>{{ thainumDigit($project->project_name) }}</span>                                
-                                รหัสโครงการ <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
+                                รหัสโครงการ 
+                                @if(!empty($project->project_no))
+                                    <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
+                                @else
+                                    <span class="dot">............................</span>
+                                @endif
                                 งบประมาณสนับสนุนจาก <span>{{ thainumDigit($project->budgetSrc->name) }}</span>โรงพยาบาลฯ
                                 ปีงบประมาณ <span>{{ thainumDigit($project->year) }}</span>
                             </p>
