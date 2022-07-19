@@ -20,7 +20,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         topic: '',
         depart_id: '',
         division_id: '',
-        year: '',
+        year: (moment().year() + 543).toString(),
         plan_type_id: '3',
         total: '',
         contact_detail: '',
@@ -42,7 +42,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         desc: '',
         price_per_unit: '',
         unit: null,
-        unit_id: '',
+        unit_id: '9',
         amount: '1',
         sum_price: ''
     };
@@ -74,7 +74,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             plan_id: '',
             item_id: '',
             price_per_unit: '',
-            unit_id: '',
+            unit_id: '9',
             amount: '1',
             sum_price: ''
         };
@@ -85,15 +85,11 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.newItem.sum_price = total;
     };
 
-    $scope.showSpecForm = function(detail) {
-        console.log(detail);
-
+    $scope.showSpecForm = function() {
         $('#spec-form').modal('show');
     };
 
     $scope.addSpec = function() {
-        $scope.newItem.desc = $('#spec').val();
-
         $('#spec-form').modal('hide');
     };
 
@@ -161,7 +157,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let type = $scope.support.plan_type_id === '' ? 3 : $scope.support.plan_type_id;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A&have_subitem=1`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -230,6 +226,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             $scope.newItem.plan_depart = plan.division ? plan.division.ward_name : plan.depart.depart_name;
             $scope.newItem.plan_id = plan.id;
             $scope.newItem.item_id = plan.plan_item.item_id;
+
+            $scope.support.topic = `ขอสนับสนุน${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`;
         }
 
         $('#plans-list').modal('hide');
@@ -247,6 +245,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     $scope.addItem = () => {
+        console.log($scope.newItem);
         $scope.support.details.push({ ...$scope.newItem });
 
         $scope.calculateTotal();
@@ -261,6 +260,9 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     $scope.showPersonList = (_selectedMode) => {
+        /** Set default depart of persons list to same user's depart */
+        $scope.cboDepart = $('#depart_id').val();
+
         $('#persons-list').modal('show');
 
         $scope.getPersons();

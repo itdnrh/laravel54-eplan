@@ -106,6 +106,7 @@ class PlanController extends Controller
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
         $showAll = $req->get('show_all');
+        $haveSubitem = $req->get('have_subitem');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -127,6 +128,9 @@ class PlanController extends Controller
                         ->when($inStock != '', function($q) use ($inStock) {
                             $q->where('items.in_stock', $inStock);
                         })
+                        ->when(!empty($haveSubitem), function($q) use ($haveSubitem) {
+                            $q->where('plan_items.have_subitem', $haveSubitem);
+                        })
                         ->pluck('plan_items.plan_id');
 
         $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
@@ -140,6 +144,9 @@ class PlanController extends Controller
                         $q->whereIn('id', $plansList);
                     })
                     ->when($inStock != '', function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when(!empty($haveSubitem), function($q) use ($plansList) {
                         $q->whereIn('id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {

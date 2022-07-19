@@ -160,12 +160,12 @@
                                         </a>
                                     </td> -->
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/supports/detail') }}/@{{ support.id }}"
+                                        <a  href="{{ url('/repairs/detail') }}/@{{ support.id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a  href="{{ url('/supports/edit') }}/@{{ support.id }}"
+                                        <a  href="{{ url('/repairs/edit') }}/@{{ support.id }}"
                                             class="btn btn-warning btn-xs"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
@@ -173,7 +173,7 @@
                                         <form
                                             id="frmDelete"
                                             method="POST"
-                                            action="{{ url('/supports/delete') }}"
+                                            action="{{ url('/repairs/delete') }}"
                                             style="display: inline;"
                                         >
                                             {{ csrf_field() }}

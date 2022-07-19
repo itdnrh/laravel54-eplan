@@ -23,9 +23,9 @@
                     <div class="col-md-12 form-group">
                         <textarea
                             type="text"
-                            id="spec"
-                            name="spec"
-                            ng-model="newItem.spec"
+                            id="desc"
+                            name="desc"
+                            ng-model="newItem.desc"
                             rows="5"
                             class="form-control"
                         ></textarea>
