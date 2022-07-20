@@ -34,11 +34,15 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('dashboard/stat2/{year}', 'DashboardController@getStat2');
 
     /** บุคลากร */
+    Route::get('system/persons', 'PersonController@index');
     Route::get('persons/list', 'PersonController@index');
     Route::get('persons/search', 'PersonController@search');
     Route::get('persons/departs', 'PersonController@departs');
     Route::get('persons/departs/head', 'PersonController@getHeadOfDeparts');
     Route::get('persons/detail/{id}', 'PersonController@detail');
+    Route::get('persons/edit/{id}', 'PersonController@edit');
+    Route::post('persons/update/{id}', 'PersonController@update');
+    Route::post('persons/delete/{id}', 'PersonController@delete');
 
     /** วันหยุดราชการ */
     Route::get('holidays', 'HolidayController@getHolidays');

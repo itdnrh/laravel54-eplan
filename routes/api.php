@@ -89,6 +89,14 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('suppliers', 'SupplierController@getAll');
     Route::get('suppliers/{id}', 'SupplierController@getById');
 
+     /** บุคลากร */
+    Route::get('persons', 'PersonController@getAll');
+    Route::get('persons/{id}', 'PersonController@getById');
+    Route::put('persons/{id}/move', 'PersonController@move');
+    Route::put('persons/{id}/transfer', 'PersonController@transfer');
+    Route::put('persons/{id}/leave', 'PersonController@leave');
+    Route::put('persons/{id}/unknown', 'PersonController@unknown');
+    Route::get('persons/{id}/movings', 'PersonController@getMoving');
     /** รายงาน */
     Route::get('reports/summary-depart', 'ReportController@getSummaryByDepart');
     Route::get('reports/asset-depart', 'ReportController@getAssetByDepart');

@@ -16,7 +16,17 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="personCtrl">
+    <section
+        class="content"
+        ng-controller="personCtrl"
+        ng-init="
+            getMovings({{ $personInfo->person_id }});
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }}
+            }, 0);
+        "
+    >
         <div class="row">
             <div class="col-md-3">
                 <?php $userPosition = $personInfo->academic ? $personInfo->position->position_name.$personInfo->academic->ac_name : $personInfo->position->position_name ?>
@@ -101,6 +111,11 @@
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#settings" data-toggle="tab">แก้ไขข้อมูล</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#movings" data-toggle="tab">
+                                ประวัติการย้าย
+                            </a>
+                        </li>
                         <!-- <li><a href="#activity" data-toggle="tab">Activity</a></li>
                         <li><a href="#timeline" data-toggle="tab">Timeline</a></li> -->
                     </ul>
@@ -113,10 +128,10 @@
                                     <div class="col-sm-10">
                                         <input
                                             type="email"
-                                            class="form-control"
                                             id="inputName"
+                                            class="form-control"
                                             value="{{ $personInfo->prefix->prefix_name.$personInfo->person_firstname. ' ' .$personInfo->person_lastname }}"
-                                            placeholder="Name"
+                                            placeholder="ชื่อ-สกุล"
                                         />
                                     </div>
                                 </div>
@@ -126,10 +141,10 @@
                                     <div class="col-sm-10">
                                         <input
                                             type="email"
-                                            class="form-control"
                                             id="inputEmail"
+                                            class="form-control"
                                             value="{{ $personInfo->person_email }}"
-                                            placeholder="Email"
+                                            placeholder="อีเมล"
                                         />
                                     </div>
                                 </div>
@@ -139,10 +154,10 @@
                                     <div class="col-sm-10">
                                         <input
                                             type="text"
-                                            class="form-control"
                                             id="inputName"
+                                            class="form-control"
                                             value="{{ $personInfo->person_tel }}"
-                                            placeholder="Name"
+                                            placeholder="โทรศัพท์"
                                         />
                                     </div>
                                 </div>
@@ -152,8 +167,8 @@
                                     <div class="col-sm-10">
                                         <input
                                             type="text"
-                                            class="form-control"
                                             id="inputSkills"
+                                            class="form-control"
                                             value="{{ $userPosition }}"
                                             placeholder="ตำแหน่ง"
                                         />
@@ -189,7 +204,7 @@
                                             class="form-control"
                                             id="inputSkills"
                                             value="{{ $userDepart }}"
-                                            placeholder="ตำแหน่ง"
+                                            placeholder="สังกัด"
                                         />
                                     </div>
                                 </div>
@@ -229,12 +244,109 @@
                                         </div>
                                     </div>
                                 </div> -->
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">Submit</button>
+                                        <button type="button" class="btn btn-warning">บันทึก</button>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-success">Action</button>
+                                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li>
+                                                    <a href="#" ng-click="showMoveForm($event, 'S', {{ $personInfo->memberOf->faction_id }}, {{ $personInfo->person_id }})">
+                                                        ย้ายภายใน ก.ภารกิจ
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" ng-click="showMoveForm($event, 'M', {{ $personInfo->memberOf->faction_id }}, {{ $personInfo->person_id }})">
+                                                        ย้ายออกภายใน รพ.
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" ng-click="showTransferForm($event, {{ $personInfo->person_id }})">
+                                                        โอน/ย้าย (ภายนอก)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" ng-click="showLeaveForm($event, {{ $personInfo->person_id }})">
+                                                        ออก
+                                                    </a>
+                                                </li>
+                                                <!-- <li>
+                                                    <a href="#">
+                                                        ลาศึกษาต่อ
+                                                    </a>
+                                                </li> -->
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                        ไม่ทราบสถานะ
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </form>
+                        </div><!-- /.tab-pane -->
+
+                        <div class="tab-pane" id="movings">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; width: 5%;">ลำดับ</th>
+                                        <th style="text-align: center; width: 10%;">วันที่ย้าย</th>
+                                        <th style="text-align: center; width: 30%;">จากหน่วยงาน</th>
+                                        <th style="text-align: center; width: 30%;">ไปหน่วยงาน</th>
+                                        <th style="text-align: center;">คำสั่ง</th>
+                                        <!-- <th style="text-align: center; width: 8%;">Actions</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(index, row) in movings">
+                                        <td style="text-align: center;">@{{ index + 1 }}</td>
+                                        <td style="text-align: center;">@{{ row.move_date | thdate }}</td>
+                                        <td>
+                                            <p class="text-sm" style="margin: 0;">
+                                                @{{ row.old_faction.faction_name || '-' }}
+                                            </p>
+                                            <p class="text-sm" style="margin: 0;">
+                                                @{{ row.old_depart.depart_name || '-' }}
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="text-sm" style="margin: 0;">
+                                                @{{ row.new_faction.faction_name || '-' }}
+                                            </p>
+                                            <p class="text-sm" style="margin: 0;">
+                                                @{{ row.new_depart.depart_name || '-' }}
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="text-sm" style="margin: 0;">
+                                                เลขที่ @{{ row.move_doc_no || '-' }}
+                                            </p>
+                                            <p class="text-sm" style="margin: 0;">
+                                                ลงวันที่ @{{ row.move_doc_date || '-' }}
+                                            </p>
+                                            <p class="text-sm" style="margin: 0;">
+                                                หมายเหตุ : 
+                                                <span class="text-sm text-primary">@{{ row.remark || '-' }}</span>
+                                            </p>
+                                        </td>
+                                        <!-- <td style="text-align: center;">
+                                            <a href="" class="btn btn-warning btn-xs">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href="" class="btn btn-danger btn-xs">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div><!-- /.tab-pane -->
 
                         <div class="tab-pane" id="activity">
@@ -322,21 +434,21 @@
                             </div><!-- /.user-block -->
                             <div class="row margin-bottom">
                                 <div class="col-sm-6">
-                                    <img class="img-responsive" src="{{ asset('/img/photo1.png') }}" alt="Photo">
+                                    <!-- <img class="img-responsive" src="{{ asset('/img/photo1.png') }}" alt="Photo"> -->
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-6">
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <!-- <div class="col-sm-6">
                                             <img class="img-responsive" src="{{ asset('/img/photo2.png') }}" alt="Photo">
                                             <br>
                                             <img class="img-responsive" src="{{ asset('/img/photo3.jpg') }}" alt="Photo">
-                                        </div><!-- /.col -->
+                                        </div>
                                         <div class="col-sm-6">
                                             <img class="img-responsive" src="{{ asset('/img/photo4.jpg') }}" alt="Photo">
                                             <br>
                                             <img class="img-responsive" src="{{ asset('/img/photo1.png') }}" alt="Photo">
-                                        </div><!-- /.col -->
+                                        </div> -->
                                     </div><!-- /.row -->
                                 </div><!-- /.col -->
                             </div><!-- /.row -->
@@ -445,10 +557,10 @@
                                         <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
 
                                         <div class="timeline-body">
+                                            <!-- <img src="http://placehold.it/150x100" alt="..." class="margin">
                                             <img src="http://placehold.it/150x100" alt="..." class="margin">
                                             <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                            <img src="http://placehold.it/150x100" alt="..." class="margin"> -->
                                         </div>
                                     </div>
                                 </li><!-- END timeline item -->
@@ -460,14 +572,19 @@
                     </div><!-- /.tab-content -->
                 </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->
-
         </div><!-- /.row -->
+
+        @include('persons._move-form')
+        @include('persons._shift-form')
+        @include('persons._transfer-form')
+        @include('persons._leave-form')
+
     </section>
 
-<script>
-    $(function () {
-        
-    });
-</script>
+    <script>
+        $(function () {
+            
+        });
+    </script>
 
 @endsection
