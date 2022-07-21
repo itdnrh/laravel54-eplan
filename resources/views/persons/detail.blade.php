@@ -110,7 +110,11 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#settings" data-toggle="tab">แก้ไขข้อมูล</a></li>
+                        <li class="active">
+                            <a href="#settings" data-toggle="tab">
+                                ข้อมูลผู้ใช้
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#movings" data-toggle="tab">
                                 ประวัติการย้าย
@@ -283,7 +287,9 @@
                                 </div> -->
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="button" class="btn btn-warning">บันทึก</button>
+                                        <a href="{{ url('/persons/edit/'.$personInfo->person_id) }}" class="btn btn-warning">
+                                            แก้ไขข้อมูล
+                                        </a>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-danger">Action</button>
                                             <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">

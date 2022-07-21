@@ -14,6 +14,12 @@ use App\Models\MemberOf;
 use App\Models\Move;
 use App\Models\Leave;
 use App\Models\Transfer;
+use App\Models\Prefix;
+use App\Models\TypePosition;
+use App\Models\TypeAcademic;
+use App\Models\Position;
+use App\Models\Academic;
+use App\Models\Renaming;
 
 class PersonController extends Controller
 {
@@ -22,7 +28,7 @@ class PersonController extends Controller
         return view('persons.list', [
             'factions'  => Faction::whereNotIn('faction_id', [4,6,12])->get(),
             'departs'   => Depart::all(),
-            'divisions' => Division::all(),
+            'divisions' => Division::whereNotIn('ward_id', [34])->get(),
         ]);
     }
 
@@ -165,9 +171,9 @@ class PersonController extends Controller
         $educations = Education::where('person_id', $id)->orderBy('edu_year', 'DESC')->first();
 
         $personInfo = Person::where('person_id', $id)
-                    ->with('prefix','typeposition','position','academic','office')
-                    ->with('memberOf','memberOf.depart','memberOf.division','memberOf.duty')
-                    ->first();
+                        ->with('prefix','typeposition','position','academic','office')
+                        ->with('memberOf','memberOf.depart','memberOf.division','memberOf.duty')
+                        ->first();
 
         return view('persons.detail', [
             'personInfo'    => $personInfo,
@@ -178,6 +184,65 @@ class PersonController extends Controller
             'divisions'     => Division::all(),
             'duties'        => Duty::all(),
         ]);
+    }
+
+    public function getById($id)
+    {
+        return [
+            'person'    => Person::where('person_id', $id)
+                            ->with('prefix','typeposition','position','academic','office')
+                            ->with('memberOf','memberOf.depart','memberOf.division','memberOf.duty')
+                            ->first(),
+            'positions' => Position::all(),
+        ];
+    }
+
+    public function edit(Request $req, $id)
+    {
+        return view('persons.edit', [
+            'person'        => Person::where('person_id', $id)->first(),
+            'factions'      => Faction::whereNotIn('faction_id', [4,6,12])->get(),
+            'departs'       => Depart::all(),
+            'divisions'     => Division::all(),
+            'duties'        => Duty::all(),
+            'prefixes'      => Prefix::all(),
+            'typepositions' => TypePosition::all(),
+            'typeacademics' => TypeAcademic::all(),
+            'academics'     => Academic::all(),
+        ]);
+    }
+
+    public function update(Request $req, $id)
+    {
+        try {
+            $person = Person::where('person_id', $id)->first();
+            $person->person_email       = $req['person_email'];
+            $person->person_tel         = $req['person_tel'];
+            $person->typeposition_id    = $req['typeposition_id'];
+            $person->typeac_id          = $req['typeac_id'];
+            $person->position_id        = $req['position_id'];
+            $person->ac_id              = $req['ac_id'];
+            $person->person_singin      = convThDateToDbDate($req['person_singin']);
+            $person->remark             = $req['remark'];
+
+            if ($person->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully!!',
+                    'person'    => $person
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
     }
 
     public function move(Request $req, $id)
@@ -354,6 +419,51 @@ class PersonController extends Controller
                     'status'    => 1,
                     'message'   => 'Updating status successfully!!',
                     'person'    => $person
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function rename(Request $req, $id)
+    {
+        try {
+            $person = Person::where('person_id', $id)->first();
+            $person->person_prefix      = $req['new_prefix'];
+            $person->person_firstname   = $req['new_firstname'];
+            $person->person_lastname    = $req['new_lastname'];
+
+            if($person->save()) {
+                /** บันทึกประวัติการเปลี่ยนชื่อ */
+                $rename = new Renaming;
+
+                if (!empty($req['doc_no'])) {
+                    $rename->doc_no         = $req['doc_no'];
+                    $rename->doc_date       = convThDateToDbDate($req['doc_date']);
+                }
+                $rename->person_id      = $req['person_id'];
+                $rename->old_fullname   = $req['old_fullname'];
+                $rename->new_prefix     = $req['new_prefix'];
+                $rename->new_firstname  = $req['new_firstname'];
+                $rename->new_lastname   = $req['new_lastname'];
+                $rename->remark         = $req['remark'];
+                $rename->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Renaming successfully!!',
+                    'person'    => Person::where('person_id', $id)
+                                    ->with('prefix','typeposition','position','academic')
+                                    ->first()
                 ];
             } else {
                 return [
