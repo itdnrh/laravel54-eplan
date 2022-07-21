@@ -183,16 +183,16 @@ class PersonController extends Controller
     public function move(Request $req, $id)
     {
         try {
-            $old     = MemberOf::where('person_id', $id)->first();;
+            $old     = MemberOf::where('person_id', $id)->first();
             $person  = Person::where('person_id', $id)->first();
 
             /** ประวัติการย้ายภายใน */
             $move = new Move;
-            $move->move_person      = $person->person_id;
-            $move->move_date        = convThDateToDbDate($req['move_date']);
-            $move->move_reason      = $req['move_reason'];
-            $move->in_out           = $req['in_out'];
-            $move->remark           = $req['remark'];
+            $move->move_person  = $person->person_id;
+            $move->move_date    = convThDateToDbDate($req['move_date']);
+            $move->move_reason  = $req['move_reason'];
+            $move->in_out       = $req['in_out'];
+            $move->remark       = $req['remark'];
 
             if ($req['move_doc_no'] != '') {
                 $move->move_doc_no      = $req['move_doc_no'];
@@ -201,17 +201,17 @@ class PersonController extends Controller
 
             /** เก็บประวัติสังกัดก่อนโอนย้าย (เฉพาะกรณีย้ายออก) */
             if ($req['in_out'] == 'O') {
-                $move->old_duty         = $old['duty_id'];
-                $move->old_faction      = $old['faction_id'];
-                $move->old_depart       = $old['depart_id'];
-                $move->old_division     = $old['ward_id'];
+                $move->old_duty     = $old->duty_id;
+                $move->old_faction  = $old->faction_id;
+                $move->old_depart   = $old->depart_id;
+                $move->old_division = $old->ward_id;
             }
 
-            $move->new_duty         = $req['move_duty'];
-            $move->new_faction      = $req['move_faction'];
-            $move->new_depart       = $req['move_depart'];
-            $move->new_division     = $req['move_division'];
-            $move->is_active        = 1;
+            $move->new_duty     = $req['move_duty'];
+            $move->new_faction  = $req['move_faction'];
+            $move->new_depart   = $req['move_depart'];
+            $move->new_division = $req['move_division'];
+            $move->is_active    = 1;
 
             if($move->save()) {
                 /** อัพเดตสังกัดหน่วยงานปัจจุบัน */
@@ -241,56 +241,45 @@ class PersonController extends Controller
         }
     }
 
-    public function transfer(Request $req)
+    public function transfer(Request $req, $id)
     {
-        $post = (array)$req->getParsedBody();
-        
         try {
-            $old     = $post['nurse']['member_of'];
+            $old    = MemberOf::where('person_id', $id)->first();
+            $person = Person::where('person_id', $id)->first();
+            $person->person_state = '8';
 
-            /** อัพเดตข้อมูลพยาบาล */
-            $nurse  = Person::where('person_id', $args['id'])->update(['person_state' => '8']);
-
-            if($nurse > 0) {
+            if($person->save()) {
                 /** ประวัติการโอนย้าย */
                 $transfer = new Transfer;
-                $transfer->transfer_person      = $args['id'];
-                $transfer->transfer_date        = toDateDb($post['transfer_date']);
-                $transfer->transfer_to          = $post['transfer_to'];
-                $transfer->transfer_reason      = $post['transfer_reason'];
-                $transfer->in_out               = $post['in_out'];
-                $transfer->remark               = $post['remark'];
+                $transfer->transfer_person  = $id;
+                $transfer->transfer_date    = convThDateToDbDate($req['transfer_date']);
+                $transfer->transfer_to      = $req['transfer_to'];
+                $transfer->transfer_reason  = $req['transfer_reason'];
+                $transfer->in_out           = $req['in_out'];
+                $transfer->remark           = $req['remark'];
 
-                if ($post['transfer_doc_no'] != '') {
-                    $transfer->transfer_doc_no      = $post['transfer_doc_no'];
-                    $transfer->transfer_doc_date    = toDateDb($post['transfer_doc_date']);
+                if ($req['transfer_doc_no'] != '') {
+                    $transfer->transfer_doc_no      = $req['transfer_doc_no'];
+                    $transfer->transfer_doc_date    = convThDateToDbDate($req['transfer_doc_date']);
                 }
 
                 /** เก็บประวัติสังกัดก่อนโอนย้าย (เฉพาะกรณีโอนย้ายออก) */
-                if ($post['in_out'] == 'O') {
-                    $transfer->old_duty             = $old['duty_id'];
-                    $transfer->old_faction          = $old['faction_id'];
-                    $transfer->old_depart           = $old['depart_id'];
-                    $transfer->old_division         = $old['ward_id'];
-                }
-
+                $transfer->old_duty     = $old->duty_id;
+                $transfer->old_faction  = $old->faction_id;
+                $transfer->old_depart   = $old->depart_id;
+                $transfer->old_division = $old->ward_id;
                 $transfer->save();
 
-                /** อัพเดตสังกัดหน่วยงานปัจจุบัน (เฉพาะกรณีโอนย้ายเข้า) */
-                if ($post['in_out'] == 'I') {
-                    $member  = new MemberOf;
-                    $member->duty_id       = '5';
-                    $member->faction_id    = '5';
-                    $member->depart_id     = '65';
-                    $member->ward_id       = '113';
-                    $member->save();
-                }
-
-                return $res->withJson([
-                    'nurse' => $nurse
-                ]);
+                return [
+                    'status'    => 1,
+                    'message'   => 'Transferring successfully!!',
+                    'person'    => $person
+                ];
             } else {
-                //throw error handler
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
         } catch (\Exception $ex) {
             return [
@@ -320,11 +309,11 @@ class PersonController extends Controller
                 /** ประวัติการโอนย้าย */
                 $leave = new Leave;
                 $leave->leave_person      = $args['id'];
-                $leave->leave_date        = toDateDb($post['leave_date']);
+                $leave->leave_date        = convThDateToDbDate($post['leave_date']);
 
                 if ($post['leave_doc_no'] != '') {
                     $leave->leave_doc_no      = $post['leave_doc_no'];
-                    $leave->leave_doc_date    = toDateDb($post['leave_doc_date']);
+                    $leave->leave_doc_date    = convThDateToDbDate($post['leave_doc_date']);
                 }
 
                 $leave->leave_type          = $post['leave_type'];
