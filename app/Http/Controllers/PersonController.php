@@ -347,12 +347,12 @@ class PersonController extends Controller
     {
         try {
             $person = Person::where('person_id', $id)->first();
-            $person->person_state = '99';
+            $person->person_state = $req['status'];
 
             if($person->save()) {
                 return [
                     'status'    => 1,
-                    'message'   => 'Updating successfully!!',
+                    'message'   => 'Updating status successfully!!',
                     'person'    => $person
                 ];
             } else {
