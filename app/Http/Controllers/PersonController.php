@@ -354,7 +354,7 @@ class PersonController extends Controller
         }
     }
 
-    public function unknown(Request $req, $id)
+    public function status(Request $req, $id)
     {
         try {
             $person = Person::where('person_id', $id)->first();

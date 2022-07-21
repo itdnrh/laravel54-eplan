@@ -364,12 +364,12 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         });
     };
 
-    $scope.unknown = (e, id) => {
+    $scope.status = (e, id) => {
         if(e) e.preventDefault();
         $scope.loading = true;
         console.log(id);
 
-        $http.put(`${CONFIG.apiUrl}/persons/${id}/unknown`, {})
+        $http.put(`${CONFIG.apiUrl}/persons/${id}/status`, {})
         .then(res => {
             $scope.loading = false;
 

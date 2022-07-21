@@ -289,53 +289,53 @@
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         ปฏิบัติราชการ
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         มาช่วยราชการ
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         ไปช่วยราชการ
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         ลาศึกษาต่อ
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         เพิ่มพูนทักษะ
                                                     </a>
                                                 </li>
                                                 <li class="divider"></li>
                                                 <!-- <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         ลาออก
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         เกษียณอายุราชการ
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         โอน/ย้าย
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         ถูกให้ออก
                                                     </a>
                                                 </li> -->
                                                 <li>
-                                                    <a href="#" ng-click="unknown($event, {{ $personInfo->person_id }})">
+                                                    <a href="#" ng-click="status($event, {{ $personInfo->person_id }})">
                                                         ไม่ทราบสถานะ
                                                     </a>
                                                 </li>
