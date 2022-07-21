@@ -10,23 +10,23 @@
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
-                        <div class="form-group col-md-12">
+                        <!-- <div class="form-group col-md-12">
                             <label for="">ประเภท</label>
                             <select
                                 class="form-control mr-2"
-                                ng-model="nurseTransfer.in_out"
+                                ng-model="transfering.in_out"
                             >
                                 <option value="">-- ประเภท --</option>
                                 <option value="O">ย้ายออก</option>
                                 <option value="I">รับย้าย</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group col-md-6">
                             <label for="">เลขที่คำสั่ง</label>
                             <input
                                 type="text"
                                 id="transfer_doc_no"
-                                ng-model="nurseTransfer.transfer_doc_no"
+                                ng-model="transfering.transfer_doc_no"
                                 class="form-control mr-2"
                                 placeholder="ระบุเลขที่คำสั่ง..."
                             />
@@ -37,7 +37,7 @@
                                 type="text"
                                 id="transfer_doc_date"
                                 class="form-control mr-2"
-                                ng-model="nurseTransfer.transfer_doc_date"
+                                ng-model="transfering.transfer_doc_date"
                             />
                         </div>
                         <div class="form-group col-md-6">
@@ -46,7 +46,7 @@
                                 type="text"
                                 id="transfer_date"
                                 class="form-control mr-2"
-                                ng-model="nurseTransfer.transfer_date"
+                                ng-model="transfering.transfer_date"
                             />
                         </div>
                         <div class="form-group col-md-6">
@@ -54,7 +54,7 @@
                             <input
                                 type="text"
                                 id="transfer_to"
-                                ng-model="nurseTransfer.transfer_to"
+                                ng-model="transfering.transfer_to"
                                 class="form-control mr-2"
                                 placeholder="ระบุหน่วยงานที่โอน/ย้ายไป..."
                             />
@@ -65,7 +65,7 @@
                                 rows="5"
                                 id="transfer_reason"
                                 class="form-control mr-2"
-                                ng-model="nurseTransfer.transfer_reason"
+                                ng-model="transfering.transfer_reason"
                             ></textarea>
                         </div>
                     </div>

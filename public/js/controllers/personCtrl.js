@@ -27,8 +27,8 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         remark: ''
     };
 
-    $scope.nurseTransfer = {
-        nurse: null,
+    $scope.transferring = {
+        person_id: '',
         transfer_date: '',
         transfer_doc_no: '',
         transfer_doc_date: '',
@@ -38,8 +38,8 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         remark: ''
     };
 
-    $scope.nurseLeave = {
-        nurse: null,
+    $scope.leaving = {
+        person_id: '',
         leave_doc_no: '',
         leave_doc_date: '',
         leave_date: '',
@@ -278,7 +278,7 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     $scope.showTransferForm = function(e, nurse) {
         e.preventDefault();
 
-        $scope.nurseTransfer.nurse = nurse;
+        $scope.transfering.nurse = nurse;
 
         $('#transferForm').modal('show');
     };
@@ -286,17 +286,15 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     $scope.transfer = (e) => {
         if(e) e.preventDefault();
 
-        console.log($scope.nurseTransfer);
-        const id = $scope.nurseTransfer.nurse.person_id;
+        console.log($scope.transferring);
 
-        $http.put(`${CONFIG.apiUrl}/persons/${id}/transfer`, $scope.nurseTransfer)
+        $http.put(`${CONFIG.apiUrl}/persons/${$scope.transferring.person_id}/transfer`, $scope.transferring)
         .then(res => {
             console.log(res);
-            $scope.data = $scope.data.filter(person => person.person_id !== id);
 
             /** Clear values */
-            $scope.nurseTransfer = {
-                nurse: null,
+            $scope.transferring = {
+                person_id: '',
                 transfer_date: '',
                 transfer_doc_no: '',
                 transfer_doc_date: '',
@@ -307,7 +305,6 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
             };
 
             $('#transferForm').modal('hide');
-
             $scope.loading = false;
 
             if (res.data.status == 1) {
@@ -324,7 +321,7 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     $scope.showLeaveForm = function(e, person) {
         e.preventDefault();
 
-        $scope.nurseLeave.nurse = person;
+        $scope.leaving.person_id = person;
 
         $('#leaveForm').modal('show');
     };
@@ -332,15 +329,15 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     $scope.leave = (e) => {
         if(e) e.preventDefault();
 
-        const id = $scope.nurseLeave.nurse.person_id;
+        const id = $scope.leaving.person_id;
 
-        $http.put(`${CONFIG.apiUrl}/persons/${id}/leave`, $scope.nurseLeave)
+        $http.put(`${CONFIG.apiUrl}/persons/${id}/leave`, $scope.leaving)
         .then(res => {
             $scope.data = $scope.data.filter(person => person.person_id !== id);
 
             /** Clear values */
-            $scope.nurseLeave = {
-                nurse: null,
+            $scope.leaving = {
+                person_id: '',
                 leave_doc_no: '',
                 leave_doc_date: '',
                 leave_date: '',
@@ -364,12 +361,12 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         });
     };
 
-    $scope.status = (e, id) => {
+    $scope.status = (e, id, status) => {
         if(e) e.preventDefault();
         $scope.loading = true;
         console.log(id);
 
-        $http.put(`${CONFIG.apiUrl}/persons/${id}/status`, {})
+        $http.put(`${CONFIG.apiUrl}/persons/${id}/status`, { status })
         .then(res => {
             $scope.loading = false;
 

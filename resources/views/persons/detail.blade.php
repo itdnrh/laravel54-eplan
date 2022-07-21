@@ -235,6 +235,43 @@
                                     </textarea>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="status" class="col-sm-2 control-label">สถานะ</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-control">
+                                            <span class="label label-success" ng-show="({{ $personInfo->person_state }} == 1)">
+                                                ปฏิบัติราชการ
+                                            </span>
+                                            <span class="label bg-olive" ng-show="({{ $personInfo->person_state }} == 2)">
+                                                มาช่วยราชการ
+                                            </span>
+                                            <span class="label bg-maroon" ng-show="({{ $personInfo->person_state }} == 3)">
+                                                ไปช่วยราชการ
+                                            </span>
+                                            <span class="label bg-navy" ng-show="({{ $personInfo->person_state }} == 4)">
+                                                ลาศึกษาต่อ
+                                            </span>
+                                            <span class="label bg-purple" ng-show="({{ $personInfo->person_state }} == 5)">
+                                                เพิ่มพูนทักษะ
+                                            </span>
+                                            <span class="label label-danger" ng-show="({{ $personInfo->person_state }} == 6)">
+                                                ลาออก
+                                            </span>
+                                            <span class="label label-warning" ng-show="({{ $personInfo->person_state }} == 7)">
+                                                เกษียณอายุราชการ
+                                            </span>
+                                            <span class="label label-primary" ng-show="({{ $personInfo->person_state }} == 8)">
+                                                โอน/ย้าย
+                                            </span>
+                                            <span class="label label-danger" ng-show="({{ $personInfo->person_state }} == 9)">
+                                                ถูกให้ออก
+                                            </span>
+                                            <span class="label label-default" ng-show="({{ $personInfo->person_state }} == 99)">
+                                                ไม่ทราบสถานะ
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <div class="checkbox">
@@ -248,8 +285,8 @@
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <button type="button" class="btn btn-warning">บันทึก</button>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-success">Action</button>
-                                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                            <button type="button" class="btn btn-danger">Action</button>
+                                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
@@ -282,8 +319,8 @@
                                             </ul>
                                         </div>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-success">สถานะ</button>
-                                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                            <button type="button" class="btn btn-primary">สถานะ</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
