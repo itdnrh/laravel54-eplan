@@ -14,7 +14,7 @@
                             <label for="">ประเภท</label>
                             <select
                                 class="form-control mr-2"
-                                ng-model="transfering.in_out"
+                                ng-model="transferring.in_out"
                             >
                                 <option value="">-- ประเภท --</option>
                                 <option value="O">ย้ายออก</option>
@@ -26,7 +26,7 @@
                             <input
                                 type="text"
                                 id="transfer_doc_no"
-                                ng-model="transfering.transfer_doc_no"
+                                ng-model="transferring.transfer_doc_no"
                                 class="form-control mr-2"
                                 placeholder="ระบุเลขที่คำสั่ง..."
                             />
@@ -37,7 +37,7 @@
                                 type="text"
                                 id="transfer_doc_date"
                                 class="form-control mr-2"
-                                ng-model="transfering.transfer_doc_date"
+                                ng-model="transferring.transfer_doc_date"
                             />
                         </div>
                         <div class="form-group col-md-6">
@@ -46,7 +46,7 @@
                                 type="text"
                                 id="transfer_date"
                                 class="form-control mr-2"
-                                ng-model="transfering.transfer_date"
+                                ng-model="transferring.transfer_date"
                             />
                         </div>
                         <div class="form-group col-md-6">
@@ -54,7 +54,7 @@
                             <input
                                 type="text"
                                 id="transfer_to"
-                                ng-model="transfering.transfer_to"
+                                ng-model="transferring.transfer_to"
                                 class="form-control mr-2"
                                 placeholder="ระบุหน่วยงานที่โอน/ย้ายไป..."
                             />
@@ -65,7 +65,7 @@
                                 rows="5"
                                 id="transfer_reason"
                                 class="form-control mr-2"
-                                ng-model="transfering.transfer_reason"
+                                ng-model="transferring.transfer_reason"
                             ></textarea>
                         </div>
                     </div>

@@ -330,10 +330,10 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         });
     };
 
-    $scope.showTransferForm = function(e, nurse) {
+    $scope.showTransferForm = function(e, person_id) {
         e.preventDefault();
 
-        $scope.transfering.nurse = nurse;
+        $scope.transferring.person_id = person_id;
 
         $('#transferForm').modal('show');
     };
