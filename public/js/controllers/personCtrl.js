@@ -373,23 +373,20 @@ app.controller('personCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         });
     };
 
-    $scope.showLeaveForm = function(e, person) {
+    $scope.showLeaveForm = function(e, id) {
         e.preventDefault();
 
-        $scope.leaving.person_id = person;
+        $scope.leaving.person_id = id;
 
         $('#leaveForm').modal('show');
     };
 
     $scope.leave = (e) => {
         if(e) e.preventDefault();
+        console.log($scope.leaving);
 
-        const id = $scope.leaving.person_id;
-
-        $http.put(`${CONFIG.apiUrl}/persons/${id}/leave`, $scope.leaving)
+        $http.put(`${CONFIG.apiUrl}/persons/${$scope.leaving.person_id}/leave`, $scope.leaving)
         .then(res => {
-            $scope.data = $scope.data.filter(person => person.person_id !== id);
-
             /** Clear values */
             $scope.leaving = {
                 person_id: '',

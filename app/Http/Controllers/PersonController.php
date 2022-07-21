@@ -354,51 +354,51 @@ class PersonController extends Controller
         }
     }
 
-    public function leave(Request $req)
+    public function leave(Request $req, $id)
     {
-        $post = (array)$req->getParsedBody();
-        
         try {
-            $old     = $post['nurse']['member_of'];
+            $old = MemberOf::where('person_id', $id)->first();
+            $person  = Person::where('person_id', $id)->first();
 
-            /** อัพเดตข้อมูลพยาบาล */
-            if ($post['leave_type'] == '1') {
-                $nurse  = Person::where('person_id', $args['id'])->update(['person_state' => '7']);
-            } else if ($post['leave_type'] == '2') {
-                $nurse  = Person::where('person_id', $args['id'])->update(['person_state' => '6']);
-            } else if ($post['leave_type'] == '3') {
-                $nurse  = Person::where('person_id', $args['id'])->update(['person_state' => '9']);
+            if ($req['leave_type'] == '1') {
+                $person->person_state = '7';
+            } else if ($req['leave_type'] == '2') {
+                $person->person_state = '6';
+            } else if ($req['leave_type'] == '3') {
+                $person->person_state = '9';
             }
 
-            if($nurse > 0) {
+            if($person->save()) {
                 /** ประวัติการโอนย้าย */
                 $leave = new Leave;
-                $leave->leave_person      = $args['id'];
-                $leave->leave_date        = convThDateToDbDate($post['leave_date']);
+                $leave->leave_person    = $id;
+                $leave->leave_date      = convThDateToDbDate($req['leave_date']);
 
-                if ($post['leave_doc_no'] != '') {
-                    $leave->leave_doc_no      = $post['leave_doc_no'];
-                    $leave->leave_doc_date    = convThDateToDbDate($post['leave_doc_date']);
+                if ($req['leave_doc_no'] != '') {
+                    $leave->leave_doc_no    = $req['leave_doc_no'];
+                    $leave->leave_doc_date  = convThDateToDbDate($req['leave_doc_date']);
                 }
 
-                $leave->leave_type          = $post['leave_type'];
-                $leave->leave_reason        = $post['leave_reason'];
-                $leave->remark              = $post['remark'];
+                $leave->leave_type      = $req['leave_type'];
+                $leave->leave_reason    = $req['leave_reason'];
+                $leave->remark          = $req['remark'];
 
-                $leave->old_duty            = $old['duty_id'];
-                $leave->old_faction         = $old['faction_id'];
-                $leave->old_depart          = $old['depart_id'];
-                $leave->old_division        = $old['ward_id'];
-                
-                if ($leave->save()) {
-                    return $res->withJson([
-                        'nurse' => $nurse
-                    ]);
-                } else {
-                    // var_dump($leave);
-                }
+                $leave->old_duty        = $old->duty_id;
+                $leave->old_faction     = $old->faction_id;
+                $leave->old_depart      = $old->depart_id;
+                $leave->old_division    = $old->ward_id;
+                $leave->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating status successfully!!',
+                    'person'    => $person
+                ];
             } else {
-                // throw error handler
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
         } catch (\Exception $ex) {
             return [

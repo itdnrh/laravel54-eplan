@@ -4,9 +4,6 @@
             <form action="">
                 <div class="modal-header">
                     <h5 class="modal-title">ฟอร์มออก</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
@@ -16,7 +13,7 @@
                                 type="text"
                                 id="leave_doc_no"
                                 class="form-control mr-2"
-                                ng-model="nurseLeave.leave_doc_no"
+                                ng-model="leaving.leave_doc_no"
                             />
                         </div>
                         <div class="form-group col-md-6">
@@ -25,7 +22,7 @@
                                 type="text"
                                 id="leave_doc_date"
                                 class="form-control mr-2"
-                                ng-model="nurseLeave.leave_doc_date"
+                                ng-model="leaving.leave_doc_date"
                             />
                         </div>
                         <div class="form-group col-md-6">
@@ -34,14 +31,14 @@
                                 type="text"
                                 id="leave_date"
                                 class="form-control mr-2"
-                                ng-model="nurseLeave.leave_date"
+                                ng-model="leaving.leave_date"
                             />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">สาเหตุ</label>
                             <select
                                 class="form-control mr-2"
-                                ng-model="nurseLeave.leave_type"
+                                ng-model="leaving.leave_type"
                             >
                                 <option value="">-- สาเหตุ --</option>
                                 <option value="1">เกษียณอายุราชการ</option>
@@ -55,13 +52,16 @@
                                 rows="5"
                                 id="leave_reason"
                                 class="form-control mr-2"
-                                ng-model="nurseLeave.leave_reason"
+                                ng-model="leaving.leave_reason"
                             ></textarea>
                         </div>
                     </div>
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button class="btn btn-primary" ng-click="leave($event)">บันทึก</button>
+                    <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        ปิด
+                    </button>
                 </div><!-- /.modal-footer -->
             </form>
         </div>

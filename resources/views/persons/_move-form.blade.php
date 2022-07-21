@@ -6,9 +6,6 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title">ฟอร์มย้ายไปหน่วยงานอื่นภายใน รพ.</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
@@ -99,6 +96,9 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button class="btn btn-primary" ng-click="move($event)">ย้าย</button>
+                    <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        ปิด
+                    </button>
                 </div><!-- /.modal-footer -->
             </form>
         </div>

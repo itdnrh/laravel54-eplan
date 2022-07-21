@@ -4,9 +4,6 @@
             <form action="">
                 <div class="modal-header">
                     <h5 class="modal-title">ฟอร์มโอน/ย้าย</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
@@ -72,6 +69,9 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button class="btn btn-primary" ng-click="transfer($event)">โอน/ย้าย</button>
+                    <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        ปิด
+                    </button>
                 </div><!-- /.modal-footer -->
             </form>
         </div>
