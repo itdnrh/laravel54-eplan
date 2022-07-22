@@ -8,11 +8,12 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Support;
 use App\Models\SupportDetail;
+use App\Models\SupportSubitem;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\PlanType;
-use App\Models\SubItem;
 use App\Models\Item;
+use App\Models\SubItem;
 use App\Models\ItemCategory;
 use App\Models\Unit;
 use App\Models\Committee;
@@ -283,7 +284,8 @@ class RepairController extends Controller
                     $detail->sum_price      = $item['sum_price'];
                     $detail->save();
 
-                    $subitem = new SubItem;
+                    $subitem = new SupportSubitem;
+                    $subitem->support_id        = $supportId;
                     $subitem->plan_id           = $item['plan_id'];
                     $subitem->desc              = $item['desc'];
                     $subitem->price_per_unit    = $item['price_per_unit'];
@@ -336,11 +338,16 @@ class RepairController extends Controller
                     'status' => 1,
                     'message' => 'Insertion successfully'
                 ];
+            } else {
+                return [
+                    'status' => 0,
+                    'message' => 'Something went wrong!!'
+                ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'status' => 0,
-                'message' => 'Something went wrong!!'
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }
@@ -358,18 +365,7 @@ class RepairController extends Controller
 
     public function update(Request $req)
     {
-        $cancel = Cancellation::find($req['id']);
-        $cancel->reason         = $req['reason'];
-        $cancel->start_date     = convThDateToDbDate($req['start_date']);
-        $cancel->start_period   = '1';
-        $cancel->end_date       = convThDateToDbDate($req['end_date']);
-        $cancel->end_period     = $req['end_period'];
-        $cancel->days           = $req['days'];
-        $cancel->working_days   = $req['working_days'];
-
-        if ($cancel->save()) {
-            return redirect('/cancellations/cancel');
-        }
+        //
     }
 
     public function delete(Request $req, $id)
