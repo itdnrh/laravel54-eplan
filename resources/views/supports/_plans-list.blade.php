@@ -13,30 +13,14 @@
                     <div class="box">
                         <div class="box-body">
                             <div style="display: flex; flex-direction: row;">
-                                <select
-                                    style="margin-right: 1rem;"
+                                <input
+                                    type="text"
+                                    id="txtKeyword"
+                                    name="txtKeyword"
                                     class="form-control"
-                                    ng-model="cboCategory"
-                                    ng-change="getPlans(cboPlanType, 0);"
-                                >
-                                    <option value="">-- เลือกประเภทพัสดุ --</option>
-                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                    </option>
-                                </select>
-                                <!-- <select
-                                    style="margin-right: 1rem;"
-                                    class="form-control"
-                                    ng-model="cboPlanType"
-                                    ng-change="onFilterCategories(cboPlanType); getPlans(cboPlanType, 0);"
-                                >
-                                    <option value="">-- เลือกประเภทแผน --</option>
-                                    @foreach($planTypes as $planType)
-                                        <option value="{{ $planType->id }}">
-                                            {{ $planType->plan_type_name }}
-                                        </option>
-                                    @endforeach
-                                </select> -->
+                                    ng-model="txtKeyword"
+                                    ng-change="getPlans('', 0, '')"
+                                />
                             </div>
                         </div><!-- /.box-body -->
                     </div>

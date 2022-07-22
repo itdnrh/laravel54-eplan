@@ -105,6 +105,7 @@ class PlanController extends Controller
         $status = $req->get('status');
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
+        $name = $req->get('name');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
@@ -119,6 +120,7 @@ class PlanController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
+
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
         $plansList = PlanItem::leftJoin('items', 'items.id', '=', 'plan_items.item_id')
@@ -127,6 +129,9 @@ class PlanController extends Controller
                         })
                         ->when($inStock != '', function($q) use ($inStock) {
                             $q->where('items.in_stock', $inStock);
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where('items.item_name', 'like', $name.'%');
                         })
                         ->when(!empty($haveSubitem), function($q) use ($haveSubitem) {
                             $q->where('plan_items.have_subitem', $haveSubitem);
@@ -144,6 +149,9 @@ class PlanController extends Controller
                         $q->whereIn('id', $plansList);
                     })
                     ->when($inStock != '', function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when(!empty($name), function($q) use ($plansList) {
                         $q->whereIn('id', $plansList);
                     })
                     ->when(!empty($haveSubitem), function($q) use ($plansList) {

@@ -5,6 +5,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
+    $scope.txtKeyword = '';
 
     $scope.supports = [];
     $scope.pager = [];
@@ -29,6 +30,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         division_id: '',
         year: (moment().year() + 543).toString(),
         plan_type_id: '',
+        category_id: '',
         total: '',
         contact_detail: '',
         contact_person: '',
@@ -156,17 +158,18 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.showPlansList = () => {
-        if (!$scope.support.plan_type_id) {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
+        if (!$scope.support.plan_type_id || !$scope.support.category_id) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
         } else {
             $scope.loading = true;
             $scope.plans = [];
             $scope.plans_pager = null;
     
             let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+            let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
             let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
     
-            $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A`)
+            $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=0&approved=A`)
             .then(function(res) {
                 $scope.setPlans(res);
     
@@ -180,15 +183,17 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.getPlans = (type, status) => {
+    $scope.getPlans = (status) => {
         $scope.loading = true;
         $scope.plans = [];
         $scope.plans_pager = null;
 
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+        let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -208,10 +213,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.plans_pager = null;
 
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A`)
+        $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             cb(res);
 
@@ -539,7 +545,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.setTopicByPlanType = function(planType) {
-        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id option:selected').text().trim()}`;
+    $scope.setTopicByPlanType = function() {
+        $scope.support.topic = `ขอรับการสนับสนุน${$('#category_id option:selected').text().trim()}`;
     };
 });

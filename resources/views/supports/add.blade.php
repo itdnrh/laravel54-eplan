@@ -60,42 +60,7 @@
                         <div class="box-body">
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_no')}"
-                                >
-                                    <label>เลขที่บันทึก :</label>
-                                    <input  type="text"
-                                            id="doc_no"
-                                            name="doc_no"
-                                            ng-model="support.doc_no"
-                                            class="form-control"
-                                            tabindex="6">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_no')">
-                                        @{{ formError.errors.doc_no[0] }}
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_date')}"
-                                >
-                                    <label>วันที่บันทึก :</label>
-                                    <input
-                                        type="text"
-                                        id="doc_date"
-                                        name="doc_date"
-                                        ng-model="support.doc_date"
-                                        class="form-control"
-                                        tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
-                                        @{{ formError.errors.doc_date[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
@@ -114,16 +79,15 @@
                                         @{{ formError.errors.year[0] }}
                                     </span>
                                 </div>
-
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
                                 >
                                     <label>ประเภทแผน :</label>
                                     <select id="plan_type_id"
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
-                                            ng-change="setTopicByPlanType(support.plan_type_id)"
+                                            ng-change="onPlanTypeSelected(support.plan_type_id);"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
@@ -136,6 +100,27 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
                                         @{{ formError.errors.plan_type_id[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'category_id')}"
+                                >
+                                    <label>ประเภทพัสดุ :</label>
+                                    <select id="category_id"
+                                            name="category_id"
+                                            ng-model="support.category_id"
+                                            ng-change="setTopicByPlanType(support.category_id)"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(support, 'category_id')">
+                                        @{{ formError.errors.category_id[0] }}
                                     </span>
                                 </div>
                             </div>

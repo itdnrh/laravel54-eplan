@@ -176,12 +176,26 @@
                                 </div>
                                 <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
                                     <label for="">ใน/นอกคลัง</label>
-                                    <div style="display: flex; gap: 30px;">
+                                    <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
                                             <input type="radio" ng-model="item.in_stock" ng-value="1" /> ในคลัง 
                                         </div>
                                         <div>
                                             <input type="radio" ng-model="item.in_stock" ng-value="0" /> นอกคลัง
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'in_stock')">
+                                        @{{ formError.errors.in_stock[0] }}
+                                    </span>
+                                </div>
+                                <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
+                                    <label for="">การคำนวณ</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="radio" ng-model="item.in_stock" ng-value="1" /> จำนวน 
+                                        </div>
+                                        <div>
+                                            <input type="radio" ng-model="item.in_stock" ng-value="0" /> งบประมาณ
                                         </div>
                                     </div>
                                     <span class="help-block" ng-show="checkValidate(item, 'in_stock')">
