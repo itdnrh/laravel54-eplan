@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            จ้างซ่อมแซม/บำรุงรักษา
+            บันทึกขอจ้างซ่อม
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">จ้างซ่อมแซม/บำรุงรักษา</li>
+            <li class="breadcrumb-item active">บันทึกขอจ้างซ่อม</li>
         </ol>
     </section>
 
@@ -83,7 +83,7 @@
                     <div class="box-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">จ้างซ่อมแซม/บำรุงรักษา</h3>
+                                <h3 class="box-title">บันทึกขอจ้างซ่อม</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/repairs/add') }}" class="btn btn-primary pull-right">
@@ -97,26 +97,21 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 12%; text-align: center;">เลขที่บันทึก</th>
-                                    <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
-                                    <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
-                                    <th>หน่วยงาน</th>
-                                    <th style="width: 8%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 8%; text-align: center;">รายการ</th>
-                                    <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
+                                    <th style="width: 12%; text-align: center;">บันทึก</th>
+                                    <th style="width: 15%;">หน่วยงาน</th>
+                                    <th style="width: 5%; text-align: center;">ปีงบ</th>
+                                    <th>รายการ</th>
+                                    <th style="width: 10%; text-align: center;">ยอดขอสนับสนุน</th>
                                     <th style="width: 8%; text-align: center;">สถานะ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ส่งเอกสาร</th>
-                                    <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, support) in supports">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_no }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ support.plan_type.plan_type_name }}
+                                    <td>
+                                        <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
+                                        <p style="margin: 0;">วันที่ @{{ support.doc_date | thdate }}</p>
                                     </td>
                                     <td>
                                         @{{ support.depart.depart_name }}
@@ -125,16 +120,24 @@
                                         </p>
                                     </td>
                                     <td style="text-align: center;">@{{ support.year }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ support.details.length }}
-                                        <a  href="#"
-                                            ng-click="showSupportDetails(support.details)"
-                                            class="btn btn-default btn-xs" 
-                                            title="รายการ">
-                                            <i class="fa fa-clone"></i>
-                                        </a>
+                                    <td>
+                                        <ul style="margin: 0; padding: 0 0 0 15px;">
+                                            <li ng-repeat="(index, detail) in support.details">
+                                                <span style="font-weight: bold;">
+                                                    @{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}
+                                                </span>
+                                                <p style="margin: 0; font-size: 12px; color: red;">
+                                                    (@{{ detail.desc }}
+                                                    จำนวน <span>@{{ detail.amount | currency:'':0 }}</span>
+                                                    <span>@{{ detail.unit.name }}</span>
+                                                    ราคา @{{ detail.price_per_unit | currency:'':0 }} บาท)
+                                                </p>
+                                            </li>
+                                        </ul>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ support.total | currency:'':0 }} บาท
+                                    </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="support.status == 0">
                                             รอดำเนินการ
@@ -149,16 +152,6 @@
                                             ยกเลิก
                                         </span>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.sent_date | thdate }}</td>
-                                    <!-- <td style="text-align: center;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
-                                            class="btn btn-default btn-xs"
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="order.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
-                                    </td> -->
                                     <td style="text-align: center;">
                                         <a  href="{{ url('/repairs/detail') }}/@{{ support.id }}"
                                             class="btn btn-primary btn-xs" 
@@ -202,19 +195,19 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
+                                        <a href="#" ng-click="getRepairsWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
+                                        <a href="#" ng-click="getRepairsWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
                                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setSupports)">
+                                        <a href="#" ng-click="getRepairsWithUrl($event, pager.path + '?page=' +i, setSupports)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
@@ -226,13 +219,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
+                                        <a href="#" ng-click="getRepairsWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
+                                        <a href="#" ng-click="getRepairsWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

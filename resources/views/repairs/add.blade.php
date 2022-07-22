@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มจ้างซ่อมแซม/บำรุงรักษา
+            เพิ่มบันทึกขอจ้างซ่อม
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มจ้างซ่อมแซม/บำรุงรักษา</li>
+            <li class="breadcrumb-item active">เพิ่มบันทึกขอจ้างซ่อม</li>
         </ol>
     </section>
 
@@ -31,7 +31,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มจ้างซ่อมแซม/บำรุงรักษา</h3>
+                        <h3 class="box-title">เพิ่มบันทึกขอจ้างซ่อม</h3>
                     </div>
 
                     <form id="frmNewSupport" name="frmNewSupport" method="post" action="{{ url('/supports/store') }}" role="form" enctype="multipart/form-data">

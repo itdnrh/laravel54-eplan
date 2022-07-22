@@ -112,7 +112,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         });
     }
 
-    $scope.getDataWithUrl = function(e, url, cb) {
+    $scope.getRepairsWithUrl = function(e, url, cb) {
 		/** Check whether parent of clicked a tag is .disabled just do nothing */
 		if ($(e.currentTarget).parent().is('li.disabled')) return;
 

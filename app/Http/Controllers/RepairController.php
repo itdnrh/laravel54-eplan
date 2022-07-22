@@ -119,15 +119,15 @@ class RepairController extends Controller
         $supports = Support::with('planType','depart','division')
                     ->with('details','details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
-                    ->with('details.plan.subItems')
+                    // ->with('details.plan.subItems')
                     ->where('plan_type_id', '3')
                     ->whereIn('id', $supportsList)
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
-                    // ->when(!empty($depart), function($q) use ($depart) {
-                    //     $q->where('depart_id', $depart);
-                    // })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
+                    })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
@@ -184,9 +184,9 @@ class RepairController extends Controller
                     ->when(!empty($supportType), function($q) use ($supportType) {
                         $q->where('support_type_id', $supportType);
                     })
-                    // ->when(!empty($depart), function($q) use ($depart) {
-                    //     $q->where('depart_id', $depart);
-                    // })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
+                    })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
