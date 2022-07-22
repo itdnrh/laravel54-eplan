@@ -233,8 +233,28 @@ class RepairController extends Controller
 
     public function create()
     {
+        $year = 2565;
+        $depart = Auth::user()->person_id == '1300200009261' ? '' : Auth::user()->memberOf->depart_id;
+
+        $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->with('budget','depart','division')
+                    ->with('planItem','planItem.unit')
+                    ->with('planItem.item','planItem.item.category')
+                    ->where('plans.approved', 'A')
+                    ->where('plans.plan_type_id', '3')
+                    ->where('plan_items.have_subitem', '1')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('plans.year', $year);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('plans.depart_id', $depart);
+                    })
+                    ->where('plan_items.remain_amount', '>', 0)
+                    // ->orderBy('plans.plan_no', 'ASC')
+                    ->paginate(10);
+
         return view('repairs.add', [
-            "planTypes"     => PlanType::all(),
+            "plans"         => $plans,
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
             "factions"      => Faction::all(),
@@ -276,7 +296,7 @@ class RepairController extends Controller
                 foreach($req['details'] as $item) {
                     $detail = new SupportDetail;
                     $detail->support_id     = $supportId;
-                    $detail->plan_id        = $item['plan_id'];
+                    $detail->plan_id        = $req['plan_id'];
                     $detail->desc           = $item['desc'];
                     $detail->price_per_unit = $item['price_per_unit'];
                     $detail->unit_id        = $item['unit_id'];
@@ -286,7 +306,7 @@ class RepairController extends Controller
 
                     $subitem = new SupportSubitem;
                     $subitem->support_id        = $supportId;
-                    $subitem->plan_id           = $item['plan_id'];
+                    $subitem->plan_id           = $req['plan_id'];
                     $subitem->desc              = $item['desc'];
                     $subitem->price_per_unit    = $item['price_per_unit'];
                     $subitem->unit_id           = $item['unit_id'];

@@ -61,41 +61,6 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_no')}"
-                                >
-                                    <label>เลขที่บันทึก :</label>
-                                    <input  type="text"
-                                            id="doc_no"
-                                            name="doc_no"
-                                            ng-model="support.doc_no"
-                                            class="form-control"
-                                            tabindex="6">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_no')">
-                                        @{{ formError.errors.doc_no[0] }}
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_date')}"
-                                >
-                                    <label>วันที่บันทึก :</label>
-                                    <input
-                                        type="text"
-                                        id="doc_date"
-                                        name="doc_date"
-                                        ng-model="support.doc_date"
-                                        class="form-control"
-                                        tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
-                                        @{{ formError.errors.doc_date[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
@@ -117,25 +82,25 @@
 
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'plan_id')}"
                                 >
-                                    <label>ประเภทแผน :</label>
-                                    <select id="plan_type_id"
-                                            name="plan_type_id"
-                                            ng-model="support.plan_type_id"
-                                            ng-change="setTopicByPlanType(support.plan_type_id)"
+                                    <label>รายการแผนจ้างบริการ :</label>
+                                    <select id="plan_id"
+                                            name="plan_id"
+                                            ng-model="support.plan_id"
+                                            ng-change="setTopicByPlanType(support.plan_id)"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
                                         <option value="">-- เลือกประเภทแผน --</option>
-                                        @foreach($planTypes as $planType)
-                                            <option value="{{ $planType->id }}">
-                                                {{ $planType->plan_type_name }}
+                                        @foreach($plans as $plan)
+                                            <option value="{{ $plan->id }}">
+                                                {{ $plan->planItem->item->item_name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
-                                        @{{ formError.errors.plan_type_id[0] }}
+                                    <span class="help-block" ng-show="checkValidate(support, 'plan_id')">
+                                        @{{ formError.errors.plan_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -166,7 +131,6 @@
                                             <tr>
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
                                                 <th>รายการ</th>
-                                                <th style="width: 4%; text-align: center">Spec</th>
                                                 <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
                                                 <th style="width: 12%; text-align: center">หน่วยนับ</th>
                                                 <th style="width: 8%; text-align: center">จำนวน</th>
@@ -182,42 +146,22 @@
                                                     <div class="input-group">
                                                         <input
                                                             type="text"
-                                                            id="plan_detail"
-                                                            name="plan_detail"
+                                                            id="desc"
+                                                            name="desc"
                                                             class="form-control"
-                                                            ng-model="newItem.plan_detail"
+                                                            ng-model="newItem.desc"
                                                             readonly
-                                                        />
-                                                        <input
-                                                            type="hidden"
-                                                            id="plan_id"
-                                                            name="plan_id"
-                                                            class="form-control"
-                                                            ng-model="newItem.plan_id"
-                                                        />
-                                                        <input
-                                                            type="hidden"
-                                                            id="item_id"
-                                                            name="item_id"
-                                                            class="form-control"
-                                                            ng-model="newItem.item_id"
                                                         />
                                                         <span class="input-group-btn">
                                                             <button
                                                                 type="button"
                                                                 class="btn btn-info btn-flat"
-                                                                ng-click="showPlansList(); onFilterCategories(support.plan_type_id);"
+                                                                ng-click="showSpecForm(detail);"
                                                             >
                                                                 ...
                                                             </button>
                                                         </span>
                                                     </div>
-                                                </td>
-                                                <td style="text-align: center">
-                                                    <!-- spec -->
-                                                    <a href="#" class="btn bg-gray" ng-click="showSpecForm(detail)">
-                                                        <i class="fa fa-bars" aria-hidden="true"></i>
-                                                    </a>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- ราคาต่อหน่วย -->
@@ -238,6 +182,7 @@
                                                         name="unit_id"
                                                         class="form-control"
                                                         ng-model="newItem.unit_id"
+                                                        disabled
                                                     >
                                                         <option value="">เลือกหน่วยนับ</option>
                                                         @foreach($units as $unit)
@@ -279,27 +224,23 @@
                                                         <i class="fa fa-plus"></i>
                                                     </a>
 
-                                                    <a href="#" class="btn btn-success btn-sm" ng-show="editRow">
+                                                    <a href="#" class="btn btn-success btn-xs" ng-show="editRow">
                                                         <i class="fa fa-floppy-o"></i>
                                                     </a>
-                                                    <a href="#" class="btn btn-danger btn-sm" ng-show="editRow">
+                                                    <a href="#" class="btn btn-danger btn-xs" ng-show="editRow">
                                                         <i class="fa fa-times"></i>
                                                     </a>
                                                 </td>
                                             </tr>
                                             <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td colspan="2">
+                                                <td>
                                                     @{{ detail.desc }}
-                                                    <p style="margin: 0;">@{{ detail.plan_detail }}</p>
-                                                    <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.price_per_unit | currency:'':2 }}
                                                 </td>
-                                                <td style="text-align: center">
-                                                    @{{ detail.unit.name }}
-                                                </td>
+                                                <td style="text-align: center">งาน</td>
                                                 <td style="text-align: center">
                                                     @{{ detail.amount | currency:'':2 }}
                                                 </td>

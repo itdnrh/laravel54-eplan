@@ -414,6 +414,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.contact_person = support.contact.person_id;
             $scope.support.contact_detail = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
             $scope.support.details = support.details;
+            $scope.support.status = support.status;
             
             $scope.support.year = support.year.toString();
             $scope.support.plan_type_id = support.plan_type_id.toString();

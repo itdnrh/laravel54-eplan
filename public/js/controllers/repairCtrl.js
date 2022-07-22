@@ -22,6 +22,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         division_id: '',
         year: (moment().year() + 543).toString(),
         plan_type_id: '3',
+        plan_id: '',
         total: '',
         contact_detail: '',
         contact_person: '',
@@ -34,17 +35,20 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     $scope.newItem = {
-        plan_no: '',
-        plan_detail: '',
-        plan_depart: '',
-        plan_id: '',
-        item_id: '',
         desc: '',
         price_per_unit: '',
         unit: null,
         unit_id: '9',
         amount: '1',
         sum_price: ''
+    };
+
+    $scope.spec = {
+        type: '',
+        parcel_no: '',
+        reg_no: '',
+        desc: '',
+        cause: ''
     };
 
     /** ============================== Init Form elements ============================== */
@@ -68,11 +72,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
     $scope.clearNewItem = () => {
         $scope.newItem = {
-            plan_no: '',
-            plan_detail: '',
-            plan_depart: '',
-            plan_id: '',
-            item_id: '',
+            desc: '',
             price_per_unit: '',
             unit_id: '9',
             amount: '1',
@@ -86,10 +86,22 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     $scope.showSpecForm = function() {
-        $('#spec-form').modal('show');
+        if ($scope.support.plan_id == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาระบุรายการแผนจ้างบริการก่อน !!!");
+        } else {
+            $('#spec-form').modal('show');
+        }
     };
 
     $scope.addSpec = function() {
+        if ($scope.spec.type == 1) {
+            $scope.newItem.desc = ` ${$scope.spec.desc} หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+        } else if ($scope.spec.type == 2) {
+            $scope.newItem.desc = `${$scope.spec.desc} รถราชการ ทะเบียน: ${$scope.spec.reg_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+        } else {
+            $scope.newItem.desc = `${$scope.spec.desc} สาเหตุ/อาการ: ${$scope.spec.cause}`
+        }
+
         $('#spec-form').modal('hide');
     };
 
@@ -141,98 +153,6 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.pager = pager;
     };
 
-    $scope.showSupportDetails = function(details) {
-        if (details) {
-            $scope.items = details;
-
-            $('#support-details').modal('show');
-        }
-    };
-
-    $scope.showPlansList = () => {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let type = $scope.support.plan_type_id === '' ? 3 : $scope.support.plan_type_id;
-        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0&approved=A&have_subitem=1`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-
-            $('#plans-list').modal('show');
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPlans = (type, status) => {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A&have_subitem=1`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPlansWithUrl = function(e, url, status, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let type = $scope.support.plan_type_id === '' ? 3 : $scope.support.plan_type_id;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-
-        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}&approved=A&have_subitem=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
-    };
-
-    $scope.onSelectedPlan = (e, plan) => {
-        if (plan) {
-            $scope.newItem.plan_no = plan.plan_no;
-            $scope.newItem.plan_detail = `${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`;
-            $scope.newItem.plan_depart = plan.division ? plan.division.ward_name : plan.depart.depart_name;
-            $scope.newItem.plan_id = plan.id;
-            $scope.newItem.item_id = plan.plan_item.item_id;
-
-            $scope.support.topic = `ขอสนับสนุน${plan.plan_item.item.item_name} (${plan.plan_item.item.category.name})`;
-        }
-
-        $('#plans-list').modal('hide');
-    };
-
     $scope.calculateTotal = () => {
         let total = 0;
 
@@ -246,10 +166,14 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
     $scope.addItem = () => {
         console.log($scope.newItem);
-        $scope.support.details.push({ ...$scope.newItem });
-
-        $scope.calculateTotal();
-        $scope.clearNewItem();
+        if ($scope.newItem.desc == '' || $scope.newItem.sum_price == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาระบุรายละเอีนดการจ้างซ่อมก่อน !!!");
+        } else {
+            $scope.support.details.push({ ...$scope.newItem });
+    
+            $scope.calculateTotal();
+            $scope.clearNewItem();
+        }
     };
 
     $scope.removeOrderItem = (index) => {
@@ -384,6 +308,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             $scope.support.contact_person = support.contact.person_id;
             $scope.support.contact_detail = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
             $scope.support.details = support.details;
+            $scope.support.status = support.status;
             
             $scope.support.year = support.year.toString();
             $scope.support.plan_type_id = support.plan_type_id.toString();
@@ -479,7 +404,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         }
     };
 
-    $scope.setTopicByPlanType = function(planType) {
-        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_type_id option:selected').text().trim()}`;
+    $scope.setTopicByPlanType = function() {
+        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_id option:selected').text().trim()}`;
     };
 });

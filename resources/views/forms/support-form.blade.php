@@ -231,17 +231,6 @@
                     <tr>
                         <td colspan="2" style="text-align: center; padding-top: 10px;">
                             <p style="margin: 0;">
-                                ผู้ขออนุมัติ<span class="dot">......................................................</span>
-                            </p>
-                            <p style="margin: 0;">
-                                ( {{ $contact->prefix->prefix_name.$contact->person_firstname.' '.$contact->person_lastname }} )
-                            </p>
-                            <p style="margin: 0;">
-                                <span>{{ $contact->position->position_name }}{{ $contact->academic ? $contact->academic->ac_name : '' }}</span>
-                            </p>
-                        </td>
-                        <td colspan="2" style="text-align: center; padding: 10px;">
-                            <p style="margin: 0;">
                                 หัวหน้ากลุ่มงาน<span class="dot">......................................................</span>
                             </p>
                             <p style="margin: 0;">
@@ -251,10 +240,7 @@
                                 <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>
                             </p>
                         </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"></td>
-                        <td colspan="2" style="text-align: center; padding: 0;">
+                        <td colspan="2" style="text-align: center; padding: 10px;">
                             <p style="margin: 0;">
                                 หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
                             </p>
@@ -267,9 +253,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2"></td>
-                        <td colspan="2" style="text-align: center; padding: 0;">
-                            <p style="margin: 10px 0 20px 0;">
+                        <td colspan="4" style="text-align: center; padding: 0;">
+                            <p style="margin: 10px 0 30px 0;">
                                 <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
                                 <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
                             </p>
