@@ -484,7 +484,6 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('repairs._plans-list')
         @include('shared._persons-list')
         @include('repairs._spec-form')
 

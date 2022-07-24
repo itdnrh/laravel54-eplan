@@ -244,9 +244,6 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
-
-        @include('repairs._support-details')
-
     </section>
 
     <script>
