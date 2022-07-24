@@ -21,7 +21,7 @@
 
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label for="">ประเภท</label>
+                        <label for="">ประเภทการซ่อม</label>
                         <select
                             id="type"
                             name="type"
@@ -31,7 +31,8 @@
                             <option value="">-- เลือกประเภท --</option>
                             <option value="1">ครุภัณฑ์</option>
                             <option value="2">ยานพาหนะ</option>
-                            <option value="3">อื่นๆ</option>
+                            <option value="3">อาคาร/สถานที่</option>
+                            <option value="9">อื่นๆ</option>
                         </select>
                     </div>
                     <div class="col-md-6 form-group">
