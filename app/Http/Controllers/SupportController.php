@@ -80,7 +80,7 @@ class SupportController extends Controller
     {
         return view('supports.list', [
             "planTypes"     => PlanType::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -100,6 +100,7 @@ class SupportController extends Controller
         $year = $req->get('year');
         $type = $req->get('type');
         $supportType = $req->get('stype');
+        $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
@@ -115,6 +116,8 @@ class SupportController extends Controller
             }
         }
 
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
         $supports = Support::with('planType','depart','division','details')
                     ->with('details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
@@ -126,6 +129,9 @@ class SupportController extends Controller
                     })
                     ->when(!empty($supportType), function($q) use ($supportType) {
                         $q->where('support_type_id', $supportType);
+                    })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);

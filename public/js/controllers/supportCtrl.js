@@ -110,9 +110,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
         let depart = $('#user').val() == '1300200009261' ? $scope.cboDepart : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&depart=${depart}&status=0-3`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -123,7 +124,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     }
 
-    $scope.getDataWithUrl = function(e, url, cb) {
+    $scope.getSupportsWithUrl = function(e, url, cb) {
 		/** Check whether parent of clicked a tag is .disabled just do nothing */
 		if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -132,9 +133,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${url}&year=${year}&depart=${depart}&status=0-3`)
+        $http.get(`${url}&year=${year}&faction=${faction}&depart=${depart}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
