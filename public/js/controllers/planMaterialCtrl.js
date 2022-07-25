@@ -27,6 +27,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         start_month: '',
         reason: '',
         remark: '',
+        have_subitem: 0,
+        calc_method: 1,
     };
 
     /** ============================== Init Form elements ============================== */
@@ -82,6 +84,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             service_plan_id: '',
             reason: '',
             remark: '',
+            have_subitem: 0,
+            calc_method: 1,
         };
     };
 

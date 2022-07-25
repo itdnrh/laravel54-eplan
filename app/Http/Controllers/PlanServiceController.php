@@ -173,6 +173,8 @@ class PlanServiceController extends Controller
             $service->remain_budget     = $req['sum_price'];
             // $service->request_cause     = $req['request_cause'];
             // $service->have_amount       = $req['have_amount'];
+            $service->have_subitem      = $req['have_subitem'];
+            $service->calc_method       = $req['calc_method'];
             $service->save();
 
             return redirect('/plans/services');
@@ -232,6 +234,8 @@ class PlanServiceController extends Controller
             $service->remain_budget     = $req['sum_price'];
             // $service->request_cause     = $req['request_cause'];
             // $service->have_amount       = $req['have_amount'];
+            $service->have_subitem      = $req['have_subitem'];
+            $service->calc_method       = $req['calc_method'];
             $service->save();
 
             return redirect('/plans/services');

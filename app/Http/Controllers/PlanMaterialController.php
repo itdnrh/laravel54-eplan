@@ -171,18 +171,19 @@ class PlanMaterialController extends Controller
             $planId = $plan->id;
 
             $material = new PlanItem();
-            $material->plan_id         = $planId;
-            $material->item_id         = $req['item_id'];
-            $material->spec            = $req['spec'];
-            $material->price_per_unit  = $req['price_per_unit'];
-            $material->unit_id         = $req['unit_id'];
-            $material->amount          = $req['amount'];
-            $material->sum_price       = $req['sum_price'];
-            $material->remain_amount   = $req['amount'];
-            $material->remain_budget   = $req['sum_price'];
+            $material->plan_id          = $planId;
+            $material->item_id          = $req['item_id'];
+            $material->spec             = $req['spec'];
+            $material->price_per_unit   = $req['price_per_unit'];
+            $material->unit_id          = $req['unit_id'];
+            $material->amount           = $req['amount'];
+            $material->sum_price        = $req['sum_price'];
+            $material->remain_amount    = $req['amount'];
+            $material->remain_budget    = $req['sum_price'];
             // $material->request_cause   = $req['request_cause'];
-            $material->have_amount     = $req['have_amount'];
-            $material->calc_method     = 1;
+            $material->have_amount      = $req['have_amount'];
+            $material->have_subitem     = $req['have_subitem'];
+            $material->calc_method      = $req['calc_method'];
             $material->save();
 
             return redirect('/plans/materials?in_stock='.$inStock);
@@ -236,17 +237,18 @@ class PlanMaterialController extends Controller
 
         if($plan->save()) {
             $material = PlanItem::where('plan_id', $id)->first();
-            $material->item_id         = $req['item_id'];
-            $material->spec            = $req['spec'];
-            $material->price_per_unit  = $req['price_per_unit'];
-            $material->unit_id         = $req['unit_id'];
-            $material->amount          = $req['amount'];
-            $material->sum_price       = $req['sum_price'];
-            $material->remain_amount   = $req['amount'];
-            $material->remain_budget   = $req['sum_price'];
+            $material->item_id          = $req['item_id'];
+            $material->spec             = $req['spec'];
+            $material->price_per_unit   = $req['price_per_unit'];
+            $material->unit_id          = $req['unit_id'];
+            $material->amount           = $req['amount'];
+            $material->sum_price        = $req['sum_price'];
+            $material->remain_amount    = $req['amount'];
+            $material->remain_budget    = $req['sum_price'];
             // $material->request_cause   = $req['request_cause'];
-            $material->have_amount     = $req['have_amount'];
-            $material->calc_method     = 1;
+            $material->have_amount      = $req['have_amount'];
+            $material->have_subitem     = $req['have_subitem'];
+            $material->calc_method      = $req['calc_method'];
             $material->save();
 
             return redirect('/plans/materials');

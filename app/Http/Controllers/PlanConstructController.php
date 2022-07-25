@@ -188,6 +188,8 @@ class PlanConstructController extends Controller
             $construct->remain_budget   = $req['sum_price'];
             $construct->request_cause   = $req['request_cause'];
             // $construct->have_amount     = $req['have_amount'];
+            $construct->have_subitem    = $req['have_subitem'];
+            $construct->calc_method     = $req['calc_method'];
             $construct->save();
 
             return redirect('/plans/constructs');
@@ -252,6 +254,8 @@ class PlanConstructController extends Controller
             $construct->remain_budget   = $req['sum_price'];
             $construct->request_cause   = $req['request_cause'];
             // $construct->have_amount     = $req['have_amount'];
+            $construct->have_subitem    = $req['have_subitem'];
+            $construct->calc_method     = $req['calc_method'];
             $construct->save();
 
             return redirect('/plans/constructs');
