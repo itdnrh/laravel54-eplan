@@ -63,7 +63,7 @@
                                     @{{ item.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="#" class="btn btn-primary" ng-click="handleItemSelected($event, item, onSelectedItem)">
+                                    <a href="#" class="btn btn-primary" ng-click="handleSubitemSelected($event, item, onSelectedItem)">
                                         เลือก
                                     </a>
                                 </td>
@@ -122,7 +122,7 @@
                             </ul>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger" ng-click="handleItemSelected($event, null, onSelectedItem)">
+                            <button type="button" class="btn btn-danger" ng-click="handleSubitemSelected($event, null, onSelectedItem)">
                                 ปิด
                             </button>
                         </div>

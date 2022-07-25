@@ -237,8 +237,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
                 price_per_unit: plan.calc_method == 1 ? plan.price_per_unit : '',
-                unit_id: plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '9',
-                unit: plan.calc_method == 1 ? plan.plan_item.unit : { id: 9, name: 'งาน' },
+                unit_id: plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '',
+                unit: plan.calc_method == 1 ? plan.plan_item.unit : null,
                 amount: plan.calc_method == 1 ? plan.remain_amount : '',
                 sum_price: plan.calc_method == 1 ? plan.remain_budget : ''
             };
@@ -261,6 +261,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.showSubitemsList = function() {
         $('#subitems-list').modal('show');
     };
+    
+    $scope.handleSubitemSelected = function() {
+        $('#subitems-list').modal('hide');
+    };
 
     $scope.showSpecForm = function(planId) {
         if (planId) {
@@ -277,6 +281,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.addItem = () => {
+        console.log($scope.newItem);
         if ($scope.newItem.plan_id !== '') {
             $scope.support.details.push({ ...$scope.newItem });
             

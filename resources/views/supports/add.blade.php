@@ -203,7 +203,7 @@
                                                         <span class="input-group-btn">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-info"
+                                                                class="btn bg-maroon"
                                                                 ng-click="showPlansList(); onFilterCategories(support.plan_type_id);"
                                                             >
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -269,7 +269,7 @@
                                                         class="form-control"
                                                         ng-model="newItem.unit_id"
                                                     >
-                                                        <option value="">เลือกหน่วยนับ</option>
+                                                        <option value="">หน่วยนับ</option>
                                                         @foreach($units as $unit)
                                                             <option value="{{ $unit->id }}">
                                                                 {{ $unit->name }}
@@ -323,7 +323,7 @@
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td colspan="2">
                                                     @{{ detail.plan.plan_item.item.item_name }}
-                                                    <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
+                                                    <!-- <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p> -->
                                                     <p style="margin: 0; color: red;">- @{{ detail.desc }}</p>
                                                 </td>
                                                 <td style="text-align: center">
