@@ -47,6 +47,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         plan: null,
         plan_id: '',
         item_id: '',
+        desc: '',
         price_per_unit: '',
         unit: null,
         unit_id: '',
@@ -89,6 +90,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             plan: null,
             plan_id: '',
             item_id: '',
+            desc: '',
             price_per_unit: '',
             unit_id: '',
             amount: '',
@@ -237,15 +239,16 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
+            console.log(plan);
             $scope.newItem = {
                 plan: plan,
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
-                price_per_unit: plan.price_per_unit,
-                unit_id: `${plan.plan_item.unit_id}`,
-                unit: plan.plan_item.unit,
-                amount: plan.remain_amount,
-                sum_price: plan.remain_budget
+                price_per_unit: plan.calc_method == 1 ? plan.price_per_unit : '',
+                unit_id: plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '9',
+                unit: plan.calc_method == 1 ? plan.plan_item.unit : { id: 9, name: 'งาน' },
+                amount: plan.calc_method == 1 ? plan.remain_amount : '',
+                sum_price: plan.calc_method == 1 ? plan.remain_budget : ''
             };
         }
 
@@ -261,6 +264,20 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         $scope.support.total = total;
         $('#total').val(total);
+    };
+
+    $scope.showSpecForm = function(planId) {
+        if (planId) {
+            console.log(planId);
+    
+            $('#spec-form').modal('show');
+        } else {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
+        }
+    };
+
+    $scope.addSpec = function() {
+        $('#spec-form').modal('hide');
     };
 
     $scope.addItem = () => {

@@ -152,6 +152,7 @@
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
                                                 <th style="width: 8%; text-align: center">เลขที่</th>
                                                 <th>รายการ</th>
+                                                <th style="width: 4%; text-align: center">Spec</th>
                                                 <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
                                                 <th style="width: 12%; text-align: center">หน่วยนับ</th>
                                                 <th style="width: 8%; text-align: center">จำนวน</th>
@@ -209,6 +210,12 @@
                                                             </button>
                                                         </span>
                                                     </div>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- spec -->
+                                                    <a href="#" class="btn bg-gray" ng-click="showSpecForm(newItem.plan_id)">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </a>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- ราคาต่อหน่วย -->
@@ -282,9 +289,10 @@
                                             <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
-                                                <td>
+                                                <td colspan="2">
                                                     @{{ detail.plan.plan_item.item.item_name }}
                                                     <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
+                                                    <p style="margin: 0; color: red;">- @{{ detail.desc }}</p>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.price_per_unit | currency:'':2 }}
@@ -534,6 +542,7 @@
 
         @include('supports._plans-list')
         @include('shared._persons-list')
+        @include('supports._spec-form')
 
     </section>
 
