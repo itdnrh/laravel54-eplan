@@ -29,89 +29,85 @@
                     <div class="box-header">
                         <h3 class="box-title">รายละเอียดบันทึกขอสนับสนุน</h3>
                     </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'doc_no')}"
-                            >
-                                <label>เลขที่บันทึก :</label>
-                                <input  
-                                    type="text"
-                                    id="doc_no"
-                                    name="doc_no"
-                                    ng-model="support.doc_no"
-                                    class="form-control"
-                                    readonly
-                                />
-                            </div>
-
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'doc_date')}"
-                            >
-                                <label>วันที่บันทึก :</label>
-                                <div class="form-control">@{{ support.doc_date }}</div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div
-                                class="form-group col-md-12"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'topic')}"
-                            >
-                                <label>เรื่อง :</label>
-                                <input
-                                    type="text"
-                                    id="topic"
-                                    name="topic"
-                                    ng-model="support.topic"
-                                    class="form-control"
-                                    readonly
-                                />
-                            </div>
-                        </div>
-
+                    <div class="box-body" style="padding: 10px 30px 0;">
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label>ปีงบประมาณ</label>
-                                <select
-                                    id="year"
-                                    name="year"
-                                    ng-model="support.year"
-                                    class="form-control"
-                                    readonly
-                                >
-                                    <option value="">-- ทั้งหมด --</option>
-                                    <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                        @{{ y }}
-                                    </option>
-                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">เลขที่บันทึก</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ support.doc_no }}
+                                    </div>
+                                </div>
                             </div>
 
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
-                            >
-                                <label>ประเภทพัสดุ :</label>
-                                <select id="plan_type_id"
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">วันที่บันทึก</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ support.doc_date }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">เรื่อง</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ support.topic }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">ปีงบประมาณ</button>
+                                    </div>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="support.year"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">ประเภทพัสดุ</button>
+                                    </div>
+                                    <select
+                                        id="plan_type_id"
                                         name="plan_type_id"
                                         ng-model="support.plan_type_id"
                                         class="form-control"
-                                        readonly>
-                                    <option value="">-- เลือกประเภทพัสดุ --</option>
-                                    @foreach($planTypes as $planType)
-                                        <option value="{{ $planType->id }}">
-                                            {{ $planType->plan_type_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                    >
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-striped">
+                                <table class="table table-striped" style="border: 1px solid gray;">
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center">ลำดับ</th>
