@@ -324,13 +324,15 @@
                                                 <td colspan="2">
                                                     @{{ detail.plan.plan_item.item.item_name }}
                                                     <!-- <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p> -->
-                                                    <p style="margin: 0; color: red;">- @{{ detail.desc }}</p>
+                                                    <p style="margin: 0; color: red;" ng-show="detail.desc">
+                                                        - @{{ detail.desc }}
+                                                    </p>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.price_per_unit | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.unit.name }}
+                                                    @{{ detail.unit_name }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.amount | currency:'':2 }}

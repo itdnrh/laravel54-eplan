@@ -49,8 +49,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         item_id: '',
         desc: '',
         price_per_unit: '',
-        unit: null,
         unit_id: '',
+        unit_name: '',
         amount: '',
         sum_price: ''
     };
@@ -93,6 +93,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             desc: '',
             price_per_unit: '',
             unit_id: '',
+            unit_name: '',
             amount: '',
             sum_price: ''
         };
@@ -231,14 +232,13 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
-            console.log(plan);
             $scope.newItem = {
                 plan: plan,
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
                 price_per_unit: plan.calc_method == 1 ? plan.price_per_unit : '',
                 unit_id: plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '',
-                unit: plan.calc_method == 1 ? plan.plan_item.unit : null,
+                unit_name: plan.calc_method == 1 ? plan.plan_item.unit.name : '',
                 amount: plan.calc_method == 1 ? plan.remain_amount : '',
                 sum_price: plan.calc_method == 1 ? plan.remain_budget : ''
             };
@@ -281,10 +281,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.addItem = () => {
-        console.log($scope.newItem);
         if ($scope.newItem.plan_id !== '') {
+            /** เซตชื่อหน่วยนับเพื่อแสดงผลในรายการ */
+            $scope.newItem.unit_name = $('#unit_id option:selected').text().trim();
+
             $scope.support.details.push({ ...$scope.newItem });
-            
+
             $scope.calculateTotal();
             $scope.clearNewItem();
         } else {
