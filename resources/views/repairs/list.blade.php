@@ -102,7 +102,7 @@
                                     <th style="width: 5%; text-align: center;">ปีงบ</th>
                                     <th>รายการ</th>
                                     <th style="width: 10%; text-align: center;">ยอดขอสนับสนุน</th>
-                                    <th style="width: 8%; text-align: center;">สถานะ</th>
+                                    <th style="width: 10%; text-align: center;">สถานะ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -151,6 +151,12 @@
                                         <span class="label label-danger" ng-show="support.status == 9">
                                             ยกเลิก
                                         </span>
+                                        <p style="margin: 0; font-size: 12px;" ng-show="support.status == 1">
+                                            (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.sent_date | thdate }})
+                                        </p>
+                                        <p style="margin: 0; font-size: 12px;" ng-show="support.status == 2">
+                                            (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.received_date | thdate }})
+                                        </p>
                                     </td>
                                     <td style="text-align: center;">
                                         <a  href="{{ url('/repairs/detail') }}/@{{ support.id }}"

@@ -156,11 +156,11 @@
                                     <th style="width: 4%; text-align: center;">#</th>
                                     <th style="width: 15%; text-align: center;">บันทึก</th>
                                     <th style="width: 8%; text-align: center;">ประเภทแผน</th>
-                                    <th style="width: 20%;">หน่วยงาน</th>
                                     <th style="width: 5%; text-align: center;">ปีงบ</th>
+                                    <th style="width: 20%;">หน่วยงาน</th>
                                     <th style="text-align: center;">รายการ</th>
                                     <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
-                                    <th style="width: 8%; text-align: center;">สถานะ</th>
+                                    <th style="width: 10%; text-align: center;">สถานะ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -174,13 +174,13 @@
                                     <td style="text-align: center;">
                                         @{{ support.plan_type.plan_type_name }}
                                     </td>
+                                    <td style="text-align: center;">@{{ support.year }}</td>
                                     <td>
                                         @{{ support.depart.depart_name }}
                                         <p style="margin: 0;" ng-show="support.division">
                                             @{{ support.division.ward_name }}
                                         </p>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.year }}</td>
                                     <td>
                                         <ul style="margin: 0; padding: 0 0 0 5px; list-style: none;">
                                             <li ng-repeat="(index, detail) in support.details">
@@ -210,6 +210,12 @@
                                         <span class="label label-danger" ng-show="support.status == 9">
                                             ยกเลิก
                                         </span>
+                                        <p style="margin: 0; font-size: 12px;" ng-show="support.status == 1">
+                                            (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.sent_date | thdate }})
+                                        </p>
+                                        <p style="margin: 0; font-size: 12px;" ng-show="support.status == 2">
+                                            (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.received_date | thdate }})
+                                        </p>
                                     </td>
                                     <td style="text-align: center;">
                                         <a  href="{{ url('/supports/detail') }}/@{{ support.id }}"
