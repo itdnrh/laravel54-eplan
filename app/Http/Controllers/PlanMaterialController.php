@@ -144,8 +144,6 @@ class PlanMaterialController extends Controller
         $inStock = $req->get('in_stock');
 
         $plan = new Plan();
-        // $plan->plan_no          = $req['plan_no'];
-        // $plan->year             = calcBudgetYear($req['year']);
         $plan->in_plan          = $req['in_plan'];
         $plan->year             = $req['year'];
         $plan->plan_type_id     = '2';
@@ -160,12 +158,6 @@ class PlanMaterialController extends Controller
         $plan->status           = '0';
         $plan->created_user     = Auth::user()->person_id;
         $plan->updated_user     = Auth::user()->person_id;
-
-        /** Upload attach file */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        // if (!empty($attachment)) {
-        //     $plan->attachment = $attachment;
-        // }
 
         if($plan->save()) {
             $planId = $plan->id;
@@ -213,9 +205,7 @@ class PlanMaterialController extends Controller
     public function update(Request $req, $id)
     {
         $plan = Plan::find($id);
-        // $plan->plan_no          = $req['plan_no'];
         $plan->in_plan          = $req['in_plan'];
-        // $plan->year             = calcBudgetYear($req['year']);
         $plan->year             = $req['year'];
         $plan->plan_type_id     = '2';
         $plan->budget_src_id    = $req['budget_src_id'];
@@ -228,12 +218,6 @@ class PlanMaterialController extends Controller
         $plan->remark           = $req['remark'];
         $plan->status           = '0';
         $plan->updated_user     = Auth::user()->person_id;
-
-        /** Upload attach file */
-        // $attachment = uploadFile($req->file('attachment'), 'uploads/');
-        // if (!empty($attachment)) {
-        //     $plan->attachment = $attachment;
-        // }
 
         if($plan->save()) {
             $material = PlanItem::where('plan_id', $id)->first();
