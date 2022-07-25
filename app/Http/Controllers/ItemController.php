@@ -163,6 +163,8 @@ class ItemController extends Controller
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
             $item->first_year   = $req['first_year'];
+            $item->have_subitem = $req['have_subitem'];
+            $item->calc_method  = $req['calc_method'];
             $item->remark       = $req['remark'];
 
             if($item->save()) {
@@ -208,6 +210,8 @@ class ItemController extends Controller
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
             $item->first_year   = $req['first_year'];
+            $item->have_subitem = $req['have_subitem'];
+            $item->calc_method  = $req['calc_method'];
             $item->remark       = $req['remark'];
 
             if($item->save()) {

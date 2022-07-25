@@ -21,6 +21,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         unit_id: '',
         in_stock: 0,
         first_year: '2565',
+        have_subitem: 0,
+        calc_method: 1,
         remark: '',
     };
 
@@ -56,6 +58,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             unit_id: '',
             in_stock: 0,
             first_year: '2565',
+            have_subitem: 0,
+            calc_method: 1,
             remark: '',
         };
     };
@@ -130,6 +134,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             $scope.item.price_per_unit  = item.price_per_unit;
             $scope.item.in_stock        = item.in_stock;
             $scope.item.first_year      = item.first_year;
+            $scope.item.have_subitem    = item.have_subitem;
+            $scope.item.calc_method     = item.calc_method;
             $scope.item.remark          = item.remark;
             $scope.item.status          = item.status;
     

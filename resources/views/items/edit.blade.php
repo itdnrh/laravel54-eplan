@@ -180,9 +180,37 @@
                                         @{{ formError.errors.unit_id[0] }}
                                     </span>
                                 </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="">การตัดยอด</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="radio" ng-model="item.calc_method" ng-value="1" /> ตัดยอดตามจำนวน 
+                                        </div>
+                                        <div>
+                                            <input type="radio" ng-model="item.calc_method" ng-value="2" /> ตัดยอดตามงบประมาณ
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'calc_method')">
+                                        @{{ formError.errors.calc_method[0] }}
+                                    </span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="">มีรายการย่อย</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="radio" ng-model="item.have_subitem" ng-value="1" /> มีรายการย่อย 
+                                        </div>
+                                        <div>
+                                            <input type="radio" ng-model="item.have_subitem" ng-value="0" /> ไม่มีรายการย่อย
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'have_subitem')">
+                                        @{{ formError.errors.have_subitem[0] }}
+                                    </span>
+                                </div>
                                 <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
                                     <label for="">ใน/นอกคลัง</label>
-                                    <div style="display: flex; gap: 30px;">
+                                    <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
                                             <input type="radio" ng-model="item.in_stock" ng-value="1" /> ในคลัง 
                                         </div>
