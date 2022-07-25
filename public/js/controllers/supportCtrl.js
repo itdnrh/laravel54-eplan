@@ -301,7 +301,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.isSelected = function(planId) {
         if ($scope.support.details.length == 0) return false;
 
-        return $scope.support.details.some(item => item.plan_id === planId);
+        return $scope.support.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
     };
 
     $scope.showPersonList = (_selectedMode) => {

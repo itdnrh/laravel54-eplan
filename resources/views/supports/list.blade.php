@@ -148,7 +148,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 12%; text-align: center;">บันทึก</th>
+                                    <th style="width: 15%; text-align: center;">บันทึก</th>
                                     <th style="width: 8%; text-align: center;">ประเภทแผน</th>
                                     <th style="width: 20%;">หน่วยงาน</th>
                                     <th style="width: 5%; text-align: center;">ปีงบ</th>
