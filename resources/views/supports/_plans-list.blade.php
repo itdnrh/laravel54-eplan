@@ -37,7 +37,7 @@
                                 <th style="width: 8%; text-align: center;">ยอดงบที่ขอ</th>
                                 <th style="width: 8%; text-align: center;">จน.คงเหลือ</th>
                                 <th style="width: 8%; text-align: center;">ยอดงบคงเหลือ</th>
-                                <th style="width: 20%; text-align: center;">หน่วยงาน</th>
+                                <th style="width: 20%; text-align: center;">หน่วยงานผู้ขอ</th>
                                 <!-- <th style="width: 5%; text-align: center;">สถานะ</th> -->
                                 <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
@@ -50,26 +50,25 @@
                                 <td>
                                     <h5 style="margin: 0; font-weight: bold;">@{{ plan.plan_item.item.category.name }}</h5>
                                     @{{ plan.plan_item.item.item_name }}
-                                    ราคาต่อหน่วย <span>@{{ plan.price_per_unit | currency:'':0 }}</span>
+                                    ราคา <span>@{{ plan.price_per_unit | currency:'':0 }}</span>
                                     <span>@{{ plan.plan_item.unit.name }}</span>
-                                    <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
-                                        class="btn btn-default btn-xs" 
-                                        title="ไฟล์แนบ"
-                                        target="_blank"
-                                        ng-show="plan.attachment">
-                                        <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                    </a> -->
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.amount | currency:'':0 }} 
-                                    <span>@{{ plan.plan_item.unit.name }}</span>
+                                    <p ng-show="plan.plan_item.calc_method == 1">
+                                        @{{ plan.amount | currency:'':0 }} 
+                                        <span>@{{ plan.plan_item.unit.name }}</span>
+                                    </p>
+                                    <p ng-show="plan.plan_item.calc_method == 2">-</p>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.sum_price | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.remain_amount | currency:'':0 }}
-                                    <span>@{{ plan.plan_item.unit.name }}</span>
+                                    <p ng-show="plan.plan_item.calc_method == 1">
+                                        @{{ plan.remain_amount | currency:'':0 }} 
+                                        <span>@{{ plan.plan_item.unit.name }}</span>
+                                    </p>
+                                    <p ng-show="plan.plan_item.calc_method == 2">-</p>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ plan.remain_budget | currency:'':0 }}
