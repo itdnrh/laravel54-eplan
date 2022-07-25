@@ -2,13 +2,11 @@
     <thead>
         <tr>
             <th style="width: 3%; text-align: center;">#</th>
-            <th style="width: 8%; text-align: center;">เลขที่รับ</th>
-            <th style="width: 12%; text-align: center;">เลขที่เอกสาร</th>
-            <th style="width: 8%; text-align: center;">วันที่เอกสาร</th>
+            <th style="width: 6%; text-align: center;">เลขที่รับ</th>
+            <th style="width: 15%; text-align: center;">เอกสาร</th>
             <th>รายการ</th>
             <th style="width: 8%; text-align: center;">ยอดเงิน</th>
             <th style="width: 20%; text-align: center;">หน่วยงาน</th>
-            <th style="width: 10%; text-align: center;">วันที่รับเอกสาร</th>
             <th style="width: 10%; text-align: center;">สถานะ</th>
             <th style="width: 6%; text-align: center;">Actions</th>
         </tr>
@@ -17,24 +15,30 @@
         <tr ng-repeat="(index, support) in supports">
             <td style="text-align: center;">@{{ index+supports_pager.from }}</td>
             <td style="text-align: center;">@{{ support.received_no }}</td>
-            <td style="text-align: center;">@{{ support.doc_no }}</td>
-            <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
+            <td>
+                <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
+                <p style="margin: 0;">เลขที่ @{{ support.doc_date | thdate }}</p>
+            </td>
             <td>
                 <ul style="margin: 0 5px; padding: 0 10px;">
                     <li ng-repeat="(index, detail) in support.details">
-                        <span>@{{ detail.plan.plan_no }}</span>
-                        <span>@{{ detail.plan.plan_item.item.item_name }} จำนวน </span>
-                        <span>@{{ detail.plan.plan_item.amount | currency:'':0 }}</span>
-                        <span>@{{ detail.plan.plan_item.unit.name }}</span>
+                        <div ng-show="detail.plan.plan_item.calc_method == 1">
+                            <span>@{{ detail.plan.plan_no }}</span>
+                            <span>@{{ detail.plan.plan_item.item.item_name }} จำนวน </span>
+                            <span>@{{ detail.amount | currency:'':0 }}</span>
+                            <span>@{{ detail.unit.name }}</span>
+                        </div>
+                        <div ng-show="detail.plan.plan_item.calc_method == 2">
+                            <span>@{{ detail.plan.plan_no }}</span>
+                            <span>@{{ detail.plan.plan_item.item.item_name }}</span>
+                            <p style="color: red; font-size: 12px;">
+                                - @{{ detail.desc }} จำนวน
+                                <span>@{{ detail.amount | currency:'':0 }}</span>
+                                <span>@{{ detail.unit.name }}</span>
+                            </p>
+                        </div>
                     </li>
                 </ul>
-                <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ plan_item.attachment }}"
-                    class="btn btn-default btn-xs" 
-                    title="ไฟล์แนบ"
-                    target="_blank"
-                    ng-show="plan_item.attachment">
-                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                </a> -->
             </td>
             <td style="text-align: center;">
                 @{{ support.total | currency:'':0 }}
@@ -42,9 +46,6 @@
             <td style="text-align: center;">
                 <p style="margin: 0;">@{{ support.depart.depart_name }}</p>
                 <p style="margin: 0;">@{{ support.division.ward_name }}</p>
-            </td>
-            <td style="text-align: center;">
-                @{{ support.received_date }}
             </td>
             <td style="text-align: center;">
                 <span class="label label-primary" ng-show="support.status == 0">
@@ -59,6 +60,9 @@
                 <span class="label label-default" ng-show="support.status == 9">
                     ยกเลิก
                 </span>
+                <p style="margin: 0; font-size: 12px;" ng-show="support.status == 2">
+                    (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.received_date | thdate }})
+                </p>
             </td>
             <td style="text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 2px;">
