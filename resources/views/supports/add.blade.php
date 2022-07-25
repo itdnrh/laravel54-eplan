@@ -152,12 +152,12 @@
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
                                                 <th style="width: 8%; text-align: center">เลขที่</th>
                                                 <th>รายการ</th>
-                                                <th style="width: 4%; text-align: center">Spec</th>
+                                                <th style="width: 20%;">รายละเอียด/รายการย่อย</th>
                                                 <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
-                                                <th style="width: 12%; text-align: center">หน่วยนับ</th>
-                                                <th style="width: 8%; text-align: center">จำนวน</th>
+                                                <th style="width: 10%; text-align: center">หน่วยนับ</th>
+                                                <th style="width: 6%; text-align: center">จำนวน</th>
                                                 <th style="width: 10%; text-align: center">รวมเป็นเงิน</th>
-                                                <th style="width: 8%; text-align: center">Actions</th>
+                                                <th style="width: 5%; text-align: center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -203,19 +203,51 @@
                                                         <span class="input-group-btn">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-info btn-flat"
+                                                                class="btn btn-info"
                                                                 ng-click="showPlansList(); onFilterCategories(support.plan_type_id);"
                                                             >
-                                                                ...
+                                                                <i class="fa fa-search" aria-hidden="true"></i>
                                                             </button>
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- spec -->
-                                                    <a href="#" class="btn bg-gray" ng-click="showSpecForm(newItem.plan_id)">
+                                                    <!-- <a href="#" class="btn bg-gray" ng-click="showSpecForm(newItem.plan_id)">
                                                         <i class="fa fa-bars" aria-hidden="true"></i>
-                                                    </a>
+                                                    </a> -->
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="desc"
+                                                            name="desc"
+                                                            class="form-control"
+                                                            ng-model="newItem.desc"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            id="subitem_id"
+                                                            name="subitem_id"
+                                                            class="form-control"
+                                                            ng-model="newItem.subitem_id"
+                                                        />
+                                                        <span class="input-group-btn">
+                                                            <button
+                                                                type="button"
+                                                                class="btn bg-gray"
+                                                                ng-click="showSpecForm(newItem.plan_id);"
+                                                            >
+                                                                ...
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                class="btn bg-primary"
+                                                                ng-click="showSubitemsList();"
+                                                            >
+                                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- ราคาต่อหน่วย -->
@@ -541,8 +573,9 @@
         </div><!-- /.row -->
 
         @include('supports._plans-list')
-        @include('shared._persons-list')
         @include('supports._spec-form')
+        @include('supports._subitems-list')
+        @include('shared._persons-list')
 
     </section>
 

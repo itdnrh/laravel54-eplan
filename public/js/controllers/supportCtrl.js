@@ -258,6 +258,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#total').val(total);
     };
 
+    $scope.showSubitemsList = function() {
+        $('#subitems-list').modal('show');
+    };
+
     $scope.showSpecForm = function(planId) {
         if (planId) {
             console.log(planId);
