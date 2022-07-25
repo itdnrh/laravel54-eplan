@@ -95,7 +95,7 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
+                                            ng-change="onFactionSelected(cboFaction); getAll($event);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -148,24 +148,23 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 12%; text-align: center;">เลขที่บันทึก</th>
-                                    <th style="width: 8%; text-align: center;">วันที่บันทึก</th>
-                                    <th style="width: 10%; text-align: center;">ประเภทแผน</th>
-                                    <th>หน่วยงาน</th>
-                                    <th style="width: 8%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 8%; text-align: center;">รายการ</th>
+                                    <th style="width: 12%; text-align: center;">บันทึก</th>
+                                    <th style="width: 8%; text-align: center;">ประเภทแผน</th>
+                                    <th style="width: 20%;">หน่วยงาน</th>
+                                    <th style="width: 5%; text-align: center;">ปีงบ</th>
+                                    <th style="text-align: center;">รายการ</th>
                                     <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
                                     <th style="width: 8%; text-align: center;">สถานะ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ส่งเอกสาร</th>
-                                    <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, support) in supports">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_no }}</td>
-                                    <td style="text-align: center;">@{{ support.doc_date | thdate }}</td>
+                                    <td>
+                                        <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
+                                        <p style="margin: 0;">วันที่ @{{ support.doc_date | thdate }}</p>
+                                    </td>
                                     <td style="text-align: center;">
                                         @{{ support.plan_type.plan_type_name }}
                                     </td>
@@ -176,14 +175,20 @@
                                         </p>
                                     </td>
                                     <td style="text-align: center;">@{{ support.year }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ support.details.length }}
-                                        <a  href="#"
-                                            ng-click="showSupportDetails(support.details)"
-                                            class="btn btn-default btn-xs" 
-                                            title="รายการ">
-                                            <i class="fa fa-clone"></i>
-                                        </a>
+                                    <td>
+                                        <ul style="margin: 0; padding: 0 0 0 5px; list-style: none;">
+                                            <li ng-repeat="(index, detail) in support.details">
+                                                <span>
+                                                    @{{ index+1 }}.@{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}
+                                                </span>
+                                                <p style="margin: 0; font-size: 12px; color: red;">
+                                                    (@{{ detail.desc }}
+                                                    จำนวน <span>@{{ detail.amount | currency:'':0 }}</span>
+                                                    <span>@{{ detail.unit.name }}</span>
+                                                    ราคา @{{ detail.price_per_unit | currency:'':0 }} บาท)
+                                                </p>
+                                            </li>
+                                        </ul>
                                     </td>
                                     <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
                                     <td style="text-align: center;">
@@ -200,16 +205,6 @@
                                             ยกเลิก
                                         </span>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.sent_date | thdate }}</td>
-                                    <!-- <td style="text-align: center;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ support.attachment }}"
-                                            class="btn btn-default btn-xs"
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="order.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
-                                    </td> -->
                                     <td style="text-align: center;">
                                         <a  href="{{ url('/supports/detail') }}/@{{ support.id }}"
                                             class="btn btn-primary btn-xs" 
@@ -300,9 +295,6 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
-
-        @include('supports._support-details')
-
     </section>
 
     <script>

@@ -251,7 +251,7 @@ class SupportController extends Controller
                     $detail = new SupportDetail;
                     $detail->support_id     = $supportId;
                     $detail->plan_id        = $item['plan_id'];
-                    // $detail->desc           = $item['desc'];
+                    $detail->desc           = $item['desc'];
                     $detail->price_per_unit = $item['price_per_unit'];
                     $detail->unit_id        = $item['unit_id'];
                     $detail->amount         = $item['amount'];
@@ -387,7 +387,7 @@ class SupportController extends Controller
                         $detail = new SupportDetail;
                         $detail->support_id     = $supportId;
                         $detail->plan_id        = $item['plan_id'];
-                        // $detail->desc           = $item['desc'];
+                        $detail->desc           = $item['desc'];
                         $detail->price_per_unit = $item['price_per_unit'];
                         $detail->unit_id        = $item['unit_id'];
                         $detail->amount         = $item['amount'];

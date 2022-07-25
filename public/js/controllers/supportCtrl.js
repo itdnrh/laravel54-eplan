@@ -151,14 +151,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = pager;
     };
 
-    $scope.showSupportDetails = function(details) {
-        if (details) {
-            $scope.items = details;
-
-            $('#support-details').modal('show');
-        }
-    };
-
     $scope.showPlansList = () => {
         if (!$scope.support.plan_type_id || !$scope.support.category_id) {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
