@@ -179,6 +179,45 @@ app.controller(
             });
         };
 
+        $scope.projects = [];
+        $scope.pager = null;
+        $scope.getProjects = function(event) {
+            $scope.loading = true;
+            $scope.projects = [];
+            $scope.pager = null;
+
+            let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+            let strategy = $scope.cboStrategy === '' ? '' : $scope.cboStrategy;
+            let kpi = $scope.cboKpi === '' ? '' : $scope.cboKpi;
+            let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+            $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&status=3`)
+            .then(function(res) {
+                const { data, ...pager } = res.data.projects;
+
+                $scope.projects = data.map(project => {
+                    if (project.payments) {
+                        project.actual = project.payments.reduce((sum, curVal) => {
+                            return sum = sum + parseFloat(curVal.net_total);
+                        }, 0);
+                    }
+
+                    return project;
+                });
+
+                $scope.pager = pager;
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
         $scope.debttypeToExcel = function (URL) {
             console.log($scope.debts);
 

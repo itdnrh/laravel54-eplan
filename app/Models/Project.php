@@ -32,4 +32,14 @@ class Project extends Model
     {
         return $this->belongsTo(ProjectType::class, 'project_type_id', 'id');
     }
+
+    public function timeline()
+    {
+        return $this->hasOne(ProjectTimeline::class, 'project_id', 'id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(ProjectPayment::class, 'project_id', 'id');
+    }
 }

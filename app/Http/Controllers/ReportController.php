@@ -18,6 +18,13 @@ class ReportController extends Controller
         ]);
     }
 
+    public function projectsList()
+    {
+        return view('reports.projects-list', [
+
+        ]);
+    }
+
     public function summaryByDepart()
     {
         $depart = '';

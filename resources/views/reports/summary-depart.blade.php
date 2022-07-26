@@ -11,6 +11,7 @@
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+            <li class="breadcrumb-item"><a href="{{ url('/reports/all') }}">รายงาน</a></li>
             <li class="breadcrumb-item active">แผนเงินบำรุงรายหน่วยงาน</li>
         </ol>
     </section>
@@ -113,15 +114,15 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="text-align: left;">หน่วยงาน</th>
-                                    <th style="text-align: center;">
+                                    <th style="text-align: right;">
                                         <a href="{{ url('/reports/asset-depart') }}">ครุภัณฑ์</a>
                                     </th>
-                                    <th style="text-align: center;">
+                                    <th style="text-align: right;">
                                         <a href="{{ url('/reports/material-depart') }}">วัสดุนอกคลัง</a>
                                     </th>
-                                    <th style="text-align: center;">จ้างบริการ</th>
-                                    <th style="text-align: center;">ก่อสร้าง</th>
-                                    <th style="text-align: center;">รวม</th>
+                                    <th style="text-align: right;">จ้างบริการ</th>
+                                    <th style="text-align: right;">ก่อสร้าง</th>
+                                    <th style="text-align: right;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>

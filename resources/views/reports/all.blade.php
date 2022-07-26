@@ -35,7 +35,12 @@
                                     </li>
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/summary-depart') }}">
-                                            <i class="fa fa-circle-o"></i> รายการครุภัณฑ์ราคา > 100,000 บาท
+                                            <i class="fa fa-circle-o"></i> รายงานครุภัณฑ์ราคา > 100,000 บาท
+                                        </a>
+                                    </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/projects-list') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานโครงการ
                                         </a>
                                     </li>
                                 </ul>

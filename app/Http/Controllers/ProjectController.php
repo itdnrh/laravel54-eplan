@@ -94,7 +94,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    
     public function search(Request $req)
     {
         $matched = [];
@@ -134,7 +133,7 @@ class ProjectController extends Controller
                         })
                         ->pluck('kpis.id');
 
-        $projects = Project::with('kpi','depart','owner','budgetSrc')
+        $projects = Project::with('kpi','depart','owner','budgetSrc','timeline','payments')
                         ->when(!empty($year), function($q) use ($year) {
                             $q->where('year', $year);
                         })
