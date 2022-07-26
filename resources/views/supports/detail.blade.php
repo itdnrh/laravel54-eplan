@@ -147,7 +147,7 @@
                                             <td>
                                                 @{{ detail.plan.plan_item.item.item_name }}
                                                 <p style="margin: 0;">@{{ detail.plan_depart }}</p>
-                                                <p style="margin: 0;" ng-show="detail.desc">
+                                                <p style="margin: 0; font-size: 12px; color: red;" ng-show="detail.desc">
                                                     - @{{ detail.desc }}
                                                 </p>
                                             </td>
@@ -155,7 +155,7 @@
                                                 @{{ detail.price_per_unit | currency:'':2 }}
                                             </td>
                                             <td style="text-align: center">
-                                                @{{ detail.plan.plan_item.unit.name }}
+                                                @{{ detail.unit.name }}
                                             </td>
                                             <td style="text-align: center">
                                                 @{{ detail.amount | currency:'':0 }}
