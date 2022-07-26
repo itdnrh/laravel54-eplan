@@ -269,6 +269,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('kpis/print/{id}', 'KpiController@printLeaveForm');
 
     /** รายงาน */
+    Route::get('reports/all', 'ReportController@index');
     Route::get('reports/summary-depart', 'ReportController@summaryByDepart');
     Route::get('reports/asset-depart', 'ReportController@assetByDepart');
     Route::get('reports/material-depart', 'ReportController@materialByDepart');

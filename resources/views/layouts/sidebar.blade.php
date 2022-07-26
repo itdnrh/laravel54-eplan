@@ -359,7 +359,15 @@
 					@endif
 
 					<!-- รายงาน -->
-					<li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
+					<li>
+						<a href="{{ url('reports/all') }}">
+							<i class="fa fa-pie-chart"></i> <span>รายงาน</span>
+							<span class="pull-right-container">
+								<small class="label pull-right bg-green">new</small>
+							</span>
+						</a>
+					</li>
+					<!-- <li class="treeview" ng-class="{ 'menu-open active': menu == 'reports' }">
 						<a href="#">
 							<i class="fa fa-pie-chart"></i>
 							<span>รายงาน</span>
@@ -374,7 +382,7 @@
 								</a>
 							</li>
 						</ul>
-					</li>
+					</li> -->
 
 					<!-- ข้อมูลระบบ -->
 					@if (

@@ -11,6 +11,13 @@ use App\Models\Person;
 
 class ReportController extends Controller
 {
+    public function index()
+    {
+        return view('reports.all', [
+
+        ]);
+    }
+
     public function summaryByDepart()
     {
         $depart = '';
