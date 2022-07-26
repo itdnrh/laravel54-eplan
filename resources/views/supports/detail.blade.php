@@ -37,7 +37,7 @@
                                         <button type="button" class="btn btn-default">เลขที่บันทึก</button>
                                     </div>
                                     <div class="form-control">
-                                        @{{ support.doc_no }}
+                                        @{{ support.doc_prefix+ '/' +support.doc_no }}
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-default">เรื่อง</button>
@@ -79,6 +79,27 @@
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
                                             @{{ y }}
                                         </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">ประเภทแผน</button>
+                                    </div>
+                                    <select
+                                        id="plan_type_id"
+                                        name="plan_type_id"
+                                        ng-model="support.plan_type_id"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- เลือกประเภทแผน --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -204,7 +225,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="form-group col-md-6" g-show="support.total > 500000">
+                            <div class="form-group col-md-6" ng-show="support.total > 500000">
                                 <label>คณะกรรมการเปิดซอง/พิจารณาราคา :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped">

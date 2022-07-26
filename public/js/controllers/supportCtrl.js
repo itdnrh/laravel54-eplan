@@ -23,6 +23,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.showTimeline = false;
 
     $scope.support = {
+        doc_prefix: '',
         doc_no: '',
         doc_date: '',
         topic: '',
@@ -424,6 +425,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         if (support) {
             if (support.doc_no) {
                 const [prefix, doc_no] = support.doc_no.split("/");
+                $scope.support.doc_prefix = prefix;
                 $scope.support.doc_no = doc_no;
             }
 

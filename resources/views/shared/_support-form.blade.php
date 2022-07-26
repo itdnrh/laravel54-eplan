@@ -9,13 +9,18 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="">เลขที่บันทึกขอสนับสนุน</label>
-                            <input
-                                type="text"
-                                id="doc_no"
-                                name="doc_no"
-                                ng-model="support.doc_no"
-                                class="form-control"
-                            />
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default">@{{ support.doc_prefix }}/</button>
+                                </div>
+                                <input
+                                    type="text"
+                                    id="doc_no"
+                                    name="doc_no"
+                                    ng-model="support.doc_no"
+                                    class="form-control"
+                                />
+                            </div>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="">ลงวันที่</label>
