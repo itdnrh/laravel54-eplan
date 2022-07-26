@@ -561,7 +561,7 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($req['id']);
-            $support->doc_no    = $req['doc_no'];
+            $support->doc_no    = $support->doc_no.$req['doc_no'];
             $support->doc_date  = convThDateToDbDate($req['doc_date']);
             $support->sent_date = date('Y-m-d');
             $support->sent_user = Auth::user()->person_id;
