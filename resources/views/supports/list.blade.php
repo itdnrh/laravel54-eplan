@@ -137,7 +137,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" ng-hide="{{ Auth::user()->person_id }} == '1300200009261'">
                                     <div class="form-group">
                                         <label>งาน</label>
                                         <select
