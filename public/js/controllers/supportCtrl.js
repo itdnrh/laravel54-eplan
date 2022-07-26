@@ -5,6 +5,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
+    $scope.cboDivision = '';
     $scope.txtKeyword = '';
 
     $scope.supports = [];
@@ -86,6 +87,13 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
+    $scope.initFiltered = () => {
+        let faction = $('#faction').val();
+
+        $scope.cboFaction = faction;
+        $scope.onFactionSelected(faction);
+    };
+
     $scope.clearNewItem = () => {
         $scope.newItem = {
             plan: null,
@@ -110,11 +118,14 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = null;
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;        
         let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
-        let depart = $('#user').val() == '1300200009261' ? $scope.cboDepart : $('#depart').val();
+        let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
+                        ? $scope.cboDepart
+                        : $('#depart').val();
+        let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&status=0-3`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -135,9 +146,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
-        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+        let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
+                        ? $scope.cboDepart
+                        : $('#depart').val();
+        let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
 
-        $http.get(`${url}&year=${year}&faction=${faction}&depart=${depart}&status=0-3`)
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 

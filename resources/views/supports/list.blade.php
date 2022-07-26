@@ -22,8 +22,10 @@
         ng-init="
             getAll();
             initForms({
-                departs: {{ $departs }}
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
             }, 2);
+            initFiltered();
         "
     >
 
@@ -41,6 +43,12 @@
                             id="user"
                             name="user"
                             value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="duty"
+                            name="duty"
+                            value="{{ Auth::user()->memberOf->duty_id }}"
                         />
                         <input
                             type="hidden"
@@ -92,8 +100,8 @@
                                 </div>
                             </div>
 
-                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="col-md-6">
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261'">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
                                         <select
@@ -105,11 +113,9 @@
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
-
                                                 <option value="{{ $faction->faction_id }}">
                                                     {{ $faction->faction_name }}
                                                 </option>
-
                                             @endforeach
                                         </select>
                                     </div>
@@ -127,6 +133,23 @@
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
                                                 @{{ dep.depart_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="dep in forms.divisions" value="@{{ div.ward_id }}">
+                                                @{{ div.ward_name }}
                                             </option>
                                         </select>
                                     </div>

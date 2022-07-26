@@ -82,6 +82,7 @@ class SupportController extends Controller
             "planTypes"     => PlanType::all(),
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 
@@ -101,7 +102,8 @@ class SupportController extends Controller
         $type = $req->get('type');
         $supportType = $req->get('stype');
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1') ? $req->get('division') : Auth::user()->memberOf->ward_id;
         $status = $req->get('status');
 
         if($status != '') {
