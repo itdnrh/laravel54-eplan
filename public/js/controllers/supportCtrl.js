@@ -88,10 +88,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.initFiltered = () => {
-        let faction = $('#faction').val();
-
-        $scope.cboFaction = faction;
-        $scope.onFactionSelected(faction);
+        if ($('#duty').val() == '1') {
+            let faction = $('#faction').val();
+    
+            $scope.cboFaction = faction;
+            $scope.onFactionSelected(faction);
+        }
     };
 
     $scope.clearNewItem = () => {
