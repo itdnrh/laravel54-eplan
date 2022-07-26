@@ -55,12 +55,12 @@
 							</span>
 						</a>
 						<ul class="treeview-menu" ng-style="{ 'display': ['plans'].includes(menu) ? 'block' : 'none' }">
-							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['assets','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans'].includes(menu) && ['assets','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/assets') }}">
 									<i class="fa fa-circle-o"></i> ครุภัณฑ์
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/materials?in_stock=0') }}">
 									<i class="fa fa-circle-o"></i> วัสดุนอกคลัง
 								</a>
@@ -70,23 +70,23 @@
 								Auth::user()->memberOf->depart_id == 2 ||
 								count(Auth::user()->delegations) > 0
 							)
-								<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
+								<li ng-class="{ 'active': ['plans'].includes(menu) && ['materials','list','add','edit','detail'].includes(submenu)}">
 									<a href="{{ url('/plans/materials?in_stock=1') }}">
 										<i class="fa fa-circle-o"></i> วัสดุในคลัง
 									</a>
 								</li>
 							@endif
-							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['services','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans'].includes(menu) && ['services','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/services') }}">
 									<i class="fa fa-circle-o"></i> จ้างบริการ
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['constructs','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans'].includes(menu) && ['constructs','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/constructs') }}">
 									<i class="fa fa-circle-o"></i> ก่อสร้าง
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['plans','projects'].includes(menu) && ['projects','list','add','edit','detail'].includes(submenu)}">
+							<li ng-class="{ 'active': ['plans'].includes(menu) && ['projects','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/projects') }}">
 									<i class="fa fa-circle-o"></i> โครงการ
 								</a>

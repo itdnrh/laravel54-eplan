@@ -66,42 +66,7 @@
                         <div class="box-body">
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_no')}"
-                                >
-                                    <label>เลขที่บันทึก :</label>
-                                    <input  type="text"
-                                            id="doc_no"
-                                            name="doc_no"
-                                            ng-model="support.doc_no"
-                                            class="form-control"
-                                            tabindex="6">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_no')">
-                                        @{{ formError.errors.doc_no[0] }}
-                                    </span>
-                                </div>
-
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(support, 'doc_date')}"
-                                >
-                                    <label>วันที่บันทึก :</label>
-                                    <input
-                                        type="text"
-                                        id="doc_date"
-                                        name="doc_date"
-                                        ng-model="support.doc_date"
-                                        class="form-control"
-                                        tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(support, 'doc_date')">
-                                        @{{ formError.errors.doc_date[0] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
@@ -122,7 +87,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
                                 >
                                     <label>ประเภทแผน :</label>
@@ -140,6 +105,27 @@
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(support, 'plan_type_id')">
                                         @{{ formError.errors.plan_type_id[0] }}
+                                    </span>
+                                </div>                                
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'category_id')}"
+                                >
+                                    <label>ประเภทพัสดุ :</label>
+                                    <select id="category_id"
+                                            name="category_id"
+                                            ng-model="support.category_id"
+                                            ng-change="setTopicByPlanType(support.category_id)"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(support, 'category_id')">
+                                        @{{ formError.errors.category_id[0] }}
                                     </span>
                                 </div>
                             </div>
@@ -171,6 +157,7 @@
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
                                                 <th style="width: 8%; text-align: center">เลขที่</th>
                                                 <th>รายการ</th>
+                                                <th style="width: 20%;">รายละเอียด/รายการย่อย</th>
                                                 <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
                                                 <th style="width: 12%; text-align: center">หน่วยนับ</th>
                                                 <th style="width: 8%; text-align: center">จำนวน</th>
@@ -225,6 +212,44 @@
                                                                 ng-click="showPlansList(); onFilterCategories(support.plan_type_id);"
                                                             >
                                                                 ...
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- spec -->
+                                                    <!-- <a href="#" class="btn bg-gray" ng-click="showSpecForm(newItem.plan_id)">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </a> -->
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="desc"
+                                                            name="desc"
+                                                            class="form-control"
+                                                            ng-model="newItem.desc"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            id="subitem_id"
+                                                            name="subitem_id"
+                                                            class="form-control"
+                                                            ng-model="newItem.subitem_id"
+                                                        />
+                                                        <span class="input-group-btn">
+                                                            <button
+                                                                type="button"
+                                                                class="btn bg-gray"
+                                                                ng-click="showSpecForm(newItem.plan_id);"
+                                                            >
+                                                                ...
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                class="btn bg-primary"
+                                                                ng-click="showSubitemsList();"
+                                                            >
+                                                                <i class="fa fa-search" aria-hidden="true"></i>
                                                             </button>
                                                         </span>
                                                     </div>
@@ -301,9 +326,12 @@
                                             <tr ng-repeat="(index, detail) in support.details">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
-                                                <td>
+                                                <td colspan="2">
                                                     @{{ detail.plan.plan_item.item.item_name }}
-                                                    <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
+                                                    <p style="margin: 0;">@{{ detail.plan.plan_item.item.category }}</p>
+                                                    <p style="margin: 0; color: red;" ng-show="detail.desc">
+                                                        - @{{ detail.desc }}
+                                                    </p>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.price_per_unit | currency:'':2 }}

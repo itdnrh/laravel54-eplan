@@ -440,6 +440,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             
             $scope.support.year = support.year.toString();
             $scope.support.plan_type_id = support.plan_type_id.toString();
+            $scope.support.category_id = support.category_id.toString();
             $scope.support.depart_id = support.depart_id.toString();
             $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
 
@@ -448,6 +449,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
 
             $('#doc_date').datepicker(dtpDateOptions).datepicker('update', moment(support.doc_date).toDate());
+
+            $scope.onPlanTypeSelected(support.plan_type_id);
         }
     };
 

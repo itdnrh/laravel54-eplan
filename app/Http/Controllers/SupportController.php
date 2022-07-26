@@ -236,12 +236,13 @@ class SupportController extends Controller
                 $support->doc_date          = convThDateToDbDate($req['doc_date']);
             }
 
-            $support->topic             = $req['topic'];
-            $support->support_type_id   = 1;
             $support->year              = $req['year'];
+            $support->support_type_id   = 1;
+            $support->plan_type_id      = $req['plan_type_id'];
+            $support->category_id       = $req['category_id'];
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
-            $support->plan_type_id      = $req['plan_type_id'];
+            $support->topic             = $req['topic'];
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
@@ -371,12 +372,13 @@ class SupportController extends Controller
                 $support->doc_date          = convThDateToDbDate($req['doc_date']);
             }
 
-            $support->topic             = $req['topic'];
-            $support->support_type_id   = 1;
             $support->year              = $req['year'];
+            $support->support_type_id   = 1;
+            $support->plan_type_id      = $req['plan_type_id'];
+            $support->category_id       = $req['category_id'];
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
-            $support->plan_type_id      = $req['plan_type_id'];
+            $support->topic             = $req['topic'];
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
