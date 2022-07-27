@@ -4,6 +4,9 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.materials = [];
     $scope.pager = [];
 
+    $scope.isApproved = false;
+    $scope.txtPrice = '';
+
     $scope.material = {
         material_id: '',
         in_plan: 'I',
@@ -58,6 +61,12 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
         $scope.onFactionSelected(data.faction);
         $scope.onDepartSelected(data.depart);
+    };
+
+    $scope.setIsApproved = function(e) {
+        $scope.isApproved = e.target.checked;
+
+        $scope.getAll(e);
     };
 
     $scope.clearMaterial = function() {

@@ -4,6 +4,9 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.constructs = [];
     $scope.pager = [];
 
+    $scope.isApproved = false;
+    $scope.txtPrice = '';
+
     $scope.construct = {
         construct_id: '',
         in_plan: 'I',
@@ -68,6 +71,12 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
         $scope.onFactionSelected(data.faction);
         $scope.onDepartSelected(data.depart);
+    };
+
+    $scope.setIsApproved = function(e) {
+        $scope.isApproved = e.target.checked;
+
+        $scope.getAll(e);
     };
 
     $scope.clearConstruct = function() {

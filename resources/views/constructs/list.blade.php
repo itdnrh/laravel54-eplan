@@ -119,6 +119,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">แผนก่อสร้าง</h3>
+                                <input
+                                    type="checkbox"
+                                    id="isApproved"
+                                    ng-model="isApproved"
+                                    ng-click="setIsApproved($event);"
+                                    style="margin-left: 10px;"
+                                /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/constructs/add') }}" class="btn btn-primary pull-right">

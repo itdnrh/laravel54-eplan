@@ -120,6 +120,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">วัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
+                                <input
+                                    type="checkbox"
+                                    id="isApproved"
+                                    ng-model="isApproved"
+                                    ng-click="setIsApproved($event);"
+                                    style="margin-left: 10px;"
+                                /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right">

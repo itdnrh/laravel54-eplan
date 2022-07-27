@@ -4,6 +4,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.services = [];
     $scope.pager = [];
 
+    $scope.isApproved = false;
+    $scope.txtPrice = '';
+
     $scope.service = {
         service_id: '',
         in_plan: 'I',
@@ -55,6 +58,12 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
         $scope.onFactionSelected(data.faction);
         $scope.onDepartSelected(data.depart);
+    };
+
+    $scope.setIsApproved = function(e) {
+        $scope.isApproved = e.target.checked;
+
+        $scope.getAll(e);
     };
 
     $scope.clearService = function() {
