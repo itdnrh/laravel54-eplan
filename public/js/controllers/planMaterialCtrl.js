@@ -120,14 +120,15 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.materials = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
-        let approved  = $scope.isApproved ? 'A' : '';
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&depart=${depart}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setMaterials(res);
 
@@ -153,14 +154,15 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.materials = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
-        let approved  = $scope.isApproved ? 'A' : '';
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&type=2&year=${year}&cate=${cate}&depart=${depart}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${url}&type=2&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             cb(res);
 
@@ -291,14 +293,15 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         if($scope.materials.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
-            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-            let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-            let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-            let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-            let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
-            let approved  = $scope.isApproved ? 'A' : '';
+            let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+            let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+            let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+            let approved    = $scope.isApproved ? 'A' : '';
             
-            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&depart=${depart}&in_stock=${inStock}&status=${status}&approved=${approved}&price=${price}&show_all=1`;
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`;
         }
     };
 });
