@@ -138,6 +138,7 @@
                                             ng-change="getAll($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
+                                            <option value="5000">5,000 บาทขึ้นไป</option>
                                             <option value="10000">10,000 บาทขึ้นไป</option>
                                             <option value="50000">50,000 บาทขึ้นไป</option>
                                             <option value="100000">100,000 บาทขึ้นไป</option>

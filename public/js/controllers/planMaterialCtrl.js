@@ -63,10 +63,10 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.onDepartSelected(data.depart);
     };
 
-    $scope.setIsApproved = function(e) {
+    $scope.setIsApproved = function(e, inStock) {
         $scope.isApproved = e.target.checked;
 
-        $scope.getAll(e);
+        $scope.getAll(inStock);
     };
 
     $scope.clearMaterial = function() {
@@ -276,7 +276,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         }
     };
 
-    $scope.exportListToExcel = function(e) {
+    $scope.exportListToExcel = function(e, inStock) {
         e.preventDefault();
 
         if($scope.materials.length == 0) {
@@ -289,7 +289,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
             let approved  = $scope.isApproved ? 'A' : '';
             
-            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`;
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&depart=${depart}&in_stock=${inStock}&status=${status}&approved=${approved}&price=${price}&show_all=1`;
         }
     };
 });

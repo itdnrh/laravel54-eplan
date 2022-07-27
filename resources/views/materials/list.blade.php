@@ -70,6 +70,7 @@
                                     </select>
                                 </div>
                             </div><!-- /.row -->
+
                             <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -119,7 +120,7 @@
                                             name="cboDivision"
                                             ng-model="cboDivision"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll({{ $in_stock }})"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
@@ -136,9 +137,10 @@
                                             name="txtPrice"
                                             ng-model="txtPrice"
                                             class="form-control"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll({{ $in_stock }})"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
+                                            <option value="5000">5,000 บาทขึ้นไป</option>
                                             <option value="10000">10,000 บาทขึ้นไป</option>
                                             <option value="50000">50,000 บาทขึ้นไป</option>
                                             <option value="100000">100,000 บาทขึ้นไป</option>
@@ -160,7 +162,7 @@
                                     type="checkbox"
                                     id="isApproved"
                                     ng-model="isApproved"
-                                    ng-click="setIsApproved($event);"
+                                    ng-click="setIsApproved($event, {{ $in_stock }});"
                                     style="margin-left: 10px;"
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
@@ -176,7 +178,7 @@
                                 >
                                     เพิ่มรายการจากปีที่แล้ว
                                 </a>
-                                <a href="#" ng-show="materials.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                <a href="#" ng-show="materials.length" ng-click="exportListToExcel($event, {{ $in_stock }})" class="btn btn-success pull-right" style="margin-right: 5px;">
                                     Excel
                                 </a>
                             </div>
