@@ -1,9 +1,9 @@
 <div class="box">
-    <div class="box-header with-border">
-        <h3 class="box-title">รายการแผนครุภัณฑ์</h3>
+    <div class="box-header">
+        <h3 style="margin: 0;">รายการแผน{{ $options['type'] }}</h3>
+        <h4 style="margin: 0;">ประจำปีงบประมาณ {{ $options['year'] }}</h4>
     </div><!-- /.box-header -->
     <div class="box-body">
-
         <table class="table table-bordered table-striped" style="font-size: 12px;">
             <thead>
                 <tr>
@@ -74,6 +74,5 @@
 
             </tbody>
         </table>
-
     </div><!-- /.box-body -->
 </div><!-- /.box -->

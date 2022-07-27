@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
 use App\Models\PlanItem;
+use App\Models\PlanType;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\Unit;
@@ -373,10 +374,13 @@ class PlanController extends Controller
                     })
                     // ->orderBy('plan_no', 'ASC');
                     ->get();
+        
+        $planType = PlanType::find($type);
 
         $fileName = 'plans-list-' . date('YmdHis') . '.xlsx';
         $options = [
-            //
+            'type' => $planType->plan_type_name,
+            'year' => $year,
         ];
         
         $this->exportExcel($fileName, 'exports.plans-list-excel', $data, $options);
