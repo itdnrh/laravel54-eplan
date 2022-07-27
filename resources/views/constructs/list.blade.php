@@ -53,7 +53,7 @@
                                             @{{ y }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>ประเภท</label>
                                     <select
@@ -68,7 +68,7 @@
                                             @{{ category.name }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
+                                </div>
                             </div><!-- /.row -->
                             <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="col-md-6">
@@ -90,8 +90,8 @@
 
                                             @endforeach
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>กลุ่มงาน</label>
@@ -107,8 +107,43 @@
                                                 @{{ dep.depart_name }}
                                             </option>
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
+                                                @{{ div.ward_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ราคา</label>
+                                        <select
+                                            id="txtPrice"
+                                            name="txtPrice"
+                                            ng-model="txtPrice"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="10000">10,000 บาทขึ้นไป</option>
+                                            <option value="50000">50,000 บาทขึ้นไป</option>
+                                            <option value="100000">100,000 บาทขึ้นไป</option>
+                                            <option value="500000">500,000 บาทขึ้นไป</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
