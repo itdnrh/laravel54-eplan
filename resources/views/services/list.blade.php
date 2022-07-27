@@ -25,6 +25,7 @@
                 departs: {{ $departs }},
                 categories: {{ $categories }}
             }, 3);
+            initFiltered();
         "
     >
 

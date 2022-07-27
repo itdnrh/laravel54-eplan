@@ -73,6 +73,15 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.onDepartSelected(data.depart);
     };
 
+    $scope.initFiltered = () => {
+        if ($('#duty').val() == '1') {
+            let faction = $('#faction').val();
+    
+            $scope.cboFaction = faction;
+            $scope.onFactionSelected(faction);
+        }
+    };
+
     $scope.setIsApproved = function(e) {
         $scope.isApproved = e.target.checked;
 

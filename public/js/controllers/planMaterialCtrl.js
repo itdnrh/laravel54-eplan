@@ -35,7 +35,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -45,7 +45,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     $('#doc_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
@@ -61,6 +61,15 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
         $scope.onFactionSelected(data.faction);
         $scope.onDepartSelected(data.depart);
+    };
+
+    $scope.initFiltered = () => {
+        if ($('#duty').val() == '1') {
+            let faction = $('#faction').val();
+    
+            $scope.cboFaction = faction;
+            $scope.onFactionSelected(faction);
+        }
     };
 
     $scope.setIsApproved = function(e, inStock) {

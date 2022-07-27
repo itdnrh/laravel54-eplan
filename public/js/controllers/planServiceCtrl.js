@@ -60,6 +60,15 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.onDepartSelected(data.depart);
     };
 
+    $scope.initFiltered = () => {
+        if ($('#duty').val() == '1') {
+            let faction = $('#faction').val();
+    
+            $scope.cboFaction = faction;
+            $scope.onFactionSelected(faction);
+        }
+    };
+
     $scope.setIsApproved = function(e) {
         $scope.isApproved = e.target.checked;
 
