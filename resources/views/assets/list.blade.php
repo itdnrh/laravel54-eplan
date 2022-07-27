@@ -23,6 +23,7 @@
             getAll();
             initForms({
                 departs: {{ $departs }},
+                divisions: {{ $divisions }},
                 categories: {{ $categories }}
             }, 1);"
     >
@@ -79,7 +80,7 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
+                                            ng-change="onFactionSelected(cboFaction);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -100,12 +101,47 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="onDepartSelected(cboDepart); getAll($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
                                                 @{{ dep.depart_name }}
                                             </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
+                                                @{{ div.ward_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ราคา</label>
+                                        <select
+                                            id="txtPrice"
+                                            name="txtPrice"
+                                            ng-model="txtPrice"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="10000">10,000 บาทขึ้นไป</option>
+                                            <option value="50000">50,000 บาทขึ้นไป</option>
+                                            <option value="100000">100,000 บาทขึ้นไป</option>
+                                            <option value="500000">500,000 บาทขึ้นไป</option>
                                         </select>
                                     </div>
                                 </div>
@@ -119,10 +155,20 @@
                         <div class="row" style="display: flex; align-items: center;">
                             <div class="col-md-6">
                                 <h3 class="box-title">แผนครุภัณฑ์</h3>
+                                <input
+                                    type="checkbox"
+                                    id="isApproved"
+                                    ng-model="isApproved"
+                                    ng-click="setIsApproved($event);"
+                                    style="margin-left: 10px;"
+                                /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
+                                </a>
+                                <a href="#" ng-show="assets.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    Excel
                                 </a>
                             </div>
                         </div>
@@ -159,20 +205,22 @@
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <h4 style="margin: 0;">
+                                        <p style="margin: 0; font-weight: bold;">
                                             @{{ plan.plan_item.item.category.name }}
-                                        </h4>
-                                        @{{ plan.plan_item.item.item_name }} 
-                                        จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.plan_item.unit.name }}</span>
-                                        <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ plan_item.attachment }}"
-                                            class="btn btn-default btn-xs" 
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="plan_item.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
+                                        </p>
+                                        <p style="margin: 0; color: green;">
+                                            @{{ plan.plan_item.item.item_name }} 
+                                            จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
+                                            <span>@{{ plan.plan_item.unit.name }}</span>
+                                            <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
+                                            <a  href="{{ url('/'). '/uploads/' }}@{{ plan_item.attachment }}"
+                                                class="btn btn-default btn-xs" 
+                                                title="ไฟล์แนบ"
+                                                target="_blank"
+                                                ng-show="plan_item.attachment">
+                                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                            </a>
+                                        </p>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ plan.plan_item.sum_price | currency:'':0 }}

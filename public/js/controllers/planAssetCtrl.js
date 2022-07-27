@@ -4,6 +4,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.assets = [];
     $scope.pager = null;
 
+    $scope.isApproved = false;
+    $scope.txtPrice = '';
+
     $scope.asset = {
         asset_id: '',
         year: (moment().year() + 543).toString(),
@@ -31,7 +34,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -41,7 +44,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $('#doc_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
@@ -95,7 +98,12 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $('#sum_price').val(price * amount);
     };
 
-    /** TODO: Duplicated function */
+    $scope.setIsApproved = function(e) {
+        $scope.isApproved = e.target.checked;
+
+        $scope.getAll(e);
+    };
+
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.assets = [];
@@ -105,8 +113,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let approved  = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&show_all=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setAssets(res);
 
@@ -136,8 +146,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let approved  = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&show_all=1`)
+        $http.get(`${url}&type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             cb(res);
 
@@ -279,6 +290,23 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        }
+    };
+
+    $scope.exportListToExcel = function(e) {
+        e.preventDefault();
+
+        if($scope.assets.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+            let approved  = $scope.isApproved ? 'A' : '';
+            
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=1&year=${year}&cate=${cate}&status=${status}&depart=${depart}&approved=${approved}&price=${price}&show_all=1`;
         }
     };
 });

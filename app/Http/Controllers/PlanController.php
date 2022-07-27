@@ -106,6 +106,7 @@ class PlanController extends Controller
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
         $name = $req->get('name');
+        $price = $req->get('price');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
@@ -166,25 +167,15 @@ class PlanController extends Controller
                     ->when(!empty($faction), function($q) use ($departsList) {
                         $q->whereIn('depart_id', $departsList);
                     })
-                    // ->when($status != '', function($q) use ($status) {
-                    //     $q->where('status', $status);
-                    // })
+                    ->when(!empty($price), function($q) use ($price) {
+                        $q->where('plan_items.price_per_unit', '>=', $price);
+                    })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('approved', $approved);
                     })
                     ->when(empty($showAll), function($q) use ($showAll) {
                         $q->where('plan_items.remain_amount', '>', 0);
                     })
-                    
-                    // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                    //     $q->whereBetween('status', $arrStatus);
-                    // })
-                    // ->when(!empty($month), function($q) use ($month) {
-                    //     $sdate = $month. '-01';
-                    //     $edate = date('Y-m-t', strtotime($sdate));
-
-                    //     $q->whereBetween('leave_date', [$sdate, $edate]);
-                    // })
                     // ->orderBy('plan_no', 'ASC')
                     ->paginate(10);
 
@@ -291,6 +282,117 @@ class PlanController extends Controller
                 'message'   => $ex->getMessage()
             ];
         }
+    }
+
+    public function excel(Request $req)
+    {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
+        /** Get params from query string */
+        $year   = $req->get('year');
+        $type   = $req->get('type');
+        $cate   = $req->get('cate');
+        $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $status = $req->get('status');
+        $approved = $req->get('approved');
+        $inStock = $req->get('in_stock');
+        $name = $req->get('name');
+        $price = $req->get('price');
+        $showAll = $req->get('show_all');
+        $haveSubitem = $req->get('have_subitem');
+
+        // if($status != '-') {
+        //     if (preg_match($pattern, $status, $matched) == 1) {
+        //         $arrStatus = explode($matched[0], $status);
+
+        //         if ($matched[0] != '-' && $matched[0] != '&') {
+        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+        //         }
+        //     } else {
+        //         array_push($conditions, ['status', '=', $status]);
+        //     }
+        // }
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $plansList = PlanItem::leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->when($inStock != '', function($q) use ($inStock) {
+                            $q->where('items.in_stock', $inStock);
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where('items.item_name', 'like', $name.'%');
+                        })
+                        ->when(!empty($haveSubitem), function($q) use ($haveSubitem) {
+                            $q->where('plan_items.have_subitem', $haveSubitem);
+                        })
+                        ->pluck('plan_items.plan_id');
+
+        $data = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->with('budget','depart','division')
+                    ->with('planItem','planItem.unit')
+                    ->with('planItem.item','planItem.item.category')
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plan_type_id', $type);
+                    })
+                    ->when(!empty($cate), function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when($inStock != '', function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when(!empty($name), function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when(!empty($haveSubitem), function($q) use ($plansList) {
+                        $q->whereIn('id', $plansList);
+                    })
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
+                    })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
+                    })
+                    ->when(!empty($price), function($q) use ($price) {
+                        $q->where('plan_items.price_per_unit', '>=', $price);
+                    })
+                    ->when($approved != '', function($q) use ($approved) {
+                        $q->where('approved', $approved);
+                    })
+                    ->when(empty($showAll), function($q) use ($showAll) {
+                        $q->where('plan_items.remain_amount', '>', 0);
+                    })
+                    // ->orderBy('plan_no', 'ASC');
+                    ->get();
+
+        $fileName = 'plans-list-' . date('YmdHis') . '.xlsx';
+        $options = [
+            //
+        ];
+        
+        $this->exportExcel($fileName, 'exports.plans-list-excel', $data, $options);
+    }
+
+    private function exportExcel($fileName, $view, $data, $options)
+    {
+        return \Excel::create($fileName, function($excel) use ($view, $data, $options) {
+            $excel->sheet('sheet1', function($sheet) use ($view, $data, $options)
+            {
+                $sheet->loadView($view, [
+                    'data' => $data,
+                    'options' => $options
+                ]);                
+            });
+        })->download();
     }
 
     public function printLeaveForm($id)

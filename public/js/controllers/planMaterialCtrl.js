@@ -261,5 +261,20 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         if(confirm(`คุณต้องเพิ่มรายการจากปีที่แล้วใช่หรือไม่?`)) {
             $('#progress-form').modal('show');
         }
-    }
+    };
+
+    $scope.exportListToExcel = function(e) {
+        e.preventDefault();
+
+        if($scope.materials.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&status=${status}&depart=${depart}&in_stock=${inStock}&show_all=1`;
+        }
+    };
 });

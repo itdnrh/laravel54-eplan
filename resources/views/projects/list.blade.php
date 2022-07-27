@@ -180,6 +180,9 @@
                                 <a href="{{ url('/projects/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มโครงการ
                                 </a>
+                                <a href="#" ng-show="projects.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    Excel
+                                </a>
                             </div>
                         </div>
                     </div><!-- /.box-header -->

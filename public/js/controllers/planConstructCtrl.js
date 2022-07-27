@@ -281,4 +281,19 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             });
         }
     };
+
+    $scope.exportListToExcel = function(e) {
+        e.preventDefault();
+
+        if($scope.constructs.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=4&year=${year}&cate=${cate}&status=${status}&depart=${depart}&show_all=1`;
+        }
+    };
 });

@@ -405,4 +405,19 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             });
         }
     };
+
+    $scope.exportListToExcel = function(e) {
+        e.preventDefault();
+
+        if($scope.projects.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            
+            window.location.href = `${CONFIG.baseUrl}/projects/excel?year=${year}&type=3&cate=${cate}&status=${status}&depart=${depart}&show_all=1`;
+        }
+    };
 });

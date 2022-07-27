@@ -124,6 +124,9 @@
                                 <a href="{{ url('/services/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
+                                <a href="#" ng-show="services.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    Excel
+                                </a>
                             </div>
                         </div>
                     </div><!-- /.box-header -->

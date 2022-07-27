@@ -100,6 +100,7 @@ class PlanAssetController extends Controller
             "categories"    => ItemCategory::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 

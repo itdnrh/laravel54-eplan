@@ -133,6 +133,9 @@
                                 >
                                     เพิ่มรายการจากปีที่แล้ว
                                 </a>
+                                <a href="#" ng-show="materials.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    Excel
+                                </a>
                             </div>
                         </div>
                     </div><!-- /.box-header -->
