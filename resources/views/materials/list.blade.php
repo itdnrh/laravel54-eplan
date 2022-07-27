@@ -243,18 +243,22 @@
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <p style="margin: 0;">@{{ plan.plan_item.item.category.name }}</p>
-                                        @{{ plan.plan_item.item.item_name }} 
-                                        จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.plan_item.unit.name }}</span>
-                                        <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
-                                            class="btn btn-default btn-xs" 
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="plan.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
+                                        <p style="margin: 0; font-weight: bold;">
+                                            @{{ plan.plan_item.item.category.name }}
+                                        </p>
+                                        <p style="margin: 0; color: blue;">
+                                            @{{ plan.plan_item.item.item_name }} 
+                                            จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
+                                            <span>@{{ plan.plan_item.unit.name }}</span>
+                                            <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
+                                            <a  href="{{ url('/'). '/uploads/' }}@{{ plan.attachment }}"
+                                                class="btn btn-default btn-xs" 
+                                                title="ไฟล์แนบ"
+                                                target="_blank"
+                                                ng-show="plan.attachment">
+                                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                            </a>
+                                        </p>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ plan.plan_item.sum_price | currency:'':0 }}

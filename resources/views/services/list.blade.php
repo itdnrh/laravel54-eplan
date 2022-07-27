@@ -233,7 +233,10 @@
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
-                                        <h4 style="margin: 0;">@{{ plan.plan_item.item.category.name }}</h4>
+                                        <p style="margin: 0; font-weight: bold;">
+                                            @{{ plan.plan_item.item.category.name }}
+                                        </p>
+                                        <p style="margin: 0; color: #dd0a35;">
                                         @{{ plan.plan_item.item.item_name }} 
                                         จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
                                         <span>@{{ plan.plan_item.unit.name }}</span>

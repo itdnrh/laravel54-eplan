@@ -250,17 +250,19 @@
                                     <td style="text-align: center;">@{{ project.project_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ project.year }}</td> -->
                                     <td>
-                                        <h5 style="margin: 0; font-weight: bold;">ตัวชี้วัด: @{{ project.kpi.kpi_name }}</h5>
-                                        <p style="margin: 0;">
-                                            @{{ project.project_name }}
+                                        <p style="margin: 0; font-weight: bold;">
+                                            ตัวชี้วัด: @{{ project.kpi.kpi_name }}
                                         </p>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
-                                            class="btn btn-default btn-xs" 
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="asset.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
+                                        <p style="margin: 0; color: #014955;">
+                                            @{{ project.project_name }}
+                                            <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
+                                                class="btn btn-default btn-xs" 
+                                                title="ไฟล์แนบ"
+                                                target="_blank"
+                                                ng-show="asset.attachment">
+                                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                            </a>
+                                        </p>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ project.total_budget | currency:'':0 }}
