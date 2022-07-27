@@ -125,9 +125,10 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
+        let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let approved  = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=4&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=4&year=${year}&cate=${cate}&depart=${depart}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setConstructs(res);
 
@@ -181,9 +182,10 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
+        let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let approved  = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&type=4&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&type=4&year=${year}&cate=${cate}&depart=${depart}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             cb(res);
 
@@ -301,8 +303,10 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
             let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let price  = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+            let approved  = $scope.isApproved ? 'A' : '';
             
-            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=4&year=${year}&cate=${cate}&status=${status}&depart=${depart}&show_all=1`;
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=4&year=${year}&cate=${cate}&depart=${depart}&status=${status}&approved=${approved}&price=${price}&show_all=1`;
         }
     };
 });
