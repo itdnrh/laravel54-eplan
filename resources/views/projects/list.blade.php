@@ -39,6 +39,31 @@
                     </div>
 
                     <form id="frmSearch" name="frmSearch" role="form">
+                        <input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="duty"
+                            name="duty"
+                            value="{{ Auth::user()->memberOf->duty_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="faction"
+                            name="faction"
+                            value="{{ Auth::user()->memberOf->faction_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="depart"
+                            name="depart"
+                            value="{{ Auth::user()->memberOf->depart_id }}"
+                        />
+
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group col-md-6">

@@ -38,7 +38,8 @@
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
 
-                    <form id="frmSearch" name="frmSearch" role="form"><input
+                    <form id="frmSearch" name="frmSearch" role="form">
+                        <input
                             type="hidden"
                             id="user"
                             name="user"

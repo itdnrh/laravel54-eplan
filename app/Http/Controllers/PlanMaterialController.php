@@ -99,8 +99,9 @@ class PlanMaterialController extends Controller
 
         return view('materials.list', [
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
             "in_stock"      => $inStock,
         ]);
     }
@@ -114,7 +115,7 @@ class PlanMaterialController extends Controller
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
             "servicePlans"  => ServicePlan::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -132,7 +133,7 @@ class PlanMaterialController extends Controller
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
             "servicePlans"  => ServicePlan::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
             "in_stock"      => $inStock,
@@ -195,7 +196,7 @@ class PlanMaterialController extends Controller
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
             "servicePlans"  => ServicePlan::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
             "in_stock"      => $inStock,

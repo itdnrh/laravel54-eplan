@@ -98,7 +98,7 @@ class PlanAssetController extends Controller
     {
         return view('assets.list', [
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -113,7 +113,7 @@ class PlanAssetController extends Controller
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
             "servicePlans"  => ServicePlan::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -129,7 +129,7 @@ class PlanAssetController extends Controller
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
             "servicePlans"  => ServicePlan::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -195,7 +195,7 @@ class PlanAssetController extends Controller
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),
             "servicePlans"  => ServicePlan::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
