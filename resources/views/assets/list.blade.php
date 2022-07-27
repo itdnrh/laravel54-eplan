@@ -25,7 +25,9 @@
                 departs: {{ $departs }},
                 divisions: {{ $divisions }},
                 categories: {{ $categories }}
-            }, 1);"
+            }, 1);
+            initFiltered()
+        "
     >
 
         <div class="row">
@@ -36,7 +38,31 @@
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
 
-                    <form id="frmSearch" name="frmSearch" role="form">
+                    <form id="frmSearch" name="frmSearch" role="form"><input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="duty"
+                            name="duty"
+                            value="{{ Auth::user()->memberOf->duty_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="faction"
+                            name="faction"
+                            value="{{ Auth::user()->memberOf->faction_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="depart"
+                            name="depart"
+                            value="{{ Auth::user()->memberOf->depart_id }}"
+                        />
+
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -71,8 +97,8 @@
                                 </div>
                             </div>
 
-                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="col-md-6">
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261'">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
                                         <select

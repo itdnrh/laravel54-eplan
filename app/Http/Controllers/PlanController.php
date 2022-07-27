@@ -102,7 +102,8 @@ class PlanController extends Controller
         $type   = $req->get('type');
         $cate   = $req->get('cate');
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1') ? $req->get('division') : Auth::user()->memberOf->ward_id;
         $status = $req->get('status');
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
@@ -162,11 +163,14 @@ class PlanController extends Controller
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
+                    })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
                     })
-                    ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('depart_id', $departsList);
+                    ->when(!empty($division), function($q) use ($division) {
+                        $q->where('division_id', $division);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         $q->where('plan_items.price_per_unit', '>=', $price);
@@ -297,7 +301,8 @@ class PlanController extends Controller
         $type   = $req->get('type');
         $cate   = $req->get('cate');
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $depart = $req->get('depart');
+        $division = $req->get('division');
         $status = $req->get('status');
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
@@ -357,11 +362,14 @@ class PlanController extends Controller
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
+                    })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
                     })
-                    ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('depart_id', $departsList);
+                    ->when(!empty($division), function($q) use ($division) {
+                        $q->where('division_id', $division);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         $q->where('plan_items.price_per_unit', '>=', $price);

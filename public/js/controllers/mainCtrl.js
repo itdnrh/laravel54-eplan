@@ -53,11 +53,11 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     $scope.cboPlanType = "";
     $scope.cboSupplier = "";
     $scope.cboCategory = "";
+    $scope.cboFaction = "";
     $scope.cboDepart = "";
+    $scope.cboDivision = "";
     $scope.cboStatus = "";
-    $scope.searchKey = "";
-    $scope.cboQuery = "";
-    $scope.cboMenu = "";
+    $scope.txtKeyword = "";
 
     $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,parseInt($scope.cboYear)+2];
     $scope.monthLists = [
