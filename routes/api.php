@@ -98,7 +98,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('persons/{id}/status', 'PersonController@status');
     Route::put('persons/{id}/rename', 'PersonController@rename');
     Route::get('persons/{id}/movings', 'PersonController@getMoving');
+
     /** รายงาน */
+    Route::get('reports/project-summary', 'ReportController@getProjectSummary');
     Route::get('reports/summary-depart', 'ReportController@getSummaryByDepart');
     Route::get('reports/asset-depart', 'ReportController@getAssetByDepart');
     Route::get('reports/material-depart', 'ReportController@getMaterialByDepart');

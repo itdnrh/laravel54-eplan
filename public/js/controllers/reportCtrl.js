@@ -179,6 +179,35 @@ app.controller(
             });
         };
 
+        $scope.factions = [];
+        $scope.getProjectSummary = function() {
+            let year = '2565';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-summary?year=${year}`)
+            .then(function(res) {
+                $scope.factions = res.data.factions.map(fac => {
+                    const projects = res.data.projects.filter(project => project.depart.faction_id === fac.faction_id);
+
+                    fac.projects = projects;
+                    fac.done = projects.filter(project => project.status == 4);
+                    fac.total_budget = projects.reduce((budget, curVal) => budget = budget + curVal.total_budget, 0);
+                    fac.total_actual = projects.reduce((actual, curVal) => actual = actual + curVal.total_actual, 0);
+                    fac.patment = projects.reduce((payment, curVal) => {
+                        const paid = curVal.payments.reduce((sum, pay) => sum = sum + pay.net_total, 0);
+
+                        return payment = payment + paid;
+                    }, 0);
+
+                    return fac;
+                });
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
         $scope.projects = [];
         $scope.pager = null;
         $scope.getProjects = function(event) {

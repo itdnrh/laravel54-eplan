@@ -39,7 +39,7 @@
                                         </a>
                                     </li>
                                     <li style="margin: 5px;">
-                                        <a href="{{ url('reports/projects-list') }}">
+                                        <a href="{{ url('reports/project-summary') }}">
                                             <i class="fa fa-circle-o"></i> รายงานโครงการ
                                         </a>
                                     </li>

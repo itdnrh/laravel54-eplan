@@ -8,6 +8,7 @@ use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
 use App\Models\Person;
+use App\Models\Project;
 
 class ReportController extends Controller
 {
@@ -16,6 +17,25 @@ class ReportController extends Controller
         return view('reports.all', [
 
         ]);
+    }
+
+    public function projectSummary()
+    {
+        return view('reports.projects-summary', [
+
+        ]);
+    }
+
+    public function getProjectSummary(Request $req)
+    {
+        $year = $req->get('year');
+
+        $projects = Project::where('year', $year)->with('depart','payments')->get();
+
+        return [
+            'factions'  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            'projects'   => $projects
+        ];
     }
 
     public function projectsList()
