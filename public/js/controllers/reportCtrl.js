@@ -246,22 +246,5 @@ app.controller(
                 $scope.loading = false;
             });
         };
-
-        $scope.debttypeToExcel = function (URL) {
-            console.log($scope.debts);
-
-            if ($scope.debts.length == 0) {
-                toaster.pop("warning", "", "ไม่พบข้อมูล !!!");
-            } else {
-                var debtDate = $("#debtDate").val().split(",");
-                var sDate = debtDate[0].trim();
-                var eDate = debtDate[1].trim();
-                var debtType =
-                    $("#debtType").val() == "" ? "0" : $("#debtType").val();
-                var showAll = $("#showall:checked").val() == "on" ? 1 : 0;
-
-                window.location.href = `${CONFIG.baseUrl}${URL}/${debtType}/${sDate}/${eDate}/${showAll}`;
-            }
-        };
     }
 );
