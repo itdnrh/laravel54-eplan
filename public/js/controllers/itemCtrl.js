@@ -162,7 +162,9 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
-                window.location.href = `${CONFIG.baseUrl}/system/items`;
+                setTimeout(() => {
+                    window.location.href = `${CONFIG.baseUrl}/system/items`;
+                }, 1000);
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
@@ -191,7 +193,9 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
 
-                    window.location.href = `${CONFIG.baseUrl}/system/items`;
+                    setTimeout(() => {
+                        window.location.href = `${CONFIG.baseUrl}/system/items`;
+                    }, 1000);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }
@@ -208,11 +212,27 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         e.preventDefault();
 
         if(confirm(`คุณต้องลบสินค้า/บริการ รหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/items/${id}`)
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/items/delete/${id}`)
             .then(res => {
                 console.log(res);
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    setTimeout(() => {
+                        window.location.href = `${CONFIG.baseUrl}/system/items`;
+                    }, 1000);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
             }, err => {
                 console.log(err);
+                $scope.loading = false;
+
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };

@@ -236,10 +236,26 @@ class ItemController extends Controller
 
     public function delete(Request $req, $id)
     {
-        $leave = Leave::find($id);
+        try {
+            $item = Item::find($id);
 
-        if($leave->delete()) {
-            return redirect('/leaves/list')->with('status', 'ลบใบลา ID: ' .$id. ' เรียบร้อยแล้ว !!');
+            if($item->delete()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deleting successfully!!',
+                    'item'      => $item
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 }

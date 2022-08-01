@@ -215,7 +215,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let name = $scope.searchKey === '' ? '' : $scope.searchKey;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
         $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&name=${name}&in_stock=${in_stock}`)
@@ -248,7 +248,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let name = $scope.searchKey === '' ? '' : $scope.searchKey;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
         $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&in_stock=${in_stock}`)

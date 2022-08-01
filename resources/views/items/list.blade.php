@@ -168,7 +168,7 @@
                                     <td style="text-align: center;">@{{ item.category.name }}</td>
                                     <td>@{{ item.item_name }}</td>
                                     <td style="text-align: center;">
-                                        @{{ item.price_per_unit | currency:'':0 }}
+                                        @{{ item.price_per_unit | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ item.unit.name }}

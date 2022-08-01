@@ -29,9 +29,9 @@
         
                                 <input
                                     type="text"
-                                    ng-model="searchKey"
+                                    ng-model="txtKeyword"
                                     class="form-control"
-                                    ng-keyup="handleInputChange('searchKey', searchKey); getItems();"
+                                    ng-keyup="handleInputChange('txtKeyword', txtKeyword); getItems();"
                                 />
                             </div>
                         </div><!-- /.box-body -->
