@@ -171,6 +171,11 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
                     $scope.construct.desc = item.item_name;
                     $scope.construct.price_per_unit = item.price_per_unit;
                     $scope.construct.unit_id = item.unit_id.toString();
+                    $scope.construct.have_subitem = item.have_subitem;
+                    $scope.construct.calc_method = item.calc_method;
+
+                    $('#have_subitem').val(item.have_subitem);
+                    $('#calc_method').val(item.calc_method);
                 }
             }, function(err) {
                 console.log(err);

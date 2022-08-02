@@ -50,6 +50,8 @@
                             name="user"
                             value="{{ Auth::user()->person_id }}"
                         />
+                        <input type="hidden" id="have_subitem" name="have_subitem" />
+                        <input type="hidden" id="calc_method" name="calc_method" />
                         {{ csrf_field() }}
 
                         <div class="box-body">

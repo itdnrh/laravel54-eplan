@@ -182,6 +182,9 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             $scope.material.unit_id = item.unit_id.toString();
             $scope.material.have_subitem = item.have_subitem;
             $scope.material.calc_method = item.calc_method;
+
+            $('#have_subitem').val(item.have_subitem);
+            $('#calc_method').val(item.calc_method);
         }
 
         $('#items-list').modal('hide');
