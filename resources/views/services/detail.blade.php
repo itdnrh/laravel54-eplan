@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <!-- <div class="form-group col-md-4">
                                     <label>สาเหตุที่ขอ :</label>
                                     <div class="form-control checkbox-groups">
                                         <div class="checkbox-container">
@@ -190,7 +190,7 @@
                                                     tabindex="3"> ขยายงาน
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group col-md-4">
                                     <label>แหล่งเงินงบประมาณ :</label>
