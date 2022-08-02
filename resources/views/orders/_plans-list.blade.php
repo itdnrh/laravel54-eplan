@@ -95,6 +95,7 @@
                                 <td style="text-align: center;">
                                         <a  href="#"
                                             ng-click="onSelectedPlan($event, plan)"
+                                            ng-show="!isSelected(plan.id)"
                                             class="btn btn-primary btn-xs"
                                             title="เลือก">
                                             เลือก

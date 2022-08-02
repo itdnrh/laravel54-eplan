@@ -163,20 +163,26 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.addOrderItem = () => {
-        if ($scope.order.details.some(od => od.plan_id === $scope.newItem.plan_id)) {
-            toaster.pop('error', "ผลการตรวจสอบ", "คุณเลือกรายการซ้ำ !!!");
-        } else {
+        // if ($scope.order.details.some(od => od.plan_id === $scope.newItem.plan_id)) {
+        //     toaster.pop('error', "ผลการตรวจสอบ", "คุณเลือกรายการซ้ำ !!!");
+        // } else {
             $scope.order.details.push({ ...$scope.newItem });
     
             $scope.calculateTotal();
             $scope.clearNewItem();
-        }
+        // }
     };
 
     $scope.removeOrderItem = (planId) => {
         $scope.order.details = $scope.order.details.filter(d => d.plan_id !== planId);
 
         $scope.calculateTotal();
+    };
+
+    $scope.isSelected = function(planId) {
+        if ($scope.order.details.length == 0) return false;
+
+        return $scope.order.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
     };
 
     $scope.onEditItem = (planId) => {
