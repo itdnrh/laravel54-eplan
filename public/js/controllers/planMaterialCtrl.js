@@ -175,16 +175,28 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
     $scope.onSelectedItem = function(event, item) {
         if (item) {
-            $('#item_id').val(item.id);
-            $scope.material.item_id = item.id;
-            $scope.material.desc = item.item_name;
-            $scope.material.price_per_unit = item.price_per_unit;
-            $scope.material.unit_id = item.unit_id.toString();
-            $scope.material.have_subitem = item.have_subitem;
-            $scope.material.calc_method = item.calc_method;
+            /** Check existed data by depart */
+            let depart = $scope.material.depart_id === '' ? 0 : $scope.material.depart_id;
 
-            $('#have_subitem').val(item.have_subitem);
-            $('#calc_method').val(item.calc_method);
+            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.material.year}/${depart}/existed`)
+            .then(function(res) {
+                if (res.data.isExisted) {
+                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+                } else {
+                    $('#item_id').val(item.id);
+                    $scope.material.item_id = item.id;
+                    $scope.material.desc = item.item_name;
+                    $scope.material.price_per_unit = item.price_per_unit;
+                    $scope.material.unit_id = item.unit_id.toString();
+                    $scope.material.have_subitem = item.have_subitem;
+                    $scope.material.calc_method = item.calc_method;
+
+                    $('#have_subitem').val(item.have_subitem);
+                    $('#calc_method').val(item.calc_method);
+                }
+            }, function(err) {
+                console.log(err);
+            });
         }
 
         $('#items-list').modal('hide');
