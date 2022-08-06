@@ -42,6 +42,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%; text-align: center;">#</th>
+                                <th style="width: 8%; text-align: center;">รหัสครุภัณฑ์</th>
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                                 <th style="width: 10%;">ราคาต่อหน่วย</th>
@@ -53,8 +54,10 @@
                                 <td style="text-align: center;">
                                     @{{ items_pager.from + index }}
                                 </td>
+                                <td style="text-align: center;">@{{ item.asset_no }}</td>
                                 <td>
                                     @{{ item.item_name }}
+                                    <span ng-show="item.en_name">(@{{ item.en_name }})</span>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ item.unit.name }}

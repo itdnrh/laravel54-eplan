@@ -147,7 +147,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 10%; text-align: center;">รหัสพัสดุ</th>
+                                    <th style="width: 10%; text-align: center;">รหัสครุภัณฑ์</th>
                                     <th style="width: 15%; text-align: center;">ประเภทสินค้า/บริการ</th>
                                     <th>รายการ</th>
                                     <th style="width: 10%; text-align: center;">ราคาต่อหน่วย</th>
@@ -164,9 +164,12 @@
                             <tbody>
                                 <tr ng-repeat="(index, item) in items">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">@{{ item.asset_no }}</td>
                                     <td style="text-align: center;">@{{ item.category.name }}</td>
-                                    <td>@{{ item.item_name }}</td>
+                                    <td>
+                                        @{{ item.item_name }}
+                                        <span ng-show="item.en_name">(@{{ item.en_name }})</span>
+                                    </td>
                                     <td style="text-align: center;">
                                         @{{ item.price_per_unit | currency:'':2 }}
                                     </td>
@@ -248,19 +251,19 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setItems)" aria-label="Previous">
+                                        <a href="#" ng-click="getItemsWithUrl($event, pager.path+ '?page=1', setItems)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setItems)" aria-label="Prev">
+                                        <a href="#" ng-click="getItemsWithUrl($event, pager.prev_page_url, setItems)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
                                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl(pager.path + '?page=' +i)">
+                                        <a href="#" ng-click="getItemsWithUrl(pager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
@@ -272,13 +275,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setItems)" aria-label="Next">
+                                        <a href="#" ng-click="getItemsWithUrl($event, pager.next_page_url, setItems)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setItems)" aria-label="Previous">
+                                        <a href="#" ng-click="getItemsWithUrl($event, pager.path+ '?page=' +pager.last_page, setItems)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

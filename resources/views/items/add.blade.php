@@ -66,18 +66,18 @@
                                 </div>
                                 <div
                                     class="col-md-6 form-group"
-                                    ng-class="{'has-error has-feedback': checkValidate(item, 'parcel_no')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(item, 'asset_no')}"
                                 >
-                                    <label for="">เลขครุภัณฑ์ (ถ้ามี)</label>
+                                    <label for="">รหัสครุภัณฑ์ (ถ้ามี)</label>
                                     <input
                                         type="text"
-                                        id="parcel_no"
-                                        name="parcel_no"
-                                        ng-model="item.parcel_no"
+                                        id="asset_no"
+                                        name="asset_no"
+                                        ng-model="item.asset_no"
                                         class="form-control"
                                     />
-                                    <span class="help-block" ng-show="checkValidate(item, 'parcel_no')">
-                                        @{{ formError.errors.parcel_no[0] }}
+                                    <span class="help-block" ng-show="checkValidate(item, 'asset_no')">
+                                        @{{ formError.errors.asset_no[0] }}
                                     </span>
                                 </div>
                                 <div
@@ -123,7 +123,7 @@
                                     class="col-md-12 form-group"
                                     ng-class="{'has-error has-feedback': checkValidate(item, 'item_name')}"
                                 >
-                                    <label for="">ชื่อสินค้า/บริการ</label>
+                                    <label for="">ชื่อสินค้า/บริการ (ไทย)</label>
                                     <input
                                         type="text"
                                         id="item_name"
@@ -133,6 +133,22 @@
                                     />
                                     <span class="help-block" ng-show="checkValidate(item, 'item_name')">
                                         @{{ formError.errors.item_name[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="col-md-12 form-group"
+                                    ng-class="{'has-error has-feedback': checkValidate(item, 'en_name')}"
+                                >
+                                    <label for="">ชื่อสินค้า/บริการ (อังกฤษ)</label>
+                                    <input
+                                        type="text"
+                                        id="en_name"
+                                        name="en_name"
+                                        ng-model="item.en_name"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(item, 'en_name')">
+                                        @{{ formError.errors.en_name[0] }}
                                     </span>
                                 </div>
                                 <div

@@ -12,11 +12,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
     $scope.item = {
         id: '',
-        parcel_no: '',
+        asset_no: '',
         plan_type_id: '',
         category_id: '',
         group_id: '',
         item_name: '',
+        en_name: '',
         price_per_unit: '',
         unit_id: '',
         in_stock: 0,
@@ -27,7 +28,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -37,7 +38,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     };
 
     // $('#doc_date')
-    //     .datepicker(dtpOptions)
+    //     .datepicker(dtpDateOptions)
     //     .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
@@ -49,11 +50,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     const clearItem = function() {
         $scope.item = {
             id: '',
-            parcel_no: '',
+            asset_no: '',
             plan_type_id: '',
             category_id: '',
             group_id: '',
             item_name: '',
+            en_name: '',
             price_per_unit: '',
             unit_id: '',
             in_stock: 0,
@@ -92,7 +94,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         $scope.pager = pager;
     };
 
-    $scope.getDataWithUrl = function(e, url, cb) {
+    $scope.getItemsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -117,11 +119,17 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
     };
 
     $scope.getById = function(id, cb) {
+        $scope.loading = false;
+
         $http.get(`${CONFIG.apiUrl}/items/${id}`)
         .then(function(res) {
             cb(res.data.item);
+
+            $scope.loading = false;
         }, function(err) {
             console.log(err);
+
+            $scope.loading = false;
         });
     }
 
@@ -129,8 +137,9 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         if (item) {
             console.log(item);
             $scope.item.id              = item.id;
-            $scope.item.parcel_no       = item.parcel_no;
+            $scope.item.asset_no        = item.asset_no;
             $scope.item.item_name       = item.item_name;
+            $scope.item.en_name         = item.en_name;
             $scope.item.price_per_unit  = item.price_per_unit;
             $scope.item.in_stock        = item.in_stock;
             $scope.item.first_year      = item.first_year;
@@ -142,7 +151,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             /** Convert int value to string */
             $scope.item.plan_type_id    = item.plan_type_id.toString();
             $scope.item.category_id     = item.category_id.toString();
-            $scope.item.group_id        = item.group_id ? plan.group_id.toString() : '';
+            $scope.item.group_id        = item.group_id ? item.group_id.toString() : '';
             $scope.item.unit_id         = item.unit_id.toString();
 
             /** */

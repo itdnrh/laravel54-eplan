@@ -158,7 +158,9 @@ class ItemController extends Controller
             $item->plan_type_id = $req['plan_type_id'];
             $item->category_id  = $req['category_id'];
             $item->group_id     = $req['group_id'];
+            $item->asset_no     = $req['asset_no'];
             $item->item_name    = $req['item_name'];
+            $item->en_name      = $req['en_name'];
             $item->price_per_unit   = $req['price_per_unit'];
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
@@ -205,7 +207,9 @@ class ItemController extends Controller
             $item->plan_type_id = $req['plan_type_id'];
             $item->category_id  = $req['category_id'];
             $item->group_id     = $req['group_id'];
+            $item->asset_no     = $req['asset_no'];
             $item->item_name    = $req['item_name'];
+            $item->en_name      = $req['en_name'];
             $item->price_per_unit   = $req['price_per_unit'];
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
