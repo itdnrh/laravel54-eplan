@@ -277,8 +277,6 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
-        @include('supports._support-details')
-
     </section>
 
     <script>
