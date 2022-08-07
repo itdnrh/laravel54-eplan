@@ -96,6 +96,7 @@
                                         id="category_id"
                                         name="category_id"
                                         ng-model="item.category_id"
+                                        ng-change="onCategorySelected(item.category_id);"
                                         class="form-control"
                                     >
                                         <option value="">-- เลือกประเภทสินค้า/บริการ --</option>

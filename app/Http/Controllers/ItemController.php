@@ -70,6 +70,7 @@ class ItemController extends Controller
         /** Get params from query string */
         $type = $req->get('type');
         $cate = $req->get('cate');
+        $group = $req->get('group');
         $name = $req->get('name');
         $inStock = $req->get('in_stock');
 
@@ -79,6 +80,9 @@ class ItemController extends Controller
                     })
                     ->when(!empty($cate), function($q) use ($cate) {
                         $q->where('category_id', $cate);
+                    })
+                    ->when(!empty($group), function($q) use ($group) {
+                        $q->where('group_id', $group);
                     })
                     ->when(!empty($inStock), function($q) use ($inStock) {
                         $q->where('in_stock', $inStock);

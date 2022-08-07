@@ -18,12 +18,32 @@
                                     id="cboCategory"
                                     name="cboCategory"
                                     ng-model="cboCategory"
-                                    ng-change="handleInputChange('cboCategory', cboCategory); getItems();"
+                                    ng-change="
+                                        handleInputChange('cboCategory', cboCategory);
+                                        onCategorySelected(cboCategory);
+                                        getItems();
+                                    "
                                     class="form-control"
                                 >
                                     <option value="">-- เลือกประเภทสินค้า/บริการ --</option>
                                     <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
                                         @{{ category.name }}
+                                    </option>
+                                </select>
+                                <select
+                                    type="text"
+                                    id="cboGroup"
+                                    name="cboGroup"
+                                    ng-model="cboGroup"
+                                    ng-change="
+                                        handleInputChange('cboGroup', cboGroup);
+                                        getItems();
+                                    "
+                                    class="form-control"
+                                >
+                                    <option value="">-- เลือกกลุ่มสินค้า/บริการ --</option>
+                                    <option ng-repeat="group in forms.groups" value="@{{ group.id }}">
+                                        @{{ group.name }}
                                     </option>
                                 </select>
         

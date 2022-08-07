@@ -53,6 +53,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     $scope.cboPlanType = "";
     $scope.cboSupplier = "";
     $scope.cboCategory = "";
+    $scope.cboGroup = "";
     $scope.cboFaction = "";
     $scope.cboDepart = "";
     $scope.cboDivision = "";
@@ -186,6 +187,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
     };
 
+    $scope.onCategorySelected = function(cate) {
+        $scope.forms.groups = $scope.temps.groups.filter(group => group.category_id === parseInt(cate));
+    };
+
     $scope.onFilterExpenses = function(type) {
         $scope.forms.expenses = $scope.temps.expenses.filter(ex => ex.expense_type_id === parseInt(type));
     };
@@ -215,10 +220,11 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let group = $scope.cboGroup === '' ? '' : $scope.cboGroup;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
-        $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&name=${name}&in_stock=${in_stock}`)
+        $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&group=${group}&name=${name}&in_stock=${in_stock}`)
         .then(function(res) {
             $scope.setItems(res);
 
