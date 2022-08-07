@@ -10,7 +10,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.material = {
         material_id: '',
         in_plan: 'I',
-        year: (moment().year() + 543).toString(),
+        year: '2566', //(moment().year() + 543).toString(),
         plan_no: '',
         faction_id: '',
         depart_id: '',
@@ -82,7 +82,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material = {
             material_id: '',
             in_plan: 'I',
-            year: (moment().year() + 543).toString(),
+            year: '2566', //(moment().year() + 543).toString(),
             plan_no: '',
             faction_id: '',
             depart_id: '',
