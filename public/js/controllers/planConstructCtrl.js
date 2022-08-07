@@ -243,8 +243,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.construct.amount             = plan.plan_item.amount;
         $scope.construct.sum_price          = plan.plan_item.sum_price;
+        $scope.construct.request_cause      = plan.plan_item.request_cause;
         $scope.construct.start_month        = plan.start_month.toString();
-        $scope.construct.request_cause      = plan.request_cause;
         $scope.construct.reason             = plan.reason;
         $scope.construct.remark             = plan.remark;
         $scope.construct.approved           = plan.approved;
@@ -258,6 +258,13 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.budget_src_id      = plan.budget_src_id.toString();
         $scope.construct.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
         $scope.construct.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+        
+        $scope.construct.have_subitem       = plan.plan_item.item.have_subitem;
+        $scope.construct.calc_method        = plan.plan_item.item.calc_method;
+
+        $('#have_subitem').val(plan.plan_item.item.have_subitem);
+        $('#calc_method').val(plan.plan_item.item.calc_method);
+
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

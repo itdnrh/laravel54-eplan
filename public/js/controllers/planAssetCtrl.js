@@ -240,9 +240,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.asset.amount             = plan.plan_item.amount;
         $scope.asset.sum_price          = plan.plan_item.sum_price;
+        $scope.asset.request_cause      = plan.plan_item.request_cause;
+        $scope.asset.have_amount        = plan.plan_item.have_amount;
         $scope.asset.start_month        = plan.start_month.toString();
-        $scope.asset.request_cause      = plan.request_cause;
-        $scope.asset.have_amount        = plan.have_amount;
         $scope.asset.reason             = plan.reason;
         $scope.asset.remark             = plan.remark;
         $scope.asset.approved           = plan.approved;
@@ -256,6 +256,12 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.budget_src_id      = plan.budget_src_id.toString();
         $scope.asset.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
         $scope.asset.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+        
+        $scope.asset.have_subitem       = plan.plan_item.item.have_subitem;
+        $scope.asset.calc_method        = plan.plan_item.item.calc_method;
+
+        $('#have_subitem').val(plan.plan_item.item.have_subitem);
+        $('#calc_method').val(plan.plan_item.item.calc_method);
 
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);

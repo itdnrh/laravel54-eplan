@@ -222,9 +222,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.price_per_unit   = plan.plan_item.price_per_unit;
         $scope.service.amount           = plan.plan_item.amount;
         $scope.service.sum_price        = plan.plan_item.sum_price;
+        $scope.service.request_cause    = plan.plan_item.request_cause;
+        $scope.service.have_amount      = plan.plan_item.have_amount;
         $scope.service.start_month      = plan.start_month.toString();
-        $scope.service.request_cause    = plan.request_cause;
-        $scope.service.have_amount      = plan.have_amount;
         $scope.service.reason           = plan.reason;
         $scope.service.remark           = plan.remark;
         $scope.service.approved         = plan.approved;
@@ -238,6 +238,13 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.budget_src_id    = plan.budget_src_id.toString();
         $scope.service.strategic_id     = plan.strategic_id && plan.strategic_id.toString();
         $scope.service.service_plan_id  = plan.service_plan_id && plan.service_plan_id.toString();
+
+        $scope.service.have_subitem     = plan.plan_item.item.have_subitem;
+        $scope.service.calc_method      = plan.plan_item.item.calc_method;
+
+        $('#have_subitem').val(plan.plan_item.item.have_subitem);
+        $('#calc_method').val(plan.plan_item.item.calc_method);
+
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

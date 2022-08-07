@@ -229,9 +229,9 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material.price_per_unit  = plan.plan_item.price_per_unit;
         $scope.material.amount          = plan.plan_item.amount;
         $scope.material.sum_price       = plan.plan_item.sum_price;
+        $scope.material.request_cause   = plan.plan_item.request_cause;
+        $scope.material.have_amount     = plan.plan_item.have_amount;
         $scope.material.start_month     = plan.start_month.toString();
-        $scope.material.request_cause   = plan.request_cause;
-        $scope.material.have_amount     = plan.have_amount;
         $scope.material.reason          = plan.reason;
         $scope.material.remark          = plan.remark;
         $scope.material.approved        = plan.approved;
@@ -245,6 +245,13 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material.budget_src_id   = plan.budget_src_id.toString();
         $scope.material.strategic_id    = plan.strategic_id && plan.strategic_id.toString();
         $scope.material.service_plan_id = plan.service_plan_id && plan.service_plan_id.toString();
+
+        $scope.material.have_subitem    = plan.plan_item.item.have_subitem;
+        $scope.material.calc_method     = plan.plan_item.item.calc_method;
+
+        $('#have_subitem').val(plan.plan_item.item.have_subitem);
+        $('#calc_method').val(plan.plan_item.item.calc_method);
+
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

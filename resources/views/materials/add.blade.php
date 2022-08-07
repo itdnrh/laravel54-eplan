@@ -44,12 +44,7 @@
                     </div>
 
                     <form id="frmNewMaterial" name="frmNewMaterial" method="post" action="{{ url('/materials/store?in_stock='.$in_stock) }}" role="form" enctype="multipart/form-data">
-                        <input
-                            type="hidden"
-                            id="user"
-                            name="user"
-                            value="{{ Auth::user()->person_id }}"
-                        />
+                        <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
                         <input type="hidden" id="have_subitem" name="have_subitem" />
                         <input type="hidden" id="calc_method" name="calc_method" />
                         {{ csrf_field() }}
