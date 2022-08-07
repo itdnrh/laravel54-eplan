@@ -219,8 +219,8 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.items_pager = null;
 
         let type = $scope.planType === '' ? '' : $scope.planType;
-        let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let group = $scope.cboGroup === '' ? '' : $scope.cboGroup;
+        let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let group = !$scope.cboGroup ? '' : $scope.cboGroup;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
@@ -253,11 +253,12 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.items_pager = null;
 
         let type = $scope.planType === '' ? '' : $scope.planType;
-        let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let group = !$scope.cboGroup ? '' : $scope.cboGroup;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&in_stock=${in_stock}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&group=${group}&name=${name}&in_stock=${in_stock}`)
         .then(function(res) {
             cb(res);
 
