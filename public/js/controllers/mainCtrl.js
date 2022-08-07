@@ -81,6 +81,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
     $scope.newItem = {
         item_name: '',
+        en_name: '',
         plan_type_id: '',
         category_id: '',
         group_id: '',
@@ -358,6 +359,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     const clearNewItem = function() {
         $scope.newItem = {
             item_name: '',
+            en_name: '',
             plan_type_id: '',
             category_id: '',
             group_id: '',

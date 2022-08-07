@@ -8,10 +8,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div
-                            class="col-md-6 form-group"
+                            class="col-md-12 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['plan_type_id']}"
                         >
-                            <label for="">ประเภทแผน</label>
+                            <label for="">ประเภทแผน <span class="required-field">*</span></label>
                             <select
                                 type="text"
                                 id="plan_type_id"
@@ -36,7 +36,7 @@
                             class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['category_id']}"
                         >
-                            <label for="">ประเภทสินค้า/บริการ</label>
+                            <label for="">ประเภทสินค้า/บริการ <span class="required-field">*</span></label>
                             <select
                                 type="text"
                                 id="category_id"
@@ -75,7 +75,7 @@
                             class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['item_name']}"
                         >
-                            <label for="">ชื่อสินค้า/บริการ</label>
+                            <label for="">ชื่อสินค้า/บริการ (ไทย) <span class="required-field">*</span></label>
                             <input
                                 type="text"
                                 id="item_name"
@@ -89,9 +89,25 @@
                         </div>
                         <div
                             class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': newItem.error['en_name']}"
+                        >
+                            <label for="">ชื่อสินค้า/บริการ (อังกฤษ)</label>
+                            <input
+                                type="text"
+                                id="en_name"
+                                name="en_name"
+                                ng-model="newItem.en_name"
+                                class="form-control"
+                            />
+                            <span class="help-block" ng-show="newItem.error['en_name']">
+                                @{{ newItem.error['en_name'] }}
+                            </span>
+                        </div>
+                        <div
+                            class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['price_per_unit']}"
                         >
-                            <label for="">ราคา</label>
+                            <label for="">ราคา <span class="required-field">*</span></label>
                             <input
                                 type="text"
                                 id="price_per_unit"
@@ -107,7 +123,7 @@
                             class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['unit_id']}"
                         >
-                            <label for="">หน่วยนับ</label>
+                            <label for="">หน่วยนับ <span class="required-field">*</span></label>
                             <select
                                 type="text"
                                 id="unit_id"
