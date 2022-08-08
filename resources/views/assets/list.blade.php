@@ -33,8 +33,6 @@
         <div class="row">
             <div class="col-md-12">
 
-            {{ Auth::user()->memberOf->depart_id }}
-            
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
