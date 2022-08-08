@@ -182,13 +182,14 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.onSelectedItem = function(event, item) {
         if (item) {
             /** Check existed data by depart */
-            let depart = $scope.asset.depart_id === '' ? 0 : $scope.asset.depart_id;
+            // let depart = $scope.asset.depart_id === '' ? 0 : $scope.asset.depart_id;
+            // let division = $scope.asset.division_id === '' ? 0 : $scope.asset.division_id;
 
-            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.asset.year}/${depart}/existed`)
-            .then(function(res) {
-                if (res.data.isExisted) {
-                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
-                } else {
+            // $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.asset.year}/${depart}/${division}/existed`)
+            // .then(function(res) {
+            //     if (res.data.isExisted) {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+            //     } else {
                     $('#item_id').val(item.id);
                     $scope.asset.item_id = item.id;
                     $scope.asset.desc = item.item_name;
@@ -199,10 +200,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
                     $('#have_subitem').val(item.have_subitem);
                     $('#calc_method').val(item.calc_method);
-                }
-            }, function(err) {
-                console.log(err);
-            });
+        //         }
+        //     }, function(err) {
+        //         console.log(err);
+        //     });
         }
 
         $('#items-list').modal('hide');

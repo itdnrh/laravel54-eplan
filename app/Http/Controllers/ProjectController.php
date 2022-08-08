@@ -308,7 +308,7 @@ class ProjectController extends Controller
         /** Upload attach file */
         $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
         if (!empty($attachment)) {
-            $plan->attachment = $attachment;
+            $project->attachment = $attachment;
         }
 
         if($project->save()) {

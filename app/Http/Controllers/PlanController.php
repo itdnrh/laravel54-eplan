@@ -74,13 +74,16 @@ class PlanController extends Controller
         }
     }
 
-    public function isExisted($itemId, $year, $depart)
+    public function isExisted($itemId, $year, $depart, $division)
     {
         $planCount = Plan::join('plan_items','plan_items.plan_id','=','plans.id')
                         ->where('plans.year',  $year)
                         ->where('plan_items.item_id',  $itemId)
                         ->when(!empty($depart), function($q) use ($depart) {
                             $q->where('plans.depart_id', $depart);
+                        })
+                        ->when(!empty($division), function($q) use ($division) {
+                            $q->where('plans.division_id', $division);
                         })
                         ->get()
                         ->count();

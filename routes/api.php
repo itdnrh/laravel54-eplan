@@ -49,7 +49,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('constructs/{id}', 'PlanController@getById');
 
     /** แผนเงินบำรุง */
-    Route::get('plans/{itemId}/{year}/{depart}/existed', 'PlanController@isExisted');
+    Route::get('plans/{itemId}/{year}/{depart}/{division}/existed', 'PlanController@isExisted');
 
     /** ควบคุมกำกับติดตาม */
     Route::get('monthly', 'MonthlyController@getAll');
