@@ -46,9 +46,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         window.location.href = `${CONFIG.baseUrl}/${path}`;
     };
 /** ################################################################################## */
-    $scope.cboYear = parseInt(moment().format('MM')) > 9
-                        ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
+    $scope.cboYear = '2566';
+    // $scope.cboYear = parseInt(moment().format('MM')) > 9
+    //                     ? (moment().year() + 544).toString()
+    //                     : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
     $scope.cboPlanType = "";
     $scope.cboSupplier = "";

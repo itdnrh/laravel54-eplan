@@ -197,14 +197,14 @@
                                 <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
-                                <a
+                                <!-- <a
                                     href="#"
                                     class="btn bg-maroon pull-right"
                                     style="margin-right: 5px;"
                                     ng-click="addFromLastYear()"
                                 >
                                     เพิ่มรายการจากปีที่แล้ว
-                                </a>
+                                </a> -->
                                 <a href="#" ng-show="materials.length" ng-click="exportListToExcel($event, {{ $in_stock }})" class="btn btn-success pull-right" style="margin-right: 5px;">
                                     Excel
                                 </a>
