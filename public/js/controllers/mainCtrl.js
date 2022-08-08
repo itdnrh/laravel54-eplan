@@ -81,14 +81,17 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     $scope.items_pager = null;
 
     $scope.newItem = {
-        item_name: '',
-        en_name: '',
         plan_type_id: '',
         category_id: '',
         group_id: '',
+        item_name: '',
+        en_name: '',
         price_per_unit: '',
         unit_id: '',
         in_stock: 0,
+        first_year: '2565',
+        have_subitem: 0,
+        calc_method: 1,
         remark: '',
         error: {}
     };
@@ -359,14 +362,17 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
     const clearNewItem = function() {
         $scope.newItem = {
-            item_name: '',
-            en_name: '',
             plan_type_id: '',
             category_id: '',
             group_id: '',
+            item_name: '',
+            en_name: '',
             price_per_unit: '',
             unit_id: '',
-            in_stock: '',
+            in_stock: 0,
+            first_year: '2565',
+            have_subitem: 0,
+            calc_method: 1,
             remark: '',
             error: {}
         };
