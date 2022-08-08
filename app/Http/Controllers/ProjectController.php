@@ -279,7 +279,7 @@ class ProjectController extends Controller
             "projectTypes"  => ProjectType::all(),
             "budgets"       => BudgetSource::where('id', '1')->get(),
             "strategics"    => Strategic::all(),
-            "strategies"    => Strategy::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
             "kpis"          => Kpi::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
