@@ -32,7 +32,7 @@ class ProjectController extends Controller
             'project_type_id' => 'required',
             'strategic_id'  => 'required',
             'strategy_id'   => 'required',
-            'kpi_id'        => 'required',
+            // 'kpi_id'        => 'required',
             'total_budget'  => 'required',
             'budget_src_id' => 'required',
             'owner_depart'  => 'required',
