@@ -232,10 +232,9 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.in_plan            = plan.in_plan;
         $scope.asset.year               = plan.year.toString();
         $scope.asset.plan_no            = plan.plan_no;
-        $scope.asset.item_id            = plan.plan_item.item_id;
-        $('#item_id').val(plan.plan_item.item_id);
 
-        $scope.asset.desc               = plan.plan_item.item.item_name;
+        $scope.asset.item_id            = plan.plan_item.item ? plan.plan_item.item_id : '';
+        $scope.asset.desc               = plan.plan_item.item ? plan.plan_item.item.item_name : '';
         $scope.asset.spec               = plan.plan_item.spec;
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.asset.amount             = plan.plan_item.amount;
@@ -257,11 +256,14 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
         $scope.asset.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
         
-        $scope.asset.have_subitem       = plan.plan_item.item.have_subitem;
-        $scope.asset.calc_method        = plan.plan_item.item.calc_method;
+        $scope.asset.have_subitem       = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
+        $scope.asset.calc_method        = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
 
-        $('#have_subitem').val(plan.plan_item.item.have_subitem);
-        $('#calc_method').val(plan.plan_item.item.calc_method);
+        if (plan.plan_item.item) {
+            $('#item_id').val(plan.plan_item.item_id);
+            $('#have_subitem').val(plan.plan_item.item.have_subitem);
+            $('#calc_method').val(plan.plan_item.item.calc_method);
+        }
 
         /** Convert db date to thai date. */            
         // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
