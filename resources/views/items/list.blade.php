@@ -39,22 +39,7 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="row">
-                                <!-- <div class="form-group col-md-6">
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="cboYear"
-                                        name="cboYear"
-                                        ng-model="cboYear"
-                                        class="form-control"
-                                        ng-change="getAll($event)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                </div> -->
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ประเภทแผน</label>
                                     <select
                                         id="cboPlanType"
@@ -71,14 +56,14 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ประเภทสินค้า/บริการ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="onCategorySelected(cboCategory); getAll($event);"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -86,25 +71,21 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div><!-- /.row -->
-                            <div class="row">
-                                <!-- <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>กลุ่มสินค้า/บริการ</label>
                                     <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
+                                        id="cboGroup"
+                                        name="cboGroup"
+                                        ng-model="cboGroup"
                                         class="form-control"
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
+                                        <option ng-repeat="group in forms.groups" value="@{{ group.id }}">
+                                            @{{ group.name }}
                                         </option>
                                     </select>
-                                </div> -->
-                            <!-- </div>
-                            <div class="row"> -->
+                                </div>
                                 <div class="form-group col-md-12">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input

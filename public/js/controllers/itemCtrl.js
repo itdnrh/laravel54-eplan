@@ -71,12 +71,13 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         $scope.items = [];
         $scope.pager = null;
 
-        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let name = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let group   = !$scope.cboGroup ? '' : $scope.cboGroup;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
 
-        $http.get(`${CONFIG.apiUrl}/items?type=${type}&cate=${cate}&name=${name}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/items?type=${type}&cate=${cate}&group=${group}&name=${name}&status=${status}`)
         .then(function(res) {
             $scope.setItems(res);
 
@@ -102,12 +103,13 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         $scope.items = [];
         $scope.pager = null;
 
-        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let group   = !$scope.cboGroup ? '' : $scope.cboGroup;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let name  = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&status=${status}&name=${name}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&group=${group}&status=${status}&name=${name}`)
         .then(function(res) {
             cb(res);
 

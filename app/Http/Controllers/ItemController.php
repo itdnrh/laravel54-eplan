@@ -104,6 +104,7 @@ class ItemController extends Controller
         /** Get params from query string */
         $type = $req->get('type');
         $cate = $req->get('cate');
+        $group = $req->get('group');
         $name = $req->get('name');
 
         $items = Item::with('planType','category','group','unit')
@@ -113,11 +114,14 @@ class ItemController extends Controller
                     ->when(!empty($cate), function($q) use ($cate) {
                         $q->where('category_id', $cate);
                     })
+                    ->when(!empty($group), function($q) use ($group) {
+                        $q->where('group_id', $group);
+                    })
                     ->when(!empty($name), function($q) use ($name) {
                         $q->where('item_name', 'like', '%'.$name.'%');
                     })
                     ->orderBy('category_id', 'ASC')
-                    ->orderBy('item_name', 'ASC')
+                    ->orderBy('price_per_unit', 'ASC')
                     ->paginate(10);
 
         return [
