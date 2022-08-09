@@ -190,6 +190,7 @@
                                             ng-model="asset.desc"
                                             class="form-control pull-right"
                                             tabindex="4"
+                                            disabled
                                         />
                                         <input type="hidden" id="item_id" name="item_id" ng-model="asset.item_id" />
                                         <span class="input-group-btn">

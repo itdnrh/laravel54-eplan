@@ -192,6 +192,7 @@
                                             ng-model="material.desc"
                                             class="form-control pull-right"
                                             tabindex="4"
+                                            disabled
                                         />
                                         <input type="hidden" id="item_id" name="item_id" ng-model="material.item_id" />
                                         <span class="input-group-btn">
