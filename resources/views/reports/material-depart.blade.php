@@ -30,12 +30,11 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="box box-primary">
 
+                <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
-
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
@@ -58,9 +57,8 @@
                                         </option>
                                         
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
+                                </div>
+                            </div>
                             <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="form-group">
                                     <label>กลุ่มงาน</label>
@@ -80,9 +78,8 @@
                                             @{{ depart.depart_name }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
+                                </div>
+                            </div>
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -98,7 +95,7 @@
                                         @{{ y }}
                                     </option>
                                 </select>
-                            </div><!-- /.form group -->
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -152,10 +149,27 @@
                                     <td style="text-align: right;">@{{ plan.agriculture | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
                                 </tr>
+                                <tr style="font-weight: bold;">
+                                    <td style="text-align: center;" colspan="2">รวม</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.medical | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.science | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.dent | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.office | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.computer | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.home | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.clothes | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.fuel | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.sticker | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.electric | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.vehicle | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.ads | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.agriculture | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalMaterialByCategories.total | currency:'':0 }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
-
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
                             <div class="col-md-4">
