@@ -84,14 +84,16 @@ class ItemController extends Controller
                     ->when(!empty($group), function($q) use ($group) {
                         $q->where('group_id', $group);
                     })
-                    ->when(!empty($inStock), function($q) use ($inStock) {
+                    ->when($inStock != '', function($q) use ($inStock) {
                         $q->where('in_stock', $inStock);
                     })
                     ->when(!empty($name), function($q) use ($name) {
                         $q->where('item_name', 'like', '%'.$name.'%');
+                        $q->orWhere('en_name', 'like', '%'.$name.'%');
                     })
                     ->orderBy('category_id', 'ASC')
                     ->orderBy('item_name', 'ASC')
+                    ->orderBy('price_per_unit', 'ASC')
                     ->paginate(10);
 
         return [
@@ -106,6 +108,7 @@ class ItemController extends Controller
         $cate = $req->get('cate');
         $group = $req->get('group');
         $name = $req->get('name');
+        $inStock = $req->get('in_stock');
 
         $items = Item::with('planType','category','group','unit')
                     ->when(!empty($type), function($q) use ($type) {
@@ -120,6 +123,9 @@ class ItemController extends Controller
                     ->when(!empty($name), function($q) use ($name) {
                         $q->where('item_name', 'like', '%'.$name.'%');
                         $q->orWhere('en_name', 'like', '%'.$name.'%');
+                    })
+                    ->when($inStock != '', function($q) use ($inStock) {
+                        $q->where('in_stock', $inStock);
                     })
                     ->orderBy('category_id', 'ASC')
                     ->orderBy('price_per_unit', 'ASC')
