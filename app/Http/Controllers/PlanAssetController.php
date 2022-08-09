@@ -34,7 +34,7 @@ class PlanAssetController extends Controller
             'faction_id'        => 'required',
             'depart_id'         => 'required',
             // 'division_id'       => 'required',
-            'desc'              => 'required',
+            'item_id'           => 'required',
             'price_per_unit'    => 'required',
             'unit_id'           => 'required',
             'amount'            => 'required',

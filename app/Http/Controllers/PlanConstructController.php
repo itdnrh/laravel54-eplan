@@ -34,7 +34,7 @@ class PlanConstructController extends Controller
             'faction_id'        => 'required',
             'depart_id'         => 'required',
             // 'division_id'       => 'required',
-            'desc'              => 'required',
+            'item_id'           => 'required',
             'location'          => 'required',
             // 'building_id'       => 'required',
             // 'boq_no'            => 'required',

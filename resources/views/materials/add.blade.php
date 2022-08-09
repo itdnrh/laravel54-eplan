@@ -187,7 +187,7 @@
                             <div class="row">
                                 <div
                                     class="form-group col-md-12"
-                                    ng-class="{'has-error has-feedback': checkValidate(material, 'desc')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(material, 'item_id')}"
                                 >
                                     <label>รายการ : <span class="required-field">*</span></label>
                                     <div class="input-group">
@@ -210,8 +210,8 @@
                                             </button>
                                         </span>
                                     </div>
-                                    <span class="help-block" ng-show="checkValidate(material, 'desc')">
-                                        @{{ formError.errors.desc[0] }}
+                                    <span class="help-block" ng-show="checkValidate(material, 'item_id')">
+                                        @{{ formError.errors.item_id[0] }}
                                     </span>
                                 </div>
                             </div>
