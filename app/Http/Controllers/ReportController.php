@@ -161,6 +161,7 @@ class ReportController extends Controller
         //                 ? Auth::user()->memberOf->faction_id
         //                 : $req->get('faction');
         $year = $req->get('year');
+        $approved = $req->get('approved');
 
         $plans = \DB::table('plans')
                     ->select(
@@ -185,7 +186,9 @@ class ReportController extends Controller
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
                     ->groupBy('plans.depart_id')
                     ->where('plans.year', $year)
-                    ->where('plans.approved', 'A')
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
                     ->get();
 
         return [

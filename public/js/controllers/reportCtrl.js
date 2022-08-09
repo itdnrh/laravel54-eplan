@@ -13,9 +13,6 @@ app.controller(
         $scope.cboFaction = '';
         $scope.cboDepart = '';
         $scope.cboDivision = '';
-        $scope.dtpYear = parseInt(moment().format('MM')) > 9
-                            ? (moment().year() + 544).toString()
-                            : (moment().year() + 543).toString();
         $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
         $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
 
@@ -67,14 +64,22 @@ app.controller(
         };
 
         $scope.plans = [];
+        $scope.totalByPlanTypes = {
+            asset: 0,
+            construct: 0,
+            material: 0,
+            service: 0,
+            total: 0,
+        };
+
         $scope.getSummaryByDepart = function () {
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
-            let year = $scope.dtpYear === ''
-                        ? $scope.dtpYear = parseInt(moment().format('MM')) > 9
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
                             : moment().year() + 543 
-                        : $scope.dtpYear;
+                        : $scope.cboYear;
             let approved = !$scope.cboApproved ? '' : 'A';
 
             $http.get(`${CONFIG.apiUrl}/reports/summary-depart?year=${year}&approved=${approved}`)
@@ -86,6 +91,15 @@ app.controller(
                     return plan;
                 });
 
+                /** Sum total of plan by plan_type */
+                res.data.plans.forEach(plan => {
+                    $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                    $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                    $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                    $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                    $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                });
+
                 $scope.loading = false;
             }, function (err) {
                 console.log(err);
@@ -93,14 +107,15 @@ app.controller(
             });
         };
 
+        $scope.totalAssetByCategories = {};
         $scope.getAssetByDepart = function () {
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
-            let year = $scope.dtpYear === ''
-                        ? $scope.dtpYear = parseInt(moment().format('MM')) > 9
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
                             : moment().year() + 543 
-                        : $scope.dtpYear;
+                        : $scope.cboYear;
             let approved = !$scope.cboApproved ? '' : 'A';
 
             $http.get(`${CONFIG.apiUrl}/reports/asset-depart?year=${year}&approved=${approved}`)
@@ -119,16 +134,18 @@ app.controller(
             });
         };
 
+        $scope.totalMaterialByCategories = {};
         $scope.getMaterialByDepart = function () {
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
-            let year = $scope.dtpYear === ''
-                        ? $scope.dtpYear = parseInt(moment().format('MM')) > 9
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
-                            : moment().year() + 543 
-                        : $scope.dtpYear;
+                            : moment().year() + 543
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/material-depart?year=${year}`)
+            $http.get(`${CONFIG.apiUrl}/reports/material-depart?year=${year}&approved=${approved}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
@@ -151,11 +168,11 @@ app.controller(
 
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
-            let year = $scope.dtpYear === ''
-                        ? $scope.dtpYear = parseInt(moment().format('MM')) > 9
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
                             : moment().year() + 543 
-                        : $scope.dtpYear;
+                        : $scope.cboYear;
 
             $http.get(`${URL}&depart=${depart}&division=${division}&year=${year}`)
             .then(function (res) {

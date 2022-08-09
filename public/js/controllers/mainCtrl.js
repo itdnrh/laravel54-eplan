@@ -188,16 +188,18 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
         $scope.forms.divisions = $scope.temps.divisions.filter(div => div.depart_id == depart);
     };
 
-    $scope.onFilterCategories = function(type) {
-        $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
-    };
-
     $scope.onCategorySelected = function(cate) {
-        $scope.forms.groups = $scope.temps.groups.filter(group => group.category_id === parseInt(cate));
+        if ($scope.temps.groups.some(group => group.category_id === parseInt(cate))) {
+            $scope.forms.groups = $scope.temps.groups.filter(group => group.category_id === parseInt(cate));
+        }
     };
 
     $scope.onFilterExpenses = function(type) {
         $scope.forms.expenses = $scope.temps.expenses.filter(ex => ex.expense_type_id === parseInt(type));
+    };
+
+    $scope.onFilterCategories = function(type) {
+        $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
     };
 
     $scope.onPlanTypeSelected = function(type) {

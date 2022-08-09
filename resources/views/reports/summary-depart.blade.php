@@ -31,12 +31,11 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="box box-primary">
 
+                <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
-
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
@@ -88,9 +87,9 @@
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
                                 <select
-                                    id="dtpYear"
-                                    name="dtpYear"
-                                    ng-model="dtpYear"
+                                    id="cboYear"
+                                    name="cboYear"
+                                    ng-model="cboYear"
                                     class="form-control"
                                     ng-change="getSummaryByDepart()"
                                 >
@@ -137,10 +136,17 @@
                                     <td style="text-align: right;">@{{ plan.construct | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
                                 </tr>
+                                <tr style="font-weight: bold;">
+                                    <td style="text-align: center;" colspan="2">รวม</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
-
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
                             <div class="col-md-4">

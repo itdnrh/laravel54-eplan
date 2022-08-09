@@ -87,9 +87,9 @@
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
                                 <select
-                                    id="dtpYear"
-                                    name="dtpYear"
-                                    ng-model="dtpYear"
+                                    id="cboYear"
+                                    name="cboYear"
+                                    ng-model="cboYear"
                                     class="form-control"
                                     ng-change="getAssetByDepart()"
                                 >

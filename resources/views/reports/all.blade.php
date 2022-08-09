@@ -27,7 +27,7 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <ul style="list-style: none; padding: 5px; padding-left: 10px;">
+                                <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/summary-depart') }}">
                                             <i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
@@ -35,7 +35,7 @@
                                     </li>
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/summary-depart') }}">
-                                            <i class="fa fa-circle-o"></i> รายงานครุภัณฑ์ราคา > 100,000 บาท
+                                            <i class="fa fa-circle-o"></i> รายงานครุภัณฑ์ราคามากกว่า 100,000 บาท
                                         </a>
                                     </li>
                                     <li style="margin: 5px;">
