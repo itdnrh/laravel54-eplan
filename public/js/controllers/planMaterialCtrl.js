@@ -178,11 +178,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             /** Check existed data by depart */
             let depart = $scope.material.depart_id === '' ? 0 : $scope.material.depart_id;
 
-            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.material.year}/${depart}/existed`)
-            .then(function(res) {
-                if (res.data.isExisted) {
-                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
-                } else {
+            // $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.material.year}/${depart}/existed`)
+            // .then(function(res) {
+            //     if (res.data.isExisted) {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+            //     } else {
                     $('#item_id').val(item.id);
                     $scope.material.item_id = item.id;
                     $scope.material.desc = item.item_name;
@@ -193,10 +193,10 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
                     $('#have_subitem').val(item.have_subitem);
                     $('#calc_method').val(item.calc_method);
-                }
-            }, function(err) {
-                console.log(err);
-            });
+            //     }
+            // }, function(err) {
+            //     console.log(err);
+            // });
         }
 
         $('#items-list').modal('hide');

@@ -75,8 +75,9 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.dtpYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/summary-depart?year=${year}`)
+            $http.get(`${CONFIG.apiUrl}/reports/summary-depart?year=${year}&approved=${approved}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
@@ -100,8 +101,9 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.dtpYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/asset-depart?year=${year}`)
+            $http.get(`${CONFIG.apiUrl}/reports/asset-depart?year=${year}&approved=${approved}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);

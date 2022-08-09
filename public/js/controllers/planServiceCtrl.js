@@ -172,11 +172,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             /** Check existed data by depart */
             let depart = $scope.service.depart_id === '' ? 0 : $scope.service.depart_id;
 
-            $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.service.year}/${depart}/existed`)
-            .then(function(res) {
-                if (res.data.isExisted) {
-                    toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
-                } else {
+            // $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.service.year}/${depart}/existed`)
+            // .then(function(res) {
+            //     if (res.data.isExisted) {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+            //     } else {
                     $('#item_id').val(item.id);
                     $scope.service.item_id = item.id;
                     $scope.service.desc = item.item_name;
@@ -187,10 +187,10 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
                     $('#have_subitem').val(item.have_subitem);
                     $('#calc_method').val(item.calc_method);
-                }
-            }, function(err) {
-                console.log(err);
-            });
+            //     }
+            // }, function(err) {
+            //     console.log(err);
+            // });
         }
 
         $('#items-list').modal('hide');

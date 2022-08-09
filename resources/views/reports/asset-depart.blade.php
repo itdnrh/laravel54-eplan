@@ -91,7 +91,7 @@
                                     name="dtpYear"
                                     ng-model="dtpYear"
                                     class="form-control"
-                                    ng-change="getSummary()"
+                                    ng-change="getAssetByDepart()"
                                 >
                                     <option value="">-- ทั้งหมด --</option>
                                     <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -113,16 +113,16 @@
                                 <tr style="font-size: 12px;">
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="text-align: left;">หน่วยงาน</th>
-                                    <th style="width: 8%; text-align: center;">ยานพาหนะ</th>
-                                    <th style="width: 8%; text-align: center;">สำนักงาน</th>
-                                    <th style="width: 8%; text-align: center;">คอมพิวเตอร์</th>
-                                    <th style="width: 8%; text-align: center;">การแพทย์</th>
-                                    <th style="width: 8%; text-align: center;">งานบ้านงานครัว</th>
-                                    <th style="width: 8%; text-align: center;">ก่อสร้าง</th>
-                                    <th style="width: 8%; text-align: center;">การเกษตร</th>
-                                    <th style="width: 8%; text-align: center;">โฆษณาและเผยแพร่</th>
-                                    <th style="width: 8%; text-align: center;">ไฟฟ้าและวิทยุ</th>
-                                    <th style="width: 8%; text-align: center;">รวม</th>
+                                    <th style="width: 8%; text-align: right;">ยานพาหนะ</th>
+                                    <th style="width: 8%; text-align: right;">สำนักงาน</th>
+                                    <th style="width: 8%; text-align: right;">คอมพิวเตอร์</th>
+                                    <th style="width: 8%; text-align: right;">การแพทย์</th>
+                                    <th style="width: 8%; text-align: right;">งานบ้านงานครัว</th>
+                                    <th style="width: 8%; text-align: right;">ก่อสร้าง</th>
+                                    <th style="width: 8%; text-align: right;">การเกษตร</th>
+                                    <th style="width: 8%; text-align: right;">โฆษณาและเผยแพร่</th>
+                                    <th style="width: 8%; text-align: right;">ไฟฟ้าและวิทยุ</th>
+                                    <th style="width: 8%; text-align: right;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
