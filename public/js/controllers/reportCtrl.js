@@ -15,6 +15,7 @@ app.controller(
         $scope.cboDivision = '';
         $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
         $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
+        $scope.cboApproved = '';
 
         let dtpOptions = {
             autoclose: true,
@@ -92,13 +93,23 @@ app.controller(
                 });
 
                 /** Sum total of plan by plan_type */
-                res.data.plans.forEach(plan => {
-                    $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
-                    $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
-                    $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
-                    $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
-                    $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
-                });
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                        $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                        $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                        $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                        $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                    });
+                } else {
+                    $scope.totalByPlanTypes = {
+                        asset: 0,
+                        construct: 0,
+                        material: 0,
+                        service: 0,
+                        total: 0,
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {
@@ -140,18 +151,33 @@ app.controller(
                 });
 
                 /** Sum total of plan by plan_type */
-                res.data.plans.forEach(plan => {
-                    $scope.totalAssetByCategories.vehicle       += plan.vehicle;
-                    $scope.totalAssetByCategories.office        += plan.office;
-                    $scope.totalAssetByCategories.computer      += plan.computer;
-                    $scope.totalAssetByCategories.medical       += plan.medical;
-                    $scope.totalAssetByCategories.home          += plan.home;
-                    $scope.totalAssetByCategories.construct     += plan.construct;
-                    $scope.totalAssetByCategories.agriculture   += plan.agriculture;
-                    $scope.totalAssetByCategories.ads           += plan.ads;
-                    $scope.totalAssetByCategories.electric      += plan.electric;
-                    $scope.totalAssetByCategories.total         += plan.total;
-                });
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalAssetByCategories.vehicle       += plan.vehicle;
+                        $scope.totalAssetByCategories.office        += plan.office;
+                        $scope.totalAssetByCategories.computer      += plan.computer;
+                        $scope.totalAssetByCategories.medical       += plan.medical;
+                        $scope.totalAssetByCategories.home          += plan.home;
+                        $scope.totalAssetByCategories.construct     += plan.construct;
+                        $scope.totalAssetByCategories.agriculture   += plan.agriculture;
+                        $scope.totalAssetByCategories.ads           += plan.ads;
+                        $scope.totalAssetByCategories.electric      += plan.electric;
+                        $scope.totalAssetByCategories.total         += plan.total;
+                    });
+                } else {
+                    $scope.totalAssetByCategories = {
+                        vehicle: 0,
+                        office: 0,
+                        computer: 0,
+                        medical: 0,
+                        home: 0,
+                        construct: 0,
+                        agriculture: 0,
+                        ads: 0,
+                        electric: 0,
+                        total: 0
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {
@@ -197,24 +223,45 @@ app.controller(
                     return plan;
                 });
 
-                /** Sum total of plan by plan_type */
-                res.data.plans.forEach(plan => {
-                    $scope.totalMaterialByCategories.medical    += plan.medical;
-                    $scope.totalMaterialByCategories.science    += plan.science;
-                    $scope.totalMaterialByCategories.dent       += plan.dent;
-                    $scope.totalMaterialByCategories.office     += plan.office;
-                    $scope.totalMaterialByCategories.computer   += plan.computer;
-                    $scope.totalMaterialByCategories.home       += plan.home;
-                    $scope.totalMaterialByCategories.clothes    += plan.clothes;
-                    $scope.totalMaterialByCategories.fuel       += plan.fuel;
-                    $scope.totalMaterialByCategories.sticker    += plan.sticker;
-                    $scope.totalMaterialByCategories.electric   += plan.electric;
-                    $scope.totalMaterialByCategories.vehicle    += plan.vehicle;
-                    $scope.totalMaterialByCategories.ads        += plan.ads;
-                    $scope.totalMaterialByCategories.construct  += plan.construct;
-                    $scope.totalMaterialByCategories.agriculture    += plan.agriculture;
-                    $scope.totalMaterialByCategories.total      += plan.total;
-                });
+                if (res.data.plans.length > 0) {
+                    /** Sum total of plan by plan_type */
+                    res.data.plans.forEach(plan => {
+                        $scope.totalMaterialByCategories.medical    += plan.medical;
+                        $scope.totalMaterialByCategories.science    += plan.science;
+                        $scope.totalMaterialByCategories.dent       += plan.dent;
+                        $scope.totalMaterialByCategories.office     += plan.office;
+                        $scope.totalMaterialByCategories.computer   += plan.computer;
+                        $scope.totalMaterialByCategories.home       += plan.home;
+                        $scope.totalMaterialByCategories.clothes    += plan.clothes;
+                        $scope.totalMaterialByCategories.fuel       += plan.fuel;
+                        $scope.totalMaterialByCategories.sticker    += plan.sticker;
+                        $scope.totalMaterialByCategories.electric   += plan.electric;
+                        $scope.totalMaterialByCategories.vehicle    += plan.vehicle;
+                        $scope.totalMaterialByCategories.ads        += plan.ads;
+                        $scope.totalMaterialByCategories.construct  += plan.construct;
+                        $scope.totalMaterialByCategories.agriculture    += plan.agriculture;
+                        $scope.totalMaterialByCategories.total      += plan.total;
+                    });
+                } else {
+                    $scope.totalAssetByCategories = {
+                        medical: 0,
+                        science: 0,
+                        dent: 0,
+                        office: 0,
+                        computer: 0,
+                        home: 0,
+                        clothes: 0,
+                        fuel: 0,
+                        sticker: 0,
+                        electric: 0,
+                        vehicle: 0,
+                        ads: 0,
+                        construct: 0,
+                        agriculture: 0,
+                        total: 0
+                    };
+                }
+
                 $scope.loading = false;
             }, function (err) {
                 console.log(err);

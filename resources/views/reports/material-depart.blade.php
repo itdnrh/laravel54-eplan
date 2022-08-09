@@ -37,49 +37,49 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="form-group">
-                                    <label>กลุ่มภารกิจ</label>
-                                    <select
-                                        id="faction"
-                                        name="faction"
-                                        ng-model="cboFaction"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="onSelectedFaction(cboFaction)"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="faction in initFormValues.factions"
-                                            value="@{{ faction.faction_id }}"
+                                <!-- <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
+                                    <div class="form-group">
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="faction"
+                                            name="faction"
+                                            ng-model="cboFaction"
+                                            class="form-control select2"
+                                            style="width: 100%; font-size: 12px;"
+                                            ng-change="onSelectedFaction(cboFaction)"
                                         >
-                                            @{{ faction.faction_name }}
-                                        </option>
-                                        
-                                    </select>
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
+                                            <option
+                                                ng-repeat="faction in initFormValues.factions"
+                                                value="@{{ faction.faction_id }}"
+                                            >
+                                                @{{ faction.faction_name }}
+                                            </option>
+                                            
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="form-group">
-                                    <label>กลุ่มงาน</label>
-                                    <select
-                                        id="depart"
-                                        name="depart"
-                                        ng-model="cboDepart"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="getSummary(); onSelectedDepart(cboDepart);"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="depart in filteredDeparts"
-                                            value="@{{ depart.depart_id }}"
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
+                                    <div class="form-group">
+                                        <label>กลุ่มงาน</label>
+                                        <select
+                                            id="depart"
+                                            name="depart"
+                                            ng-model="cboDepart"
+                                            class="form-control select2"
+                                            style="width: 100%; font-size: 12px;"
+                                            ng-change="getSummary(); onSelectedDepart(cboDepart);"
                                         >
-                                            @{{ depart.depart_name }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
+                                            <option
+                                                ng-repeat="depart in filteredDeparts"
+                                                value="@{{ depart.depart_id }}"
+                                            >
+                                                @{{ depart.depart_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div> -->
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -96,6 +96,20 @@
                                     </option>
                                 </select>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label>สถานะ</label>
+                                <select
+                                    id="cboApproved"
+                                    name="cboApproved"
+                                    ng-model="cboApproved"
+                                    class="form-control"
+                                    ng-change="getSummaryByDepart()"
+                                >
+                                    <option value="">ยังไม่อนุมัติ</option>
+                                    <option value="A">อนุมัติ</option>
+                                </select>
+                            </div>
+
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

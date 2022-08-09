@@ -38,7 +38,7 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
+                            <!-- <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="form-group">
                                     <label>กลุ่มภารกิจ</label>
                                     <select
@@ -58,9 +58,8 @@
                                         </option>
                                         
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
+                                </div>
+                            </div>
                             <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="form-group">
                                     <label>กลุ่มงาน</label>
@@ -70,7 +69,7 @@
                                         ng-model="cboDepart"
                                         class="form-control select2"
                                         style="width: 100%; font-size: 12px;"
-                                        ng-change="getSummary(); onSelectedDepart(cboDepart);"
+                                        ng-change="getSummaryByDepart();"
                                     >
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
                                         <option
@@ -80,9 +79,8 @@
                                             @{{ depart.depart_name }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.col -->
-
+                                </div>
+                            </div> -->
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -98,7 +96,21 @@
                                         @{{ y }}
                                     </option>
                                 </select>
-                            </div><!-- /.form group -->
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>สถานะ</label>
+                                <select
+                                    id="cboApproved"
+                                    name="cboApproved"
+                                    ng-model="cboApproved"
+                                    class="form-control"
+                                    ng-change="getSummaryByDepart()"
+                                >
+                                    <option value="">ยังไม่อนุมัติ</option>
+                                    <option value="A">อนุมัติ</option>
+                                </select>
+                            </div>
+
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

@@ -38,7 +38,7 @@
 
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
+                            <!-- <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
                                 <div class="form-group">
                                     <label>กลุ่มภารกิจ</label>
                                     <select
@@ -80,7 +80,7 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -97,6 +97,20 @@
                                     </option>
                                 </select>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label>สถานะ</label>
+                                <select
+                                    id="cboApproved"
+                                    name="cboApproved"
+                                    ng-model="cboApproved"
+                                    class="form-control"
+                                    ng-change="getSummaryByDepart()"
+                                >
+                                    <option value="">ยังไม่อนุมัติ</option>
+                                    <option value="A">อนุมัติ</option>
+                                </select>
+                            </div>
+
                         </div>
                     </form>
                 </div><!-- /.box -->
