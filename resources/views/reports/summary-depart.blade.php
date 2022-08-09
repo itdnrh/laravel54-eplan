@@ -92,7 +92,7 @@
                                     name="dtpYear"
                                     ng-model="dtpYear"
                                     class="form-control"
-                                    ng-change="getSummary()"
+                                    ng-change="getSummaryByDepart()"
                                 >
                                     <option value="">-- ทั้งหมด --</option>
                                     <option ng-repeat="y in budgetYearRange" value="@{{ y }}">

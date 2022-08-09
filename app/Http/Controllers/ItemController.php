@@ -119,9 +119,11 @@ class ItemController extends Controller
                     })
                     ->when(!empty($name), function($q) use ($name) {
                         $q->where('item_name', 'like', '%'.$name.'%');
+                        $q->orWhere('en_name', 'like', '%'.$name.'%');
                     })
                     ->orderBy('category_id', 'ASC')
                     ->orderBy('price_per_unit', 'ASC')
+                    ->orderBy('asset_no', 'ASC')
                     ->paginate(10);
 
         return [
