@@ -297,6 +297,7 @@ class ProjectController extends Controller
         $project->project_no        = $req['project_no'];
         $project->project_name      = $req['project_name'];
         $project->project_type_id   = $req['project_type_id'];
+        $project->strategy_id       = $req['strategy_id'];
         $project->kpi_id            = $req['kpi_id'];
         $project->total_budget      = $req['total_budget'];
         $project->total_budget_str  = $req['total_budget_str'];
@@ -341,6 +342,7 @@ class ProjectController extends Controller
         $project->project_no        = $req['project_no'];
         $project->project_name      = $req['project_name'];
         $project->project_type_id   = $req['project_type_id'];
+        $project->strategy_id       = $req['strategy_id'];
         $project->kpi_id            = $req['kpi_id'];
         $project->total_budget      = $req['total_budget'];
         $project->total_budget_str  = $req['total_budget_str'];
