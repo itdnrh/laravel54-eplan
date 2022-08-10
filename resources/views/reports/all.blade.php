@@ -29,18 +29,18 @@
                             <div class="col-md-6">
                                 <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
                                     <li style="margin: 5px;">
-                                        <a href="{{ url('reports/summary-depart') }}">
-                                            <i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
+                                        <a href="{{ url('reports/plan-depart') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามหน่วยงาน
                                         </a>
                                     </li>
-                                    <!-- <li style="margin: 5px;">
-                                        <a href="{{ url('reports/summary-depart') }}">
-                                            <i class="fa fa-circle-o"></i> รายงานครุภัณฑ์ราคามากกว่า 100,000 บาท
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/plan-item') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามรายการ
                                         </a>
-                                    </li> -->
+                                    </li>
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/project-summary') }}">
-                                            <i class="fa fa-circle-o"></i> รายงานโครงการ
+                                            <i class="fa fa-circle-o"></i> รายงานแผนงานโครงการ
                                         </a>
                                     </li>
                                 </ul>

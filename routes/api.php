@@ -101,7 +101,8 @@ Route::group(['middleware' => 'api'], function () {
 
     /** รายงาน */
     Route::get('reports/project-summary', 'ReportController@getProjectSummary');
-    Route::get('reports/summary-depart', 'ReportController@getSummaryByDepart');
+    Route::get('reports/plan-depart', 'ReportController@getSummaryByDepart');
     Route::get('reports/asset-depart', 'ReportController@getAssetByDepart');
     Route::get('reports/material-depart', 'ReportController@getMaterialByDepart');
+    Route::get('reports/plan-item', 'ReportController@getPlanByItem');
 });

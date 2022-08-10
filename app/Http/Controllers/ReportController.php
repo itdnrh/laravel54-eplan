@@ -52,8 +52,8 @@ class ReportController extends Controller
             $depart = Auth::user()->memberOf->depart_id;
         }
 
-        return view('reports.summary-depart', [
-            "factions"  => Faction::all(),
+        return view('reports.plan-depart', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
         ]);
     }
@@ -98,7 +98,7 @@ class ReportController extends Controller
         }
 
         return view('reports.asset-depart', [
-            "factions"  => Faction::all(),
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
         ]);
     }
@@ -149,7 +149,7 @@ class ReportController extends Controller
         }
 
         return view('reports.material-depart', [
-            "factions"  => Faction::all(),
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
         ]);
     }
@@ -194,6 +194,47 @@ class ReportController extends Controller
         return [
             'plans'     => $plans,
             'departs'   => Depart::all()
+        ];
+    }
+
+    public function planItem()
+    {
+        return view('reports.plan-item', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getPlanByItem(Request $req)
+    {
+        /** Get params from query string */
+        // $faction    = Auth::user()->memberOf->duty_id == 2
+        //                 ? Auth::user()->memberOf->faction_id
+        //                 : $req->get('faction');
+        $year = $req->get('year');
+        $approved = $req->get('approved');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plan_items.item_id',
+                        'items.item_name',
+                        \DB::raw("count(plans.id) as amount"),
+                        \DB::raw("sum(plan_items.sum_price) as sum_price")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->groupBy('plan_items.item_id')
+                    ->groupBy('items.item_name')
+                    ->orderByRaw("sum(plan_items.sum_price) DESC")
+                    ->orderBy("items.item_name", "DESC")
+                    ->get();
+
+        return [
+            'plans' => $plans,
         ];
     }
 }

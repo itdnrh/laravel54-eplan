@@ -83,7 +83,7 @@ app.controller(
                         : $scope.cboYear;
             let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/summary-depart?year=${year}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-depart?year=${year}&approved=${approved}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
@@ -261,6 +261,47 @@ app.controller(
                         total: 0
                     };
                 }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getPlanByItem = function () {
+            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&approved=${approved}`)
+            .then(function (res) {
+                console.log(res);
+                $scope.plans = res.data.plans;
+
+                // /** Sum total of plan by plan_type */
+                // if (res.data.plans.length > 0) {
+                //     res.data.plans.forEach(plan => {
+                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                //     });
+                // } else {
+                //     $scope.totalByPlanTypes = {
+                //         asset: 0,
+                //         construct: 0,
+                //         material: 0,
+                //         service: 0,
+                //         total: 0,
+                //     };
+                // }
 
                 $scope.loading = false;
             }, function (err) {
