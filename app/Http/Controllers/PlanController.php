@@ -271,7 +271,7 @@ class PlanController extends Controller
                                         ->with('budget','depart','division')
                                         ->with('planItem','planItem.unit')
                                         ->with('planItem.item','planItem.item.category')
-                                        ->where('plan_type_id', '1')
+                                        ->where('plan_type_id', $deleted->plan_type_id)
                                         ->where('year', $deleted->year)
                                         ->where('depart_id', $deleted->depart_id)
                                         ->paginate(10)
