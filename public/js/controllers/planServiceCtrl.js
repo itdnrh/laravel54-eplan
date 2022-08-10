@@ -296,6 +296,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 

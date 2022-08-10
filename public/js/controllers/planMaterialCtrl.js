@@ -303,6 +303,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 

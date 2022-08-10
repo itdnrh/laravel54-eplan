@@ -315,6 +315,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
