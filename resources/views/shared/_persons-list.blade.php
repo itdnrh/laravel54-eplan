@@ -24,8 +24,14 @@
                                         <option value="{{ $depart->depart_id }}">{{ $depart->depart_name }}</option>
                                     @endforeach
                                 </select>
-        
-                                <input type="text" ng-model="searchKey" class="form-control" ng-keyup="getPersons()">
+                                <input
+                                    type="text"
+                                    id="searchKey"
+                                    name="searchKey"
+                                    ng-model="searchKey"
+                                    ng-keyup="getPersons()"
+                                    class="form-control"
+                                />
                             </div>
                         </div><!-- /.box-body -->
                     </div>
