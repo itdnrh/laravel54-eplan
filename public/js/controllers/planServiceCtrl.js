@@ -116,13 +116,14 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
         let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setServices(res);
 
@@ -150,13 +151,14 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
         let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&type=3&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${url}&type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             cb(res);
 

@@ -132,13 +132,14 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
         let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=4&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=4&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setConstructs(res);
 
@@ -154,6 +155,34 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
         $scope.constructs = data;
         $scope.pager = pager;
+    };
+
+    $scope.getDataWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.constructs = [];
+        $scope.pager = null;
+
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let approved    = $scope.isApproved ? 'A' : '';
+
+        $http.get(`${url}&type=4&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
     };
 
     $scope.onSelectedItem = function(event, item) {
@@ -183,33 +212,6 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         }
 
         $('#items-list').modal('hide');
-    };
-
-    $scope.getDataWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.constructs = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
-        let approved    = $scope.isApproved ? 'A' : '';
-
-        $http.get(`${url}&type=4&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&price=${price}&show_all=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
     };
 
     $scope.getById = function(id, cb) {

@@ -106,7 +106,7 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
+                                            ng-change="onFactionSelected(cboFaction); getAll($event);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
