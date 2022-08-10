@@ -33,11 +33,11 @@
                                             <i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
                                         </a>
                                     </li>
-                                    <li style="margin: 5px;">
+                                    <!-- <li style="margin: 5px;">
                                         <a href="{{ url('reports/summary-depart') }}">
                                             <i class="fa fa-circle-o"></i> รายงานครุภัณฑ์ราคามากกว่า 100,000 บาท
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/project-summary') }}">
                                             <i class="fa fa-circle-o"></i> รายงานโครงการ
