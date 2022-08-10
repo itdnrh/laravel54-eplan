@@ -306,7 +306,7 @@
                                                 <i class="fa fa-search"></i>
                                             </a>
                                             <a  ng-click="edit(project.id)"
-                                                ng-show="project.approved != 'A' && {{ Auth::user()->memberOf->depart_id }} == project.owner_depart"
+                                                ng-show="project.approved != 'A' && ({{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == project.owner_depart)"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -315,7 +315,7 @@
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/projects/delete') }}"
-                                                ng-show="project.approved != 'A' && {{ Auth::user()->memberOf->depart_id }} == project.owner_depart"
+                                                ng-show="project.approved != 'A' && ({{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == project.owner_depart)"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
