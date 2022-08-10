@@ -236,6 +236,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
         $scope.asset.item_id            = plan.plan_item.item ? plan.plan_item.item_id : '';
         $scope.asset.desc               = plan.plan_item.item ? plan.plan_item.item.item_name : '';
+
         $scope.asset.spec               = plan.plan_item.spec;
         $scope.asset.price_per_unit     = plan.plan_item.price_per_unit;
         $scope.asset.amount             = plan.plan_item.amount;
@@ -316,6 +317,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 

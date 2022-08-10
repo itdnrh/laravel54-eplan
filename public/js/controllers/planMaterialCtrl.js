@@ -222,8 +222,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material.year            = plan.year.toString();
         // $scope.material.plan_no         = plan.plan_no;
 
-        $scope.material.desc            = plan.plan_item.item ? plan.plan_item.item.item_name : '';
         $scope.material.item_id         = plan.plan_item.item ? plan.plan_item.item_id : '';
+        $scope.material.desc            = plan.plan_item.item ? plan.plan_item.item.item_name : '';
 
         $scope.material.spec            = plan.plan_item.spec;
         $scope.material.price_per_unit  = plan.plan_item.price_per_unit;

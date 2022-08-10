@@ -215,9 +215,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.in_plan          = plan.in_plan;
         $scope.service.year             = plan.year.toString();
         // $scope.service.plan_no          = plan.plan_no;
-        $scope.service.desc             = plan.plan_item.item.item_name;
-        $scope.service.item_id          = plan.plan_item.item_id;
-        $('#item_id').val(plan.plan_item.item_id);
+
+        $scope.service.item_id          = plan.plan_item.item ? plan.plan_item.item_id : '';
+        $scope.service.desc             = plan.plan_item.item ? plan.plan_item.item.item_name : '';
 
         $scope.service.price_per_unit   = plan.plan_item.price_per_unit;
         $scope.service.amount           = plan.plan_item.amount;
@@ -239,11 +239,14 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.strategic_id     = plan.strategic_id && plan.strategic_id.toString();
         $scope.service.service_plan_id  = plan.service_plan_id && plan.service_plan_id.toString();
 
-        $scope.service.have_subitem     = plan.plan_item.item.have_subitem;
-        $scope.service.calc_method      = plan.plan_item.item.calc_method;
+        $scope.service.have_subitem     = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
+        $scope.service.calc_method      = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
 
-        $('#have_subitem').val(plan.plan_item.item.have_subitem);
-        $('#calc_method').val(plan.plan_item.item.calc_method);
+        if (plan.plan_item.item) {
+            $('#item_id').val(plan.plan_item.item_id);
+            $('#have_subitem').val(plan.plan_item.item.have_subitem);
+            $('#calc_method').val(plan.plan_item.item.calc_method);
+        }
 
 
         /** Generate departs and divisions data from plan */

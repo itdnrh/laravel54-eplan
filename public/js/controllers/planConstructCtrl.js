@@ -231,9 +231,9 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.in_plan            = plan.in_plan;
         $scope.construct.year               = plan.year.toString();
         // $scope.construct.plan_no            = plan.plan_no;
-        $scope.construct.desc               = plan.plan_item.item.item_name;
-        $scope.construct.item_id            = plan.plan_item.item_id;
-        $('#item_id').val(plan.plan_item.item_id);
+
+        $scope.construct.item_id            = plan.plan_item.item ? plan.plan_item.item_id : '';
+        $scope.construct.desc               = plan.plan_item.item ? plan.plan_item.item.item_name : '';
 
         $scope.construct.location           = plan.plan_item.location;
         $scope.construct.building_id        = plan.plan_item.building_id ? plan.plan_item.building_id.toString() : '';
@@ -259,12 +259,14 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
         $scope.construct.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
         
-        $scope.construct.have_subitem       = plan.plan_item.item.have_subitem;
-        $scope.construct.calc_method        = plan.plan_item.item.calc_method;
+        $scope.construct.have_subitem       = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
+        $scope.construct.calc_method        = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
 
-        $('#have_subitem').val(plan.plan_item.item.have_subitem);
-        $('#calc_method').val(plan.plan_item.item.calc_method);
-
+        if (plan.plan_item.item) {
+            $('#item_id').val(plan.plan_item.item_id);
+            $('#have_subitem').val(plan.plan_item.item.have_subitem);
+            $('#calc_method').val(plan.plan_item.item.calc_method);
+        }
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);
