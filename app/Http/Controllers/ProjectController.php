@@ -105,10 +105,10 @@ class ProjectController extends Controller
         $year = $req->get('year');
         $strategic = $req->get('strategic');
         $strategy = $req->get('strategy');
-        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
+        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
                     ? $req->get('faction') 
                     : Auth::user()->memberOf->faction_id;
-        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
                     ? $req->get('depart') 
                     : Auth::user()->memberOf->depart_id;
         $name = $req->get('name');

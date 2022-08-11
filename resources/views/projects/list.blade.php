@@ -137,7 +137,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 3 || {{ Auth::user()->memberOf->depart_id }} == 4">
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->person_id }} == '3249900388197' || {{ Auth::user()->memberOf->depart_id }} == 3 || {{ Auth::user()->memberOf->depart_id }} == 4">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
