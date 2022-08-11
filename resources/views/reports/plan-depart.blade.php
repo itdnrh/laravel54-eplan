@@ -117,7 +117,7 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนเงินบำรุงตามหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
+                        <h3 class="box-title">รายงานแผนเงินบำรุงตามหน่วยงาน ปีงบประมาณ @{{ cboYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table class="table table-bordered table-striped">

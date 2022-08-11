@@ -15,7 +15,9 @@ app.controller(
         $scope.cboDivision = '';
         $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
         $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
+        $scope.cboPlanType = '';
         $scope.cboApproved = '';
+        $scope.cboSort = '';
 
         let dtpOptions = {
             autoclose: true,
@@ -270,16 +272,16 @@ app.controller(
         };
 
         $scope.getPlanByItem = function () {
-            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
-            let year = $scope.cboYear === ''
-                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
-                            ? moment().year() + 544
-                            : moment().year() + 543 
-                        : $scope.cboYear;
-            let approved = !$scope.cboApproved ? '' : 'A';
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&approved=${approved}&sort=${sort}`)
             .then(function (res) {
                 console.log(res);
                 $scope.plans = res.data.plans;

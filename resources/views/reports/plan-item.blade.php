@@ -38,77 +38,68 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <!-- <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="form-group">
-                                    <label>กลุ่มภารกิจ</label>
+
+                            <div class="row">
+                                <!-- // TODO: should use datepicker instead -->
+                                <div class="form-group col-md-6">
+                                    <label>ปีงบประมาณ</label>
                                     <select
-                                        id="faction"
-                                        name="faction"
-                                        ng-model="cboFaction"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="onSelectedFaction(cboFaction)"
+                                        id="cboYear"
+                                        name="cboYear"
+                                        ng-model="cboYear"
+                                        class="form-control"
+                                        ng-change="getPlanByItem()"
                                     >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="faction in initFormValues.factions"
-                                            value="@{{ faction.faction_id }}"
-                                        >
-                                            @{{ faction.faction_name }}
-                                        </option>
-                                        
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="form-group">
-                                    <label>กลุ่มงาน</label>
-                                    <select
-                                        id="depart"
-                                        name="depart"
-                                        ng-model="cboDepart"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="getSummaryByDepart();"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="depart in filteredDeparts"
-                                            value="@{{ depart.depart_id }}"
-                                        >
-                                            @{{ depart.depart_name }}
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
                                         </option>
                                     </select>
                                 </div>
-                            </div> -->
-                            <!-- // TODO: should use datepicker instead -->
-                            <div class="form-group col-md-6">
-                                <label>ปีงบประมาณ</label>
-                                <select
-                                    id="cboYear"
-                                    name="cboYear"
-                                    ng-model="cboYear"
-                                    class="form-control"
-                                    ng-change="getSummaryByDepart()"
-                                >
-                                    <option value="">-- ทั้งหมด --</option>
-                                    <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                        @{{ y }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>สถานะ</label>
-                                <select
-                                    id="cboApproved"
-                                    name="cboApproved"
-                                    ng-model="cboApproved"
-                                    class="form-control"
-                                    ng-change="getSummaryByDepart()"
-                                >
-                                    <option value="">ยังไม่อนุมัติ</option>
-                                    <option value="A">อนุมัติ</option>
-                                </select>
+                                <div class="form-group col-md-6">
+                                    <label>ประเภทแผน</label>
+                                    <select
+                                        id="cboPlanType"
+                                        name="cboPlanType"
+                                        ng-model="cboPlanType"
+                                        ng-change="getPlanByItem()"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboApproved"
+                                        name="cboApproved"
+                                        ng-model="cboApproved"
+                                        class="form-control"
+                                        ng-change="getPlanByItem()"
+                                    >
+                                        <option value="">ยังไม่อนุมัติ</option>
+                                        <option value="A">อนุมัติ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>เรียมลำดับ</label>
+                                    <select
+                                        id="cboSort"
+                                        name="cboSort"
+                                        ng-model="cboSort"
+                                        class="form-control"
+                                        ng-change="getPlanByItem()"
+                                    >
+                                        <option value="">-- เลือก --</option>
+                                        <option value="sum_price">งบประมาณ</option>
+                                        <option value="amount">จำนวนที่ขอ</option>
+                                    </select>
+                                </div>
                             </div>
 
                         </div><!-- /.box-body -->
@@ -117,7 +108,7 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนเงินบำรุงตามรายการ ปีงบประมาณ @{{ dtpYear }}</h3>
+                        <h3 class="box-title">รายงานแผนเงินบำรุงตามรายการ ปีงบประมาณ @{{ cboYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table class="table table-bordered table-striped">
@@ -126,7 +117,7 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="text-align: left;">รายการ</th>
                                     <th style="width: 15%; text-align: right;">จำนวนที่ขอ</th>
-                                    <th style="width: 15%; text-align: right;">ยอดงบประมาณ</th>
+                                    <th style="width: 15%; text-align: right;">งบประมาณ</th>
                                 </tr>
                             </thead>
                             <tbody>
