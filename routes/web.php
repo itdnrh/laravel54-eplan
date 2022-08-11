@@ -271,15 +271,11 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** รายงาน */
     Route::get('reports/all', 'ReportController@index');
+    Route::get('reports/project-depart', 'ReportController@projectByDepart');
     Route::get('reports/project-summary', 'ReportController@projectSummary');
     Route::get('reports/projects-list', 'ReportController@projectsList');
     Route::get('reports/plan-depart', 'ReportController@planByDepart');
     Route::get('reports/asset-depart', 'ReportController@assetByDepart');
     Route::get('reports/material-depart', 'ReportController@materialByDepart');
     Route::get('reports/plan-item', 'ReportController@planByItem');
-    // Route::get('reports/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');
-    // Route::get('reports/debt-creditor-excel/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorExcel');     
-    // Route::get('reports/debt-debttype/list', 'ReportController@debtDebttype');    
-    // Route::get('reports/debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeRpt');
-    // Route::get('reports/debt-debttype-excel/{debttype}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeExcel');   
 });

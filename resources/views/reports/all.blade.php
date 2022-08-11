@@ -25,8 +25,9 @@
                         <h3 class="box-title">รายงาน</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <div class="row">
+                        <div class="row" style="margin: auto 10px;">
                             <div class="col-md-6">
+                                <h4>แผนเงินบำรุง</h4>
                                 <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/plan-depart') }}">
@@ -38,20 +39,16 @@
                                             <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามรายการ
                                         </a>
                                     </li>
-                                    <li style="margin: 5px;">
-                                        <a href="{{ url('reports/project-summary') }}">
-                                            <i class="fa fa-circle-o"></i> รายงานแผนงานโครงการ
-                                        </a>
-                                    </li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
-                                <ul style="list-style: none; padding: 5px; padding-left: 10px;">
-                                    <!-- <li>
-                                        <a href="{{ url('reports/summary-depart') }}">
-                                            <i class="fa fa-circle-o"></i> แผนเงินบำรุงรายหน่วยงาน
+                                <h4>โครงการ</h4>
+                                <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/project-depart') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามหน่วยงาน
                                         </a>
-                                    </li> -->
+                                    </li>
                                 </ul>
                             </div>
                         </div>

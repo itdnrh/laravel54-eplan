@@ -311,43 +311,6 @@ app.controller(
             });
         };
 
-        $scope.getDataWithURL = function (URL) {
-            $scope.data = [];
-            $scope.pager = [];
-            $scope.loading = true;
-
-            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
-            let year = $scope.cboYear === ''
-                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
-                            ? moment().year() + 544
-                            : moment().year() + 543 
-                        : $scope.cboYear;
-
-            $http.get(`${URL}&depart=${depart}&division=${division}&year=${year}`)
-            .then(function (res) {
-                    console.log(res);
-                    const { data, ...pager } = res.data.persons;
-                    $scope.data = data;
-                    $scope.pager = pager;
-
-                    $scope.data = data.map((person) => {
-                        const leave = res.data.leaves.find((leave) =>
-                            person.person_id === leave.leave_person
-                        );
-                        return {
-                            ...person,
-                            leave: leave,
-                        };
-                    });
-
-                    $scope.loading = false;
-            }, function (err) {
-                    console.log(err);
-                    $scope.loading = false;
-            });
-        };
-
         $scope.factions = [];
         $scope.getProjectSummary = function() {
             let year = '2565';
@@ -414,6 +377,64 @@ app.controller(
                 console.log(err);
                 $scope.loading = false;
             });
+        };
+
+        $scope.getProjectByDepart = function () {
+            let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-depart?year=${year}&faction=${faction}&approved=${approved}`)
+            .then(function (res) {
+                console.log(res.data);
+                $scope.projects = res.data.projects.map(project => {
+                    let dep = res.data.departs.find(d => d.depart_id === project.depart_id);
+                    project.depart_name = dep.depart_name;
+
+                    return project;
+                });
+
+                /** Sum total of plan by plan_type */
+                // if (res.data.plans.length > 0) {
+                //     res.data.plans.forEach(plan => {
+                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                //     });
+                // } else {
+                //     $scope.totalByPlanTypes = {
+                //         asset: 0,
+                //         construct: 0,
+                //         material: 0,
+                //         service: 0,
+                //         total: 0,
+                //     };
+                // }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.totalAssetByCategories = {
+            vehicle: 0,
+            office: 0,
+            computer: 0,
+            medical: 0,
+            home: 0,
+            construct: 0,
+            agriculture: 0,
+            ads: 0,
+            electric: 0,
+            total: 0
         };
     }
 );
