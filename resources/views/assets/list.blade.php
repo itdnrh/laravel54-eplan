@@ -98,8 +98,8 @@
                                 </div>
                             </div>
 
-                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1">
-                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->person_id }} == '3249900388197'">
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1 || Auth::user()->memberOf->depart_id == 4">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->person_id }} == '3249900388197' || Auth::user()->memberOf->depart_id == 4">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
                                         <select
