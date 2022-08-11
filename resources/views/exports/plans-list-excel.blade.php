@@ -30,8 +30,8 @@
                         <td style="text-align: center;">{{ ++$cx }}</td>
                         <td style="text-align: center;">{{ $plan->plan_no }}</td>
                         <!-- <td style="text-align: center;">{{ $plan->year }}</td> -->
-                        <td>{{ $plan->planItem->item->item_name }}</td>
-                        <td>{{ $plan->planItem->item->category->name }}</td>
+                        <td>{{ $plan->planItem->item ? $plan->planItem->item->item_name : '' }}</td>
+                        <td>{{ $plan->planItem->item ? $plan->planItem->item->category->name : '' }}</td>
                         <td style="text-align: center;">
                             {{ number_format($plan->planItem->price_per_unit) }}
                         </td>
