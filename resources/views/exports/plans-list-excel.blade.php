@@ -14,6 +14,7 @@
                     <th style="width: 8%; text-align: center;">ประเภทครุภัณฑ์</th>
                     <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                     <th style="width: 8%; text-align: center;">จำนวนที่ขอ</th>
+                    <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                     <th style="width: 8%; text-align: center;">ราคารวม</th>
                     <th style="width: 4%; text-align: center;">ในแผน</th>
                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
@@ -36,7 +37,10 @@
                             {{ number_format($plan->planItem->price_per_unit) }}
                         </td>
                         <td style="text-align: center;">
-                            {{ number_format($plan->planItem->amount) }} {{ $plan->planItem->unit->name }}
+                            {{ number_format($plan->planItem->amount) }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ $plan->planItem->unit->name }}
                         </td>
                         <td style="text-align: center;">
                             {{ number_format($plan->planItem->sum_price) }}
