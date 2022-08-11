@@ -21,7 +21,7 @@
         class="content"
         ng-controller="reportCtrl"
         ng-init="
-            getSummaryByDepart();
+            getPlanByDepart();
             initForm({ 
                 factions: {{ $factions }},
                 departs: {{ $departs }}
@@ -38,16 +38,16 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <!-- <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>กลุ่มภารกิจ</label>
                                     <select
-                                        id="faction"
-                                        name="faction"
+                                        id="cboFaction"
+                                        name="cboFaction"
                                         ng-model="cboFaction"
                                         class="form-control select2"
                                         style="width: 100%; font-size: 12px;"
-                                        ng-change="onSelectedFaction(cboFaction)"
+                                        ng-change="onSelectedFaction(cboFaction); getPlanByDepart();"
                                     >
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
                                         <option
@@ -60,27 +60,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->person_id }} == '1300200009261'">
-                                <div class="form-group">
-                                    <label>กลุ่มงาน</label>
-                                    <select
-                                        id="depart"
-                                        name="depart"
-                                        ng-model="cboDepart"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="getSummaryByDepart();"
-                                    >
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="depart in filteredDeparts"
-                                            value="@{{ depart.depart_id }}"
-                                        >
-                                            @{{ depart.depart_name }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div> -->
                             <!-- // TODO: should use datepicker instead -->
                             <div class="form-group col-md-6">
                                 <label>ปีงบประมาณ</label>
@@ -89,7 +68,7 @@
                                     name="cboYear"
                                     ng-model="cboYear"
                                     class="form-control"
-                                    ng-change="getSummaryByDepart()"
+                                    ng-change="getPlanByDepart()"
                                 >
                                     <option value="">-- ทั้งหมด --</option>
                                     <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -104,7 +83,7 @@
                                     name="cboApproved"
                                     ng-model="cboApproved"
                                     class="form-control"
-                                    ng-change="getSummaryByDepart()"
+                                    ng-change="getPlanByDepart()"
                                 >
                                     <option value="">ยังไม่อนุมัติ</option>
                                     <option value="A">อนุมัติ</option>
@@ -155,6 +134,14 @@
                                     <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
+                                </tr>
+                                <tr style="font-weight: bold;">
+                                    <td style="text-align: center;" colspan="2">ร้อยละ</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset*100/totalByPlanTypes.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.material*100/totalByPlanTypes.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.service*100/totalByPlanTypes.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct*100/totalByPlanTypes.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;"></td>
                                 </tr>
                             </tbody>
                         </table>

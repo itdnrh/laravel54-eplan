@@ -46,7 +46,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function summaryByDepart()
+    public function planByDepart()
     {
         $depart = '';
         if (Auth::user()->memberOf->duty_id == 2) {
@@ -59,14 +59,14 @@ class ReportController extends Controller
         ]);
     }
 
-    public function getSummaryByDepart(Request $req)
+    public function getPlanByDepart(Request $req)
     {
         /** Get params from query string */
-        // $faction    = Auth::user()->memberOf->duty_id == 2
-        //                 ? Auth::user()->memberOf->faction_id
-        //                 : $req->get('faction');
-        $year = $req->get('year');
-        $approved = $req->get('approved');
+        $faction    = $req->get('faction');
+        $year       = $req->get('year');
+        $approved   = $req->get('approved');
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
         $plans = \DB::table('plans')
                     ->select(
@@ -80,6 +80,9 @@ class ReportController extends Controller
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->groupBy('plans.depart_id')
                     ->where('plans.year', $year)
+                    ->when(!empty($faction), function($q) use ($departsList) {
+                        $q->whereIn('plans.depart_id', $departsList);
+                    })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
                     })
@@ -198,7 +201,7 @@ class ReportController extends Controller
         ];
     }
 
-    public function planItem()
+    public function planByItem()
     {
         return view('reports.plan-item', [
             "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),

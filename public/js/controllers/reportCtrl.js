@@ -75,9 +75,8 @@ app.controller(
             total: 0,
         };
 
-        $scope.getSummaryByDepart = function () {
-            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
+        $scope.getPlanByDepart = function () {
+            let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
@@ -85,7 +84,7 @@ app.controller(
                         : $scope.cboYear;
             let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-depart?year=${year}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-depart?year=${year}&faction=${faction}&approved=${approved}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
