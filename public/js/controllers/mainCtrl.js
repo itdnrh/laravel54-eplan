@@ -306,8 +306,6 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
 
                     /** ถ้าบันทึกสำเร็จให้เซตค่า desc และ item_id จาก responsed data  */
                     cb(event, res.data.item);
-                    
-                    clearNewItem();
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกสินค้า/บริการได้ !!!");
                 }
@@ -316,6 +314,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกสินค้า/บริการได้ !!!");
             })
 
+            clearNewItem();
             $('#item-form').modal('hide');
         }
     };
