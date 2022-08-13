@@ -261,13 +261,18 @@
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'owner_depart')}"
                                 >
                                     <label>&nbsp;</label>
-                                    <select id="owner_depart" 
-                                            name="owner_depart"
-                                            ng-model="project.owner_depart" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="12"
-                                            ng-change="onDepartSelected(project.owner_depart)">
+                                    <select 
+                                        id="owner_depart" 
+                                        name="owner_depart"
+                                        ng-model="project.owner_depart" 
+                                        class="form-control select2" 
+                                        style="width: 100%; font-size: 12px;"
+                                        tabindex="12"
+                                        ng-change="
+                                            onDepartSelected(project.owner_depart);
+                                            setCboDepartFromOwnerDepart(project.owner_depart);
+                                        "
+                                    >
                                         <option value="">-- เลือกกลุ่มงาน --</option>
                                         <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
                                             @{{ depart.depart_name }}

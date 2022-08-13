@@ -156,12 +156,16 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.getPersons();
     };
 
+    $scope.setCboDepartFromOwnerDepart = function(depart) {
+        $scope.cboDepart = depart;
+    };
+
     $scope.getPersons = async () => {
         $scope.loading = true;
         $scope.persons = [];
         $scope.persons_pager = null;
 
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let depart = $scope.cboDepart == '' ? $scope.project.owner_depart : $scope.cboDepart;
         let name = $scope.searchKey == '' ? '' : $scope.searchKey;
 
         $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${name}`)
