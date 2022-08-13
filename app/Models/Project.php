@@ -23,6 +23,11 @@ class Project extends Model
         return $this->belongsTo(BudgetSource::class, 'budget_src_id', 'id');
     }
 
+    public function strategy()
+    {
+        return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
+    }
+
     public function kpi()
     {
         return $this->belongsTo(Kpi::class, 'kpi_id', 'id');

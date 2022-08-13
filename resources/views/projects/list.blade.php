@@ -222,11 +222,19 @@
                     <div class="box-body">
 
                         @if (session('status'))
-                            <div class="alert alert-success alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                {{ session('status') }}
-                            </div>
+                            @if (session('status') == 1)
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    {{ session('message') }}
+                                </div>
+                            @else
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    {{ session('message') }}
+                                </div>
+                            @endif
                         @endif
 
                         <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">

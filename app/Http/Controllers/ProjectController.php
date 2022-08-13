@@ -222,7 +222,7 @@ class ProjectController extends Controller
         $project = Project::where('id', $id)
                     ->with('budgetSrc','depart','depart.faction')
                     ->with('owner','owner.prefix','owner.position','owner.academic')
-                    ->with('kpi','kpi.strategy','kpi.strategy.strategic')
+                    ->with('strategy','kpi','kpi.strategy.strategic')
                     ->first();
 
         return [
@@ -272,7 +272,7 @@ class ProjectController extends Controller
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::all(),
             "kpis"          => Kpi::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -285,39 +285,57 @@ class ProjectController extends Controller
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::orderBy('strategy_no')->get(),
             "kpis"          => Kpi::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
 
     public function store(Request $req)
     {
-        $project = new Project();
-        $project->year              = $req['year'];
-        $project->project_no        = $req['project_no'];
-        $project->project_name      = $req['project_name'];
-        $project->project_type_id   = $req['project_type_id'];
-        $project->strategy_id       = $req['strategy_id'];
-        $project->kpi_id            = $req['kpi_id'];
-        $project->total_budget      = $req['total_budget'];
-        $project->total_budget_str  = $req['total_budget_str'];
-        $project->budget_src_id     = $req['budget_src_id'];
-        $project->owner_depart      = $req['owner_depart'];
-        $project->owner_person      = $req['owner_person'];
-        $project->start_month       = $req['start_month'];
-        $project->remark            = $req['remark'];
-        $project->status            = '0';
-        $project->created_user      = Auth::user()->person_id;
-        $project->updated_user      = Auth::user()->person_id;
+        try {
+            $project = new Project();
+            $project->year              = $req['year'];
+            $project->project_no        = $req['project_no'];
+            $project->project_name      = $req['project_name'];
+            $project->project_type_id   = $req['project_type_id'];
+            $project->strategy_id       = $req['strategy_id'];
+            $project->kpi_id            = $req['kpi_id'];
+            $project->total_budget      = $req['total_budget'];
+            $project->total_budget_str  = $req['total_budget_str'];
+            $project->budget_src_id     = $req['budget_src_id'];
+            $project->owner_depart      = $req['owner_depart'];
+            $project->owner_person      = $req['owner_person'];
+            $project->start_month       = $req['start_month'];
+            $project->remark            = $req['remark'];
+            $project->status            = '0';
+            $project->created_user      = Auth::user()->person_id;
+            $project->updated_user      = Auth::user()->person_id;
 
-        /** Upload attach file */
-        $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
-        if (!empty($attachment)) {
-            $project->attachment = $attachment;
-        }
+            /** Upload attach file */
+            $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
+            if (!empty($attachment)) {
+                $project->attachment = $attachment;
+            }
 
-        if($project->save()) {
-            return redirect('/projects/list');
+            if($project->save()) {
+                return redirect('/projects/list')
+                        ->with([
+                            'status'    => 1,
+                            'message'   =>'บันทึกโครงการเรียบร้อยแล้ว!!'
+                        ]);
+            } else {
+                return redirect('/projects/list')
+                        ->with([
+                            'status'    => 0,
+                            'message'   => 'Something went wrong!!'
+                        ]);
+            }
+        } catch (\Exception $ex) {
+            return redirect('/projects/list')
+                    ->with([
+                        'status'    => 0,
+                        'message'   => $ex->getMessage()
+                    ]);
         }
     }
 
