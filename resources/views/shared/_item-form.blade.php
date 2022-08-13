@@ -32,6 +32,8 @@
                                 @{{ newItem.error['plan_type_id'] }}
                             </span>
                         </div>
+                    </div>
+                    <div class="row">
                         <div
                             class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['category_id']}"
@@ -71,6 +73,8 @@
                                 </option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row">
                         <div
                             class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['item_name']}"
@@ -103,6 +107,8 @@
                                 @{{ newItem.error['en_name'] }}
                             </span>
                         </div>
+                    </div>
+                    <div class="row">
                         <div
                             class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': newItem.error['price_per_unit']}"
@@ -142,6 +148,8 @@
                                 @{{ newItem.error['unit_id'] }}
                             </span>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 form-group" ng-show="isMaterial(newItem.plan_type_id)">
                             <label for="">ใน/นอกคลัง</label>
                             <div style="display: flex; gap: 30px;">

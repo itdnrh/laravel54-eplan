@@ -1,4 +1,4 @@
-app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONFIG) {
+app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $routeParams) {
 /** ################################################################################## */
     console.log(CONFIG);
 /** ################################################################################## */
@@ -298,15 +298,22 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
     };
 
     $scope.createNewItem = function(event, cb) {
-        if (validateNewItem($scope.newItem)) {
+        if (validateNewItem($scope.newItem)) {            
             $http.post(`${CONFIG.baseUrl}/items/store`, $scope.newItem)
             .then(res => {
-                /** ถ้าบันทึกสำเร็จให้เซตค่า desc และ item_id จาก responsed data  */
-                cb(event, res.data.item);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกสินค้า/บริการเรียบร้อย !!!");
 
-                clearNewItem();
+                    /** ถ้าบันทึกสำเร็จให้เซตค่า desc และ item_id จาก responsed data  */
+                    cb(event, res.data.item);
+                    
+                    clearNewItem();
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกสินค้า/บริการได้ !!!");
+                }
             }, err => {
                 console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกสินค้า/บริการได้ !!!");
             })
 
             $('#item-form').modal('hide');
@@ -343,6 +350,8 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams, CONF
 
         if ($scope.newItem.price_per_unit == '') {
             $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วย' }
+        } else if (isNaN($scope.newItem.price_per_unit)) {
+            $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วยเป็นตัวเลข (ไม่ต้องมี comma หรือ ,)' }
         } else {
             if ($scope.newItem.error.hasOwnProperty('price_per_unit')) {
                 const { price_per_unit, ...rest } = $scope.newItem.error;
