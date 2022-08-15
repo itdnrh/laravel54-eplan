@@ -10,6 +10,7 @@ use App\Models\Division;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\PlanType;
+use App\Models\ItemCategory;
 
 class ReportController extends Controller
 {
@@ -289,6 +290,59 @@ class ReportController extends Controller
 
         return [
             'plans' => $plans,
+        ];
+    }
+
+    public function planByType()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.plan-type', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
+            "planTypes" => PlanType::all(),
+        ]);
+    }
+
+    public function getPlanByType(Request $req)
+    {
+        /** Get params from query string */
+        $faction    = $req->get('faction');
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $approved   = $req->get('approved');
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'items.category_id',
+                        \DB::raw("sum(plan_items.amount) as amount"),
+                        \DB::raw("sum(plan_items.sum_price) as sum_price")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('items.category_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plans.plan_type_id', $type);
+                    })
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->get();
+
+        $categories = ItemCategory::all();
+                        // ->when(!empty($type), function($q) use ($type) {
+                        //     $q->where('plan_type_id', $type);
+                        // })->get();
+
+        return [
+            'plans'         => $plans,
+            'categories'    => $categories
         ];
     }
 }

@@ -214,7 +214,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
-    $scope.showItemsList = function() {
+    $scope.showItemsList = function(inStock='') {
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === $scope.planType);
 
         $scope.getItems();
@@ -224,12 +224,13 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.loading = true;
         $scope.items = [];
         $scope.items_pager = null;
+        console.log($scope.inStock);
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
         let group = !$scope.cboGroup ? '' : $scope.cboGroup;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
+        let in_stock = $scope.inStock !== '' ? $scope.inStock : '';
 
         $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&group=${group}&name=${name}&in_stock=${in_stock}`)
         .then(function(res) {

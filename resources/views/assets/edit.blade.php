@@ -26,6 +26,7 @@
                 categories: {{ $categories }},
                 groups: {{ $groups }}
             }, 1);
+            setInStock('');
             getById({{ $asset->id }}, setEditControls)
         "
     >

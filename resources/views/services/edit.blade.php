@@ -27,6 +27,7 @@
                 groups: {{ $groups }}
             }, 3);
             getById({{ $service->id }}, setEditControls);
+            setInStock('');
         "
     >
 

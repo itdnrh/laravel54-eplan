@@ -311,6 +311,53 @@ app.controller(
             });
         };
 
+        $scope.getPlanByType = function () {
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&sort=${sort}`)
+            .then(function (res) {
+                console.log(res);
+
+                $scope.plans = res.data.plans.map(plan => {
+                    let cate = res.data.categories.find(c => c.id === plan.category_id);
+                    plan.category_name = cate ? cate.name : '';
+
+                    return plan;
+                });
+
+                // /** Sum total of plan by plan_type */
+                // if (res.data.plans.length > 0) {
+                //     res.data.plans.forEach(plan => {
+                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                //     });
+                // } else {
+                //     $scope.totalByPlanTypes = {
+                //         asset: 0,
+                //         construct: 0,
+                //         material: 0,
+                //         service: 0,
+                //         total: 0,
+                //     };
+                // }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
         $scope.factions = [];
         $scope.getProjectSummary = function() {
             let year = '2565';

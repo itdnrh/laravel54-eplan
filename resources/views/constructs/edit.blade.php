@@ -27,6 +27,7 @@
                 groups: {{ $groups }}
             }, 4);
             getById({{ $construct->id }}, setEditControls);
+            setInStock('');
         "
     >
 

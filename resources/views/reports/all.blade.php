@@ -39,6 +39,11 @@
                                             <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามรายการ
                                         </a>
                                     </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/plan-type') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามประเภทแผน
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-md-6">

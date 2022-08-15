@@ -26,6 +26,7 @@
                 categories: {{ $categories }},
                 groups: {{ $groups }}
             }, 4);
+            setInStock('');
             setUserInfo({
                 user: {{ Auth::user()->person_id }},
                 faction: {{ Auth::user()->memberOf->faction_id }},
