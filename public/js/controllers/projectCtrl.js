@@ -427,12 +427,16 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         if($scope.projects.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
-            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-            let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-            let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-            let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let strategic   = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+            let strategy    = !$scope.cboStrategy ? '' : $scope.cboStrategy;
+            let kpi         = !$scope.cboKpi ? '' : $scope.cboKpi;
+            let faction     = !$scope.cboFaction ? '' : $scope.cboFaction;
+            let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+            let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
             
-            window.location.href = `${CONFIG.baseUrl}/projects/excel?year=${year}&type=3&cate=${cate}&status=${status}&depart=${depart}&show_all=1`;
+            window.location.href = `${CONFIG.baseUrl}/projects/excel?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`;
         }
     };
 });

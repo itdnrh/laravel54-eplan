@@ -126,6 +126,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('projects/{id}/timeline', 'ProjectController@storeTimeline');
     Route::post('projects/{id}/{timelineId}/timeline', 'ProjectController@updateTimeline');
     Route::get('projects/print/{id}', 'ProjectController@printForm');
+    Route::get('projects/excel', 'ProjectController@excel');
 
     /** การอนุมัติ */
     Route::get('approvals/assets', 'ApprovalController@assets');

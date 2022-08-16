@@ -511,6 +511,88 @@ class ProjectController extends Controller
         }
     }
 
+    public function excel(Request $req)
+    {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
+        /** Get params from query string */
+        $year = $req->get('year');
+        $strategic = $req->get('strategic');
+        $strategy = $req->get('strategy');
+        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
+                    ? $req->get('faction') 
+                    : Auth::user()->memberOf->faction_id;
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
+                    ? $req->get('depart') 
+                    : Auth::user()->memberOf->depart_id;
+        $name = $req->get('name');
+        $status = $req->get('status');
+
+        // if($status != '-') {
+        //     if (preg_match($pattern, $status, $matched) == 1) {
+        //         $arrStatus = explode($matched[0], $status);
+
+        //         if ($matched[0] != '-' && $matched[0] != '&') {
+        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+        //         }
+        //     } else {
+        //         array_push($conditions, ['status', '=', $status]);
+        //     }
+        // }
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $strategiesList = Strategy::where('strategic_id', $strategic)->pluck('id');
+
+        $data = Project::with('strategy','kpi','depart','budgetSrc')
+                        ->with('owner','owner.prefix')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($strategic), function($q) use ($strategiesList) {
+                            $q->whereIn('strategy_id', $strategiesList);
+                        })
+                        ->when(!empty($strategy), function($q) use ($strategy) {
+                            $q->whereIn('strategy_id', $strategy);
+                        })
+                        ->when(!empty($faction), function($q) use ($departsList) {
+                            $q->whereIn('owner_depart', $departsList);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('owner_depart', $depart);
+                        })
+                        // ->when($status != '', function($q) use ($status) {
+                        //     $q->where('status', $status);
+                        // })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where('project_name', 'Like', $name.'%');
+                        })
+                        ->get();
+
+        $fileName = 'projects-list-' . date('YmdHis') . '.xlsx';
+        $options = [
+            'year' => $year,
+        ];
+        
+        $this->exportExcel($fileName, 'exports.projects-list-excel', $data, $options);
+    }
+
+    private function exportExcel($fileName, $view, $data, $options)
+    {
+        return \Excel::create($fileName, function($excel) use ($view, $data, $options) {
+            $excel->sheet('sheet1', function($sheet) use ($view, $data, $options)
+            {
+                $sheet->loadView($view, [
+                    'data' => $data,
+                    'options' => $options
+                ]);                
+            });
+        })->download();
+    }
+
     public function printForm($id)
     {
         $project = Project::where('id', $id)

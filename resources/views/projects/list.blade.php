@@ -241,9 +241,9 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่</th>
+                                    <th style="width: 8%; text-align: center;">เลขที่โครงการ</th>
                                     <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                    <th>รายการ</th>
+                                    <th>ชื่อโครงการ</th>
                                     <th style="width: 8%; text-align: center;">งบประมาณ</th>
                                     <th style="width: 8%; text-align: center;">แหล่งงบฯ</th>
                                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
