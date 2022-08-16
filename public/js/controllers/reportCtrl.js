@@ -78,6 +78,14 @@ app.controller(
         };
 
         $scope.getPlanByDepart = function () {
+            $scope.totalByPlanTypes = {
+                asset: 0,
+                construct: 0,
+                material: 0,
+                service: 0,
+                total: 0,
+            };
+
             let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
@@ -133,8 +141,20 @@ app.controller(
             electric: 0,
             total: 0
         };
-
         $scope.getAssetByDepart = function () {
+            $scope.totalAssetByCategories = {
+                vehicle: 0,
+                office: 0,
+                computer: 0,
+                medical: 0,
+                home: 0,
+                construct: 0,
+                agriculture: 0,
+                ads: 0,
+                electric: 0,
+                total: 0
+            };
+
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
             let year = $scope.cboYear === ''
@@ -208,6 +228,24 @@ app.controller(
         };
 
         $scope.getMaterialByDepart = function () {
+            $scope.totalMaterialByCategories = {
+                medical: 0,
+                science: 0,
+                dent: 0,
+                office: 0,
+                computer: 0,
+                home: 0,
+                clothes: 0,
+                fuel: 0,
+                sticker: 0,
+                electric: 0,
+                vehicle: 0,
+                ads: 0,
+                construct: 0,
+                agriculture: 0,
+                total: 0
+            };
+
             let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
             let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
             let year = $scope.cboYear === ''
