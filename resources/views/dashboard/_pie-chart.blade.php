@@ -1,7 +1,7 @@
 <div class="box box-success">
     <div class="box-header">
         <h3 class="box-title">
-            สัดส่วนแผนงบลงทุน
+            สัดส่วนสัดส่วนแผนเงินบำรุง
             <!-- <span>ประจำเดือน</span> -->
         </h3>
     </div>

@@ -22,7 +22,7 @@
                     <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>
-                <p><h4>แผนวัสดุ (นอกคลัง)</h4></p>
+                <p><h4>แผนวัสดุ</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>

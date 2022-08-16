@@ -20,17 +20,17 @@ class DashboardController extends Controller
 
     public function getStat1($year)
     {
-        $sql = "SELECT #p.plan_type_id, pt.plan_type_name,
-                sum(pi.sum_price) as sum_all,
-                sum(case when (p.status >= '3') then p.po_net_total end) as sum_po,
-                sum(case when (p.status >= '4') then p.po_net_total end) as sum_insp, #ตรวจรับแล้ว
-                sum(case when (p.status >= '5') then p.po_net_total end) as sum_with #ส่งเบิกเงินแล้ว
-                FROM eplan_db.plans p
-                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
-                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
-                #group by p.plan_type_id, pt.plan_type_name; ";
-
-        $stats = \DB::select($sql);
+        $stats = \DB::table("plans")
+                        ->select(
+                            \DB::raw("sum(plan_items.sum_price) as sum_all"),
+                            \DB::raw("sum(case when (plans.status >= '3') then plan_items.sum_price end) as sum_po"),
+                            \DB::raw("sum(case when (plans.status >= '4') then plan_items.sum_price end) as sum_insp"),
+                            \DB::raw("sum(case when (plans.status >= '5') then plan_items.sum_price end) as sum_with")
+                        )
+                        ->leftJoin("plan_items", "plan_items.plan_id", "=", "plans.id")
+                        ->leftJoin("plan_types", "plans.plan_type_id", "=", "plan_types.id")
+                        ->where("plans.year", $year)
+                        ->get();
 
         return [
             'stats' => $stats
@@ -39,13 +39,18 @@ class DashboardController extends Controller
 
     public function getStat2($year)
     {
-        $sql = "SELECT p.plan_type_id, pt.plan_type_name, sum(pi.sum_price) as sum_all
-                FROM eplan_db.plans p
-                left join eplan_db.plan_items pi on (p.id=pi.plan_id)
-                left join eplan_db.plan_types pt on (p.plan_type_id=pt.id)
-                group by p.plan_type_id, pt.plan_type_name; ";
-
-        $stats = \DB::select($sql);
+        $stats = \DB::table("plans")
+                        ->select(
+                            "plans.plan_type_id",
+                            "plan_types.plan_type_name",
+                            \DB::raw("sum(plan_items.sum_price) as sum_all")
+                        )
+                        ->leftJoin("plan_items", "plan_items.plan_id", "=", "plans.id")
+                        ->leftJoin("plan_types", "plans.plan_type_id", "=", "plan_types.id")
+                        ->groupBy("plans.plan_type_id")
+                        ->groupBy("plan_types.plan_type_name")
+                        ->where("plans.year", $year)
+                        ->get();
 
         return [
             'stats' => $stats

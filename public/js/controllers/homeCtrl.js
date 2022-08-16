@@ -42,7 +42,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         // let date = $('#cboAssetDate').val() !== ''
         //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
         //             : moment().format('YYYY-MM-DD');
-        let year = 2565
+        let year = 2566
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}`)
         .then(function(res) {
@@ -111,10 +111,11 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.getStat1 = function () {
         $scope.loading = true;
 
-        let year = '2565';
+        let year = '2566';
 
         $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}`)
         .then(function(res) {
+            console.log(res);
             $scope.stat1Cards = res.data.stats;
 
             $scope.loading = false;
@@ -128,7 +129,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.getStat2 = function () {
         $scope.loading = true;
 
-        let year = '2565';
+        let year = '2566';
 
         $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}`)
         .then(function(res) {
@@ -187,9 +188,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.getPlanTypeRatio = function (data) {
-        $scope.pieOptions = ChartService.initPieChart("pieChartContainer", "สัดส่วนสัดส่วนแผนงบลงทุน", "บาท", "สัดส่วนแผนงบลงทุน");
+        $scope.pieOptions = ChartService.initPieChart("pieChartContainer", "สัดส่วนสัดส่วนแผนเงินบำรุง", "บาท", "สัดส่วนแผนเงินบำรุง");
         $scope.pieOptions.series[0].data.push({ name: 'ครุุภัณฑ์', y: parseInt(data[0].sum_all) });
-        $scope.pieOptions.series[0].data.push({ name: 'วัสดุนอกคลัง', y: parseInt(data[1].sum_all) });
+        $scope.pieOptions.series[0].data.push({ name: 'วัสดุ', y: parseInt(data[1].sum_all) });
         $scope.pieOptions.series[0].data.push({ name: 'จ้างบริการ', y: parseInt(data[2].sum_all) });
         $scope.pieOptions.series[0].data.push({ name: 'ก่อสร้าง', y: parseInt(data[3].sum_all) });
 
