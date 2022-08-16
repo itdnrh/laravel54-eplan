@@ -263,6 +263,7 @@ class ReportController extends Controller
         $year       = $req->get('year');
         $type       = $req->get('type');
         $approved   = $req->get('approved');
+        $price      = $req->get('price');
         $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
         $plans = \DB::table('plans')
@@ -280,6 +281,13 @@ class ReportController extends Controller
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($price), function($q) use ($price) {
+                        if ($price == 1) {
+                            $q->where('plan_items.price_per_unit', '>=', 10000);
+                        } else {
+                            $q->where('plan_items.price_per_unit', '<', 10000);
+                        }
                     })
                     ->groupBy('plan_items.item_id')
                     ->groupBy('items.item_name')
