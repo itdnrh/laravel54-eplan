@@ -129,24 +129,17 @@ class ProjectController extends Controller
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        $kpisList = Kpi::leftJoin('strategies', 'strategies.id', '=', 'kpis.strategy_id')
-                        ->when(!empty($strategic), function($q) use ($strategic) {
-                            $q->where('strategies.strategic_id', $strategic);
-                        })
-                        ->when(!empty($strategy), function($q) use ($strategy) {
-                            $q->where('kpis.strategy_id', $strategy);
-                        })
-                        ->pluck('kpis.id');
+        $strategiesList = Strategy::where('strategic_id', $strategic)->pluck('id');
 
         $projects = Project::with('kpi','depart','owner','budgetSrc','timeline','payments')
                         ->when(!empty($year), function($q) use ($year) {
                             $q->where('year', $year);
                         })
-                        ->when(!empty($strategic), function($q) use ($kpisList) {
-                            $q->whereIn('kpi_id', $kpisList);
+                        ->when(!empty($strategic), function($q) use ($strategiesList) {
+                            $q->whereIn('strategy_id', $strategiesList);
                         })
-                        ->when(!empty($strategy), function($q) use ($kpisList) {
-                            $q->whereIn('kpi_id', $kpisList);
+                        ->when(!empty($strategy), function($q) use ($strategy) {
+                            $q->whereIn('strategy_id', $strategy);
                         })
                         ->when(!empty($faction), function($q) use ($departsList) {
                             $q->whereIn('owner_depart', $departsList);
