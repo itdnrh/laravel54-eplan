@@ -76,15 +76,14 @@ class ReportController extends Controller
                             \DB::raw("sum(projects.total_budget) as total_budget"),
                             \DB::raw("count(projects.id) as total_amount")
                         )
-                        // ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                         ->groupBy('projects.owner_depart')
                         ->where('projects.year', $year)
-                        // ->when(!empty($faction), function($q) use ($departsList) {
-                        //     $q->whereIn('projects.owner_depart', $departsList);
-                        // })
-                        // ->when(!empty($approved), function($q) use ($approved) {
-                        //     $q->where('projects.approved', $approved);
-                        // })
+                        ->when(!empty($faction), function($q) use ($departsList) {
+                            $q->whereIn('projects.owner_depart', $departsList);
+                        })
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('projects.approved', $approved);
+                        })
                         ->get();
 
         return [
@@ -321,7 +320,9 @@ class ReportController extends Controller
         $faction    = $req->get('faction');
         $year       = $req->get('year');
         $type       = $req->get('type');
+        $price      = $req->get('price');
         $approved   = $req->get('approved');
+        $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
@@ -341,6 +342,14 @@ class ReportController extends Controller
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
                     })
+                    ->when(!empty($price), function($q) use ($price) {
+                        if ($price == 1) {
+                            $q->where('plan_items.price_per_unit', '>=', 10000);
+                        } else {
+                            $q->where('plan_items.price_per_unit', '<', 10000);
+                        }
+                    })
+                    ->orderByRaw("sum(plan_items." .$sort. ") DESC")
                     ->get();
 
         $categories = ItemCategory::all();

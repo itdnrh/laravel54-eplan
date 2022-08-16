@@ -74,16 +74,17 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>สถานะ</label>
+                                    <label>ราคาต่อหน่วย</label>
                                     <select
-                                        id="cboApproved"
-                                        name="cboApproved"
-                                        ng-model="cboApproved"
+                                        id="cboPrice"
+                                        name="cboPrice"
+                                        ng-model="cboPrice"
                                         class="form-control"
                                         ng-change="getPlanByType()"
                                     >
-                                        <option value="">ยังไม่อนุมัติ</option>
-                                        <option value="A">อนุมัติ</option>
+                                        <option value="">-- เลือก --</option>
+                                        <option value="1">ราคา 10,000 บาทขึ้นไป</option>
+                                        <option value="2">ราคา น้อยกว่า 10,000 บาท</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -98,6 +99,19 @@
                                         <option value="">-- เลือก --</option>
                                         <option value="sum_price">งบประมาณ</option>
                                         <option value="amount">จำนวนที่ขอ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboApproved"
+                                        name="cboApproved"
+                                        ng-model="cboApproved"
+                                        class="form-control"
+                                        ng-change="getPlanByType()"
+                                    >
+                                        <option value="">ยังไม่อนุมัติ</option>
+                                        <option value="A">อนุมัติ</option>
                                     </select>
                                 </div>
                             </div>

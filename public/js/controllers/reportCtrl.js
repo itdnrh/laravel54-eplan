@@ -321,12 +321,11 @@ app.controller(
                                 : $scope.cboYear;
             let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
             let approved    = !$scope.cboApproved ? '' : 'A';
+            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&sort=${sort}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
             .then(function (res) {
-                console.log(res);
-
                 $scope.plans = res.data.plans.map(plan => {
                     let cate = res.data.categories.find(c => c.id === plan.category_id);
                     plan.category_name = cate ? cate.name : '';
