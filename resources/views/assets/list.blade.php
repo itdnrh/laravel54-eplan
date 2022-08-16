@@ -192,7 +192,7 @@
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right" ng-click="isDisabledRequest($event)">
                                     เพิ่มรายการ
                                 </a>
                                 <a href="#" ng-show="assets.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">

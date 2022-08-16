@@ -209,7 +209,7 @@
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/projects/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/projects/add') }}" class="btn btn-primary pull-right" ng-click="isDisabledRequest($event)">
                                     เพิ่มโครงการ
                                 </a>
                                 <a href="#" ng-show="projects.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
