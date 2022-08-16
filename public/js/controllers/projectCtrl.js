@@ -238,7 +238,9 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             $scope.project.project_name     = project.project_name;
             $scope.project.kpi              = project.kpi;
             $scope.project.total_budget     = project.total_budget;
+            $scope.project.total_budget_str = project.total_budget_str;
             $scope.project.total_actual     = project.total_actual;
+            $scope.project.total_actual_str = project.total_actual_str;
             $scope.project.budget_src       = project.budget_src;
 
             $scope.project.approved         = project.approved;
@@ -390,6 +392,9 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         e.preventDefault();
     
         if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.id} ใช่หรือไม่?`)) {
+            $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
+            $('#total_budget_str').val($scope.project.total_budget_str);
+
             $(`#${form}`).submit();
         }
     };

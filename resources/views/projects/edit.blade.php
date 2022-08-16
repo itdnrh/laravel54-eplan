@@ -211,7 +211,14 @@
                                         name="total_budget"
                                         ng-model="project.total_budget"
                                         class="form-control pull-right"
-                                        tabindex="4">
+                                        tabindex="4"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        id="total_budget_str"
+                                        name="total_budget_str"
+                                        ng-model="project.total_budget_str"
+                                    />
                                     <span class="help-block" ng-show="checkValidate(project, 'total_budget')">
                                         @{{ formError.errors.total_budget[0] }}
                                     </span>
@@ -227,7 +234,14 @@
                                         name="total_actual"
                                         ng-model="project.total_actual"
                                         class="form-control pull-right"
-                                        tabindex="4">
+                                        tabindex="4"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        id="total_actual_str"
+                                        name="total_actual_str"
+                                        ng-model="project.total_actual_str"
+                                    />
                                     <span class="help-block" ng-show="checkValidate(project, 'total_actual')">
                                         @{{ formError.errors.total_actual[0] }}
                                     </span>
