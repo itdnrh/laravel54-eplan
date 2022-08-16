@@ -11,6 +11,7 @@ use App\Models\Person;
 use App\Models\Project;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
+use App\Models\Strategic;
 use App\Models\Strategy;
 
 class ReportController extends Controller
@@ -96,19 +97,18 @@ class ReportController extends Controller
     public function projectByStrategic()
     {
         return view('reports.project-strategic', [
-            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+            "strategics"  => Strategic::all(),
         ]);
     }
 
     public function getProjectByStrategic(Request $req)
     {
         /** Get params from query string */
-        $faction    = $req->get('faction');
+        $strategic  = $req->get('strategic');
         $year       = $req->get('year');
         $approved   = $req->get('approved');
 
-        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+        $strategiesList = Strategy::where('strategic_id', $strategic)->pluck('id');
 
         $projects = \DB::table('projects')
                         ->select(
@@ -128,8 +128,8 @@ class ReportController extends Controller
                         ->groupBy('projects.strategy_id')
                         ->groupBy('strategies.strategy_name')
                         ->where('projects.year', $year)
-                        ->when(!empty($faction), function($q) use ($departsList) {
-                            $q->whereIn('projects.owner_depart', $departsList);
+                        ->when(!empty($strategic), function($q) use ($strategiesList) {
+                            $q->whereIn('projects.strategy_id', $strategiesList);
                         })
                         ->when(!empty($approved), function($q) use ($approved) {
                             $q->where('projects.approved', $approved);

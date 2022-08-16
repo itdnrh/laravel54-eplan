@@ -23,8 +23,7 @@
         ng-init="
             getProjectByStrategic();
             initForm({ 
-                factions: {{ $factions }},
-                departs: {{ $departs }}
+                strategics: {{ $strategics }},
             });
         "
     >
@@ -40,21 +39,20 @@
                         <div class="box-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>กลุ่มภารกิจ</label>
+                                    <label>ยุทธศาตร์</label>
                                     <select
-                                        id="cboFaction"
-                                        name="cboFaction"
-                                        ng-model="cboFaction"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
-                                        ng-change="onSelectedFaction(cboFaction); getProjectByStrategic();"
+                                        id="cboStrategic"
+                                        name="cboStrategic"
+                                        ng-model="cboStrategic"
+                                        class="form-control"
+                                        ng-change="getProjectByStrategic();"
                                     >
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
                                         <option
-                                            ng-repeat="faction in initFormValues.factions"
-                                            value="@{{ faction.faction_id }}"
+                                            ng-repeat="strategic in initFormValues.strategics"
+                                            value="@{{ strategic.id }}"
                                         >
-                                            @{{ faction.faction_name }}
+                                            @{{ strategic.strategic_name }}
                                         </option>
                                         
                                     </select>

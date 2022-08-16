@@ -10,6 +10,7 @@ app.controller(
         $scope.filteredDivisions = [];
         $scope.loading = false;
 
+        $scope.cboStrategic = '';
         $scope.cboFaction = '';
         $scope.cboDepart = '';
         $scope.cboDivision = '';
@@ -486,7 +487,7 @@ app.controller(
         };
 
         $scope.getProjectByStrategic = function () {
-            let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+            let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
@@ -494,7 +495,7 @@ app.controller(
                         : $scope.cboYear;
             let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/project-strategic?year=${year}&faction=${faction}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/project-strategic?year=${year}&strategic=${strategic}&approved=${approved}`)
             .then(function (res) {
                 console.log(res.data);
                 $scope.projects = res.data.projects.map(project => {
