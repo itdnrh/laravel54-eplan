@@ -54,6 +54,11 @@
                                             <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามหน่วยงาน
                                         </a>
                                     </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/project-strategic') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามยุทธศาสตร์
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

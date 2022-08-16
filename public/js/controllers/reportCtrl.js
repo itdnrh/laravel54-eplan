@@ -484,5 +484,63 @@ app.controller(
             electric: 0,
             total: 0
         };
+
+        $scope.getProjectByStrategic = function () {
+            let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-strategic?year=${year}&faction=${faction}&approved=${approved}`)
+            .then(function (res) {
+                console.log(res.data);
+                $scope.projects = res.data.projects.map(project => {
+                    let stg = res.data.strategies.find(s => s.id === project.strategy_id);
+                    project.strategic_id = stg.strategic_id;
+
+                    return project;
+                });
+
+                /** Sum total of plan by plan_type */
+                // if (res.data.plans.length > 0) {
+                //     res.data.plans.forEach(plan => {
+                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                //     });
+                // } else {
+                //     $scope.totalByPlanTypes = {
+                //         asset: 0,
+                //         construct: 0,
+                //         material: 0,
+                //         service: 0,
+                //         total: 0,
+                //     };
+                // }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.totalAssetByCategories = {
+            vehicle: 0,
+            office: 0,
+            computer: 0,
+            medical: 0,
+            home: 0,
+            construct: 0,
+            agriculture: 0,
+            ads: 0,
+            electric: 0,
+            total: 0
+        };
     }
 );

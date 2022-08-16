@@ -67,6 +67,7 @@
 							</li>
 							@if (
 								Auth::user()->person_id == '1300200009261' ||
+								Auth::user()->memberOf->depart_id == 4 ||
 								Auth::user()->memberOf->depart_id == 2 ||
 								count(Auth::user()->delegations) > 0
 							)
