@@ -324,13 +324,14 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
             let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
             let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
             let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
             let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
             let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
             let approved    = $scope.isApproved ? 'A' : '';
             
-            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`;
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`;
         }
     };
 });
