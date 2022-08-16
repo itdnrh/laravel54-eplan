@@ -29,7 +29,7 @@
             </tr>
             <tr ng-repeat="(index, asset) in assets" style="font-size: 12px;">
                 <td>@{{ index+1 }}. @{{ asset.category_name }}</td>
-                <td style="text-align: right;">@{{ asset.budget | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ asset.request | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.sent | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.withdraw | currency:'':0 }}</td>

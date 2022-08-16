@@ -65,7 +65,7 @@ class DashboardController extends Controller
         $plans = \DB::table('plans')
                     ->select(
                         'items.category_id',
-                        \DB::raw("sum(case when (plans.status=0) then plan_items.sum_price end) as pending"),
+                        \DB::raw("sum(case when (plans.status=0) then plan_items.sum_price end) as request"),
                         \DB::raw("sum(case when (plans.status=1) then plan_items.sum_price end) as sent"),
                         \DB::raw("sum(case when (plans.status=2) then plan_items.sum_price end) as received"),
                         \DB::raw("sum(case when (plans.status=3) then plan_items.sum_price end) as po"),
@@ -79,7 +79,7 @@ class DashboardController extends Controller
                     ->groupBy('items.category_id')
                     ->where('plans.year', $year)
                     ->where('plans.plan_type_id', 1)
-                    ->where('plans.approved', 'A')
+                    // ->where('plans.approved', 'A')
                     ->get();
 
         return [
@@ -97,7 +97,7 @@ class DashboardController extends Controller
         $plans = \DB::table('plans')
                     ->select(
                         'items.category_id',
-                        \DB::raw("sum(case when (plans.status=0) then plan_items.sum_price end) as pending"),
+                        \DB::raw("sum(case when (plans.status=0) then plan_items.sum_price end) as request"),
                         \DB::raw("sum(case when (plans.status=1) then plan_items.sum_price end) as sent"),
                         \DB::raw("sum(case when (plans.status=2) then plan_items.sum_price end) as received"),
                         \DB::raw("sum(case when (plans.status=3) then plan_items.sum_price end) as po"),
@@ -111,8 +111,8 @@ class DashboardController extends Controller
                     ->groupBy('items.category_id')
                     ->where('plans.year', $year)
                     ->where('plans.plan_type_id', 2)
-                    ->where('plans.approved', 'A')
-                    ->get();
+                    // ->where('plans.approved', 'A')
+                    ->paginate(10);
 
         return [
             'plans'         => $plans,

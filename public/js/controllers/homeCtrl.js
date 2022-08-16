@@ -73,31 +73,61 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.materials = [];
     $scope.totalMaterial = 0;
     $scope.getSummaryMaterials = function() {
+        $scope.materials = [];
+        $scope.pager = null;
         $scope.loading = true;
 
         // let date = $('#cboAssetDate').val() !== ''
         //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
         //             : moment().format('YYYY-MM-DD');
-        let year = 2565
+        let year = 2566;
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}`)
         .then(function(res) {
-            const { plans, budget, categories } = res.data;
+            $scope.setMaterials(res);
 
-            let cates = categories.map(cate => {
-                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
-                cate.budget = summary ? summary.budget : 0;
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
 
-                return cate;
-            });
+    $scope.setMaterials = function(res) {
+        const { plans, budget, categories } = res.data;
 
-            $scope.materials = plans.map(plan => {
-                const cateInfo = cates.find(cate => cate.id === plan.category_id);
-                plan.category_name = cateInfo.name;
-                plan.budget = cateInfo.budget;
+        let cates = categories.map(cate => {
+            const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+            cate.budget = summary ? summary.budget : 0;
 
-                return plan;
-            });
+            return cate;
+        });
+
+        const { data, ...pager } = plans;
+        $scope.materials = data.map(plan => {
+            const cateInfo = cates.find(cate => cate.id === plan.category_id);
+            plan.category_name = cateInfo.name;
+            plan.budget = cateInfo.budget;
+
+            return plan;
+        });
+
+        $scope.pager = pager;
+    };
+
+    $scope.getMaterialsWithURL = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.materials = [];
+        $scope.pager = null;
+        $scope.loading = true;
+
+        let year = 2566
+
+        $http.get(`${url}&year=${year}`)
+        .then(function(res) {
+            cb(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -115,7 +145,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}`)
         .then(function(res) {
-            console.log(res);
             $scope.stat1Cards = res.data.stats;
 
             $scope.loading = false;
@@ -141,24 +170,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         }, function(err) {
             console.log(err);
 
-            $scope.loading = false;
-        });
-    };
-
-    // TODO: Duplicated method
-    $scope.getDataWithURL = function(e, URL, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-
-        $http.get(URL)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
             $scope.loading = false;
         });
     };

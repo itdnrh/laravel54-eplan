@@ -28,8 +28,8 @@
                 <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
             </tr>
             <tr ng-repeat="(index, material) in materials" style="font-size: 12px;">
-                <td>@{{ index+1 }}. @{{ material.category_name }}</td>
-                <td style="text-align: right;">@{{ material.budget | currency:'':0 }}</td>
+                <td>@{{ pager.from+index }}. @{{ material.category_name }}</td>
+                <td style="text-align: right;">@{{ material.request | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.sent | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.withdraw | currency:'':0 }}</td>
@@ -38,31 +38,31 @@
         </table>
     </div><!-- /.box-body -->
     <div class="box-footer">
-        <div class="row" ng-show="false">
+        <div class="row" ng-show="pager">
             <div class="col-md-4">
                 <span style="margin-top: 5px;" ng-show="pager.last_page > 0">
                     หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                 </span>
             </div>
             <div class="col-md-4" style="text-align: center;">
-                จำนวน @{{ pager.total }} บาท
+                จำนวน @{{ pager.total }} รายการ
             </div>
             <div class="col-md-4">
                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                     <li ng-if="pager.current_page !== 1">
-                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setHeadLeaves)" aria-label="Previous">
+                        <a href="#" ng-click="getMaterialsWithURL($event, pager.path+ '?page=1', setMaterials)" aria-label="Previous">
                             <span aria-hidden="true">First</span>
                         </a>
                     </li>
                 
                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setHeadLeaves)" aria-label="Prev">
+                        <a href="#" ng-click="getMaterialsWithURL($event, pager.prev_page_url, setMaterials)" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
 
                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                        <a href="#" ng-click="getDataWithURL($event, pager.path + '?page=' +i, setHeadLeaves)">
+                        <a href="#" ng-click="getMaterialsWithURL($event, pager.path + '?page=' +i, setMaterials)">
                             @{{ i }}
                         </a>
                     </li> -->
@@ -74,13 +74,13 @@
                     </li> -->
 
                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setHeadLeaves)" aria-label="Next">
+                        <a href="#" ng-click="getMaterialsWithURL($event, pager.next_page_url, setMaterials)" aria-label="Next">
                             <span aria-hidden="true">Next</span>
                         </a>
                     </li>
 
                     <li ng-if="pager.current_page !== pager.last_page">
-                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setHeadLeaves)" aria-label="Previous">
+                        <a href="#" ng-click="getMaterialsWithURL($event, pager.path+ '?page=' +pager.last_page, setMaterials)" aria-label="Previous">
                             <span aria-hidden="true">Last</span>
                         </a>
                     </li>
