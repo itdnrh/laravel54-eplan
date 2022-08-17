@@ -49,6 +49,45 @@ class ReportController extends Controller
         ]);
     }
 
+    public function projectByFaction()
+    {
+        return view('reports.project-faction', [
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getProjectByFaction(Request $req)
+    {
+        /** Get params from query string */
+        $year       = $req->get('year');
+        $approved   = $req->get('approved');
+
+        $projects = \DB::table('projects')
+                        ->select(
+                            \DB::raw("projects.owner_depart as depart_id"),
+                            \DB::raw("sum(case when (projects.project_type_id=1) then projects.total_budget end) as hos_budget"),
+                            \DB::raw("count(case when (projects.project_type_id=1) then projects.id end) as hos_amount"),
+                            \DB::raw("sum(case when (projects.project_type_id=2) then projects.total_budget end) as cup_budget"),
+                            \DB::raw("count(case when (projects.project_type_id=2) then projects.id end) as cup_amount"),
+                            \DB::raw("sum(case when (projects.project_type_id=3) then projects.total_budget end) as tam_budget"),
+                            \DB::raw("count(case when (projects.project_type_id=3) then projects.id end) as tam_amount"),
+                            \DB::raw("sum(projects.total_budget) as total_budget"),
+                            \DB::raw("count(projects.id) as total_amount")
+                        )
+                        ->groupBy('projects.owner_depart')
+                        ->where('projects.year', $year)
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('projects.approved', $approved);
+                        })
+                        ->get();
+
+        return [
+            'projects'  => $projects,
+            'departs'   => Depart::all(),
+            'factions'  => Faction::whereNotIn('faction_id', [6,4,12])->get()
+        ];
+    }
+
     public function projectByDepart()
     {
         return view('reports.project-depart', [
@@ -184,7 +223,6 @@ class ReportController extends Controller
         ];
     }
 
-    
     public function planByDepart()
     {
         $depart = '';

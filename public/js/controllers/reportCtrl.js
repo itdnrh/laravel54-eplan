@@ -55,7 +55,6 @@ app.controller(
 
             $http.get(`${CONFIG.baseUrl}/reports/daily-data?depart=${depart}&division=${division}&date=${date}`)
             .then(function (res) {
-                console.log(res);
                 const { data, ...pager } = res.data.leaves;
 
                 $scope.data = data;
@@ -602,7 +601,215 @@ app.controller(
             });
         };
 
+        $scope.totalByFaction = {
+            cup_amount: 0,
+            cup_budget: 0,
+            hos_amount: 0,
+            hos_budget: 0,
+            tam_amount: 0,
+            tam_budget: 0,
+            total_amount: 0,
+            total_budget: 0,
+        };
+
+        $scope.getProjectByFaction = function () {
+            $scope.totalByFaction = {
+                cup_amount: 0,
+                cup_budget: 0,
+                hos_amount: 0,
+                hos_budget: 0,
+                tam_amount: 0,
+                tam_budget: 0,
+                total_amount: 0,
+                total_budget: 0,
+            };
+
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-faction?year=${year}&approved=${approved}`)
+            .then(function (res) {
+                let departs = res.data.projects.map(plan => {
+                    let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
+                    plan.depart_name = dep.depart_name;
+                    plan.faction_id = dep.faction_id;
+
+                    return plan;
+                });
+
+                let admin = {
+                    cup_amount: 0,
+                    cup_budget: 0,
+                    hos_amount: 0,
+                    hos_budget: 0,
+                    tam_amount: 0,
+                    tam_budget: 0,
+                    total_amount: 0,
+                    total_budget: 0,
+                };
+                let doctor = {
+                    cup_amount: 0,
+                    cup_budget: 0,
+                    hos_amount: 0,
+                    hos_budget: 0,
+                    tam_amount: 0,
+                    tam_budget: 0,
+                    total_amount: 0,
+                    total_budget: 0,
+                };
+                let primary = {
+                    cup_amount: 0,
+                    cup_budget: 0,
+                    hos_amount: 0,
+                    hos_budget: 0,
+                    tam_amount: 0,
+                    tam_budget: 0,
+                    total_amount: 0,
+                    total_budget: 0,
+                };
+                let prs = {
+                    cup_amount: 0,
+                    cup_budget: 0,
+                    hos_amount: 0,
+                    hos_budget: 0,
+                    tam_amount: 0,
+                    tam_budget: 0,
+                    total_amount: 0,
+                    total_budget: 0,
+                };
+                let nurse = {
+                    cup_amount: 0,
+                    cup_budget: 0,
+                    hos_amount: 0,
+                    hos_budget: 0,
+                    tam_amount: 0,
+                    tam_budget: 0,
+                    total_amount: 0,
+                    total_budget: 0,
+                };
+
+                departs.forEach(dep => {
+                    if (dep.faction_id == 1) {
+                        admin.cup_amount         += dep.cup_amount && parseInt(dep.cup_amount);
+                        admin.cup_budget      += dep.cup_budget && parseInt(dep.cup_budget);
+                        admin.hos_amount       += dep.hos_amount && parseInt(dep.hos_amount);
+                        admin.hos_budget     += dep.hos_budget && parseInt(dep.hos_budget);
+                        admin.tam_amount         += dep.tam_amount && parseInt(dep.tam_amount);
+                        admin.tam_budget         += dep.tam_budget && parseInt(dep.tam_budget);
+                        admin.total_amount         += dep.total_amount && parseInt(dep.total_amount);
+                        admin.total_budget         += dep.total_budget && parseInt(dep.total_budget);
+                    } else if (dep.faction_id == 2) {
+                        doctor.cup_amount        += dep.cup_amount && parseInt(dep.cup_amount);
+                        doctor.cup_budget     += dep.cup_budget && parseInt(dep.cup_budget);
+                        doctor.hos_amount      += dep.hos_amount && parseInt(dep.hos_amount);
+                        doctor.hos_budget    += dep.hos_budget && parseInt(dep.hos_budget);
+                        doctor.tam_amount        += dep.tam_amount && parseInt(dep.tam_amount);
+                        doctor.tam_budget        += dep.tam_budget && parseInt(dep.tam_budget);
+                        doctor.total_amount        += dep.total_amount && parseInt(dep.total_amount);
+                        doctor.total_budget        += dep.total_budget && parseInt(dep.total_budget);
+                    } else if (dep.faction_id == 3) {
+                        primary.cup_amount       += dep.cup_amount && parseInt(dep.cup_amount);
+                        primary.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
+                        primary.hos_amount     += dep.hos_amount && parseInt(dep.hos_amount);
+                        primary.hos_budget   += dep.hos_budget && parseInt(dep.hos_budget);
+                        primary.tam_amount       += dep.tam_amount && parseInt(dep.tam_amount);
+                        primary.tam_budget       += dep.tam_budget && parseInt(dep.tam_budget);
+                        primary.total_amount       += dep.total_amount && parseInt(dep.total_amount);
+                        primary.total_budget       += dep.total_budget && parseInt(dep.total_budget);
+                    } else if (dep.faction_id == 7) {
+                        prs.cup_amount       += dep.cup_amount && parseInt(dep.cup_amount);
+                        prs.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
+                        prs.hos_amount     += dep.hos_amount && parseInt(dep.hos_amount);
+                        prs.hos_budget   += dep.hos_budget && parseInt(dep.hos_budget);
+                        prs.tam_amount       += dep.tam_amount && parseInt(dep.tam_amount);
+                        prs.tam_budget       += dep.tam_budget && parseInt(dep.tam_budget);
+                        prs.total_amount       += dep.total_amount && parseInt(dep.total_amount);
+                        prs.total_budget       += dep.total_budget && parseInt(dep.total_budget);
+                    } else if (dep.faction_id == 5) {
+                        nurse.cup_amount     += dep.cup_amount && parseInt(dep.cup_amount);
+                        nurse.cup_budget  += dep.cup_budget && parseInt(dep.cup_budget);
+                        nurse.hos_amount   += dep.hos_amount && parseInt(dep.hos_amount);
+                        nurse.hos_budget += dep.hos_budget && parseInt(dep.hos_budget);
+                        nurse.tam_amount     += dep.tam_amount && parseInt(dep.tam_amount);
+                        nurse.tam_budget     += dep.tam_budget && parseInt(dep.tam_budget);
+                        nurse.total_amount     += dep.total_amount && parseInt(dep.total_amount);
+                        nurse.total_budget     += dep.total_budget && parseInt(dep.total_budget);
+                    }
+                });
+
+                $scope.projects = res.data.factions.map(faction => {
+                    if (faction.faction_id == 1) {
+                        return { ...faction, ...admin };
+                    } else if (faction.faction_id == 2) {
+                        return { ...faction, ...doctor };
+                    } else if (faction.faction_id == 3) {
+                        return { ...faction, ...primary };
+                    } else if (faction.faction_id == 7) {
+                        return { ...faction, ...prs };
+                    } else if (faction.faction_id == 5) {
+                        return { ...faction, ...nurse };
+                    }
+                });
+
+                /** Sum total of plan by plan_type */
+                if (res.data.projects.length > 0) {
+                    res.data.projects.forEach(project => {
+                        $scope.totalByFaction.cup_amount    += project.cup_amount ? project.cup_amount : 0;
+                        $scope.totalByFaction.cup_budget    += project.cup_budget ? project.cup_budget : 0;
+                        $scope.totalByFaction.hos_amount    += project.hos_amount ? project.hos_amount : 0;
+                        $scope.totalByFaction.hos_budget    += project.hos_budget ? project.hos_budget : 0;
+                        $scope.totalByFaction.tam_amount    += project.tam_amount ? project.tam_amount : 0;
+                        $scope.totalByFaction.tam_budget    += project.tam_budget ? project.tam_budget : 0;
+                        $scope.totalByFaction.total_amount  += project.total_amount ? project.total_amount : 0;
+                        $scope.totalByFaction.total_budget  += project.total_budget ? project.total_budget : 0;
+                    });
+                } else {
+                    $scope.totalByFaction = {
+                        cup_amount: 0,
+                        cup_budget: 0,
+                        hos_amount: 0,
+                        hos_budget: 0,
+                        tam_amount: 0,
+                        tam_budget: 0,
+                        total_amount: 0,
+                        total_budget: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.totalByDepart = {
+            cup_amount: 0,
+            cup_budget: 0,
+            hos_amount: 0,
+            hos_budget: 0,
+            tam_amount: 0,
+            tam_budget: 0,
+            total_amount: 0,
+            total_budget: 0,
+        };
+
         $scope.getProjectByDepart = function () {
+            $scope.totalByDepart = {
+                cup_amount: 0,
+                cup_budget: 0,
+                hos_amount: 0,
+                hos_budget: 0,
+                tam_amount: 0,
+                tam_budget: 0,
+                total_amount: 0,
+                total_budget: 0,
+            };
+
             let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
@@ -613,7 +820,6 @@ app.controller(
 
             $http.get(`${CONFIG.apiUrl}/reports/project-depart?year=${year}&faction=${faction}&approved=${approved}`)
             .then(function (res) {
-                console.log(res.data);
                 $scope.projects = res.data.projects.map(project => {
                     let dep = res.data.departs.find(d => d.depart_id === project.depart_id);
                     project.depart_name = dep.depart_name;
@@ -622,23 +828,29 @@ app.controller(
                 });
 
                 /** Sum total of plan by plan_type */
-                // if (res.data.plans.length > 0) {
-                //     res.data.plans.forEach(plan => {
-                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
-                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
-                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
-                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
-                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
-                //     });
-                // } else {
-                //     $scope.totalByPlanTypes = {
-                //         asset: 0,
-                //         construct: 0,
-                //         material: 0,
-                //         service: 0,
-                //         total: 0,
-                //     };
-                // }
+                if (res.data.projects.length > 0) {
+                    res.data.projects.forEach(project => {
+                        $scope.totalByDepart.cup_amount    += project.cup_amount ? project.cup_amount : 0;
+                        $scope.totalByDepart.cup_budget    += project.cup_budget ? project.cup_budget : 0;
+                        $scope.totalByDepart.hos_amount    += project.hos_amount ? project.hos_amount : 0;
+                        $scope.totalByDepart.hos_budget    += project.hos_budget ? project.hos_budget : 0;
+                        $scope.totalByDepart.tam_amount    += project.tam_amount ? project.tam_amount : 0;
+                        $scope.totalByDepart.tam_budget    += project.tam_budget ? project.tam_budget : 0;
+                        $scope.totalByDepart.total_amount  += project.total_amount ? project.total_amount : 0;
+                        $scope.totalByDepart.total_budget  += project.total_budget ? project.total_budget : 0;
+                    });
+                } else {
+                    $scope.totalByDepart = {
+                        cup_amount: 0,
+                        cup_budget: 0,
+                        hos_amount: 0,
+                        hos_budget: 0,
+                        tam_amount: 0,
+                        tam_budget: 0,
+                        total_amount: 0,
+                        total_budget: 0,
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {

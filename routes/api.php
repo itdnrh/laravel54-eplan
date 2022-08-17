@@ -100,6 +100,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('persons/{id}/movings', 'PersonController@getMoving');
 
     /** รายงาน */
+    Route::get('reports/project-faction', 'ReportController@getProjectByFaction');
     Route::get('reports/project-depart', 'ReportController@getProjectByDepart');
     Route::get('reports/project-strategic', 'ReportController@getProjectByStrategic');
     Route::get('reports/project-summary', 'ReportController@getProjectSummary');

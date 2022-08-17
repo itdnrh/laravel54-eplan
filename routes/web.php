@@ -272,6 +272,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** รายงาน */
     Route::get('reports/all', 'ReportController@index');
+    Route::get('reports/project-faction', 'ReportController@projectByFaction');
     Route::get('reports/project-depart', 'ReportController@projectByDepart');
     Route::get('reports/project-strategic', 'ReportController@projectByStrategic');
     Route::get('reports/project-summary', 'ReportController@projectSummary');
