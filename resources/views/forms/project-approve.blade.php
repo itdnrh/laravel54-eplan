@@ -19,9 +19,11 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 77%; margin-left: 70px;">
-                                    <span style="margin: 0 5px;">{{ $project->depart->depart_name }}</span>
-                                    <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit($project->depart->tel_no) }}</span>
+                                    <span style="margin: 0 5px; font-size: 13.5pt;">
+                                        {{ $project->owner_depart != 37 ? $project->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
+                                    </span>
+                                    <span style="margin: 0 2px; font-size: 13.5pt;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
+                                    <span style="margin: 0 2px; font-size: 13.5pt;">โทร {{ thainumDigit($project->depart->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -71,7 +73,7 @@
                                 @endif
                             </p>
                             <p>
-                                ได้รับอนุมัติให้จัดทำโครงการ <span>{{ thainumDigit($project->project_name) }}</span>                                
+                                ได้รับอนุมัติให้จัดทำ <span>{{ thainumDigit($project->project_name) }}</span>                                
                                 รหัสโครงการ 
                                 @if(!empty($project->project_no))
                                     <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
@@ -93,7 +95,7 @@
                         <td colspan="4">
                             <p class="memo-paragraph with-expanded" style="padding-right: 5px;">
                                 ในการนี้ <span>{{ $project->depart->depart_name}}</span>
-                                จึงขออนุมัติดำเนินโครงการ <span>{{ thainumDigit($project->project_name) }}</span> ตามเอกสารที่แนบมาพร้อมนี้
+                                จึงขออนุมัติดำเนิน <span>{{ thainumDigit($project->project_name) }}</span> ตามเอกสารที่แนบมาพร้อมนี้
                             </p>
                         </td>
                     </tr>

@@ -176,7 +176,11 @@ class PlanController extends Controller
                         $q->where('division_id', $division);
                     })
                     ->when(!empty($price), function($q) use ($price) {
-                        $q->where('plan_items.price_per_unit', '>=', $price);
+                        if ($price == '1') {
+                            $q->where('plan_items.price_per_unit', '<', 10000);
+                        } else {
+                            $q->where('plan_items.price_per_unit', '>=', $price);
+                        }
                     })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('approved', $approved);
@@ -377,7 +381,11 @@ class PlanController extends Controller
                         $q->where('division_id', $division);
                     })
                     ->when(!empty($price), function($q) use ($price) {
-                        $q->where('plan_items.price_per_unit', '>=', $price);
+                        if ($price == '1') {
+                            $q->where('plan_items.price_per_unit', '<', 10000);
+                        } else {
+                            $q->where('plan_items.price_per_unit', '>=', $price);
+                        }
                     })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('approved', $approved);
