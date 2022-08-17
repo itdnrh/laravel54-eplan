@@ -142,6 +142,49 @@ class ReportController extends Controller
         ];
     }
 
+    public function planByFaction()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.plan-faction', [
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getPlanByFaction(Request $req)
+    {
+        /** Get params from query string */
+        $year       = $req->get('year');
+        $approved   = $req->get('approved');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (plans.plan_type_id=1) then plan_items.sum_price end) as asset"),
+                        \DB::raw("sum(case when (plans.plan_type_id=2) then plan_items.sum_price end) as material"),
+                        \DB::raw("sum(case when (plans.plan_type_id=3) then plan_items.sum_price end) as service"),
+                        \DB::raw("sum(case when (plans.plan_type_id=4) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(plan_items.sum_price) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->groupBy('plans.depart_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->get();
+
+        return [
+            'plans'     => $plans,
+            'departs'   => Depart::all(),
+            'factions'  => Faction::whereNotIn('faction_id', [6,4,12])->get()
+        ];
+    }
+
+    
     public function planByDepart()
     {
         $depart = '';

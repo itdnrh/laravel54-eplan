@@ -30,6 +30,11 @@
                                 <h4>แผนเงินบำรุง</h4>
                                 <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
                                     <li style="margin: 5px;">
+                                        <a href="{{ url('reports/plan-faction') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามกลุ่มภารกิจ
+                                        </a>
+                                    </li>
+                                    <li style="margin: 5px;">
                                         <a href="{{ url('reports/plan-depart') }}">
                                             <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามหน่วยงาน
                                         </a>
@@ -49,6 +54,11 @@
                             <div class="col-md-6">
                                 <h4>โครงการ</h4>
                                 <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/project-faction') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามกลุ่มภารกิจ
+                                        </a>
+                                    </li>    
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/project-depart') }}">
                                             <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามหน่วยงาน

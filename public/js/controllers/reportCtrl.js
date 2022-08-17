@@ -77,6 +77,142 @@ app.controller(
             total: 0,
         };
 
+        $scope.getPlanByFaction = function () {
+            $scope.totalByPlanTypes = {
+                asset: 0,
+                construct: 0,
+                material: 0,
+                service: 0,
+                total: 0,
+            };
+
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-faction?year=${year}&approved=${approved}`)
+            .then(function (res) {
+                let departs = res.data.plans.map(plan => {
+                    let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
+                    plan.depart_name = dep.depart_name;
+                    plan.faction_id = dep.faction_id;
+
+                    return plan;
+                });
+
+                let admin = {
+                    asset: 0,
+                    material: 0,
+                    service: 0,
+                    construct: 0,
+                    total: 0,
+                };
+                let doctor = {
+                    asset: 0,
+                    material: 0,
+                    service: 0,
+                    construct: 0,
+                    total: 0,
+                };
+                let primary = {
+                    asset: 0,
+                    material: 0,
+                    service: 0,
+                    construct: 0,
+                    total: 0,
+                };
+                let prs = {
+                    asset: 0,
+                    material: 0,
+                    service: 0,
+                    construct: 0,
+                    total: 0,
+                };
+                let nurse = {
+                    asset: 0,
+                    material: 0,
+                    service: 0,
+                    construct: 0,
+                    total: 0,
+                };
+
+                departs.forEach(dep => {
+                    if (dep.faction_id == 1) {
+                        admin.asset         += dep.asset && parseInt(dep.asset);
+                        admin.material      += dep.material && parseInt(dep.material);
+                        admin.service       += dep.service && parseInt(dep.service);
+                        admin.construct     += dep.construct && parseInt(dep.construct);
+                        admin.total         += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 2) {
+                        doctor.asset        += dep.asset && parseInt(dep.asset);
+                        doctor.material     += dep.material && parseInt(dep.material);
+                        doctor.service      += dep.service && parseInt(dep.service);
+                        doctor.construct    += dep.construct && parseInt(dep.construct);
+                        doctor.total        += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 3) {
+                        primary.asset       += dep.asset && parseInt(dep.asset);
+                        primary.material    += dep.material && parseInt(dep.material);
+                        primary.service     += dep.service && parseInt(dep.service);
+                        primary.construct   += dep.construct && parseInt(dep.construct);
+                        primary.total       += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 7) {
+                        prs.asset       += dep.asset && parseInt(dep.asset);
+                        prs.material    += dep.material && parseInt(dep.material);
+                        prs.service     += dep.service && parseInt(dep.service);
+                        prs.construct   += dep.construct && parseInt(dep.construct);
+                        prs.total       += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 5) {
+                        nurse.asset     += dep.asset && parseInt(dep.asset);
+                        nurse.material  += dep.material && parseInt(dep.material);
+                        nurse.service   += dep.service && parseInt(dep.service);
+                        nurse.construct += dep.construct && parseInt(dep.construct);
+                        nurse.total     += dep.total && parseInt(dep.total);
+                    }
+                });
+
+                $scope.plans = res.data.factions.map(faction => {
+                    if (faction.faction_id == 1) {
+                        return { ...faction, ...admin };
+                    } else if (faction.faction_id == 2) {
+                        return { ...faction, ...doctor };
+                    } else if (faction.faction_id == 3) {
+                        return { ...faction, ...primary };
+                    } else if (faction.faction_id == 7) {
+                        return { ...faction, ...prs };
+                    } else if (faction.faction_id == 5) {
+                        return { ...faction, ...nurse };
+                    }
+                });
+
+                /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
+                        $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
+                        $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
+                        $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
+                        $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                    });
+                } else {
+                    $scope.totalByPlanTypes = {
+                        asset: 0,
+                        construct: 0,
+                        material: 0,
+                        service: 0,
+                        total: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
         $scope.getPlanByDepart = function () {
             $scope.totalByPlanTypes = {
                 asset: 0,

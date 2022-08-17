@@ -276,6 +276,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('reports/project-strategic', 'ReportController@projectByStrategic');
     Route::get('reports/project-summary', 'ReportController@projectSummary');
     Route::get('reports/projects-list', 'ReportController@projectsList');
+    Route::get('reports/plan-faction', 'ReportController@planByFaction');
     Route::get('reports/plan-depart', 'ReportController@planByDepart');
     Route::get('reports/asset-depart', 'ReportController@assetByDepart');
     Route::get('reports/material-depart', 'ReportController@materialByDepart');
