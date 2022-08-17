@@ -120,4 +120,29 @@ class DashboardController extends Controller
             'budget'        => PlanSummary::where('year', $year)->get()
         ];
     }
+
+    public function getProjectByType(Request $req)
+    {
+        /** Get params from query string */
+        $year       = $req->get('year');
+        $approved   = $req->get('approved');
+
+        $projects = \DB::table('projects')
+                        ->select(
+                            \DB::raw("project_types.name"),
+                            \DB::raw("count(projects.id) as amount"),
+                            \DB::raw("sum(projects.total_budget) as budget")
+                        )
+                        ->leftJoin("project_types", "projects.project_type_id", "=", "project_types.id")
+                        ->groupBy('project_types.name')
+                        ->where('projects.year', $year)
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('projects.approved', $approved);
+                        })
+                        ->get();
+
+        return [
+            'projects'  => $projects,
+        ];
+    }
 }

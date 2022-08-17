@@ -37,12 +37,12 @@
             <section class="col-lg-6 connectedSortable">
 
                 @include('dashboard._pie-chart')
-
+                
             </section>
             <section class="col-lg-6 connectedSortable">
-    
-                <!-- <div id="barContainer2" style="width: 100%; height: 400px; margin: 0 auto; margin-top: 20px;"></div> -->
-    
+
+                @include('dashboard._project-pie-chart')
+
             </section>
         </div>
         <div class="row">

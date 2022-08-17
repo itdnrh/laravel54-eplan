@@ -199,13 +199,36 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.getPlanTypeRatio = function (data) {
-        $scope.pieOptions = ChartService.initPieChart("pieChartContainer", "สัดส่วนสัดส่วนแผนเงินบำรุง", "บาท", "สัดส่วนแผนเงินบำรุง");
+        $scope.pieOptions = ChartService.initPieChart("pieChartContainer", "", "บาท", "สัดส่วนแผนเงินบำรุง");
         $scope.pieOptions.series[0].data.push({ name: 'ครุุภัณฑ์', y: parseInt(data[0].sum_all) });
         $scope.pieOptions.series[0].data.push({ name: 'วัสดุ', y: parseInt(data[1].sum_all) });
         $scope.pieOptions.series[0].data.push({ name: 'จ้างบริการ', y: parseInt(data[2].sum_all) });
         $scope.pieOptions.series[0].data.push({ name: 'ก่อสร้าง', y: parseInt(data[3].sum_all) });
 
         var chart = new Highcharts.Chart($scope.pieOptions);
+    };
+
+    $scope.getProjectTypeRatio = function () {
+        $scope.loading = true;
+
+        let year = '2566';
+
+        $http.get(`${CONFIG.apiUrl}/dashboard/project-type?year=${year}&approved=`)
+        .then(function(res) {
+            console.log(res);
+            let dataSeries = res.data.projects.map(type => {
+                return { name: type.name, y: parseInt(type.budget) }
+            });
+            $scope.pieOptions = ChartService.initPieChart("projectPieChartContainer", "", "บาท", "สัดส่วนสัดส่วนแผนงาน/โครงการ");
+            $scope.pieOptions.series[0].data = dataSeries;
+
+            var chart = new Highcharts.Chart($scope.pieOptions);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
     };
 
     $scope.getSumMonthData = function () {
