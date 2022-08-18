@@ -92,6 +92,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         first_year: '2565',
         have_subitem: 0,
         calc_method: 1,
+        is_fixcost: 0,
         remark: '',
         error: {}
     };
@@ -384,13 +385,22 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
             first_year: '2565',
             have_subitem: 0,
             calc_method: 1,
+            is_fixcost: 0,
             remark: '',
             error: {}
         };
     };
 
     $scope.isMaterial = function(planType) {
-        if ([2,6].includes(parseInt(planType))) {
+        if (parseInt(planType) === 2) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.isService = function(planType) {
+        if (parseInt(planType) === 3) {
             return true;
         } else {
             return false;

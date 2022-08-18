@@ -191,7 +191,7 @@
                                         @{{ formError.errors.unit_id[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-4 form-group">
                                     <label for="">การตัดยอด</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -205,7 +205,7 @@
                                         @{{ formError.errors.calc_method[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-4 form-group">
                                     <label for="">มีรายการย่อย</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -219,7 +219,7 @@
                                         @{{ formError.errors.have_subitem[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
+                                <div class="col-md-4 form-group" ng-show="isMaterial(item.plan_type_id)">
                                     <label for="">ใน/นอกคลัง</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -233,18 +233,27 @@
                                         @{{ formError.errors.in_stock[0] }}
                                     </span>
                                 </div>
-                                <div
-                                    class="form-group"
-                                    ng-class="{
-                                        'col-md-6': isMaterial(item.plan_type_id),
-                                        'col-md-12': !isMaterial(item.plan_type_id)
-                                    }"
-                                >
+                                <div class="col-md-4 form-group" ng-show="isService(item.plan_type_id)">
+                                    <label for="">เป็นรายการ Fix Cost</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="radio" ng-model="item.is_fixcost" ng-value="0" /> ไม่เป็น
+                                        </div>
+                                        <div>
+                                            <input type="radio" ng-model="item.is_fixcost" ng-value="1" /> เป็น
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'is_fixcost')">
+                                        @{{ formError.errors.is_fixcost[0] }}
+                                    </span>
+                                </div>
+                                <div class="form-group col-md-12">
                                     <label for="">หมายเหตุ</label>
                                     <textarea
                                         rows=""
                                         id="remark"
                                         name="remark"
+                                        rows="5"
                                         ng-model="item.remark"
                                         class="form-control"
                                     ></textarea>

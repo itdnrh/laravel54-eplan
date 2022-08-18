@@ -24,6 +24,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         first_year: '2565',
         have_subitem: 0,
         calc_method: 1,
+        is_fixcost: 0,
         remark: '',
     };
 
@@ -62,6 +63,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             first_year: '2565',
             have_subitem: 0,
             calc_method: 1,
+            is_fixcost: 0,
             remark: '',
         };
     };
@@ -147,6 +149,7 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             $scope.item.first_year      = item.first_year;
             $scope.item.have_subitem    = item.have_subitem;
             $scope.item.calc_method     = item.calc_method;
+            $scope.item.is_fixcost      = item.is_fixcost;
             $scope.item.remark          = item.remark;
             $scope.item.status          = item.status;
     

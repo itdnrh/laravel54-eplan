@@ -183,6 +183,7 @@ class ItemController extends Controller
             $item->first_year   = $req['first_year'];
             $item->have_subitem = $req['have_subitem'];
             $item->calc_method  = $req['calc_method'];
+            $item->is_fixcost   = $req['is_fixcost'];
             $item->remark       = $req['remark'];
 
             if($item->save()) {
@@ -232,6 +233,7 @@ class ItemController extends Controller
             $item->first_year   = $req['first_year'];
             $item->have_subitem = $req['have_subitem'];
             $item->calc_method  = $req['calc_method'];
+            $item->is_fixcost   = $req['is_fixcost'];
             $item->remark       = $req['remark'];
 
             if($item->save()) {
