@@ -5,14 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายงานแผนเงินบำรุงตามกลุ่มภารกิจ
+            แผนครุภัณฑ์กลุ่มภารกิจ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item"><a href="{{ url('/reports/all') }}">รายงาน</a></li>
-            <li class="breadcrumb-item active">รายงานแผนเงินบำรุงตามกลุ่มภารกิจ</li>
+            <li class="breadcrumb-item active">แผนครุภัณฑ์กลุ่มภารกิจ</li>
         </ol>
     </section>
 
@@ -20,21 +19,17 @@
     <section
         class="content"
         ng-controller="reportCtrl"
-        ng-init="
-            getPlanByFaction();
-            initForm({
-                departs: {{ $departs }}
-            });
-        "
+        ng-init="getAssetByFaction();"
     >
 
         <div class="row">
             <div class="col-md-12">
-
                 <div class="box box-primary">
+
                     <div class="box-header">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
+
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <!-- // TODO: should use datepicker instead -->
@@ -45,7 +40,7 @@
                                     name="cboYear"
                                     ng-model="cboYear"
                                     class="form-control"
-                                    ng-change="getPlanByFaction()"
+                                    ng-change="getAssetByFaction()"
                                 >
                                     <option value="">-- ทั้งหมด --</option>
                                     <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -60,36 +55,37 @@
                                     name="cboApproved"
                                     ng-model="cboApproved"
                                     class="form-control"
-                                    ng-change="getPlanByFaction()"
+                                    ng-change="getAssetByFaction()"
                                 >
                                     <option value="">ยังไม่อนุมัติ</option>
                                     <option value="A">อนุมัติ</option>
                                 </select>
                             </div>
 
-                        </div><!-- /.box-body -->
+                        </div>
                     </form>
                 </div><!-- /.box -->
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนเงินบำรุงตามกลุ่มภารกิจ ปีงบประมาณ @{{ cboYear }}</h3>
+                        <h3 class="box-title">แผนครุภัณฑ์กลุ่มภารกิจ ปีงบประมาณ @{{ dtpYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table class="table table-bordered table-striped">
                             <thead>
-                                <tr>
+                                <tr style="font-size: 12px;">
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="text-align: left;">กลุ่มภารกิจ</th>
-                                    <th style="text-align: right;">
-                                        <a href="{{ url('/reports/asset-faction') }}">ครุภัณฑ์</a>
-                                    </th>
-                                    <th style="text-align: right;">
-                                        <a href="{{ url('/reports/material-faction') }}">วัสดุ</a>
-                                    </th>
-                                    <th style="text-align: right;">จ้างบริการ</th>
-                                    <th style="text-align: right;">ก่อสร้าง</th>
-                                    <th style="text-align: right;">รวม</th>
+                                    <th style="text-align: left;">หน่วยงาน</th>
+                                    <th style="width: 8%; text-align: right;">ยานพาหนะ</th>
+                                    <th style="width: 8%; text-align: right;">สำนักงาน</th>
+                                    <th style="width: 8%; text-align: right;">คอมพิวเตอร์</th>
+                                    <th style="width: 8%; text-align: right;">การแพทย์</th>
+                                    <th style="width: 8%; text-align: right;">งานบ้านงานครัว</th>
+                                    <th style="width: 8%; text-align: right;">ก่อสร้าง</th>
+                                    <th style="width: 8%; text-align: right;">การเกษตร</th>
+                                    <th style="width: 8%; text-align: right;">โฆษณาและเผยแพร่</th>
+                                    <th style="width: 8%; text-align: right;">ไฟฟ้าและวิทยุ</th>
+                                    <th style="width: 8%; text-align: right;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,27 +94,29 @@
                                     <td>
                                         @{{ plan.faction_name }}
                                     </td>
-                                    <td style="text-align: right;">@{{ plan.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.service | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.vehicle | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.office | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.computer | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.medical | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.home | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.agriculture | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.ads | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.electric | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
                                 </tr>
                                 <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
-                                </tr>
-                                <tr style="font-weight: bold;">
-                                    <td style="text-align: center;" colspan="2">ร้อยละ</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;"></td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.vehicle | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.office | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.computer | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.medical | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.home | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.construct | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.agriculture | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.ads | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.electric | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalAssetByFaction.total | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>

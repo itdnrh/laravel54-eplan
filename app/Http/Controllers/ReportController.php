@@ -322,6 +322,54 @@ class ReportController extends Controller
         ];
     }
 
+    public function assetByFaction()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.asset-faction', [
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getAssetByFaction(Request $req)
+    {
+        /** Get params from query string */
+        $year = $req->get('year');
+        $approved = $req->get('approved');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (items.category_id=1) then plan_items.sum_price end) as vehicle"),
+                        \DB::raw("sum(case when (items.category_id=2) then plan_items.sum_price end) as office"),
+                        \DB::raw("sum(case when (items.category_id=3) then plan_items.sum_price end) as computer"),
+                        \DB::raw("sum(case when (items.category_id=4) then plan_items.sum_price end) as medical"),
+                        \DB::raw("sum(case when (items.category_id=5) then plan_items.sum_price end) as home"),
+                        \DB::raw("sum(case when (items.category_id=6) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(case when (items.category_id=7) then plan_items.sum_price end) as agriculture"),
+                        \DB::raw("sum(case when (items.category_id=8) then plan_items.sum_price end) as ads"),
+                        \DB::raw("sum(case when (items.category_id=9) then plan_items.sum_price end) as electric"),
+                        \DB::raw("sum(case when (items.category_id between 1 and 9) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('plans.depart_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->get();
+
+        return [
+            'plans'     => $plans,
+            'departs'   => Depart::all(),
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+        ];
+    }
+
     public function materialByDepart()
     {
         $depart = '';

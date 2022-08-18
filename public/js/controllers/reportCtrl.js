@@ -276,6 +276,7 @@ app.controller(
             electric: 0,
             total: 0
         };
+
         $scope.getAssetByDepart = function () {
             $scope.totalAssetByCategories = {
                 vehicle: 0,
@@ -334,6 +335,204 @@ app.controller(
                         ads: 0,
                         electric: 0,
                         total: 0
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getAssetByFaction = function () {
+            $scope.totalAssetByFaction = {
+                vehicle: 0,
+                office: 0,
+                computer: 0,
+                medical: 0,
+                home: 0,
+                construct: 0,
+                agriculture: 0,
+                ads: 0,
+                electric: 0,
+                total: 0
+            };
+
+            let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+            let division = $scope.cboDivision === '' ? '' : $scope.cboDivision;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/asset-faction?year=${year}&approved=${approved}`)
+            .then(function (res) {
+                let departs = res.data.plans.map(plan => {
+                    let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
+                    plan.depart_name = dep.depart_name;
+                    plan.faction_id = dep.faction_id;
+
+                    return plan;
+                });
+
+                let admin = {
+                    vehicle: 0,
+                    office: 0,
+                    computer: 0,
+                    medical: 0,
+                    home: 0,
+                    construct: 0,
+                    agriculture: 0,
+                    ads: 0,
+                    electric: 0,
+                    total: 0
+                };
+                let doctor = {
+                    vehicle: 0,
+                    office: 0,
+                    computer: 0,
+                    medical: 0,
+                    home: 0,
+                    construct: 0,
+                    agriculture: 0,
+                    ads: 0,
+                    electric: 0,
+                    total: 0
+                };
+                let primary = {
+                    vehicle: 0,
+                    office: 0,
+                    computer: 0,
+                    medical: 0,
+                    home: 0,
+                    construct: 0,
+                    agriculture: 0,
+                    ads: 0,
+                    electric: 0,
+                    total: 0
+                };
+                let prs = {
+                    vehicle: 0,
+                    office: 0,
+                    computer: 0,
+                    medical: 0,
+                    home: 0,
+                    construct: 0,
+                    agriculture: 0,
+                    ads: 0,
+                    electric: 0,
+                    total: 0
+                };
+                let nurse = {
+                    vehicle: 0,
+                    office: 0,
+                    computer: 0,
+                    medical: 0,
+                    home: 0,
+                    construct: 0,
+                    agriculture: 0,
+                    ads: 0,
+                    electric: 0,
+                    total: 0
+                };
+
+                departs.forEach(dep => {
+                    if (dep.faction_id == 1) {
+                        admin.vehicle       += dep.vehicle && parseInt(dep.vehicle);
+                        admin.office        += dep.office && parseInt(dep.office);
+                        admin.computer      += dep.computer && parseInt(dep.computer);
+                        admin.medical       += dep.medical && parseInt(dep.medical);
+                        admin.home          += dep.home && parseInt(dep.home);
+                        admin.construct     += dep.construct && parseInt(dep.construct);
+                        admin.agriculture   += dep.agriculture && parseInt(dep.agriculture);
+                        admin.ads           += dep.ads && parseInt(dep.ads);
+                        admin.electric      += dep.electric && parseInt(dep.electric);
+                        admin.total         += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 2) {
+                        doctor.vehicle      += dep.vehicle && parseInt(dep.vehicle);
+                        doctor.office       += dep.office && parseInt(dep.office);
+                        doctor.computer     += dep.computer && parseInt(dep.computer);
+                        doctor.medical      += dep.medical && parseInt(dep.medical);
+                        doctor.home         += dep.home && parseInt(dep.home);
+                        doctor.construct    += dep.construct && parseInt(dep.construct);
+                        doctor.agriculture  += dep.agriculture && parseInt(dep.agriculture);
+                        doctor.ads          += dep.ads && parseInt(dep.ads);
+                        doctor.electric     += dep.electric && parseInt(dep.electric);
+                        doctor.total        += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 3) {
+                        primary.vehicle     += dep.vehicle && parseInt(dep.vehicle);
+                        primary.office      += dep.office && parseInt(dep.office);
+                        primary.computer    += dep.computer && parseInt(dep.computer);
+                        primary.medical     += dep.medical && parseInt(dep.medical);
+                        primary.home        += dep.home && parseInt(dep.home);
+                        primary.construct   += dep.construct && parseInt(dep.construct);
+                        primary.agriculture += dep.agriculture && parseInt(dep.agriculture);
+                        primary.ads         += dep.ads && parseInt(dep.ads);
+                        primary.electric    += dep.electric && parseInt(dep.electric);
+                        primary.total       += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 7) {
+                        prs.vehicle         += dep.vehicle && parseInt(dep.vehicle);
+                        prs.office          += dep.office && parseInt(dep.office);
+                        prs.computer        += dep.computer && parseInt(dep.computer);
+                        prs.medical         += dep.medical && parseInt(dep.medical);
+                        prs.home            += dep.home && parseInt(dep.home);
+                        prs.construct       += dep.construct && parseInt(dep.construct);
+                        prs.agriculture     += dep.agriculture && parseInt(dep.agriculture);
+                        prs.ads             += dep.ads && parseInt(dep.ads);
+                        prs.electric        += dep.electric && parseInt(dep.electric);
+                        prs.total           += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 5) {
+                        nurse.vehicle       += dep.vehicle && parseInt(dep.vehicle);
+                        nurse.office        += dep.office && parseInt(dep.office);
+                        nurse.computer      += dep.computer && parseInt(dep.computer);
+                        nurse.medical       += dep.medical && parseInt(dep.medical);
+                        nurse.home          += dep.home && parseInt(dep.home);
+                        nurse.construct     += dep.construct && parseInt(dep.construct);
+                        nurse.agriculture   += dep.agriculture && parseInt(dep.agriculture);
+                        nurse.ads           += dep.ads && parseInt(dep.ads);
+                        nurse.electric      += dep.electric && parseInt(dep.electric);
+                        nurse.total         += dep.total && parseInt(dep.total);
+                    }
+                });
+
+                $scope.plans = res.data.factions.map(faction => {
+                    if (faction.faction_id == 1) {
+                        return { ...faction, ...admin };
+                    } else if (faction.faction_id == 2) {
+                        return { ...faction, ...doctor };
+                    } else if (faction.faction_id == 3) {
+                        return { ...faction, ...primary };
+                    } else if (faction.faction_id == 7) {
+                        return { ...faction, ...prs };
+                    } else if (faction.faction_id == 5) {
+                        return { ...faction, ...nurse };
+                    }
+                });
+
+                /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalAssetByFaction.vehicle       += plan.vehicle && parseInt(plan.vehicle);
+                        $scope.totalAssetByFaction.office        += plan.office && parseInt(plan.office);
+                        $scope.totalAssetByFaction.computer      += plan.computer && parseInt(plan.computer);
+                        $scope.totalAssetByFaction.medical       += plan.medical && parseInt(plan.medical);
+                        $scope.totalAssetByFaction.home          += plan.home && parseInt(plan.home);
+                        $scope.totalAssetByFaction.construct     += plan.construct && parseInt(plan.construct);
+                        $scope.totalAssetByFaction.agriculture   += plan.agriculture && parseInt(plan.agriculture);
+                        $scope.totalAssetByFaction.ads           += plan.ads && parseInt(plan.ads);
+                        $scope.totalAssetByFaction.electric      += plan.electric && parseInt(plan.electric);
+                        $scope.totalAssetByFaction.total         += plan.total && parseInt(plan.total);
+                    });
+                } else {
+                    $scope.totalByFaction = {
+                        asset: 0,
+                        construct: 0,
+                        material: 0,
+                        service: 0,
+                        total: 0,
                     };
                 }
 
