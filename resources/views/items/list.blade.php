@@ -137,7 +137,7 @@
                                         ใน/นอกคลัง
                                     </th>
                                     <!-- <th style="width: 8%; text-align: center;">ซื้อปีแรก</th> -->
-                                    <!-- <th style="width: 10%; text-align: center;">สถานะ</th> -->
+                                    <th style="width: 10%; text-align: center;">Fix cost</th>
                                     <th style="width: 10%; text-align: center;">หมายเหตุ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
@@ -161,32 +161,9 @@
                                         <span ng-show="item.in_stock == 1">ในคลัง</span>
                                         <span ng-show="item.in_stock == 0">นอกคลัง</span>
                                     </td>
-                                    <!-- <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="item.status == 0">
-                                            อยู่ระหว่างดำเนินการ
-                                        </span>
-                                        <span class="label label-info" ng-show="item.status == 1">
-                                            ส่งเอกสารแล้ว
-                                        </span>
-                                        <span class="label bg-navy" ng-show="item.status == 2">
-                                            รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="item.status == 3">
-                                            ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="item.status == 4">
-                                            ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="item.status == 5">
-                                            ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="item.status == 6">
-                                            ตั้งหนี้แล้ว
-                                        </span>
-                                        <span class="label label-default" ng-show="item.status == 9">
-                                            ยกเลิก
-                                        </span>
-                                    </td> -->
+                                    <td style="text-align: center;">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="item.is_fixcost == '1'"></i>
+                                    </td>
                                     <td style="text-align: center; font-size: 12px;">
                                         @{{ item.remark }}
                                     </td>
