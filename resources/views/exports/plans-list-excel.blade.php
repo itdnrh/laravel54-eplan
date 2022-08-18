@@ -17,8 +17,10 @@
                     <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                     <th style="width: 8%; text-align: center;">ราคารวม</th>
                     <th style="width: 4%; text-align: center;">ในแผน</th>
-                    <th style="width: 20%; text-align: center;">เหตุผลความจำเป็น</th>
-                    <th style="width: 20%; text-align: center;">หน่วยงาน</th>
+                    <th style="width: 10%; text-align: center;">เหตุผลความจำเป็น</th>
+                    <th style="width: 10%; text-align: center;">กลุ่มภารกิจ</th>
+                    <th style="width: 10%; text-align: center;">กลุ่มงาน</th>
+                    <th style="width: 10%; text-align: center;">งาน</th>
                     <th style="width: 5%; text-align: center;">อนุมัติ</th>
                     <th style="width: 10%; text-align: center;">สถานะ</th>
                 </tr>
@@ -57,9 +59,24 @@
                             {{ $plan->reason }}
                         </td>
                         <td style="text-align: center;">
+                            @if($plan->depart->faction_id == '1')
+                                {{ 'อำนวยการ' }}
+                            @elseif($plan->depart->faction_id == '2')
+                                {{ 'ทุติยภูมิ/ตติยภูมิ' }}
+                            @elseif($plan->depart->faction_id == '3')
+                                {{ 'ปฐมภูมิ' }}
+                            @elseif($plan->depart->faction_id == '7')
+                                {{ 'พรส' }}
+                            @elseif($plan->depart->faction_id == '5')
+                                {{ 'พยาบาล' }}
+                            @endif
+                        </td>
+                        <td style="text-align: center;">
                             {{ $plan->depart->depart_name }}
+                        </td>
+                        <td style="text-align: center;">
                             @if($plan->division)
-                                <p style="margin: 0;">/{{ $plan->division->ward_name }}</p>
+                                {{ $plan->division->ward_name }}
                             @endif
                         </td>
                         <td style="text-align: center;">
