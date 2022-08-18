@@ -22,10 +22,11 @@
         ng-controller="reportCtrl"
         ng-init="
             getPlanByItem();
-            initForm({ 
+            initForms({ 
                 factions: {{ $factions }},
-                departs: {{ $departs }}
-            });
+                departs: {{ $departs }},
+                categories: {{ $categories }},
+            }, '');
         "
     >
 
@@ -41,7 +42,7 @@
 
                             <div class="row">
                                 <!-- // TODO: should use datepicker instead -->
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -56,13 +57,13 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ประเภทแผน</label>
                                     <select
                                         id="cboPlanType"
                                         name="cboPlanType"
                                         ng-model="cboPlanType"
-                                        ng-change="getPlanByItem()"
+                                        ng-change="onPlanTypeSelected(cboPlanType); getPlanByItem();"
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -73,7 +74,22 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
+                                    <label>ประเภทสินค้า/บริการ</label>
+                                    <select
+                                        id="cboCategory"
+                                        name="cboCategory"
+                                        ng-model="cboCategory"
+                                        class="form-control"
+                                        ng-change="getPlanByItem();"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label>สถานะ</label>
                                     <select
                                         id="cboApproved"
@@ -86,7 +102,7 @@
                                         <option value="A">อนุมัติ</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label>ราคาต่อหน่วย</label>
                                     <select
                                         id="cboPrice"
@@ -100,7 +116,7 @@
                                         <option value="2">ราคา น้อยกว่า 10,000 บาท</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label>เรียมลำดับ</label>
                                     <select
                                         id="cboSort"
@@ -114,8 +130,19 @@
                                         <option value="amount">จำนวนที่ขอ</option>
                                     </select>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label for="">&nbsp;</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                ng-model="chkIsFixcost"
+                                                ng-click="setIsFixcost($event);"
+                                            /> เฉพาะรายการ Fixcost
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -143,14 +170,11 @@
                                     <td style="text-align: right;">@{{ plan.amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.sum_price | currency:'':0 }}</td>
                                 </tr>
-                                <!-- <tr style="font-weight: bold;">
+                                <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
-                                </tr> -->
+                                    <td style="text-align: right;">@{{ totalByItem.amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByItem.sum_price | currency:'':0 }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->

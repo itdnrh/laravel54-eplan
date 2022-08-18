@@ -17,11 +17,13 @@ app.controller(
         $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
         $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
         $scope.cboPlanType = '';
+        $scope.cboCategory = '';
         $scope.cboApproved = '';
-        $scope.cboSort = '';
+        $scope.chkIsFixcost = false;
         $scope.cboPrice = '';
+        $scope.cboSort = '';
 
-        let dtpOptions = {
+        let dtpDateOptions = {
             autoclose: true,
             language: 'th',
             format: 'dd/mm/yyyy',
@@ -31,7 +33,7 @@ app.controller(
         };
     
         $('#dtpDate')
-            .datepicker(dtpOptions)
+            .datepicker(dtpDateOptions)
             .datepicker('update', new Date())
             .on('changeDate', function(event) {
                 $('#dtpDate').datepicker('update', moment(event.date).toDate());
@@ -39,11 +41,10 @@ app.controller(
                 $scope.getDaily();
             });
 
-        $scope.initForm = function (initValues) {
-            $scope.initFormValues = initValues;
-
-            $scope.filteredDeparts = initValues.departs;
-            $scope.filteredDivisions = initValues.divisions;
+        $scope.setIsFixcost = function(e) {
+            $scope.chkIsFixcost = e.target.checked;
+    
+            $scope.getPlanByItem(e);
         };
 
         $scope.getDaily = function () {
@@ -645,39 +646,39 @@ app.controller(
         };
 
         $scope.getPlanByItem = function () {
+            $scope.totalByItem = {
+                amount: 0,
+                sum_price: 0
+            };
+
             let year        = $scope.cboYear === ''
                                 ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                                     ? moment().year() + 544
                                     : moment().year() + 543 
                                 : $scope.cboYear;
             let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let cate        = !$scope.cboCategory ? '' : $scope.cboCategory;
+            let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let isFixcost   = $scope.chkIsFixcost ? '1' : '';
             let approved    = !$scope.cboApproved ? '' : 'A';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&cate=${cate}&price=${price}&approved=${approved}&isFixcost=${isFixcost}&sort=${sort}`)
             .then(function (res) {
-                console.log(res);
                 $scope.plans = res.data.plans;
 
                 // /** Sum total of plan by plan_type */
-                // if (res.data.plans.length > 0) {
-                //     res.data.plans.forEach(plan => {
-                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
-                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
-                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
-                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
-                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
-                //     });
-                // } else {
-                //     $scope.totalByPlanTypes = {
-                //         asset: 0,
-                //         construct: 0,
-                //         material: 0,
-                //         service: 0,
-                //         total: 0,
-                //     };
-                // }
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByItem.amount    += plan.amount ? plan.amount : 0;
+                        $scope.totalByItem.sum_price += plan.sum_price ? plan.sum_price : 0;
+                    });
+                } else {
+                    $scope.totalByItem = {
+                        amount: 0,
+                        sum_price: 0
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {

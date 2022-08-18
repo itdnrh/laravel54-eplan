@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนวัสดุนอกคลังรายหน่วยงาน
+            แผนวัสดุตามหน่วยงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนวัสดุนอกคลังรายหน่วยงาน</li>
+            <li class="breadcrumb-item active">แผนวัสดุตามหน่วยงาน</li>
         </ol>
     </section>
 
@@ -116,7 +116,7 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">แผนวัสดุนอกคลังรายหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
+                        <h3 class="box-title">แผนวัสดุตามหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table class="table table-bordered table-striped">

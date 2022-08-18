@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนครุภัณฑ์รายหน่วยงาน
+            แผนครุภัณฑ์ตามหน่วยงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แผนครุภัณฑ์รายหน่วยงาน</li>
+            <li class="breadcrumb-item active">แผนครุภัณฑ์ตามหน่วยงาน</li>
         </ol>
     </section>
 
@@ -117,7 +117,7 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">แผนครุภัณฑ์รายหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
+                        <h3 class="box-title">แผนครุภัณฑ์ตามหน่วยงาน ปีงบประมาณ @{{ dtpYear }}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table class="table table-bordered table-striped">

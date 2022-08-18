@@ -432,6 +432,7 @@ class ReportController extends Controller
             "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
             "planTypes" => PlanType::all(),
+            "categories"    => ItemCategory::all(),
         ]);
     }
 
@@ -440,8 +441,10 @@ class ReportController extends Controller
         /** Get params from query string */
         $year       = $req->get('year');
         $type       = $req->get('type');
-        $approved   = $req->get('approved');
+        $cate       = $req->get('cate');
         $price      = $req->get('price');
+        $approved   = $req->get('approved');
+        $isFixcost  = $req->get('isFixcost');
         $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
         $plans = \DB::table('plans')
@@ -456,6 +459,12 @@ class ReportController extends Controller
                     ->where('plans.year', $year)
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plans.plan_type_id', $type);
+                    })
+                    ->when(!empty($cate), function($q) use ($cate) {
+                        $q->where('items.category_id', $cate);
+                    })
+                    ->when(!empty($isFixcost), function($q) use ($isFixcost) {
+                        $q->where('items.is_fixcost', $isFixcost);
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
