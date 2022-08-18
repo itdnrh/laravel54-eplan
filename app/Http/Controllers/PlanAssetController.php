@@ -112,7 +112,9 @@ class PlanAssetController extends Controller
     {
         return view('assets.detail', [
             "plan"          => Plan::with('planItem')->where('id', $id)->first(),
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),

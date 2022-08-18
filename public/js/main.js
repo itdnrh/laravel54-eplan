@@ -9,7 +9,7 @@ if(window){
 	Object.assign(env, window.__env);
 }
 
-var app = angular.module('app', ['ngRoute', 'xeditable','ngTagsInput','toaster','ngAnimate','angularModalService']);
+var app = angular.module('app', ['ngRoute','xeditable','ngTagsInput','toaster','ngAnimate','angularModalService']);
 
 /** App Config */
 app.constant('CONFIG', env);

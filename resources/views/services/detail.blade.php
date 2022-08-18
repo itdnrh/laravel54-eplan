@@ -21,7 +21,9 @@
         ng-init="
             initForms({
                 departs: {{ $departs }},
-                divisions: {{ $divisions }}
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
             }, 2);
             getById({{ $plan->id }}, setEditControls);
         "
@@ -316,11 +318,19 @@
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
                                         href="#"
-                                        ng-click="edit(service.service_id)"
+                                        ng-click="edit(service.id)"
                                         ng-show="!service.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
+                                    </a>
+                                    <a
+                                        href="#"
+                                        ng-click="onShowChangeForm($event, service)"
+                                        ng-show="!service.approved && {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        class="btn btn-primary"
+                                    >
+                                        <i class="fa fa-refresh"></i> เปลี่ยนหมวด
                                     </a>
                                     <form
                                         id="frmDelete"
@@ -328,11 +338,11 @@
                                         action="{{ url('/services/delete') }}"
                                         ng-show="!service.approved"
                                     >
-                                        <input type="hidden" id="id" name="id" value="@{{ service.service_id }}" />
+                                        <input type="hidden" id="id" name="id" value="@{{ service.id }}" />
                                         {{ csrf_field() }}
                                         <button
                                             type="submit"
-                                            ng-click="delete($event, service.service_id)"
+                                            ng-click="delete($event, service.id)"
                                             class="btn btn-danger btn-block"
                                         >
                                             <i class="fa fa-trash"></i> ลบ
@@ -348,6 +358,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._change-form')
 
     </section>
 

@@ -21,7 +21,9 @@
         ng-init="
             initForms({
                 departs: {{ $departs }},
-                divisions: {{ $divisions }}
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
             }, 1);
             getById({{ $plan->id }}, setEditControls);
         "
@@ -277,9 +279,10 @@
                                 <div class="form-group col-md-6">
                                     <label>เหตุผล :</label>
                                     <textarea
-                                        id="reason" 
-                                        name="reason" 
-                                        ng-model="asset.reason" 
+                                        id="reason"
+                                        name="reason"
+                                        row="5"
+                                        ng-model="asset.reason"
                                         class="form-control"
                                     ></textarea>
                                 </div>
@@ -287,9 +290,10 @@
                                 <div class="form-group col-md-6">
                                     <label>หมายเหตุ :</label>
                                     <textarea
-                                        id="remark" 
-                                        name="remark" 
-                                        ng-model="asset.remark" 
+                                        id="remark"
+                                        name="remark"
+                                        row="5"
+                                        ng-model="asset.remark"
                                         class="form-control"
                                     ></textarea>
                                 </div>
@@ -348,11 +352,19 @@
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
                                         href="#"
-                                        ng-click="edit(asset.asset_id)"
+                                        ng-click="edit(asset.id)"
                                         ng-show="!asset.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
+                                    </a>
+                                    <a
+                                        href="#"
+                                        ng-click="onShowChangeForm($event, asset)"
+                                        ng-show="!asset.approved && {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        class="btn btn-primary"
+                                    >
+                                        <i class="fa fa-refresh"></i> เปลี่ยนหมวด
                                     </a>
                                     <form
                                         id="frmDelete"
@@ -360,11 +372,11 @@
                                         action="{{ url('/asset/delete') }}"
                                         ng-show="!asset.approved"
                                     >
-                                        <input type="hidden" id="id" name="id" value="@{{ asset.asset_id }}" />
+                                        <input type="hidden" id="id" name="id" value="@{{ asset.id }}" />
                                         {{ csrf_field() }}
                                         <button
                                             type="submit"
-                                            ng-click="delete($event, asset.asset_id)"
+                                            ng-click="delete($event, asset.id)"
                                             class="btn btn-danger btn-block"
                                         >
                                             <i class="fa fa-trash"></i> ลบ
@@ -380,6 +392,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._change-form')
 
     </section>
 

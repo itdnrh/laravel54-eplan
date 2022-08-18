@@ -8,7 +8,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.txtPrice = '';
 
     $scope.service = {
-        service_id: '',
+        id: '',
         in_plan: 'I',
         year: '2566', //(moment().year() + 543).toString(),
         plan_no: '',
@@ -77,7 +77,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
     $scope.clearService = function() {
         $scope.service = {
-            service_id: '',
+            id: '',
             in_plan: 'I',
             year: '2566', //(moment().year() + 543).toString(),
             plan_no: '',
@@ -213,7 +213,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.planType                 = 3;
 
         /** ข้อมูลจ้างบริการ */
-        $scope.service.service_id       = plan.id;
+        $scope.service.id               = plan.id;
         $scope.service.in_plan          = plan.in_plan;
         $scope.service.year             = plan.year.toString();
         // $scope.service.plan_no          = plan.plan_no;
@@ -233,6 +233,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.status           = plan.status;
 
         /** Convert int value to string */
+        $scope.service.plan_type_id     = plan.plan_type_id.toString();
         $scope.service.unit_id          = plan.plan_item.unit_id.toString();
         $scope.service.faction_id       = plan.depart.faction_id.toString();
         $scope.service.depart_id        = plan.depart_id.toString();
@@ -269,7 +270,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนจ้างบริการรหัส ${$scope.service.service_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนจ้างบริการรหัส ${$scope.service.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };

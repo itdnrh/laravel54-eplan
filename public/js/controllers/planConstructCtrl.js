@@ -8,7 +8,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.txtPrice = '';
 
     $scope.construct = {
-        construct_id: '',
+        id: '',
         in_plan: 'I',
         year: '2566', //(moment().year() + 543).toString(),
         plan_no: '',
@@ -90,7 +90,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
     $scope.clearConstruct = function() {
         $scope.construct = {
-            construct_id: '',
+            id: '',
             in_plan: 'I',
             year: '2566', //(moment().year() + 543).toString(),
             plan_no: '',
@@ -229,7 +229,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.planType                     = 1;
 
         /** ข้อมูลงานก่อสร้าง */
-        $scope.construct.construct_id       = plan.id;
+        $scope.construct.id                 = plan.id;
         $scope.construct.in_plan            = plan.in_plan;
         $scope.construct.year               = plan.year.toString();
         // $scope.construct.plan_no            = plan.plan_no;
@@ -253,6 +253,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.status             = plan.status;
 
         /** Convert int value to string */
+        $scope.construct.plan_type_id       = plan.plan_type_id.toString();
         $scope.construct.unit_id            = plan.plan_item.unit_id.toString();
         $scope.construct.faction_id         = plan.depart.faction_id.toString();
         $scope.construct.depart_id          = plan.depart_id.toString();
@@ -288,7 +289,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนก่อสร้างรหัส ${$scope.construct.construct_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนก่อสร้างรหัส ${$scope.construct.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };

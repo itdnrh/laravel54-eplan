@@ -296,6 +296,39 @@ class PlanController extends Controller
         }
     }
 
+    public function change(Request $req, $id)
+    {
+        try {
+            $plan = Plan::find($id);
+            $plan->plan_type_id     = $req['plan_type_id'];
+            $plan->updated_user     = $req['user'];;
+    
+            if($plan->save()) {
+                $item = Item::find($req['item_id']);
+                $item->plan_type_id = $req['plan_type_id'];
+                $item->category_id  = $req['category_id'];
+                $item->group_id     = $req['group_id'];
+                $item->save();
+                
+                return [
+                    'status'    => 1,
+                    'message'   => 'Changing successfully!!',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function excel(Request $req)
     {
         $matched = [];

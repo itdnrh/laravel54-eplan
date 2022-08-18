@@ -21,7 +21,9 @@
         ng-init="
             initForms({
                 departs: {{ $departs }},
-                divisions: {{ $divisions }}
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
             }, 2);
             getById({{ $plan->id }}, setEditControls);
         "
@@ -333,11 +335,19 @@
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
                                         href="#"
-                                        ng-click="edit(material.material_id)"
+                                        ng-click="edit(material.id)"
                                         ng-show="!material.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
+                                    </a>
+                                    <a
+                                        href="#"
+                                        ng-click="onShowChangeForm($event, material)"
+                                        ng-show="!material.approved && {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        class="btn btn-primary"
+                                    >
+                                        <i class="fa fa-refresh"></i> เปลี่ยนหมวด
                                     </a>
                                     <form
                                         id="frmDelete"
@@ -345,11 +355,11 @@
                                         action="{{ url('/material/delete') }}"
                                         ng-show="!material.approved"
                                     >
-                                        <input type="hidden" id="id" name="id" value="@{{ material.material_id }}" />
+                                        <input type="hidden" id="id" name="id" value="@{{ material.id }}" />
                                         {{ csrf_field() }}
                                         <button
                                             type="submit"
-                                            ng-click="delete($event, material.material_id)"
+                                            ng-click="delete($event, material.id)"
                                             class="btn btn-danger btn-block"
                                         >
                                             <i class="fa fa-trash"></i> ลบ
@@ -365,6 +375,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._change-form')
 
     </section>
 

@@ -114,7 +114,9 @@ class PlanMaterialController extends Controller
     {
         return view('materials.detail', [
             "plan"          => Plan::with('planItem')->where('id', $id)->first(),
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
+            "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
             "budgetSources" => BudgetSource::all(),
             "strategics"    => Strategic::all(),

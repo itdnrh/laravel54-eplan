@@ -8,7 +8,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.txtPrice = '';
 
     $scope.material = {
-        material_id: '',
+        id: '',
         in_plan: 'I',
         year: '2566', //(moment().year() + 543).toString(),
         plan_no: '',
@@ -80,7 +80,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
     $scope.clearMaterial = function() {
         $scope.material = {
-            material_id: '',
+            id: '',
             in_plan: 'I',
             year: '2566', //(moment().year() + 543).toString(),
             plan_no: '',
@@ -219,7 +219,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.planType                 = 2;
 
         /** ข้อมูลวัสดุ */
-        $scope.material.material_id     = plan.id;
+        $scope.material.id              = plan.id;
         $scope.material.in_plan         = plan.in_plan;
         $scope.material.year            = plan.year.toString();
         // $scope.material.plan_no         = plan.plan_no;
@@ -240,6 +240,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material.status          = plan.status;
 
         /** Convert int value to string */
+        $scope.material.plan_type_id    = plan.plan_type_id.toString();
         $scope.material.unit_id         = plan.plan_item.unit_id.toString();
         $scope.material.faction_id      = plan.depart.faction_id.toString();
         $scope.material.depart_id       = plan.depart_id.toString();
@@ -276,7 +277,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนวัสดุนอกคลังรหัส ${$scope.material.material_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนวัสดุนอกคลังรหัส ${$scope.material.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };

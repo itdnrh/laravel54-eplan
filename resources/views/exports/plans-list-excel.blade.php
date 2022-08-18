@@ -17,6 +17,7 @@
                     <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                     <th style="width: 8%; text-align: center;">ราคารวม</th>
                     <th style="width: 4%; text-align: center;">ในแผน</th>
+                    <th style="width: 20%; text-align: center;">เหตุผลความจำเป็น</th>
                     <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                     <th style="width: 5%; text-align: center;">อนุมัติ</th>
                     <th style="width: 10%; text-align: center;">สถานะ</th>
@@ -51,6 +52,9 @@
                             @else
                                 {{ 'นอกแผน' }}
                             @endif
+                        </td>
+                        <td style="text-align: center;">
+                            {{ $plan->reason }}
                         </td>
                         <td style="text-align: center;">
                             {{ $plan->depart->depart_name }}

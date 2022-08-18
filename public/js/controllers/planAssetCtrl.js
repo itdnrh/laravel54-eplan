@@ -8,7 +8,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.txtPrice = '';
 
     $scope.asset = {
-        asset_id: '',
+        id: '',
         year: '2566', //(moment().year() + 543).toString(),
         in_plan: 'I',
         plan_no: '',
@@ -73,7 +73,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     const clearAsset = function() {
         $scope.asset = {
-            asset_id: '',
+            id: '',
             year: '2566', //(moment().year() + 543).toString(),
             in_plan: 'I',
             plan_no: '',
@@ -231,7 +231,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.planId                   = plan.id;
         $scope.planType                 = 1;
         /** ข้อมูลครุภัณฑ์ */
-        $scope.asset.asset_id           = plan.id;
+        $scope.asset.id                 = plan.id;
         $scope.asset.in_plan            = plan.in_plan;
         $scope.asset.year               = plan.year.toString();
         $scope.asset.plan_no            = plan.plan_no;
@@ -252,6 +252,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.status             = plan.status;
 
         /** Convert int value to string */
+        $scope.asset.plan_type_id       = plan.plan_type_id.toString();
         $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
         $scope.asset.faction_id         = plan.depart.faction_id.toString();
         $scope.asset.depart_id          = plan.depart_id.toString();
@@ -290,7 +291,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนครุภัณฑ์รหัส ${$scope.asset.asset_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนครุภัณฑ์รหัส ${$scope.asset.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };

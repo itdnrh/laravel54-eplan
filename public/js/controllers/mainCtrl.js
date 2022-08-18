@@ -205,7 +205,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.onPlanTypeSelected = function(type) {
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === parseInt(type));
 
-        if ([1, 3,4].includes(parseInt(type))) {
+        if ([1,3,4].includes(parseInt(type))) {
             $scope.forms.groups = $scope.temps.groups.filter(group => group.plan_type_id === parseInt(type));
 
             $('#group_id').attr('disabled', false)
@@ -470,5 +470,72 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
             e.preventDefault();
             return;
         }
-    }
+    };
+
+    $scope.changeData = {
+        plan_id: '',
+        item_id: '',
+        from_type: '',
+        plan_type_id: '',
+        category_id: '',
+        group_id: '',
+        user: ''
+    };
+
+    $scope.onShowChangeForm = function(e, plan) {
+        e.preventDefault();
+        console.log(plan);
+
+        $scope.changeData.plan_id   = plan.id;
+        $scope.changeData.item_id   = plan.item_id;
+        $scope.changeData.from_type = plan.plan_type_id;
+
+        $('#change-form').modal('show');
+    };
+
+    $scope.change = function(e, form, id) {
+        e.preventDefault();
+        
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        $scope.loading = true;
+        const data = { ...$scope.changeData, user: $('#user').val() }
+
+        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/plans/${id}/change`, data)
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "เปลี่ยนหมวดเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนหมวดได้ !!!");
+                }
+
+                $scope.loading = false;
+
+                $('#change-form').modal('hide');
+
+                setTimeout(() => {
+                    if ($scope.changeData.from_type == '1') {
+                        window.location.href = `${CONFIG.baseUrl}/plans/assets`;
+                    } else if ($scope.changeData.from_type == '2') {
+                        window.location.href = `${CONFIG.baseUrl}/plans/materials?in_stock=0`;
+                    } else if ($scope.changeData.from_type == '3') {
+                        window.location.href = `${CONFIG.baseUrl}/plans/services`;
+                    } else if ($scope.changeData.from_type == '4') {
+                        window.location.href = `${CONFIG.baseUrl}/plans/constructs`;
+                    }
+                }, 1000);
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนหมวดได้ !!!");
+            });
+        } else {
+            $scope.loading = false;
+        }
+    };
 });

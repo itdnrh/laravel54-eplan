@@ -21,7 +21,9 @@
         ng-init="
             initForms({
                 departs: {{ $departs }},
-                divisions: {{ $divisions }}
+                divisions: {{ $divisions }},
+                categories: {{ $categories }},
+                groups: {{ $groups }}
             }, 4);
             getById({{ $plan->id }}, setEditControls);
         "
@@ -314,11 +316,19 @@
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
                                         href="#"
-                                        ng-click="edit(construct.construct_id)"
+                                        ng-click="edit(construct.id)"
                                         ng-show="!construct.approved"
                                         class="btn btn-warning"
                                     >
                                         <i class="fa fa-edit"></i> แก้ไข
+                                    </a>
+                                    <a
+                                        href="#"
+                                        ng-click="onShowChangeForm($event, construct)"
+                                        ng-show="!construct.approved && {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        class="btn btn-primary"
+                                    >
+                                        <i class="fa fa-refresh"></i> เปลี่ยนหมวด
                                     </a>
                                     <form
                                         id="frmDelete"
@@ -326,11 +336,11 @@
                                         action="{{ url('/constructs/delete') }}"
                                         ng-show="!construct.approved"
                                     >
-                                        <input type="hidden" id="id" name="id" value="@{{ construct.construct_id }}" />
+                                        <input type="hidden" id="id" name="id" value="@{{ construct.id }}" />
                                         {{ csrf_field() }}
                                         <button
                                             type="submit"
-                                            ng-click="delete($event, construct.construct_id)"
+                                            ng-click="delete($event, construct.id)"
                                             class="btn btn-danger btn-block"
                                         >
                                             <i class="fa fa-trash"></i> ลบ
@@ -346,6 +356,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('shared._change-form')
 
     </section>
 
