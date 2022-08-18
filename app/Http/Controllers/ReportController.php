@@ -478,9 +478,16 @@ class ReportController extends Controller
                     })
                     ->groupBy('plan_items.item_id')
                     ->groupBy('items.item_name')
-                    ->orderByRaw("sum(plan_items." .$sort. ") DESC")
-                    ->orderBy("plans.plan_type_id")
-                    ->orderBy("items.item_name", "DESC")
+                    ->when(!empty($isFixcost), function($q) use ($sort) {
+                        $q->orderBy("plans.depart_id");
+                        $q->orderByRaw("sum(plan_items." .$sort. ") DESC");
+                    })
+                    ->when(empty($isFixcost), function($q) use ($sort) {
+                        $q->orderByRaw("sum(plan_items." .$sort. ") DESC");
+                        $q->orderBy("plans.plan_type_id");
+                        $q->orderBy("items.item_name", "DESC");
+                    })
+                    
                     ->get();
 
         return [
