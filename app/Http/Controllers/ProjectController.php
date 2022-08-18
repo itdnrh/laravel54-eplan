@@ -202,7 +202,7 @@ class ProjectController extends Controller
                         //     $q->where('status', $status);
                         // })
                         ->when(!empty($name), function($q) use ($name) {
-                            $q->where('project_name', 'Like', $name.'%');
+                            $q->where('project_name', 'Like', '%'.$name.'%');
                         })
                         ->paginate(10);
 
