@@ -5,7 +5,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.pager = [];
 
     $scope.isApproved = false;
-    $scope.txtPrice = '';
+    $scope.cboPrice = '';
+    $scope.txtItemName = '';
 
     $scope.material = {
         id: '',
@@ -126,10 +127,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&name=${name}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setMaterials(res);
 
@@ -161,10 +163,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`)
+        $http.get(`${url}&type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&name=${name}&price=${price}&show_all=1`)
         .then(function(res) {
             cb(res);
 
@@ -329,10 +332,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
             let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
             let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-            let price       = $scope.txtPrice === '' ? '' : $scope.txtPrice;
+            let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+            let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
             let approved    = $scope.isApproved ? 'A' : '';
             
-            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&price=${price}&show_all=1`;
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&name=${name}&price=${price}&show_all=1`;
         }
     };
 });

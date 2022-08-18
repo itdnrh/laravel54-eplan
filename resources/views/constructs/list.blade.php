@@ -157,9 +157,9 @@
                                     <div class="form-group">
                                         <label>ราคา</label>
                                         <select
-                                            id="txtPrice"
-                                            name="txtPrice"
-                                            ng-model="txtPrice"
+                                            id="cboPrice"
+                                            name="cboPrice"
+                                            ng-model="cboPrice"
                                             class="form-control"
                                             ng-change="getAll($event)"
                                         >
@@ -172,7 +172,19 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div><!-- /.row -->
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>ชื่อสินค้า/บริการ</label>
+                                    <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keyup="getAll($event)"
+                                    />
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
