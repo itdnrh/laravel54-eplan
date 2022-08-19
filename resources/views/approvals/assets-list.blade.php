@@ -108,6 +108,35 @@
                                         </select>
                                     </div><!-- /.form group -->
                                 </div><!-- /.col-md-6 -->
+                                <div class="form-group col-md-6">
+                                    <label>ชื่อสินค้า/บริการ</label>
+                                    <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keyup="getAll(1)"
+                                    />
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ราคา</label>
+                                        <select
+                                            id="cboPrice"
+                                            name="cboPrice"
+                                            ng-model="cboPrice"
+                                            class="form-control"
+                                            ng-change="getAll(1)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="1">ต่ำกว่า 10,000 บาท</option>
+                                            <option value="10000">10,000 บาทขึ้นไป</option>
+                                            <option value="50000">50,000 บาทขึ้นไป</option>
+                                            <option value="100000">100,000 บาทขึ้นไป</option>
+                                            <option value="500000">500,000 บาทขึ้นไป</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>

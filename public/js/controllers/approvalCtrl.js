@@ -3,13 +3,15 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.loading = false;
     $scope.plans = [];
     $scope.pager = null;
-    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboYear = '2566', //(moment().year() + 543).toString(),
     $scope.cboPlanType = "";
     $scope.cboCategory = "";
     $scope.cboFaction = "";
     $scope.cboDepart = "";
     $scope.cboStatus = "";
-    $scope.txtKeyword = "";
+    $scope.cboPrice = '';
+    $scope.txtItemName = '';
+    $scope.isApproved = false;
 
     $scope.toApprovesList = [];
     $scope.onSelectedCheckBox = (e, plan) => {
@@ -102,12 +104,14 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction  = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
         let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}${in_stock}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&&status=${status}${in_stock}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -135,12 +139,14 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction  = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
         let in_stock = params.inStock != undefined ? `&in_stock=${params.inStock}` : '';
 
-        $http.get(`${url}&type=${params.type}&year=${year}&cate=${cate}&status=${status}&faction=${faction}&depart=${depart}${in_stock}`)
+        $http.get(`${url}&type=${params.type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&&status=${status}${in_stock}`)
         .then(function(res) {
             cb(res);
 
