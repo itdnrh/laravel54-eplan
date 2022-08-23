@@ -173,36 +173,6 @@
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <label>สาเหตุที่ขอ :</label>
-                                    <div class="form-control checkbox-groups">
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="N"
-                                                    ng-model="material.request_cause"
-                                                    tabindex="3"> ขอใหม่
-                                        </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="R"
-                                                    ng-model="material.request_cause"
-                                                    tabindex="3"> ทดแทน
-                                        </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="E"
-                                                    ng-model="material.request_cause"
-                                                    tabindex="3"> ขยายงาน
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-4">
                                     <label>จำนวนเดิมที่มี :</label>
                                     <input  type="text"
                                             id="have_amount"
@@ -227,7 +197,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label>ยุทธศาสตร์ :</label>
                                     <select id="strategic_id" 
                                             name="strategic_id"
@@ -244,7 +214,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label>Service Plan :</label>
                                     <select id="service_plan_id" 
                                             name="service_plan_id"
@@ -335,7 +305,7 @@
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
                                         href="#"
-                                        ng-click="edit(material.id)"
+                                        ng-click="edit(material.id, {{ $in_stock }})"
                                         ng-show="!material.approved"
                                         class="btn btn-warning"
                                     >

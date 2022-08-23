@@ -99,18 +99,16 @@ class PlanMaterialController extends Controller
 
     public function index(Request $req)
     {
-        $inStock = $req->get('in_stock');
-
         return view('materials.list', [
             "categories"    => ItemCategory::all(),
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
-            "in_stock"      => $inStock,
+            "in_stock"      => empty($req->get('in_stock')) ? 0 : $req->get('in_stock'),
         ]);
     }
 
-    public function detail($id)
+    public function detail(Request $req, $id)
     {
         return view('materials.detail', [
             "plan"          => Plan::with('planItem')->where('id', $id)->first(),
@@ -124,13 +122,12 @@ class PlanMaterialController extends Controller
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
+            "in_stock"      => empty($req->get('in_stock')) ? 0 : $req->get('in_stock'),
         ]);
     }
 
     public function add(Request $req)
     {
-        $inStock = $req->get('in_stock');
-
         return view('materials.add', [
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
@@ -142,7 +139,7 @@ class PlanMaterialController extends Controller
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
-            "in_stock"      => $inStock,
+            "in_stock"      => empty($req->get('in_stock')) ? 0 : $req->get('in_stock'),
         ]);
     }
 
@@ -191,8 +188,6 @@ class PlanMaterialController extends Controller
 
     public function edit(Request $req, $id)
     {
-        $inStock = $req->get('in_stock');
-
         return view('materials.edit', [
             "material"      => Plan::find($id),
             "planTypes"     => PlanType::all(),
@@ -205,7 +200,7 @@ class PlanMaterialController extends Controller
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
-            "in_stock"      => $inStock,
+            "in_stock"      => empty($req->get('in_stock')) ? 0 : $req->get('in_stock'),
         ]);
     }
 
