@@ -273,8 +273,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $(`#${form}`).submit();
     };
 
-    $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/materials/edit/${id}`;
+    $scope.edit = function(id, inStock) {
+        window.location.href = `${CONFIG.baseUrl}/materials/edit/${id}?in_stock=${inStock}`;
     };
 
     $scope.update = function(event, form) {

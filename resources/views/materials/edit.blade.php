@@ -39,7 +39,7 @@
                         <h3 class="box-title">แก้ไขแผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                     </div>
 
-                    <form id="frmEditMaterial" name="frmEditMaterial" method="post" action="{{ url('/materials/update/'.$material->id) }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditMaterial" name="frmEditMaterial" method="post" action="{{ url('/materials/update/'.$material->id.'?in_stock='.$in_stock) }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         <input type="hidden" id="have_subitem" name="have_subitem" />
                         <input type="hidden" id="calc_method" name="calc_method" />

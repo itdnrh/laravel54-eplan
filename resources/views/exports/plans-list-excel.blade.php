@@ -16,13 +16,14 @@
                     <th style="width: 8%; text-align: center;">จำนวนที่ขอ</th>
                     <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                     <th style="width: 8%; text-align: center;">ราคารวม</th>
-                    <th style="width: 4%; text-align: center;">ในแผน</th>
+                    <!-- <th style="width: 4%; text-align: center;">ในแผน</th> -->
+                    <th style="width: 4%; text-align: center;">สาเหตุที่ขอ</th>
                     <th style="width: 10%; text-align: center;">เหตุผลความจำเป็น</th>
                     <th style="width: 10%; text-align: center;">กลุ่มภารกิจ</th>
                     <th style="width: 10%; text-align: center;">กลุ่มงาน</th>
                     <th style="width: 10%; text-align: center;">งาน</th>
-                    <th style="width: 5%; text-align: center;">อนุมัติ</th>
-                    <th style="width: 10%; text-align: center;">สถานะ</th>
+                    <!-- <th style="width: 5%; text-align: center;">อนุมัติ</th>
+                    <th style="width: 10%; text-align: center;">สถานะ</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -48,11 +49,20 @@
                         <td style="text-align: center;">
                             {{ number_format($plan->planItem->sum_price) }}
                         </td>
-                        <td style="text-align: center;">
+                        <!-- <td style="text-align: center;">
                             @if($plan->in_plan == 'I')
                                 {{ 'ในแผน' }}
                             @else
                                 {{ 'นอกแผน' }}
+                            @endif
+                        </td> -->
+                        <td style="text-align: center;">
+                            @if($plan->planItem->request_cause == 'N')
+                                {{ 'ขอใหม่' }}
+                            @elseif($plan->planItem->request_cause == 'R')
+                                {{ 'ทดแทน' }}
+                            @elseif($plan->planItem->request_cause == 'E')
+                                {{ 'ขยายงาน' }}
                             @endif
                         </td>
                         <td style="text-align: center;">
@@ -79,7 +89,7 @@
                                 {{ $plan->division->ward_name }}
                             @endif
                         </td>
-                        <td style="text-align: center;">
+                        <!-- <td style="text-align: center;">
                             {{ $plan->approved }}
                         </td>
                         <td style="text-align: center;">
@@ -92,7 +102,7 @@
                             @elseif($plan->status == '9')
                                 {{ 'ยกเลิก' }}
                             @endif
-                        </td>
+                        </td> -->
                     </tr>
 
                 @endforeach

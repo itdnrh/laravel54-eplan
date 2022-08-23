@@ -211,6 +211,8 @@ class PlanMaterialController extends Controller
 
     public function update(Request $req, $id)
     {
+        $inStock = $req->get('in_stock');
+
         $plan = Plan::find($id);
         $plan->in_plan          = $req['in_plan'];
         $plan->year             = $req['year'];
@@ -242,7 +244,7 @@ class PlanMaterialController extends Controller
             $material->calc_method      = $req['calc_method'];
             $material->save();
 
-            return redirect('/plans/materials');
+            return redirect('/plans/materials?in_stock='.$inStock);
         }
     }
 

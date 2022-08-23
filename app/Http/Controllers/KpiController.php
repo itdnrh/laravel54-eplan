@@ -251,7 +251,7 @@ class KpiController extends Controller
     {
         return view('kpis.add', [
             "strategics"    => Strategic::all(),
-            "strategies"    => Strategy::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);

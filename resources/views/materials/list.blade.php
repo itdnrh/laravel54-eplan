@@ -308,12 +308,12 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/materials/detail') }}/@{{ plan.id }}"
+                                            <a  href="{{ url('/materials/detail') }}/@{{ plan.id }}?in_stock={{ $in_stock }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(plan.id)"
+                                            <a  ng-click="edit(plan.id, {{ $in_stock }})"
                                                 ng-show="!plan.approved"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
