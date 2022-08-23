@@ -202,33 +202,6 @@
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <label>สาเหตุที่ขอ :</label>
-                                    <div class="form-control checkbox-groups">
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="N"
-                                                    ng-model="construct.request_cause"> ขอใหม่
-                                        </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="R"
-                                                    ng-model="construct.request_cause"> ทดแทน
-                                        </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="E"
-                                                    ng-model="construct.request_cause"> ขยายงาน
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-4">
                                     <label>แหล่งเงินงบประมาณ :</label>
                                     <select
                                         id="budget_src_id"
