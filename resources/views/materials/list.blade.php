@@ -184,7 +184,7 @@
                                         name="txtItemName"
                                         class="form-control"
                                         ng-model="txtItemName"
-                                        ng-keyup="getAll($event)"
+                                        ng-keyup="getAll({{ $in_stock }})"
                                     />
                                 </div>
                             </div>

@@ -235,13 +235,13 @@
                                     </td> -->
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
-                                            <a  href="{{ url('/projects/detail') }}/@{{ project.id }}"
+                                            <a  href="{{ url('/kpis/detail') }}/@{{ kpi.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(project.id)"
-                                                ng-show="project.approved != 'A'"
+                                            <a  ng-click="edit(kpi.id)"
+                                                ng-show="kpi.approved != 'A'"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -249,8 +249,8 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/projects/delete') }}"
-                                                ng-show="project.approved != 'A'"
+                                                action="{{ url('/kpis/delete') }}"
+                                                ng-show="kpi.approved != 'A'"
                                             >
                                                 {{ csrf_field() }}
                                                 <button

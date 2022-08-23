@@ -150,31 +150,31 @@ class PlanController extends Controller
                     ->with('planItem','planItem.unit')
                     ->with('planItem.item','planItem.item.category')
                     ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plan_type_id', $type);
+                        $q->where('plans.plan_type_id', $type);
                     })
                     ->when(!empty($cate), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when($inStock != '', function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($name), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($haveSubitem), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {
-                        $q->where('year', $year);
+                        $q->where('plans.year', $year);
                     })
                     ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('depart_id', $departsList);
+                        $q->whereIn('plans.depart_id', $departsList);
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
+                        $q->where('plans.depart_id', $depart);
                     })
                     ->when(!empty($division), function($q) use ($division) {
-                        $q->where('division_id', $division);
+                        $q->where('plans.division_id', $division);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         if ($price == '1') {
@@ -184,7 +184,7 @@ class PlanController extends Controller
                         }
                     })
                     ->when($approved != '', function($q) use ($approved) {
-                        $q->where('approved', $approved);
+                        $q->where('plans.approved', $approved);
                     })
                     ->when(empty($showAll), function($q) use ($showAll) {
                         $q->where('plan_items.remain_amount', '>', 0);
@@ -344,7 +344,7 @@ class PlanController extends Controller
         $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == '4')
                         ? $req->get('faction')
                         : Auth::user()->memberOf->faction_id;
-        $depart = $req->get('depart');
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '4') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $division = $req->get('division');
         $status = $req->get('status');
         $approved = $req->get('approved');

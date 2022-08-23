@@ -88,8 +88,8 @@ class ProjectController extends Controller
     {
         return view('projects.list', [
             "strategics"    => Strategic::all(),
-            "strategies"    => Strategy::all(),
-            "kpis"          => Kpi::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
+            "kpis"          => Kpi::orderBy('kpi_no')->get(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
@@ -278,7 +278,7 @@ class ProjectController extends Controller
             "budgets"       => BudgetSource::where('id', '1')->get(),
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::orderBy('strategy_no')->get(),
-            "kpis"          => Kpi::all(),
+            "kpis"          => Kpi::orderBy('kpi_no')->get(),
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
         ]);
@@ -340,8 +340,8 @@ class ProjectController extends Controller
             "projectTypes"  => ProjectType::all(),
             "budgets"       => BudgetSource::where('id', '1')->get(),
             "strategics"    => Strategic::all(),
-            "strategies"    => Strategy::all(),
-            "kpis"          => Kpi::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
+            "kpis"          => Kpi::orderBy('kpi_no')->get(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);

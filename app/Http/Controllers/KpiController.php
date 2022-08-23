@@ -67,7 +67,7 @@ class KpiController extends Controller
     {
         return view('kpis.list', [
             "strategics"    => Strategic::all(),
-            "strategies"    => Strategy::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
@@ -110,17 +110,16 @@ class KpiController extends Controller
                         })
                         ->pluck('kpis.id');
 
-        $kpis = Kpi::leftJoin('strategies', 'strategies.id', '=', 'kpis.strategy_id')
-                    ->with('strategy','strategy.strategic','depart')
+        $kpis = Kpi::with('strategy','strategy.strategic','depart')
                     ->with('owner','owner.prefix','owner.position')
-                    ->when(!empty($strategic), function($q) use ($strategic) {
-                        $q->where('strategies.strategic_id', $strategic);
+                    ->when(!empty($strategic), function($q) use ($kpisList) {
+                        $q->whereIn('id', $kpisList);
                     })
                     ->when(!empty($strategy), function($q) use ($strategy) {
-                        $q->where('kpis.strategy_id', $strategy);
+                        $q->where('strategy_id', $strategy);
                     })
                     ->when(!empty($year), function($q) use ($year) {
-                        $q->where('kpis.year', $year);
+                        $q->where('year', $year);
                     })
                     // ->when(!empty($strategic), function($q) use ($kpisList) {
                     //     $q->whereIn('kpi_id', $kpisList);
@@ -140,6 +139,7 @@ class KpiController extends Controller
                     // ->when(!empty($name), function($q) use ($name) {
                     //     $q->where('project_name', 'Like', $name.'%');
                     // })
+                    ->orderBy('kpi_no')
                     ->paginate(10);
 
         return [
@@ -166,17 +166,16 @@ class KpiController extends Controller
                         })
                         ->pluck('kpis.id');
 
-        $kpis = Kpi::leftJoin('strategies', 'strategies.id', '=', 'kpis.strategy_id')
-                    ->with('strategy','strategy.strategic','depart')
+        $kpis = Kpi::with('strategy','strategy.strategic','depart')
                     ->with('owner','owner.prefix','owner.position')
-                    ->when(!empty($strategic), function($q) use ($strategic) {
-                        $q->where('strategies.strategic_id', $strategic);
+                    ->when(!empty($strategic), function($q) use ($kpisList) {
+                        $q->whereIn('id', $kpisList);
                     })
                     ->when(!empty($strategy), function($q) use ($strategy) {
-                        $q->where('kpis.strategy_id', $strategy);
+                        $q->where('strategy_id', $strategy);
                     })
                     ->when(!empty($year), function($q) use ($year) {
-                        $q->where('kpis.year', $year);
+                        $q->where('year', $year);
                     })
                     // ->when(!empty($strategic), function($q) use ($kpisList) {
                     //     $q->whereIn('kpi_id', $kpisList);
@@ -196,6 +195,7 @@ class KpiController extends Controller
                     // ->when(!empty($name), function($q) use ($name) {
                     //     $q->where('project_name', 'Like', $name.'%');
                     // })
+                    ->orderBy('kpi_no')
                     ->paginate(10);
 
         return [
