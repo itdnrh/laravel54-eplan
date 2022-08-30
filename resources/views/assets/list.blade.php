@@ -173,7 +173,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
                                         id="txtItemName"
@@ -182,6 +182,22 @@
                                         ng-model="txtItemName"
                                         ng-keyup="getAll($event)"
                                     />
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ประเภทงบประมาณ</label>
+                                        <select
+                                            id="cboBudget"
+                                            name="cboBudget"
+                                            ng-model="cboBudget"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="1">เงินบำรุง</option>
+                                            <option value="3">ค่าเสื่อม</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->

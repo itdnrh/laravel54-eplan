@@ -112,6 +112,7 @@ class PlanController extends Controller
         $inStock = $req->get('in_stock');
         $name = $req->get('name');
         $price = $req->get('price');
+        $budget = $req->get('budget');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
@@ -182,6 +183,9 @@ class PlanController extends Controller
                         } else {
                             $q->where('plan_items.price_per_unit', '>=', $price);
                         }
+                    })
+                    ->when(!empty($budget), function($q) use ($budget) {
+                        $q->where('plans.budget_src_id', $budget);
                     })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
@@ -351,6 +355,7 @@ class PlanController extends Controller
         $inStock = $req->get('in_stock');
         $name = $req->get('name');
         $price = $req->get('price');
+        $budget = $req->get('budget');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
@@ -421,6 +426,9 @@ class PlanController extends Controller
                         } else {
                             $q->where('plan_items.price_per_unit', '>=', $price);
                         }
+                    })
+                    ->when(!empty($budget), function($q) use ($budget) {
+                        $q->where('plans.budget_src_id', $budget);
                     })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('approved', $approved);
