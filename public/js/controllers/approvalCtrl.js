@@ -13,28 +13,28 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.txtItemName = '';
     $scope.isApproved = false;
 
-    $scope.toApprovesList = [];
+    $scope.plansToApproveList = [];
     $scope.onSelectedCheckBox = (e, plan) => {
         let newList = [];
         if (e.target.checked) {
-            newList = [...$scope.toApprovesList, plan.id];
+            newList = [...$scope.plansToApproveList, plan.id];
         } else {
-            newList = $scope.toApprovesList.filter(app => app !== plan.id);
+            newList = $scope.plansToApproveList.filter(app => app !== plan.id);
         }
 
-        $scope.toApprovesList = [...new Set(newList)];
+        $scope.plansToApproveList = [...new Set(newList)];
     };
 
     $scope.approveAll = () => {
         if (confirm('คุณต้องการอนุมัติทุกรายการที่หน่วยงานร้องขอใช่หรือไม่?')) {
-            // $http.post(`${CONFIG.baseUrl}/approvals/2565/year`, $scope.toApprovesList)
+            // $http.post(`${CONFIG.baseUrl}/approvals/2565/year`, $scope.plansToApproveList)
             // .then(function(res) {
             //     console.log(res);
 
             //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+            //         toaster.pop('success', "ผลการทำงาน", "อนุมัติแผนฯเรียบร้อย !!!");
             //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถอนุมัติแผนฯได้ !!!");
             //     }
 
             //     $scope.loading = false;
@@ -49,10 +49,10 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         e.preventDefault();
 
         if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
             $http.post(`${CONFIG.baseUrl}/approvals`, { id: plan.id })
             .then((res) => {
-                console.log(res);
-
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "อนุมัติรายการเรียบร้อย !!!");
 
@@ -71,29 +71,43 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
                 console.log(err);
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
     $scope.approveByList = () => {
-        if ($scope.toApprovesList.length == 0) {
+        if ($scope.plansToApproveList.length == 0) {
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกการอนุมัติได้ กรุณาเลือกรายการก่อน!!!");
         } else {
-            console.log($scope.toApprovesList);
-            // $http.post(`${CONFIG.baseUrl}/approvals/lists`, { plans: $scope.toApprovesList })
-            // .then(function(res) {
-            //     console.log(res);
+            if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.id} ใช่หรือไม่?`)) {
+                $scope.loading = true;
 
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
-            //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
-            //     }
+                $http.post(`${CONFIG.baseUrl}/approvals/lists`, { plans: $scope.plansToApproveList })
+                .then(function(res) {
+                    if (res.data.status == 1) {
+                        toaster.pop('success', "ผลการทำงาน", "อนุมัติแผนฯเรียบร้อย !!!");
 
-            //     $scope.loading = false;
-            // }, function(err) {
-            //     console.log(err);
-            //     $scope.loading = false;
-            // });
+                        res.data.plans.forEach(lst => {
+                            $scope.plans.forEach(plan => {
+                                if (plan.id === lst.id) {
+                                    plan.plan_no = lst.plan_no;
+                                    plan.approved = lst.approved;
+                                }
+                            });
+                        });
+                    } else {
+                        toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถอนุมัติแผนฯได้ !!!");
+                    }
+
+                    $scope.loading = false;
+                }, function(err) {
+                    console.log(err);
+                    $scope.loading = false;
+                });
+            } else {
+                $scope.loading = false;
+            }
         }
     };
 

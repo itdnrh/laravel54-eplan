@@ -164,6 +164,7 @@ class ApprovalController extends Controller
             return [
                 'status'    => 1,
                 'message'   => 'Insertion successfully!!',
+                'plans'     => Plan::whereIn('id', $req['plans'])->get()
             ];
         } catch (\Exception $ex) {
             return [
