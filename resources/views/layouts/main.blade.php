@@ -62,6 +62,7 @@
 	<script type="text/javascript" src="{{ asset('/node_modules/ng-tags-input/build/ng-tags-input.min.js') }}"></script>
 	<!-- jQuery-UI -->
 	<script type="text/javascript" src="{{ asset('/node_modules/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/node_modules/inputmask/dist/inputmask.min.js') }}"></script>
 	<!-- Other -->
 	<!--<script type="text/javascript" src="{{ asset('/bower/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>-->
 	<script type="text/javascript" src="{{ asset('/node_modules/select2/dist/js/select2.full.min.js') }}"></script>

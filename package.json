@@ -28,6 +28,7 @@
     "daterangepicker": "^1.6.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "fullcalendar": "3.10.1",
+    "inputmask": "5.0.7",
     "jquery": "3.5.1",
     "jquery-ui-dist": "1.12.1",
     "moment": "^2.18.1",

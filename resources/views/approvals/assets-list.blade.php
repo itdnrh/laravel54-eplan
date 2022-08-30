@@ -149,13 +149,13 @@
                                 <h3 class="box-title">ครุภัณฑ์</h3>
                             </div>
                             <div class="col-md-6">
-                                <a 
+                                <!-- <a 
                                     href="#"
                                     class="btn btn-primary pull-right"
                                     ng-click="approveAll()"
                                 >
                                     อนุมัติทั้งหมด
-                                </a>
+                                </a> -->
                                 <a
                                     href="#"
                                     class="btn btn-success pull-right"
@@ -197,7 +197,7 @@
                                     <td style="text-align: center;">
                                         <input
                                             type="checkbox"
-                                            ng-click="onSelectedCheckBox($event, plan)"
+                                            ng-click="onCheckedPlan($event, plan)"
                                             ng-show="!plan.approved"
                                         />
                                     </td>
@@ -292,6 +292,25 @@
                         </table>
 
                         <div class="row">
+                            <div class="col-md-12">
+                                <a 
+                                    href="#"
+                                    class="btn btn-primary"
+                                    ng-click="checkedAll()"
+                                >
+                                    เลือกทั้งหมด
+                                </a>
+                                <a 
+                                    href="#"
+                                    class="btn btn-primary"
+                                    ng-click="uncheckedAll()"
+                                >
+                                    ไม่เลือกทั้งหมด
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 5px;">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>

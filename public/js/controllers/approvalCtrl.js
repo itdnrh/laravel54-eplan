@@ -14,7 +14,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.isApproved = false;
 
     $scope.plansToApproveList = [];
-    $scope.onSelectedCheckBox = (e, plan) => {
+    $scope.onCheckedPlan = (e, plan) => {
         let newList = [];
         if (e.target.checked) {
             newList = [...$scope.plansToApproveList, plan.id];
@@ -109,6 +109,28 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
                 $scope.loading = false;
             }
         }
+    };
+
+    $scope.checkedAll = function() {
+        console.log($scope.plans);
+        $scope.plans.forEach(plan => {
+            if (plan.approved != 'A' && !$scope.plansToApproveList.includes(plan.id)) {
+                newList = [...$scope.plansToApproveList, plan.id];
+            } else {
+                newList = $scope.plansToApproveList.filter(app => app !== plan.id);
+            }
+    
+            $scope.plansToApproveList = [...new Set(newList)];
+        });
+
+        let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
+        checkboxes.forEach(chk => {
+            $(chk).prop("checked", true);
+        });
+    };
+
+    $scope.uncheckedAll = function() {
+
     };
 
     $scope.getAll = function(type, inStock) {
