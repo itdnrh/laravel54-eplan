@@ -502,7 +502,7 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/materials/validate', material, 'frmNewMaterial', store)"
+                                ng-click="onValidateForm($event, '/materials/validate', material, 'frmNewMaterial', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก
@@ -523,6 +523,14 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
+
+            $('#sum_price').inputmask("currency", { "placeholder": "0" });
+
+            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
+
+            $('#have_amount').inputmask("currency", { "placeholder": "0", digits: 0 });
         });
     </script>
 

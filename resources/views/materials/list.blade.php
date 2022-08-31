@@ -206,7 +206,7 @@
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right" ng-click="isDisabledRequest($event)">
+                                <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right"><!-- //ng-click="isDisabledRequest($event)" -->
                                     เพิ่มรายการ
                                 </a>
                                 <!-- <a
