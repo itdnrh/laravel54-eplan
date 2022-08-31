@@ -112,7 +112,6 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     };
 
     $scope.checkedAll = function() {
-        console.log($scope.plans);
         $scope.plans.forEach(plan => {
             if (plan.approved != 'A' && !$scope.plansToApproveList.includes(plan.id)) {
                 newList = [...$scope.plansToApproveList, plan.id];
@@ -130,7 +129,12 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     };
 
     $scope.uncheckedAll = function() {
+        $scope.plansToApproveList = [];
 
+        let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
+        checkboxes.forEach(chk => {
+            $(chk).prop("checked", false);
+        });
     };
 
     $scope.getAll = function(type, inStock) {
