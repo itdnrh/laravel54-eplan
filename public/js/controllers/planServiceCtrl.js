@@ -103,8 +103,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     };
 
     $scope.calculateSumPrice = async function() {
-        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
-        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
+        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($scope.currencyToNumber($(`#price_per_unit`).val()));
+        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($scope.currencyToNumber($(`#amount`).val()));
 
         $scope.service.sum_price = price * amount;
         $('#sum_price').val(price * amount);

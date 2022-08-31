@@ -103,7 +103,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.calculateSumPrice = async function() {
         let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($scope.currencyToNumber($(`#price_per_unit`).val()));
-        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
+        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($scope.currencyToNumber($(`#amount`).val()));
 
         $scope.asset.sum_price = price * amount;
         $('#sum_price').val(price * amount);

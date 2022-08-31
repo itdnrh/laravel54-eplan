@@ -120,8 +120,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     };
 
     $scope.calculateSumPrice = async function() {
-        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($(`#price_per_unit`).val());
-        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($(`#amount`).val());
+        let price = $(`#price_per_unit`).val() == '' ? 0 : parseFloat($scope.currencyToNumber($(`#price_per_unit`).val()));
+        let amount = $(`#amount`).val() == '' ? 0 : parseFloat($scope.currencyToNumber($(`#amount`).val()));
 
         $scope.construct.sum_price = price * amount;
         $('#sum_price').val(price * amount);
