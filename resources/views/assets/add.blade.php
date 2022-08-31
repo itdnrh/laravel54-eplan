@@ -355,7 +355,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'have_amount')}"
                                 >
-                                    <label>จำนวนเดิมที่มี : <span class="required-field">*</span></label>
+                                    <label>จำนวนเดิมที่มี : <span class="required-field">*</span> (สามารถเป็น 0 ได้)</label>
                                     <input  type="text"
                                             id="have_amount"
                                             name="have_amount"
@@ -509,7 +509,7 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="onValidateForm($event, '/assets/validate', 'frmNewLeave', store)"
+                                ng-click="onValidateForm($event, '/assets/validate', asset, 'frmNewLeave', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

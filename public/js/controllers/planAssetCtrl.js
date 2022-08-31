@@ -351,15 +351,4 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             window.location.href = `${CONFIG.baseUrl}/plans/excel?type=1&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&approved=${approved}&name=${name}&price=${price}&show_all=1`;
         }
     };
-
-    $scope.onValidateForm = function(e, endpoint, frmName, store) {
-        e.preventDefault();
-
-        $scope.asset.price_per_unit = $scope.currencyToNumber($scope.asset.price_per_unit);
-        $scope.asset.sum_price      = $scope.currencyToNumber($scope.asset.sum_price);
-        $scope.asset.amount         = $scope.currencyToNumber($scope.asset.amount);
-        $scope.asset.have_amount    = $scope.currencyToNumber($scope.asset.have_amount);
-
-        $scope.formValidate(e, endpoint, $scope.asset, frmName, store)
-    };
 });

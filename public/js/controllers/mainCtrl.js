@@ -555,4 +555,17 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
 
         return currency.replace(',', '');
     };
+
+    $scope.onValidateForm = function(e, endpoint, plan, frmName, callback) {
+        e.preventDefault();
+
+        plan.price_per_unit = $scope.currencyToNumber(plan.price_per_unit);
+        plan.sum_price      = $scope.currencyToNumber(plan.sum_price);
+        plan.amount         = $scope.currencyToNumber(plan.amount);
+        plan.have_amount    = $scope.currencyToNumber(plan.have_amount);
+
+        console.log(plan);
+
+        $scope.formValidate(e, endpoint, plan, frmName, callback)
+    };
 });
