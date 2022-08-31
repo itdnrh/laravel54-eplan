@@ -131,3 +131,9 @@ function thainumDigit($num){
     array( "o" , "๑" , "๒" , "๓" , "๔" , "๕" , "๖" , "๗" , "๘" , "๙" ),
     $num);
 }
+
+function currencyToNumber($currency) {
+    if ($currency == '') return 0;
+
+    return str_replace(',', '', $currency);
+}

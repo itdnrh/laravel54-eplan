@@ -548,4 +548,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
             $scope.loading = false;
         }
     };
+
+    $scope.currencyToNumber = function(currency) {
+        if (typeof currency === 'number') return currency;
+        if (currency == '') return 0;
+
+        return currency.replace(',', '');
+    };
 });

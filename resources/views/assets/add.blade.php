@@ -509,7 +509,7 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/assets/validate', asset, 'frmNewLeave', store)"
+                                ng-click="onValidateForm($event, '/assets/validate', 'frmNewLeave', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก
