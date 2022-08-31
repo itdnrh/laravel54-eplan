@@ -40,6 +40,7 @@
                                         getItems();
                                     "
                                     class="form-control"
+                                    ng-show="planType != 2"
                                 >
                                     <option value="">-- เลือกกลุ่มสินค้า/บริการ --</option>
                                     <option ng-repeat="group in forms.groups" value="@{{ group.id }}">
@@ -62,10 +63,13 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%; text-align: center;">#</th>
-                                <th style="width: 8%; text-align: center;">รหัสครุภัณฑ์</th>
+                                <th style="width: 8%; text-align: center;" ng-show="planType == 1">
+                                    รหัสครุภัณฑ์
+                                </th>
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                                 <th style="width: 10%;">ราคาต่อหน่วย</th>
+                                <th style="width: 6%; text-align: center; font-size: 12px;">รายจ่ายประจำ</th>
                                 <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
@@ -74,7 +78,9 @@
                                 <td style="text-align: center;">
                                     @{{ items_pager.from + index }}
                                 </td>
-                                <td style="text-align: center;">@{{ item.asset_no }}</td>
+                                <td style="text-align: center;" ng-show="planType == 1">
+                                    @{{ item.asset_no }}
+                                </td>
                                 <td>
                                     @{{ item.item_name }}
                                     <span ng-show="item.en_name">(@{{ item.en_name }})</span>
@@ -84,6 +90,13 @@
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ item.price_per_unit | currency:'':2 }}
+                                </td>
+                                <td style="text-align: center;">
+                                    <i
+                                        class="fa fa-check-square-o text-success"
+                                        aria-hidden="true"
+                                        ng-show="item.is_fixcost == '1'"
+                                    ></i>
                                 </td>
                                 <td style="text-align: center;">
                                     <a href="#" class="btn btn-primary" ng-click="handleItemSelected($event, item, onSelectedItem)">

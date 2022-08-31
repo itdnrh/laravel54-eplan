@@ -192,6 +192,8 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.onCategorySelected = function(cate) {
         if ($scope.temps.groups.some(group => group.category_id === parseInt(cate))) {
             $scope.forms.groups = $scope.temps.groups.filter(group => group.category_id === parseInt(cate));
+        } else {
+            $scope.forms.groups = $scope.temps.groups.filter(group => group.plan_type_id === $scope.planType);
         }
     };
 
@@ -225,7 +227,6 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.loading = true;
         $scope.items = [];
         $scope.items_pager = null;
-        console.log($scope.inStock);
 
         let type = $scope.planType === '' ? '' : $scope.planType;
         let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
