@@ -80,7 +80,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         if ($scope.plansToApproveList.length == 0) {
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกการอนุมัติได้ กรุณาเลือกรายการก่อน!!!");
         } else {
-            if (confirm(`คุณต้องการอนุมัติรายการรหัส ${plan.id} ใช่หรือไม่?`)) {
+            if (confirm(`คุณต้องการอนุมัติแผนตามรายการที่เลือกใช่หรือไม่?`)) {
                 $scope.loading = true;
 
                 $http.post(`${CONFIG.baseUrl}/approvals/lists`, { plans: $scope.plansToApproveList })
@@ -111,30 +111,30 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         }
     };
 
-    $scope.checkedAll = function() {
-        $scope.plans.forEach(plan => {
-            if (plan.approved != 'A' && !$scope.plansToApproveList.includes(plan.id)) {
-                newList = [...$scope.plansToApproveList, plan.id];
-            } else {
-                newList = $scope.plansToApproveList.filter(app => app !== plan.id);
-            }
-    
-            $scope.plansToApproveList = [...new Set(newList)];
-        });
+    $scope.onCheckedAll = function(e) {
+        if (e.target.checked) {
+            $scope.plans.forEach(plan => {
+                if (plan.approved != 'A' && !$scope.plansToApproveList.includes(plan.id)) {
+                    newList = [...$scope.plansToApproveList, plan.id];
+                } else {
+                    newList = $scope.plansToApproveList.filter(app => app !== plan.id);
+                }
 
-        let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
-        checkboxes.forEach(chk => {
-            $(chk).prop("checked", true);
-        });
-    };
+                $scope.plansToApproveList = [...new Set(newList)];
+            });
 
-    $scope.uncheckedAll = function() {
-        $scope.plansToApproveList = [];
+            let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
+            checkboxes.forEach(chk => {
+                $(chk).prop("checked", true);
+            });
+        } else {
+            $scope.plansToApproveList = [];
 
-        let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
-        checkboxes.forEach(chk => {
-            $(chk).prop("checked", false);
-        });
+            let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
+            checkboxes.forEach(chk => {
+                $(chk).prop("checked", false);
+            });
+        }
     };
 
     $scope.getAll = function(type, inStock) {
