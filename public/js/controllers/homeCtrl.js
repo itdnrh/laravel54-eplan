@@ -57,8 +57,10 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
             $scope.assets = plans.map(plan => {
                 const cateInfo = cates.find(cate => cate.id === plan.category_id);
-                plan.category_name = cateInfo.name;
-                plan.budget = cateInfo.budget;
+                if (cateInfo) {
+                    plan.category_name = cateInfo.name;
+                    plan.budget = cateInfo.budget;
+                }
 
                 return plan;
             });
