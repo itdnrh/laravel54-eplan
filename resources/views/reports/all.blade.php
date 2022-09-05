@@ -49,7 +49,6 @@
                                             <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามประเภทแผน
                                         </a>
                                     </li>
-                                    </li>
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/plan-quarter') }}">
                                             <i class="fa fa-circle-o"></i> รายงานแผนเงินบำรุงตามไตรมาส
@@ -73,6 +72,11 @@
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/project-strategic') }}">
                                             <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามยุทธศาสตร์
+                                        </a>
+                                    </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/project-quarter') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามไตรมาส
                                         </a>
                                     </li>
                                 </ul>

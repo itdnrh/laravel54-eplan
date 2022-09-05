@@ -9,6 +9,7 @@ use App\Models\Depart;
 use App\Models\Division;
 use App\Models\Person;
 use App\Models\Project;
+use App\Models\ProjectType;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\Strategic;
@@ -167,6 +168,59 @@ class ReportController extends Controller
                         ->where('projects.year', $year)
                         ->when(!empty($strategic), function($q) use ($strategiesList) {
                             $q->whereIn('projects.strategy_id', $strategiesList);
+                        })
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('projects.approved', $approved);
+                        })
+                        ->groupBy('projects.strategy_id')
+                        ->groupBy('strategies.strategy_name')
+                        ->get();
+
+        return [
+            'projects'      => $projects,
+            'strategies'    => Strategy::all()
+        ];
+    }
+
+    public function projectByQuarter()
+    {
+        return view('reports.project-quarter', [
+            "strategics"    => Strategic::all(),
+            "projectTypes"  => ProjectType::all(),
+        ]);
+    }
+
+    public function getProjectByQuarter(Request $req)
+    {
+        /** Get params from query string */
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $strategic  = $req->get('strategic');
+        $approved   = $req->get('approved');
+
+        $strategiesList = Strategy::where('strategic_id', $strategic)->pluck('id');
+
+        $projects = \DB::table('projects')
+                        ->select(
+                            "projects.strategy_id",
+                            "strategies.strategy_name",
+                            \DB::raw("count(case when (projects.start_month in ('10','11','12')) then projects.id end) as q1_amt"),
+                            \DB::raw("sum(case when (projects.start_month in ('10','11','12')) then projects.total_budget end) as q1_bud"),
+                            \DB::raw("count(case when (projects.start_month in ('01','02','03')) then projects.id end) as q2_amt"),
+                            \DB::raw("sum(case when (projects.start_month in ('01','02','03')) then projects.total_budget end) as q2_bud"),
+                            \DB::raw("count(case when (projects.start_month in ('04','05','06')) then projects.id end) as q3_amt"),
+                            \DB::raw("sum(case when (projects.start_month in ('04','05','06')) then projects.total_budget end) as q3_bud"),
+                            \DB::raw("count(projects.id) as total_amt"),
+                            \DB::raw("sum(projects.total_budget) as total_bud")
+                        )
+                        ->leftJoin('strategies', 'strategies.id', '=', 'projects.strategy_id')
+                        ->leftJoin('strategics', 'strategics.id', '=', 'strategies.id')
+                        ->where('projects.year', $year)
+                        ->when(!empty($strategic), function($q) use ($strategiesList) {
+                            $q->whereIn('projects.strategy_id', $strategiesList);
+                        })
+                        ->when(!empty($type), function($q) use ($type) {
+                            $q->where('projects.project_type_id', $type);
                         })
                         ->when(!empty($approved), function($q) use ($approved) {
                             $q->where('projects.approved', $approved);

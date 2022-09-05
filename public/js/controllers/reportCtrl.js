@@ -17,6 +17,7 @@ app.controller(
         $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
         $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
         $scope.cboPlanType = '';
+        $scope.cboProjectType = '';
         $scope.cboCategory = '';
         $scope.cboApproved = '';
         $scope.chkIsFixcost = false;
@@ -787,6 +788,15 @@ app.controller(
                         $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
                         $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
                     });
+                    
+                    /** Render chart */
+                    const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
+                    $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
+                    $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalByPlanQuarters.q1_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt($scope.totalByPlanQuarters.q2_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt($scope.totalByPlanQuarters.q3_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt($scope.totalByPlanQuarters.q4_sum) });
+                    let chart = new Highcharts.Chart($scope.pieOptions);
                 } else {
                     $scope.totalByPlanQuarters = {
                         q1_amt: 0,
@@ -800,24 +810,11 @@ app.controller(
                     };
                 }
 
-                const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
-                $scope.renderChart($scope.totalByPlanQuarters, typeName);
-
                 $scope.loading = false;
             }, function (err) {
                 console.log(err);
                 $scope.loading = false;
             });
-        };
-
-        $scope.renderChart = function (data, typeName) {
-            $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
-            $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt(data.q1_sum) });
-            $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt(data.q2_sum) });
-            $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt(data.q3_sum) });
-            $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt(data.q4_sum) });
-
-            let chart = new Highcharts.Chart($scope.pieOptions);
         };
 
         $scope.factions = [];
@@ -1146,7 +1143,7 @@ app.controller(
             });
         };
 
-        $scope.totalAssetByCategories = {
+        $scope.totalProjectByStrategics = {
             vehicle: 0,
             office: 0,
             computer: 0,
@@ -1195,6 +1192,88 @@ app.controller(
                 //         total: 0,
                 //     };
                 // }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.totalProjectByQuarters = {
+            q1_amt: 0,
+            q1_bud: 0,
+            q2_amt: 0,
+            q2_bud: 0,
+            q3_amt: 0,
+            q3_bud: 0,
+            q4_amt: 0,
+            q4_bud: 0,
+        };
+
+        $scope.getProjectByQuarters = function () {
+            $scope.totalProjectByQuarters = {
+                q1_amt: 0,
+                q1_bud: 0,
+                q2_amt: 0,
+                q2_bud: 0,
+                q3_amt: 0,
+                q3_bud: 0,
+                q4_amt: 0,
+                q4_bud: 0,
+            };
+
+            let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let type = $scope.cboProjectType === '' ? '' : $scope.cboProjectType;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-quarter?year=${year}&strategic=${strategic}&type=${type}&approved=${approved}`)
+            .then(function (res) {
+                $scope.projects = res.data.projects.map(project => {
+                    let stg = res.data.strategies.find(s => s.id === project.strategy_id);
+                    project.strategic_id = stg.strategic_id;
+
+                    return project;
+                }).sort((a, b) => a.strategic_id - b.strategic_id);
+
+                /** Sum total of plan by plan_type */
+                if (res.data.projects.length > 0) {
+                    res.data.projects.forEach(project => {
+                        $scope.totalProjectByQuarters.q1_amt += project.q1_amt ? project.q1_amt : 0;
+                        $scope.totalProjectByQuarters.q1_bud += project.q1_bud ? project.q1_bud : 0;
+                        $scope.totalProjectByQuarters.q2_amt += project.q2_amt ? project.q2_amt : 0;
+                        $scope.totalProjectByQuarters.q2_bud += project.q2_bud ? project.q2_bud : 0;
+                        $scope.totalProjectByQuarters.q3_amt += project.q3_amt ? project.q3_amt : 0;
+                        $scope.totalProjectByQuarters.q3_bud += project.q3_bud ? project.q3_bud : 0;
+                        $scope.totalProjectByQuarters.q4_amt += project.q4_amt ? project.q4_amt : 0;
+                        $scope.totalProjectByQuarters.q4_bud += project.q4_bud ? project.q4_bud : 0;
+                    });
+
+                    /** Render chart */
+                    const typeName = type === '' ? '' : `(${$('#cboProjectType option:selected').text()})`;
+                    $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนงาน/โครงการ ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนงาน/โครงการ");
+                    $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalProjectByQuarters.q1_bud) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt($scope.totalProjectByQuarters.q2_bud) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt($scope.totalProjectByQuarters.q3_bud) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt($scope.totalProjectByQuarters.q4_bud) });
+                    let chart = new Highcharts.Chart($scope.pieOptions);
+                } else {
+                    $scope.totalProjectByQuarters = {
+                        q1_amt: 0,
+                        q1_bud: 0,
+                        q2_amt: 0,
+                        q2_bud: 0,
+                        q3_amt: 0,
+                        q3_bud: 0,
+                        q4_amt: 0,
+                        q4_bud: 0,
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {
