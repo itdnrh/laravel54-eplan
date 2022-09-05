@@ -557,4 +557,73 @@ class ReportController extends Controller
             'categories'    => $categories
         ];
     }
+
+    public function planByQuarter()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.plan-quarter', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
+            "planTypes" => PlanType::all(),
+        ]);
+    }
+
+    public function getPlanByQuarter(Request $req)
+    {
+        /** Get params from query string */
+        $faction    = $req->get('faction');
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $price      = $req->get('price');
+        $approved   = $req->get('approved');
+        $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'items.category_id',
+                        \DB::raw("sum(case when (plans.start_month in ('10','11','12')) then plan_items.amount end) as q1_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('10','11','12')) then plan_items.sum_price end) as q1_sum"),
+                        \DB::raw("sum(case when (plans.start_month in ('01','02','03')) then plan_items.amount end) as q2_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('01','02','03')) then plan_items.sum_price end) as q2_sum"),
+                        \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.amount end) as q3_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.sum_price end) as q3_sum"),
+                        \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.amount end) as q4_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.sum_price end) as q4_sum")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->groupBy('items.category_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plans.plan_type_id', $type);
+                    })
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($price), function($q) use ($price) {
+                        if ($price == 1) {
+                            $q->where('plan_items.price_per_unit', '>=', 10000);
+                        } else {
+                            $q->where('plan_items.price_per_unit', '<', 10000);
+                        }
+                    })
+                    ->orderByRaw("sum(plan_items." .$sort. ") DESC")
+                    ->get();
+
+        $categories = ItemCategory::all();
+                        // ->when(!empty($type), function($q) use ($type) {
+                        //     $q->where('plan_type_id', $type);
+                        // })->get();
+
+        return [
+            'plans'         => $plans,
+            'categories'    => $categories
+        ];
+    }
 }

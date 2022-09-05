@@ -1,6 +1,6 @@
 app.controller(
     "reportCtrl",
-    function (CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
+    function (CONFIG, $scope, $http, toaster, StringFormatService, ChartService) {
         /** ################################################################################## */
         $scope.leaves = [];
         $scope.data = [];
@@ -731,6 +731,93 @@ app.controller(
                 console.log(err);
                 $scope.loading = false;
             });
+        };
+
+        $scope.totalByPlanQuarters = {
+            q1_amt: 0,
+            q1_sum: 0,
+            q2_amt: 0,
+            q2_sum: 0,
+            q3_amt: 0,
+            q3_sum: 0,
+            q4_amt: 0,
+            q4_sum: 0,
+        };
+
+        $scope.getPlanByQuarter = function () {
+            $scope.totalByPlanQuarters = {
+                q1_amt: 0,
+                q1_sum: 0,
+                q2_amt: 0,
+                q2_sum: 0,
+                q3_amt: 0,
+                q3_sum: 0,
+                q4_amt: 0,
+                q4_sum: 0,
+            };
+
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans.map(plan => {
+                    let cate = res.data.categories.find(c => c.id === plan.category_id);
+                    plan.category_name = cate ? cate.name : '';
+
+                    return plan;
+                });
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByPlanQuarters.q1_amt += plan.q1_amt ? plan.q1_amt : 0;
+                        $scope.totalByPlanQuarters.q1_sum += plan.q1_sum ? plan.q1_sum : 0;
+                        $scope.totalByPlanQuarters.q2_amt += plan.q2_amt ? plan.q2_amt : 0;
+                        $scope.totalByPlanQuarters.q2_sum += plan.q2_sum ? plan.q2_sum : 0;
+                        $scope.totalByPlanQuarters.q3_amt += plan.q3_amt ? plan.q3_amt : 0;
+                        $scope.totalByPlanQuarters.q3_sum += plan.q3_sum ? plan.q3_sum : 0;
+                        $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
+                        $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
+                    });
+                } else {
+                    $scope.totalByPlanQuarters = {
+                        q1_amt: 0,
+                        q1_sum: 0,
+                        q2_amt: 0,
+                        q2_sum: 0,
+                        q3_amt: 0,
+                        q3_sum: 0,
+                        q4_amt: 0,
+                        q4_sum: 0,
+                    };
+                }
+
+                const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
+                $scope.renderChart($scope.totalByPlanQuarters, typeName);
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.renderChart = function (data, typeName) {
+            $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
+            $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt(data.q1_sum) });
+            $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt(data.q2_sum) });
+            $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt(data.q3_sum) });
+            $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt(data.q4_sum) });
+
+            let chart = new Highcharts.Chart($scope.pieOptions);
         };
 
         $scope.factions = [];

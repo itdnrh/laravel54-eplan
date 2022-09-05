@@ -113,4 +113,5 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('reports/material-depart', 'ReportController@getMaterialByDepart');
     Route::get('reports/plan-item', 'ReportController@getPlanByItem');
     Route::get('reports/plan-type', 'ReportController@getPlanByType');
+    Route::get('reports/plan-quarter', 'ReportController@getPlanByQuarter');
 });
