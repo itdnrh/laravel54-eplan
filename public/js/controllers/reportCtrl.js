@@ -1170,13 +1170,12 @@ app.controller(
 
             $http.get(`${CONFIG.apiUrl}/reports/project-strategic?year=${year}&strategic=${strategic}&approved=${approved}`)
             .then(function (res) {
-                console.log(res.data);
                 $scope.projects = res.data.projects.map(project => {
                     let stg = res.data.strategies.find(s => s.id === project.strategy_id);
                     project.strategic_id = stg.strategic_id;
 
                     return project;
-                });
+                }).sort((a, b) => a.strategic_id - b.strategic_id);
 
                 /** Sum total of plan by plan_type */
                 // if (res.data.plans.length > 0) {

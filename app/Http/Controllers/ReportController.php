@@ -164,8 +164,6 @@ class ReportController extends Controller
                         )
                         ->leftJoin('strategies', 'strategies.id', '=', 'projects.strategy_id')
                         ->leftJoin('strategics', 'strategics.id', '=', 'strategies.id')
-                        ->groupBy('projects.strategy_id')
-                        ->groupBy('strategies.strategy_name')
                         ->where('projects.year', $year)
                         ->when(!empty($strategic), function($q) use ($strategiesList) {
                             $q->whereIn('projects.strategy_id', $strategiesList);
@@ -173,6 +171,8 @@ class ReportController extends Controller
                         ->when(!empty($approved), function($q) use ($approved) {
                             $q->where('projects.approved', $approved);
                         })
+                        ->groupBy('projects.strategy_id')
+                        ->groupBy('strategies.strategy_name')
                         ->get();
 
         return [
