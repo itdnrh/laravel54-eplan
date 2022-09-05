@@ -154,14 +154,14 @@ class ReportController extends Controller
                         ->select(
                             "projects.strategy_id",
                             "strategies.strategy_name",
-                            \DB::raw("sum(case when (projects.project_type_id=1) then projects.total_budget end) as hos_budget"),
                             \DB::raw("count(case when (projects.project_type_id=1) then projects.id end) as hos_amount"),
-                            \DB::raw("sum(case when (projects.project_type_id=2) then projects.total_budget end) as cup_budget"),
+                            \DB::raw("sum(case when (projects.project_type_id=1) then projects.total_budget end) as hos_budget"),
                             \DB::raw("count(case when (projects.project_type_id=2) then projects.id end) as cup_amount"),
-                            \DB::raw("sum(case when (projects.project_type_id=3) then projects.total_budget end) as tam_budget"),
+                            \DB::raw("sum(case when (projects.project_type_id=2) then projects.total_budget end) as cup_budget"),
                             \DB::raw("count(case when (projects.project_type_id=3) then projects.id end) as tam_amount"),
-                            \DB::raw("sum(projects.total_budget) as total_budget"),
-                            \DB::raw("count(projects.id) as total_amount")
+                            \DB::raw("sum(case when (projects.project_type_id=3) then projects.total_budget end) as tam_budget"),
+                            \DB::raw("count(projects.id) as total_amount"),
+                            \DB::raw("sum(projects.total_budget) as total_budget")
                         )
                         ->leftJoin('strategies', 'strategies.id', '=', 'projects.strategy_id')
                         ->leftJoin('strategics', 'strategics.id', '=', 'strategies.id')

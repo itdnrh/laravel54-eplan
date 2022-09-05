@@ -143,14 +143,17 @@
                                     <td style="text-align: center;">@{{ project.total_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.total_budget | currency:'':0 }}</td>
                                 </tr>
-                                <!-- <tr style="font-weight: bold;">
-                                    <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
-                                </tr> -->
+                                <tr style="font-weight: bold;">
+                                    <td style="text-align: center;" colspan="3">รวม</td>
+                                    <td style="text-align: center;">@{{ totalProjectByStrategics.hos_amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalProjectByStrategics.hos_budget | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ totalProjectByStrategics.cup_amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalProjectByStrategics.cup_budget | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ totalProjectByStrategics.tam_amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalProjectByStrategics.tam_budget | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ totalProjectByStrategics.total_amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalProjectByStrategics.total_budget | currency:'':0 }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->

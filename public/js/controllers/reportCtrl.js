@@ -1144,19 +1144,28 @@ app.controller(
         };
 
         $scope.totalProjectByStrategics = {
-            vehicle: 0,
-            office: 0,
-            computer: 0,
-            medical: 0,
-            home: 0,
-            construct: 0,
-            agriculture: 0,
-            ads: 0,
-            electric: 0,
-            total: 0
+            hos_amount: 0,
+            hos_budget: 0,
+            cup_amount: 0,
+            cup_budget: 0,
+            tam_amount: 0,
+            tam_budget: 0,
+            total_amount: 0,
+            total_budget: 0
         };
 
         $scope.getProjectByStrategic = function () {
+            $scope.totalProjectByStrategics = {
+                hos_amount: 0,
+                hos_budget: 0,
+                cup_amount: 0,
+                cup_budget: 0,
+                tam_amount: 0,
+                tam_budget: 0,
+                total_amount: 0,
+                total_budget: 0
+            };
+
             let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
@@ -1175,23 +1184,29 @@ app.controller(
                 }).sort((a, b) => a.strategic_id - b.strategic_id);
 
                 /** Sum total of plan by plan_type */
-                // if (res.data.plans.length > 0) {
-                //     res.data.plans.forEach(plan => {
-                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
-                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
-                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
-                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
-                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
-                //     });
-                // } else {
-                //     $scope.totalByPlanTypes = {
-                //         asset: 0,
-                //         construct: 0,
-                //         material: 0,
-                //         service: 0,
-                //         total: 0,
-                //     };
-                // }
+                if (res.data.projects.length > 0) {
+                    res.data.projects.forEach(project => {
+                        $scope.totalProjectByStrategics.hos_amount += project.hos_amount ? project.hos_amount : 0;
+                        $scope.totalProjectByStrategics.hos_budget += project.hos_budget ? project.hos_budget : 0;
+                        $scope.totalProjectByStrategics.cup_amount += project.cup_amount ? project.cup_amount : 0;
+                        $scope.totalProjectByStrategics.cup_budget += project.cup_budget ? project.cup_budget : 0;
+                        $scope.totalProjectByStrategics.tam_amount += project.tam_amount ? project.tam_amount : 0;
+                        $scope.totalProjectByStrategics.tam_budget += project.tam_budget ? project.tam_budget : 0;
+                        $scope.totalProjectByStrategics.total_amount += project.total_amount ? project.total_amount : 0;
+                        $scope.totalProjectByStrategics.total_budget += project.total_budget ? project.total_budget : 0;
+                    });
+                } else {
+                    $scope.totalProjectByStrategics = {
+                        hos_amount: 0,
+                        hos_budget: 0,
+                        cup_amount: 0,
+                        cup_budget: 0,
+                        total_amount: 0,
+                        tam_budget: 0,
+                        total_amount: 0,
+                        total_budget: 0
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {
