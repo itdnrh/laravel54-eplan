@@ -177,13 +177,13 @@
                                 <h3 class="box-title">โครงการ</h3>
                             </div>
                             <div class="col-md-6">
-                                <a 
+                                <!-- <a 
                                     href="#"
                                     class="btn btn-primary pull-right"
                                     ng-click="approveAll()"
                                 >
                                     อนุมัติทั้งหมด
-                                </a>
+                                </a> -->
                                 <a
                                     href="#"
                                     class="btn btn-success pull-right"
@@ -226,7 +226,7 @@
                                     <td style="text-align: center;">
                                         <input
                                             type="checkbox"
-                                            ng-click="onSelectedCheckBox($event, project)"
+                                            ng-click="onCheckedPlan($event, project)"
                                             ng-show="project.approved != 'A'"
                                         />
                                     </td>
@@ -308,6 +308,15 @@
                             </tbody>
                         </table>
 
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-md-12">
+                                <div class="btn">
+                                    <input type="checkbox" id="chkAll" ng-click="onCheckedAll($event)" />
+                                    เลือกทั้งหมด
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
@@ -355,6 +364,7 @@
                                 </ul>
                             </div>
                         </div><!-- /.row -->
+
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
@@ -364,10 +374,8 @@
                     <!-- end loading -->
 
                 </div><!-- /.box -->
-
             </div><!-- /.col -->
         </div><!-- /.row -->
-
     </section>
 
     <script>
