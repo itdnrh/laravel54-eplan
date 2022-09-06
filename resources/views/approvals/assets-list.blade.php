@@ -291,7 +291,7 @@
                             </tbody>
                         </table>
 
-                        <div class="row">
+                        <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-12">
                                 <div class="btn">
                                     <input type="checkbox" id="chkAll" ng-click="onCheckedAll($event)" />
@@ -300,7 +300,7 @@
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 10px;">
+                        <div class="row">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>

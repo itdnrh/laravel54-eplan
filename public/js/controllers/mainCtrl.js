@@ -475,7 +475,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
-    $scope.isDisabledRequest = function(e, userRole) {
+    $scope.isDisabledRequest = function(e, userRole='') {
         if (moment().isAfter(moment('2022-08-16 17:30:00')) && userRole != 4) {
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งข้อมูลได้ เนื่องจากเลยกำหนดแล้ว !!!");
             e.preventDefault();

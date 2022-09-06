@@ -148,13 +148,13 @@
                                 <h3 class="box-title">แผนวัสดุ ({{ $in_stock == 1 ? 'ในคลัง' : 'นอกคลัง' }})</h3>
                             </div>
                             <div class="col-md-6">
-                                <a
+                                <!-- <a
                                     href="#"
                                     class="btn btn-primary pull-right"
                                     ng-click="approveAll()"
                                 >
                                     อนุมัติทั้งหมด
-                                </a>
+                                </a> -->
                                 <a
                                     href="#"
                                     class="btn btn-success pull-right"
@@ -197,7 +197,7 @@
                                     <td style="text-align: center;">
                                         <input
                                             type="checkbox"
-                                            ng-click="onSelectedCheckBox($event, plan)"
+                                            ng-click="onCheckedPlan($event, plan)"
                                             ng-show="!plan.approved"
                                         />
                                     </td>
@@ -288,6 +288,15 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-md-12">
+                                <div class="btn">
+                                    <input type="checkbox" id="chkAll" ng-click="onCheckedAll($event)" />
+                                    เลือกทั้งหมด
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-4">

@@ -217,7 +217,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/project-type?year=${year}&approved=`)
         .then(function(res) {
-            console.log(res);
             let dataSeries = res.data.projects.map(type => {
                 return { name: type.name, y: parseInt(type.budget) }
             });
@@ -239,7 +238,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         ReportService.getSeriesData('/report/sum-month-chart/', month)
         .then(function(res) {
-            console.log(res);
             var debtSeries = [];
             var paidSeries = [];
             var setzeroSeries = [];

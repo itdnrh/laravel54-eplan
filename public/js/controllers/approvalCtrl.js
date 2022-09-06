@@ -100,7 +100,15 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
                         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถอนุมัติแผนฯได้ !!!");
                     }
 
+                    /** Reset data */
                     $scope.loading = false;
+                    $scope.plansToApproveList = [];
+                    $('#chkAll').prop("checked", false);
+
+                    let checkboxes = document.querySelectorAll('table td > input[type="checkbox"]');
+                    checkboxes.forEach(chk => {
+                        $(chk).prop("checked", false);
+                    });
                 }, function(err) {
                     console.log(err);
                     $scope.loading = false;
