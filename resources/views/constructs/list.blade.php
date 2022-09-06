@@ -203,7 +203,7 @@
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/constructs/add') }}" class="btn btn-primary pull-right"><!-- // ng-click="isDisabledRequest($event)" -->
+                                <a href="{{ url('/constructs/add') }}" class="btn btn-primary pull-right" ng-click="isDisabledRequest($event, {{ Auth::user()->memberOf->depart_id }})"><!-- // -->
                                     เพิ่มรายการ
                                 </a>
                                 <a href="#" ng-show="constructs.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
