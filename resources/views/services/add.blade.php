@@ -202,7 +202,7 @@
                                         />
                                         <input type="hidden" id="item_id" name="item_id" ng-model="service.item_id" />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList()">
+                                            <button type="button" class="btn btn-default btn-flat" ng-click="showItemsList('#items-list')">
                                                 ...
                                             </button>
                                             <button type="button" class="btn btn-primary btn-flat" ng-click="showNewItemForm()">

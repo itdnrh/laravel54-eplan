@@ -164,6 +164,14 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.inStock = value;
     };
 
+    $scope.setPlanType = function(planType) {
+        $scope.planType = planType;
+    };
+
+    $scope.setCboCategory = function(cate) {
+        $scope.cboCategory = cate;
+    };
+
     $scope.getMonthName = function(month) {
         const monthObj = $scope.monthLists.find(m => m.id == month);
 
@@ -217,13 +225,13 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
-    $scope.showItemsList = function(inStock='') {
+    $scope.showItemsList = function(modalId, inStock='') {
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === $scope.planType);
 
-        $scope.getItems();
+        $scope.getItems(modalId);
     };
 
-    $scope.getItems = function() {
+    $scope.getItems = function(modalId, haveSubitem='') {
         $scope.loading = true;
         $scope.items = [];
         $scope.items_pager = null;
@@ -232,15 +240,16 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
         let group = !$scope.cboGroup ? '' : $scope.cboGroup;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let have_subitem = haveSubitem === '' ? '' : haveSubitem;
         let in_stock = $scope.inStock !== '' ? $scope.inStock : '';
 
-        $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&group=${group}&name=${name}&in_stock=${in_stock}`)
+        $http.get(`${CONFIG.baseUrl}/items/search?type=${type}&cate=${cate}&group=${group}&name=${name}&have_subitem=${have_subitem}&in_stock=${in_stock}`)
         .then(function(res) {
             $scope.setItems(res);
 
             $scope.loading = false;
 
-            $('#items-list').modal('show');
+            $(modalId).modal('show');
         }, function(err) {
             console.log(err);
             $scope.loading = false;
@@ -254,7 +263,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.items_pager = pager;
     };
 
-    $scope.getItemsWithUrl = function(e, url, cb) {
+    $scope.getItemsWithUrl = function(e, url, cb, haveSubitem='') {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -266,9 +275,10 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
         let group = !$scope.cboGroup ? '' : $scope.cboGroup;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let have_subitem = haveSubitem === '' ? '' : haveSubitem;
         let in_stock = $scope.inStock === '' ? '' : $scope.inStock;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&group=${group}&name=${name}&in_stock=${in_stock}`)
+        $http.get(`${url}&type=${type}&cate=${cate}&group=${group}&name=${name}&have_subitem=${have_subitem}&in_stock=${in_stock}`)
         .then(function(res) {
             cb(res);
 

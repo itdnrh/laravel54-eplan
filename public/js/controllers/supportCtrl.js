@@ -14,9 +14,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.plans = [];
     $scope.plans_pager = null;
 
-    $scope.items = [];
-    $scope.items_pager = null;
-
     $scope.persons = [];
     $scope.persons_pager = null;
 
@@ -278,10 +275,22 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.showSubitemsList = function() {
-        $('#subitems-list').modal('show');
+        if (!$scope.support.plan_type_id || !$scope.support.category_id) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
+        } else {
+            $scope.getItems('#subitems-list', 0);
+        }
     };
     
-    $scope.handleSubitemSelected = function() {
+    $scope.handleSubitemSelected = function(e, item) {
+        if (item) {
+            $('#subitem_id').val(item.id);
+            $scope.newItem.subitem_id       = item.id;
+            $scope.newItem.desc             = item.item_name;
+            $scope.newItem.price_per_unit   = item.price_per_unit;
+            $scope.newItem.unit_id          = item.unit_id.toString();
+        }
+
         $('#subitems-list').modal('hide');
     };
 

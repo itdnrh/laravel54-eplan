@@ -200,7 +200,7 @@
                                                 class="btn btn-default btn-flat"
                                                 ng-click="
                                                     onShowItemsList();
-                                                    showItemsList();
+                                                    showItemsList('#items-list');
                                                 "
                                             >
                                                 ...

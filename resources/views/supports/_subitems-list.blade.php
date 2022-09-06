@@ -18,7 +18,10 @@
                                     id="cboCategory"
                                     name="cboCategory"
                                     ng-model="cboCategory"
-                                    ng-change="handleInputChange('cboCategory', cboCategory); getItems();"
+                                    ng-change="
+                                        handleInputChange('cboCategory', cboCategory);
+                                        getItems('#subitems-list', 0);
+                                    "
                                     class="form-control"
                                 >
                                     <option value="">-- เลือกประเภทสินค้า/บริการ --</option>
@@ -31,7 +34,10 @@
                                     type="text"
                                     ng-model="searchKey"
                                     class="form-control"
-                                    ng-keyup="handleInputChange('searchKey', searchKey); getItems();"
+                                    ng-keyup="
+                                        handleInputChange('searchKey', searchKey);
+                                        getItems('#subitems-list', 0);
+                                    "
                                 />
                             </div>
                         </div><!-- /.box-body -->
@@ -63,7 +69,7 @@
                                     @{{ item.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="#" class="btn btn-primary" ng-click="handleSubitemSelected($event, item, onSelectedItem)">
+                                    <a href="#" class="btn btn-primary" ng-click="handleSubitemSelected($event, item)">
                                         เลือก
                                     </a>
                                 </td>
@@ -91,13 +97,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="items_pager.current_page !== 1">
-                                    <a ng-click="getItemsWithUrl($event, items_pager.path+ '?page=1', setItems)" aria-label="Previous">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.path+ '?page=1', setItems, 0)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (items_pager.current_page==1)}">
-                                    <a ng-click="getItemsWithUrl($event, items_pager.prev_page_url, setItems)" aria-label="Prev">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.prev_page_url, setItems, 0)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -109,20 +115,20 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (items_pager.current_page==items_pager.last_page)}">
-                                    <a ng-click="getItemsWithUrl($event, items_pager.next_page_url, setItems)" aria-label="Next">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.next_page_url, setItems, 0)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="items_pager.current_page !== items_pager.last_page">
-                                    <a ng-click="getItemsWithUrl($event, items_pager.path+ '?page=' +items_pager.last_page, setItems)" aria-label="Previous">
+                                    <a ng-click="getItemsWithUrl($event, items_pager.path+ '?page=' +items_pager.last_page, setItems, 0)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger" ng-click="handleSubitemSelected($event, null, onSelectedItem)">
+                            <button type="button" class="btn btn-danger" ng-click="handleSubitemSelected($event, null)">
                                 ปิด
                             </button>
                         </div>

@@ -87,7 +87,10 @@
                                     <select id="plan_type_id"
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
-                                            ng-change="onPlanTypeSelected(support.plan_type_id);"
+                                            ng-change="
+                                                onPlanTypeSelected(support.plan_type_id);
+                                                setPlanType(support.plan_type_id);
+                                            "
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
@@ -110,7 +113,10 @@
                                     <select id="category_id"
                                             name="category_id"
                                             ng-model="support.category_id"
-                                            ng-change="setTopicByPlanType(support.category_id)"
+                                            ng-change="
+                                                setTopicByPlanType(support.category_id);
+                                                setCboCategory(support.category_id);
+                                            "
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">

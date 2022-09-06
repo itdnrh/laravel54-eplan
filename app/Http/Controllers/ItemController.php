@@ -73,6 +73,7 @@ class ItemController extends Controller
         $group = $req->get('group');
         $name = $req->get('name');
         $inStock = $req->get('in_stock');
+        $haveSubitem = $req->get('have_subitem');
 
         $items = Item::with('planType','category','group','unit')
                     ->when(!empty($type), function($q) use ($type) {
@@ -86,6 +87,9 @@ class ItemController extends Controller
                     })
                     ->when($inStock != '', function($q) use ($inStock) {
                         $q->where('in_stock', $inStock);
+                    })
+                    ->when($haveSubitem != '', function($q) use ($haveSubitem) {
+                        $q->where('have_subitem', $haveSubitem);
                     })
                     ->when(!empty($name), function($q) use ($name) {
                         $q->where('item_name', 'like', '%'.$name.'%');
