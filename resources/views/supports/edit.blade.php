@@ -248,6 +248,7 @@
                                                                 type="button"
                                                                 class="btn bg-primary"
                                                                 ng-click="showSubitemsList();"
+                                                                ng-disabled="support.plan_type_id != '2' || (support.plan_type_id == '2' && newItem.item.have_subitem == 0)"
                                                             >
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                                             </button>

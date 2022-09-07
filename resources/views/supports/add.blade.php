@@ -210,7 +210,10 @@
                                                             <button
                                                                 type="button"
                                                                 class="btn bg-maroon"
-                                                                ng-click="showPlansList(); onFilterCategories(support.plan_type_id);"
+                                                                ng-click="
+                                                                    showPlansList();
+                                                                    onFilterCategories(support.plan_type_id);
+                                                                "
                                                             >
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                                             </button>
@@ -249,6 +252,7 @@
                                                                 type="button"
                                                                 class="btn bg-primary"
                                                                 ng-click="showSubitemsList();"
+                                                                ng-disabled="support.plan_type_id != '2' || (support.plan_type_id == '2' && newItem.item.have_subitem == 0)"
                                                             >
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                                             </button>

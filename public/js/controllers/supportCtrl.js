@@ -46,6 +46,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         plan: null,
         plan_id: '',
         item_id: '',
+        item: null,
         desc: '',
         price_per_unit: '',
         unit_id: '',
@@ -98,6 +99,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             plan: null,
             plan_id: '',
             item_id: '',
+            item: null,
             desc: '',
             price_per_unit: '',
             unit_id: '',
@@ -252,6 +254,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 plan: plan,
                 plan_id: plan.id,
                 item_id: plan.plan_item.item_id,
+                item: plan.plan_item.item,
                 price_per_unit: plan.calc_method == 1 ? plan.price_per_unit : '',
                 unit_id: plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '',
                 unit_name: plan.calc_method == 1 ? plan.plan_item.unit.name : '',
@@ -275,10 +278,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.showSubitemsList = function() {
-        if (!$scope.support.plan_type_id || !$scope.support.category_id) {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
-        } else {
+        if ($scope.newItem.plan_id) {
             $scope.getItems('#subitems-list', 0);
+        } else {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
         }
     };
     
@@ -296,8 +299,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.showSpecForm = function(planId) {
         if (planId) {
-            console.log(planId);
-    
             $('#spec-form').modal('show');
         } else {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
