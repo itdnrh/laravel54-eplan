@@ -32,10 +32,12 @@
         
                                 <input
                                     type="text"
-                                    ng-model="searchKey"
+                                    id="txtKeyword"
+                                    name="txtKeyword"
+                                    ng-model="txtKeyword"
                                     class="form-control"
                                     ng-keyup="
-                                        handleInputChange('searchKey', searchKey);
+                                        handleInputChange('txtKeyword', txtKeyword);
                                         getItems('#subitems-list', 0);
                                     "
                                 />
@@ -49,6 +51,7 @@
                             <tr>
                                 <th style="width: 5%; text-align: center;">#</th>
                                 <th>รายการ</th>
+                                <th style="width: 15%; text-align: center;">ประเภท</th>
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                                 <th style="width: 10%;">ราคาต่อหน่วย</th>
                                 <th style="width: 6%; text-align: center;">Actions</th>
@@ -59,9 +62,8 @@
                                 <td style="text-align: center;">
                                     @{{ items_pager.from + index }}
                                 </td>
-                                <td>
-                                    @{{ item.item_name }}
-                                </td>
+                                <td>@{{ item.item_name }}</td>
+                                <td>@{{ item.category.name }}</td>
                                 <td style="text-align: center;">
                                     @{{ item.unit.name }}
                                 </td>

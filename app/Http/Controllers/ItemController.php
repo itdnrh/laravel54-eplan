@@ -92,8 +92,10 @@ class ItemController extends Controller
                         $q->where('have_subitem', $haveSubitem);
                     })
                     ->when(!empty($name), function($q) use ($name) {
-                        $q->where('item_name', 'like', '%'.$name.'%');
-                        $q->orWhere('en_name', 'like', '%'.$name.'%');
+                        $q->where(function($query) use ($name) {
+                            $query->where('item_name', 'like', '%'.$name.'%');
+                            $query->orWhere('en_name', 'like', '%'.$name.'%');
+                        });
                     })
                     ->orderBy('category_id', 'ASC')
                     ->orderBy('item_name', 'ASC')
