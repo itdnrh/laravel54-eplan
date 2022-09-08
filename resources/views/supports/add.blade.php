@@ -90,6 +90,7 @@
                                             ng-change="
                                                 onPlanTypeSelected(support.plan_type_id);
                                                 setPlanType(support.plan_type_id);
+                                                clearNewItem();
                                             "
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
@@ -116,6 +117,7 @@
                                             ng-change="
                                                 setTopicByPlanType(support.category_id);
                                                 setCboCategory(support.category_id);
+                                                clearNewItem();
                                             "
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
@@ -594,6 +596,13 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
+
+            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
+
+            $('#sum_price').inputmask("currency", { "placeholder": "0" });
+
         });
     </script>
 
