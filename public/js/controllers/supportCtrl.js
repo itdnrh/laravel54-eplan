@@ -532,13 +532,18 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.depart_id = support.depart_id.toString();
             $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
 
+            /** Set each committees by filtering from responsed committees data */
             $scope.support.spec_committee = committees.filter(com => com.committee_type_id == 1);
             $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
             $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
 
+            /** Set date value to datepicker input of doc_date */
             $('#doc_date').datepicker(dtpDateOptions).datepicker('update', moment(support.doc_date).toDate());
 
+            /** Initial model values in mainCtrl */
             $scope.onPlanTypeSelected(support.plan_type_id);
+            $scope.setPlanType(support.plan_type_id);
+            $scope.setCboCategory(support.category_id.toString());
         }
     };
 
@@ -627,6 +632,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
                     /** TODO: Reset supports model */
                     $scope.setSupports(res);
+
+                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }

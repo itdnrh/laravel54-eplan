@@ -94,7 +94,11 @@
                                     <select id="plan_type_id"
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
-                                            ng-change="setTopicByPlanType(support.plan_type_id)"
+                                            ng-change="
+                                                setTopicByPlanType(support.plan_type_id);
+                                                setPlanType(support.plan_type_id);
+                                                clearNewItem();
+                                            "
                                             class="form-control">
                                         <option value="">-- เลือกประเภทแผน --</option>
                                         @foreach($planTypes as $planType)
@@ -115,7 +119,11 @@
                                     <select id="category_id"
                                             name="category_id"
                                             ng-model="support.category_id"
-                                            ng-change="setTopicByPlanType(support.category_id)"
+                                            ng-change="
+                                                setTopicByPlanType(support.category_id);
+                                                setCboCategory(support.category_id);
+                                                clearNewItem();
+                                            "
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
@@ -218,82 +226,99 @@
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- spec -->
-                                                    <!-- <a href="#" class="btn bg-gray" ng-click="showSpecForm(newItem.plan_id)">
-                                                        <i class="fa fa-bars" aria-hidden="true"></i>
-                                                    </a> -->
-                                                    <div class="input-group">
-                                                        <input
-                                                            type="text"
-                                                            id="desc"
-                                                            name="desc"
-                                                            class="form-control"
-                                                            ng-model="newItem.desc"
-                                                        />
-                                                        <input
-                                                            type="hidden"
-                                                            id="subitem_id"
-                                                            name="subitem_id"
-                                                            class="form-control"
-                                                            ng-model="newItem.subitem_id"
-                                                        />
-                                                        <span class="input-group-btn">
-                                                            <button
-                                                                type="button"
-                                                                class="btn bg-gray"
-                                                                ng-click="showSpecForm(newItem.plan_id);"
-                                                            >
-                                                                ...
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                class="btn bg-primary"
-                                                                ng-click="showSubitemsList();"
-                                                                ng-disabled="support.plan_type_id != '2' || (support.plan_type_id == '2' && newItem.item.have_subitem == 0)"
-                                                            >
-                                                                <i class="fa fa-search" aria-hidden="true"></i>
-                                                            </button>
-                                                        </span>
+                                                    <div
+                                                        class="form-group"
+                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
+                                                    >
+                                                        <div class="input-group">
+                                                            <input
+                                                                type="text"
+                                                                id="desc"
+                                                                name="desc"
+                                                                class="form-control"
+                                                                ng-model="newItem.desc"
+                                                            />
+                                                            <input
+                                                                type="hidden"
+                                                                id="subitem_id"
+                                                                name="subitem_id"
+                                                                class="form-control"
+                                                                ng-model="newItem.subitem_id"
+                                                            />
+                                                            <span class="input-group-btn">
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn bg-gray"
+                                                                    ng-click="showSpecForm(newItem.plan_id);"
+                                                                >
+                                                                    ...
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn bg-primary"
+                                                                    ng-click="showSubitemsList();"
+                                                                    ng-disabled="support.plan_type_id != '2' || (support.plan_type_id == '2' && newItem.item.have_subitem == 0)"
+                                                                >
+                                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- ราคาต่อหน่วย -->
-                                                    <input
-                                                        type="text"
-                                                        id="price_per_unit"
-                                                        name="price_per_unit"
-                                                        class="form-control"
-                                                        style="text-align: center"
-                                                        ng-model="newItem.price_per_unit"
-                                                        ng-change="calculateSumPrice(newItem.price_per_unit, newItem.amount)"
-                                                    />
+                                                    <div
+                                                        class="form-group"
+                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            id="price_per_unit"
+                                                            name="price_per_unit"
+                                                            class="form-control"
+                                                            style="text-align: center"
+                                                            ng-model="newItem.price_per_unit"
+                                                            ng-change="calculateSumPrice(newItem.price_per_unit, newItem.amount)"
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- หน่วยนับ -->
-                                                    <select
-                                                        id="unit_id"
-                                                        name="unit_id"
-                                                        class="form-control"
-                                                        ng-model="newItem.unit_id"
+                                                    <div
+                                                        class="form-group"
+                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
                                                     >
-                                                        <option value="">เลือกหน่วยนับ</option>
-                                                        @foreach($units as $unit)
-                                                            <option value="{{ $unit->id }}">
-                                                                {{ $unit->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                        <select
+                                                            id="unit_id"
+                                                            name="unit_id"
+                                                            class="form-control"
+                                                            ng-model="newItem.unit_id"
+                                                        >
+                                                            <option value="">เลือกหน่วยนับ</option>
+                                                            @foreach($units as $unit)
+                                                                <option value="{{ $unit->id }}">
+                                                                    {{ $unit->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- จำนวน -->
-                                                    <input
-                                                        type="text"
-                                                        id="amount"
-                                                        name="amount"
-                                                        class="form-control"
-                                                        style="text-align: center"
-                                                        ng-model="newItem.amount"
-                                                        ng-change="calculateSumPrice(newItem.price_per_unit, newItem.amount)"
-                                                    />
+                                                    <div
+                                                        class="form-group"
+                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            id="amount"
+                                                            name="amount"
+                                                            class="form-control"
+                                                            style="text-align: center"
+                                                            ng-model="newItem.amount"
+                                                            ng-change="calculateSumPrice(newItem.price_per_unit, newItem.amount)"
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- รวมเป็นเงิน -->
@@ -304,6 +329,7 @@
                                                         class="form-control"
                                                         style="text-align: center"
                                                         ng-model="newItem.sum_price"
+                                                        readonly
                                                     />
                                                 </td>
                                                 <td style="text-align: center">
@@ -360,7 +386,7 @@
                                             <tr>
                                                 <td colspan="6" style="text-align: right;">รวมเป็นเงิน</td>
                                                 <td style="text-align: center;">
-                                                    <div class="form-control" style="text-align: center;">
+                                                    <div class="form-control" style="text-align: center;" readonly>
                                                         @{{ support.total | currency:'':2 }}
                                                     </div>
                                                 </td>
@@ -569,7 +595,7 @@
                                 ng-click="formValidate($event, '/supports/validate', support, 'frmEditSupport', update)"
                                 class="btn btn-warning pull-right"
                             >
-                                แก้ไข
+                                บันทึก
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
@@ -586,6 +612,8 @@
         </div><!-- /.row -->
 
         @include('supports._plans-list')
+        @include('supports._spec-form')
+        @include('supports._subitems-list')
         @include('shared._persons-list')
 
     </section>
@@ -593,6 +621,12 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
+
+            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
+
+            $('#sum_price').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 
