@@ -47,6 +47,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         plan_id: '',
         item_id: '',
         item: null,
+        subitem_id: '',
         desc: '',
         price_per_unit: '',
         unit_id: '',
@@ -100,6 +101,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             plan_id: '',
             item_id: '',
             item: null,
+            subitem_id: '',
             desc: '',
             price_per_unit: '',
             unit_id: '',
@@ -250,17 +252,15 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
-            $scope.newItem = {
-                plan: plan,
-                plan_id: plan.id,
-                item_id: plan.plan_item.item_id,
-                item: plan.plan_item.item,
-                price_per_unit: plan.calc_method == 1 ? plan.price_per_unit : '',
-                unit_id: plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '',
-                unit_name: plan.calc_method == 1 ? plan.plan_item.unit.name : '',
-                amount: plan.calc_method == 1 ? plan.remain_amount : '',
-                sum_price: plan.calc_method == 1 ? plan.remain_budget : ''
-            };
+            $scope.newItem.plan         = plan;
+            $scope.newItem.plan_id      = plan.id,
+            $scope.newItem.item_id      = plan.plan_item.item_id,
+            $scope.newItem.item         = plan.plan_item.item,
+            $scope.newItem.price_per_unit = plan.calc_method == 1 ? plan.price_per_unit : '',
+            $scope.newItem.unit_id      = plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '',
+            $scope.newItem.unit_name    = plan.calc_method == 1 ? plan.plan_item.unit.name : '',
+            $scope.newItem.amount       = plan.calc_method == 1 ? plan.remain_amount : '',
+            $scope.newItem.sum_price    = plan.calc_method == 1 ? plan.remain_budget : ''
         }
 
         $('#plans-list').modal('hide');
@@ -291,7 +291,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.newItem.subitem_id       = item.id;
             $scope.newItem.desc             = item.item_name;
             $scope.newItem.price_per_unit   = item.price_per_unit;
-            $scope.newItem.unit_id          = item.unit_id.toString();
+            $scope.newItem.unit_id          = item.unit_id ? item.unit_id.toString() : '';
         }
 
         $('#subitems-list').modal('hide');
