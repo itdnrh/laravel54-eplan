@@ -205,19 +205,18 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <ul style="margin: 0; padding: 0 0 0 5px; list-style: none;">
-                                            <li ng-repeat="(index, detail) in support.details">
-                                                <span>
-                                                    @{{ index+1 }}.@{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}
-                                                </span>
-                                                <p style="margin: 0; font-size: 12px; color: red;">
-                                                    (@{{ detail.desc }}
-                                                    จำนวน <span>@{{ detail.amount | currency:'':0 }}</span>
-                                                    <span>@{{ detail.unit.name }}</span>
-                                                    ราคา @{{ detail.price_per_unit | currency:'':0 }} บาท)
-                                                </p>
-                                            </li>
-                                        </ul>
+                                        <span>
+                                            @{{ support.details[0].plan.plan_no }} - @{{ support.details[0].plan.plan_item.item.item_name }}
+                                        </span>
+                                        <p style="margin: 0; font-size: 12px; color: red;">
+                                            (@{{ support.details[0].desc }}
+                                            จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
+                                            <span>@{{ support.details[0].unit.name }}</span>
+                                            ราคา @{{ support.details[0].price_per_unit | currency:'':0 }} บาท) 
+                                            <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                                                ... ดูเพิ่ม <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                                            </a>
+                                        </p>
                                     </td>
                                     <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
                                     <td style="text-align: center;">
@@ -332,6 +331,9 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('supports._details-list')
+
     </section>
 
     <script>
