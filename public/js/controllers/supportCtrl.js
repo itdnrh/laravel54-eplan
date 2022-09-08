@@ -53,7 +53,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         unit_id: '',
         unit_name: '',
         amount: '',
-        sum_price: ''
+        sum_price: '',
+        error: null
     };
 
     /** ============================== Init Form elements ============================== */
@@ -107,7 +108,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             unit_id: '',
             unit_name: '',
             amount: '',
-            sum_price: ''
+            sum_price: '',
+            error: null
         };
     };
 
@@ -309,15 +311,61 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#spec-form').modal('hide');
     };
 
+    const validateNewItem = () => {
+        if ($scope.newItem.item.have_subitem == 1 && $scope.newItem.desc == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, desc: 'กรุณาระบุรายละเอียด/รายการย่อย' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('desc')) {
+                const { desc, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
+
+        if ($scope.newItem.price_per_unit == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วย' }
+        } else if (isNaN($scope.newItem.price_per_unit)) {
+            $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วยเป็นตัวเลข (ไม่ต้องมี comma หรือ ,)' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('price_per_unit')) {
+                const { price_per_unit, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
+
+        if ($scope.newItem.unit_id == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, unit_id: 'กรุณาเลือกหน่วยนับ' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('unit_id')) {
+                const { unit_id, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
+
+        if ($scope.newItem.amount == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, amount: 'กรุณาเลือกหน่วยนับ' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('amount')) {
+                const { amount, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
+
+        return $scope.newItem.error ? Object.keys($scope.newItem.error).length === 0 : true;
+    };
+
     $scope.addItem = () => {
         if ($scope.newItem.plan_id !== '') {
-            /** เซตชื่อหน่วยนับเพื่อแสดงผลในรายการ */
-            $scope.newItem.unit_name = $('#unit_id option:selected').text().trim();
+            if (!validateNewItem($scope.newItem)) {
+                toaster.pop('error', "ผลการตรวจสอบ", "กรุณารายละเอียดรายการให้ครบก่อน !!!");
+            } else {
+                /** เซตชื่อหน่วยนับเพื่อแสดงผลในรายการ */
+                $scope.newItem.unit_name = $('#unit_id option:selected').text().trim();
 
-            $scope.support.details.push({ ...$scope.newItem });
+                $scope.support.details.push({ ...$scope.newItem });
 
-            $scope.calculateTotal();
-            $scope.clearNewItem();
+                $scope.calculateTotal();
+                $scope.clearNewItem();
+            }
         } else {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
         }

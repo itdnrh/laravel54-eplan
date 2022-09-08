@@ -280,6 +280,7 @@ class SupportController extends Controller
 
                     /** TODO: should update plan's remain_amount by decrease from req->amount  */
                     $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
+
                     // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
                     if ($planItem->calc_method == 1) {
                         $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
