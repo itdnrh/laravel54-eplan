@@ -114,7 +114,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.calculateSumPrice = function(price, amount) {
-        $scope.newItem.sum_price = parseFloat(price) * parseFloat(amount);
+        $scope.newItem.sum_price = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
     };
 
     $scope.getAll = function() {
@@ -335,8 +335,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         if ($scope.newItem.price_per_unit == '') {
             $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วย' }
-        } else if (isNaN($scope.newItem.price_per_unit)) {
-            $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วยเป็นตัวเลข (ไม่ต้องมี comma หรือ ,)' }
         } else {
             if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('price_per_unit')) {
                 const { price_per_unit, ...rest } = $scope.newItem.error;
@@ -375,6 +373,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
                 $scope.support.details.push({ ...$scope.newItem });
 
+                $("#unit_id").val(null).trigger('change.select2');
                 $scope.calculateTotal();
                 $scope.clearNewItem();
             }

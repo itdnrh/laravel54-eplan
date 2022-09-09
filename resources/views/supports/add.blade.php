@@ -163,7 +163,7 @@
                                                 <th style="width: 20%;">รายละเอียด/รายการย่อย</th>
                                                 <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
                                                 <th style="width: 10%; text-align: center">หน่วยนับ</th>
-                                                <th style="width: 6%; text-align: center">จำนวน</th>
+                                                <th style="width: 8%; text-align: center">จำนวน</th>
                                                 <th style="width: 10%; text-align: center">รวมเป็นเงิน</th>
                                                 <th style="width: 5%; text-align: center">Actions</th>
                                             </tr>
@@ -226,7 +226,7 @@
                                                     <!-- spec -->
                                                     <div
                                                         class="form-group"
-                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
+                                                        ng-class="{'has-error has-feedback': newItem.error['desc']}"
                                                     >
                                                         <div class="input-group">
                                                             <input
@@ -267,7 +267,7 @@
                                                     <!-- ราคาต่อหน่วย -->
                                                     <div
                                                         class="form-group"
-                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
+                                                        ng-class="{'has-error has-feedback': newItem.error['price_per_unit']}"
                                                     >
                                                         <input
                                                             type="text"
@@ -284,12 +284,12 @@
                                                     <!-- หน่วยนับ -->
                                                     <div
                                                         class="form-group"
-                                                        ng-class="{'has-error has-feedback': newItem.error['amount']}"
+                                                        ng-class="{'has-error has-feedback': newItem.error['unit_id']}"
                                                     >
                                                         <select
                                                             id="unit_id"
                                                             name="unit_id"
-                                                            class="form-control"
+                                                            class="form-control select2"
                                                             ng-model="newItem.unit_id"
                                                         >
                                                             <option value="">หน่วยนับ</option>
@@ -359,16 +359,16 @@
                                                     </p>
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.price_per_unit | currency:'':2 }}
+                                                    @{{ currencyToNumber(detail.price_per_unit) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.unit_name }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.amount | currency:'':2 }}
+                                                    @{{ currencyToNumber(detail.amount) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.sum_price | currency:'':2 }}
+                                                    @{{ currencyToNumber(detail.sum_price) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     <!-- <a href="#" class="btn btn-warning btn-sm">
