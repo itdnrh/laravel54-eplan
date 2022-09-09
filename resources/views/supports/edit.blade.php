@@ -361,16 +361,16 @@
                                                     </p>
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.price_per_unit | currency:'':2 }}
+                                                    @{{ currencyToNumber(detail.price_per_unit) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ detail.unit.name }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.amount | currency:'':2 }}
+                                                    @{{ currencyToNumber(detail.amount) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    @{{ detail.sum_price | currency:'':2 }}
+                                                    @{{ currencyToNumber(detail.sum_price) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     <a
