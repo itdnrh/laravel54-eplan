@@ -184,14 +184,14 @@
                                 >
                                     อนุมัติทั้งหมด
                                 </a> -->
-                                <a
+                                <!-- <a
                                     href="#"
                                     class="btn btn-success pull-right"
                                     style="margin-right: 5px;"
                                     ng-click="approveByList()"
                                 >
                                     อนุมัติรายการที่เลือก
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div><!-- /.box-header -->
@@ -224,11 +224,12 @@
                             <tbody>
                                 <tr ng-repeat="(index, project) in projects">
                                     <td style="text-align: center;">
-                                        <input
+                                        @{{ index+1 }}
+                                        <!-- <input
                                             type="checkbox"
                                             ng-click="onCheckedPlan($event, project)"
                                             ng-show="project.approved != 'A'"
-                                        />
+                                        /> -->
                                     </td>
                                     <td style="text-align: center;">@{{ project.project_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ project.year }}</td> -->
@@ -301,14 +302,14 @@
                             </tbody>
                         </table>
 
-                        <div class="row" style="margin-bottom: 10px;">
+                        <!-- <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-12">
                                 <div class="btn">
                                     <input type="checkbox" id="chkAll" ng-click="onCheckedAll($event)" />
                                     เลือกทั้งหมด
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="row">
                             <div class="col-md-4">

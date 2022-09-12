@@ -139,7 +139,7 @@ class ProjectController extends Controller
                             $q->whereIn('strategy_id', $strategiesList);
                         })
                         ->when(!empty($strategy), function($q) use ($strategy) {
-                            $q->whereIn('strategy_id', $strategy);
+                            $q->where('strategy_id', $strategy);
                         })
                         ->when(!empty($faction), function($q) use ($departsList) {
                             $q->whereIn('owner_depart', $departsList);

@@ -74,8 +74,8 @@ class ApprovalController extends Controller
     {
         return view('approvals.projects-list', [
             "strategics"    => Strategic::all(),
-            "strategies"    => Strategy::all(),
-            "kpis"          => Kpi::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
+            "kpis"          => Kpi::orderBy('kpi_no')->get(),
             "factions"      => $this->factions,
             "departs"       => Depart::all(),
         ]);
