@@ -173,4 +173,31 @@ class ApprovalController extends Controller
             ];
         }
     }
+
+    public function cancel(Request $req)
+    {
+        try {
+            $plan = Plan::find($req['id']);
+            $plan->plan_no  = null;
+            $plan->approved = null;
+
+            if ($plan->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully!!',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
 }

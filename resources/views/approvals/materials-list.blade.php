@@ -269,21 +269,14 @@
                                         >
                                             อนุมัติ
                                         </button>
-                                        <form
-                                            id="frmDelete"
-                                            method="POST"
-                                            action="{{ url('/assets/delete') }}"
+                                        <button
+                                            type="submit"
+                                            ng-click="cancel($event, plan)"
+                                            class="btn btn-danger btn-xs"
                                             ng-show="plan.approved == 'A'"
                                         >
-                                            {{ csrf_field() }}
-                                            <button
-                                                type="submit"
-                                                ng-click="delete($event, plan.id)"
-                                                class="btn btn-danger btn-xs"
-                                            >
-                                                ยกเลิก
-                                            </button>
-                                        </form>
+                                            ยกเลิก
+                                        </button>
                                     </td>             
                                 </tr>
                             </tbody>

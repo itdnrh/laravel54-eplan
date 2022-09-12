@@ -87,6 +87,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('repairs', 'RepairController@getAll');
     Route::get('repairs/{id}', 'RepairController@getById');
 
+    /** การอนุมัติ */
+    Route::put('approvals/{id}/cancel', 'ApprovalController@cancel');
+
     /** เจ้าหนี้ */    
     Route::get('suppliers', 'SupplierController@getAll');
     Route::get('suppliers/{id}', 'SupplierController@getById');

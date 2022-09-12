@@ -119,6 +119,38 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         }
     };
 
+    
+    $scope.cancel = (e, plan) => {
+        e.preventDefault();
+
+        if (confirm(`คุณต้องการยกเลิกอนุมัติรายการรหัส ${plan.plan_no} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.apiUrl}/approvals/${plan.id}/cancel`, { id: plan.id })
+            .then((res) => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกอนุมัติรายการเรียบร้อย !!!");
+
+                    $scope.plans.forEach(plan => {
+                        if (plan.id === res.data.plan.id) {
+                            plan.plan_no = res.data.plan.plan_no;
+                            plan.approved = res.data.plan.approved;
+                        }
+                    });
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถยกเลิกอนุมัติรายการได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, (err) => {
+                console.log(err);
+                $scope.loading = false;
+            });
+        } else {
+            $scope.loading = false;
+        }
+    };
+
     $scope.onCheckedAll = function(e) {
         if (e.target.checked) {
             $scope.plans.forEach(plan => {
