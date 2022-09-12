@@ -138,8 +138,10 @@ class PlanController extends Controller
                             $q->where('items.in_stock', $inStock);
                         })
                         ->when(!empty($name), function($q) use ($name) {
-                            $q->where('item_name', 'like', '%'.$name.'%');
-                            $q->orWhere('en_name', 'like', '%'.$name.'%');
+                            $q->where(function($query) use ($name) {
+                                $query->where('item_name', 'like', '%'.$name.'%');
+                                $query->orWhere('en_name', 'like', '%'.$name.'%');
+                            });
                         })
                         ->when(!empty($haveSubitem), function($q) use ($haveSubitem) {
                             $q->where('plan_items.have_subitem', $haveSubitem);

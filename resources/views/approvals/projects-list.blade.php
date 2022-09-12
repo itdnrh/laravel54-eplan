@@ -18,9 +18,9 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="projectCtrl"
+        ng-controller="approvalCtrl"
         ng-init="
-            getAll();
+            getProjects();
             initForms({
                 departs: {{ $departs }},
                 strategics: {{ $strategics }},
@@ -48,7 +48,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getProjects($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -63,7 +63,7 @@
                                         name="cboStrategic"
                                         ng-model="cboStrategic"
                                         class="form-control"
-                                        ng-change="onStrategicSelected(cboStrategic); getAll($event)"
+                                        ng-change="onStrategicSelected(cboStrategic); getProjects($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         @foreach($strategics as $strategic)
@@ -85,7 +85,7 @@
                                             name="cboStrategy"
                                             ng-model="cboStrategy"
                                             class="form-control"
-                                            ng-change="onStrategySelected(cboStrategy); getAll($event)"
+                                            ng-change="onStrategySelected(cboStrategy); getProjects($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="strategy in forms.strategies" value="@{{ strategy.id }}">
@@ -102,7 +102,7 @@
                                             name="cboKpi"
                                             ng-model="cboKpi"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getProjects($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="kpi in forms.kpis" value="@{{ kpi.id }}">
@@ -142,7 +142,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getProjects($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -161,7 +161,7 @@
                                             name="txtKeyword"
                                             ng-model="txtKeyword"
                                             class="form-control"
-                                            ng-keyup="getAll($event)"
+                                            ng-keyup="getProjects($event)"
                                         >
                                     </div><!-- /.form group -->
                                 </div><!-- /.col-md-6 -->
@@ -283,16 +283,16 @@
                                         <button
                                             type="submit"
                                             class="btn btn-primary btn-xs"
-                                            ng-click="approve($event, plan)"
+                                            ng-click="approveProject($event, project)"
                                             ng-show="!project.approved"
                                         >
                                             อนุมัติ
                                         </button>
                                         <button
                                             type="submit"
-                                            ng-click="cancel($event, plan)"
+                                            ng-click="cancelProject($event, project)"
                                             class="btn btn-danger btn-xs"
-                                            ng-show="plan.approved == 'A'"
+                                            ng-show="project.approved == 'A'"
                                         >
                                             ยกเลิก
                                         </button>

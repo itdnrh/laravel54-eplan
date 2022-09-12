@@ -13,6 +13,11 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.txtItemName = '';
     $scope.isApproved = false;
 
+    $scope.cboStrategic = '';
+    $scope.cboStrategy = '';
+    $scope.cboKpi = '';
+    $scope.txtKeyword = '';
+
     $scope.plansToApproveList = [];
     $scope.onCheckedPlan = (e, plan) => {
         let newList = [];
@@ -119,7 +124,6 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         }
     };
 
-    
     $scope.cancel = (e, plan) => {
         e.preventDefault();
 
@@ -235,5 +239,128 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    
+    $scope.getProjects = function(event) {
+        $scope.loading = true;
+        $scope.projects = [];
+        $scope.pager = null;
+
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let strategic   = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+        let strategy    = !$scope.cboStrategy ? '' : $scope.cboStrategy;
+        let kpi         = !$scope.cboKpi ? '' : $scope.cboKpi;
+        let faction     = !$scope.cboFaction ? '' : $scope.cboFaction;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+        $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
+        .then(function(res) {
+            $scope.setProjects(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setProjects = function(res) {
+        const { data, ...pager } = res.data.projects;
+
+        $scope.projects = data;
+        $scope.pager = pager;
+    };
+
+    $scope.getProjectsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.projects = [];
+        $scope.pager = null;
+
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let strategic   = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+        let strategy    = !$scope.cboStrategy ? '' : $scope.cboStrategy;
+        let kpi         = !$scope.cboKpi ? '' : $scope.cboKpi;
+        let faction     = !$scope.cboFaction ? '' : $scope.cboFaction;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+        $http.get(`${url}&year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.approveProject = (e, project) => {
+        e.preventDefault();
+
+        if (confirm(`คุณต้องการอนุมัติแผนงาน/โครงการรหัส ${project.id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.apiUrl}/projects/${project.id}/approve`, { id: project.id })
+            .then((res) => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "อนุมัติแผนงาน/โครงการเรียบร้อย !!!");
+
+                    $scope.projects.forEach(project => {
+                        if (project.id === res.data.project.id) {
+                            project.project_no = res.data.project.project_no;
+                            project.approved = res.data.project.approved;
+                        }
+                    });
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถอนุมัติแผนงาน/โครงการได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, (err) => {
+                console.log(err);
+                $scope.loading = false;
+            });
+        } else {
+            $scope.loading = false;
+        }
+    };
+
+    $scope.cancelProject = (e, project) => {
+        e.preventDefault();
+
+        if (confirm(`คุณต้องการยกเลิกอนุมัติแผนงาน/โครงการรหัส ${project.project_no} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.apiUrl}/projects/${project.id}/cancel`, { id: project.id })
+            .then((res) => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกอนุมัติแผนงาน/โครงการเรียบร้อย !!!");
+
+                    $scope.projects.forEach(project => {
+                        if (project.id === res.data.project.id) {
+                            project.project_no = res.data.project.project_no;
+                            project.approved = res.data.project.approved;
+                        }
+                    });
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถยกเลิกอนุมัติแผนงาน/โครงการได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, (err) => {
+                console.log(err);
+                $scope.loading = false;
+            });
+        } else {
+            $scope.loading = false;
+        }
     };
 });

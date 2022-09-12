@@ -511,6 +511,74 @@ class ProjectController extends Controller
         }
     }
 
+    protected function generateProjectNo(Project $p)
+    {
+        $projectNo = '';
+        $project = Project::where('year', $p->year)
+                    ->where('approved', 'A')
+                    ->orderBy('project_no', 'DESC')
+                    ->first();
+
+        $running = $project ? (int)substr($project->project_no, 4) + 1 : 0001;
+        $projectNo = substr($p->year, 2).sprintf("%'.02d", $p->project_type_id).sprintf("%'.04d", $running);
+
+        return $projectNo;
+    }
+
+    public function approve(Request $req)
+    {
+        try {
+            $project = Project::find($req['id']);
+            $project->project_no  = $this->generateProjectNo($project);
+            $project->approved = 'A';
+
+            if ($project->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Approval successfully!!',
+                    'project'   => $project
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function cancel(Request $req)
+    {
+        try {
+            $project = Project::find($req['id']);
+            $project->project_no  = null;
+            $project->approved = null;
+
+            if ($project->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Cancellation successfully!!',
+                    'project'   => $project
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function excel(Request $req)
     {
         $matched = [];
