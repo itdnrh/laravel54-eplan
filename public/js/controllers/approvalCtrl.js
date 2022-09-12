@@ -315,7 +315,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                     $scope.projects.forEach(project => {
                         if (project.id === res.data.project.id) {
-                            project.project_no = res.data.project.project_no;
+                            // project.project_no = res.data.project.project_no;
                             project.approved = res.data.project.approved;
                         }
                     });
@@ -346,7 +346,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                     $scope.projects.forEach(project => {
                         if (project.id === res.data.project.id) {
-                            project.project_no = res.data.project.project_no;
+                            // project.project_no = res.data.project.project_no;
                             project.approved = res.data.project.approved;
                         }
                     });

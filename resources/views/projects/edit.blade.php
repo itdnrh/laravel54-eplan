@@ -71,6 +71,25 @@
                                 </div>
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'project_no')}"
+                                >
+                                    <label>รหัสโครงการ : <span class="required-field">*</span></label>
+                                    <input
+                                        id="project_no"
+                                        name="project_no"
+                                        ng-model="project.project_no"
+                                        class="form-control"
+                                        tabindex="1"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(project, 'project_no')">
+                                        @{{ formError.errors.project_no[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'strategic_id')}"
                                 >
                                     <label>ยุทธศาสตร์ : <span class="required-field">*</span></label>
@@ -414,7 +433,7 @@
                                 ng-click="formValidate($event, '/projects/validate', project, 'frmEditProject', update)"
                                 class="btn btn-warning pull-right"
                             >
-                                แก้ไข
+                                บันทึกการแก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

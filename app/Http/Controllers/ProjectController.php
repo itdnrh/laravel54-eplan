@@ -529,7 +529,7 @@ class ProjectController extends Controller
     {
         try {
             $project = Project::find($req['id']);
-            $project->project_no  = $this->generateProjectNo($project);
+            // $project->project_no  = $this->generateProjectNo($project);
             $project->approved = 'A';
 
             if ($project->save()) {
@@ -556,7 +556,7 @@ class ProjectController extends Controller
     {
         try {
             $project = Project::find($req['id']);
-            $project->project_no  = null;
+            // $project->project_no  = null;
             $project->approved = null;
 
             if ($project->save()) {
