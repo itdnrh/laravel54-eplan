@@ -9,6 +9,12 @@
 
 	<title>E-Plan</title>
 
+	<!-- icon -->
+	<link rel="icon" type="image/ico" href="{{ asset('/img/favicon.ico') }}">
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/img/apple-touch-icon.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/img/favicon-32x32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/img/favicon-16x16.png') }}">
+	<link rel="manifest" href="{{ asset('/img/site.webmanifest') }}">
 	<!-- bootstrap -->
 	<link rel="stylesheet" href="{{ asset('/node_modules/bootstrap/dist/css/bootstrap.min.css') }}">
 	<!-- select2 -->
