@@ -16,8 +16,12 @@
                     <th style="width: 8%; text-align: center;">จำนวนที่ขอ</th>
                     <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                     <th style="width: 8%; text-align: center;">ราคารวม</th>
+                    <th style="width: 4%; text-align: center;">เดือนที่ขอ</th>
+                    <th style="width: 4%; text-align: center;">ไตรมาส</th>
                     <!-- <th style="width: 4%; text-align: center;">ในแผน</th> -->
-                    <th style="width: 4%; text-align: center;">สาเหตุที่ขอ</th>
+                    @if ($options['type'] == '1')
+                        <th style="width: 4%; text-align: center;">สาเหตุที่ขอ</th>
+                    @endif
                     <th style="width: 10%; text-align: center;">เหตุผลความจำเป็น</th>
                     <th style="width: 10%; text-align: center;">กลุ่มภารกิจ</th>
                     <th style="width: 10%; text-align: center;">กลุ่มงาน</th>
@@ -57,14 +61,30 @@
                             @endif
                         </td> -->
                         <td style="text-align: center;">
-                            @if($plan->planItem->request_cause == 'N')
-                                {{ 'ขอใหม่' }}
-                            @elseif($plan->planItem->request_cause == 'R')
-                                {{ 'ทดแทน' }}
-                            @elseif($plan->planItem->request_cause == 'E')
-                                {{ 'ขยายงาน' }}
+                            {{ getShortMonth($plan->start_month) }}
+                        </td>
+                        <td style="text-align: center;">
+                            @if(in_array($plan->start_month, ['10','11','12']))
+                                {{ 'Q1' }}
+                            @elseif(in_array($plan->start_month, ['01','02','03']))
+                                {{ 'Q2' }}
+                            @elseif(in_array($plan->start_month, ['04','05','06']))
+                                {{ 'Q3' }}
+                            @elseif(in_array($plan->start_month, ['07','08','09']))
+                                {{ 'Q4' }}
                             @endif
                         </td>
+                        @if ($options['type'] == '1')
+                            <td style="text-align: center;">
+                                @if($plan->planItem->request_cause == 'N')
+                                    {{ 'ขอใหม่' }}
+                                @elseif($plan->planItem->request_cause == 'R')
+                                    {{ 'ทดแทน' }}
+                                @elseif($plan->planItem->request_cause == 'E')
+                                    {{ 'ขยายงาน' }}
+                                @endif
+                            </td>
+                        @endif
                         <td style="text-align: center;">
                             {{ $plan->reason }}
                         </td>
