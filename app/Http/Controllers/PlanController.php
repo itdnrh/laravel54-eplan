@@ -445,7 +445,8 @@ class PlanController extends Controller
 
         $fileName = 'plans-list-' . date('YmdHis') . '.xlsx';
         $options = [
-            'type' => $planType->plan_type_name,
+            'plan_type_id' => $planType->id,
+            'plan_type_name' => $planType->plan_type_name,
             'year' => $year,
         ];
         

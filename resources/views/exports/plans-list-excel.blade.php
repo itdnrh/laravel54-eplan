@@ -1,6 +1,6 @@
 <div class="box">
     <div class="box-header">
-        <h3 style="margin: 0;">รายการแผน{{ $options['type'] }}</h3>
+        <h3 style="margin: 0;">รายการแผน{{ $options['plan_type_name'] }}</h3>
         <h4 style="margin: 0;">ประจำปีงบประมาณ {{ $options['year'] }}</h4>
     </div><!-- /.box-header -->
     <div class="box-body">
@@ -19,7 +19,7 @@
                     <th style="width: 4%; text-align: center;">เดือนที่ขอ</th>
                     <th style="width: 4%; text-align: center;">ไตรมาส</th>
                     <!-- <th style="width: 4%; text-align: center;">ในแผน</th> -->
-                    @if ($options['type'] == '1')
+                    @if ($options['plan_type_id'] == '1')
                         <th style="width: 4%; text-align: center;">สาเหตุที่ขอ</th>
                     @endif
                     <th style="width: 10%; text-align: center;">เหตุผลความจำเป็น</th>
@@ -74,7 +74,7 @@
                                 {{ 'Q4' }}
                             @endif
                         </td>
-                        @if ($options['type'] == '1')
+                        @if ($options['plan_type_id'] == '1')
                             <td style="text-align: center;">
                                 @if($plan->planItem->request_cause == 'N')
                                     {{ 'ขอใหม่' }}
