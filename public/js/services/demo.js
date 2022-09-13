@@ -499,7 +499,7 @@ $(function () {
         'class': 'btn btn-default btn-sm',
         href   : 'https://themequarry.com'
     }).html('Let\'s Do It!').css(btn_css)
-  
+
     var close   = $('<a />', {
         'class'         : 'float-right',
         href            : '#',

@@ -1,6 +1,6 @@
 app.controller(
     "reportCtrl",
-    function (CONFIG, $scope, $http, toaster, StringFormatService, ChartService) {
+    function (CONFIG, $scope, $http, $timeout, toaster, StringFormatService, ChartService, ExcelService) {
         /** ################################################################################## */
         $scope.leaves = [];
         $scope.data = [];
@@ -42,9 +42,16 @@ app.controller(
                 $scope.getDaily();
             });
 
+        $scope.exportToExcel = function (tableId) {
+            var exportHref = ExcelService.tableToExcel(tableId, 'WireWorkbenchDataExport');
+            $timeout(function() {
+                location.href = exportHref;
+            },100); // trigger download
+        }
+
         $scope.setIsFixcost = function(e) {
             $scope.chkIsFixcost = e.target.checked;
-    
+
             $scope.getPlanByItem(e);
         };
 

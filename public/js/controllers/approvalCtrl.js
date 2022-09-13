@@ -1,8 +1,11 @@
 app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
-    $scope.loading = false;
     $scope.plans = [];
     $scope.pager = null;
+    $scope.projects = [];
+    $scope.projects_pager = null;
+    $scope.loading = false;
+
     $scope.cboYear = '2566', //(moment().year() + 543).toString(),
     $scope.cboPlanType = "";
     $scope.cboCategory = "";
@@ -245,7 +248,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.getProjects = function(event) {
         $scope.loading = true;
         $scope.projects = [];
-        $scope.pager = null;
+        $scope.projects_pager = null;
 
         let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
         let strategic   = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
@@ -271,7 +274,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         const { data, ...pager } = res.data.projects;
 
         $scope.projects = data;
-        $scope.pager = pager;
+        $scope.projects_pager = pager;
     };
 
     $scope.getProjectsWithUrl = function(e, url, cb) {
@@ -280,7 +283,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
         $scope.loading = true;
         $scope.projects = [];
-        $scope.pager = null;
+        $scope.projects_pager = null;
 
         let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
         let strategic   = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;

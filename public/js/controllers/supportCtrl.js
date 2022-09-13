@@ -277,6 +277,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.newItem.sum_price    = plan.calc_method == 1 ? plan.remain_budget : ''
         }
 
+        if (plan.calc_method == 1) {
+            $('#unit_id').val(plan.plan_item.unit_id).trigger("change.select2");
+        }
+
         $('#plans-list').modal('hide');
     };
 
