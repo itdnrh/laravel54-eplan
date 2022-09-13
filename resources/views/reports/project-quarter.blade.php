@@ -20,9 +20,7 @@
     <section
         class="content"
         ng-controller="reportCtrl"
-        ng-init="
-            getProjectByQuarters();
-        "
+        ng-init="getProjectByQuarters();"
     >
 
         <div class="row">
@@ -90,10 +88,20 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนงาน/โครงการตามไตรมาส ปีงบประมาณ @{{ cboYear }}</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายงานแผนงาน/โครงการตามไตรมาส ปีงบประมาณ @{{ cboYear }}</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    Excel
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
@@ -103,8 +111,11 @@
                                     <th style="text-align: center;" colspan="2">ไตรมาส 2</th>
                                     <th style="text-align: center;" colspan="2">ไตรมาส 3</th>
                                     <th style="text-align: center;" colspan="2">ไตรมาส 4</th>
+                                    <th style="text-align: center;" colspan="2">รวม</th>
                                 </tr>
                                 <tr>
+                                    <th style="width: 5%; text-align: center;">จำนวน</th>
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 5%; text-align: center;">จำนวน</th>
                                     <th style="width: 8%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 5%; text-align: center;">จำนวน</th>
@@ -128,6 +139,8 @@
                                     <td style="text-align: right;">@{{ project.q3_bud | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ project.q4_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.q4_bud | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ project.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ project.total_bud | currency:'':0 }}</td>
                                 </tr>
                                 <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="3">รวม</td>
@@ -139,6 +152,8 @@
                                     <td style="text-align: right;">@{{ totalProjectByQuarters.q3_bud | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ totalProjectByQuarters.q4_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalProjectByQuarters.q4_bud | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ totalProjectByQuarters.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalProjectByQuarters.total_bud | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>

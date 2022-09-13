@@ -146,6 +146,13 @@ app.controller(
                     construct: 0,
                     total: 0,
                 };
+                let strategic = {
+                    asset: 0,
+                    material: 0,
+                    service: 0,
+                    construct: 0,
+                    total: 0,
+                };
 
                 departs.forEach(dep => {
                     if (dep.faction_id == 1) {
@@ -178,6 +185,12 @@ app.controller(
                         nurse.service   += dep.service && parseInt(dep.service);
                         nurse.construct += dep.construct && parseInt(dep.construct);
                         nurse.total     += dep.total && parseInt(dep.total);
+                    } else if (dep.faction_id == 13) {
+                        strategic.asset     += dep.asset && parseInt(dep.asset);
+                        strategic.material  += dep.material && parseInt(dep.material);
+                        strategic.service   += dep.service && parseInt(dep.service);
+                        strategic.construct += dep.construct && parseInt(dep.construct);
+                        strategic.total     += dep.total && parseInt(dep.total);
                     }
                 });
 
@@ -192,6 +205,8 @@ app.controller(
                         return { ...faction, ...prs };
                     } else if (faction.faction_id == 5) {
                         return { ...faction, ...nurse };
+                    } else if (faction.faction_id == 13) {
+                        return { ...faction, ...strategic };
                     }
                 });
 
@@ -263,6 +278,186 @@ app.controller(
                         material: 0,
                         service: 0,
                         total: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getPlanByItem = function () {
+            $scope.totalByItem = {
+                amount: 0,
+                sum_price: 0
+            };
+
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let cate        = !$scope.cboCategory ? '' : $scope.cboCategory;
+            let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let isFixcost   = $scope.chkIsFixcost ? '1' : '';
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&cate=${cate}&price=${price}&approved=${approved}&isFixcost=${isFixcost}&sort=${sort}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans;
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByItem.amount    += plan.amount ? plan.amount : 0;
+                        $scope.totalByItem.sum_price += plan.sum_price ? plan.sum_price : 0;
+                    });
+                } else {
+                    $scope.totalByItem = {
+                        amount: 0,
+                        sum_price: 0
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.totalPlanByPlanTypes = {
+            amount: 0,
+            sum_price: 0
+        };
+        $scope.getPlanByType = function () {
+            $scope.totalPlanByPlanTypes = {
+                amount: 0,
+                sum_price: 0
+            };
+
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans.map(plan => {
+                    let cate = res.data.categories.find(c => c.id === plan.category_id);
+                    plan.category_name = cate ? cate.name : '';
+
+                    return plan;
+                });
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalPlanByPlanTypes.amount      += plan.amount ? plan.amount : 0;
+                        $scope.totalPlanByPlanTypes.sum_price   += plan.sum_price ? plan.sum_price : 0;
+                    });
+                } else {
+                    $scope.totalPlanByPlanTypes = {
+                        amount: 0,
+                        sum_price: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.totalByPlanQuarters = {
+            q1_amt: 0,
+            q1_sum: 0,
+            q2_amt: 0,
+            q2_sum: 0,
+            q3_amt: 0,
+            q3_sum: 0,
+            q4_amt: 0,
+            q4_sum: 0,
+            total_amt: 0,
+            total_sum: 0,
+        };
+
+        $scope.getPlanByQuarter = function () {
+            $scope.totalByPlanQuarters = {
+                q1_amt: 0,
+                q1_sum: 0,
+                q2_amt: 0,
+                q2_sum: 0,
+                q3_amt: 0,
+                q3_sum: 0,
+                q4_amt: 0,
+                q4_sum: 0,
+                total_amt: 0,
+                total_sum: 0,
+            };
+
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans.map(plan => {
+                    let cate = res.data.categories.find(c => c.id === plan.category_id);
+                    plan.category_name = cate ? cate.name : '';
+
+                    return plan;
+                });
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByPlanQuarters.q1_amt += plan.q1_amt ? plan.q1_amt : 0;
+                        $scope.totalByPlanQuarters.q1_sum += plan.q1_sum ? plan.q1_sum : 0;
+                        $scope.totalByPlanQuarters.q2_amt += plan.q2_amt ? plan.q2_amt : 0;
+                        $scope.totalByPlanQuarters.q2_sum += plan.q2_sum ? plan.q2_sum : 0;
+                        $scope.totalByPlanQuarters.q3_amt += plan.q3_amt ? plan.q3_amt : 0;
+                        $scope.totalByPlanQuarters.q3_sum += plan.q3_sum ? plan.q3_sum : 0;
+                        $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
+                        $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
+                        $scope.totalByPlanQuarters.total_amt += plan.total_amt ? plan.total_amt : 0;
+                        $scope.totalByPlanQuarters.total_sum += plan.total_sum ? plan.total_sum : 0;
+                    });
+                    
+                    /** Render chart */
+                    const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
+                    $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
+                    $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalByPlanQuarters.q1_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt($scope.totalByPlanQuarters.q2_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt($scope.totalByPlanQuarters.q3_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt($scope.totalByPlanQuarters.q4_sum) });
+                    let chart = new Highcharts.Chart($scope.pieOptions);
+                } else {
+                    $scope.totalByPlanQuarters = {
+                        q1_amt: 0,
+                        q1_sum: 0,
+                        q2_amt: 0,
+                        q2_sum: 0,
+                        q3_amt: 0,
+                        q3_sum: 0,
+                        q4_amt: 0,
+                        q4_sum: 0,
                     };
                 }
 
@@ -653,183 +848,6 @@ app.controller(
             });
         };
 
-        $scope.getPlanByItem = function () {
-            $scope.totalByItem = {
-                amount: 0,
-                sum_price: 0
-            };
-
-            let year        = $scope.cboYear === ''
-                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
-                                    ? moment().year() + 544
-                                    : moment().year() + 543 
-                                : $scope.cboYear;
-            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-            let cate        = !$scope.cboCategory ? '' : $scope.cboCategory;
-            let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
-            let isFixcost   = $scope.chkIsFixcost ? '1' : '';
-            let approved    = !$scope.cboApproved ? '' : 'A';
-            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-
-            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&cate=${cate}&price=${price}&approved=${approved}&isFixcost=${isFixcost}&sort=${sort}`)
-            .then(function (res) {
-                $scope.plans = res.data.plans;
-
-                // /** Sum total of plan by plan_type */
-                if (res.data.plans.length > 0) {
-                    res.data.plans.forEach(plan => {
-                        $scope.totalByItem.amount    += plan.amount ? plan.amount : 0;
-                        $scope.totalByItem.sum_price += plan.sum_price ? plan.sum_price : 0;
-                    });
-                } else {
-                    $scope.totalByItem = {
-                        amount: 0,
-                        sum_price: 0
-                    };
-                }
-
-                $scope.loading = false;
-            }, function (err) {
-                console.log(err);
-                $scope.loading = false;
-            });
-        };
-
-        $scope.getPlanByType = function () {
-            let year        = $scope.cboYear === ''
-                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
-                                    ? moment().year() + 544
-                                    : moment().year() + 543 
-                                : $scope.cboYear;
-            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-            let approved    = !$scope.cboApproved ? '' : 'A';
-            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
-            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-
-            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
-            .then(function (res) {
-                $scope.plans = res.data.plans.map(plan => {
-                    let cate = res.data.categories.find(c => c.id === plan.category_id);
-                    plan.category_name = cate ? cate.name : '';
-
-                    return plan;
-                });
-
-                // /** Sum total of plan by plan_type */
-                // if (res.data.plans.length > 0) {
-                //     res.data.plans.forEach(plan => {
-                //         $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
-                //         $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
-                //         $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
-                //         $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
-                //         $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
-                //     });
-                // } else {
-                //     $scope.totalByPlanTypes = {
-                //         asset: 0,
-                //         construct: 0,
-                //         material: 0,
-                //         service: 0,
-                //         total: 0,
-                //     };
-                // }
-
-                $scope.loading = false;
-            }, function (err) {
-                console.log(err);
-                $scope.loading = false;
-            });
-        };
-
-        $scope.totalByPlanQuarters = {
-            q1_amt: 0,
-            q1_sum: 0,
-            q2_amt: 0,
-            q2_sum: 0,
-            q3_amt: 0,
-            q3_sum: 0,
-            q4_amt: 0,
-            q4_sum: 0,
-            total_amt: 0,
-            total_sum: 0,
-        };
-
-        $scope.getPlanByQuarter = function () {
-            $scope.totalByPlanQuarters = {
-                q1_amt: 0,
-                q1_sum: 0,
-                q2_amt: 0,
-                q2_sum: 0,
-                q3_amt: 0,
-                q3_sum: 0,
-                q4_amt: 0,
-                q4_sum: 0,
-                total_amt: 0,
-                total_sum: 0,
-            };
-
-            let year        = $scope.cboYear === ''
-                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
-                                    ? moment().year() + 544
-                                    : moment().year() + 543 
-                                : $scope.cboYear;
-            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-            let approved    = !$scope.cboApproved ? '' : 'A';
-            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
-            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-
-            $http.get(`${CONFIG.apiUrl}/reports/plan-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
-            .then(function (res) {
-                $scope.plans = res.data.plans.map(plan => {
-                    let cate = res.data.categories.find(c => c.id === plan.category_id);
-                    plan.category_name = cate ? cate.name : '';
-
-                    return plan;
-                });
-
-                // /** Sum total of plan by plan_type */
-                if (res.data.plans.length > 0) {
-                    res.data.plans.forEach(plan => {
-                        $scope.totalByPlanQuarters.q1_amt += plan.q1_amt ? plan.q1_amt : 0;
-                        $scope.totalByPlanQuarters.q1_sum += plan.q1_sum ? plan.q1_sum : 0;
-                        $scope.totalByPlanQuarters.q2_amt += plan.q2_amt ? plan.q2_amt : 0;
-                        $scope.totalByPlanQuarters.q2_sum += plan.q2_sum ? plan.q2_sum : 0;
-                        $scope.totalByPlanQuarters.q3_amt += plan.q3_amt ? plan.q3_amt : 0;
-                        $scope.totalByPlanQuarters.q3_sum += plan.q3_sum ? plan.q3_sum : 0;
-                        $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
-                        $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
-                        $scope.totalByPlanQuarters.total_amt += plan.total_amt ? plan.total_amt : 0;
-                        $scope.totalByPlanQuarters.total_sum += plan.total_sum ? plan.total_sum : 0;
-                    });
-                    
-                    /** Render chart */
-                    const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
-                    $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
-                    $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalByPlanQuarters.q1_sum) });
-                    $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt($scope.totalByPlanQuarters.q2_sum) });
-                    $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt($scope.totalByPlanQuarters.q3_sum) });
-                    $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt($scope.totalByPlanQuarters.q4_sum) });
-                    let chart = new Highcharts.Chart($scope.pieOptions);
-                } else {
-                    $scope.totalByPlanQuarters = {
-                        q1_amt: 0,
-                        q1_sum: 0,
-                        q2_amt: 0,
-                        q2_sum: 0,
-                        q3_amt: 0,
-                        q3_sum: 0,
-                        q4_amt: 0,
-                        q4_sum: 0,
-                    };
-                }
-
-                $scope.loading = false;
-            }, function (err) {
-                console.log(err);
-                $scope.loading = false;
-            });
-        };
-
         $scope.factions = [];
         $scope.getProjectSummary = function() {
             let year = '2565';
@@ -988,53 +1006,72 @@ app.controller(
                     total_amount: 0,
                     total_budget: 0,
                 };
+                let strategic = {
+                    cup_amount: 0,
+                    cup_budget: 0,
+                    hos_amount: 0,
+                    hos_budget: 0,
+                    tam_amount: 0,
+                    tam_budget: 0,
+                    total_amount: 0,
+                    total_budget: 0,
+                };
 
                 departs.forEach(dep => {
                     if (dep.faction_id == 1) {
-                        admin.cup_amount         += dep.cup_amount && parseInt(dep.cup_amount);
-                        admin.cup_budget      += dep.cup_budget && parseInt(dep.cup_budget);
-                        admin.hos_amount       += dep.hos_amount && parseInt(dep.hos_amount);
-                        admin.hos_budget     += dep.hos_budget && parseInt(dep.hos_budget);
-                        admin.tam_amount         += dep.tam_amount && parseInt(dep.tam_amount);
-                        admin.tam_budget         += dep.tam_budget && parseInt(dep.tam_budget);
-                        admin.total_amount         += dep.total_amount && parseInt(dep.total_amount);
-                        admin.total_budget         += dep.total_budget && parseInt(dep.total_budget);
+                        admin.cup_amount    += dep.cup_amount && parseInt(dep.cup_amount);
+                        admin.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
+                        admin.hos_amount    += dep.hos_amount && parseInt(dep.hos_amount);
+                        admin.hos_budget    += dep.hos_budget && parseInt(dep.hos_budget);
+                        admin.tam_amount    += dep.tam_amount && parseInt(dep.tam_amount);
+                        admin.tam_budget    += dep.tam_budget && parseInt(dep.tam_budget);
+                        admin.total_amount  += dep.total_amount && parseInt(dep.total_amount);
+                        admin.total_budget  += dep.total_budget && parseInt(dep.total_budget);
                     } else if (dep.faction_id == 2) {
-                        doctor.cup_amount        += dep.cup_amount && parseInt(dep.cup_amount);
-                        doctor.cup_budget     += dep.cup_budget && parseInt(dep.cup_budget);
-                        doctor.hos_amount      += dep.hos_amount && parseInt(dep.hos_amount);
-                        doctor.hos_budget    += dep.hos_budget && parseInt(dep.hos_budget);
-                        doctor.tam_amount        += dep.tam_amount && parseInt(dep.tam_amount);
-                        doctor.tam_budget        += dep.tam_budget && parseInt(dep.tam_budget);
-                        doctor.total_amount        += dep.total_amount && parseInt(dep.total_amount);
-                        doctor.total_budget        += dep.total_budget && parseInt(dep.total_budget);
+                        doctor.cup_amount   += dep.cup_amount && parseInt(dep.cup_amount);
+                        doctor.cup_budget   += dep.cup_budget && parseInt(dep.cup_budget);
+                        doctor.hos_amount   += dep.hos_amount && parseInt(dep.hos_amount);
+                        doctor.hos_budget   += dep.hos_budget && parseInt(dep.hos_budget);
+                        doctor.tam_amount   += dep.tam_amount && parseInt(dep.tam_amount);
+                        doctor.tam_budget   += dep.tam_budget && parseInt(dep.tam_budget);
+                        doctor.total_amount += dep.total_amount && parseInt(dep.total_amount);
+                        doctor.total_budget += dep.total_budget && parseInt(dep.total_budget);
                     } else if (dep.faction_id == 3) {
-                        primary.cup_amount       += dep.cup_amount && parseInt(dep.cup_amount);
-                        primary.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
-                        primary.hos_amount     += dep.hos_amount && parseInt(dep.hos_amount);
-                        primary.hos_budget   += dep.hos_budget && parseInt(dep.hos_budget);
-                        primary.tam_amount       += dep.tam_amount && parseInt(dep.tam_amount);
-                        primary.tam_budget       += dep.tam_budget && parseInt(dep.tam_budget);
-                        primary.total_amount       += dep.total_amount && parseInt(dep.total_amount);
-                        primary.total_budget       += dep.total_budget && parseInt(dep.total_budget);
+                        primary.cup_amount      += dep.cup_amount && parseInt(dep.cup_amount);
+                        primary.cup_budget      += dep.cup_budget && parseInt(dep.cup_budget);
+                        primary.hos_amount      += dep.hos_amount && parseInt(dep.hos_amount);
+                        primary.hos_budget      += dep.hos_budget && parseInt(dep.hos_budget);
+                        primary.tam_amount      += dep.tam_amount && parseInt(dep.tam_amount);
+                        primary.tam_budget      += dep.tam_budget && parseInt(dep.tam_budget);
+                        primary.total_amount    += dep.total_amount && parseInt(dep.total_amount);
+                        primary.total_budget    += dep.total_budget && parseInt(dep.total_budget);
                     } else if (dep.faction_id == 7) {
-                        prs.cup_amount       += dep.cup_amount && parseInt(dep.cup_amount);
-                        prs.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
-                        prs.hos_amount     += dep.hos_amount && parseInt(dep.hos_amount);
-                        prs.hos_budget   += dep.hos_budget && parseInt(dep.hos_budget);
-                        prs.tam_amount       += dep.tam_amount && parseInt(dep.tam_amount);
-                        prs.tam_budget       += dep.tam_budget && parseInt(dep.tam_budget);
-                        prs.total_amount       += dep.total_amount && parseInt(dep.total_amount);
-                        prs.total_budget       += dep.total_budget && parseInt(dep.total_budget);
+                        prs.cup_amount      += dep.cup_amount && parseInt(dep.cup_amount);
+                        prs.cup_budget      += dep.cup_budget && parseInt(dep.cup_budget);
+                        prs.hos_amount      += dep.hos_amount && parseInt(dep.hos_amount);
+                        prs.hos_budget      += dep.hos_budget && parseInt(dep.hos_budget);
+                        prs.tam_amount      += dep.tam_amount && parseInt(dep.tam_amount);
+                        prs.tam_budget      += dep.tam_budget && parseInt(dep.tam_budget);
+                        prs.total_amount    += dep.total_amount && parseInt(dep.total_amount);
+                        prs.total_budget    += dep.total_budget && parseInt(dep.total_budget);
                     } else if (dep.faction_id == 5) {
-                        nurse.cup_amount     += dep.cup_amount && parseInt(dep.cup_amount);
-                        nurse.cup_budget  += dep.cup_budget && parseInt(dep.cup_budget);
-                        nurse.hos_amount   += dep.hos_amount && parseInt(dep.hos_amount);
-                        nurse.hos_budget += dep.hos_budget && parseInt(dep.hos_budget);
-                        nurse.tam_amount     += dep.tam_amount && parseInt(dep.tam_amount);
-                        nurse.tam_budget     += dep.tam_budget && parseInt(dep.tam_budget);
-                        nurse.total_amount     += dep.total_amount && parseInt(dep.total_amount);
-                        nurse.total_budget     += dep.total_budget && parseInt(dep.total_budget);
+                        nurse.cup_amount    += dep.cup_amount && parseInt(dep.cup_amount);
+                        nurse.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
+                        nurse.hos_amount    += dep.hos_amount && parseInt(dep.hos_amount);
+                        nurse.hos_budget    += dep.hos_budget && parseInt(dep.hos_budget);
+                        nurse.tam_amount    += dep.tam_amount && parseInt(dep.tam_amount);
+                        nurse.tam_budget    += dep.tam_budget && parseInt(dep.tam_budget);
+                        nurse.total_amount  += dep.total_amount && parseInt(dep.total_amount);
+                        nurse.total_budget  += dep.total_budget && parseInt(dep.total_budget);
+                    } else if (dep.faction_id == 13) {
+                        strategic.cup_amount    += dep.cup_amount && parseInt(dep.cup_amount);
+                        strategic.cup_budget    += dep.cup_budget && parseInt(dep.cup_budget);
+                        strategic.hos_amount    += dep.hos_amount && parseInt(dep.hos_amount);
+                        strategic.hos_budget    += dep.hos_budget && parseInt(dep.hos_budget);
+                        strategic.tam_amount    += dep.tam_amount && parseInt(dep.tam_amount);
+                        strategic.tam_budget    += dep.tam_budget && parseInt(dep.tam_budget);
+                        strategic.total_amount  += dep.total_amount && parseInt(dep.total_amount);
+                        strategic.total_budget  += dep.total_budget && parseInt(dep.total_budget);
                     }
                 });
 
@@ -1049,6 +1086,8 @@ app.controller(
                         return { ...faction, ...prs };
                     } else if (faction.faction_id == 5) {
                         return { ...faction, ...nurse };
+                    } else if (faction.faction_id == 13) {
+                        return { ...faction, ...strategic };
                     }
                 });
 
@@ -1237,6 +1276,8 @@ app.controller(
             q3_bud: 0,
             q4_amt: 0,
             q4_bud: 0,
+            total_amt: 0,
+            total_bud: 0,
         };
 
         $scope.getProjectByQuarters = function () {
@@ -1249,6 +1290,8 @@ app.controller(
                 q3_bud: 0,
                 q4_amt: 0,
                 q4_bud: 0,
+                total_amt: 0,
+                total_bud: 0,
             };
 
             let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
@@ -1280,6 +1323,8 @@ app.controller(
                         $scope.totalProjectByQuarters.q3_bud += project.q3_bud ? project.q3_bud : 0;
                         $scope.totalProjectByQuarters.q4_amt += project.q4_amt ? project.q4_amt : 0;
                         $scope.totalProjectByQuarters.q4_bud += project.q4_bud ? project.q4_bud : 0;
+                        $scope.totalProjectByQuarters.total_amt += project.total_amt ? project.total_amt : 0;
+                        $scope.totalProjectByQuarters.total_bud += project.total_bud ? project.total_bud : 0;
                     });
 
                     /** Render chart */
@@ -1300,6 +1345,8 @@ app.controller(
                         q3_bud: 0,
                         q4_amt: 0,
                         q4_bud: 0,
+                        total_amt: 0,
+                        total_bud: 0,
                     };
                 }
 

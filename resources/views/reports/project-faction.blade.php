@@ -22,9 +22,7 @@
         ng-controller="reportCtrl"
         ng-init="
             getProjectByFaction();
-            initForm({
-                departs: {{ $departs }}
-            });
+            initForms({ departs: {{ $departs }} });
         "
     >
 
@@ -73,26 +71,28 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนงาน/โครงการตามกลุ่มภารกิจ ปีงบประมาณ @{{ cboYear }}</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายงานแผนงาน/โครงการตามกลุ่มภารกิจ ปีงบประมาณ @{{ cboYear }}</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    Excel
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
                                     <th style="text-align: left;" rowspan="2">กลุ่มภารกิจ</th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/asset-depart') }}">โรงพยาบาล</a>
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/material-depart') }}">CUP</a>
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/material-depart') }}">ตำบล</a>
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/material-depart') }}">รวม</a>
-                                    </th>
+                                    <th style="text-align: center;" colspan="2">โรงพยาบาล</th>
+                                    <th style="text-align: center;" colspan="2">CUP</th>
+                                    <th style="text-align: center;" colspan="2">ตำบล</th>
+                                    <th style="text-align: center;" colspan="2">รวม</th>
                                 </tr>
                                 <tr>
                                     <th style="width: 6%; text-align: center;">จำนวน</th>
@@ -108,9 +108,7 @@
                             <tbody>
                                 <tr ng-repeat="(index, project) in projects">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
-                                    <td>
-                                        @{{ project.faction_name }}
-                                    </td>
+                                    <td>@{{ project.faction_name }}</td>
                                     <td style="text-align: center;">@{{ project.hos_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.hos_budget | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ project.cup_amount | currency:'':0 }}</td>

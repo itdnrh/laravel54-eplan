@@ -22,10 +22,7 @@
         ng-controller="reportCtrl"
         ng-init="
             getProjectByDepart();
-            initForm({ 
-                factions: {{ $factions }},
-                departs: {{ $departs }}
-            });
+            initForms({ departs: {{ $departs }} });
         "
     >
 
@@ -50,13 +47,11 @@
                                         ng-change="onSelectedFaction(cboFaction); getProjectByDepart();"
                                     >
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="faction in initFormValues.factions"
-                                            value="@{{ faction.faction_id }}"
-                                        >
-                                            @{{ faction.faction_name }}
-                                        </option>
-                                        
+                                        @foreach($factions as $faction)
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -96,26 +91,28 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนงาน/โครงการตามหน่วยงาน ปีงบประมาณ @{{ cboYear }}</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายงานแผนงาน/โครงการตามหน่วยงาน ปีงบประมาณ @{{ cboYear }}</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    Excel
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
                                     <th style="text-align: left;" rowspan="2">หน่วยงาน</th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/asset-depart') }}">โรงพยาบาล</a>
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/material-depart') }}">CUP</a>
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/material-depart') }}">ตำบล</a>
-                                    </th>
-                                    <th style="text-align: center;" colspan="2">
-                                        <a href="{{ url('/reports/material-depart') }}">รวม</a>
-                                    </th>
+                                    <th style="text-align: center;" colspan="2">โรงพยาบาล</th>
+                                    <th style="text-align: center;" colspan="2">CUP</th>
+                                    <th style="text-align: center;" colspan="2">ตำบล</th>
+                                    <th style="text-align: center;" colspan="2">รวม</th>
                                 </tr>
                                 <tr>
                                     <th style="width: 6%; text-align: center;">จำนวน</th>

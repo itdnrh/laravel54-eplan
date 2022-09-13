@@ -22,10 +22,7 @@
         ng-controller="reportCtrl"
         ng-init="
             getPlanByDepart();
-            initForm({ 
-                factions: {{ $factions }},
-                departs: {{ $departs }}
-            });
+            initForms({ departs: {{ $departs }} });
         "
     >
 
@@ -45,18 +42,15 @@
                                         id="cboFaction"
                                         name="cboFaction"
                                         ng-model="cboFaction"
-                                        class="form-control select2"
-                                        style="width: 100%; font-size: 12px;"
+                                        class="form-control"
                                         ng-change="onSelectedFaction(cboFaction); getPlanByDepart();"
                                     >
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option
-                                            ng-repeat="faction in initFormValues.factions"
-                                            value="@{{ faction.faction_id }}"
-                                        >
-                                            @{{ faction.faction_name }}
-                                        </option>
-                                        
+                                        @foreach($factions as $faction)
+                                            <option value="{{ $faction->faction_id }}">
+                                                {{ $faction->faction_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -96,10 +90,20 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนเงินบำรุงตามหน่วยงาน ปีงบประมาณ @{{ cboYear }}</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายงานแผนเงินบำรุงตามหน่วยงาน ปีงบประมาณ @{{ cboYear }}</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    Excel
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>

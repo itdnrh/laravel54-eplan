@@ -122,10 +122,20 @@
 
                 <div class="box">
                     <div class="box-header with-border table-striped">
-                        <h3 class="box-title">รายงานแผนเงินบำรุงตามประเภทแผน ปีงบประมาณ @{{ cboYear }}</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายงานแผนเงินบำรุงตามประเภทแผน ปีงบประมาณ @{{ cboYear }}</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    Excel
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
@@ -137,20 +147,15 @@
                             <tbody>
                                 <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
-                                    <td>
-                                        @{{ plan.category_name }}
-                                    </td>
+                                    <td>@{{ plan.category_name }}</td>
                                     <td style="text-align: right;">@{{ plan.amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.sum_price | currency:'':0 }}</td>
                                 </tr>
-                                <!-- <tr style="font-weight: bold;">
+                                <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
-                                </tr> -->
+                                    <td style="text-align: right;">@{{ totalPlanByPlanTypes.amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalPlanByPlanTypes.sum_price | currency:'':0 }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->

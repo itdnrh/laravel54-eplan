@@ -75,11 +75,11 @@ class ReportController extends Controller
                             \DB::raw("sum(projects.total_budget) as total_budget"),
                             \DB::raw("count(projects.id) as total_amount")
                         )
-                        ->groupBy('projects.owner_depart')
                         ->where('projects.year', $year)
                         ->when(!empty($approved), function($q) use ($approved) {
                             $q->where('projects.approved', $approved);
                         })
+                        ->groupBy('projects.owner_depart')
                         ->get();
 
         return [
@@ -118,7 +118,6 @@ class ReportController extends Controller
                             \DB::raw("sum(projects.total_budget) as total_budget"),
                             \DB::raw("count(projects.id) as total_amount")
                         )
-                        ->groupBy('projects.owner_depart')
                         ->where('projects.year', $year)
                         ->when(!empty($faction), function($q) use ($departsList) {
                             $q->whereIn('projects.owner_depart', $departsList);
@@ -126,6 +125,7 @@ class ReportController extends Controller
                         ->when(!empty($approved), function($q) use ($approved) {
                             $q->where('projects.approved', $approved);
                         })
+                        ->groupBy('projects.owner_depart')
                         ->get();
 
         return [
@@ -164,7 +164,7 @@ class ReportController extends Controller
                             \DB::raw("sum(projects.total_budget) as total_budget")
                         )
                         ->leftJoin('strategies', 'strategies.id', '=', 'projects.strategy_id')
-                        ->leftJoin('strategics', 'strategics.id', '=', 'strategies.id')
+                        ->leftJoin('strategics', 'strategics.id', '=', 'strategies.strategic_id')
                         ->where('projects.year', $year)
                         ->when(!empty($strategic), function($q) use ($strategiesList) {
                             $q->whereIn('projects.strategy_id', $strategiesList);
@@ -214,7 +214,7 @@ class ReportController extends Controller
                             \DB::raw("sum(projects.total_budget) as total_bud")
                         )
                         ->leftJoin('strategies', 'strategies.id', '=', 'projects.strategy_id')
-                        ->leftJoin('strategics', 'strategics.id', '=', 'strategies.id')
+                        ->leftJoin('strategics', 'strategics.id', '=', 'strategies.strategic_id')
                         ->where('projects.year', $year)
                         ->when(!empty($strategic), function($q) use ($strategiesList) {
                             $q->whereIn('projects.strategy_id', $strategiesList);
@@ -263,11 +263,11 @@ class ReportController extends Controller
                         \DB::raw("sum(plan_items.sum_price) as total")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->groupBy('plans.depart_id')
                     ->where('plans.year', $year)
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
                     })
+                    ->groupBy('plans.depart_id')
                     ->get();
 
         return [
@@ -309,7 +309,6 @@ class ReportController extends Controller
                         \DB::raw("sum(plan_items.sum_price) as total")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->groupBy('plans.depart_id')
                     ->where('plans.year', $year)
                     ->when(!empty($faction), function($q) use ($departsList) {
                         $q->whereIn('plans.depart_id', $departsList);
@@ -317,161 +316,7 @@ class ReportController extends Controller
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
                     })
-                    ->get();
-
-        return [
-            'plans'     => $plans,
-            'departs'   => Depart::all()
-        ];
-    }
-
-    public function assetByDepart()
-    {
-        $depart = '';
-        if (Auth::user()->memberOf->duty_id == 2) {
-            $depart = Auth::user()->memberOf->depart_id;
-        }
-
-        return view('reports.asset-depart', [
-            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
-        ]);
-    }
-
-    public function getAssetByDepart(Request $req)
-    {
-        /** Get params from query string */
-        // $faction    = Auth::user()->memberOf->duty_id == 2
-        //                 ? Auth::user()->memberOf->faction_id
-        //                 : $req->get('faction');
-        $year = $req->get('year');
-        $approved = $req->get('approved');
-
-        $plans = \DB::table('plans')
-                    ->select(
-                        'plans.depart_id',
-                        \DB::raw("sum(case when (items.category_id=1) then plan_items.sum_price end) as vehicle"),
-                        \DB::raw("sum(case when (items.category_id=2) then plan_items.sum_price end) as office"),
-                        \DB::raw("sum(case when (items.category_id=3) then plan_items.sum_price end) as computer"),
-                        \DB::raw("sum(case when (items.category_id=4) then plan_items.sum_price end) as medical"),
-                        \DB::raw("sum(case when (items.category_id=5) then plan_items.sum_price end) as home"),
-                        \DB::raw("sum(case when (items.category_id=6) then plan_items.sum_price end) as construct"),
-                        \DB::raw("sum(case when (items.category_id=7) then plan_items.sum_price end) as agriculture"),
-                        \DB::raw("sum(case when (items.category_id=8) then plan_items.sum_price end) as ads"),
-                        \DB::raw("sum(case when (items.category_id=9) then plan_items.sum_price end) as electric"),
-                        \DB::raw("sum(case when (items.category_id between 1 and 9) then plan_items.sum_price end) as total")
-                    )
-                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
                     ->groupBy('plans.depart_id')
-                    ->where('plans.year', $year)
-                    ->when(!empty($approved), function($q) use ($approved) {
-                        $q->where('plans.approved', $approved);
-                    })
-                    ->get();
-
-        return [
-            'plans'     => $plans,
-            'departs'   => Depart::all()
-        ];
-    }
-
-    public function assetByFaction()
-    {
-        $depart = '';
-        if (Auth::user()->memberOf->duty_id == 2) {
-            $depart = Auth::user()->memberOf->depart_id;
-        }
-
-        return view('reports.asset-faction', [
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
-        ]);
-    }
-
-    public function getAssetByFaction(Request $req)
-    {
-        /** Get params from query string */
-        $year = $req->get('year');
-        $approved = $req->get('approved');
-
-        $plans = \DB::table('plans')
-                    ->select(
-                        'plans.depart_id',
-                        \DB::raw("sum(case when (items.category_id=1) then plan_items.sum_price end) as vehicle"),
-                        \DB::raw("sum(case when (items.category_id=2) then plan_items.sum_price end) as office"),
-                        \DB::raw("sum(case when (items.category_id=3) then plan_items.sum_price end) as computer"),
-                        \DB::raw("sum(case when (items.category_id=4) then plan_items.sum_price end) as medical"),
-                        \DB::raw("sum(case when (items.category_id=5) then plan_items.sum_price end) as home"),
-                        \DB::raw("sum(case when (items.category_id=6) then plan_items.sum_price end) as construct"),
-                        \DB::raw("sum(case when (items.category_id=7) then plan_items.sum_price end) as agriculture"),
-                        \DB::raw("sum(case when (items.category_id=8) then plan_items.sum_price end) as ads"),
-                        \DB::raw("sum(case when (items.category_id=9) then plan_items.sum_price end) as electric"),
-                        \DB::raw("sum(case when (items.category_id between 1 and 9) then plan_items.sum_price end) as total")
-                    )
-                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-                    ->groupBy('plans.depart_id')
-                    ->where('plans.year', $year)
-                    ->when(!empty($approved), function($q) use ($approved) {
-                        $q->where('plans.approved', $approved);
-                    })
-                    ->get();
-
-        return [
-            'plans'     => $plans,
-            'departs'   => Depart::all(),
-            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
-        ];
-    }
-
-    public function materialByDepart()
-    {
-        $depart = '';
-        if (Auth::user()->memberOf->duty_id == 2) {
-            $depart = Auth::user()->memberOf->depart_id;
-        }
-
-        return view('reports.material-depart', [
-            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
-        ]);
-    }
-
-    public function getMaterialByDepart(Request $req)
-    {
-        /** Get params from query string */
-        // $faction    = Auth::user()->memberOf->duty_id == 2
-        //                 ? Auth::user()->memberOf->faction_id
-        //                 : $req->get('faction');
-        $year = $req->get('year');
-        $approved = $req->get('approved');
-
-        $plans = \DB::table('plans')
-                    ->select(
-                        'plans.depart_id',
-                        \DB::raw("sum(case when (items.category_id=10) then plan_items.sum_price end) as medical"),
-                        \DB::raw("sum(case when (items.category_id=11) then plan_items.sum_price end) as science"),
-                        \DB::raw("sum(case when (items.category_id=12) then plan_items.sum_price end) as dent"),
-                        \DB::raw("sum(case when (items.category_id=13) then plan_items.sum_price end) as office"),
-                        \DB::raw("sum(case when (items.category_id=14) then plan_items.sum_price end) as computer"),
-                        \DB::raw("sum(case when (items.category_id=15) then plan_items.sum_price end) as home"),
-                        \DB::raw("sum(case when (items.category_id=16) then plan_items.sum_price end) as clothes"),
-                        \DB::raw("sum(case when (items.category_id=17) then plan_items.sum_price end) as fuel"),
-                        \DB::raw("sum(case when (items.category_id=18) then plan_items.sum_price end) as sticker"),
-                        \DB::raw("sum(case when (items.category_id=19) then plan_items.sum_price end) as electric"),
-                        \DB::raw("sum(case when (items.category_id=20) then plan_items.sum_price end) as vehicle"),
-                        \DB::raw("sum(case when (items.category_id=21) then plan_items.sum_price end) as ads"),
-                        \DB::raw("sum(case when (items.category_id=22) then plan_items.sum_price end) as construct"),
-                        \DB::raw("sum(case when (items.category_id=23) then plan_items.sum_price end) as agriculture"),
-                        \DB::raw("sum(case when (items.category_id between 10 and 23) then plan_items.sum_price end) as total")
-                    )
-                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-                    ->groupBy('plans.depart_id')
-                    ->where('plans.year', $year)
-                    ->when(!empty($approved), function($q) use ($approved) {
-                        $q->where('plans.approved', $approved);
-                    })
                     ->get();
 
         return [
@@ -583,7 +428,6 @@ class ReportController extends Controller
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-                    ->groupBy('items.category_id')
                     ->where('plans.year', $year)
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plans.plan_type_id', $type);
@@ -598,6 +442,7 @@ class ReportController extends Controller
                             $q->where('plan_items.price_per_unit', '<', 10000);
                         }
                     })
+                    ->groupBy('items.category_id')
                     ->orderByRaw("sum(plan_items." .$sort. ") DESC")
                     ->get();
 
@@ -680,73 +525,158 @@ class ReportController extends Controller
         ];
     }
 
-    
-    public function assetByQuarter()
+    public function assetByFaction()
     {
         $depart = '';
         if (Auth::user()->memberOf->duty_id == 2) {
             $depart = Auth::user()->memberOf->depart_id;
         }
 
-        return view('reports.asset-quarter', [
-            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
-            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
-            "planTypes" => PlanType::all(),
+        return view('reports.asset-faction', [
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
         ]);
     }
 
-    public function getAssetByQuarter(Request $req)
+    public function getAssetByFaction(Request $req)
     {
         /** Get params from query string */
-        $faction    = $req->get('faction');
-        $year       = $req->get('year');
-        $type       = $req->get('type');
-        $price      = $req->get('price');
-        $approved   = $req->get('approved');
-        $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
-
-        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+        $year = $req->get('year');
+        $approved = $req->get('approved');
 
         $plans = \DB::table('plans')
                     ->select(
-                        'items.category_id',
-                        \DB::raw("sum(case when (plans.start_month in ('10','11','12')) then plan_items.amount end) as q1_amt"),
-                        \DB::raw("sum(case when (plans.start_month in ('10','11','12')) then plan_items.sum_price end) as q1_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('01','02','03')) then plan_items.amount end) as q2_amt"),
-                        \DB::raw("sum(case when (plans.start_month in ('01','02','03')) then plan_items.sum_price end) as q2_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.amount end) as q3_amt"),
-                        \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.sum_price end) as q3_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.amount end) as q4_amt"),
-                        \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.sum_price end) as q4_sum")
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (items.category_id=1) then plan_items.sum_price end) as vehicle"),
+                        \DB::raw("sum(case when (items.category_id=2) then plan_items.sum_price end) as office"),
+                        \DB::raw("sum(case when (items.category_id=3) then plan_items.sum_price end) as computer"),
+                        \DB::raw("sum(case when (items.category_id=4) then plan_items.sum_price end) as medical"),
+                        \DB::raw("sum(case when (items.category_id=5) then plan_items.sum_price end) as home"),
+                        \DB::raw("sum(case when (items.category_id=6) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(case when (items.category_id=7) then plan_items.sum_price end) as agriculture"),
+                        \DB::raw("sum(case when (items.category_id=8) then plan_items.sum_price end) as ads"),
+                        \DB::raw("sum(case when (items.category_id=9) then plan_items.sum_price end) as electric"),
+                        \DB::raw("sum(case when (items.category_id between 1 and 9) then plan_items.sum_price end) as total")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-                    ->groupBy('items.category_id')
                     ->where('plans.year', $year)
-                    ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plans.plan_type_id', $type);
-                    })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
                     })
-                    ->when(!empty($price), function($q) use ($price) {
-                        if ($price == 1) {
-                            $q->where('plan_items.price_per_unit', '>=', 10000);
-                        } else {
-                            $q->where('plan_items.price_per_unit', '<', 10000);
-                        }
-                    })
-                    ->orderByRaw("sum(plan_items." .$sort. ") DESC")
+                    ->groupBy('plans.depart_id')
                     ->get();
 
-        $categories = ItemCategory::all();
-                        // ->when(!empty($type), function($q) use ($type) {
-                        //     $q->where('plan_type_id', $type);
-                        // })->get();
+        return [
+            'plans'     => $plans,
+            'departs'   => Depart::all(),
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+        ];
+    }
+
+    public function assetByDepart()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.asset-depart', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getAssetByDepart(Request $req)
+    {
+        /** Get params from query string */
+        // $faction    = Auth::user()->memberOf->duty_id == 2
+        //                 ? Auth::user()->memberOf->faction_id
+        //                 : $req->get('faction');
+        $year = $req->get('year');
+        $approved = $req->get('approved');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (items.category_id=1) then plan_items.sum_price end) as vehicle"),
+                        \DB::raw("sum(case when (items.category_id=2) then plan_items.sum_price end) as office"),
+                        \DB::raw("sum(case when (items.category_id=3) then plan_items.sum_price end) as computer"),
+                        \DB::raw("sum(case when (items.category_id=4) then plan_items.sum_price end) as medical"),
+                        \DB::raw("sum(case when (items.category_id=5) then plan_items.sum_price end) as home"),
+                        \DB::raw("sum(case when (items.category_id=6) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(case when (items.category_id=7) then plan_items.sum_price end) as agriculture"),
+                        \DB::raw("sum(case when (items.category_id=8) then plan_items.sum_price end) as ads"),
+                        \DB::raw("sum(case when (items.category_id=9) then plan_items.sum_price end) as electric"),
+                        \DB::raw("sum(case when (items.category_id between 1 and 9) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->groupBy('plans.depart_id')
+                    ->get();
 
         return [
-            'plans'         => $plans,
-            'categories'    => $categories
+            'plans'     => $plans,
+            'departs'   => Depart::all()
+        ];
+    }
+
+    public function materialByDepart()
+    {
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.material-depart', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get()
+        ]);
+    }
+
+    public function getMaterialByDepart(Request $req)
+    {
+        /** Get params from query string */
+        // $faction    = Auth::user()->memberOf->duty_id == 2
+        //                 ? Auth::user()->memberOf->faction_id
+        //                 : $req->get('faction');
+        $year = $req->get('year');
+        $approved = $req->get('approved');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.depart_id',
+                        \DB::raw("sum(case when (items.category_id=10) then plan_items.sum_price end) as medical"),
+                        \DB::raw("sum(case when (items.category_id=11) then plan_items.sum_price end) as science"),
+                        \DB::raw("sum(case when (items.category_id=12) then plan_items.sum_price end) as dent"),
+                        \DB::raw("sum(case when (items.category_id=13) then plan_items.sum_price end) as office"),
+                        \DB::raw("sum(case when (items.category_id=14) then plan_items.sum_price end) as computer"),
+                        \DB::raw("sum(case when (items.category_id=15) then plan_items.sum_price end) as home"),
+                        \DB::raw("sum(case when (items.category_id=16) then plan_items.sum_price end) as clothes"),
+                        \DB::raw("sum(case when (items.category_id=17) then plan_items.sum_price end) as fuel"),
+                        \DB::raw("sum(case when (items.category_id=18) then plan_items.sum_price end) as sticker"),
+                        \DB::raw("sum(case when (items.category_id=19) then plan_items.sum_price end) as electric"),
+                        \DB::raw("sum(case when (items.category_id=20) then plan_items.sum_price end) as vehicle"),
+                        \DB::raw("sum(case when (items.category_id=21) then plan_items.sum_price end) as ads"),
+                        \DB::raw("sum(case when (items.category_id=22) then plan_items.sum_price end) as construct"),
+                        \DB::raw("sum(case when (items.category_id=23) then plan_items.sum_price end) as agriculture"),
+                        \DB::raw("sum(case when (items.category_id between 10 and 23) then plan_items.sum_price end) as total")
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->where('plans.year', $year)
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('plans.approved', $approved);
+                    })
+                    ->groupBy('plans.depart_id')
+                    ->get();
+
+        return [
+            'plans'     => $plans,
+            'departs'   => Depart::all()
         ];
     }
 }

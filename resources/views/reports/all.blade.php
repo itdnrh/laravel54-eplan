@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แผนเงินบำรุงรายหน่วยงาน
+            รายงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
@@ -20,7 +20,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="box box-primary">
+                <div class="box box-primary" style="height: 80vh;">
                     <div class="box-header with-border table-striped">
                         <h3 class="box-title">รายงาน</h3>
                     </div><!-- /.box-header -->
