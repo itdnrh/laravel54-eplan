@@ -648,11 +648,12 @@ class ReportController extends Controller
                         \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.amount end) as q3_amt"),
                         \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.sum_price end) as q3_sum"),
                         \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.amount end) as q4_amt"),
-                        \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.sum_price end) as q4_sum")
+                        \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.sum_price end) as q4_sum"),
+                        \DB::raw("sum(plan_items.amount) as total_amt"),
+                        \DB::raw("sum(plan_items.sum_price) as total_sum")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-                    ->groupBy('items.category_id')
                     ->where('plans.year', $year)
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plans.plan_type_id', $type);
@@ -667,13 +668,11 @@ class ReportController extends Controller
                             $q->where('plan_items.price_per_unit', '<', 10000);
                         }
                     })
+                    ->groupBy('items.category_id')
                     ->orderByRaw("sum(plan_items." .$sort. ") DESC")
                     ->get();
 
         $categories = ItemCategory::all();
-                        // ->when(!empty($type), function($q) use ($type) {
-                        //     $q->where('plan_type_id', $type);
-                        // })->get();
 
         return [
             'plans'         => $plans,

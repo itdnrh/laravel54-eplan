@@ -743,6 +743,8 @@ app.controller(
             q3_sum: 0,
             q4_amt: 0,
             q4_sum: 0,
+            total_amt: 0,
+            total_sum: 0,
         };
 
         $scope.getPlanByQuarter = function () {
@@ -755,6 +757,8 @@ app.controller(
                 q3_sum: 0,
                 q4_amt: 0,
                 q4_sum: 0,
+                total_amt: 0,
+                total_sum: 0,
             };
 
             let year        = $scope.cboYear === ''
@@ -787,6 +791,8 @@ app.controller(
                         $scope.totalByPlanQuarters.q3_sum += plan.q3_sum ? plan.q3_sum : 0;
                         $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
                         $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
+                        $scope.totalByPlanQuarters.total_amt += plan.total_amt ? plan.total_amt : 0;
+                        $scope.totalByPlanQuarters.total_sum += plan.total_sum ? plan.total_sum : 0;
                     });
                     
                     /** Render chart */

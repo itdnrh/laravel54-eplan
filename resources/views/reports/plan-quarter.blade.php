@@ -134,8 +134,11 @@
                                     <th style="text-align: center;" colspan="2">ไตรมาส 2</th>
                                     <th style="text-align: center;" colspan="2">ไตรมาส 3</th>
                                     <th style="text-align: center;" colspan="2">ไตรมาส 4</th>
+                                    <th style="text-align: center;" colspan="2">รวม</th>
                                 </tr>
                                 <tr>
+                                    <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
+                                    <th style="width: 10%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
                                     <th style="width: 10%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
@@ -160,6 +163,8 @@
                                     <td style="text-align: right;">@{{ plan.q3_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.q4_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.q4_sum | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total_sum | currency:'':0 }}</td>
                                 </tr>
                                 <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
@@ -171,6 +176,8 @@
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q3_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q4_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q4_sum | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.total_sum | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
