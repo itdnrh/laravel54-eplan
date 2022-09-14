@@ -224,7 +224,7 @@
                             <tbody>
                                 <tr ng-repeat="(index, project) in projects">
                                     <td style="text-align: center;">
-                                        @{{ index+1 }}
+                                        @{{ projects_pager.from+index }}
                                         <!-- <input
                                             type="checkbox"
                                             ng-click="onCheckedPlan($event, project)"
@@ -313,45 +313,45 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
+                                หน้า @{{ projects_pager.current_page }} จาก @{{ projects_pager.last_page }}
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
+                                จำนวน @{{ projects_pager.total }} รายการ
                             </div>
                             <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                                    <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getProjectsWithUrl($event, pager.path+ '?page=1', setProjects)" aria-label="Previous">
+                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="projects_pager.last_page > 1">
+                                    <li ng-if="projects_pager.current_page !== 1">
+                                        <a href="#" ng-click="getProjectsWithUrl($event, projects_pager.path+ '?page=1', setProjects)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
-                                    <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getProjectsWithUrl($event, pager.prev_page_url, setProjects)" aria-label="Prev">
+                                    <li ng-class="{'disabled': (projects_pager.current_page==1)}">
+                                        <a href="#" ng-click="getProjectsWithUrl($event, projects_pager.prev_page_url, setProjects)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
-                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getProjectsWithUrl(pager.path + '?page=' +i)">
+                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': projects_pager.current_page==i}">
+                                        <a href="#" ng-click="getProjectsWithUrl(projects_pager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
 
-                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                        <a href="#" ng-click="pager.path">
+                                    <!-- <li ng-if="projects_pager.current_page < projects_pager.last_page && (projects_pager.last_page - projects_pager.current_page) > 10">
+                                        <a href="#" ng-click="projects_pager.path">
                                             ...
                                         </a>
                                     </li> -->
 
-                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getProjectsWithUrl($event, pager.next_page_url, setProjects)" aria-label="Next">
+                                    <li ng-class="{'disabled': (projects_pager.current_page==projects_pager.last_page)}">
+                                        <a href="#" ng-click="getProjectsWithUrl($event, projects_pager.next_page_url, setProjects)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
-                                    <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getProjectsWithUrl($event, pager.path+ '?page=' +pager.last_page, setProjects)" aria-label="Previous">
+                                    <li ng-if="projects_pager.current_page !== projects_pager.last_page">
+                                        <a href="#" ng-click="getProjectsWithUrl($event, projects_pager.path+ '?page=' +projects_pager.last_page, setProjects)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
