@@ -564,7 +564,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         if (typeof currency === 'number') return currency;
         if (currency == '') return 0;
 
-        return currency.replace(',', '');
+        return currency.replaceAll(',', '');
     };
 
     $scope.onValidateForm = function(e, endpoint, plan, frmName, callback) {
