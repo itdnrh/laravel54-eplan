@@ -146,7 +146,12 @@
                                 <tr ng-repeat="(index, item) in items">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ item.asset_no }}</td>
-                                    <td style="text-align: center;">@{{ item.category.name }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ item.category.name }}
+                                        <p class="description" ng-show="item.group">
+                                            (กลุ่ม@{{ item.group.name }})
+                                        </p>
+                                    </td>
                                     <td>
                                         @{{ item.item_name }}
                                         <span ng-show="item.en_name">(@{{ item.en_name }})</span>
