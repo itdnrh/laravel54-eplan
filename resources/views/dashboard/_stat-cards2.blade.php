@@ -3,7 +3,7 @@
         <div class="small-box bg-primary">
             <div class="inner">
                 <h3 style="font-size: 28px;">
-                    @{{ stat2Cards[0].sum_all | currency:'':0 }}
+                    @{{ getStatCardById(1) | currency:'':0 }}
                     <span style="font-size: 14px;">บาท</span>
                 </h3>
                 <p><h4>แผนครุภัณฑ์</h4></p>
@@ -18,7 +18,7 @@
         <div class="small-box bg-gray">
             <div class="inner">
                 <h3 style="font-size: 28px;">
-                    @{{ stat2Cards[1].sum_all | currency:'':0 }}
+                    @{{ getStatCardById(2) | currency:'':0 }}
                     <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>
@@ -34,7 +34,7 @@
         <div class="small-box bg-teal">
             <div class="inner">
                 <h3 style="font-size: 28px;">
-                    @{{ stat2Cards[2].sum_all | currency:'':0 }}
+                    @{{ getStatCardById(3) | currency:'':0 }}
                     <span style="font-size: 14px;">บาท</span>
                 </h3>
                 <p><h4>แผนจ้างบริการ</h4></p>
@@ -49,7 +49,7 @@
         <div class="small-box bg-purple">
             <div class="inner">
                 <h3 style="font-size: 28px;">
-                    @{{ stat2Cards[3].sum_all | currency:'':0 }}
+                    @{{ getStatCardById(4) | currency:'':0 }}
                     <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>

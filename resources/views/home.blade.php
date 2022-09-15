@@ -16,6 +16,36 @@
 
     <!-- Main content -->
     <section class="content" ng-controller="homeCtrl">
+        <!-- /** Filtering Tools */ -->
+        <div class="row">
+            <div class="col-md-12">
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <label for="">ประจำปี :</label>
+                    <input
+                        type="text"
+                        id="dtpYear"
+                        name="dtpYear"
+                        ng-model="dtpYear"
+                        class="form-control"
+                        style="width: 180px; margin-left: 5px;"
+                    />
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left: 10px;">
+                        <label class="btn btn-default active" ng-click="onApprovedToggle($event)">
+                            <input type="radio" id="all" name="approved" value="" autocomplete="off" checked /> ทั้งหมด
+                        </label>
+                        <label class="btn btn-default" ng-click="onApprovedToggle($event)">
+                            <input type="radio" id="none" name="approved" value="1" autocomplete="off" /> ไม่อนุมัติ
+                        </label>
+                        </label>
+                        <label class="btn btn-default" ng-click="onApprovedToggle($event)">
+                            <input type="radio" id="approved" name="approved" value="2" autocomplete="off" /> อนุมัติ
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /** Filtering Tools */ -->
 
         @include('dashboard._stat-cards')
 

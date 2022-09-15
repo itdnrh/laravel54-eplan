@@ -1,38 +1,113 @@
 app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, ChartService) {
 /** ################################################################################## */
     $scope.loading = false;
+    $scope.pager = null;
+
     $scope.pieOptions = {};
     $scope.barOptions = {};
-    $scope.headLeaves = [];
-    $scope.pager = null;
-    $scope.departs = [];
-    $scope.departPager = null;
 
-    $('#cboAssetDate').datepicker({
+    $scope.approved = '';
+    $scope.dtpYear = moment().add(1, 'years').year() + 543;
+
+    const dtpYearOptions = {
         autoclose: true,
-        format: 'mm/yyyy',
-        viewMode: "months", 
-        minViewMode: "months",
+        format: 'yyyy',
+        viewMode: "years", 
+        minViewMode: "years",
         language: 'th',
         thaiyear: true
-    })
-    .datepicker('update', moment().toDate())
-    .on('changeDate', function(event) {
-        $scope.getDepartLeaves();
-    });
+    };
 
-    $('#cboMaterialDate').datepicker({
+    const dtpMonthOptions = {
         autoclose: true,
-        format: 'mm/yyyy',
-        viewMode: "months", 
-        minViewMode: "months",
+        format: 'yyyy',
+        viewMode: "years", 
+        minViewMode: "years",
         language: 'th',
         thaiyear: true
-    })
+    };
+
+    $('#dtpYear').datepicker(dtpYearOptions)
+    .datepicker('update', moment(moment().add(1, 'years').toDate()).toDate())
+    .on('changeDate', function(event) {
+        $scope.dtpYear = moment(event.date).year() + 543;
+
+        $scope.getStat1();
+        $scope.getStat2();
+        $scope.getSummaryAssets();
+        $scope.getSummaryMaterials();
+        $scope.getProjectTypeRatio();
+    });
+
+    $('#cboAssetDate').datepicker(dtpMonthOptions)
     .datepicker('update', moment().toDate())
     .on('changeDate', function(event) {
-        $scope.getHeadLeaves();
+        console.log(moment(event.date).year());
     });
+
+    $('#cboMaterialDate').datepicker(dtpMonthOptions)
+    .datepicker('update', moment().toDate())
+    .on('changeDate', function(event) {
+        console.log(moment(event.date).year());
+    });
+
+    $scope.onApprovedToggle = function(e) {
+        $scope.approved = $(e.target).children().val();
+
+        $scope.getStat1();
+        $scope.getStat2();
+        $scope.getSummaryAssets();
+        $scope.getSummaryMaterials();
+        $scope.getProjectTypeRatio();
+    };
+
+
+    $scope.stat1Cards = [];
+    $scope.stat2Cards = [];
+    $scope.getStat1 = function () {
+        $scope.loading = true;
+
+        let year = $scope.dtpYear;
+
+        $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}?approved=${$scope.approved}`)
+        .then(function(res) {
+            $scope.stat1Cards = res.data.stats;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getStatCardById = function(id) {
+        if (!$scope.stat2Cards) return 0;
+        
+        let type = $scope.stat2Cards.find(st => st.plan_type_id == id);
+        if (!type) return 0;
+
+        return type.sum_all;
+    };
+
+    $scope.getStat2 = function () {
+        $scope.loading = true;
+
+        let year = $scope.dtpYear;
+
+        $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}?approved=${$scope.approved}`)
+        .then(function(res) {
+            $scope.stat2Cards = res.data.stats;
+
+            $scope.getPlanTypeRatio(res.data.stats);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
 
     $scope.assets = [];
     $scope.totalAsset = 0;
@@ -42,9 +117,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         // let date = $('#cboAssetDate').val() !== ''
         //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
         //             : moment().format('YYYY-MM-DD');
-        let year = 2566
+        let year = $scope.dtpYear
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
             const { plans, budget, categories } = res.data;
 
@@ -82,9 +157,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         // let date = $('#cboAssetDate').val() !== ''
         //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
         //             : moment().format('YYYY-MM-DD');
-        let year = 2566;
+        let year = $scope.dtpYear;
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
             $scope.setMaterials(res);
 
@@ -125,53 +200,15 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         $scope.pager = null;
         $scope.loading = true;
 
-        let year = 2566
+        let year = $scope.dtpYear
 
-        $http.get(`${url}&year=${year}`)
+        $http.get(`${url}&year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
             cb(res);
 
             $scope.loading = false;
         }, function(err) {
             console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.stat1Cards = [];
-    $scope.stat2Cards = [];
-    $scope.getStat1 = function () {
-        $scope.loading = true;
-
-        let year = '2566';
-
-        $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}`)
-        .then(function(res) {
-            $scope.stat1Cards = res.data.stats;
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getStat2 = function () {
-        $scope.loading = true;
-
-        let year = '2566';
-
-        $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}`)
-        .then(function(res) {
-            $scope.stat2Cards = res.data.stats;
-
-            $scope.getPlanTypeRatio(res.data.stats);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-
             $scope.loading = false;
         });
     };
@@ -202,10 +239,10 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
     $scope.getPlanTypeRatio = function (data) {
         $scope.pieOptions = ChartService.initPieChart("pieChartContainer", "", "บาท", "สัดส่วนแผนเงินบำรุง");
-        $scope.pieOptions.series[0].data.push({ name: 'ครุุภัณฑ์', y: parseInt(data[0].sum_all) });
-        $scope.pieOptions.series[0].data.push({ name: 'วัสดุ', y: parseInt(data[1].sum_all) });
-        $scope.pieOptions.series[0].data.push({ name: 'จ้างบริการ', y: parseInt(data[2].sum_all) });
-        $scope.pieOptions.series[0].data.push({ name: 'ก่อสร้าง', y: parseInt(data[3].sum_all) });
+        $scope.pieOptions.series[0].data.push({ name: 'ครุุภัณฑ์', y: $scope.getStatCardById(1) });
+        $scope.pieOptions.series[0].data.push({ name: 'วัสดุ', y: $scope.getStatCardById(2) });
+        $scope.pieOptions.series[0].data.push({ name: 'จ้างบริการ', y: $scope.getStatCardById(3) });
+        $scope.pieOptions.series[0].data.push({ name: 'ก่อสร้าง', y: $scope.getStatCardById(4) });
 
         var chart = new Highcharts.Chart($scope.pieOptions);
     };
@@ -213,9 +250,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.getProjectTypeRatio = function () {
         $scope.loading = true;
 
-        let year = '2566';
+        let year = $scope.dtpYear;
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/project-type?year=${year}&approved=`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/project-type?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
             let dataSeries = res.data.projects.map(type => {
                 return { name: type.name, y: parseInt(type.budget) }

@@ -18,8 +18,10 @@ class DashboardController extends Controller
         return view('suppliers.list');
     }
 
-    public function getStat1($year)
+    public function getStat1(Request $req, $year)
     {
+        $approved = $req->get('approved');
+
         $stats = \DB::table("plans")
                         ->select(
                             \DB::raw("sum(plan_items.sum_price) as sum_all"),
@@ -30,6 +32,13 @@ class DashboardController extends Controller
                         ->leftJoin("plan_items", "plan_items.plan_id", "=", "plans.id")
                         ->leftJoin("plan_types", "plans.plan_type_id", "=", "plan_types.id")
                         ->where("plans.year", $year)
+                        ->when(!empty($approved), function($query) use ($approved) {
+                            if ($approved == '1') {
+                                $query->whereNull('plans.approved');
+                            } else {
+                                $query->where('plans.approved', 'A');
+                            }
+                        })
                         ->get();
 
         return [
@@ -37,8 +46,10 @@ class DashboardController extends Controller
         ];
     }
 
-    public function getStat2($year)
+    public function getStat2(Request $req, $year)
     {
+        $approved = $req->get('approved');
+
         $stats = \DB::table("plans")
                         ->select(
                             "plans.plan_type_id",
@@ -50,6 +61,13 @@ class DashboardController extends Controller
                         ->groupBy("plans.plan_type_id")
                         ->groupBy("plan_types.plan_type_name")
                         ->where("plans.year", $year)
+                        ->when(!empty($approved), function($query) use ($approved) {
+                            if ($approved == '1') {
+                                $query->whereNull('plans.approved');
+                            } else {
+                                $query->where('plans.approved', 'A');
+                            }
+                        })
                         ->get();
 
         return [
@@ -61,6 +79,7 @@ class DashboardController extends Controller
     {
         /** Get params from query string */
         $year = $req->get('year');
+        $approved = $req->get('approved');
 
         $plans = \DB::table('plans')
                     ->select(
@@ -78,6 +97,13 @@ class DashboardController extends Controller
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
                     ->groupBy('items.category_id')
                     ->where('plans.year', $year)
+                    ->when(!empty($approved), function($query) use ($approved) {
+                        if ($approved == '1') {
+                            $query->whereNull('plans.approved');
+                        } else {
+                            $query->where('plans.approved', 'A');
+                        }
+                    })
                     ->where('plans.plan_type_id', 1)
                     // ->where('plans.approved', 'A')
                     ->get();
@@ -93,6 +119,7 @@ class DashboardController extends Controller
     {
         /** Get params from query string */
         $year = $req->get('year');
+        $approved = $req->get('approved');
 
         $plans = \DB::table('plans')
                     ->select(
@@ -111,7 +138,13 @@ class DashboardController extends Controller
                     ->groupBy('items.category_id')
                     ->where('plans.year', $year)
                     ->where('plans.plan_type_id', 2)
-                    // ->where('plans.approved', 'A')
+                    ->when(!empty($approved), function($query) use ($approved) {
+                        if ($approved == '1') {
+                            $query->whereNull('plans.approved');
+                        } else {
+                            $query->where('plans.approved', 'A');
+                        }
+                    })
                     ->paginate(10);
 
         return [
@@ -136,8 +169,12 @@ class DashboardController extends Controller
                         ->leftJoin("project_types", "projects.project_type_id", "=", "project_types.id")
                         ->groupBy('project_types.name')
                         ->where('projects.year', $year)
-                        ->when(!empty($approved), function($q) use ($approved) {
-                            $q->where('projects.approved', $approved);
+                        ->when(!empty($approved), function($query) use ($approved) {
+                            if ($approved == '1') {
+                                $query->whereNull('projects.approved');
+                            } else {
+                                $query->where('projects.approved', 'A');
+                            }
                         })
                         ->get();
 
