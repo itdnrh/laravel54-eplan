@@ -267,19 +267,20 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
             $scope.newItem.plan         = plan;
-            $scope.newItem.plan_id      = plan.id,
-            $scope.newItem.item_id      = plan.plan_item.item_id,
-            $scope.newItem.item         = plan.plan_item.item,
-            $scope.newItem.price_per_unit = plan.calc_method == 1 ? plan.price_per_unit : '',
-            $scope.newItem.unit_id      = plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '',
-            $scope.newItem.unit_name    = plan.calc_method == 1 ? plan.plan_item.unit.name : '',
-            $scope.newItem.amount       = plan.calc_method == 1 ? plan.remain_amount : '',
-            $scope.newItem.sum_price    = plan.calc_method == 1 ? plan.remain_budget : ''
+            $scope.newItem.plan_id      = plan.id;
+            $scope.newItem.item_id      = plan.plan_item.item_id;
+            $scope.newItem.item         = plan.plan_item.item;
+            $scope.newItem.price_per_unit = plan.calc_method == 1 ? plan.price_per_unit : '';
+            $scope.newItem.unit_id      = plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '';
+            $scope.newItem.unit_name    = plan.calc_method == 1 ? plan.plan_item.unit.name : '';
+            $scope.newItem.amount       = plan.calc_method == 1 ? plan.remain_amount : '';
+            $scope.newItem.sum_price    = plan.calc_method == 1 ? plan.remain_budget : '';
+
+            if (plan.calc_method == 1) {
+                $('#unit_id').val(plan.plan_item.unit_id).trigger("change.select2");
+            }
         }
 
-        if (plan.calc_method == 1) {
-            $('#unit_id').val(plan.plan_item.unit_id).trigger("change.select2");
-        }
 
         $('#plans-list').modal('hide');
     };

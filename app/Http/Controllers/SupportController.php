@@ -605,14 +605,14 @@ class SupportController extends Controller
     public function printForm($id)
     {
         $support = Support::with('planType','depart','division')
-                    ->with('details','details.plan','details.plan.planItem.unit')
-                    ->with('details.plan.planItem','details.plan.planItem.item')
-                    ->find($id);
+                            ->with('details','details.plan','details.plan.planItem.unit')
+                            ->with('details.plan.planItem','details.plan.planItem.item')
+                            ->find($id);
 
         $committees = Committee::with('type','person','person.prefix')
-                        ->with('person.position','person.academic')
-                        ->where('support_id', $id)
-                        ->get();
+                                ->with('person.position','person.academic')
+                                ->where('support_id', $id)
+                                ->get();
         
         $contact = Person::where('person_id', $support->contact_person)
                             ->with('prefix','position')
@@ -621,12 +621,14 @@ class SupportController extends Controller
         $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.faction_id', $support->depart->faction_id)
                             ->where('level.duty_id', '1')
+                            ->where('personal.person_state', '1')
                             ->with('prefix','position')
                             ->first();
-        
+
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.depart_id', $support->depart_id)
                             ->where('level.duty_id', '2')
+                            ->where('personal.person_state', '1')
                             ->with('prefix','position')
                             ->first();
 

@@ -209,7 +209,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-md-6" ng-show="support.total > 100000">
+                            <div class="form-group col-md-6">
                                 <label>คณะกรรมการกำหนดคุณลักษณะ :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -225,7 +225,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="form-group col-md-6" ng-show="support.total > 500000">
+                            <div class="form-group col-md-6" ng-show="support.total >= 500000">
                                 <label>คณะกรรมการเปิดซอง/พิจารณาราคา :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
