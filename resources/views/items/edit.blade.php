@@ -271,7 +271,7 @@
                                 ng-click="formValidate($event, '/items/validate', item, 'frmEditItem', update)"
                                 class="btn btn-warning pull-right"
                             >
-                                แก้ไข
+                                บันทึกการแก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>
