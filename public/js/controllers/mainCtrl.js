@@ -221,7 +221,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
 
             $('#group_id').attr('disabled', false)
         } else {
-            $('#group_id').attr('disabled', true)
+            // $('#group_id').attr('disabled', true)
         }
     };
 

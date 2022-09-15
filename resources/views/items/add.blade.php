@@ -285,6 +285,8 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 

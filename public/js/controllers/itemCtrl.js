@@ -160,7 +160,11 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             $scope.item.unit_id         = item.unit_id.toString();
 
             /** */
+            $("#unit_id").val(item.unit_id).trigger('change.select2');
+
+            /** */
             $scope.onPlanTypeSelected(item.plan_type_id);
+            $scope.onCategorySelected(item.category_id);
         }
     };
 
