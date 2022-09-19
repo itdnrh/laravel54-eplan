@@ -3,7 +3,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.loading = false;
     $scope.vatRates = [0,7];
     $scope.editRow = false;
-    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.txtPoNo = '';
 
@@ -20,7 +20,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         po_req_date: '',
         po_app_no: '',
         po_app_date: '',
-        year: '',
+        year: '2566',
         supplier_id: '',
         order_type_id: '',
         plan_type_id: '',
@@ -123,16 +123,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.calculateSumPrice = function() {
-        let price = parseFloat($(`#price_per_unit`).val());
-        let amount = parseFloat($(`#amount`).val());
+        let price = parseFloat($scope.currencyToNumber($(`#price_per_unit`).val()));
+        let amount = parseFloat($scope.currencyToNumber($(`#amount`).val()));
 
         $scope.newItem.sum_price = price * amount;
         $('#sum_price').val(price * amount);
     };
 
     $scope.calculateVat = function() {
-        let total = parseFloat($(`#total`).val());
-        let rate = parseFloat($(`#vat_rate`).val());
+        let total = parseFloat($scope.currencyToNumber($(`#total`).val()));
+        let rate = parseFloat($scope.currencyToNumber($(`#vat_rate`).val()));
         let vat = (total * rate) / 100;
 
         $scope.order.vat = vat;
@@ -142,8 +142,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.calculateNetTotal = function() {
-        let total = parseFloat($(`#total`).val());
-        let vat = parseFloat($(`#vat`).val());
+        let total = parseFloat($scope.currencyToNumber($(`#total`).val()));
+        let vat = parseFloat($scope.currencyToNumber($(`#vat`).val()));
 
         let net_total = total + vat;
         $scope.order.net_total = net_total;

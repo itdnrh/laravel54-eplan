@@ -97,7 +97,6 @@
                                         กรุณาระบุเลขที่ P/O
                                     </span>
                                 </div>
-
                                 <div
                                     class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
@@ -114,7 +113,9 @@
                                         กรุณาระบุวันที่ใบ P/O
                                     </span>
                                 </div>
+                            </div>
 
+                            <div class="row">
                                 <div
                                     class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_req_no')}"
@@ -130,7 +131,6 @@
                                         กรุณาระบุเลขที่บันทึกรายงานขอซื้อ/จ้าง
                                     </span>
                                 </div>
-
                                 <div
                                     class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_req_date')}"
@@ -162,7 +162,6 @@
                                         กรุณาระบุเลขที่อนุมัติสั่งซื้อ/จ้าง
                                     </span>
                                 </div>
-
                                 <div
                                     class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_app_date')}"
@@ -204,7 +203,6 @@
                                         กรุณาเลือกเจ้าหนี้
                                     </span>
                                 </div>
-                                
                                 <div
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
@@ -529,6 +527,14 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
+            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
+            $('#sum_price').inputmask("currency", { "placeholder": "0" });
+
+            $('#total').inputmask("currency", { "placeholder": "0" });
+            $('#vat').inputmask("currency", { "placeholder": "0" });
+            $('#net_total').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 
