@@ -124,12 +124,17 @@
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_req_no')}"
                                 >
                                     <label>เลขที่บันทึกรายงานขอซื้อ/จ้าง :</label>
-                                    <input  type="text"
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default">{{ $documentNo }}/</button>
+                                        </div>
+                                        <input  type="text"
                                             id="po_req_no"
                                             name="po_req_no"
                                             ng-model="order.po_req_no"
                                             class="form-control"
                                             tabindex="6">
+                                    </div>
                                     <span class="help-block" ng-show="checkValidate(order, 'po_req_no')">
                                         กรุณาระบุเลขที่บันทึกรายงานขอซื้อ/จ้าง
                                     </span>
@@ -155,12 +160,18 @@
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_app_no')}"
                                 >
                                     <label>เลขที่อนุมัติสั่งซื้อ/จ้าง :</label>
-                                    <input  type="text"
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default">{{ $documentNo }}/</button>
+                                        </div>
+                                        <input
+                                            type="text"
                                             id="po_app_no"
                                             name="po_app_no"
                                             ng-model="order.po_app_no"
                                             class="form-control"
                                             tabindex="6">
+                                    </div>
                                     <span class="help-block" ng-show="checkValidate(order, 'po_app_no')">
                                         กรุณาระบุเลขที่อนุมัติสั่งซื้อ/จ้าง
                                     </span>
@@ -286,15 +297,16 @@
                                                             ng-model="newItem.plan_no"
                                                         />
                                                         <p style="margin: 0;">@{{ detail.plan_depart }}</p>
-                                                        <p style="margin: 0;">
-                                                            @{{ detail.plan_detail }}
-                                                            <span>@{{ detail.plan_desc }}</span>
-                                                            <span>@{{ detail.spec }}</span>
+                                                        <p style="margin: 0;">@{{ detail.plan_detail }}</p>
+                                                        <p class="item__desc-text">@{{ detail.plan_desc }}</p>
+                                                        <p class="item__spec-text">
+                                                            @{{ detail.spec }}
                                                         </p>
+                                                        
                                                     </td>
                                                     <td style="text-align: center">
                                                         <!-- spec -->
-                                                        <a href="#" class="btn bg-gray" ng-click="showSpecForm(detail)">
+                                                        <a href="#" class="btn bg-gray" ng-click="showSpecForm(index)">
                                                             <i class="fa fa-bars" aria-hidden="true"></i>
                                                         </a>
                                                     </td>

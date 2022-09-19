@@ -7,16 +7,9 @@
             <div class="modal-body">
                 <input
                     type="hidden"
-                    id="item_id"
-                    name="item_id"
-                    ng-model="newItem.item_id"
-                />
-                <input
-                    type="hidden"
-                    id="plan_no"
-                    name="plan_no"
-                    style="text-align: center"
-                    ng-model="newItem.plan_no"
+                    id="selectedIndex"
+                    name="selectedIndex"
+                    ng-model="selectedIndex"
                 />
 
                 <div class="row">
@@ -25,7 +18,7 @@
                             type="text"
                             id="spec"
                             name="spec"
-                            ng-model="newItem.spec"
+                            ng-model="order.details[selectedIndex].spec"
                             rows="5"
                             class="form-control"
                         ></textarea>

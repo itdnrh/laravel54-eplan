@@ -179,6 +179,8 @@ class OrderController extends Controller
 
     public function create(Request $req)
     {
+        $depart = Depart::where('depart_id', '2')->first();
+
         if (!empty($req->get('support'))) {
             $support = Support::with('planType','depart','division','details')
                         ->with('details.unit','details.plan','details.plan.planItem.unit')
@@ -190,6 +192,7 @@ class OrderController extends Controller
         }
 
         return view('orders.add', [
+            'documentNo'    => $depart->memo_no,
             'support'       => $support,
             "suppliers"     => Supplier::all(),
             "planTypes"     => PlanType::all(),
@@ -265,9 +268,7 @@ class OrderController extends Controller
                     $plan->save();
 
                     /** Update support_details's items */
-                    $supportDetail = SupportDetail::where('support_id', $detail->support_id)
-                                        ->where('plan_id', $detail->plan_id)
-                                        ->update(['status' => 3]);
+                    $supportDetail = SupportDetail::where('id', $detail->support_detail_id)->update(['status' => 3]);
                 }
 
                 return [

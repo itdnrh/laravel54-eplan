@@ -48,3 +48,15 @@
 .required-field {
     color: red;
 }
+
+.item__desc-text {
+    margin: 0;
+    color: red;
+}
+
+.item__spec-text {
+    margin: 0;
+    color: gray;
+    font-size: 12px;
+    font-style: italic;
+}
