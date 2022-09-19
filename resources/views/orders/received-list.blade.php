@@ -20,9 +20,8 @@
         class="content"
         ng-controller="orderCtrl"
         ng-init="
-            getSupportsToReceive();
-            getPlans(2);
             getSupports(2);
+            getSupportsToReceive();
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -161,16 +160,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#supported-list" data-toggle="tab">
+                                <a href="#received-list" data-toggle="tab">
                                     <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
                                     ใบขอสนับสนุนลงรับแล้ว
-                                    <span class="badge badge-light">@{{ leaves.length }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#received-list" data-toggle="tab">
-                                    <i class="fa fa-pencil-square-o text-maroon" aria-hidden="true"></i>
-                                    รายการแผนที่ลงรับแล้ว
                                     <span class="badge badge-light">@{{ leaves.length }}</span>
                                 </a>
                             </li>
@@ -179,11 +171,6 @@
                             <div class="active tab-pane" id="supports-list">
 
                                 @include('orders._supports-list')
-
-                            </div><!-- /.tab-pane -->
-                            <div class="tab-pane" id="supported-list">
-
-                                @include('orders._supported-list')
 
                             </div><!-- /.tab-pane -->
                             <div class="tab-pane" id="received-list">
@@ -205,6 +192,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
+        @include('supports._details-list')
         @include('orders._receive-list')
         @include('orders._receive-form')
 
