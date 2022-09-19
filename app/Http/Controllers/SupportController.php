@@ -144,7 +144,7 @@ class SupportController extends Controller
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
                     })
-                    ->orderBy('received_no', 'DESC')
+                    ->orderBy('sent_date', 'DESC')
                     ->paginate(10);
 
         return [
