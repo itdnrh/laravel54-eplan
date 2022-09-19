@@ -62,18 +62,21 @@
                     <form
                         id="frmDelete"
                         method="POST"
-                        action="{{ url('/assets/delete') }}"
+                        action="{{ url('/supports/cancel') }}"
                         ng-show="support.status == 2"
                     >
                         {{ csrf_field() }}
                         <button
                             type="submit"
-                            ng-click="delete($event, plan.id)"
+                            ng-click="cancel($event, plan.id)"
                             class="btn btn-danger btn-xs"
                         >
                             ยกเลิก
                         </button>
                     </form>
+                    <a href="{{ url('orders/add?support=') }}@{{ support.id }}" class="btn btn-primary btn-xs">
+                        สร้าง PO
+                    </a>
                 </div>
             </td>             
         </tr>

@@ -106,6 +106,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(event.date);
         });
 
+    $scope.setSupportToOrder = function(support) {
+        $scope.order.plan_type_id = support.plan_type_id.toString();
+
+        support.details.forEach(item => {
+            const orderItem = {
+                plan_no: item.plan.plan_no,
+                plan_depart: support.division ? support.division.ward_name : support.depart.depart_name,
+                plan_detail: `${item.plan.plan_item.item.item_name} (${item.plan.plan_item.item.category.name})`,
+                plan_desc: item.desc,
+                plan_id: item.plan.id,
+                item_id: item.plan.plan_item.item_id,
+                support_id: support.id,
+                spec: '',
+                price_per_unit: item.price_per_unit,
+                unit_id: item.unit.id,
+                unit: item.unit,
+                amount: item.amount,
+                sum_price: item.sum_price
+            };
+
+            $scope.order.details.push(orderItem);
+            $scope.calculateTotal();
+        });
+    };
+
     $scope.clearNewItem = () => {
         $scope.newItem = {
             plan_no: '',
@@ -167,7 +192,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         //     toaster.pop('error', "ผลการตรวจสอบ", "คุณเลือกรายการซ้ำ !!!");
         // } else {
             $scope.order.details.push({ ...$scope.newItem });
-    
+
             $scope.calculateTotal();
             $scope.clearNewItem();
         // }

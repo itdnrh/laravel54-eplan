@@ -19,11 +19,14 @@
     <section
         class="content"
         ng-controller="orderCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }}
-        });"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }}
+            });
+            setSupportToOrder({{ $support }});
+        "
     >
 
         <div class="row">

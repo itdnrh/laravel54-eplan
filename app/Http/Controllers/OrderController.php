@@ -177,9 +177,20 @@ class OrderController extends Controller
         ];
     }
 
-    public function create()
+    public function create(Request $req)
     {
+        if (!empty($req->get('support'))) {
+            $support = Support::with('planType','depart','division','details')
+                        ->with('details.unit','details.plan','details.plan.planItem.unit')
+                        ->with('details.plan.planItem','details.plan.planItem.item')
+                        ->with('details.plan.planItem.item.category')
+                        ->find($req->get('support'));
+        } else {
+            $support = '';
+        }
+
         return view('orders.add', [
+            'support'       => $support,
             "suppliers"     => Supplier::all(),
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
