@@ -573,9 +573,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         plan.price_per_unit = $scope.currencyToNumber(plan.price_per_unit);
         plan.sum_price      = $scope.currencyToNumber(plan.sum_price);
         plan.amount         = $scope.currencyToNumber(plan.amount);
-        plan.have_amount    = $scope.currencyToNumber(plan.have_amount);
-
-        console.log(plan);
+        plan.have_amount    = plan.have_amount ? $scope.currencyToNumber(plan.have_amount) : 0;
 
         $scope.formValidate(e, endpoint, plan, frmName, callback)
     };
