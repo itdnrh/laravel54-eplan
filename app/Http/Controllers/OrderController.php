@@ -233,26 +233,16 @@ class OrderController extends Controller
             // $order->user_id         = $req['user_id'];
 
             if ($order->save()) {
-                /** Update running number table of doc_type_id = 10 */
-                if ($order->order_type_id == 1) {
-                    $docTypeId = '7';
-                } else if ($order->order_type_id == 2) {
-                    $docTypeId = '8';
-                } else {
-                    $docTypeId = '9';
-                }
-
-                $poNoSplitted = explode('/', $order->po_no);
-                $running = Running::where('doc_type_id', $docTypeId)
-                                ->where('year', $order->year)
-                                ->update(['running_no' => $poNoSplitted[0]]);
-
                 $orderId = $order->id;
+
+                /** Update running number table of doc_type_id = 10 */
+                $this->updateRunning($order);
 
                 foreach($req['details'] as $item) {
                     $detail = new OrderDetail;
                     $detail->order_id       = $orderId;
                     $detail->support_id     = $item['support_id'];
+                    $detail->support_detail_id = $item['support_detail_id'];
                     $detail->plan_id        = $item['plan_id'];
                     $detail->item_id        = $item['item_id'];
                     $detail->spec           = $item['spec'];
@@ -260,15 +250,14 @@ class OrderController extends Controller
                     $detail->unit_id        = $item['unit_id'];
                     $detail->amount         = $item['amount'];
                     $detail->sum_price      = $item['sum_price'];
-                    $detail->save();
 
-                    /** Update plan data */
-                    $plan = Plan::find($item['plan_id']);
-                    $plan->status = 3;
-                    $plan->save();
-
-                    /** Update support_details's items */
-                    $supportDetail = SupportDetail::where('id', $detail->support_detail_id)->update(['status' => 3]);
+                    if ($detail->save()) {
+                        /** Update plan data */
+                        $plan = Plan::find($detail->plan_id)->update(['status' => 3]);
+    
+                        /** Update support_details's items */
+                        $supportDetail = SupportDetail::find($detail->support_detail_id)->update(['status' => 3]);
+                    }
                 }
 
                 return [
@@ -288,6 +277,24 @@ class OrderController extends Controller
                 'message'   => $ex->getMessage()
             ];
         }
+    }
+
+    private function updateRunning(Order $order)
+    {
+        $docTypeId = '';
+        list($poNo, $poYear) = explode('/', $order->po_no);
+
+        if ($order->order_type_id == 1) {
+            $docTypeId = '7';
+        } else if ($order->order_type_id == 2) {
+            $docTypeId = '8';
+        } else {
+            $docTypeId = '9';
+        }
+
+        return Running::where('doc_type_id', $docTypeId)
+                        ->where('year', $order->year)
+                        ->update(['running_no' => $poNo]);
     }
 
     public function edit($id)

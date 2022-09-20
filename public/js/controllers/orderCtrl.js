@@ -770,6 +770,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.store = function(event, form) {
         event.preventDefault();
+        $scope.loading = true;
 
         $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
         .then(res => {
@@ -779,11 +780,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
             }
+
+            $scope.loading = false;
+
+            window.location.href = `${CONFIG.baseUrl}/orders/list`;
         }, err => {
             console.log(err);
+            $scope.loading = false;
         });
-
-        // window.location.href = `${CONFIG.baseUrl}/orders/list`;
     }
 
     $scope.edit = function(id) {
