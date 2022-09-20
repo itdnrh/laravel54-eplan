@@ -47,11 +47,9 @@
                 >
                     <option value="">-- ทั้งหมด --</option>
                     @foreach($factions as $faction)
-
                         <option value="{{ $faction->faction_id }}">
                             {{ $faction->faction_name }}
                         </option>
-
                     @endforeach
                 </select>
             </div>
@@ -116,7 +114,7 @@
             <td>
                 <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
                 <p style="margin: 0;">เลขที่ @{{ support.doc_date | thdate }}</p>
-                <p style="margin: 0; font-size: 12px;">
+                <p class="item__spec-text">
                     (<i class="fa fa-clock-o" aria-hidden="true"></i> ส่งเมื่อ @{{ support.sent_date | thdate }})
                 </p>
             </td>
