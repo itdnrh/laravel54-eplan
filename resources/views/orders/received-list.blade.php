@@ -20,8 +20,8 @@
         class="content"
         ng-controller="orderCtrl"
         ng-init="
-            getSupports(2);
-            getSupportsToReceive();
+            getSupports();
+            getReceiveds(2);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -30,106 +30,6 @@
 
         <div class="row">
             <div class="col-md-12">
-
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">ค้นหาข้อมูล</h3>
-                    </div>
-
-                    <form id="frmSearch" name="frmSearch" role="form">
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="cboYear"
-                                        name="cboYear"
-                                        ng-model="cboYear"
-                                        class="form-control"
-                                        ng-change="getPlans(2)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                                <div class="form-group col-md-6">
-                                    <label>ประเภทพัสดุ</label>
-                                    <select
-                                        style="margin-right: 1rem;"
-                                        class="form-control"
-                                        ng-model="cboPlanType"
-                                        ng-change="onFilterCategories(cboPlanType); getPlans(2);"
-                                    >
-                                        <option value="">-- เลือกประเภทพัสดุ --</option>
-                                        @foreach($planTypes as $planType)
-                                            <option value="{{ $planType->id }}">
-                                                {{ $planType->plan_type_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>ประเภทครุภัณฑ์</label>
-                                    <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
-                                        class="form-control"
-                                        ng-change="getPlans(2)"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.row -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>กลุ่มภารกิจ</label>
-                                        <select
-                                            id="cboFaction"
-                                            name="cboFaction"
-                                            ng-model="cboFaction"
-                                            class="form-control"
-                                            ng-change="onFactionSelected(cboFaction)"
-                                        >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            @foreach($factions as $faction)
-
-                                                <option value="{{ $faction->faction_id }}">
-                                                    {{ $faction->faction_name }}
-                                                </option>
-
-                                            @endforeach
-                                        </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>กลุ่มงาน</label>
-                                        <select
-                                            id="cboDepart"
-                                            name="cboDepart"
-                                            ng-model="cboDepart"
-                                            class="form-control select2"
-                                            ng-change="getPlans(2)"
-                                        >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
-                                                @{{ dep.depart_name }}
-                                            </option>
-                                        </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
-                            </div><!-- /.row -->
-                        </div><!-- /.box-body -->
-                    </form>
-                </div><!-- /.box -->
-
                 <div class="box">
                     <div class="box-header with-border">
                         <div class="row">

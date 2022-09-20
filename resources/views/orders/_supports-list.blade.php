@@ -1,38 +1,43 @@
 <!-- // TODO: Filtering controls -->
-<!-- <div class="box" style="margin-top: 10px;">
-    <div class="box-body">
-        <div class="row">
-            <div class="col-md-6">
-                <select
-                    style="margin-right: 1rem;"
-                    class="form-control"
-                    ng-model="cboPlanType"
-                    ng-change="onFilterCategories(cboPlanType); getSupportsToReceive();"
-                >
-                    <option value="">-- เลือกประเภทแผน --</option>
-                    @foreach($planTypes as $planType)
-                        <option value="{{ $planType->id }}">
-                            {{ $planType->plan_type_name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-6">
-                <select
-                    style="margin-right: 1rem;"
-                    class="form-control"
-                    ng-model="cboCategory"
-                    ng-change="getSupportsToReceive();"
-                >
-                    <option value="">-- เลือกประเภทพัสดุ --</option>
-                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                        @{{ category.name }}
-                    </option>
-                </select>
-            </div>
+<form id="frmSearch" name="frmSearch" role="form">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>ปีงบประมาณ</label>
+            <select
+                id="cboYear"
+                name="cboYear"
+                ng-model="cboYear"
+                class="form-control"
+                ng-change="getSupports()"
+            >
+                <option value="">-- ทั้งหมด --</option>
+                <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                    @{{ y }}
+                </option>
+            </select>
         </div>
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-md-6">
+        <div class="form-group col-md-6">
+            <label>ประเภทพัสดุ</label>
+            <select
+                style="margin-right: 1rem;"
+                class="form-control"
+                ng-model="cboPlanType"
+                ng-change="getSupports();"
+            >
+                <option value="">-- เลือกประเภทพัสดุ --</option>
+                @foreach($planTypes as $planType)
+                    <option value="{{ $planType->id }}">
+                        {{ $planType->plan_type_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>กลุ่มภารกิจ</label>
                 <select
                     id="cboFaction"
                     name="cboFaction"
@@ -40,7 +45,7 @@
                     class="form-control"
                     ng-change="onFactionSelected(cboFaction)"
                 >
-                    <option value="">-- กลุ่มภารกิจ --</option>
+                    <option value="">-- ทั้งหมด --</option>
                     @foreach($factions as $faction)
 
                         <option value="{{ $faction->faction_id }}">
@@ -50,15 +55,18 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>กลุ่มงาน</label>
                 <select
                     id="cboDepart"
                     name="cboDepart"
                     ng-model="cboDepart"
-                    ng-change="getSupportsToReceive()"
                     class="form-control"
+                    ng-change="getSupports();"
                 >
-                    <option value="">-- กลุ่มงาน --</option>
+                    <option value="">-- ทั้งหมด --</option>
                     <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
                         @{{ dep.depart_name }}
                     </option>
@@ -66,7 +74,23 @@
             </div>
         </div>
     </div>
-</div> -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>เลขที่ใบขอสนับสนุน</label>
+                <input
+                    type="text"
+                    id="txtSupportNo"
+                    name="txtSupportNo"
+                    ng-model="txtSupportNo"
+                    class="form-control"
+                    ng-keyup="getSupports();"
+                />
+            </div>
+        </div>
+    </div>
+</form>
 <!-- // TODO: Filtering controls -->
 
 <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
@@ -83,11 +107,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-show="supportsToReceives.length === 0">
+        <tr ng-show="supports.length === 0">
             <td colspan="8" style="text-align: center; color: red;">-- ไม่มีรายการ --</td>
         </tr>
-        <tr ng-repeat="(index, support) in supportsToReceives" ng-show="supportsToReceives.length > 0">
-            <td style="text-align: center;">@{{ index+supportsToReceives_pager.from }}</td>
+        <tr ng-repeat="(index, support) in supports" ng-show="supports.length > 0">
+            <td style="text-align: center;">@{{ index+supports_pager.from }}</td>
             <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
             <td>
                 <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
@@ -132,41 +156,41 @@
 
 @include('orders._receive-form')
 
-<div class="row" ng-show="supportsToReceives_pager.last_page > 1">
+<div class="row" ng-show="supports_pager.last_page > 1">
     <div class="col-md-4">
-        หน้า @{{ supportsToReceives_pager.current_page }} จาก @{{ supportsToReceives_pager.last_page }}
+        หน้า @{{ supports_pager.current_page }} จาก @{{ supports_pager.last_page }}
     </div>
     <div class="col-md-4" style="text-align: center;">
-        จำนวน @{{ supportsToReceives_pager.total }} รายการ
+        จำนวน @{{ supports_pager.total }} รายการ
     </div>
     <div class="col-md-4">
         <ul class="pagination pagination-sm no-margin pull-right">
-            <li ng-if="supportsToReceives_pager.current_page !== 1">
-                <a ng-click="getPlansToReceiveWithUrl($event, supportsToReceives_pager.path+ '?page=1', setPlansToReceive)" aria-label="Previous">
+            <li ng-if="supports_pager.current_page !== 1">
+                <a ng-click="getSupportsWithUrl($event, supports_pager.path+ '?page=1', setSupports)" aria-label="Previous">
                     <span aria-hidden="true">First</span>
                 </a>
             </li>
 
-            <li ng-class="{'disabled': (supportsToReceives_pager.current_page==1)}">
-                <a ng-click="getPlansToReceiveWithUrl($event, supportsToReceives_pager.prev_page_url, setPlansToReceive)" aria-label="Prev">
+            <li ng-class="{'disabled': (supports_pager.current_page==1)}">
+                <a ng-click="getSupportsWithUrl($event, supports_pager.prev_page_url, setSupports)" aria-label="Prev">
                     <span aria-hidden="true">Prev</span>
                 </a>
             </li>
 
-            <!-- <li ng-if="supportsToReceives_pager.current_page < supportsToReceives_pager.last_page && (supportsToReceives_pager.last_page - supportsToReceives_pager.current_page) > 10">
-                <a href="@{{ supportsToReceives_pager.url(supportsToReceives_pager.current_page + 10) }}">
+            <!-- <li ng-if="supports_pager.current_page < supports_pager.last_page && (supports_pager.last_page - supports_pager.current_page) > 10">
+                <a href="@{{ supports_pager.url(supports_pager.current_page + 10) }}">
                     ...
                 </a>
             </li> -->
 
-            <li ng-class="{'disabled': (supportsToReceives_pager.current_page==supportsToReceives_pager.last_page)}">
-                <a ng-click="getPlansToReceiveWithUrl($event, supportsToReceives_pager.next_page_url, setPlansToReceive)" aria-label="Next">
+            <li ng-class="{'disabled': (supports_pager.current_page==supports_pager.last_page)}">
+                <a ng-click="getSupportsWithUrl($event, supports_pager.next_page_url, setSupports)" aria-label="Next">
                     <span aria-hidden="true">Next</span>
                 </a>
             </li>
 
-            <li ng-if="supportsToReceives_pager.current_page !== supportsToReceives_pager.last_page">
-                <a ng-click="getPlansToReceiveWithUrl($event, supportsToReceives_pager.path+ '?page=' +supportsToReceives_pager.last_page, setPlansToReceive)" aria-label="Previous">
+            <li ng-if="supports_pager.current_page !== supports_pager.last_page">
+                <a ng-click="getSupportsWithUrl($event, supports_pager.path+ '?page=' +supports_pager.last_page, setSupports)" aria-label="Previous">
                     <span aria-hidden="true">Last</span>
                 </a>
             </li>

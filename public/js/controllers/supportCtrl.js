@@ -1,7 +1,7 @@
 app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
@@ -27,7 +27,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         topic: '',
         depart_id: '',
         division_id: '',
-        year: (moment().year() + 543).toString(),
+        year: '2566', //(moment().year() + 543).toString(),
         plan_type_id: '',
         category_id: '',
         total: '',

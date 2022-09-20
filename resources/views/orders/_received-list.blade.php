@@ -1,3 +1,98 @@
+<!-- // TODO: Filtering controls -->
+<form id="frmSearch" name="frmSearch" role="form">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>ปีงบประมาณ</label>
+            <select
+                id="cboYear"
+                name="cboYear"
+                ng-model="cboYear"
+                class="form-control"
+                ng-change="getReceiveds(2)"
+            >
+                <option value="">-- ทั้งหมด --</option>
+                <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                    @{{ y }}
+                </option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label>ประเภทพัสดุ</label>
+            <select
+                style="margin-right: 1rem;"
+                class="form-control"
+                ng-model="cboPlanType"
+                ng-change="getReceiveds(2);"
+            >
+                <option value="">-- เลือกประเภทพัสดุ --</option>
+                @foreach($planTypes as $planType)
+                    <option value="{{ $planType->id }}">
+                        {{ $planType->plan_type_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>กลุ่มภารกิจ</label>
+                <select
+                    id="cboFaction"
+                    name="cboFaction"
+                    ng-model="cboFaction"
+                    class="form-control"
+                    ng-change="onFactionSelected(cboFaction)"
+                >
+                    <option value="">-- ทั้งหมด --</option>
+                    @foreach($factions as $faction)
+
+                        <option value="{{ $faction->faction_id }}">
+                            {{ $faction->faction_name }}
+                        </option>
+
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>กลุ่มงาน</label>
+                <select
+                    id="cboDepart"
+                    name="cboDepart"
+                    ng-model="cboDepart"
+                    class="form-control"
+                    ng-change="getReceiveds(2)"
+                >
+                    <option value="">-- ทั้งหมด --</option>
+                    <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                        @{{ dep.depart_name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>เลขที่ใบขอสนับสนุน</label>
+                <input
+                    type="text"
+                    id="txtSupportNo"
+                    name="txtSupportNo"
+                    ng-model="txtSupportNo"
+                    class="form-control"
+                    ng-keyup="getReceiveds(2);"
+                />
+            </div>
+        </div>
+    </div>
+</form>
+<!-- // TODO: Filtering controls -->
+
 <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
     <thead>
         <tr>
@@ -12,8 +107,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="(index, support) in supports">
-            <td style="text-align: center;">@{{ index+supports_pager.from }}</td>
+        <tr ng-repeat="(index, support) in receiveds">
+            <td style="text-align: center;">@{{ index+receiveds_pager.from }}</td>
             <td style="text-align: center;">@{{ support.received_no }}</td>
             <td>
                 <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
@@ -85,45 +180,45 @@
 
 <div class="row">
     <div class="col-md-4">
-        หน้า @{{ supports_pager.current_page }} จาก @{{ supports_pager.last_page }}
+        หน้า @{{ receiveds_pager.current_page }} จาก @{{ receiveds_pager.last_page }}
     </div>
     <div class="col-md-4" style="text-align: center;">
-        จำนวน @{{ supports_pager.total }} รายการ
+        จำนวน @{{ receiveds_pager.total }} รายการ
     </div>
     <div class="col-md-4">
-        <ul class="pagination pagination-sm no-margin pull-right" ng-show="supports_pager.last_page > 1">
-            <li ng-if="supports_pager.current_page !== 1">
-                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.path+ '?page=1', 2, setSupports)" aria-label="Previous">
+        <ul class="pagination pagination-sm no-margin pull-right" ng-show="receiveds_pager.last_page > 1">
+            <li ng-if="receiveds_pager.current_page !== 1">
+                <a href="#" ng-click="getReceivedsWithUrl($event, receiveds_pager.path+ '?page=1', 2, setReceiveds)" aria-label="Previous">
                     <span aria-hidden="true">First</span>
                 </a>
             </li>
         
-            <li ng-class="{'disabled': (supports_pager.current_page==1)}">
-                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.prev_page_url, 2, setSupports)" aria-label="Prev">
+            <li ng-class="{'disabled': (receiveds_pager.current_page==1)}">
+                <a href="#" ng-click="getReceivedsWithUrl($event, receiveds_pager.prev_page_url, 2, setReceiveds)" aria-label="Prev">
                     <span aria-hidden="true">Prev</span>
                 </a>
             </li>
 
-            <!-- <li ng-repeat="i in debtPages" ng-class="{'active': supports_pager.current_page==i}">
-                <a href="#" ng-click="getSupportWithUrl(supports_pager.path + '?page=' +i)">
+            <!-- <li ng-repeat="i in debtPages" ng-class="{'active': receiveds_pager.current_page==i}">
+                <a href="#" ng-click="getReceivedsWithUrl(receiveds_pager.path + '?page=' +i, 2, setReceiveds)">
                     @{{ i }}
                 </a>
             </li> -->
 
-            <!-- <li ng-if="supports_pager.current_page < supports_pager.last_page && (supports_pager.last_page - supports_pager.current_page) > 10">
-                <a href="#" ng-click="supports_pager.path">
+            <!-- <li ng-if="receiveds_pager.current_page < receiveds_pager.last_page && (receiveds_pager.last_page - receiveds_pager.current_page) > 10">
+                <a href="#" ng-click="receiveds_pager.path">
                     ...
                 </a>
             </li> -->
 
-            <li ng-class="{'disabled': (supports_pager.current_page==supports_pager.last_page)}">
-                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.next_page_url, 2, setSupports)" aria-label="Next">
+            <li ng-class="{'disabled': (receiveds_pager.current_page==receiveds_pager.last_page)}">
+                <a href="#" ng-click="getReceivedsWithUrl($event, receiveds_pager.next_page_url, 2, setReceiveds)" aria-label="Next">
                     <span aria-hidden="true">Next</span>
                 </a>
             </li>
 
-            <li ng-if="supports_pager.current_page !== supports_pager.last_page">
-                <a href="#" ng-click="getSupportWithUrl($event, supports_pager.path+ '?page=' +supports_pager.last_page, 2, setSupports)" aria-label="Previous">
+            <li ng-if="receiveds_pager.current_page !== receiveds_pager.last_page">
+                <a href="#" ng-click="getReceivedsWithUrl($event, receiveds_pager.path+ '?page=' +receiveds_pager.last_page, 2, setReceiveds)" aria-label="Previous">
                     <span aria-hidden="true">Last</span>
                 </a>
             </li>

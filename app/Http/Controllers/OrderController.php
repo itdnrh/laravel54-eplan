@@ -157,7 +157,7 @@ class OrderController extends Controller
             "suppliers"     => Supplier::all(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -198,7 +198,7 @@ class OrderController extends Controller
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
             "orderTypes"    => OrderType::all(),
@@ -323,7 +323,7 @@ class OrderController extends Controller
         return view('orders.received-list', [
             "categories"    => ItemCategory::all(),
             "planTypes"     => PlanType::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
         ]);
     }

@@ -104,6 +104,7 @@ class SupportController extends Controller
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1') ? $req->get('division') : Auth::user()->memberOf->ward_id;
+        $docNo = $req->get('doc_no');
         $status = $req->get('status');
 
         if($status != '') {
@@ -137,6 +138,9 @@ class SupportController extends Controller
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
+                    })
+                    ->when(!empty($docNo), function($q) use ($docNo) {
+                        $q->where('doc_no', 'like', '%'.$docNo.'%');
                     })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);

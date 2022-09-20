@@ -5,6 +5,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.editRow = false;
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
+    $scope.txtSupportNo = '';
     $scope.txtPoNo = '';
 
     $scope.orders = [];
@@ -348,70 +349,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#plans-list').modal('hide');
     };
 
-    $scope.planToReceives = [];
-    $scope.planToReceives_pager = null;
-    $scope.showPlansToReceive = () => {
-        $scope.getPlansToReceive();
-    };
-
-    $scope.getPlansToReceive = function(res) {
-        $scope.loading = true;
-        $scope.planToReceives = [];
-        $scope.planToReceives_pager = null;
-
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=1`)
-        .then(function(res) {
-            $scope.loading = false;
-
-            $scope.setPlansToReceive(res);
-
-            $('#receive-list').modal('show');
-        }, function(err) {
-            $scope.loading = false;
-            console.log(err);
-        });
-    };
-
-    $scope.getPlansToReceiveWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.planToReceives = [];
-        $scope.planToReceives_pager = null;
-
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-
-        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPlansToReceive = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.planToReceives = data;
-        $scope.planToReceives_pager = pager;
-    };
-
     $scope.onReceivePlan = function(e, plan) {
         $http.post(`${CONFIG.baseUrl}/orders/received/1`, { id: plan.id })
         .then(function(res) {
             console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
+
+                $scope.getReceiveds(2);
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
             }
@@ -422,19 +367,22 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     /** ============================================================================= */
-    $scope.supports = [];
-    $scope.supports_pager = null;
-    $scope.getSupports = (status) => {
+    $scope.receiveds = [];
+    $scope.receiveds_pager = null;
+    $scope.getReceiveds = (status) => {
         $scope.loading = true;
-        $scope.supports = [];
-        $scope.supports_pager = null;
+        $scope.receiveds = [];
+        $scope.receiveds_pager = null;
 
+        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=${status}`)
         .then(function(res) {
-            $scope.setSupports(res);
+            console.log(res);
+            $scope.setReceiveds(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -443,7 +391,64 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
     };
 
-    $scope.getSupportWithUrl = function(e, url, status, cb) {
+    $scope.getReceivedsWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.receiveds = [];
+        $scope.receiveds_pager = null;
+
+        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+
+        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=${status}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setReceiveds = function(res) {
+        const { data, ...pager } = res.data.supports;
+
+        $scope.receiveds = data;
+        $scope.receiveds_pager = pager;
+    };
+
+    $scope.supports = [];
+    $scope.supports_pager = null;
+    $scope.getSupports = function(res) {
+        $scope.loading = true;
+        $scope.supports = [];
+        $scope.supports_pager = null;
+
+        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
+        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        // let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=1`)
+        .then(function(res) {
+            $scope.loading = false;
+
+            $scope.setSupports(res);
+
+            $('#supports-receive').modal('show');
+        }, function(err) {
+            $scope.loading = false;
+            console.log(err);
+        });
+    };
+
+    $scope.getSupportsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -451,10 +456,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supports = [];
         $scope.supports_pager = null;
 
+        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        // let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
 
-        $http.get(`${url}&type=${type}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=1`)
         .then(function(res) {
             cb(res);
 
@@ -472,60 +480,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supports_pager = pager;
     };
 
-    $scope.supportsToReceives = [];
-    $scope.supportsToReceives_pager = null;
-    $scope.getSupportsToReceive = function(res) {
-        $scope.loading = true;
-        $scope.supportsToReceives = [];
-        $scope.supportsToReceives_pager = null;
-
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-
-        $http.get(`${CONFIG.baseUrl}/supports/search?type=${type}&depart=${depart}&status=1`)
-        .then(function(res) {
-            $scope.loading = false;
-
-            $scope.setSupportsToReceive(res);
-
-            $('#supports-receive').modal('show');
-        }, function(err) {
-            $scope.loading = false;
-            console.log(err);
-        });
-    };
-
-    $scope.getSupportsToReceiveWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.supportsToReceives = [];
-        $scope.supportsToReceives_pager = null;
-
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-
-        $http.get(`${url}&type=${type}&depart=${depart}&status=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setSupportsToReceive = function(res) {
-        const { data, ...pager } = res.data.supports;
-
-        $scope.supportsToReceives = data;
-        $scope.supportsToReceives_pager = pager;
-    };
-
     $scope.ShowReceiveSupportForm = function(e, support) {
         console.log(support);
         $('#receive-form').modal('show');
@@ -539,7 +493,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                     toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
     
                     /** Remove support data that has been received */
-                    $scope.supportsToReceives = $scope.supportsToReceives.filter(el => el.id !== res.data.support.id);
+                    $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
                 }
