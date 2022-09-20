@@ -511,12 +511,13 @@
                                             กรุณาระบุรวมเป็นเงิน
                                         </span>
                                     </div>
-                                    <div style="text-align: center;" ng-show="order.net_total_str !== ''">
-                                        <h4>( @{{ order.net_total_str }} )</h4>
-                                    </div>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right;" ng-show="order.net_total_str !== ''">
+                                    <h4>( @{{ order.net_total_str }} )</h4>
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
 
                         <div class="box-footer clearfix">

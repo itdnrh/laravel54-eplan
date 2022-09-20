@@ -177,22 +177,24 @@ class SupportController extends Controller
         $supportType = $req->get('supportType');
         $status = $req->get('status');
 
-        $plans = SupportDetail::join('supports', 'supports.id', '=', 'support_details.support_id')
-                    ->with('plan','plan.planItem','plan.planItem.item')
+        $supportsList = Support::when(!empty($year), function($q) use ($year) {
+                            $q->where('supports.year', $year);
+                        })
+                        ->when(!empty($type), function($q) use ($type) {
+                            $q->where('supports.plan_type_id', $type);
+                        })
+                        ->when(!empty($supportType), function($q) use ($supportType) {
+                            $q->where('supports.support_type_id', $supportType);
+                        })
+                        ->when(!empty($status), function($q) use ($status) {
+                            $q->where('supports.status', $status);
+                        })
+                        ->pluck('id');
+
+        $plans = SupportDetail::with('plan','plan.planItem','plan.planItem.item')
                     ->with('plan.planItem.item.category','support.depart','unit')
-                    ->where('support_details.status', '2')
-                    ->when(!empty($year), function($q) use ($year) {
-                        $q->where('supports.year', $year);
-                    })
-                    ->when(!empty($type), function($q) use ($type) {
-                        $q->where('supports.plan_type_id', $type);
-                    })
-                    ->when(!empty($supportType), function($q) use ($supportType) {
-                        $q->where('supports.support_type_id', $supportType);
-                    })
-                    ->when(!empty($status), function($q) use ($status) {
-                        $q->where('supports.status', $status);
-                    })
+                    ->where('status', '2')
+                    ->whereIn('support_id', $supportsList)
                     ->paginate(10);
 
         return [
