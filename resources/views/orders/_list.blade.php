@@ -33,7 +33,7 @@
                     <i class="fa fa-clone"></i>
                 </a>
             </td>
-            <td style="text-align: center;">@{{ order.net_total | currency:'':0 }}</td>
+            <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
             <td style="text-align: center;">
                 <span class="label label-primary" ng-show="order.status == 0">
                     อยู่ระหว่างจัดซื้อจัดจ้าง

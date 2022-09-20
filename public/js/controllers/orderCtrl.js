@@ -728,7 +728,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
         .then(res => {
-            console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อเรียบร้อย !!!");
             } else {
