@@ -562,13 +562,15 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
         .then(function(res) {
-            $scope.loading = false;
-
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/supports/list`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
             }
+
+            $scope.loading = false;
         }, function(err) {
             $scope.loading = false;
 

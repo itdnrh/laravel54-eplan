@@ -232,10 +232,10 @@
                                         <span class="label label-danger" ng-show="support.status == 9">
                                             ยกเลิก
                                         </span>
-                                        <p style="margin: 0; font-size: 12px;" ng-show="support.status == 1">
+                                        <p class="item__spec-text" style="margin-top: 3px;" ng-show="support.status == 1">
                                             (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.sent_date | thdate }})
                                         </p>
-                                        <p style="margin: 0; font-size: 12px;" ng-show="support.status == 2">
+                                        <p class="item__spec-text" style="margin-top: 3px;" ng-show="support.status == 2">
                                             (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.received_date | thdate }})
                                         </p>
                                     </td>
