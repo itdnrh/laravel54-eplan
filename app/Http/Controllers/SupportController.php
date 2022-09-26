@@ -542,7 +542,7 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($req['id']);
-            $support->doc_no    = $support->doc_no.$req['doc_no'];
+            $support->doc_no    = $req['doc_prefix'].'/'.$req['doc_no'];
             $support->doc_date  = convThDateToDbDate($req['doc_date']);
             $support->sent_date = date('Y-m-d');
             $support->sent_user = Auth::user()->person_id;
@@ -579,10 +579,10 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($id);
-            $support->return_date   = date('Y-m-d h:i:s');
-            $support->return_reason = $req['reason'];
-            $support->return_user   = $req['user'];
-            $support->status        = 3;
+            $support->returned_date     = date('Y-m-d h:i:s');
+            $support->returned_reason   = $req['reason'];
+            $support->returned_user     = $req['user'];
+            $support->status            = 3;
 
             if ($support->save()) {
                 return [

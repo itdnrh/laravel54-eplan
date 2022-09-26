@@ -190,8 +190,27 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-md-12">
-                                <label>คณะกรรมการตรวจรับ :</label>
+                            <div class="form-group col-md-8">
+                                <label>คณะกรรมการกำหนดคุณลักษณะเฉพาะ/จัดทำร่างขอบเขตงาน :</label>
+                                <div class="table-responsive">
+                                    <table class="table table-striped" style="width: 80%;">
+                                        <tr ng-repeat="(index, spec) in support.spec_committee">
+                                            <td>
+                                                @{{ index+1 }}. 
+                                                @{{ spec.person.prefix.prefix_name + spec.person.person_firstname +' '+ spec.person.person_lastname }}
+                                            </td>
+                                            <td>
+                                                ตำแหน่ง @{{ spec.person.position.position_name + spec.person.academic.ac_name }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label>คณะกรรมการตรวจรับพัสดุ :</label>
                                 <div class="table-responsive" style="margin: 0; padding: 0;">
                                     <table class="table table-striped" style="width: 80%;">
                                         <tr ng-repeat="(index, insp) in support.insp_committee">
@@ -209,26 +228,10 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-md-6">
-                                <label>คณะกรรมการกำหนดคุณลักษณะ :</label>
+                            <div class="form-group col-md-8" ng-show="support.total >= 500000">
+                                <label>คณะกรรมการพิจารณาผลการประกวดราคา :</label>
                                 <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <tr ng-repeat="(index, spec) in support.spec_committee">
-                                            <td>
-                                                @{{ index+1 }}. 
-                                                @{{ spec.person.prefix.prefix_name + spec.person.person_firstname +' '+ spec.person.person_lastname }}
-                                            </td>
-                                            <td>
-                                                ตำแหน่ง @{{ spec.person.position.position_name + spec.person.academic.ac_name }}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6" ng-show="support.total >= 500000">
-                                <label>คณะกรรมการเปิดซอง/พิจารณาราคา :</label>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped" style="width: 80%;">
                                         <tr ng-repeat="(index, env) in support.env_committee">
                                             <td>
                                                 @{{ index+1 }}. 
@@ -281,6 +284,14 @@
                         <button
                             ng-click="showSendForm(support)"
                             ng-show="support.status == 0"
+                            class="btn btn-primary"
+                        >
+                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                            ส่งเอกสารไปพัสดุ
+                        </button>
+                        <button
+                            ng-click="send($event)"
+                            ng-show="support.status == 3"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
