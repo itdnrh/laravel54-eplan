@@ -390,14 +390,14 @@ class OrderController extends Controller
                 $support->received_no   = $req['received_no'];
                 $support->received_date = $req['received_date'];
                 $support->received_user = Auth::user()->person_id;
-                $support->officer = $req['officer'];
-                $support->status = 2; 
+                $support->parcel_officer = $req['officer'];
+                $support->status        = 2; 
 
                 if ($support->save()) {
                     /** Update running number table of doc_type_id = 10 */
-                    $running = Running::where('doc_type_id', '10')
-                                    ->where('year', $support->year)
-                                    ->update(['running_no' => $support->received_no]);
+                    // $running = Running::where('doc_type_id', '10')
+                    //                 ->where('year', $support->year)
+                    //                 ->update(['running_no' => $support->received_no]);
 
                     foreach($req['details'] as $detail) {
                         /** Update support_details's status to 2=รับเอกสารแล้ว */

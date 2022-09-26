@@ -152,8 +152,6 @@
     </tbody>
 </table>
 
-@include('orders._receive-form')
-
 <div class="row" ng-show="supports_pager.last_page > 1">
     <div class="col-md-4">
         หน้า @{{ supports_pager.current_page }} จาก @{{ supports_pager.last_page }}

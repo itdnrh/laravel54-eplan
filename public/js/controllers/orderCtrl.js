@@ -503,25 +503,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#receive-form').modal('show');
     };
 
-    $scope.onReceiveSupport = function(e, support) {
+    $scope.onReceiveSupport = function(e, form, support) {
+        e.preventDefault();
+
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
         if (support) {
-            console.log($scope.receive);
-            // $http.post(`${CONFIG.baseUrl}/orders/received/2`, $scope.receive)
-            // .then(function(res) {
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
+            $http.post(`${CONFIG.baseUrl}/orders/received/2`, $scope.receive)
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
 
-            //         /** Remove support data that has been received */
-            //         $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
+                    /** Remove support data that has been received */
+                    $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
 
-            //         $scope.getReceiveds(2);
-            //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            //     }
-            // }, function(err) {
-            //     console.log(err);
-            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            // });
+                    $scope.getReceiveds(2);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
+                }
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
+            });
         }
     };
 
