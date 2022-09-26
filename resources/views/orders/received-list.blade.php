@@ -96,6 +96,7 @@
         @include('orders._receive-list')
         @include('orders._receive-form')
         @include('orders._return-form')
+        @include('orders._spec-committee-form')
 
     </section>
 

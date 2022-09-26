@@ -591,6 +591,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             });
     };
 
+    $scope.showSpecCommitteeForm = function(e) {
+        $('#spec-committee-form').modal('show');
+    };
+
+    $scope.onPrintSpecCommittee = function(e) {
+        $('#spec-committee-form').modal('hide');
+
+        window.location.href = `${CONFIG.baseUrl}/supports/1/print-spec-committee`;
+    };
+
     $scope.supportDetails = [];
     $scope.showDetailsList = function(e, details) {
         e.preventDefault();

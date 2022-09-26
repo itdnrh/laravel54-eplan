@@ -126,8 +126,8 @@
                     </a>
                 </p>
             </td>
-            <td style="text-align: center;">
-                @{{ support.total | currency:'':0 }}
+            <td style="text-align: right;">
+                @{{ support.total | currency:'':2 }}
             </td>
             <td style="text-align: center;">
                 <p style="margin: 0;">@{{ support.depart.depart_name }}</p>
@@ -167,8 +167,8 @@
                             ยกเลิก
                         </button>
                     </form>
-                    <a href="{{ url('orders/add?support=') }}@{{ support.id }}" class="btn btn-success btn-xs">
-                        กำหนด Spec
+                    <a href="#" class="btn btn-success btn-xs" ng-click="showSpecCommitteeForm($event)">
+                        ผู้กำหนด Spec
                     </a>
                     <a href="{{ url('orders/add?support=') }}@{{ support.id }}" class="btn btn-primary btn-xs">
                         สร้าง PO

@@ -644,4 +644,45 @@ class SupportController extends Controller
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
         return renderPdf('forms.support-form', $data);
     }
+
+    public function printSpecCommittee($id)
+    {
+        $support = Support::with('depart','planType','category')
+                    ->with('details','details.plan','details.unit')
+                    ->with('officer','officer.prefix','officer.position')
+                    ->find($id);
+
+        $planType = PlanType::find($support->plan_type_id);
+        
+        $committees = Committee::with('type','person','person.prefix')
+                                ->with('person.position','person.academic')
+                                ->where('support_id', $support->id)
+                                ->where('committee_type_id', '1')
+                                ->get();
+
+        /** หัวหน้ากลุ่มงานพัสดุ */
+        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.depart_id', '2')
+                            ->where('level.duty_id', '2')
+                            ->with('prefix','position')
+                            ->first();
+        
+        /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
+        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.faction_id', '1')
+                            ->where('level.duty_id', '1')
+                            ->with('prefix','position')
+                            ->first();
+
+        $data = [
+            "support"       => $support,
+            "planType"      => $planType,
+            "committees"    => $committees,
+            "headOfDepart"  => $headOfDepart,
+            "headOfFaction" => $headOfFaction,
+        ];
+
+        /** Invoke helper function to return view of pdf instead of laravel's view to client */
+        return renderPdf('forms.orders.spec-committee', $data);
+    }
 }

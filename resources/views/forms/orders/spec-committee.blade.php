@@ -40,7 +40,7 @@
                                 <span class="content__header-topic">วันที่</span>
                                 <div class="content__header-text" style="width: 70%; margin-left: 28px;">
                                     <span style="margin: 0 10px;">
-                                        <!-- {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($order->po_date) }} -->
+                                        <!-- {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($support->doc_date) }} -->
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThMonth(date('Y-m-d'))) }}
                                     </span>
                                 </div>
@@ -68,11 +68,11 @@
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.ต้นเรื่อง</span>
                                 ด้วย กลุ่มงานพัสดุ โรงพยาบาลเทพรัตน์นครราชสีมา มีความประสงค์จะดำเนินการ
-                                จัดซื้อ<span>{{ $order->support->category->name }}</span> โดยวิธีเฉพาะเจาะจง เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
-                                จึงขออนุมัติจัดซื้อ <span>{{ $order->support->category->name }}</span>
-                                จำนวน <span>{{ thainumDigit(count($order->details)) }}</span> รายการ
-                                จำนวนเงิน <span>{{ thainumDigit(number_format($order->net_total, 2)) }} บาท</span>
-                                (<span>{{ $order->net_total_str }}</span>)
+                                จัดซื้อ<span>{{ $support->category->name }}</span> โดยวิธีเฉพาะเจาะจง เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
+                                จึงขออนุมัติจัดซื้อ <span>{{ $support->category->name }}</span>
+                                จำนวน <span>{{ thainumDigit(count($support->details)) }}</span> รายการ
+                                จำนวนเงิน <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
+                                (<span>{{ baht_text(number_format($support->total, 2)) }}</span>)
                             </p>
                         </td>
                     </tr>
@@ -107,16 +107,16 @@
                                         <span>{{ $committees[0]->person->prefix->prefix_name.$committees[0]->person->person_firstname.' '.$committees[0]->person->person_lastname }}</span>
                                         <span>ตำแหน่ง {{ $committees[0]->person->position->position_name }}{{ $committees[0]->person->academic ? $committees[0]->person->academic->ac_name : '' }}</span>
                                     </span>
-                                    เป็นผู้รับผิดชอบจัดทำรายละเอียด คุณลักษณะเฉพาะและราคากลางการซื้อ <span>{{ $order->support->category->name }}</span>
-                                    จำนวน <span>{{ thainumDigit(count($order->details)) }} รายการ</span>
+                                    เป็นผู้รับผิดชอบจัดทำรายละเอียด คุณลักษณะเฉพาะและราคากลางการซื้อ <span>{{ $support->category->name }}</span>
+                                    จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
                                     เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่ โดยมีหน้าที่จัดทำรายละเอียดคุณลักษณะเฉพาะของพัสดุรวมทั้งกำหนดหลักเกณฑ์พิจารณาคัดเลือก ข้อเสนอด้วย</span>
                                 @else
                                     <!-- // คณะกรรมการมากกว่า 1 คน -->
                                     <p>
                                         <span>{{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}</span>
                                         <span>ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}</span>
-                                        เป็นผู้รับผิดชอบจัดทำรายละเอียดคุณลักษณะเฉพาะและราคากลางการซื้อ<span>{{ $order->support->category->name }}
-                                        จำนวน <span>{{ thainumDigit(count($order->details)) }} รายการ</span>
+                                        เป็นผู้รับผิดชอบจัดทำรายละเอียดคุณลักษณะเฉพาะและราคากลางการซื้อ<span>{{ $support->category->name }}
+                                        จำนวน <span>{{ thainumDigit(count($details)) }} รายการ</span>
                                         เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่โดยมีหน้าที่จัดทำรายละเอียดคุณลักษณะเฉพาะของพัสดุ รวมทั้งกำหนด หลักเกณฑ์พิจารณาคัดเลือกข้อเสนอด้วย
                                     </p>
                                 @endif
@@ -153,7 +153,7 @@
                         <td colspan="2" style="text-align: center; padding: 5px;">
                             <div class="signature">
                                 <p style="margin: 30px 0 0;">
-                                    ( {{ $order->officer->prefix->prefix_name.$order->officer->person_firstname. ' ' .$order->officer->person_lastname }} )
+                                    ( {{ $support->officer->prefix->prefix_name.$support->officer->person_firstname. ' ' .$support->officer->person_lastname }} )
                                 </p>
                                 <!-- <p style="margin: 0;">
                                     <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>

@@ -420,46 +420,4 @@ class OrderController extends Controller
             ];
         }
     }
-
-    public function printSpecCommittee($id)
-    {
-        $order = Order::with('supplier','planType','details')
-                    ->with('details.plan','details.unit','details.item')
-                    ->with('orderType','support','support.category')
-                    ->with('officer','officer.prefix','officer.position')
-                    ->find($id);
-
-        $planType = PlanType::find($order->plan_type_id);
-        
-        $committees = Committee::with('type','person','person.prefix')
-                                ->with('person.position','person.academic')
-                                ->where('support_id', $order->support_id)
-                                ->where('committee_type_id', '1')
-                                ->get();
-
-        /** หัวหน้ากลุ่มงานพัสดุ */
-        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
-                            ->where('level.depart_id', '2')
-                            ->where('level.duty_id', '2')
-                            ->with('prefix','position')
-                            ->first();
-        
-        /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
-        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
-                            ->where('level.faction_id', '1')
-                            ->where('level.duty_id', '1')
-                            ->with('prefix','position')
-                            ->first();
-
-        $data = [
-            "order"         => $order,
-            "planType"      => $planType,
-            "committees"    => $committees,
-            "headOfDepart"  => $headOfDepart,
-            "headOfFaction" => $headOfFaction,
-        ];
-
-        /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.orders.spec-committee', $data);
-    }
 }

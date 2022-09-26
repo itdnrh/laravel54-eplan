@@ -37,4 +37,9 @@ class Support extends Model
     {
         return $this->hasMany(SupportDetail::class, 'support_id', 'id');
     }
+
+    public function officer()
+    {
+        return $this->belongsTo(Person::class, 'parcel_officer', 'person_id');
+    }
 }

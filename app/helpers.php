@@ -159,7 +159,7 @@ const BAHT_TEXT_POINT = 'จุด';
  * @param bool $display_zero
  * @return string|null
  */
-function baht_text ($number, $include_unit = true, $display_zero = true)
+function baht_text($number, $include_unit = true, $display_zero = true)
 {
     if (!is_numeric($number)) {
         return null;
