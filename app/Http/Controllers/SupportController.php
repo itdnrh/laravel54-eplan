@@ -575,6 +575,34 @@ class SupportController extends Controller
         }
     }
 
+    public function onReturn(Request $req, $id)
+    {
+        try {
+            $support = Support::find($id);
+            $support->return_date   = date('Y-m-d h:i:s');
+            $support->return_reason = $req['reason'];
+            $support->return_user   = $req['user'];
+            $support->status        = 3;
+
+            if ($support->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Support have been returned!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function printForm($id)
     {
         $support = Support::with('planType','depart','division')

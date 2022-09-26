@@ -147,6 +147,12 @@
                     title="รับเอกสาร">
                     รับเอกสาร
                 </a>
+                <a  href="#"
+                    ng-click="showReturnSupportForm($event, support)"
+                    class="btn btn-danger btn-xs"
+                    title="ตีกลับเอกสาร">
+                    ตีกลับ
+                </a>
             </td>             
         </tr>
     </tbody>

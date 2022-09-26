@@ -230,6 +230,9 @@
                                             รับเอกสารแล้ว
                                         </span>
                                         <span class="label bg-maroon" ng-show="support.status == 3">
+                                            เอกสารถูกตีกลับ
+                                        </span>
+                                        <span class="label bg-navy" ng-show="support.status == 4">
                                             PO แล้ว
                                         </span>
                                         <span class="label label-danger" ng-show="support.status == 9">

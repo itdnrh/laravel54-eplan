@@ -84,6 +84,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('supports', 'SupportController@search');
     Route::get('supports/{id}', 'SupportController@getById');
     Route::get('supports/details/list', 'SupportController@getSupportDetails');
+    Route::put('supports/{id}/return', 'SupportController@onReturn');
 
     /** จ้างซ่อมแซม/บำรุงรักษา */
     Route::get('repairs', 'RepairController@getAll');

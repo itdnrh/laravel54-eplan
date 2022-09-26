@@ -547,7 +547,49 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             // });
         }
     };
-    /** ============================================================================= */
+
+    $scope.returnData = {
+        reason: '',
+        support_id: '',
+        user: ''
+    };
+    $scope.showReturnSupportForm = function(e, support) {
+        console.log(support);
+        if (support) {
+            $scope.returnData.support_id = support.id;
+    
+            $('#return-form').modal('show');
+        }
+    };
+
+    $scope.onReturnSupport = function(e, form, id) {
+        e.preventDefault();
+
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        /** Add user's id from laravel auth user */
+        $scope.returnData.user = $('#user').val();
+
+        $http.put(`${CONFIG.apiUrl}/supports/${id}/return`, $scope.returnData)
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ตีกลับเอกสารเรียบร้อย !!!");
+
+                    $scope.getSupports();
+                    $scope.getReceiveds(2);
+
+                    $('#return-form').modal('hide');
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถตีกลับเอกสารได้ !!!");
+                }
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถตีกลับเอกสารได้ !!!");
+            });
+    };
 
     $scope.supportDetails = [];
     $scope.showDetailsList = function(e, details) {
