@@ -75,14 +75,21 @@ body {
   text-indent: 2.5cm;
   text-decoration: underline;
   font-weight: bold;
-  /* border: 1px solid black; */
+  /* border: 1px solid blue; */
+}
+
+.memo-paragraph-topic-inline {
+  width: 100%;
+  margin: 5px 0 0 0;
+  text-decoration: underline;
+  font-weight: bold;
+  /* border: 1px solid blue; */
 }
 
 .memo-paragraph-content {
   width: 100%;
   margin: 0;
   text-indent: 2.5cm;
-  overflow-wrap: break-word;
   /* border: 1px solid black; */
 }
 
@@ -251,6 +258,7 @@ ul.committee-lists {
   line-height: 20px;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
 .content__header-topic {

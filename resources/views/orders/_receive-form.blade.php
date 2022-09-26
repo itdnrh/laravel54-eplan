@@ -4,78 +4,57 @@
             <form>
                 <input
                     type="hidden"
-                    id="inspect_user"
-                    name="inspect_user"
-                    value="{{ Auth::user()->person_id }}"
-                    class="form-control"
-                />
-                <input
-                    type="hidden"
-                    id="po_id"
-                    name="po_id"
-                    value="@{{ order.id }}"
+                    id="support_id"
+                    name="support_id"
+                    value="@{{ receive.support_id }}"
                     class="form-control"
                 />
                 <div class="modal-header">
                     <h5 class="modal-title">บันทึกรับใบขอสนับสนุน</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="">เลขที่ใบขอสนับสนุน</label>
-                            <input
-                                type="text"
-                                id="withdraw_no"
-                                name="withdraw_no"
-                                ng-model="withdrawal.withdraw_no"
-                                class="form-control"
-                            />
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label for="">ลงวันที่วันที่</label>
-                            <input
-                                type="text"
-                                id="withdraw_date"
-                                name="withdraw_date"
-                                ng-model="withdrawal.withdraw_date"
-                                class="form-control"
-                            />
-                        </div>
-                        <div class="col-md-6 form-group">
+                    <div class="row" style="padding: 10px 80px;">
+                        <div class="col-md-12 form-group">
                             <label for="">เลขที่รับ</label>
                             <input
                                 type="text"
-                                id="deliver_no"
-                                name="deliver_no"
-                                ng-model="withdrawal.deliver_no"
-                                class="form-control"
-                            />
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label for="">ยอดเงิน</label>
-                            <input
-                                type="text"
-                                id="net_total"
-                                name="net_total"
-                                value="@{{ withdrawal.net_total | currency:'':2 }}"
+                                id="received_no"
+                                name="received_no"
+                                ng-model="receive.received_no"
                                 class="form-control"
                             />
                         </div>
                         <div class="col-md-12 form-group">
-                            <label for="">หมายเหตุ</label>
+                            <label for="">ลงวันที่วันที่</label>
                             <input
                                 type="text"
-                                id="remark"
-                                name="remark"
-                                ng-model="withdrawal.remark"
+                                id="received_date"
+                                name="received_date"
+                                ng-model="receive.received_date"
                                 class="form-control"
                             />
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="">จทน.พัสดุ (ผู้รับผิดชอบ)</label>
+                            <select
+                                id="officer"
+                                name="officer"
+                                ng-model="receive.officer"
+                                class="form-control"
+                            >
+                                <option value="">-- เลือก จทน.พัสดุ --</option>
+                                @foreach($officers as $officer)
+                                    <option value="{{ $officer->person_id }}">
+                                        {{ $officer->person_firstname }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="onReceiveSupport($event, support)"
+                        ng-click="onReceiveSupport($event, receive.support_id)"
                         class="btn btn-primary"
                         aria-label="Save"
                     >

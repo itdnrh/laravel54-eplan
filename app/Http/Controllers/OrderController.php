@@ -23,6 +23,8 @@ use App\Models\Division;
 use App\Models\OrderType;
 use App\Models\BudgetSource;
 use App\Models\Running;
+use App\Models\Person;
+use App\Models\Committee;
 
 class OrderController extends Controller
 {
@@ -44,15 +46,11 @@ class OrderController extends Controller
             'vat_rate'      => 'required',
             'vat'           => 'required',
             'net_total'     => 'required',
+            'parcel_officer' => 'required',
         ];
 
         $messages = [
-            'reason.required'       => 'กรุณาระบุเหตุผลการยกเลิก',
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_period.required'   => 'กรุณาเลือกช่วงเวลา',
+            'parcel_officer.required' => 'กรุณาระบุเจ้าหน้าที่พัสดุ',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -217,12 +215,14 @@ class OrderController extends Controller
             $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
             $order->po_app_no       = $depart->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
+            $order->support_id     = $item['support_id'];
             $order->year            = $req['year'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
             $order->deliver_amt     = $req['deliver_amt'];
             $order->budget_src_id   = $req['budget_src_id'];
+            $order->parcel_officer  = $req['parcel_officer'];
             $order->remark          = $req['remark'];
             $order->total           = $req['total'];
             $order->vat_rate        = $req['vat_rate'];
@@ -234,6 +234,9 @@ class OrderController extends Controller
 
             if ($order->save()) {
                 $orderId = $order->id;
+
+                /** Update support data */
+                $support = Support::find($order->support_id)->update(['status' => 3]);
 
                 /** Update running number table of doc_type_id = 10 */
                 $this->updateRunning($order);
@@ -352,11 +355,18 @@ class OrderController extends Controller
 
     public function received()
     {
+        $officers = Person::leftJoin('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('personal.person_state', 1)
+                            ->where('level.depart_id', 2)
+                            ->whereIn('personal.position_id', [8, 39, 81])
+                            ->get();
+
         return view('orders.received-list', [
             "categories"    => ItemCategory::all(),
             "planTypes"     => PlanType::all(),
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
+            "officers"      => $officers
         ]);
     }
 
@@ -364,7 +374,7 @@ class OrderController extends Controller
     {
         try {
             if ($mode == 1) {
-                $plan = Plan::find($req['id']);
+                $plan = Plan::find($req['support_id']);
                 $plan->received_date = date('Y-m-d');
                 $plan->received_user = Auth::user()->person_id;
                 $plan->status = 2;
@@ -377,9 +387,10 @@ class OrderController extends Controller
                 }
             } else if ($mode == 2) {
                 $support = Support::find($req['id']);
-                $support->received_no   = $this->getRunningByDocType('10');
-                $support->received_date = date('Y-m-d');
+                $support->received_no   = $req['received_no'];
+                $support->received_date = $req['received_date'];
                 $support->received_user = Auth::user()->person_id;
+                $support->officer = $req['officer'];
                 $support->status = 2; 
 
                 if ($support->save()) {
@@ -410,31 +421,45 @@ class OrderController extends Controller
         }
     }
 
-    public function printCancelForm($id)
+    public function printSpecCommittee($id)
     {
-        $leave      = Leave::where('id', $id)
-                        ->with('person', 'person.prefix', 'person.position', 'person.academic')
-                        ->with('person.memberOf', 'person.memberOf.depart', 'type')
-                        ->with('delegate', 'delegate.prefix', 'delegate.position', 'delegate.academic')
-                        ->first();
+        $order = Order::with('supplier','planType','details')
+                    ->with('details.plan','details.unit','details.item')
+                    ->with('orderType','support','support.category')
+                    ->with('officer','officer.prefix','officer.position')
+                    ->find($id);
 
-        $cancel     = Cancellation::where('leave_id', $leave->id)->first();
+        $planType = PlanType::find($order->plan_type_id);
+        
+        $committees = Committee::with('type','person','person.prefix')
+                                ->with('person.position','person.academic')
+                                ->where('support_id', $order->support_id)
+                                ->where('committee_type_id', '1')
+                                ->get();
 
-        $places     = ['1' => 'โรงพยาบาลเทพรัตน์นครราชสีมา'];
-
-        $histories  = History::where([
-                            'person_id' => $leave->leave_person,
-                            'year'      => $leave->year
-                        ])->first();
+        /** หัวหน้ากลุ่มงานพัสดุ */
+        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.depart_id', '2')
+                            ->where('level.duty_id', '2')
+                            ->with('prefix','position')
+                            ->first();
+        
+        /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
+        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.faction_id', '1')
+                            ->where('level.duty_id', '1')
+                            ->with('prefix','position')
+                            ->first();
 
         $data = [
-            'leave'     => $leave,
-            'cancel'    => $cancel,
-            'places'    => $places,
-            'histories' => $histories
+            "order"         => $order,
+            "planType"      => $planType,
+            "committees"    => $committees,
+            "headOfDepart"  => $headOfDepart,
+            "headOfFaction" => $headOfFaction,
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.form03', $data);
+        return renderPdf('forms.orders.spec-committee', $data);
     }
 }

@@ -210,13 +210,14 @@
                             ng-show="order.status == 3"
                         >
                             <i class="fa fa-calculator"></i> ส่งเบิกเงิน
-                        </a>
-                        <a
-                            href="#"
-                            class="btn btn-danger"
-                        >
-                            <i class="fa fa-cubes"></i> ส่งคลังพัสดุ
                         </a> -->
+                        <a
+                            href="{{ url('/orders/print') }}/@{{ order.id }}"
+                            class="btn btn-success"
+                        >
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                            พิมพ์รายละเอียดคุณลักษณะเฉพาะ
+                        </a>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 

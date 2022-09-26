@@ -32,6 +32,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         net_total: '',
         net_total_str: '',
         budget_src_id: '',
+        parcel_officer: '',
+        parcel_officer_detail: '',
         remark: '',
         details: [],
     };
@@ -480,27 +482,46 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supports_pager = pager;
     };
 
-    $scope.ShowReceiveSupportForm = function(e, support) {
-        console.log(support);
+    $scope.receive = {
+        support_id: '',
+        received_no: '',
+        received_date: '',
+        officer: '',
+        remark: ''
+    };
+
+    $scope.showReceiveSupportForm = function(e, support) {
+        $scope.receive.support_id = support.id;
+
+        $('#received_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
         $('#receive-form').modal('show');
     };
 
     $scope.onReceiveSupport = function(e, support) {
         if (support) {
-            $http.post(`${CONFIG.baseUrl}/orders/received/2`, support)
-            .then(function(res) {
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
-    
-                    /** Remove support data that has been received */
-                    $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
-                } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-                }
-            }, function(err) {
-                console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            });
+            console.log($scope.receive);
+            // $http.post(`${CONFIG.baseUrl}/orders/received/2`, $scope.receive)
+            // .then(function(res) {
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
+
+            //         /** Remove support data that has been received */
+            //         $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
+
+            //         $scope.getReceiveds(2);
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
+            //     }
+            // }, function(err) {
+            //     console.log(err);
+            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
+            // });
         }
     };
 
@@ -635,6 +656,76 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if (order) {    
             $('#inspect-form').modal('show');
         }
+    };
+
+    $scope.showPersonList = (_selectedMode) => {
+        /** Set default depart of persons list to same user's depart */
+        $scope.cboDepart = '2';
+
+        $('#persons-list').modal('show');
+
+        $scope.getPersons();
+
+        $scope.selectedMode = _selectedMode;
+    };
+
+    $scope.getPersons = async () => {
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
+        .then(function(res) {
+            $scope.setPersons(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPersonsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+
+        $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPersons = function(res) {
+        const { data, ...pager } = res.data.persons;
+
+        $scope.persons = data;
+        $scope.persons_pager = pager;
+    };
+
+    $scope.selectedMode = '';
+    $scope.onSelectedPerson = (mode, person) => {
+        if (person) {
+            $scope.order.parcel_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+            $scope.order.parcel_officer = person.person_id;
+        }
+
+        $('#persons-list').modal('hide');
+        $scope.selectedMode = '';
     };
 
     $scope.onInspect = (e) => {

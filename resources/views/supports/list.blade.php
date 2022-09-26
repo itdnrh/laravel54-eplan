@@ -229,6 +229,9 @@
                                         <span class="label label-success" ng-show="support.status == 2">
                                             รับเอกสารแล้ว
                                         </span>
+                                        <span class="label bg-maroon" ng-show="support.status == 3">
+                                            PO แล้ว
+                                        </span>
                                         <span class="label label-danger" ng-show="support.status == 9">
                                             ยกเลิก
                                         </span>

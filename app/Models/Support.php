@@ -13,6 +13,11 @@ class Support extends Model
         return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(ItemCategory::class, 'category_id', 'id');
+    }
+
     public function depart()
     {
         return $this->belongsTo(Depart::class, 'depart_id', 'depart_id');

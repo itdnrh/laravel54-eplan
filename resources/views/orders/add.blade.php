@@ -434,6 +434,41 @@
                                 <div class="col-md-8">
                                     <div
                                         class="form-group col-md-8"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'parcel_officer')}"
+                                    >
+                                        <label>เจ้าหน้าที่พัสดุ :</label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="parcel_officer_detail"
+                                                name="parcel_officer_detail"
+                                                class="form-control"
+                                                ng-model="order.parcel_officer_detail"
+                                                readonly
+                                            />
+                                            <input
+                                                type="hidden"
+                                                id="parcel_officer"
+                                                name="parcel_officer"
+                                                class="form-control"
+                                                ng-model="order.parcel_officer"
+                                            />
+                                            <span class="input-group-btn">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-info btn-flat"
+                                                    ng-click="showPersonList(4)"
+                                                >
+                                                    ...
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <span class="help-block" ng-show="checkValidate(order, 'parcel_officer')">
+                                            @{{ formError.errors.parcel_officer[0] }}
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="form-group col-md-8"
                                         ng-class="{'has-error has-feedback': checkValidate(order, 'remark')}"
                                     >
                                         <label>หมายเหตุ :</label>
@@ -543,6 +578,7 @@
 
         @include('orders._plans-list')
         @include('orders._spec-form')
+        @include('shared._persons-list')
 
     </section>
 

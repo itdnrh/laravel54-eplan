@@ -234,7 +234,7 @@ class RepairController extends Controller
 
     public function create()
     {
-        $year = 2565;
+        $year = 2566;
         $depart = Auth::user()->person_id == '1300200009261' ? '' : Auth::user()->memberOf->depart_id;
 
         $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')

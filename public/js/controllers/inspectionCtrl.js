@@ -230,6 +230,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.onSelectedOrder = (e, order) => {
         if (order) {
+            console.log(order);
             $scope.inspection = {
                 order: order,
                 order_id: order.id,

@@ -142,7 +142,7 @@
             </td>
             <td style="text-align: center;">
                 <a  href="#"
-                    ng-click="onReceiveSupport($event, support)"
+                    ng-click="showReceiveSupportForm($event, support)"
                     class="btn btn-primary btn-xs"
                     title="รับเอกสาร">
                     รับเอกสาร

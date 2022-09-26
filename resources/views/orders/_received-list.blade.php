@@ -167,6 +167,9 @@
                             ยกเลิก
                         </button>
                     </form>
+                    <a href="{{ url('orders/add?support=') }}@{{ support.id }}" class="btn btn-success btn-xs">
+                        กำหนด Spec
+                    </a>
                     <a href="{{ url('orders/add?support=') }}@{{ support.id }}" class="btn btn-primary btn-xs">
                         สร้าง PO
                     </a>

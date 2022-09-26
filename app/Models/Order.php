@@ -28,6 +28,11 @@ class Order extends Model
         return $this->belongsTo(BudgetSource::class, 'budget_src_id', 'id');
     }
 
+    public function support()
+    {
+        return $this->belongsTo(Support::class, 'support_id', 'id');
+    }
+
     public function details()
     {
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
@@ -36,5 +41,10 @@ class Order extends Model
     public function inspections()
     {
         return $this->hasMany(Inspection::class, 'order_id', 'id');
+    }
+
+    public function officer()
+    {
+        return $this->belongsTo(Person::class, 'parcel_officer', 'person_id');
     }
 }
