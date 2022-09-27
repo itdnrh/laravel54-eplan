@@ -110,6 +110,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(event.date);
         });
 
+    $('#spec_doc_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
     $scope.setSupportToOrder = function(support) {
         if (support) {
             $scope.order.plan_type_id = support.plan_type_id.toString();
@@ -591,14 +598,29 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             });
     };
 
-    $scope.showSpecCommitteeForm = function(e) {
+    $scope.showSpecCommitteeForm = function(e, id) {
         $('#spec-committee-form').modal('show');
+
+        $scope.specCommittee.support_id = id;
+
+        $('#spec_doc_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
     };
 
-    $scope.onPrintSpecCommittee = function(e) {
+    $scope.specCommittee = {
+        support_id: '',
+        purchase_method: '1',
+        source_price: '1',
+        spec_doc_no: '',
+        spec_doc_date: ''
+    };
+    $scope.onPrintSpecCommittee = function(e, id) {
+        console.log($scope.specCommittee);
+
         $('#spec-committee-form').modal('hide');
 
-        window.location.href = `${CONFIG.baseUrl}/supports/1/print-spec-committee`;
+        window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
     };
 
     $scope.supportDetails = [];

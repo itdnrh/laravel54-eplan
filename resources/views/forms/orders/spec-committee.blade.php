@@ -132,6 +132,17 @@
                                 <p class="next-paragraph">/๔.ข้อเสนอ...</p>
                             </td>
                         </tr>
+                    @else
+                        <tr>
+                            <td colspan="4">
+                                <div class="memo-paragraph-content with-compressed with-expanded">
+                                    <span class="memo-paragraph-topic-inline">๔.ข้อเสนอ</span>
+                                    จึงเรียนมาเพื่อโปรดพิจารณา หากเห็นชอบแล้วขอได้โปรดอนุมัติแต่งตั้งผู้จัดทำ
+                                    รายละเอียดคุณลักษณะเฉพาะและราคากลาง รวมทั้งหลักเกณฑ์การพิจารณาคัดเลือกข้อเสนอตามรายชื่อที่เสนอ
+                                    ในข้อ ๓ ต่อไป
+                                </div>
+                            </td>
+                        </tr>
                     @endif
 
                     @if(count($committees) > 1)
