@@ -18,6 +18,7 @@ use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
+use App\Models\ProvinceOrder;
 
 class SupportController extends Controller
 {
@@ -32,15 +33,12 @@ class SupportController extends Controller
             'depart_id'         => 'required',
             'total'             => 'required',
             'reason'            => 'required',
+            'spec_committee'    => 'required',
             'insp_committee'    => 'required',
-            'contact_person'    => 'required',
+            'contact_person'    => 'required'
         ];
 
-        if ($request['total'] > 100000) {
-            $rules['spec_committee'] = 'required';
-        }
-
-        if ($request['total'] > 500000) {
+        if ($request['total'] >= 500000) {
             $rules['env_committee'] = 'required';
         }
 
@@ -660,6 +658,8 @@ class SupportController extends Controller
                                 ->where('committee_type_id', '1')
                                 ->get();
 
+        /** กลุ่มงานพัสดุ */
+        $departOfParcel = Depart::where('depart_id', 2)->first();
         /** หัวหน้ากลุ่มงานพัสดุ */
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.depart_id', '2')
@@ -674,12 +674,16 @@ class SupportController extends Controller
                             ->with('prefix','position')
                             ->first();
 
+        $provinceOrders = ProvinceOrder::where('is_activated', 1)->get();
+
         $data = [
-            "support"       => $support,
-            "planType"      => $planType,
-            "committees"    => $committees,
-            "headOfDepart"  => $headOfDepart,
-            "headOfFaction" => $headOfFaction,
+            "support"           => $support,
+            "planType"          => $planType,
+            "committees"        => $committees,
+            "departOfParcel"    => $departOfParcel,
+            "headOfDepart"      => $headOfDepart,
+            "headOfFaction"     => $headOfFaction,
+            "provinceOrders"    => $provinceOrders
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
