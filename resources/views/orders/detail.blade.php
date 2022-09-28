@@ -193,7 +193,6 @@
                         </div><!-- /.row -->
 
                     </div><!-- /.box-body -->
-
                     <div class="box-footer clearfix" style="text-align: center;">
                         <!-- <a
                             href="#"

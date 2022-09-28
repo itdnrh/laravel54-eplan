@@ -215,7 +215,6 @@ class OrderController extends Controller
             $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
             $order->po_app_no       = $depart->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
-            $order->support_id     = $item['support_id'];
             $order->year            = $req['year'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
@@ -374,7 +373,7 @@ class OrderController extends Controller
     {
         try {
             if ($mode == 1) {
-                $plan = Plan::find($req['support_id']);
+                $plan = Plan::find($req['plan_id']);
                 $plan->received_date = date('Y-m-d');
                 $plan->received_user = Auth::user()->person_id;
                 $plan->status = 2;
@@ -386,12 +385,12 @@ class OrderController extends Controller
                     ];
                 }
             } else if ($mode == 2) {
-                $support = Support::find($req['id']);
-                $support->received_no   = $req['received_no'];
-                $support->received_date = $req['received_date'];
-                $support->received_user = Auth::user()->person_id;
-                $support->parcel_officer = $req['officer'];
-                $support->status        = 2; 
+                $support = Support::find($req['support_id']);
+                $support->received_no       = $req['received_no'];
+                $support->received_date     = convThDateToDbDate($req['received_date']);
+                $support->received_user     = Auth::user()->person_id;
+                $support->parcel_officer    = $req['officer'];
+                $support->status            = 2; 
 
                 if ($support->save()) {
                     /** Update running number table of doc_type_id = 10 */
@@ -399,12 +398,14 @@ class OrderController extends Controller
                     //                 ->where('year', $support->year)
                     //                 ->update(['running_no' => $support->received_no]);
 
-                    foreach($req['details'] as $detail) {
+                    /** Get all support's details */
+                    $details = SupportDetail::where('support_id', $req['support_id'])->get();
+                    foreach($details as $detail) {
                         /** Update support_details's status to 2=รับเอกสารแล้ว */
-                        SupportDetail::where('support_id', $req['id'])->update(['status' => 2]);
+                        SupportDetail::find($detail->id)->update(['status' => 2]);
 
                         /** Update plans's status to 2=รับเอกสารแล้ว */
-                        Plan::find($detail['plan_id'])->update(['status' => 2]);
+                        Plan::find($detail->plan_id)->update(['status' => 2]);
                     }
 
                     return [

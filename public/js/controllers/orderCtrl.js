@@ -528,6 +528,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                     $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
 
                     $scope.getReceiveds(2);
+
+                    $('#receive-form').modal('hide');
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
                 }

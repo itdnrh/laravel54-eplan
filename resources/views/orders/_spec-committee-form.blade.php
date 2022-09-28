@@ -28,7 +28,7 @@
                             ng-model="specCommittee.source_price"
                             class="form-control"
                         >
-                            <option value="1">ราคาที่ได้จากการจัดซื้อภายใน ๒ ปีงบประมาณ</option>
+                            <option value="1">ราคาที่ได้จากการจัดซื้อภายใน 2 ปีงบประมาณ</option>
                             <option value="2">อื่น ๆ</option>
                         </select>
                     </div>
