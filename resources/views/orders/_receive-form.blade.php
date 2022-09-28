@@ -63,7 +63,7 @@
                                 <option value="">-- เลือก จทน.พัสดุ --</option>
                                 @foreach($officers as $officer)
                                     <option value="{{ $officer->person_id }}">
-                                        {{ $officer->person_firstname }}
+                                        {{ $officer->prefix->prefix_name.$officer->person_firstname. ' ' .$officer->person_lastname }}
                                     </option>
                                 @endforeach
                             </select>

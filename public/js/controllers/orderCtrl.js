@@ -26,7 +26,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         plan_type_id: '',
         deliver_amt: 1,
         total: '',
-        vat_rate: '',
+        vat_rate: '7',
         vat: '',
         net_total: '',
         net_total_str: '',
@@ -139,7 +139,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 };
     
                 $scope.order.details.push(orderItem);
-                $scope.calculateTotal();
+                $scope.calculateNetTotal();
             });
         }
     };
@@ -170,50 +170,54 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.calculateVat = function() {
-        let total = parseFloat($scope.currencyToNumber($(`#total`).val()));
-        let rate = parseFloat($scope.currencyToNumber($(`#vat_rate`).val()));
-        let vat = (total * rate) / 100;
+        let net_total = parseFloat($scope.currencyToNumber($(`#net_total`).val()));
+        let rate = parseFloat($scope.order.vat_rate);
+        let vat = (net_total * rate) / (100 + rate);
 
         $scope.order.vat = vat;
         $('#vat').val(vat);
 
-        $scope.calculateNetTotal();
+        $scope.calculateTotal();
     };
 
     $scope.calculateNetTotal = function() {
-        let total = parseFloat($scope.currencyToNumber($(`#total`).val()));
-        let vat = parseFloat($scope.currencyToNumber($(`#vat`).val()));
+        let net_total = 0;
 
-        let net_total = total + vat;
-        $scope.order.net_total = net_total;
-        $scope.order.net_total_str = StringFormatService.arabicNumberToText(net_total);
-        $('#net_total').val(net_total);
-    };
-
-    $scope.calculateTotal = () => {
-        let total = 0;
-
-        total = $scope.order.details.reduce((sum, curVal) => {
+        net_total = $scope.order.details.reduce((sum, curVal) => {
             return sum = sum + curVal.sum_price;
         }, 0);
 
+        $scope.order.net_total = net_total;
+        $scope.order.net_total_str = StringFormatService.arabicNumberToText(net_total);
+        $('#net_total').val(net_total);
+
+        $scope.calculateVat();
+    };
+
+    $scope.calculateTotal = () => {
+        let net_total = parseFloat($scope.currencyToNumber($(`#net_total`).val()));
+        let vat = parseFloat($scope.currencyToNumber($(`#vat`).val()));
+        console.log(net_total);
+        let total = net_total - vat;
         $scope.order.total = total;
         $('#total').val(total);
     };
 
     $scope.addOrderItem = () => {
+        /** เช็คซ้ำ */
         // if ($scope.order.details.some(od => od.plan_id === $scope.newItem.plan_id)) {
         //     toaster.pop('error', "ผลการตรวจสอบ", "คุณเลือกรายการซ้ำ !!!");
-        // } else {
-            $scope.order.details.push({ ...$scope.newItem });
-
-            $scope.calculateTotal();
-            $scope.clearNewItem();
+        //     return;
         // }
+
+        $scope.order.details.push({ ...$scope.newItem });
+
+        $scope.calculateNetTotal();
+        $scope.clearNewItem();
     };
 
-    $scope.removeOrderItem = (planId) => {
-        $scope.order.details = $scope.order.details.filter(d => d.plan_id !== planId);
+    $scope.removeOrderItem = (selectedIndex) => {
+        $scope.order.details = $scope.order.details.filter((d, index) => index !== selectedIndex);
 
         $scope.calculateTotal();
     };

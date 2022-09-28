@@ -175,7 +175,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('orders/update', 'OrderController@update');
     Route::post('orders/delete/{id}', 'OrderController@delete');
     Route::get('orders/received', 'OrderController@received');
-    Route::post('orders/received/{mode}', 'OrderController@doReceived');
+    Route::post('orders/received/{mode}', 'OrderController@onReceived');
     Route::get('orders/print/{id}', 'OrderController@printSpecCommittee');
 
     /** ตรวจรับพัสดุ */

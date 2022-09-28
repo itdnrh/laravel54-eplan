@@ -232,14 +232,12 @@ class OrderController extends Controller
             // $order->user_id         = $req['user_id'];
 
             if ($order->save()) {
-                $orderId = $order->id;
-
                 /** Update running number table of doc_type_id = 10 */
-                $this->updateRunning($order);
+                // $this->updateRunning($order);
 
                 foreach($req['details'] as $item) {
                     $detail = new OrderDetail;
-                    $detail->order_id       = $orderId;
+                    $detail->order_id       = $order->id;
                     $detail->support_id     = $item['support_id'];
                     $detail->support_detail_id = $item['support_detail_id'];
                     $detail->plan_id        = $item['plan_id'];
@@ -255,7 +253,11 @@ class OrderController extends Controller
                         $plan = Plan::find($detail->plan_id)->update(['status' => 3]);
 
                         /** Update support_details's items */
-                        $supportDetail = SupportDetail::find($detail->support_detail_id)->update(['status' => 3]);
+                        $supportDetail = SupportDetail::find($detail->support_detail_id)
+                                            ->update([
+                                                'ref_order_id'  => $order->id,
+                                                'status'        => 3
+                                            ]);
 
                         /** TODO: should update plan's remain_amount by decrease from req->amount  */
                         $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
@@ -366,7 +368,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function doReceived(Request $req, $mode)
+    public function onReceived(Request $req, $mode)
     {
         try {
             if ($mode == 1) {

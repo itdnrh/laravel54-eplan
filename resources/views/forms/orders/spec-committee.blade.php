@@ -13,6 +13,7 @@
                 <h2>บันทึกข้อความ</h2>
             </div>
             <div class="content">
+                <?php $orderType = in_array($support->plan_type_id, [1,2]) ? 'จัดซื้อ' : '' ?>
                 <table class="layout">
                     <tr>
                         <td colspan="4">
@@ -68,8 +69,8 @@
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.ต้นเรื่อง</span>
                                 ด้วย กลุ่มงานพัสดุ โรงพยาบาลเทพรัตน์นครราชสีมา มีความประสงค์จะดำเนินการ
-                                จัดซื้อ<span>{{ $support->category->name }}</span> โดยวิธีเฉพาะเจาะจง เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
-                                จึงขออนุมัติจัดซื้อ <span>{{ $support->category->name }}</span>
+                                {{$orderType}}<span>{{ $support->category->name }}</span> โดยวิธีเฉพาะเจาะจง เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
+                                จึงขออนุมัติ{{$orderType}}<span>{{ $support->category->name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($support->details)) }}</span> รายการ
                                 จำนวนเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
                                 <span>({{ baht_text($support->total) }})</span>
@@ -117,7 +118,7 @@
                                     </table>
                                 </div>
 
-                                เป็น{{ $committeeType }}ผู้รับผิดชอบจัดทำรายละเอียดคุณลักษณะเฉพาะ และราคากลางการซื้อ<span>{{ $support->category->name }}</span>
+                                เป็น{{ $committeeType }}ผู้รับผิดชอบจัดทำรายละเอียดคุณลักษณะเฉพาะ และราคากลางการ{{$orderType}}<span>{{ $support->category->name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
                                 เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่ โดยมีหน้าที่จัดทำรายละเอียดคุณลักษณะเฉพาะของพัสดุ รวมทั้งกำหนด
                                 หลักเกณฑ์พิจารณาคัดเลือกข้อเสนอด้วย</span>
@@ -272,7 +273,7 @@
                                 <span class="memo-paragraph-topic-inline">๑.เรื่องเดิม</span>
                                 ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 ลงวันที่&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThMonth(date('Y-m-d'))) }}</span>
-                                ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}ผู้กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลางซื้อ
+                                ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}ผู้กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}
                                 <span>{{ $support->category->name }}</span> สนับสนุน การทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น
                             </p>
                         </td>
@@ -309,7 +310,7 @@
                             <?php $unspacing = strlen(baht_text($support->total)) > 80 ? '' : '&nbsp;'; ?>
                             <div class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๓.ข้อพิจารณา</span>
-                                บัดนี้ ผู้กำหนดรายละเอียดคุณลักษณะ ได้กำหนดรายละเอียดคุณลักษณะ เฉพาะและราคากลางซื้อ<span>{{ $support->category->name }}</span>
+                                บัดนี้ ผู้กำหนดรายละเอียดคุณลักษณะ ได้กำหนดรายละเอียดคุณลักษณะ เฉพาะและราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
                                 <span>({{ baht_text($support->total) }})</span>
@@ -328,7 +329,7 @@
                                     </tr>
                                 </table>
                                 <p>
-                                    ข้าพเจ้าฯ ได้สรุปรายละเอียดคุณลักษณะเฉพาะและราคากลางซื้อ<span>{{ $support->category->name }}</span>
+                                    ข้าพเจ้าฯ ได้สรุปรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
                                     จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
                                     เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
                                     <span>({{ baht_text($support->total) }})</span>
@@ -343,7 +344,7 @@
                             <div class="page-number">- ๒ -</div>
                             <div class="memo-paragraph-content with-compressed with-expanded" style="margin-bottom: 10px;">
                                 <span class="memo-paragraph-topic-inline">๔.ข้อเสนอ</span>
-                                จึงเรียนมาเพื่อโปรดพิจารณา ให้ความเห็นชอบรายละเอียดคุณลักษณะเฉพาะ และราคากลางซื้อ<span>{{ $support->category->name }}</span>
+                                จึงเรียนมาเพื่อโปรดพิจารณา ให้ความเห็นชอบรายละเอียดคุณลักษณะเฉพาะ และราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
                                 <span>({{ baht_text($support->total) }})</span> ของโรงพยาบาลเทพรัตน์นครราชสีมา

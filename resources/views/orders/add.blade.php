@@ -388,7 +388,7 @@
                                                         <a
                                                             href="#"
                                                             class="btn btn-danger btn-xs"
-                                                            ng-click="removeOrderItem(detail.plan_id)"
+                                                            ng-click="removeOrderItem(index)"
                                                             ng-show="!editRow"
                                                         >
                                                             <i class="fa fa-trash"></i>
@@ -487,18 +487,18 @@
                                 <div class="col-md-4">
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'total')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'net_total')}"
                                     >
-                                        <label>รวมเป็นเงิน :</label>
+                                        <label>ยอดสุทธิ :</label>
                                         <input  type="text"
-                                                id="total"
-                                                name="total"
-                                                ng-model="order.total"
-                                                class="form-control pull-right"
+                                                id="net_total"
+                                                name="net_total"
+                                                ng-model="order.net_total"
+                                                class="form-control"
                                                 style="text-align: right;"
                                                 tabindex="5" />
-                                        <span class="help-block" ng-show="checkValidate(order, 'total')">
-                                            กรุณาระบุรวมเป็นเงิน
+                                        <span class="help-block" ng-show="checkValidate(order, 'net_total')">
+                                            กรุณาระบุยอดสุทธิ
                                         </span>
                                     </div>
                                     <div
@@ -526,23 +526,23 @@
                                                     tabindex="5" />
                                         </div>
                                         <span class="help-block" ng-show="checkValidate(order, 'vat')">
-                                            กรุณาระบุรวมเป็นเงิน
+                                            กรุณาระบุภาษีมูลค่าเพิ่ม
                                         </span>
                                     </div>
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'net_total')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'total')}"
                                     >
-                                        <label>ยอดสุทธิ :</label>
+                                        <label>ฐานภาษี :</label>
                                         <input  type="text"
-                                                id="net_total"
-                                                name="net_total"
-                                                ng-model="order.net_total"
-                                                class="form-control"
+                                                id="total"
+                                                name="total"
+                                                ng-model="order.total"
+                                                class="form-control pull-right"
                                                 style="text-align: right;"
                                                 tabindex="5" />
-                                        <span class="help-block" ng-show="checkValidate(order, 'net_total')">
-                                            กรุณาระบุรวมเป็นเงิน
+                                        <span class="help-block" ng-show="checkValidate(order, 'total')">
+                                            กรุณาระบุฐานภาษี
                                         </span>
                                     </div>
                                 </div>
