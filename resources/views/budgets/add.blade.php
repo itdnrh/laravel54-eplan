@@ -246,6 +246,7 @@
     <script>
         $(function () {
             $('.select2').select2();
+            $('#budget').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 

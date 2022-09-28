@@ -6,7 +6,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     $scope.summary = [];
 
-    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboExpenseType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';

@@ -184,7 +184,8 @@ class PlanSummaryController extends Controller
             $budget = new PlanSummary();
             $budget->year         = $req['year'];
             $budget->expense_id   = $req['expense_id'];
-            $budget->budget       = $req['budget'];
+            $budget->budget       = currencyToNumber($req['budget']);
+            $budget->remain       = currencyToNumber($req['budget']);
             $budget->owner_depart = $req['owner_depart'];
             $budget->remark       = $req['remark'];
             $budget->status       = '0';
