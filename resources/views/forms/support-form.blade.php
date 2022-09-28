@@ -23,7 +23,7 @@
                                         {{ $support->depart_id != 37 ? $support->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
                                     </span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit($support->depart->tel_no) }}</span>
+                                    <span style="margin: 0 5px;">โทร {{ thainumDigit($support->depart->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>

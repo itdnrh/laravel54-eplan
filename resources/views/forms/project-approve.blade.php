@@ -18,12 +18,18 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
-                                <div class="content__header-text" style="width: 77%; margin-left: 70px;">
-                                    <span style="margin: 0 5px; font-size: 13.5pt;">
+                                @if(strlen($project->depart->depart_name) < 120)
+                                    <div class="content__header-text" style="width: 87%;">
+                                @else
+                                    <div class="content__header-text" style="width: 87%; font-size: 18.5px;">
+                                @endif
+                                    <span style="margin: 0 0 0 2px;">
                                         {{ $project->owner_depart != 37 ? $project->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
                                     </span>
-                                    <span style="margin: 0 2px; font-size: 13.5pt;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    <span style="margin: 0 2px; font-size: 13.5pt;">โทร {{ thainumDigit($project->depart->tel_no) }}</span>
+                                    <span style="margin: 0 0 0 2px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
+                                    <span style="margin: 0 0 0 2px;">
+                                        โทร {{ thainumDigit($project->depart->tel_no) }}
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -32,7 +38,7 @@
                         <td colspan="2" style="width: 50%;">
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
-                                <div class="content__header-text" style="width: 90%; margin-left: 12px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin: 0 5px;">{{ thainumDigit($project->depart->memo_no.'/') }}</span>
                                 </div>
                             </div>
@@ -40,7 +46,7 @@
                         <td colspan="2">
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
-                                <div class="content__header-text" style="width: 70%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit(convDbDateToLongThMonth(date('Y-m-d'))) }}
                                     </span>
@@ -52,7 +58,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 85%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 94%;">
                                     <span style="margin-left: 5px;">ขออนุมัติดำเนินโครงการ</span>
                                 </div>
                             </div>
@@ -64,39 +70,63 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <p class="memo-paragraph with-expanded">
-                                ตามที่ <span>{{ $project->depart->depart_name }}</span>
-                                @if($project->depart->faction_id == '7')
-                                    กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
-                                @else
-                                    <span>{{ $project->depart->faction->faction_name }}</span>
-                                @endif
-                            </p>
-                            <p>
-                                ได้รับอนุมัติให้จัดทำ <span>{{ thainumDigit($project->project_name) }}</span>                                
-                                รหัสโครงการ 
-                                @if(!empty($project->project_no))
-                                    <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
-                                @else
-                                    <span class="dot">............................</span>
-                                @endif
-                                งบประมาณสนับสนุนจาก <span>{{ thainumDigit($project->budgetSrc->name) }}</span>โรงพยาบาลฯ
-                                ปีงบประมาณ <span>{{ thainumDigit($project->year) }}</span>
-                            </p>
-                            <p>
-                                จำนวน <span>{{ thainumDigit(number_format($project->total_budget)) }}</span> บาท
-                                (<span>{{ $project->total_budget_str }}</span>)
-                                เป็นโครงการระดับ <span>{{ $project->projectType->name }}</span> นั้น
-                                <!-- โดยมีวัตถุประสงค์เพื่อ <span>{{ thainumDigit($project->remark) }}</span> นั้น -->
-                            </p>
+                            <div class="memo-paragraph with-expanded">
+                                <p>
+                                    ตามที่
+                                    @if($project->owner_depart != 37)
+                                        <span>{{ $project->depart->depart_name }}</span>
+                                    @else
+                                        <span style="font-size: 20px;">{{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}</span>
+                                    @endif
+                                    @if($project->depart->faction_id == '7')
+                                        กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
+                                    @else
+                                        {{ $project->depart->faction->faction_name }}
+                                    @endif
+                                    ได้รับอนุมัติให้จัดทำ {{ thainumDigit($project->project_name) }}                                
+                                    รหัสโครงการ 
+                                    @if(!empty($project->project_no))
+                                        <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
+                                    @else
+                                        <span class="dot">............................</span>
+                                    @endif
+                                    งบประมาณสนับสนุนจาก <span>{{ thainumDigit($project->budgetSrc->name) }}โรงพยาบาลฯ</span>
+                                    ปีงบประมาณ <span>{{ thainumDigit($project->year) }}</span>
+                                    จำนวน <span>{{ thainumDigit(number_format($project->total_budget, 2)) }}</span> บาท
+                                    <span>({{ $project->total_budget_str }})</span>
+                                    โดยเป็นโครงการระดับ <span>{{ $project->projectType->name }}</span> นั้น
+                                    <!-- โดยมีวัตถุประสงค์เพื่อ <span>{{ thainumDigit($project->remark) }}</span> นั้น -->
+                                </p>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <p class="memo-paragraph with-expanded" style="padding-right: 5px;">
-                                ในการนี้ <span>{{ $project->depart->depart_name}}</span>
-                                จึงขออนุมัติดำเนิน <span>{{ thainumDigit($project->project_name) }}</span> ตามเอกสารที่แนบมาพร้อมนี้
-                            </p>
+                            <div class="memo-paragraph with-expanded">
+                                ในการนี้
+                                @if($project->owner_depart != 37)
+                                    <span>{{ $project->depart->depart_name }}</span>
+                                @else
+                                    <span style="font-size: 20px;">{{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}</span>
+                                @endif
+                                @if($project->depart->faction_id == '7')
+                                    กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
+                                @else
+                                    {{ $project->depart->faction->faction_name }}
+                                @endif
+                                จึงขออนุมัติดำเนิน {{ thainumDigit($project->project_name) }}
+                                @if(strlen($project->project_name) > 250 || strlen($project->project_name) <= 130)
+                                    {{ 'ตามเอกสารที่แนบมาพร้อมนี้' }}
+                                @elseif(strlen($project->project_name) > 220 && strlen($project->project_name) <= 250)
+                                    {{ 'ตามเอกสารที่แนบมา พร้อมนี้' }}
+                                @elseif(strlen($project->project_name) > 200 && strlen($project->project_name) <= 220)
+                                    {{ 'ตามเอกสาร ที่แนบมาพร้อมนี้' }}
+                                @elseif(strlen($project->project_name) > 130 && strlen($project->project_name) <= 170)
+                                    {{ 'ตามเอกสารที่แนบ มาพร้อมนี้' }}
+                                @else
+                                    {{ 'ตามเอกสาร ที่แนบ มาพร้อมนี้' }}
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     <tr>
