@@ -234,9 +234,6 @@ class OrderController extends Controller
             if ($order->save()) {
                 $orderId = $order->id;
 
-                /** Update support data */
-                $support = Support::find($order->support_id)->update(['status' => 3]);
-
                 /** Update running number table of doc_type_id = 10 */
                 $this->updateRunning($order);
 

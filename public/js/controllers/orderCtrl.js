@@ -22,7 +22,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         po_app_no: '',
         po_app_date: '',
         year: '2566',
-        supplier_id: '',
         order_type_id: '',
         plan_type_id: '',
         deliver_amt: 1,

@@ -18,7 +18,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
-                                <div class="content__header-text" style="width: 77%; margin-left: 70px;">
+                                <div class="content__header-text" style="width: 87%;">
                                     <span style="margin: 0 5px;">
                                         {{ $support->depart_id != 37 ? $support->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
                                     </span>
@@ -32,7 +32,7 @@
                         <td colspan="2" style="width: 50%;">
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
-                                <div class="content__header-text" style="width: 90%; margin-left: 12px;">
+                                <div class="content__header-text" style="width: 94%;">
                                     <span style="margin: 0 5px;">{{ thainumDigit($support->doc_no) }}</span>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                         <td colspan="2">
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
-                                <div class="content__header-text" style="width: 70%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         {{ $support->doc_date == ''
                                                 ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit(convDbDateToLongThMonth(date('Y-m-d')))
@@ -55,7 +55,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 85%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 94%;">
                                     <span>{{ thainumDigit($support->topic) }}</span>
                                 </div>
                             </div>
@@ -67,53 +67,55 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <p style="margin: 5px 0 0 80px;">
+                            <p class="memo-paragraph-content">
                                 ด้วย <span>{{ $support->depart->depart_name }}</span>
-                                มีความประสงค์ขอให้ดำเนินการซื้อ/จ้าง ดังนี้
+                                มีความประสงค์ขอให้ดำเนินการซื้อ / จ้าง ดังนี้
                             </p>
-
-                            <table style="width: 95%;" class="table" border="1">
-                                <tr style="font-size: 16px;">
-                                    <th style="width: 5%; text-align: center; padding: 0;">ลำดับ</th>
-                                    <th style="text-align: center; padding: 0;">รายการ</th>
-                                    <th style="width: 12%; text-align: center; padding: 0;">จำนวนหน่วย</th>
-                                    <th style="width: 12%; text-align: center; padding: 0;">ราคาต่อหน่วย</th>
-                                    <th style="width: 12%; text-align: center; padding: 0;">ราคารวม</th>
-                                </tr>
-                                <?php $row = 0; ?>
-                                <?php $total = 0; ?>
-                                @foreach($support->details as $detail)
-                                    <?php $total += (float)$detail->sum_price; ?>
+                            
+                            <div class="table-container">
+                                <table style="width: 100%;" class="table" border="1">
+                                    <tr style="font-size: 16px;">
+                                        <th style="width: 5%; text-align: center;">ลำดับ</th>
+                                        <th style="text-align: center;">รายการ</th>
+                                        <th style="width: 12%; text-align: center;">จำนวนหน่วย</th>
+                                        <th style="width: 12%; text-align: center;">ราคาต่อหน่วย</th>
+                                        <th style="width: 14%; text-align: center;">ราคารวม</th>
+                                    </tr>
+                                    <?php $row = 0; ?>
+                                    <?php $total = 0; ?>
+                                    @foreach($support->details as $detail)
+                                        <?php $total += (float)$detail->sum_price; ?>
+                                        <tr>
+                                            <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
+                                            <td>
+                                                {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                @if($detail->desc != '')
+                                                    <p style="margin: 0 0 0 5px;">
+                                                        - {{ thainumDigit($detail->desc) }}
+                                                    </p>
+                                                @endif
+                                            </td>
+                                            <td style="text-align: center;">
+                                                {{ thainumDigit(number_format($detail->amount)) }}
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {{ thainumDigit(number_format($detail->sum_price, 2)) }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     <tr>
-                                        <td style="text-align: center; padding: 0;">{{ ++$row }}</td>
-                                        <td style=" padding: 0 5px;">
-                                            {{ thainumDigit($detail->plan->planItem->item->item_name) }}
-                                            @if($detail->desc != '')
-                                                <p style="margin: 0 0 0 5px;">
-                                                    - {{ thainumDigit($detail->desc) }}
-                                                </p>
-                                            @endif
+                                        <td style="text-align: center; font-weight: bold;" colspan="4">
+                                            รวมเป็นเงินทั้งสิ้น
                                         </td>
-                                        <td style="text-align: center; padding: 0;">
-                                            {{ thainumDigit(number_format($detail->amount)) }}
-                                        </td>
-                                        <td style="text-align: center; padding: 0;">
-                                            {{ thainumDigit(number_format($detail->price_per_unit)) }}
-                                        </td>
-                                        <td style="text-align: center; padding: 0;">
-                                            {{ thainumDigit(number_format($detail->sum_price)) }}
+                                        <td style="text-align: right;">
+                                            {{ thainumDigit(number_format($total, 2)) }}
                                         </td>
                                     </tr>
-                                @endforeach
-                                <tr>
-                                    <td style="text-align: center; font-size: 20px; font-weight: bold;" colspan="4">
-                                        รวมเป็นเงินทั้งสิ้น
-                                    </td>
-                                    <td style="text-align: center; font-size: 20px; font-weight: bold;">
-                                        {{ thainumDigit(number_format($total)) }}
-                                    </td>
-                                </tr>
-                            </table>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                     <tr>

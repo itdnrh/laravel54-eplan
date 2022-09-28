@@ -72,7 +72,6 @@
                                         id="order_type_id"
                                         name="order_type_id"
                                         ng-model="order.order_type_id"
-                                        ng-change="getRunningNo(order.order_type_id)"
                                         class="form-control"
                                         tabindex="1"
                                     >
@@ -89,7 +88,7 @@
                                     class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
                                 >
-                                    <label>เลขที่ P/O :</label>
+                                    <label>เลขที่ P/O : </label>
                                     <input  type="text"
                                             id="po_no"
                                             name="po_no"
