@@ -120,15 +120,10 @@
                                     <div class="col-md-6"></div>
                                     <div class="col-md-6">
                                         <a href="{{ url('/orders/add') }}" class="btn btn-primary pull-right">
-                                            เพิ่มใบสั่งซื้อ (P/O)
+                                            สร้างใบสั่งซื้อ (P/O)
                                         </a>
                                     </div>
                                 </div>
-
-                                <!-- <div class="alert alert-warning alert-dismissible" style="margin: 10px 5px;">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                    <i class="icon fa fa-warning"></i>ท่านสามารถยกเลิกวันลาในรายการที่ผ่านการอนุมัติแล้วเท่านั้น !!
-                                </div> -->
 
                                 @include('orders._list')
                                 @include('orders._order-details')

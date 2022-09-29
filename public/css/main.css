@@ -51,11 +51,20 @@
 
 .item__desc-text {
     margin: 0;
+    font-size: 12px;
+    font-weight: bold;
     color: red;
+    /* border: 1px solid gray; */
+}
+
+
+.item__desc-text::before {
+    content: "- ";
 }
 
 .item__spec-text {
     margin: 0;
+    padding-left: 5px;
     color: gray;
     font-size: 12px;
     font-style: italic;

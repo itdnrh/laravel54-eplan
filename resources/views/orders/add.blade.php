@@ -258,16 +258,16 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div style="display: flex;">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 3%; text-align: center">ลำดับ</th>
                                                     <th>รายการ</th>
                                                     <th style="width: 4%; text-align: center">Spec</th>
-                                                    <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
+                                                    <th style="width: 12%; text-align: center">ราคาต่อหน่วย</th>
                                                     <th style="width: 12%; text-align: center">หน่วยนับ</th>
                                                     <th style="width: 8%; text-align: center">จำนวน</th>
-                                                    <th style="width: 10%; text-align: center">รวมเป็นเงิน</th>
+                                                    <th style="width: 12%; text-align: center">รวมเป็นเงิน</th>
                                                     <th style="width: 6%; text-align: center">Actions</th>
                                                 </tr>
                                             </thead>
@@ -298,9 +298,9 @@
                                                         <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                         <p style="margin: 0;">@{{ detail.plan_detail }}</p>
                                                         <p class="item__desc-text">@{{ detail.plan_desc }}</p>
-                                                        <p class="item__spec-text">
+                                                        <span class="item__spec-text">
                                                             @{{ detail.spec }}
-                                                        </p>
+                                                        </span>
                                                         
                                                     </td>
                                                     <td style="text-align: center">
@@ -318,31 +318,32 @@
                                                             class="form-control"
                                                             style="text-align: center"
                                                             ng-model="newItem.price_per_unit"
-                                                            ng-change="calculateSumPrice()"
-                                                            ng-show="editRow"
+                                                            ng-keyup="calculateSumPrice($event)"
+                                                            ng-show="editRow && editRowIndex == index"
                                                         />
-                                                        <span ng-show="!editRow">
+                                                        <span ng-show="!editRow || editRowIndex != index">
                                                             @{{ detail.price_per_unit | currency:'':2 }}
                                                         </span>
                                                     </td>
                                                     <td style="text-align: center">
                                                         <!-- หน่วยนับ -->
-                                                        <select
-                                                            id="unit_id"
-                                                            name="unit_id"
-                                                            class="form-control"
-                                                            ng-model="newItem.unit_id"
-                                                            ng-show="editRow"
-                                                        >
-                                                            <option value="">เลือกหน่วยนับ</option>
-                                                            @foreach($units as $unit)
-                                                                <option value="{{ $unit->id }}">
-                                                                    {{ $unit->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span ng-show="!editRow">
-                                                            @{{ detail.unit.name }}
+                                                        <span style="margin: 0; width: 180px;" ng-show="editRow && editRowIndex == index">
+                                                            <select
+                                                                id="unit_id_@{{ index }}"
+                                                                name="unit_id"
+                                                                class="form-control"
+                                                                ng-model="newItem.unit_id"
+                                                            >
+                                                                <option value="">-- หน่วยนับ --</option>
+                                                                @foreach($units as $unit)
+                                                                    <option value="{{ $unit->id }}">
+                                                                        {{ $unit->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </span>
+                                                        <span ng-show="!editRow || editRowIndex != index">
+                                                            @{{ detail.unit_name }}
                                                         </span>
                                                     </td>
                                                     <td style="text-align: center">
@@ -354,10 +355,10 @@
                                                             class="form-control"
                                                             style="text-align: center"
                                                             ng-model="newItem.amount"
-                                                            ng-change="calculateSumPrice()"
-                                                            ng-show="editRow"
+                                                            ng-keyup="calculateSumPrice($event)"
+                                                            ng-show="editRow && editRowIndex == index"
                                                         />
-                                                        <span ng-show="!editRow">
+                                                        <span ng-show="!editRow || editRowIndex != index">
                                                             @{{ detail.amount | currency:'':2 }}
                                                         </span>
                                                     </td>
@@ -370,9 +371,9 @@
                                                             class="form-control"
                                                             style="text-align: center"
                                                             ng-model="newItem.sum_price"
-                                                            ng-show="editRow"
+                                                            ng-show="editRow && editRowIndex == index"
                                                         />
-                                                        <span ng-show="!editRow">
+                                                        <span ng-show="!editRow || editRowIndex != index">
                                                             @{{ detail.sum_price | currency:'':2 }}
                                                         </span>
                                                     </td>
@@ -380,8 +381,8 @@
                                                         <a
                                                             href="#"
                                                             class="btn btn-warning btn-xs"
-                                                            ng-click="toggleEditRow(); onEditItem(detail.plan_id);"
-                                                            ng-show="!editRow"
+                                                            ng-click="onEditItem(index);"
+                                                            ng-show="!editRow || editRowIndex != index"
                                                         >
                                                             <i class="fa fa-edit"></i>
                                                         </a>
@@ -389,15 +390,15 @@
                                                             href="#"
                                                             class="btn btn-danger btn-xs"
                                                             ng-click="removeOrderItem(index)"
-                                                            ng-show="!editRow"
+                                                            ng-show="!editRow || editRowIndex != index"
                                                         >
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                         <a
                                                             href="#"
                                                             class="btn btn-success btn-xs"
-                                                            ng-click="confirmEditedItem(detail.plan_id); toggleEditRow();"
-                                                            ng-show="editRow"
+                                                            ng-click="confirmEditedItem(index);"
+                                                            ng-show="editRow && editRowIndex == index"
                                                         >
                                                             <i class="fa fa-floppy-o" aria-hidden="true"></i>
                                                         </a>
@@ -405,7 +406,7 @@
                                                             href="#"
                                                             class="btn btn-danger btn-xs"
                                                             ng-click="toggleEditRow()"
-                                                            ng-show="editRow"
+                                                            ng-show="editRow && editRowIndex == index"
                                                         >
                                                             <i class="fa fa-times" aria-hidden="true"></i>
                                                         </a>
@@ -433,24 +434,24 @@
                                 <div class="col-md-8">
                                     <div
                                         class="form-group col-md-8"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'parcel_officer')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'supply_officer')}"
                                     >
                                         <label>เจ้าหน้าที่พัสดุ :</label>
                                         <div class="input-group">
                                             <input
                                                 type="text"
-                                                id="parcel_officer_detail"
-                                                name="parcel_officer_detail"
+                                                id="supply_officer_detail"
+                                                name="supply_officer_detail"
                                                 class="form-control"
-                                                ng-model="order.parcel_officer_detail"
+                                                ng-model="order.supply_officer_detail"
                                                 readonly
                                             />
                                             <input
                                                 type="hidden"
-                                                id="parcel_officer"
-                                                name="parcel_officer"
+                                                id="supply_officer"
+                                                name="supply_officer"
                                                 class="form-control"
-                                                ng-model="order.parcel_officer"
+                                                ng-model="order.supply_officer"
                                             />
                                             <span class="input-group-btn">
                                                 <button
@@ -462,8 +463,8 @@
                                                 </button>
                                             </span>
                                         </div>
-                                        <span class="help-block" ng-show="checkValidate(order, 'parcel_officer')">
-                                            @{{ formError.errors.parcel_officer[0] }}
+                                        <span class="help-block" ng-show="checkValidate(order, 'supply_officer')">
+                                            @{{ formError.errors.supply_officer[0] }}
                                         </span>
                                     </div>
                                     <div
@@ -585,9 +586,9 @@
         $(function () {
             $('.select2').select2();
 
-            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
-            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
-            $('#sum_price').inputmask("currency", { "placeholder": "0" });
+            $('input[name="price_per_unit"]').inputmask("currency", { "placeholder": "0" });
+            $('input[name="amount"]').inputmask("currency",{ "placeholder": "0", digits: 1 });
+            $('input[name="sum_price"]').inputmask("currency", { "placeholder": "0" });
 
             $('#total').inputmask("currency", { "placeholder": "0" });
             $('#vat').inputmask("currency", { "placeholder": "0" });

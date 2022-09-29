@@ -24,7 +24,7 @@ use App\Models\OrderType;
 use App\Models\BudgetSource;
 use App\Models\Running;
 use App\Models\Person;
-use App\Models\Committee;
+use App\Models\SupportOrder;
 
 class OrderController extends Controller
 {
@@ -46,11 +46,11 @@ class OrderController extends Controller
             'vat_rate'      => 'required',
             'vat'           => 'required',
             'net_total'     => 'required',
-            'parcel_officer' => 'required',
+            'supply_officer' => 'required',
         ];
 
         $messages = [
-            'parcel_officer.required' => 'กรุณาระบุเจ้าหน้าที่พัสดุ',
+            'supply_officer.required' => 'กรุณาระบุเจ้าหน้าที่พัสดุ',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -184,6 +184,7 @@ class OrderController extends Controller
                         ->with('details.unit','details.plan','details.plan.planItem.unit')
                         ->with('details.plan.planItem','details.plan.planItem.item')
                         ->with('details.plan.planItem.item.category')
+                        ->with('officer','officer.prefix','officer.position')
                         ->find($req->get('support'));
         } else {
             $support = '';
@@ -206,14 +207,15 @@ class OrderController extends Controller
     public function store(Request $req)
     {
         try {
-            $depart = Depart::where('depart_id', '2')->first();
+            /** Get depart data of supplies department */
+            $supply = Depart::where('depart_id', '2')->first();
 
             $order = new Order;
             $order->po_no           = $req['po_no'];
             $order->po_date         = convThDateToDbDate($req['po_date']);
-            $order->po_req_no       = $depart->memo_no.'/'.$req['po_req_no'];
+            $order->po_req_no       = $supply->memo_no.'/'.$req['po_req_no'];
             $order->po_req_date     = convThDateToDbDate($req['po_req_date']);
-            $order->po_app_no       = $depart->memo_no.'/'.$req['po_app_no'];
+            $order->po_app_no       = $supply->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
             $order->supplier_id     = $req['supplier_id'];
@@ -221,7 +223,7 @@ class OrderController extends Controller
             $order->plan_type_id    = $req['plan_type_id'];
             $order->deliver_amt     = $req['deliver_amt'];
             $order->budget_src_id   = $req['budget_src_id'];
-            $order->parcel_officer  = $req['parcel_officer'];
+            $order->supply_officer  = $req['supply_officer'];
             $order->remark          = $req['remark'];
             $order->total           = $req['total'];
             $order->vat_rate        = $req['vat_rate'];
@@ -242,6 +244,7 @@ class OrderController extends Controller
                     $detail->support_detail_id = $item['support_detail_id'];
                     $detail->plan_id        = $item['plan_id'];
                     $detail->item_id        = $item['item_id'];
+                    $detail->desc           = $item['plan_desc'];
                     $detail->spec           = $item['spec'];
                     $detail->price_per_unit = $item['price_per_unit'];
                     $detail->unit_id        = $item['unit_id'];
@@ -250,16 +253,17 @@ class OrderController extends Controller
 
                     if ($detail->save()) {
                         /** Update plan data */
-                        $plan = Plan::find($detail->plan_id)->update(['status' => 3]);
+                        $plan = Plan::find($detail->plan_id)->update([
+                            'status' => 3
+                        ]);
 
                         /** Update support_details's items */
-                        $supportDetail = SupportDetail::find($detail->support_detail_id)
-                                            ->update([
-                                                'ref_order_id'  => $order->id,
-                                                'status'        => 3
-                                            ]);
+                        $supportDetail = SupportDetail::find($detail->support_detail_id)->update([
+                            'ref_order_id'  => $order->id,
+                            'status'        => 3
+                        ]);
 
-                        /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                        /** TODO: should update plan's remain_amount by decrease from request->amount  */
                         $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
                         /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
                         if ($planItem->calc_method == 1) {
@@ -274,7 +278,7 @@ class OrderController extends Controller
                         }
 
                         $planItem->save();
-                        /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                        /** TODO: should update plan's remain_amount by decrease from request->amount  */
                     }
                 }
 
@@ -388,7 +392,7 @@ class OrderController extends Controller
                 $support->received_no       = $req['received_no'];
                 $support->received_date     = convThDateToDbDate($req['received_date']);
                 $support->received_user     = Auth::user()->person_id;
-                $support->parcel_officer    = $req['officer'];
+                $support->supply_officer    = $req['officer'];
                 $support->status            = 2; 
 
                 if ($support->save()) {

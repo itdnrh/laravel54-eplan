@@ -21,6 +21,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         po_req_date: '',
         po_app_no: '',
         po_app_date: '',
+        support_order_id: '',
         year: '2566',
         order_type_id: '',
         plan_type_id: '',
@@ -31,8 +32,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         net_total: '',
         net_total_str: '',
         budget_src_id: '',
-        parcel_officer: '',
-        parcel_officer_detail: '',
+        supply_officer: '',
+        supply_officer_detail: '',
         remark: '',
         details: [],
     };
@@ -118,7 +119,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.setSupportToOrder = function(support) {
         if (support) {
+            console.log(support);
             $scope.order.plan_type_id = support.plan_type_id.toString();
+            $scope.order.order_type_id = [1,2].includes(support.plan_type_id) ? '1' : '';
+            // $scope.order.support_order_id = support.plan_type_id;
+            $scope.order.supply_officer = support.supply_officer;
+            $scope.order.supply_officer_detail = support.officer.prefix.prefix_name+support.officer.person_firstname+ ' ' +support.officer.person_lastname;
     
             support.details.forEach(item => {
                 const orderItem = {
@@ -133,7 +139,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                     spec: '',
                     price_per_unit: item.price_per_unit,
                     unit_id: item.unit.id,
-                    unit: item.unit,
+                    unit_name: item.unit.name,
                     amount: item.amount,
                     sum_price: item.sum_price
                 };
@@ -156,14 +162,19 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             spec: '',
             price_per_unit: '',
             unit_id: '',
+            unit_name: '',
             amount: '',
             sum_price: ''
         };
     };
 
-    $scope.calculateSumPrice = function() {
-        let price = parseFloat($scope.currencyToNumber($(`#price_per_unit`).val()));
-        let amount = parseFloat($scope.currencyToNumber($(`#amount`).val()));
+    $scope.calculateSumPrice = function(e) {
+        let price = e.target.name == 'price_per_unit'
+                        ? parseFloat($scope.currencyToNumber($(e.target).val()))
+                        : parseFloat($scope.currencyToNumber($(`#price_per_unit`).val()));
+        let amount = e.target.name == 'amount'
+                        ? parseFloat($scope.currencyToNumber($(e.target).val()))
+                        : parseFloat($scope.currencyToNumber($(`#amount`).val()));
 
         $scope.newItem.sum_price = price * amount;
         $('#sum_price').val(price * amount);
@@ -174,8 +185,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let rate = parseFloat($scope.order.vat_rate);
         let vat = (net_total * rate) / (100 + rate);
 
-        $scope.order.vat = vat;
-        $('#vat').val(vat);
+        $scope.order.vat = vat.toFixed(2);
+        $('#vat').val(vat.toFixed(2));
 
         $scope.calculateTotal();
     };
@@ -197,10 +208,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.calculateTotal = () => {
         let net_total = parseFloat($scope.currencyToNumber($(`#net_total`).val()));
         let vat = parseFloat($scope.currencyToNumber($(`#vat`).val()));
-        console.log(net_total);
         let total = net_total - vat;
+
         $scope.order.total = total;
         $('#total').val(total);
+    };
+
+    $scope.isSelected = function(planId) {
+        if ($scope.order.details.length == 0) return false;
+
+        return $scope.order.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
     };
 
     $scope.addOrderItem = () => {
@@ -222,31 +239,49 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.calculateTotal();
     };
 
-    $scope.isSelected = function(planId) {
-        if ($scope.order.details.length == 0) return false;
-
-        return $scope.order.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
+    $scope.editRowIndex = '';
+    $scope.toggleEditRow = function(selectedIndex = '') {
+        $scope.editRow = !$scope.editRow;
+        $scope.editRowIndex = selectedIndex;
     };
 
-    $scope.onEditItem = (planId) => {
-        let detail = $scope.order.details.find(d => d.plan_id === planId);
-        console.log(detail);
-        $scope.newItem.price_per_unit = detail.price_per_unit;
-        $scope.newItem.unit_id = detail.unit_id.toString();
-        $scope.newItem.amount = detail.amount;
-        $scope.newItem.sum_price = detail.sum_price;
+    $scope.onEditItem = (selectedIndex) => {
+        $scope.toggleEditRow(selectedIndex);
+
+        /** Set select input as select2 */
+        $(`#unit_id_${selectedIndex}`).select2({ theme: 'bootstrap' });
+
+        let detail = $scope.order.details.find((d, index) => index === selectedIndex);
+
+        if (detail) {
+            $scope.newItem.price_per_unit   = detail.price_per_unit;
+            $scope.newItem.unit_id          = detail.unit_id.toString();
+            $scope.newItem.amount           = detail.amount;
+            $scope.newItem.sum_price        = detail.sum_price;
+
+            $(`#unit_id_${selectedIndex}`).val(detail.unit_id).trigger('change.select2');
+        }
     };
 
-    $scope.confirmEditedItem = (planId) => {
-        console.log($scope.newItem);
-        let detail = $scope.order.details.find(d => d.plan_id === planId);
-        console.log(detail);
-        $scope.order.details.price_per_unit = detail.price_per_unit;
-        $scope.order.details.unit_id = detail.unit_id;
-        $scope.order.details.amount = detail.amount;
-        $scope.order.details.sum_price = detail.sum_price;
+    $scope.confirmEditedItem = (selectedIndex) => {
+        let edittedData = $scope.order.details.map((d, index) => {
+            if (index === selectedIndex) {
+                d.price_per_unit    = $scope.currencyToNumber($scope.newItem.price_per_unit);
+                d.unit_id           = $scope.newItem.unit_id;
+                d.unit_name         = $(`#unit_id_${selectedIndex} option:selected`).text().replace(/^\s+|\s+$|[\r\n]+/g, "");
+                d.amount            = $scope.currencyToNumber($scope.newItem.amount);
+                d.sum_price         = $scope.currencyToNumber($scope.newItem.sum_price);
+            }
 
-        $scope.calculateTotal();
+            return d;
+        });
+
+        $scope.order.details = edittedData;
+        $scope.calculateNetTotal();
+
+        /** Clear data */
+        $scope.clearNewItem();
+        $scope.toggleEditRow();
     };
 
     $scope.selectedIndex = '';
@@ -258,10 +293,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.addSpec = function(e) {
         $('#spec-form').modal('hide');
-    };
-
-    $scope.toggleEditRow = function() {
-        $scope.editRow = !$scope.editRow;
     };
 
     $scope.showPlansList = (type) => {
@@ -350,7 +381,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 spec: '',
                 price_per_unit: plan.price_per_unit,
                 unit_id: plan.unit.id,
-                unit: plan.unit,
+                unit_name: plan.unit.name,
                 amount: plan.amount,
                 sum_price: plan.sum_price
             };
@@ -623,9 +654,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.onPrintSpecCommittee = function(e, id) {
         console.log($scope.specCommittee);
 
-        $('#spec-committee-form').modal('hide');
+        // $http.post(`${CONFIG.apiUrl}/`)
+        // .then(res => {
+        //     $('#spec-committee-form').modal('hide');
+    
+            window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+        // }, err => {
 
-        window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+        // });
     };
 
     $scope.supportDetails = [];
@@ -805,8 +841,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.selectedMode = '';
     $scope.onSelectedPerson = (mode, person) => {
         if (person) {
-            $scope.order.parcel_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
-            $scope.order.parcel_officer = person.person_id;
+            $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+            $scope.order.supply_officer = person.person_id;
         }
 
         $('#persons-list').modal('hide');

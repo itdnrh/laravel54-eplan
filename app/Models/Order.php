@@ -45,6 +45,6 @@ class Order extends Model
 
     public function officer()
     {
-        return $this->belongsTo(Person::class, 'parcel_officer', 'person_id');
+        return $this->belongsTo(Person::class, 'supply_officer', 'person_id');
     }
 }
