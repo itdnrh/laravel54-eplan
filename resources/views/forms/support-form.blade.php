@@ -255,7 +255,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align: center; padding: 0;">
-                            <p style="margin: 10px 0 30px 0;">
+                            <p style="margin: 0 0 20px 0;">
                                 <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
                                 <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
                             </p>
