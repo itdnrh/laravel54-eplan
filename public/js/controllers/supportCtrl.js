@@ -193,7 +193,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     
             let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
             let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
-            let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+            let depart = $('#user').val() == '1300200009261' ? '' : $('#depart_id').val();
     
             $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=0&approved=A`)
             .then(function(res) {
