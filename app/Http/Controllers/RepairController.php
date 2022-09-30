@@ -394,13 +394,11 @@ class RepairController extends Controller
 
             if ($support->save()) {
                 foreach($req['details'] as $detail) {
-                    Plan::where('id', $detail['plan_id'])->update([
-                        'doc_no'    => $support->doc_no,
-                        'doc_date'  => $support->doc_date,
-                        'sent_date' => date('Y-m-d'),
-                        'sent_user' => Auth::user()->person_id,
-                        'status'    => 1
-                    ]);
+                    /** Update support_details's status to 1=ส่งเอกสารแล้ว */
+                    SupportDetail::where('support_id', $req['id'])->update(['status' => 1]);
+
+                    /** Update plans's status to 9=อยู่ระหว่างการจัดซื้อ */
+                    Plan::where('id', $detail['plan_id'])->update(['status' => 9]);
                 }
 
                 return [

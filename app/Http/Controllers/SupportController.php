@@ -556,9 +556,9 @@ class SupportController extends Controller
                 foreach($req['details'] as $detail) {
                     /** Update support_details's status to 1=ส่งเอกสารแล้ว */
                     SupportDetail::where('support_id', $req['id'])->update(['status' => 1]);
-                    
-                    /** Update plans's status to 1=ส่งเอกสารแล้ว */
-                    Plan::where('id', $detail['plan_id'])->update(['status' => 1]);
+
+                    /** Update plans's status to 9=อยู่ระหว่างการจัดซื้อ */
+                    Plan::where('id', $detail['plan_id'])->update(['status' => 9]);
                 }
 
                 return [

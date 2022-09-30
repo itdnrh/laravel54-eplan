@@ -245,6 +245,9 @@
                                             ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="plan.status == 9">
+                                            อยู่ระหว่างการจัดซื้อ
+                                        </span>
+                                        <span class="label label-default" ng-show="plan.status == 99">
                                             ยกเลิก
                                         </span>
                                     </td>
