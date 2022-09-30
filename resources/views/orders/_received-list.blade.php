@@ -74,7 +74,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-group">
                 <label>เลขที่ใบขอสนับสนุน</label>
                 <input
@@ -82,6 +82,19 @@
                     id="txtSupportNo"
                     name="txtSupportNo"
                     ng-model="txtSupportNo"
+                    class="form-control"
+                    ng-keyup="getReceiveds(2);"
+                />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>เลขที่รับเอกสาร</label>
+                <input
+                    type="text"
+                    id="txtReceivedNo"
+                    name="txtReceivedNo"
+                    ng-model="txtReceivedNo"
                     class="form-control"
                     ng-keyup="getReceiveds(2);"
                 />

@@ -6,6 +6,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.txtSupportNo = '';
+    $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';
 
     $scope.orders = [];
@@ -421,8 +422,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
         let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+        let received_no = $scope.txtReceivedNo == '' ? '' : $scope.txtReceivedNo;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&received_no=${received_no}&status=${status}`)
         .then(function(res) {
             console.log(res);
             $scope.setReceiveds(res);
@@ -446,8 +448,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
         let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+        let received_no = $scope.txtReceivedNo == '' ? '' : $scope.txtReceivedNo;
 
-        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&received_no=${received_no}&status=${status}`)
         .then(function(res) {
             cb(res);
 
