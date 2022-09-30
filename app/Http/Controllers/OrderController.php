@@ -353,7 +353,20 @@ class OrderController extends Controller
 
     public function delete(Request $req, $id)
     {
-        //
+        /** TODO: Revert plan_items's remain data */
+        // $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
+        // // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
+        // if ($planItem->calc_method == 1) {
+        //     $planItem->remain_amount = (float)$planItem->remain_amount + (float)$supportDetail->amount;
+        //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$supportDetail->sum_price;
+        // } else {
+        //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$item['sum_price'];
+
+        //     if ($planItem->remain_amount == 0) {
+        //         $planItem->remain_amount = 1;
+        //     }
+        // }
+        // $planItem->update();
     }
 
     public function received()

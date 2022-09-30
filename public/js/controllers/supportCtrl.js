@@ -619,7 +619,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         e.preventDefault();
 
         if(confirm(`คุณต้องแก้ไขบันทึกขอสนับสนุน รหัส ${$scope.support.id} ใช่หรือไม่?`)) {
-            // $scope.loading = true;
+            $scope.loading = true;
 
             /** Set only person data to all committee sets */
             $scope.support.insp_committee = $scope.support.insp_committee.map(insp => insp.person);

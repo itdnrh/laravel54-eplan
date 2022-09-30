@@ -264,11 +264,9 @@ class SupportController extends Controller
             $support->updated_user      = $req['user'];
             
             if ($support->save()) {
-                $supportId = $support->id;
-
                 foreach($req['details'] as $item) {
                     $detail = new SupportDetail;
-                    $detail->support_id     = $supportId;
+                    $detail->support_id     = $support->id;
                     $detail->plan_id        = $item['plan_id'];
 
                     if (!empty($item['subitem_id'])) {
@@ -282,18 +280,13 @@ class SupportController extends Controller
                     $detail->sum_price      = currencyToNumber($item['sum_price']);
                     $detail->status         = 0;
                     $detail->save();
-
-                    /** TODO: should update plan's status to 99=pending  */
-                    // $plan = Plan::find($item['plan_id']);
-                    // $plan->status = '99';
-                    // $plan->save();
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */
                 if (count($req['spec_committee']) > 0) {
                     foreach($req['spec_committee'] as $spec) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 1;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -306,7 +299,7 @@ class SupportController extends Controller
                 if (count($req['insp_committee']) > 0) {
                     foreach($req['insp_committee'] as $insp) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 2;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -319,7 +312,7 @@ class SupportController extends Controller
                 if (count($req['env_committee']) > 0) {
                     foreach($req['env_committee'] as $env) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 3;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -389,33 +382,49 @@ class SupportController extends Controller
             $support->updated_user      = $req['user'];
             
             if ($support->save()) {
-                $supportId = $support->id;
-
                 foreach($req['details'] as $item) {
                     if (!array_key_exists('id', $item)) {
                         $detail = new SupportDetail;
-                        $detail->support_id     = $supportId;
+                        $detail->support_id     = $support->id;
                         $detail->plan_id        = $item['plan_id'];
-                        $detail->desc           = $item['desc'];
-                        $detail->price_per_unit = $item['price_per_unit'];
-                        $detail->unit_id        = $item['unit_id'];
-                        $detail->amount         = $item['amount'];
-                        $detail->sum_price      = $item['sum_price'];
-                        $detail->status         = 0;
-                        $detail->save();
 
-                        /** TODO: should update plan's status to 99=pending  */
-                        // $plan = Plan::find($item['plan_id']);
-                        // $plan->status = '99';
-                        // $plan->save();
+                        if (!empty($item['subitem_id'])) {
+                            $detail->subitem_id     = $item['subitem_id'];
+                        }
+
+                        $detail->desc           = $item['desc'];
+                        $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
+                        $detail->unit_id        = currencyToNumber($item['unit_id']);
+                        $detail->amount         = currencyToNumber($item['amount']);
+                        $detail->sum_price      = currencyToNumber($item['sum_price']);
+                        $detail->save();
+                    } else {
+                        $detail = SupportDetail::find($item['id']);
+                        $detail->support_id     = $support->id;
+                        $detail->plan_id        = $item['plan_id'];
+
+                        if (!empty($item['subitem_id'])) {
+                            $detail->subitem_id     = $item['subitem_id'];
+                        }
+
+                        $detail->desc           = $item['desc'];
+                        $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
+                        $detail->unit_id        = currencyToNumber($item['unit_id']);
+                        $detail->amount         = currencyToNumber($item['amount']);
+                        $detail->sum_price      = currencyToNumber($item['sum_price']);
+                        $detail->save();
                     }
                 }
-                
+
+                /** Delete all committees of updated supoorts */
+                Committee::where('support_id', $support->id)->delete();
+
+                /** Add all new committees of updated supoorts */
                 /** คณะกรรมการกำหนดคุณลักษณะ */
                 if (count($req['spec_committee']) > 0) {
                     foreach($req['spec_committee'] as $spec) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 1;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -428,7 +437,7 @@ class SupportController extends Controller
                 if (count($req['insp_committee']) > 0) {
                     foreach($req['insp_committee'] as $insp) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 2;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -441,7 +450,7 @@ class SupportController extends Controller
                 if (count($req['env_committee']) > 0) {
                     foreach($req['env_committee'] as $env) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 3;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -484,36 +493,18 @@ class SupportController extends Controller
             $deleted  = $support;
 
             if ($support->delete()) {
+                /** Fetch support_details data and update plan's status */
                 $details = SupportDetail::where('support_id', $deleted->id)->get();
-
                 foreach($details as $item) {
-                    /** Fetch support_details data */
-                    $supportDetail = SupportDetail::find($item->id);
-
                     /** TODO: Revert plans's status to 0=รอดำเนินการ */
-                    // Plan::find($item->plan_id)->update(['status' => 0]);
-                    
-                    /** TODO: Revert plan_items's remain data */
-                    $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
-                    // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
-                    if ($planItem->calc_method == 1) {
-                        $planItem->remain_amount = (float)$planItem->remain_amount + (float)$supportDetail->amount;
-                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$supportDetail->sum_price;
-                    } else {
-                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$item['sum_price'];
-
-                        if ($planItem->remain_amount == 0) {
-                            $planItem->remain_amount = 1;
-                        }
-                    }
-                    $planItem->update();
-
-                    /** Delete support_details data */
-                    $supportDetail->delete();
+                    Plan::find($item->plan_id)->update(['status' => 0]);
                 }
 
+                /** TODO: Delete support_details data */
+                SupportDetail::find($deleted->id)->delete();
+
                 /** TODO: Delete all committee of deleted support data */
-                // Committee::where('support_id', $deleted->id)->delete();
+                Committee::where('support_id', $deleted->id)->delete();
 
                 return [
                     'status'    => 1,
