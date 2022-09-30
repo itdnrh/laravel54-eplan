@@ -236,25 +236,13 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="plan.status == 0">
-                                            อยู่ระหว่างดำเนินการ
+                                            รอดำเนินการ
                                         </span>
                                         <span class="label label-info" ng-show="plan.status == 1">
-                                            ส่งเอกสารแล้ว
+                                            ดำเนินการแล้วบางส่วน
                                         </span>
                                         <span class="label bg-navy" ng-show="plan.status == 2">
-                                            รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="plan.status == 3">
-                                            ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="plan.status == 4">
-                                            ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="plan.status == 5">
-                                            ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="plan.status == 6">
-                                            ตั้งหนี้แล้ว
+                                            ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="plan.status == 9">
                                             ยกเลิก
