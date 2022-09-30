@@ -2,6 +2,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 /** ################################################################################## */
     $scope.loading = false;
 
+    $scope.searchKey = '';
+
     $scope.supports = [];
     $scope.pager = [];
 
@@ -204,9 +206,9 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.persons_pager = null;
 
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+        let name = $scope.searchKey == '' ? '' : $scope.searchKey;
 
-        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${name}`)
         .then(function(res) {
             $scope.setPersons(res);
 
@@ -226,9 +228,9 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.persons_pager = null;
 
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+        let name = $scope.searchKey == '' ? '' : $scope.searchKey;
 
-        $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
+        $http.get(`${url}&depart=${depart}&name=${name}`)
         .then(function(res) {
             cb(res);
 

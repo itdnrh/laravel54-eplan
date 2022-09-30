@@ -7,6 +7,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.cboDepart = '';
     $scope.cboDivision = '';
     $scope.txtKeyword = '';
+    $scope.searchKey == '';
 
     $scope.supports = [];
     $scope.pager = [];
@@ -416,9 +417,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.persons_pager = null;
 
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+        let name = $scope.searchKey == '' ? '' : $scope.searchKey;
 
-        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${name}`)
         .then(function(res) {
             $scope.setPersons(res);
 
@@ -438,9 +439,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.persons_pager = null;
 
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+        let name = $scope.searchKey == '' ? '' : $scope.searchKey;
 
-        $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
+        $http.get(`${url}&depart=${depart}&name=${name}`)
         .then(function(res) {
             cb(res);
 
