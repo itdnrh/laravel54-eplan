@@ -252,13 +252,8 @@ class OrderController extends Controller
                     $detail->sum_price      = $item['sum_price'];
 
                     if ($detail->save()) {
-                        /** Update plan data */
-                        $plan = Plan::find($detail->plan_id)->update([
-                            'status' => 3
-                        ]);
-
-                        /** Update support_details's items */
-                        $supportDetail = SupportDetail::find($detail->support_detail_id)->update([
+                        /** Update support_details's status to 3=ออกใบสั่งซื้อแล้ว */
+                        SupportDetail::find($detail->support_detail_id)->update([
                             'ref_order_id'  => $order->id,
                             'status'        => 3
                         ]);
@@ -276,9 +271,15 @@ class OrderController extends Controller
                                 $planItem->remain_amount = 0;
                             }
                         }
-
                         $planItem->save();
                         /** TODO: should update plan's remain_amount by decrease from request->amount  */
+
+                        /** Update plan's status to  1=ดำเนินการแล้วบางส่วน, 2=ดำเนินการครบแล้ว */
+                        if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
+                            Plan::find($detail->plan_id)->update(['status' => 1]);
+                        } else {
+                            Plan::find($detail->plan_id)->update(['status' => 2]);
+                        }
                     }
                 }
 
@@ -406,9 +407,6 @@ class OrderController extends Controller
                     foreach($details as $detail) {
                         /** Update support_details's status to 2=รับเอกสารแล้ว */
                         SupportDetail::find($detail->id)->update(['status' => 2]);
-
-                        /** Update plans's status to 2=รับเอกสารแล้ว */
-                        Plan::find($detail->plan_id)->update(['status' => 2]);
                     }
 
                     return [
