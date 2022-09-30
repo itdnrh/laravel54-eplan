@@ -113,10 +113,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         };
     };
 
-    $scope.calculateSumPrice = function(price, amount) {
-        $scope.newItem.sum_price = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
-    };
-
     $scope.getAll = function() {
         $scope.loading = true;
         $scope.supports = [];
@@ -285,11 +281,15 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#plans-list').modal('hide');
     };
 
+    $scope.calculateSumPrice = function(price, amount) {
+        $scope.newItem.sum_price = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+    };
+
     $scope.calculateTotal = () => {
         let total = 0;
 
         total = $scope.support.details.reduce((sum, curVal) => {
-            return sum = sum + parseFloat(curVal.sum_price);
+            return sum = sum + parseFloat($scope.currencyToNumber(curVal.sum_price));
         }, 0);
 
         $scope.support.total = total;

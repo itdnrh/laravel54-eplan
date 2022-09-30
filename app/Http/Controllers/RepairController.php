@@ -226,7 +226,7 @@ class RepairController extends Controller
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -244,6 +244,7 @@ class RepairController extends Controller
                     ->where('plans.approved', 'A')
                     ->where('plans.plan_type_id', '3')
                     ->where('plan_items.have_subitem', '1')
+                    ->where('plan_items.is_repairing_item', '1')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('plans.year', $year);
                     })
@@ -252,13 +253,13 @@ class RepairController extends Controller
                     })
                     ->where('plan_items.remain_amount', '>', 0)
                     // ->orderBy('plans.plan_no', 'ASC')
-                    ->paginate(10);
+                    ->get();
 
         return view('repairs.add', [
             "plans"         => $plans,
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -283,6 +284,7 @@ class RepairController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->plan_type_id      = $req['plan_type_id'];
+            $support->category_id       = '44';
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
@@ -292,35 +294,24 @@ class RepairController extends Controller
             $support->updated_user      = $req['user'];
             
             if ($support->save()) {
-                $supportId = $support->id;
-
                 foreach($req['details'] as $item) {
                     $detail = new SupportDetail;
-                    $detail->support_id     = $supportId;
+                    $detail->support_id     = $support->id;
                     $detail->plan_id        = $req['plan_id'];
                     $detail->desc           = $item['desc'];
-                    $detail->price_per_unit = $item['price_per_unit'];
-                    $detail->unit_id        = $item['unit_id'];
-                    $detail->amount         = $item['amount'];
-                    $detail->sum_price      = $item['sum_price'];
+                    $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
+                    $detail->unit_id        = currencyToNumber($item['unit_id']);
+                    $detail->amount         = currencyToNumber($item['amount']);
+                    $detail->sum_price      = currencyToNumber($item['sum_price']);
+                    $detail->status         = 0;
                     $detail->save();
-
-                    $subitem = new SupportSubitem;
-                    $subitem->support_id        = $supportId;
-                    $subitem->plan_id           = $req['plan_id'];
-                    $subitem->desc              = $item['desc'];
-                    $subitem->price_per_unit    = $item['price_per_unit'];
-                    $subitem->unit_id           = $item['unit_id'];
-                    $subitem->amount            = $item['amount'];
-                    $subitem->sum_price         = $item['sum_price'];
-                    $subitem->save();
                 }
                 
                 /** คณะกรรมการกำหนดคุณลักษณะ */
                 if (count($req['spec_committee']) > 0) {
                     foreach($req['spec_committee'] as $spec) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 1;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -333,7 +324,7 @@ class RepairController extends Controller
                 if (count($req['insp_committee']) > 0) {
                     foreach($req['insp_committee'] as $insp) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 2;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];
@@ -346,7 +337,7 @@ class RepairController extends Controller
                 if (count($req['env_committee']) > 0) {
                     foreach($req['env_committee'] as $env) {
                         $comm = new Committee;
-                        $comm->support_id           = $supportId;
+                        $comm->support_id           = $support->id;
                         $comm->committee_type_id    = 3;
                         $comm->detail               = '';
                         $comm->year                 = $req['year'];

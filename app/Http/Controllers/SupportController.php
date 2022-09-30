@@ -272,10 +272,10 @@ class SupportController extends Controller
                     }
 
                     $detail->desc           = $item['desc'];
-                    $detail->price_per_unit = $item['price_per_unit'];
-                    $detail->unit_id        = $item['unit_id'];
-                    $detail->amount         = $item['amount'];
-                    $detail->sum_price      = $item['sum_price'];
+                    $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
+                    $detail->unit_id        = currencyToNumber($item['unit_id']);
+                    $detail->amount         = currencyToNumber($item['amount']);
+                    $detail->sum_price      = currencyToNumber($item['sum_price']);
                     $detail->status         = 0;
                     $detail->save();
 

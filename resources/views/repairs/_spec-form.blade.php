@@ -58,7 +58,7 @@
                         />
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">รายการ</label>
+                        <label for="">รายการ (ระบุรายการ เช่น เครื่องคอมพิวเตอร์, รถตู้, ตู้เย็น, อาคาร ฯลฯ เป็นต้น)</label>
                         <input
                             type="text"
                             id="desc"

@@ -195,7 +195,7 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped" style="width: 80%;">
                                         <tr ng-repeat="(index, spec) in support.spec_committee">
-                                            <td>
+                                            <td style="width: 40%;">
                                                 @{{ index+1 }}. 
                                                 @{{ spec.person.prefix.prefix_name + spec.person.person_firstname +' '+ spec.person.person_lastname }}
                                             </td>
@@ -214,7 +214,7 @@
                                 <div class="table-responsive" style="margin: 0; padding: 0;">
                                     <table class="table table-striped" style="width: 80%;">
                                         <tr ng-repeat="(index, insp) in support.insp_committee">
-                                            <td>
+                                            <td style="width: 40%;">
                                                 @{{ index+1 }}. 
                                                 @{{ insp.person.prefix.prefix_name + insp.person.person_firstname +' '+ insp.person.person_lastname }}
                                             </td>
@@ -233,7 +233,7 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped" style="width: 80%;">
                                         <tr ng-repeat="(index, env) in support.env_committee">
-                                            <td>
+                                            <td style="width: 40%;">
                                                 @{{ index+1 }}. 
                                                 @{{ env.person.prefix.prefix_name + env.person.person_firstname +' '+ env.person.person_lastname }}
                                             </td>

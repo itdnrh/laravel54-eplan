@@ -20,7 +20,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         topic: '',
         depart_id: '',
         division_id: '',
-        year: (moment().year() + 543).toString(),
+        year: '2566', //(moment().year() + 543).toString(),
         plan_type_id: '3',
         plan_id: '',
         total: '',
@@ -80,31 +80,6 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         };
     };
 
-    $scope.calculateSumPrice = function(price) {
-        const total = parseFloat(price) * parseFloat($scope.newItem.amount);
-        $scope.newItem.sum_price = total;
-    };
-
-    $scope.showSpecForm = function() {
-        if ($scope.support.plan_id == '') {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาระบุรายการแผนจ้างบริการก่อน !!!");
-        } else {
-            $('#spec-form').modal('show');
-        }
-    };
-
-    $scope.addSpec = function() {
-        if ($scope.spec.type == 1) {
-            $scope.newItem.desc = ` ${$scope.spec.desc} หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
-        } else if ($scope.spec.type == 2) {
-            $scope.newItem.desc = `${$scope.spec.desc} รถราชการ ทะเบียน: ${$scope.spec.reg_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
-        } else {
-            $scope.newItem.desc = `${$scope.spec.desc} สาเหตุ/อาการ: ${$scope.spec.cause}`
-        }
-
-        $('#spec-form').modal('hide');
-    };
-
     $scope.getAll = function() {
         $scope.loading = true;
         $scope.supports = [];
@@ -153,11 +128,35 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.pager = pager;
     };
 
+    $scope.calculateSumPrice = function(price, amount) {
+        $scope.newItem.sum_price = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+    };
+
+    $scope.showSpecForm = function() {
+        if ($scope.support.plan_id == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาระบุรายการแผนจ้างบริการก่อน !!!");
+        } else {
+            $('#spec-form').modal('show');
+        }
+    };
+
+    $scope.addSpec = function() {
+        if ($scope.spec.type == 1) {
+            $scope.newItem.desc = ` ${$scope.spec.desc} หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+        } else if ($scope.spec.type == 2) {
+            $scope.newItem.desc = `${$scope.spec.desc} รถราชการ ทะเบียน: ${$scope.spec.reg_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+        } else {
+            $scope.newItem.desc = `${$scope.spec.desc} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+        }
+
+        $('#spec-form').modal('hide');
+    };
+
     $scope.calculateTotal = () => {
         let total = 0;
 
         total = $scope.support.details.reduce((sum, curVal) => {
-            return sum = sum + curVal.sum_price;
+            return sum = sum + $scope.currencyToNumber(curVal.sum_price);
         }, 0);
 
         $scope.support.total = total;
@@ -298,8 +297,13 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
     $scope.setEditControls = function(support, committees) {
         if (support) {
+            if (support.doc_no) {
+                const [prefix, doc_no] = support.doc_no.split("/");
+                $scope.support.doc_prefix = prefix;
+                $scope.support.doc_no = doc_no;
+            }
+
             $scope.support.id = support.id;
-            $scope.support.doc_no = support.doc_no;
             $scope.support.doc_date = support.doc_date;
             $scope.support.topic = support.topic;
             $scope.support.total = support.total;
@@ -371,6 +375,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/supports/list`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
