@@ -175,7 +175,6 @@ class RepairController extends Controller
         $supports = Support::with('planType','depart','division')
                     ->with('details','details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
-                    ->with('details.plan.subItems')
                     ->where('plan_type_id', '3')
                     ->whereIn('id', $supportsList)
                     ->when(!empty($year), function($q) use ($year) {
@@ -251,7 +250,6 @@ class RepairController extends Controller
                         $q->where('plans.depart_id', $depart);
                     })
                     ->where('plan_items.remain_amount', '>', 0)
-                    // ->orderBy('plans.plan_no', 'ASC')
                     ->get();
 
         return view('repairs.add', [
@@ -363,14 +361,36 @@ class RepairController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        $order = order::with('supplier','details','details.unit')
-                    ->where('id', $id)
-                    ->first();
+        $year = 2566;
+        $depart = Auth::user()->person_id == '1300200009261' ? '' : Auth::user()->memberOf->depart_id;
 
-        return view('orders.edit', [
-            "order" => $order
+        $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->with('budget','depart','division')
+                    ->with('planItem','planItem.unit')
+                    ->with('planItem.item','planItem.item.category')
+                    ->where('plans.approved', 'A')
+                    ->where('plans.plan_type_id', '3')
+                    ->where('plan_items.have_subitem', '1')
+                    ->where('plan_items.is_repairing_item', '1')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('plans.year', $year);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('plans.depart_id', $depart);
+                    })
+                    ->where('plan_items.remain_amount', '>', 0)
+                    ->get();
+
+        return view('repairs.edit', [
+            "repair"        => Support::find($id),
+            "plans"         => $plans,
+            "categories"    => ItemCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 
