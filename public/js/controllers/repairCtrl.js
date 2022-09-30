@@ -146,8 +146,6 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             return;
         }
 
-        console.log($scope.spec);
-
         if ($scope.spec.repair_type == 1) {
             $scope.newItem.desc = ` ${$scope.spec.desc} หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
         } else if ($scope.spec.repair_type == 2) {
@@ -156,7 +154,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             $scope.newItem.desc = `${$scope.spec.desc} รายละเอียดการซ่อม: ${$scope.spec.cause}`
         }
 
-        // $('#spec-form').modal('hide');
+        $('#spec-form').modal('hide');
     };
 
     $scope.calculateTotal = () => {
@@ -379,11 +377,10 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         .then(function(res) {
             $scope.loading = false;
 
-            console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
-                window.location.href = `${CONFIG.baseUrl}/supports/list`;
+                window.location.href = `${CONFIG.baseUrl}/repairs/list`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
