@@ -219,9 +219,9 @@
                                     ๕.  รายชื่อผู้ประสานงาน
                                 @endif
                                 <span style="margin: 0;">
-                                    ชื่อ-สกุล <span class="text-val-dot p10">{{ $contact->prefix->prefix_name.$contact->person_firstname.' '.$contact->person_lastname }}</span>
-                                    ตำแหน่ง <span class="text-val-dot p10">{{ $contact->position->position_name }}{{ $contact->academic ? $contact->academic->ac_name : '' }}</span> 
-                                    โทร <span class="text-val-dot p10">{{ thainumDigit($contact->person_tel) }}</span>
+                                    ชื่อ-สกุล <span class="text-val-dot p5">{{ $contact->prefix->prefix_name.$contact->person_firstname.' '.$contact->person_lastname }}</span>
+                                    ตำแหน่ง <span class="text-val-dot p5">{{ $contact->position->position_name }}{{ $contact->academic ? $contact->academic->ac_name : '' }}</span> 
+                                    โทร <span class="text-val-dot p5">{{ thainumDigit($contact->person_tel) }}</span>
                                 </span>
                             </p>
                             <p style="margin: 0 0 0 80px;">
