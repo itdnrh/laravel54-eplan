@@ -44,7 +44,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     };
 
     $scope.spec = {
-        type: '',
+        repair_type: '',
         parcel_no: '',
         reg_no: '',
         desc: '',
@@ -140,16 +140,23 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         }
     };
 
-    $scope.addSpec = function() {
-        if ($scope.spec.type == 1) {
+    $scope.addSpec = function(e, form) {
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        console.log($scope.spec);
+
+        if ($scope.spec.repair_type == 1) {
             $scope.newItem.desc = ` ${$scope.spec.desc} หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
-        } else if ($scope.spec.type == 2) {
+        } else if ($scope.spec.repair_type == 2) {
             $scope.newItem.desc = `${$scope.spec.desc} รถราชการ ทะเบียน: ${$scope.spec.reg_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
         } else {
             $scope.newItem.desc = `${$scope.spec.desc} รายละเอียดการซ่อม: ${$scope.spec.cause}`
         }
 
-        $('#spec-form').modal('hide');
+        // $('#spec-form').modal('hide');
     };
 
     $scope.calculateTotal = () => {

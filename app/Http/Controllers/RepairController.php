@@ -119,7 +119,6 @@ class RepairController extends Controller
         $supports = Support::with('planType','depart','division')
                     ->with('details','details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
-                    // ->with('details.plan.subItems')
                     ->where('support_type_id', '2')
                     ->where('plan_type_id', '3')
                     ->whereIn('id', $supportsList)

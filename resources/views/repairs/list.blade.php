@@ -123,9 +123,7 @@
                                     <td>
                                         <ul style="margin: 0; padding: 0 0 0 15px;">
                                             <li ng-repeat="(index, detail) in support.details">
-                                                <span style="font-weight: bold;">
-                                                    @{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}
-                                                </span>
+                                                <span>@{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}</span>
                                                 <p style="margin: 0; font-size: 12px; color: red;">
                                                     (@{{ detail.desc }}
                                                     จำนวน <span>@{{ detail.amount | currency:'':0 }}</span>
