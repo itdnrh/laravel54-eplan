@@ -77,9 +77,9 @@
                                     <tr style="font-size: 16px;">
                                         <th style="width: 5%; text-align: center;">ลำดับ</th>
                                         <th style="text-align: center;">รายการ</th>
-                                        <th style="width: 12%; text-align: center;">จำนวนหน่วย</th>
-                                        <th style="width: 12%; text-align: center;">ราคาต่อหน่วย</th>
-                                        <th style="width: 14%; text-align: center;">ราคารวม</th>
+                                        <th style="width: 10%; text-align: center;">จำนวนหน่วย</th>
+                                        <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
+                                        <th style="width: 15%; text-align: center;">ราคารวม</th>
                                     </tr>
                                     <?php $row = 0; ?>
                                     <?php $total = 0; ?>
@@ -211,9 +211,21 @@
                                 <p style="margin: 0;">
                                     ๕.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
                                 </p>
+                                @if(count($committees) >= 6)
+                                    <div style="height: 75px;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
                             @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
                             <p style="margin: 0 0 10px;">
                                 @if((float)$total >= 500000)
+                                    @if(count($committees) >= 6)
+                                        <div style="height: 20px;"></div>
+                                        <p class="page-number">- ๒ -</p>
+                                    @endif
                                     ๖.  รายชื่อผู้ประสานงาน
                                 @else
                                     ๕.  รายชื่อผู้ประสานงาน
