@@ -83,13 +83,16 @@
                                     </tr>
                                     <?php $row = 0; ?>
                                     <?php $total = 0; ?>
+                                    <?php $tableHeight = 0; ?>
                                     @foreach($support->details as $detail)
                                         <?php $total += (float)$detail->sum_price; ?>
-                                        <tr>
+                                        <tr style="min-height: 20px;">
                                             <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                             <td>
+                                                <?php $tableHeight += 20; ?>
                                                 {{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                                 @if($detail->desc != '')
+                                                    <?php $tableHeight += 20; ?>
                                                     <p style="margin: 0 0 0 5px;">
                                                         - {{ thainumDigit($detail->desc) }}
                                                     </p>
@@ -106,6 +109,8 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    <?php $tableHeight += 20; ?>
+
                                     <tr>
                                         <td style="text-align: center; font-weight: bold;" colspan="4">
                                             รวมเป็นเงินทั้งสิ้น
@@ -128,6 +133,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            {{ $tableHeight }}
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
                             <div style="margin: 0;">
                                 ๑. รายชื่อคณะกรรมการกำหนดคุณลักษณะเฉพาะวัสดุหรือครุภัณฑ์ (กรณีงานซื้อ)/คณะกรรมการจัดทำร่างขอบเขตงาน (กรณีงานจ้าง)
@@ -210,6 +216,10 @@
                                     ๓.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน............แผ่น
                                 @endif
                             </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
                             <p style="margin: 0;">
                                 @if((float)$total >= 500000)
                                     ๕.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
@@ -218,25 +228,28 @@
                                 @endif
                             </p>
 
-                            @if(count($support->details) > 4 && count($committees) <= 6)
-                                <div style="height: 60px;"></div>
-                                <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
-                            @endif
-                            @if(count($committees) > 6)
-                                @if(count($support->details) >= 4)
+                            @if(count($committees) <= 6)
+                                @if($tableHeight > 100 && $tableHeight < 180)
                                     <div style="height: 40px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
-                                @if(count($support->details) == 1)
-                                    <div style="height: 120px;"></div>
+
+                                @if($tableHeight >= 180)
+                                    <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
-                                @if(count($support->details) == 2)
-                                    <div style="height: 100px;"></div>
+                            @endif
+
+                            @if(count($committees) > 6)
+                                <!-- ประมาณไม่เกิน 2 แถวใหญ่ -->
+                                @if($tableHeight <= 100)
+                                    <div style="height: {{ 100 - $tableHeight }}px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
-                                @if(count($support->details) == 3)
-                                    <div style="height: 80px;"></div>
+
+                                <!-- ประมาณมากกว่า 2 แถวใหญ่ -->
+                                @if($tableHeight > 100)
+                                    <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
@@ -244,7 +257,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            @if(count($support->details) > 4 || count($committees) > 6)
+                            @if($tableHeight > 100 || count($committees) > 6)
                                 <div style="height: 20px;"></div>
                                 <p class="page-number">- ๒ -</p>
                             @endif

@@ -518,7 +518,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             }
 
             $scope.support.id = support.id;
-            $scope.support.doc_date = StringFormatService.convFromDbDate(support.doc_date);
+            $scope.support.doc_date = support.doc_date ? StringFormatService.convFromDbDate(support.doc_date) : '';
             $scope.support.topic = support.topic;
             $scope.support.total = support.total;
             $scope.support.reason = support.reason;
@@ -631,7 +631,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             .then(function(res) {
                 $scope.loading = false;
 
-                console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
 
