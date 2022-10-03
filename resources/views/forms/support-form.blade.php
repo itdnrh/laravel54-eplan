@@ -146,7 +146,10 @@
                                     @endforeach
                                 </ul>
                             </p>
-
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
                             @if((float)$total >= 500000)
                                 <p style="margin: 0;">
                                     ๒. รายชื่อคณะกรรมการพิจารณาผลการประกวดราคา
@@ -166,7 +169,10 @@
                                     </ul>
                                 </p>
                             @endif
-
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
                             <p style="margin: 0;">
                                 @if((float)$total >= 500000)
                                     ๓. รายชื่อคณะกรรมการตรวจรับพัสดุ
@@ -211,25 +217,25 @@
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @endif
                             </p>
+                            @if(count($support->details) > 3 || count($committees) >= 6)
+                                <div style="height: 75px;"></div>
+                                <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                            @endif
                             @if((float)$total >= 500000)
                                 <p style="margin: 0;">
                                     ๕.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
                                 </p>
-                                @if(count($support->details) > 3 || count($committees) >= 6)
-                                    <div style="height: 75px;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
-                                @endif
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
+                            @if(count($support->details) > 3 || count($committees) >= 6)
+                                <div style="height: 20px;"></div>
+                                <p class="page-number">- ๒ -</p>
+                            @endif
                             <p style="margin: 0 0 10px;">
                                 @if((float)$total >= 500000)
-                                    @if(count($support->details) > 3 || count($committees) >= 6)
-                                        <div style="height: 20px;"></div>
-                                        <p class="page-number">- ๒ -</p>
-                                    @endif
                                     ๖.  รายชื่อผู้ประสานงาน
                                 @else
                                     ๕.  รายชื่อผู้ประสานงาน
