@@ -129,7 +129,7 @@
                     <tr>
                         <td colspan="4">
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
-                            <p style="margin: 0;">
+                            <div style="margin: 0;">
                                 ๑. รายชื่อคณะกรรมการกำหนดคุณลักษณะเฉพาะวัสดุหรือครุภัณฑ์ (กรณีงานซื้อ)/คณะกรรมการจัดทำร่างขอบเขตงาน (กรณีงานจ้าง)
                                 <ul class="committee-lists">
                                     <?php $c1 = 1; ?>
@@ -145,13 +145,13 @@
                                         @endif
                                     @endforeach
                                 </ul>
-                            </p>
+                            </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="4">
-                            @if((float)$total >= 500000)
-                                <p style="margin: 0;">
+                    @if((float)$total >= 500000)
+                        <tr>
+                            <td colspan="4">
+                                <div style="margin: 0;">
                                     ๒. รายชื่อคณะกรรมการพิจารณาผลการประกวดราคา
                                     <ul class="committee-lists">
                                         <?php $c3 = 1; ?>
@@ -167,13 +167,13 @@
                                             @endif
                                         @endforeach
                                     </ul>
-                                </p>
-                            @endif
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
                         <td colspan="4">
-                            <p style="margin: 0;">
+                            <div style="margin: 0;">
                                 @if((float)$total >= 500000)
                                     ๓. รายชื่อคณะกรรมการตรวจรับพัสดุ
                                 @else
@@ -198,7 +198,7 @@
                                         @endif
                                     @endforeach
                                 </ul>
-                            </p>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -217,8 +217,8 @@
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @endif
                             </p>
-                            @if(count($support->details) > 3 || count($committees) >= 6)
-                                <div style="height: 75px;"></div>
+                            @if(count($support->details) > 4 || count($committees) > 6)
+                                <div style="height: 75px; border: 1px solid red;"></div>
                                 <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                             @endif
                             @if((float)$total >= 500000)
@@ -230,7 +230,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            @if(count($support->details) > 3 || count($committees) >= 6)
+                            @if(count($support->details) > 4 || count($committees) > 6)
                                 <div style="height: 20px;"></div>
                                 <p class="page-number">- ๒ -</p>
                             @endif
