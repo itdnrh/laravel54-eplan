@@ -799,7 +799,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.persons_pager = null;
 
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
 
         $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
         .then(function(res) {
@@ -821,7 +821,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.persons_pager = null;
 
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = $scope.searchKey == '' ? '' : $scope.searchKey;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
 
         $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
         .then(function(res) {
