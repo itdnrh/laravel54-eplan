@@ -217,14 +217,28 @@
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @endif
                             </p>
-                            @if(count($support->details) > 4 || count($committees) > 6)
-                                <div style="height: 75px; border: 1px solid red;"></div>
+
+                            @if(count($support->details) > 4 && count($committees) <= 6)
+                                <div style="height: 60px;"></div>
                                 <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                             @endif
-                            @if((float)$total >= 500000)
-                                <p style="margin: 0;">
-                                    ๕.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
-                                </p>
+                            @if(count($committees) > 6)
+                                @if(count($support->details) >= 4)
+                                    <div style="height: 40px;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+                                @if(count($support->details) == 1)
+                                    <div style="height: 120px;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+                                @if(count($support->details) == 2)
+                                    <div style="height: 100px;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+                                @if(count($support->details) == 3)
+                                    <div style="height: 80px;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
                             @endif
                         </td>
                     </tr>
