@@ -120,7 +120,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = null;
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;        
+        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
         let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
         let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
                         ? $scope.cboDepart
@@ -147,6 +147,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
         let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
         let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
                         ? $scope.cboDepart
@@ -628,28 +629,29 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
             /** Set user props of support model by logged in user */
             $scope.support.user = $('#user').val();
+            console.log($scope.support);
 
-            $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
-            .then(function(res) {
-                $scope.loading = false;
+            // $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
+            // .then(function(res) {
+            //     $scope.loading = false;
 
-                console.log(res);
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+            //     console.log(res);
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
 
-                    /** TODO: Reset supports model */
-                    $scope.setSupports(res);
+            //         /** TODO: Reset supports model */
+            //         $scope.setSupports(res);
 
-                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
-                } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
-                }
-            }, function(err) {
-                $scope.loading = false;
+            //         window.location.href = `${CONFIG.baseUrl}/supports/list`;
+            //     } else {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            //     }
+            // }, function(err) {
+            //     $scope.loading = false;
 
-                console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
-            });
+            //     console.log(err);
+            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            // });
         }
     };
 
