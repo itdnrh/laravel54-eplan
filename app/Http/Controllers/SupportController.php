@@ -356,18 +356,14 @@ class SupportController extends Controller
     public function update(Request $req, $id)
     {
         try {
-            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
-            $doc_no_prefix = $person->memberOf->depart->memo_no;
-
             $support = Support::find($id);
-            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
+            $support->doc_no            = $req['doc_prefix'].'/'.$req['doc_no'];
 
             if (!empty($req['doc_date'])) {
                 $support->doc_date          = convThDateToDbDate($req['doc_date']);
             }
 
             $support->year              = $req['year'];
-            $support->support_type_id   = 1;
             $support->plan_type_id      = $req['plan_type_id'];
             $support->category_id       = $req['category_id'];
             $support->depart_id         = $req['depart_id'];
@@ -377,10 +373,9 @@ class SupportController extends Controller
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
-            $support->status            = 0;
             $support->created_user      = $req['user'];
             $support->updated_user      = $req['user'];
-            
+
             if ($support->save()) {
                 foreach($req['details'] as $item) {
                     if (!array_key_exists('id', $item)) {

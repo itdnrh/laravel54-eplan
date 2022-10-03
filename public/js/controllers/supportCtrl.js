@@ -1,4 +1,4 @@
-app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
@@ -480,8 +480,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.removePersonItem = (mode, person) => {
-        console.log(person);
-        console.log(parseInt(mode));
         if (parseInt(mode) === 1) {
             $scope.support.spec_committee = $scope.support.spec_committee.filter(sc => {
                 return sc.person_id !== person.person_id
@@ -494,8 +492,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.env_committee = $scope.support.env_committee.filter(ic => {
                 return ic.person_id !== person.person_id
             });
-        } else {
-
         }
     };
 
@@ -522,7 +518,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             }
 
             $scope.support.id = support.id;
-            $scope.support.doc_date = support.doc_date;
+            $scope.support.doc_date = StringFormatService.convFromDbDate(support.doc_date);
             $scope.support.topic = support.topic;
             $scope.support.total = support.total;
             $scope.support.reason = support.reason;
@@ -539,9 +535,15 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
 
             /** Set each committees by filtering from responsed committees data */
-            $scope.support.spec_committee = committees.filter(com => com.committee_type_id == 1);
-            $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
-            $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
+            $scope.support.spec_committee = committees
+                                                .filter(com => com.committee_type_id == 1)
+                                                .map(com => com.person);
+            $scope.support.insp_committee = committees
+                                                .filter(com => com.committee_type_id == 2)
+                                                .map(com => com.person);
+            $scope.support.env_committee = committees
+                                                .filter(com => com.committee_type_id == 3)
+                                                .map(com => com.person);
 
             /** Set date value to datepicker input of doc_date */
             $('#doc_date').datepicker(dtpDateOptions).datepicker('update', moment(support.doc_date).toDate());
@@ -622,36 +624,30 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         if(confirm(`คุณต้องแก้ไขบันทึกขอสนับสนุน รหัส ${$scope.support.id} ใช่หรือไม่?`)) {
             $scope.loading = true;
 
-            /** Set only person data to all committee sets */
-            $scope.support.insp_committee = $scope.support.insp_committee.map(insp => insp.person);
-            $scope.support.env_committee = $scope.support.env_committee.map(env => env.person);
-            $scope.support.spec_committee = $scope.support.spec_committee.map(spec => spec.person);
-
             /** Set user props of support model by logged in user */
             $scope.support.user = $('#user').val();
-            console.log($scope.support);
 
-            // $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
-            // .then(function(res) {
-            //     $scope.loading = false;
+            $http.post(`${CONFIG.baseUrl}/supports/update/${$scope.support.id}`, $scope.support)
+            .then(function(res) {
+                $scope.loading = false;
 
-            //     console.log(res);
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
 
-            //         /** TODO: Reset supports model */
-            //         $scope.setSupports(res);
+                    /** TODO: Reset supports model */
+                    $scope.setSupports(res);
 
-            //         window.location.href = `${CONFIG.baseUrl}/supports/list`;
-            //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
-            //     }
-            // }, function(err) {
-            //     $scope.loading = false;
+                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
 
-            //     console.log(err);
-            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
-            // });
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            });
         }
     };
 

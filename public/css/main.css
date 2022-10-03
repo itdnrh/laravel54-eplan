@@ -9,18 +9,35 @@
 
 .committee-wrapper {
     display: flex;
-    min-height: 50px;
+    /* min-height: 50px; */
 }
 
 .committee-wrapper .committee-lists {
     width: 90%;
-    margin: 4px 0;
+    margin: 0;
+    /* border: 1px dashed red; */
+}
+
+.committee-lists li {
+    margin: 0;
+    padding: 2px;
+    /* border: 1px dashed gray; */
 }
 
 .committee-lists .committee-item {
-    display: flex;
-    justify-content: space-between;
     padding: 2px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.committee-item > :first-child {
+    width: 40%;
+    /* border: 1px dashed black; */
+}
+
+.committee-item > :nth-child(2) {
+    width: 55%;
+    /* border: 1px dashed blue; */
 }
 
 .tab__container-bordered {

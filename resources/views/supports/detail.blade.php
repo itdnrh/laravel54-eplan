@@ -197,29 +197,10 @@
                                         <tr ng-repeat="(index, spec) in support.spec_committee">
                                             <td style="width: 40%;">
                                                 @{{ index+1 }}. 
-                                                @{{ spec.person.prefix.prefix_name + spec.person.person_firstname +' '+ spec.person.person_lastname }}
+                                                @{{ spec.prefix.prefix_name + spec.person_firstname +' '+ spec.person_lastname }}
                                             </td>
                                             <td>
-                                                ตำแหน่ง @{{ spec.person.position.position_name + spec.person.academic.ac_name }}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-8">
-                                <label>คณะกรรมการตรวจรับพัสดุ :</label>
-                                <div class="table-responsive" style="margin: 0; padding: 0;">
-                                    <table class="table table-striped" style="width: 80%;">
-                                        <tr ng-repeat="(index, insp) in support.insp_committee">
-                                            <td style="width: 40%;">
-                                                @{{ index+1 }}. 
-                                                @{{ insp.person.prefix.prefix_name + insp.person.person_firstname +' '+ insp.person.person_lastname }}
-                                            </td>
-                                            <td>
-                                                ตำแหน่ง @{{ insp.person.position.position_name + insp.person.academic.ac_name }}
+                                                ตำแหน่ง @{{ spec.position.position_name + spec.academic.ac_name }}
                                             </td>
                                         </tr>
                                     </table>
@@ -235,10 +216,29 @@
                                         <tr ng-repeat="(index, env) in support.env_committee">
                                             <td style="width: 40%;">
                                                 @{{ index+1 }}. 
-                                                @{{ env.person.prefix.prefix_name + env.person.person_firstname +' '+ env.person.person_lastname }}
+                                                @{{ env.prefix.prefix_name + env.person_firstname +' '+ env.person_lastname }}
                                             </td>
                                             <td>
-                                                ตำแหน่ง @{{ env.person.position.position_name + env.person.academic.ac_name }}
+                                                ตำแหน่ง @{{ env.position.position_name + env.academic.ac_name }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label>คณะกรรมการตรวจรับพัสดุ :</label>
+                                <div class="table-responsive" style="margin: 0; padding: 0;">
+                                    <table class="table table-striped" style="width: 80%;">
+                                        <tr ng-repeat="(index, insp) in support.insp_committee">
+                                            <td style="width: 40%;">
+                                                @{{ index+1 }}. 
+                                                @{{ insp.prefix.prefix_name + insp.person_firstname +' '+ insp.person_lastname }}
+                                            </td>
+                                            <td>
+                                                ตำแหน่ง @{{ insp.position.position_name + insp.academic.ac_name }}
                                             </td>
                                         </tr>
                                     </table>

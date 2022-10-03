@@ -437,14 +437,14 @@
                                     </label>
                                     <div class="committee-wrapper">
                                         <ul class="committee-lists">
-                                            <li ng-repeat="committee in support.spec_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="committee in support.spec_committee">
                                                 <div class="committee-item">
-                                                    <span>@{{ committee.person.prefix.prefix_name + committee.person.person_firstname +' '+ committee.person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ committee.person.position.position_name + committee.person.academic.ac_name }}</span>
+                                                    <span>@{{ committee.prefix.prefix_name + committee.person_firstname +' '+ committee.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ committee.position.position_name + committee.academic.ac_name }}</span>
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(1, committee.person)"
+                                                        ng-click="removePersonItem(1, committee)"
                                                     >
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
@@ -477,14 +477,14 @@
                                     </label>
                                     <div class="committee-wrapper">
                                         <ul class="committee-lists">
-                                            <li ng-repeat="committee in support.env_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="committee in support.env_committee">
                                                 <div class="committee-item">
-                                                    <span>@{{ committee.person.prefix.prefix_name + committee.person.person_firstname +' '+ committee.person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ committee.person.position.position_name + committee.person.academic.ac_name }}</span>
+                                                    <span>@{{ committee.prefix.prefix_name + committee.person_firstname +' '+ committee.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ committee.position.position_name + committee.academic.ac_name }}</span>
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(3, committee.person)"
+                                                        ng-click="removePersonItem(3, committee)"
                                                     >
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
@@ -516,14 +516,14 @@
                                     </label>
                                     <div class="committee-wrapper">
                                         <ul class="committee-lists">
-                                            <li ng-repeat="committee in support.insp_committee" style="margin: 4px 0;">
+                                            <li ng-repeat="committee in support.insp_committee">
                                                 <div class="committee-item">
-                                                    <span>@{{ committee.person.prefix.prefix_name + committee.person.person_firstname +' '+ committee.person.person_lastname }}</span>
-                                                    <span>ตำแหน่ง @{{ committee.person.position.position_name + committee.person.academic.ac_name }}</span>
+                                                    <span>@{{ committee.prefix.prefix_name + committee.person_firstname +' '+ committee.person_lastname }}</span>
+                                                    <span>ตำแหน่ง @{{ committee.position.position_name + committee.academic.ac_name }}</span>
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs" 
-                                                        ng-click="removePersonItem(2, committee.person)"
+                                                        ng-click="removePersonItem(2, committee)"
                                                     >
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </a>
