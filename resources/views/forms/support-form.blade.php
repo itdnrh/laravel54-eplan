@@ -215,7 +215,7 @@
                                 <p style="margin: 0;">
                                     ๕.  รายละเอียดข้อมูลเพื่อประกอบการพิจารณาการจัดหาครุภัณฑ์ (กรณีเงินต่อหน่วยเกิน ๒,๐๐๐,๐๐๐ บาท)
                                 </p>
-                                @if(count($committees) >= 6)
+                                @if(count($support->details) > 3 || count($committees) >= 6)
                                     <div style="height: 75px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
@@ -226,7 +226,7 @@
                         <td colspan="4">
                             <p style="margin: 0 0 10px;">
                                 @if((float)$total >= 500000)
-                                    @if(count($committees) >= 6)
+                                    @if(count($support->details) > 3 || count($committees) >= 6)
                                         <div style="height: 20px;"></div>
                                         <p class="page-number">- ๒ -</p>
                                     @endif
