@@ -352,3 +352,12 @@ ul.committee-lists {
   text-align: center;
   /* border: 1px dotted red; */
 }
+
+.print-options {
+  margin: 0;
+  padding: 0;
+  bottom: 2px;
+  position: absolute;
+  font-size: 14px;
+  /* border: 1px dotted red; */
+}

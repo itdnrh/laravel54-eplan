@@ -305,6 +305,7 @@
                     </tr>
                 </table>
             </div>
+            <p class="print-options">พิมพ์จากระบบ E-Plan เมื่อ {{ date('Y-m-d H:i:s') }}</p>
         </div>
     </body>
 </html>
