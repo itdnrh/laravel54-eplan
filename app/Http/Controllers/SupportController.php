@@ -99,10 +99,11 @@ class SupportController extends Controller
         $year = $req->get('year');
         $type = $req->get('type');
         $supportType = $req->get('stype');
-        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == '2') ? $req->get('faction') : Auth::user()->memberOf->faction_id;
-        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2')
+        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
+                    ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
                     ? $req->get('depart') : Auth::user()->memberOf->depart_id;
-        $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2')
+        $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
                     ? $req->get('division') : Auth::user()->memberOf->ward_id;
         $docNo = $req->get('doc_no');
         $receivedNo = $req->get('received_no');

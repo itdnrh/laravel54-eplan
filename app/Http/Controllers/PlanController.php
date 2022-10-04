@@ -170,11 +170,15 @@ class PlanController extends Controller
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('plans.year', $year);
                     })
-                    ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('plans.depart_id', $departsList);
+                    ->when(!empty($faction), function($q) use ($departsList, $depart, $cate) {
+                        if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                            $q->whereIn('plans.depart_id', $departsList);
+                        }
                     })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('plans.depart_id', $depart);
+                    ->when(!empty($depart), function($q) use ($depart, $cate) {
+                        if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                            $q->where('plans.depart_id', $depart);
+                        }
                     })
                     ->when(!empty($division), function($q) use ($division) {
                         $q->where('plans.division_id', $division);
@@ -195,11 +199,100 @@ class PlanController extends Controller
                     ->when(empty($showAll), function($q) use ($showAll) {
                         $q->where('plan_items.remain_amount', '>', 0);
                     })
-                    // ->orderBy('plan_no', 'ASC')
                     ->paginate(10);
 
         return [
             'plans' => $plans,
+        ];
+    }
+
+    public function searchGroups(Request $req, $cate)
+    {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
+        /** Get params from query string */
+        $year   = $req->get('year');
+        $type   = $req->get('type');
+        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == '4') ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '4') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->duty_id == '2' || Auth::user()->memberOf->depart_id == '4') ? $req->get('division') : '';
+        $status = $req->get('status');
+        $approved = $req->get('approved');
+        $inStock = $req->get('in_stock');
+        $name = $req->get('name');
+        $price = $req->get('price');
+        $budget = $req->get('budget');
+        $showAll = $req->get('show_all');
+        $haveSubitem = $req->get('have_subitem');
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $plansList = Plan::when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when($approved != '', function($q) use ($approved) {
+                            $q->where('approved', $approved);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart, $cate) {
+                            if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                                $q->where('depart_id', $depart);
+                            }
+                        })->pluck('id');
+
+        $planGroups = \DB::table('plan_items')
+                        ->select(
+                            'plan_items.item_id','items.item_name',
+                            'items.price_per_unit','items.unit_id',
+                            \DB::raw('units.name as unit_name'),
+                            \DB::raw('SUM(plan_items.amount) as amount'),
+                            \DB::raw('SUM(plan_items.sum_price) as sum_price')
+                        )
+                        ->leftJoin('items', 'plan_items.item_id', '=', 'items.id')
+                        ->leftJoin('units', 'plan_items.unit_id', '=', 'units.id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->whereIn('plan_items.plan_id', $plansList)
+                        ->groupBy('plan_items.item_id')
+                        ->groupBy('items.item_name')
+                        ->groupBy('items.price_per_unit')
+                        ->groupBy('items.unit_id')
+                        ->groupBy('units.name')
+                        ->get();
+
+        $planItemsList = PlanItem::leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->whereIn('plan_items.plan_id', $plansList)
+                        ->pluck('plan_items.plan_id');
+
+        $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                        ->with('budget','depart','division')
+                        ->with('planItem','planItem.unit')
+                        ->with('planItem.item','planItem.item.category')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->whereIn('plans.id', $planItemsList)
+                        // ->when(!empty($faction), function($q) use ($departsList, $depart, $cate) {
+                        //     if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                        //         $q->whereIn('plans.depart_id', $departsList);
+                        //     }
+                        // })
+                        // ->when(!empty($depart), function($q) use ($depart, $cate) {
+                        //     if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                        //         $q->where('plans.depart_id', $depart);
+                        //     }
+                        // })
+                        ->get();
+
+        return [
+            'plans'         => $plans,
+            'planGroups'    => $planGroups,
         ];
     }
 

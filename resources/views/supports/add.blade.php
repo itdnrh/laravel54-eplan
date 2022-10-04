@@ -219,6 +219,16 @@
                                                             >
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                                             </button>
+                                                            <button
+                                                                type="button"
+                                                                class="btn bg-navy"
+                                                                ng-click="
+                                                                    showPlanGroupsList();
+                                                                    onFilterCategories(support.plan_type_id);
+                                                                "
+                                                            >
+                                                                <i class="fa fa-th" aria-hidden="true"></i>
+                                                            </button>
                                                         </span>
                                                     </div>
                                                 </td>
@@ -348,7 +358,44 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr ng-repeat="(index, detail) in support.details">
+                                            <tr ng-repeat="(index, detail) in support.planGroups" ng-show="isPlanGroup">
+                                                <td style="text-align: center">@{{ index+1 }}</td>
+                                                <td style="text-align: center"></td>
+                                                <td colspan="2">
+                                                    @{{ detail.item_name }}
+                                                    <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
+                                                        <li ng-repeat="(index, detail) in support.details" style="margin: 0; padding: 0;">
+                                                            - @{{ detail.plan.depart.depart_name }}
+                                                            @{{ currencyToNumber(detail.amount) | currency:'':0 }}
+                                                            @{{ detail.unit_name }}
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ currencyToNumber(detail.price_per_unit) | currency:'':2 }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ detail.unit_name }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ currencyToNumber(detail.amount) | currency:'':2 }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @{{ currencyToNumber(detail.sum_price) | currency:'':2 }}
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- <a href="#" class="btn btn-warning btn-sm">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a> -->
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-sm"
+                                                        ng-click="removeAddedItem(detail.plan_id)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat="(index, detail) in support.details" ng-show="isPlanGroup">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td colspan="2">
@@ -606,6 +653,7 @@
         </div><!-- /.row -->
 
         @include('supports._plans-list')
+        @include('supports._plan-groups-list')
         @include('supports._spec-form')
         @include('supports._subitems-list')
         @include('shared._persons-list')

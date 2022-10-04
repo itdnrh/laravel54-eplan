@@ -37,6 +37,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         reason: '',
         remark: '',
         details: [],
+        planGroups: [],
         spec_committee: [],
         env_committee: [],
         insp_committee: [],
@@ -121,8 +122,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
-        let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
+        let faction = ($('#user').val() == '1300200009261' || $('#depart').val() == '4')
+                        ? $scope.cboFaction
+                        : $('#faction').val();
+        let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1' || $('#depart').val() == '4')
                         ? $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
@@ -182,6 +185,66 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
             $('#details-list').modal('show');
         }
+    };
+
+    $scope.isPlanGroup = false;
+    $scope.planGroups = [];
+    $scope.plansGroups_pager = null;
+    $scope.showPlanGroupsList = function() {
+        if (!$scope.support.category_id) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
+        } else {
+            $scope.loading = true;
+            $scope.isPlanGroup = true;
+            $scope.planGroups = [];
+            $scope.plansGroups_pager = null;
+
+            let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+            let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
+            let depart = $('#user').val() == '1300200009261' ? '' : $('#depart_id').val();
+
+            $http.get(`${CONFIG.baseUrl}/plans/search-group/${cate}?depart=${depart}&status=0&approved=A`)
+            .then(function(res) {
+                console.log(res);
+
+                $scope.planGroups = res.data.planGroups;
+                $scope.plans = res.data.plans;
+
+                $scope.loading = false;
+
+                $('#plan-groups-list').modal('show');
+            }, function(err) {
+                console.log(err);
+
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.onSelectedPlanGroup = function(e, planGroup) {
+        if (planGroup) {
+            console.log(planGroup);
+            const plans = $scope.plans.filter(plan => plan.plan_item.item_id == planGroup.item_id);
+
+            plans.forEach(plan => {
+                $scope.newItem.plan         = plan;
+                $scope.newItem.plan_id      = plan.id;
+                $scope.newItem.item_id      = plan.plan_item.item_id;
+                $scope.newItem.item         = plan.plan_item.item;
+                $scope.newItem.price_per_unit = plan.calc_method == 1 ? plan.price_per_unit : '';
+                $scope.newItem.unit_id      = plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '';
+                $scope.newItem.unit_name    = plan.calc_method == 1 ? plan.plan_item.unit.name : '';
+                $scope.newItem.amount       = plan.calc_method == 1 ? plan.remain_amount : '';
+                $scope.newItem.sum_price    = plan.calc_method == 1 ? plan.remain_budget : '';
+                $scope.support.details.push({ ...$scope.newItem });
+            });
+
+            $scope.calculateTotal();
+            $scope.clearNewItem();
+            $scope.support.planGroups.push(planGroup);
+        }
+
+        $('#plan-groups-list').modal('hide');
     };
 
     $scope.showPlansList = () => {
@@ -278,7 +341,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 $('#unit_id').val(plan.plan_item.unit_id).trigger("change.select2");
             }
         }
-
 
         $('#plans-list').modal('hide');
     };

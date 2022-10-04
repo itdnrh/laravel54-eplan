@@ -50,6 +50,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** แผนเงินบำรุง */
     Route::get('plans/search', 'PlanController@search');
+    Route::get('plans/search-group/{cate}', 'PlanController@searchGroups');
     Route::get('plans/assets', 'PlanAssetController@index');
     Route::get('plans/materials', 'PlanMaterialController@index');
     Route::get('plans/services', 'PlanServiceController@index');
