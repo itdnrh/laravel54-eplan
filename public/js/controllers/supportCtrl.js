@@ -718,26 +718,25 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         
         /** Set user props of support model by logged in user */
         $scope.support.user = $('#user').val();
-        console.log($scope.support);
 
-        // $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
-        // .then(function(res) {
-        //     $scope.loading = false;
+        $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
+        .then(function(res) {
+            $scope.loading = false;
 
-        //     console.log(res);
-        //     if (res.data.status == 1) {
-        //         toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+            console.log(res);
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
-        //         window.location.href = `${CONFIG.baseUrl}/supports/list`;
-        //     } else {
-        //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        //     }
-        // }, function(err) {
-        //     $scope.loading = false;
+                window.location.href = `${CONFIG.baseUrl}/supports/list`;
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            }
+        }, function(err) {
+            $scope.loading = false;
 
-        //     console.log(err);
-        //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        // });
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        });
     };
 
     $scope.update = function(e, form) {
