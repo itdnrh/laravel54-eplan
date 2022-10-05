@@ -224,7 +224,8 @@ class PlanController extends Controller
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        $plansList = Plan::when(!empty($year), function($q) use ($year) {
+        $plansList = Plan::where('status', 0)
+                        ->when(!empty($year), function($q) use ($year) {
                             $q->where('year', $year);
                         })
                         ->when($approved != '', function($q) use ($approved) {
@@ -281,6 +282,7 @@ class PlanController extends Controller
                         ->with('budget','depart','division')
                         ->with('planItem','planItem.unit')
                         ->with('planItem.item','planItem.item.category')
+                        ->where('status', 0)
                         ->when(!empty($year), function($q) use ($year) {
                             $q->where('year', $year);
                         })

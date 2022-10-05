@@ -141,7 +141,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="(index, detail) in support.details">
+                                        <tr ng-show="support.is_plan_group">
+                                            <td style="text-align: center">@{{ index+1 }}</td>
+                                            <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
+                                            <td>
+                                                @{{ support.plan_group_desc }}
+                                                จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
+                                                <span>@{{ support.details[0].unit.name }}</span>
+                                                <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
+                                                    <li ng-repeat="(index, detail) in support.details" style="margin: 0; padding: 0;">
+                                                        - @{{ detail.plan.depart.depart_name }}
+                                                        @{{ currencyToNumber(detail.amount) | currency:'':0 }}
+                                                        @{{ detail.unit_name }}
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td style="text-align: center">
+                                                @{{ support.details[0].price_per_unit | currency:'':2 }}
+                                            </td>
+                                            <td style="text-align: center">
+                                                @{{ support.details[0].unit.name }}
+                                            </td>
+                                            <td style="text-align: center">
+                                                @{{ support.plan_group_amt | currency:'':0 }}
+                                            </td>
+                                            <td style="text-align: center">
+                                                @{{ support.total | currency:'':2 }}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="(index, detail) in support.details" ng-show="!support.is_plan_group">
                                             <td style="text-align: center">@{{ index+1 }}</td>
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>

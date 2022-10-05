@@ -81,34 +81,63 @@
                                         <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
                                         <th style="width: 15%; text-align: center;">ราคารวม</th>
                                     </tr>
+
                                     <?php $row = 0; ?>
                                     <?php $total = 0; ?>
                                     <?php $tableHeight = 0; ?>
-                                    @foreach($support->details as $detail)
-                                        <?php $total += (float)$detail->sum_price; ?>
+                                    @if($support->is_plan_group == '1')
+                                        <?php $total = (float)$support->total; ?>
                                         <tr style="min-height: 20px;">
                                             <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                             <td>
                                                 <?php $tableHeight += 20; ?>
-                                                {{ thainumDigit($detail->plan->planItem->item->item_name) }}
-                                                @if($detail->desc != '')
+                                                {{ thainumDigit($support->plan_group_desc) }}
+                                                @foreach($support->details as $detail)
                                                     <?php $tableHeight += 20; ?>
-                                                    <p style="margin: 0 0 0 5px;">
-                                                        - {{ thainumDigit($detail->desc) }}
+                                                    <p style="margin: 0; padding: 0; font-size: 14px;">
+                                                        - {{ $detail->plan->depart->depart_name }}
+                                                        {{ thainumDigit(number_format($detail->amount)) }}
+                                                        {{ $detail->plan->planItem->unit->name }}
                                                     </p>
-                                                @endif
+                                                @endforeach
                                             </td>
                                             <td style="text-align: center;">
-                                                {{ thainumDigit(number_format($detail->amount)) }}
+                                                {{ thainumDigit(number_format($support->plan_group_amt)) }}
                                             </td>
                                             <td style="text-align: right;">
-                                                {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                {{ thainumDigit(number_format($support->details[0]->price_per_unit, 2)) }}
                                             </td>
                                             <td style="text-align: right;">
-                                                {{ thainumDigit(number_format($detail->sum_price, 2)) }}
+                                                {{ thainumDigit(number_format($support->total, 2)) }}
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @else
+                                        @foreach($support->details as $detail)
+                                            <?php $total += (float)$detail->sum_price; ?>
+                                            <tr style="min-height: 20px;">
+                                                <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
+                                                <td>
+                                                    <?php $tableHeight += 20; ?>
+                                                    {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                    @if($detail->desc != '')
+                                                        <?php $tableHeight += 20; ?>
+                                                        <p style="margin: 0 0 0 5px;">
+                                                            - {{ thainumDigit($detail->desc) }}
+                                                        </p>
+                                                    @endif
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    {{ thainumDigit(number_format($detail->amount)) }}
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    {{ thainumDigit(number_format($detail->sum_price, 2)) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                     <?php $tableHeight += 20; ?>
 
                                     <tr>
@@ -125,6 +154,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            {{ $tableHeight }}
                             <span>เหตุผลและความจำเป็น</span>
                             <span style="margin: 0 0 0 5px;" class="text-val-dot">
                                 {{ thainumDigit($support->reason) }}

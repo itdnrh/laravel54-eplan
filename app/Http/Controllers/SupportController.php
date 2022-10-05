@@ -256,8 +256,9 @@ class SupportController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
-            // $support->is_plan_group     = $req['is_plan_group'];
-            // $support->plan_group_desc   = $req['plan_group_desc'];
+            $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
+            $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
+            $support->plan_group_amt    = $req['planGroups'][0]['amount'];
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
