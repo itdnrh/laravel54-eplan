@@ -355,8 +355,7 @@
                                             </tr>
                                             <tr ng-show="support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
-                                                <td>
+                                                <td colspan="3">
                                                     @{{ support.plan_group_desc }}
                                                     จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
                                                     <span>@{{ support.details[0].unit.name }}</span>

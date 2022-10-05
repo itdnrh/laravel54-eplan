@@ -126,18 +126,26 @@
                 <p style="margin: 0;">เลขที่ @{{ support.doc_date | thdate }}</p>
             </td>
             <td>
-                <span>
-                    @{{ support.details[0].plan.plan_no }} - @{{ support.details[0].plan.plan_item.item.item_name }}
-                </span>
-                <p style="margin: 0; font-size: 12px; color: red;">
-                    (@{{ support.details[0].desc }}
+                <div ng-show="support.is_plan_group">
+                    @{{ support.plan_group_desc }}
                     จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
                     <span>@{{ support.details[0].unit.name }}</span>
-                    ราคา @{{ support.details[0].price_per_unit | currency:'':0 }} บาท) 
-                    <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
-                        ... ดูเพิ่ม <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                    <a href="#" class="text-danger" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                        <i class="fa fa-tags" aria-hidden="true"></i>
                     </a>
-                </p>
+                </div>
+                <div ng-show="!support.is_plan_group">
+                    <span>@{{ support.details[0].plan.plan_no }} - @{{ support.details[0].plan.plan_item.item.item_name }}</span>
+                    <p style="margin: 0; font-size: 12px; color: red;">
+                        (@{{ support.details[0].desc }}
+                        จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
+                        <span>@{{ support.details[0].unit.name }}</span>
+                        ราคา @{{ support.details[0].price_per_unit | currency:'':0 }} บาท) 
+                        <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                            ... ดูเพิ่ม <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                        </a>
+                    </p>
+                </div>
             </td>
             <td style="text-align: right;">
                 @{{ support.total | currency:'':2 }}
