@@ -19,7 +19,7 @@
                                     name="txtKeyword"
                                     class="form-control"
                                     ng-model="txtKeyword"
-                                    ng-change="getPlans('', 0, '')"
+                                    ng-change="getPlanGroupsList()"
                                 />
                             </div>
                         </div><!-- /.box-body -->
@@ -39,7 +39,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="(index, plan) in planGroups">
-                                <td style="text-align: center;">@{{ index+1 }}</td>
+                                <td style="text-align: center;">@{{ index+plansGroups_pager.from }}</td>
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td>
                                     @{{ plan.item_name }}
@@ -84,13 +84,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="plansGroups_pager.current_page !== 1">
-                                    <a ng-click="getPlansWithUrl($event, plansGroups_pager.path+ '?page=1', 0, setPlans)" aria-label="Previous">
+                                    <a ng-click="getPlanGroupsListWithUrl($event, plansGroups_pager.path+ '?page=1', 0, setPlanGroupsList)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (plansGroups_pager.current_page==1)}">
-                                    <a ng-click="getPlansWithUrl($event, plansGroups_pager.prev_page_url, 0, setPlans)" aria-label="Prev">
+                                    <a ng-click="getPlanGroupsListWithUrl($event, plansGroups_pager.prev_page_url, 0, setPlanGroupsList)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -102,13 +102,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (plansGroups_pager.current_page==plansGroups_pager.last_page)}">
-                                    <a ng-click="getPlansWithUrl($event, plansGroups_pager.next_page_url, 0, setPlans)" aria-label="Next">
+                                    <a ng-click="getPlanGroupsListWithUrl($event, plansGroups_pager.next_page_url, 0, setPlanGroupsList)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="plansGroups_pager.current_page !== plansGroups_pager.last_page">
-                                    <a ng-click="getPlansWithUrl($event, plansGroups_pager.path+ '?page=' +plansGroups_pager.last_page, 0, setPlans)" aria-label="Previous">
+                                    <a ng-click="getPlanGroupsListWithUrl($event, plansGroups_pager.path+ '?page=' +plansGroups_pager.last_page, 0, setPlanGroupsList)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>

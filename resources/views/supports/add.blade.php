@@ -226,6 +226,7 @@
                                                                     showPlanGroupsList();
                                                                     onFilterCategories(support.plan_type_id);
                                                                 "
+                                                                ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '4' || {{ Auth::user()->memberOf->depart_id }} == '39' || {{ Auth::user()->memberOf->depart_id }} == '65'"
                                                             >
                                                                 <i class="fa fa-th" aria-hidden="true"></i>
                                                             </button>
@@ -358,7 +359,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr ng-repeat="(index, detail) in support.planGroups" ng-show="isPlanGroup">
+                                            <tr ng-repeat="(index, detail) in support.planGroups" ng-show="support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center"></td>
                                                 <td colspan="2">
@@ -395,7 +396,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr ng-repeat="(index, detail) in support.details" ng-show="isPlanGroup">
+                                            <tr ng-repeat="(index, detail) in support.details" ng-show="!support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td colspan="2">

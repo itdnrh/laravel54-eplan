@@ -1,7 +1,9 @@
 app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
+    $scope.cboYear = parseInt(moment().format('MM')) > 9
+                        ? (moment().year() + 544).toString()
+                        : (moment().year() + 543).toString();
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
@@ -31,6 +33,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         year: '2566', //(moment().year() + 543).toString(),
         plan_type_id: '',
         category_id: '',
+        is_plan_group: false,
         total: '',
         contact_detail: '',
         contact_person: '',
@@ -187,7 +190,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.isPlanGroup = false;
     $scope.planGroups = [];
     $scope.plansGroups_pager = null;
     $scope.showPlanGroupsList = function() {
@@ -195,20 +197,19 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
         } else {
             $scope.loading = true;
-            $scope.isPlanGroup = true;
+            $scope.support.is_plan_group = true;
+
+            $scope.plans = [];
             $scope.planGroups = [];
             $scope.plansGroups_pager = null;
 
-            let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+            let year = $scope.cboYear === '' ? '' : $scope.cboYear;
             let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
             let depart = $('#user').val() == '1300200009261' ? '' : $('#depart_id').val();
 
-            $http.get(`${CONFIG.baseUrl}/plans/search-group/${cate}?depart=${depart}&status=0&approved=A`)
+            $http.get(`${CONFIG.baseUrl}/plans/search-group/${cate}?year=${year}&depart=${depart}&status=0&approved=A`)
             .then(function(res) {
-                console.log(res);
-
-                $scope.planGroups = res.data.planGroups;
-                $scope.plans = res.data.plans;
+                $scope.setPlanGroupsList(res);
 
                 $scope.loading = false;
 
@@ -221,9 +222,67 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
+    $scope.getPlanGroupsList = function() {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.planGroups = [];
+        $scope.plansGroups_pager = null;
+
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
+        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart_id').val();
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+        $http.get(`${CONFIG.baseUrl}/plans/search-group/${cate}?year=${year}&depart=${depart}&name=${name}&status=0&approved=A`)
+        .then(function(res) {
+            $scope.setPlanGroupsList(res);
+
+            $scope.loading = false;
+
+            $('#plan-groups-list').modal('show');
+        }, function(err) {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlanGroupsListWithUrl = function(e, url, cb) {
+		/** Check whether parent of clicked a tag is .disabled just do nothing */
+		if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.planGroups = [];
+        $scope.plansGroups_pager = null;
+
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
+        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart_id').val();
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+        $http.get(`${CONFIG.baseUrl}/plans/search-group/${cate}?year=${year}&depart=${depart}&name=${name}&status=0&approved=A`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlanGroupsList = function(res) {
+        const { data, ...pager } = res.data.planGroups;
+
+        $scope.planGroups = data;
+        $scope.plansGroups_pager = pager;
+        $scope.plans = res.data.plans;
+    };
+
     $scope.onSelectedPlanGroup = function(e, planGroup) {
         if (planGroup) {
-            console.log(planGroup);
             const plans = $scope.plans.filter(plan => plan.plan_item.item_id == planGroup.item_id);
 
             plans.forEach(plan => {
@@ -659,25 +718,26 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         
         /** Set user props of support model by logged in user */
         $scope.support.user = $('#user').val();
+        console.log($scope.support);
 
-        $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
-        .then(function(res) {
-            $scope.loading = false;
+        // $http.post(`${CONFIG.baseUrl}/supports/store`, $scope.support)
+        // .then(function(res) {
+        //     $scope.loading = false;
 
-            console.log(res);
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+        //     console.log(res);
+        //     if (res.data.status == 1) {
+        //         toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
-                window.location.href = `${CONFIG.baseUrl}/supports/list`;
-            } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-            }
-        }, function(err) {
-            $scope.loading = false;
+        //         window.location.href = `${CONFIG.baseUrl}/supports/list`;
+        //     } else {
+        //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        //     }
+        // }, function(err) {
+        //     $scope.loading = false;
 
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        });
+        //     console.log(err);
+        //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        // });
     };
 
     $scope.update = function(e, form) {

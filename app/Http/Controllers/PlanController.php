@@ -215,18 +215,12 @@ class PlanController extends Controller
 
         /** Get params from query string */
         $year   = $req->get('year');
-        $type   = $req->get('type');
         $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == '4') ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '4') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->duty_id == '2' || Auth::user()->memberOf->depart_id == '4') ? $req->get('division') : '';
-        $status = $req->get('status');
         $approved = $req->get('approved');
         $inStock = $req->get('in_stock');
         $name = $req->get('name');
-        $price = $req->get('price');
-        $budget = $req->get('budget');
-        $showAll = $req->get('show_all');
-        $haveSubitem = $req->get('have_subitem');
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
@@ -255,17 +249,30 @@ class PlanController extends Controller
                         ->when(!empty($cate), function($q) use ($cate) {
                             $q->where('items.category_id', $cate);
                         })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where(function($query) use ($name) {
+                                $query->where('items.item_name', 'like', '%'.$name.'%');
+                                $query->orWhere('items.en_name', 'like', '%'.$name.'%');
+                            });
+                        })
                         ->whereIn('plan_items.plan_id', $plansList)
                         ->groupBy('plan_items.item_id')
                         ->groupBy('items.item_name')
                         ->groupBy('items.price_per_unit')
                         ->groupBy('items.unit_id')
                         ->groupBy('units.name')
-                        ->get();
+                        ->orderBy(\DB::raw('SUM(plan_items.amount)'), 'DESC')
+                        ->paginate(10);
 
         $planItemsList = PlanItem::leftJoin('items', 'items.id', '=', 'plan_items.item_id')
                         ->when(!empty($cate), function($q) use ($cate) {
                             $q->where('items.category_id', $cate);
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where(function($query) use ($name) {
+                                $query->where('items.item_name', 'like', '%'.$name.'%');
+                                $query->orWhere('items.en_name', 'like', '%'.$name.'%');
+                            });
                         })
                         ->whereIn('plan_items.plan_id', $plansList)
                         ->pluck('plan_items.plan_id');
