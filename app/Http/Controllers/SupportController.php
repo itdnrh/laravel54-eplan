@@ -257,8 +257,12 @@ class SupportController extends Controller
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
             $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
-            $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
-            $support->plan_group_amt    = $req['planGroups'][0]['amount'];
+
+            if (count($req['planGroups']) > 0) {
+                $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
+                $support->plan_group_amt    = $req['planGroups'][0]['amount'];
+            }
+
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
@@ -373,6 +377,9 @@ class SupportController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
+            // $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
+            // $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
+            // $support->plan_group_amt    = $req['planGroups'][0]['amount'];
             $support->total             = $req['total'];
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
@@ -500,7 +507,7 @@ class SupportController extends Controller
                 }
 
                 /** TODO: Delete support_details data */
-                SupportDetail::find($deleted->id)->delete();
+                SupportDetail::where('support_id', $deleted->id)->delete();
 
                 /** TODO: Delete all committee of deleted support data */
                 Committee::where('support_id', $deleted->id)->delete();
