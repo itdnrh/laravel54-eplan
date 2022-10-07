@@ -21,7 +21,7 @@
         class="content"
         ng-controller="reportCtrl"
         ng-init="
-            getPlanByQuarter();
+            getPlanProcessByQuarter();
             initForm({ 
                 factions: {{ $factions }},
                 departs: {{ $departs }}
@@ -48,7 +48,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getPlanByQuarter()"
+                                        ng-change="getPlanProcessByQuarter()"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -62,7 +62,7 @@
                                         id="cboPlanType"
                                         name="cboPlanType"
                                         ng-model="cboPlanType"
-                                        ng-change="getPlanByQuarter()"
+                                        ng-change="getPlanProcessByQuarter()"
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -80,7 +80,7 @@
                                         name="cboPrice"
                                         ng-model="cboPrice"
                                         class="form-control"
-                                        ng-change="getPlanByQuarter()"
+                                        ng-change="getPlanProcessByQuarter()"
                                     >
                                         <option value="">-- เลือก --</option>
                                         <option value="1">ราคา 10,000 บาทขึ้นไป</option>
@@ -94,7 +94,7 @@
                                         name="cboSort"
                                         ng-model="cboSort"
                                         class="form-control"
-                                        ng-change="getPlanByQuarter()"
+                                        ng-change="getPlanProcessByQuarter()"
                                     >
                                         <option value="">-- เลือก --</option>
                                         <option value="sum_price">งบประมาณ</option>
@@ -108,7 +108,7 @@
                                         name="cboApproved"
                                         ng-model="cboApproved"
                                         class="form-control"
-                                        ng-change="getPlanByQuarter()"
+                                        ng-change="getPlanProcessByQuarter()"
                                     >
                                         <option value="">ยังไม่อนุมัติ</option>
                                         <option value="A">อนุมัติ</option>
@@ -140,23 +140,28 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
                                     <th style="text-align: left;" rowspan="2">ประเภท</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 1</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 2</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 3</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 4</th>
-                                    <th style="text-align: center;" colspan="2">รวม</th>
+                                    <th style="text-align: center;" colspan="3">ไตรมาส 1</th>
+                                    <th style="text-align: center;" colspan="3">ไตรมาส 3</th>
+                                    <th style="text-align: center;" colspan="3">ไตรมาส 3</th>
+                                    <th style="text-align: center;" colspan="3">ไตรมาส 4</th>
+                                    <th style="text-align: center;" colspan="3">รวม</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
                                     <th style="width: 10%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
-                                    <th style="width: 10%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
-                                    <th style="width: 10%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
-                                    <th style="width: 10%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: right;">จน.ที่ขอ</th>
-                                    <th style="width: 10%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
+                                    <th style="width: 5%; text-align: right;">ร้อยละ</th>
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
+                                    <th style="width: 5%; text-align: right;">ร้อยละ</th>
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
+                                    <th style="width: 5%; text-align: right;">ร้อยละ</th>
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
+                                    <th style="width: 5%; text-align: right;">ร้อยละ</th>
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
+                                    <th style="width: 5%; text-align: right;">ร้อยละ</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,29 +170,39 @@
                                     <td>
                                         @{{ plan.category_name }}
                                     </td>
-                                    <td style="text-align: right;">@{{ plan.q1_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.q1_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q2_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.q1_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (plan.q1_amt * 100)/plan.q1_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.q2_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q3_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.q2_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (plan.q2_amt * 100)/plan.q2_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.q3_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q4_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.q3_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (plan.q3_amt * 100)/plan.q3_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.q4_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.q4_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (plan.q4_amt * 100)/plan.q4_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.total_sum | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (plan.total_amt * 100)/plan.total_sum | currency:'':2 }}</td>
                                 </tr>
                                 <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q1_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q1_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q2_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q1_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (totalByPlanQuarters.q1_amt * 100)/totalByPlanQuarters.q1_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q2_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q3_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q2_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (totalByPlanQuarters.q1_amt * 100)/totalByPlanQuarters.q1_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q3_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q4_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q3_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (totalByPlanQuarters.q1_amt * 100)/totalByPlanQuarters.q1_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q4_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanQuarters.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.q4_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (totalByPlanQuarters.q1_amt * 100)/totalByPlanQuarters.q1_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.total_sum | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanQuarters.total_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ (totalByPlanQuarters.total_amt * 100)/totalByPlanQuarters.total_sum | currency:'':2 }}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -120,7 +120,7 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function add()
+    public function create()
     {
         return view('expenses.add', [
             "expenseTypes"  => ExpenseType::all(),

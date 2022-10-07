@@ -502,7 +502,7 @@ app.controller(
                                 : $scope.cboYear;
             let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
             let approved    = !$scope.cboApproved ? '' : 'A';
-            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-process-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
@@ -514,22 +514,22 @@ app.controller(
                     return plan;
                 });
 
-                // /** Sum total of plan by plan_type */
+                // // /** Sum total of plan by plan_type */
                 if (res.data.plans.length > 0) {
                     res.data.plans.forEach(plan => {
-                        $scope.totalByPlanQuarters.q1_amt += plan.q1_amt ? plan.q1_amt : 0;
                         $scope.totalByPlanQuarters.q1_sum += plan.q1_sum ? plan.q1_sum : 0;
-                        $scope.totalByPlanQuarters.q2_amt += plan.q2_amt ? plan.q2_amt : 0;
+                        $scope.totalByPlanQuarters.q1_amt += plan.q1_amt ? plan.q1_amt : 0;
                         $scope.totalByPlanQuarters.q2_sum += plan.q2_sum ? plan.q2_sum : 0;
-                        $scope.totalByPlanQuarters.q3_amt += plan.q3_amt ? plan.q3_amt : 0;
+                        $scope.totalByPlanQuarters.q2_amt += plan.q2_amt ? plan.q2_amt : 0;
                         $scope.totalByPlanQuarters.q3_sum += plan.q3_sum ? plan.q3_sum : 0;
-                        $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
+                        $scope.totalByPlanQuarters.q3_amt += plan.q3_amt ? plan.q3_amt : 0;
                         $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
-                        $scope.totalByPlanQuarters.total_amt += plan.total_amt ? plan.total_amt : 0;
+                        $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
                         $scope.totalByPlanQuarters.total_sum += plan.total_sum ? plan.total_sum : 0;
+                        $scope.totalByPlanQuarters.total_amt += plan.total_amt ? plan.total_amt : 0;
                     });
                     
-                    /** Render chart */
+                //     /** Render chart */
                     const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
                     $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
                     $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalByPlanQuarters.q1_sum) });
