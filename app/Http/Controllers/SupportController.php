@@ -410,6 +410,7 @@ class SupportController extends Controller
                         $detail->unit_id        = currencyToNumber($item['unit_id']);
                         $detail->amount         = currencyToNumber($item['amount']);
                         $detail->sum_price      = currencyToNumber($item['sum_price']);
+                        $detail->status         = 0;
                         $detail->save();
                     } else {
                         $detail = SupportDetail::find($item['id']);

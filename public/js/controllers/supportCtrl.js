@@ -513,14 +513,14 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.removeAddedItem = (planId) => {
-        const rm = $scope.support.details.find(d => d.plan_id === planId);
+    $scope.removeAddedItem = (selectedIndex) => {
+        const rm = $scope.support.details.find((d, index) => index === selectedIndex);
 
         if (rm) {
-            $scope.support.removed.push(rm.id);
+            $scope.support.removed = [...new Set([...$scope.support.removed, rm.id])];
         }
 
-        $scope.support.details = $scope.support.details.filter(d => d.plan_id !== planId);
+        $scope.support.details = $scope.support.details.filter((d, index) => index !== selectedIndex);
         $scope.calculateTotal();
     };
 

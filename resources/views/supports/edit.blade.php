@@ -406,7 +406,7 @@
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-xs"
-                                                        ng-click="removeAddedItem(detail.plan_id)"
+                                                        ng-click="removeAddedItem(index)"
                                                         ng-disabled="detail.status != 0"
                                                     >
                                                         <i class="fa fa-trash"></i>

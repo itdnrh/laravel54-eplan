@@ -385,13 +385,10 @@
                                                     @{{ currencyToNumber(detail.sum_price) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <!-- <a href="#" class="btn btn-warning btn-sm">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a> -->
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-sm"
-                                                        ng-click="removeAddedItem(detail.plan_id)">
+                                                        ng-click="removeAddedItem(index)">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
@@ -419,13 +416,10 @@
                                                     @{{ currencyToNumber(detail.sum_price) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <!-- <a href="#" class="btn btn-warning btn-sm">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a> -->
                                                     <a
                                                         href="#"
                                                         class="btn btn-danger btn-sm"
-                                                        ng-click="removeAddedItem(detail.plan_id)">
+                                                        ng-click="removeAddedItem(index)">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
