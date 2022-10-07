@@ -555,18 +555,19 @@ class ReportController extends Controller
                     ->select(
                         'items.category_id',
                         \DB::raw("sum(case when (plans.start_month in ('10','11','12')) then plan_items.sum_price end) as q1_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('10','11','12') and plans.id in (select plan_id from support_details where status='2')) then plan_items.sum_price end) as q1_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('10','11','12') and plans.id in (select plan_id from support_details where status='2')) then support_details.sum_price end) as q1_amt"),
                         \DB::raw("sum(case when (plans.start_month in ('01','02','03')) then plan_items.sum_price end) as q2_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('01','02','03') and plans.id in (select plan_id from support_details where status='2')) then plan_items.sum_price end) as q2_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('01','02','03') and plans.id in (select plan_id from support_details where status='2')) then support_details.sum_price end) as q2_amt"),
                         \DB::raw("sum(case when (plans.start_month in ('04','05','06')) then plan_items.sum_price end) as q3_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('04','05','06') and plans.id in (select plan_id from support_details where status='2')) then plan_items.sum_price end) as q3_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('04','05','06') and plans.id in (select plan_id from support_details where status='2')) then support_details.sum_price end) as q3_amt"),
                         \DB::raw("sum(case when (plans.start_month in ('07','08','09')) then plan_items.sum_price end) as q4_sum"),
-                        \DB::raw("sum(case when (plans.start_month in ('07','08','09') and plans.id in (select plan_id from support_details where status='2')) then plan_items.sum_price end) as q4_amt"),
+                        \DB::raw("sum(case when (plans.start_month in ('07','08','09') and plans.id in (select plan_id from support_details where status='2')) then support_details.sum_price end) as q4_amt"),
                         \DB::raw("sum(plan_items.sum_price) as total_sum"),
                         \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status='2')) then plan_items.sum_price end) as total_amt")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->leftJoin('support_details', 'support_details.plan_id', '=', 'plans.id')
                     ->where('plans.year', $year)
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plans.plan_type_id', $type);
