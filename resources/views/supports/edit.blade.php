@@ -384,8 +384,8 @@
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td colspan="2">
-                                                    @{{ detail.plan.plan_item.item.item_name }}
-                                                    <p style="margin: 0;">@{{ detail.plan.plan_item.item.category }}</p>
+                                                    <p style="margin: 0;">@{{ detail.plan.plan_item.item.category.name }}</p>
+                                                    <p style="margin: 0;">@{{ detail.plan.plan_item.item.item_name }}</p>
                                                     <p style="margin: 0; color: red;" ng-show="detail.desc">
                                                         - @{{ detail.desc }}
                                                     </p>

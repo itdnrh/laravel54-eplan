@@ -388,6 +388,13 @@ class SupportController extends Controller
             $support->updated_user      = $req['user'];
 
             if ($support->save()) {
+                /** Delete support_detials data that user remove from table list */
+                if (count($req['removed']) > 0) {
+                    foreach($req['removed'] as $rm) {
+                        SupportDetail::where('id', $rm)->delete();
+                    }
+                }
+
                 foreach($req['details'] as $item) {
                     if (!array_key_exists('id', $item)) {
                         $detail = new SupportDetail;

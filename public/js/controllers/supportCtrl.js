@@ -41,6 +41,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         reason: '',
         remark: '',
         details: [],
+        removed: [],
         spec_committee: [],
         env_committee: [],
         insp_committee: [],
@@ -390,6 +391,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.newItem.plan_id      = plan.id;
             $scope.newItem.item_id      = plan.plan_item.item_id;
             $scope.newItem.item         = plan.plan_item.item;
+            $scope.newItem.subitem_id   = '';
+            $scope.newItem.desc         = '';
             $scope.newItem.price_per_unit = plan.calc_method == 1 ? plan.price_per_unit : '';
             $scope.newItem.unit_id      = plan.calc_method == 1 ? `${plan.plan_item.unit_id}` : '';
             $scope.newItem.unit_name    = plan.calc_method == 1 ? plan.plan_item.unit.name : '';
@@ -511,8 +514,13 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.removeAddedItem = (planId) => {
-        $scope.support.details = $scope.support.details.filter(d => d.plan_id !== planId);
+        const rm = $scope.support.details.find(d => d.plan_id === planId);
 
+        if (rm) {
+            $scope.support.removed.push(rm.id);
+        }
+
+        $scope.support.details = $scope.support.details.filter(d => d.plan_id !== planId);
         $scope.calculateTotal();
     };
 
@@ -638,9 +646,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 $scope.support.doc_no = doc_no;
             }
 
-            $scope.support.id = support.id;
-            $scope.support.doc_date = support.doc_date ? StringFormatService.convFromDbDate(support.doc_date) : '';
-            $scope.support.topic = support.topic;
+            $scope.support.id               = support.id;
+            $scope.support.doc_date         = support.doc_date ? StringFormatService.convFromDbDate(support.doc_date) : '';
+            $scope.support.topic            = support.topic;
             $scope.support.is_plan_group    = support.is_plan_group;
             $scope.support.plan_group_desc  = support.plan_group_desc;
             $scope.support.plan_group_amt   = support.plan_group_amt;
