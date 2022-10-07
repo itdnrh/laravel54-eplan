@@ -468,6 +468,95 @@ app.controller(
             });
         };
 
+        $scope.totalByPlanProcessQuarters = {
+            q1_amt: 0,
+            q1_sum: 0,
+            q2_amt: 0,
+            q2_sum: 0,
+            q3_amt: 0,
+            q3_sum: 0,
+            q4_amt: 0,
+            q4_sum: 0,
+            total_amt: 0,
+            total_sum: 0,
+        };
+
+        $scope.getPlanProcessByQuarter = function () {
+            $scope.totalByPlanQuarters = {
+                q1_amt: 0,
+                q1_sum: 0,
+                q2_amt: 0,
+                q2_sum: 0,
+                q3_amt: 0,
+                q3_sum: 0,
+                q4_amt: 0,
+                q4_sum: 0,
+                total_amt: 0,
+                total_sum: 0,
+            };
+
+            let year        = $scope.cboYear === ''
+                                ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                                    ? moment().year() + 544
+                                    : moment().year() + 543 
+                                : $scope.cboYear;
+            let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved    = !$scope.cboApproved ? '' : 'A';
+            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-process-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            .then(function (res) {
+                $scope.plans = res.data.plans.map(plan => {
+                    let cate = res.data.categories.find(c => c.id === plan.category_id);
+                    plan.category_name = cate ? cate.name : '';
+
+                    return plan;
+                });
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalByPlanQuarters.q1_amt += plan.q1_amt ? plan.q1_amt : 0;
+                        $scope.totalByPlanQuarters.q1_sum += plan.q1_sum ? plan.q1_sum : 0;
+                        $scope.totalByPlanQuarters.q2_amt += plan.q2_amt ? plan.q2_amt : 0;
+                        $scope.totalByPlanQuarters.q2_sum += plan.q2_sum ? plan.q2_sum : 0;
+                        $scope.totalByPlanQuarters.q3_amt += plan.q3_amt ? plan.q3_amt : 0;
+                        $scope.totalByPlanQuarters.q3_sum += plan.q3_sum ? plan.q3_sum : 0;
+                        $scope.totalByPlanQuarters.q4_amt += plan.q4_amt ? plan.q4_amt : 0;
+                        $scope.totalByPlanQuarters.q4_sum += plan.q4_sum ? plan.q4_sum : 0;
+                        $scope.totalByPlanQuarters.total_amt += plan.total_amt ? plan.total_amt : 0;
+                        $scope.totalByPlanQuarters.total_sum += plan.total_sum ? plan.total_sum : 0;
+                    });
+                    
+                    /** Render chart */
+                    const typeName = type === '' ? '' : `(${$('#cboPlanType option:selected').text()})`;
+                    $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนเงินบำรุง");
+                    $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalByPlanQuarters.q1_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt($scope.totalByPlanQuarters.q2_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt($scope.totalByPlanQuarters.q3_sum) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt($scope.totalByPlanQuarters.q4_sum) });
+                    let chart = new Highcharts.Chart($scope.pieOptions);
+                } else {
+                    $scope.totalByPlanQuarters = {
+                        q1_amt: 0,
+                        q1_sum: 0,
+                        q2_amt: 0,
+                        q2_sum: 0,
+                        q3_amt: 0,
+                        q3_sum: 0,
+                        q4_amt: 0,
+                        q4_sum: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
         $scope.totalAssetByCategories = {
             vehicle: 0,
             office: 0,
