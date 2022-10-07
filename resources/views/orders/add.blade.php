@@ -272,7 +272,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="(index, detail) in order.details">
+                                                <tr ng-show="order.is_plan_group">
+                                                    <td style="text-align: center">@{{ index+1 }}</td>
+                                                    <td>@{{ order.plan_group_desc }}</td>
+                                                    <td></td>
+                                                    <td style="text-align: right;">@{{ order.details[0].price_per_unit | currency:'':2 }}</td>
+                                                    <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>
+                                                    <td style="text-align: center;">@{{ order.plan_group_amt | currency:'':1 }}</td>
+                                                    <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
+                                                </tr>
+                                                <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
                                                     <td style="text-align: center">@{{ index+1 }}</td>
                                                     <td>
                                                         <!-- รายการ -->
@@ -297,11 +306,12 @@
                                                         />
                                                         <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                         <p style="margin: 0;">@{{ detail.plan_detail }}</p>
-                                                        <p class="item__desc-text">@{{ detail.plan_desc }}</p>
-                                                        <span class="item__spec-text">
+                                                        <p class="item__desc-text" ng-show="detail.plan_desc">
+                                                            - @{{ detail.plan_desc }}
+                                                        </p>
+                                                        <span class="item__spec-text" ng-show="detail.spec != ''">
                                                             @{{ detail.spec }}
                                                         </span>
-                                                        
                                                     </td>
                                                     <td style="text-align: center">
                                                         <!-- spec -->

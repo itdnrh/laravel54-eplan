@@ -224,12 +224,15 @@ class OrderController extends Controller
             $order->deliver_amt     = $req['deliver_amt'];
             $order->budget_src_id   = $req['budget_src_id'];
             $order->supply_officer  = $req['supply_officer'];
-            $order->remark          = $req['remark'];
+            $order->is_plan_group   = $req['is_plan_group'];
+            $order->plan_group_desc = $req['plan_group_desc'];
+            $order->plan_group_amt  = $req['plan_group_amt'];
             $order->total           = $req['total'];
             $order->vat_rate        = $req['vat_rate'];
             $order->vat             = $req['vat'];
             $order->net_total       = $req['net_total'];
             $order->net_total_str   = $req['net_total_str'];
+            $order->remark          = $req['remark'];
             $order->status          = '0';
             // $order->user_id         = $req['user_id'];
 
@@ -331,42 +334,61 @@ class OrderController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        /** TODO: should update plan's remain_amount by decrease from req->amount  */
-        // $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
-        /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
-        // if ($planItem->calc_method == 1) {
-        //     $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
-        //     $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
-        // } else {
-        //     $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+        try {
+            $order = Order::find($id);
+            $order->is_plan_group   = $req['is_plan_group'];
+            $order->plan_group_desc = $req['plan_group_desc'];
+            $order->plan_group_amt  = $req['plan_group_amt'];
 
-        //     if ($planItem->remain_budget <= 0) {
-        //         $planItem->remain_amount = 0;
-        //     }
-        // }
-
-        // $planItem->save();
-        /** TODO: should update plan's remain_amount by decrease from req->amount  */
+            // if ($order->save()) {
+                /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                // $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
+                /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
+                // if ($planItem->calc_method == 1) {
+                //     $planItem->remain_amount = (float)$planItem->remain_amount - (float)$item['amount'];
+                //     $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+                // } else {
+                //     $planItem->remain_budget = (float)$planItem->remain_budget - (float)$item['sum_price'];
+        
+                //     if ($planItem->remain_budget <= 0) {
+                //         $planItem->remain_amount = 0;
+                //     }
+                // }
+        
+                // $planItem->save();
+                /** TODO: should update plan's remain_amount by decrease from req->amount  */
+            // }
+        } catch (\Exception $ex) {
+            //throw $ex;
+        }
     }
 
     public function delete(Request $req, $id)
     {
-        /** TODO: Revert plan_items's remain data */
-        // $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
-        // // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
-        // if ($planItem->calc_method == 1) {
-        //     $planItem->remain_amount = (float)$planItem->remain_amount + (float)$supportDetail->amount;
-        //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$supportDetail->sum_price;
-        // } else {
-        //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$item['sum_price'];
+        try {
+            $order = Order::find($id);
 
-        //     if ($planItem->remain_amount == 0) {
-        //         $planItem->remain_amount = 1;
-        //     }
-        // }
-        // $planItem->update();
+            // if ($order->delete()) {
+                /** TODO: Revert plan_items's remain data */
+                // $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
+                // // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
+                // if ($planItem->calc_method == 1) {
+                //     $planItem->remain_amount = (float)$planItem->remain_amount + (float)$supportDetail->amount;
+                //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$supportDetail->sum_price;
+                // } else {
+                //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$item['sum_price'];
+
+                //     if ($planItem->remain_amount == 0) {
+                //         $planItem->remain_amount = 1;
+                //     }
+                // }
+                // $planItem->update();
+            // }
+        } catch (\Exception $ex) {
+            //throw $ex;
+        }
     }
 
     public function received()
@@ -426,12 +448,17 @@ class OrderController extends Controller
                         'status'    => 1,
                         'support'   => $support,
                     ];
+                } else {
+                    return [
+                        'status'    => 0,
+                        'message'   => 'Something went wrong!!'
+                    ];
                 }
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'status' => 0,
-                'error'  => 'Something went wrong!!'
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }

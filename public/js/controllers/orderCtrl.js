@@ -27,6 +27,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         order_type_id: '',
         plan_type_id: '',
         deliver_amt: 1,
+        is_plan_group: false,
+        plan_group_desc: '',
+        plan_group_amt: 0,
         total: '',
         vat_rate: '7',
         vat: '',
@@ -120,13 +123,18 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.setSupportToOrder = function(support) {
         if (support) {
-            console.log(support);
             $scope.order.plan_type_id = support.plan_type_id.toString();
             $scope.order.order_type_id = [1,2].includes(support.plan_type_id) ? '1' : '';
             // $scope.order.support_order_id = support.plan_type_id;
             $scope.order.supply_officer = support.supply_officer;
             $scope.order.supply_officer_detail = support.officer.prefix.prefix_name+support.officer.person_firstname+ ' ' +support.officer.person_lastname;
-    
+
+            if (support.is_plan_group == 1) {
+                $scope.order.is_plan_group = true;
+                $scope.order.plan_group_desc = support.plan_group_desc;
+                $scope.order.plan_group_amt = support.plan_group_amt;
+            }
+
             support.details.forEach(item => {
                 const orderItem = {
                     plan_no: item.plan.plan_no,
@@ -144,10 +152,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                     amount: item.amount,
                     sum_price: item.sum_price
                 };
-    
+
                 $scope.order.details.push(orderItem);
-                $scope.calculateNetTotal();
             });
+
+            $scope.calculateNetTotal();
         }
     };
 
