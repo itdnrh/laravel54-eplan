@@ -141,13 +141,13 @@
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
                                     <th style="text-align: left;" rowspan="2">ประเภท</th>
                                     <th style="text-align: center;" colspan="3">ไตรมาส 1</th>
-                                    <th style="text-align: center;" colspan="3">ไตรมาส 3</th>
+                                    <th style="text-align: center;" colspan="3">ไตรมาส 2</th>
                                     <th style="text-align: center;" colspan="3">ไตรมาส 3</th>
                                     <th style="text-align: center;" colspan="3">ไตรมาส 4</th>
                                     <th style="text-align: center;" colspan="3">รวม</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 10%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
                                     <th style="width: 5%; text-align: right;">ร้อยละ</th>
                                     <th style="width: 8%; text-align: right;">งบประมาณ</th>
@@ -167,9 +167,7 @@
                             <tbody>
                                 <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
-                                    <td>
-                                        @{{ plan.category_name }}
-                                    </td>
+                                    <td>@{{ plan.category_name }}</td>
                                     <td style="text-align: right;">@{{ plan.q1_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.q1_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ (plan.q1_amt * 100)/plan.q1_sum | currency:'':2 }}</td>

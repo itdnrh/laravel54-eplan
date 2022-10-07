@@ -18,11 +18,11 @@
         <div class="small-box bg-green">
             <div class="inner">
                 <h3 style="font-size: 28px;">
-                    @{{ '0' | currency:'':0 }}
+                    @{{ stat1Cards[0].sum_po | currency:'':0 }}
                     <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>
-                <p><h4>ออกใบสั้งซื้อ</h4></p>
+                <p><h4>ส่งขอสนับสนุน</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-paper-airplane"></i>

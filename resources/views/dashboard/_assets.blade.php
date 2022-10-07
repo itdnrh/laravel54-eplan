@@ -22,15 +22,13 @@
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: center;">ประมาณการ</th>
-                <th style="width: 15%; text-align: center;">ส่งเอกสาร</th>
-                <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
+                <th style="width: 15%; text-align: center;">ส่งขอสนับสนุน</th>
                 <th style="width: 15%; text-align: center;">ส่งเบิกเงิน</th>
                 <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
             </tr>
             <tr ng-repeat="(index, asset) in assets" style="font-size: 12px;">
                 <td>@{{ index+1 }}. @{{ asset.category_name }}</td>
                 <td style="text-align: right;">@{{ asset.request | currency:'':0 }}</td>
-                <td style="text-align: right;">@{{ asset.sent | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.withdraw | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.debt | currency:'':0 }}</td>

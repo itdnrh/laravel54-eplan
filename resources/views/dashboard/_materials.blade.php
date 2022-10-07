@@ -22,15 +22,13 @@
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: center;">ประมาณการ</th>
-                <th style="width: 15%; text-align: center;">ส่งเอกสาร</th>
-                <th style="width: 15%; text-align: center;">ออกใบสั่งซื้อ</th>
+                <th style="width: 15%; text-align: center;">ส่งขอสนับสนุน</th>
                 <th style="width: 15%; text-align: center;">ส่งเบิกเงิน</th>
                 <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
             </tr>
             <tr ng-repeat="(index, material) in materials" style="font-size: 12px;">
                 <td>@{{ pager.from+index }}. @{{ material.category_name }}</td>
                 <td style="text-align: right;">@{{ material.request | currency:'':0 }}</td>
-                <td style="text-align: right;">@{{ material.sent | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.withdraw | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.debt | currency:'':0 }}</td>
