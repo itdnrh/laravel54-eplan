@@ -171,12 +171,16 @@ class PlanController extends Controller
                         $q->where('plans.year', $year);
                     })
                     ->when(!empty($faction), function($q) use ($departsList, $depart, $cate) {
-                        if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                        if ((Auth::user()->memberOf->depart_id == '39' && $cate == '3') || (Auth::user()->memberOf->depart_id == '65' && $cate == '4')) {
+
+                        } else {
                             $q->whereIn('plans.depart_id', $departsList);
                         }
                     })
                     ->when(!empty($depart), function($q) use ($depart, $cate) {
-                        if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
+                        if ((Auth::user()->memberOf->depart_id == '39' && $cate == '3') || (Auth::user()->memberOf->depart_id == '65' && $cate == '4')) {
+
+                        } else {
                             $q->where('plans.depart_id', $depart);
                         }
                     })
@@ -232,8 +236,10 @@ class PlanController extends Controller
                             $q->where('approved', $approved);
                         })
                         ->when(!empty($depart), function($q) use ($depart, $cate) {
-                            if (($depart != '39' && $cate != '3') && ($depart != '65' && $cate != '4')) {
-                                $q->where('depart_id', $depart);
+                            if (($depart == '39' && $cate == '3') || ($depart == '65' && $cate == '4')) {
+                            
+                            } else {
+                                $q->where('plans.depart_id', $depart);
                             }
                         })->pluck('id');
 
