@@ -58,7 +58,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll()"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -117,7 +117,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll()"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">

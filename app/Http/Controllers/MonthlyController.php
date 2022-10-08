@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\PlanMonthly;
-use App\Models\PlanSummary;
+use App\Models\Budget;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\Item;
@@ -181,7 +181,7 @@ class MonthlyController extends Controller
 
         return [
             'monthly'   => $monthly,
-            'budget'    => PlanSummary::where('year', $year)->get()
+            'budget'    => Budget::where('year', $year)->get()
         ];
     }
 
@@ -250,7 +250,7 @@ class MonthlyController extends Controller
             $plan->updated_user = $req['user'];
 
             if($plan->save()) {
-                $planSum = PlanSummary::where('year', $req['year'])
+                $planSum = Budget::where('year', $req['year'])
                             ->where('expense_id', $req['expense_id'])
                             ->first();
                 $planSum->remain = (double)$planSum->remain - (double)$req['total'];
@@ -311,7 +311,7 @@ class MonthlyController extends Controller
             $plan->updated_user = $req['user'];
 
             if($plan->save()) {
-                $planSum = PlanSummary::where('year', $req['year'])
+                $planSum = Budget::where('year', $req['year'])
                             ->where('expense_id', $req['expense_id'])
                             ->first();
                 $planSum->remain = (double)$planSum->remain - (double)$req['total'];
@@ -346,7 +346,7 @@ class MonthlyController extends Controller
                 /** TODO: redo plan_summary's remain value to before 
                  * by plus with deleted plan's total
                  */
-                $planSum = PlanSummary::where('year', $req['year'])
+                $planSum = Budget::where('year', $req['year'])
                             ->where('expense_id', $req['expense_id'])
                             ->first();
                 $planSum->remain = (double)$planSum->remain + (double)$old_total;

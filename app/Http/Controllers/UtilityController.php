@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Utility;
 use App\Models\UtilityType;
-use App\Models\PlanSummary;
+use App\Models\Budget;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -208,7 +208,7 @@ class UtilityController extends Controller
 
         return [
             'monthly'   => $monthly,
-            'budget'    => PlanSummary::where('year', $year)->get()
+            'budget'    => Budget::where('year', $year)->get()
         ];
     }
 

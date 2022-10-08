@@ -37,16 +37,6 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         todayHighlight: true
     };
 
-    // $('#doc_date')
-    //     .datepicker(dtpOptions)
-        // .datepicker('update', new Date());
-        // .on('show', function (e) {
-        //     $('.day').click(function(event) {
-        //         event.preventDefault();
-        //         event.stopPropagation();
-        //     });
-        // });
-
     $('#remain').prop('disabled', true);
 
     const clearBudget = function() {
@@ -70,7 +60,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
+        let type    = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
@@ -188,6 +178,8 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/budgets/list`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
@@ -213,12 +205,14 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         if(confirm(`คุณต้องแก้ไขประมาณการรายจ่ายรหัส ${$scope.budget.id} ใช่หรือไม่?`)) {
             $scope.budget.user = $('#user').val();
 
-            $http.post(`${CONFIG.baseUrl}/budget/update/${$scope.budget.id}`, $scope.budget)
+            $http.put(`${CONFIG.apiUrl}/budgets/${$scope.budget.id}`, $scope.budget)
             .then(function(res) {
                 $scope.loading = false;
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/budgets/list`;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }
@@ -237,12 +231,14 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         $scope.loading = true;
 
         if(confirm(`คุณต้องประมาณการรายจ่ายรหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/budgets/${id}`)
+            $http.delete(`${CONFIG.apiUrl}/budgets/${id}`)
             .then(res => {
                 $scope.loading = false;
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/budgets/list`;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถลบข้อมูลได้ !!!");
                 }

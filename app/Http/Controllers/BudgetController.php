@@ -74,32 +74,15 @@ class BudgetController extends Controller
 
     public function search(Request $req)
     {
-        $matched = [];
-        $arrStatus = [];
-        $conditions = [];
-        $pattern = '/^\<|\>|\&|\-/i';
-
         /** Get params from query string */
-        $year = $req->get('year');
-        $type = $req->get('type');
-        $faction = $req->get('faction');
-        $depart = $req->get('depart');
-        $status = $req->get('status');
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $faction    = $req->get('faction');
+        $depart     = $req->get('depart');
+        $status     = $req->get('status');
 
-        // if($status != '-') {
-        //     if (preg_match($pattern, $status, $matched) == 1) {
-        //         $arrStatus = explode($matched[0], $status);
-
-        //         if ($matched[0] != '-' && $matched[0] != '&') {
-        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
-        //         }
-        //     } else {
-        //         array_push($conditions, ['status', '=', $status]);
-        //     }
-        // }
-
-        $expensesList = Expense::where('expense_type_id', $type)->pluck('id');
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+        $expensesList = Expense::where('expense_type_id', $type)->pluck('id');
 
         $budgets = Budget::with('expense','depart')
                     ->when(!empty($year), function($q) use ($year) {
@@ -108,19 +91,15 @@ class BudgetController extends Controller
                     ->when(!empty($type), function($q) use ($expensesList) {
                         $q->whereIn('expense_id', $expensesList);
                     })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
-                    })
                     ->when(!empty($faction), function($q) use ($departsList) {
                         $q->whereIn('depart_id', $departsList);
+                    })
+                    ->when(!empty($depart), function($q) use ($depart) {
+                        $q->where('depart_id', $depart);
                     })
                     // ->when($status != '', function($q) use ($status) {
                     //     $q->where('status', $status);
                     // })
-                    // ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                    //     $q->whereBetween('status', $arrStatus);
-                    // })
-                    // ->orderBy('plan_no', 'ASC')
                     ->get();
 
         return [
@@ -131,11 +110,7 @@ class BudgetController extends Controller
 
     public function getAll()
     {
-        // $budgets = PlanMonthly::with('kpi','depart','owner','budgetSrc')->paginate(10);
-
-        // return [
-        //     'budgets' => $budgets,
-        // ];
+        //
     }
 
     public function getById($id)
@@ -217,10 +192,10 @@ class BudgetController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
         try {
-            $budget = new Budget();
+            $budget = Budget::find($id);
             $budget->year         = $req['year'];
             $budget->expense_id   = $req['expense_id'];
             $budget->budget       = currencyToNumber($req['budget']);
@@ -229,7 +204,7 @@ class BudgetController extends Controller
             $budget->remark       = $req['remark'];
             $budget->status       = '0';
 
-            if($plan->save()) {
+            if($budget->save()) {
                 return [
                     'status'    => 1,
                     'message'   => 'Updating successfully',

@@ -69,6 +69,8 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('budgets', 'BudgetController@getAll');
     Route::get('budgets/{id}', 'BudgetController@getById');
     Route::get('budgets/{year}/{expense}', 'BudgetController@getByExpense');
+    Route::put('budgets/{id}', 'BudgetController@update');
+    Route::delete('budgets/{id}', 'BudgetController@delete');
 
     /** การส่งเบิกเงิน */
     Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');

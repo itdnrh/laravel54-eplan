@@ -226,8 +226,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('budgets/store', 'BudgetController@store');
     Route::get('budgets/edit/{id}', 'BudgetController@edit');
     Route::get('budgets/detail/{id}', 'BudgetController@detail');
-    Route::post('budgets/update/{id}', 'BudgetController@update');
-    Route::post('budgets/delete/{id}', 'BudgetController@delete');
 
     /** ค่าสาธารณูปโภค */
     Route::post('utilities/validate', 'UtilityController@formValidate');
