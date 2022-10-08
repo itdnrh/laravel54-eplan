@@ -88,7 +88,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     $scope.getPlanSummaryByExpense = function(e, year, expense) {
         $scope.loading = true;
 
-        $http.get(`${CONFIG.apiUrl}/plan-summary/${year}/${expense}`)
+        $http.get(`${CONFIG.apiUrl}/budgets/${year}/${expense}`)
         .then(function(res) {
             $scope.expenseBudget = res.data.plan.budget;
             $scope.expenseRemain = res.data.plan.remain;
@@ -189,13 +189,13 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
             } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
         }, function(err) {
             $scope.loading = false;
 
             console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
     }
 
@@ -206,37 +206,51 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     $scope.update = function(event, form) {
         event.preventDefault();
         console.log($scope.budget);
-    
-        // if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตามรหัส ${$scope.budget.id} ใช่หรือไม่?`)) {
-        //     $scope.budget.user = $('#user').val();
 
-        //     $http.post(`${CONFIG.baseUrl}/budget/update/${$scope.budget.id}`, $scope.budget)
-        //     .then(function(res) {
-        //         $scope.loading = false;
+        $scope.loading = true;
+        $scope.budget.user = $('#user').val();
 
-        //         if (res.data.status == 1) {
-        //             toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
-        //         } else {
-        //             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        //         }
-        //     }, function(err) {
-        //         $scope.loading = false;
+        if(confirm(`คุณต้องแก้ไขประมาณการรายจ่ายรหัส ${$scope.budget.id} ใช่หรือไม่?`)) {
+            $scope.budget.user = $('#user').val();
 
-        //         console.log(err);
-        //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        //     });
-        // }
+            $http.post(`${CONFIG.baseUrl}/budget/update/${$scope.budget.id}`, $scope.budget)
+            .then(function(res) {
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            });
+        }
     };
 
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องประมาณการรายจ่ายรหัส ${id} ใช่หรือไม่?`)) {
+            $http.delete(`${CONFIG.baseUrl}/budgets/${id}`)
             .then(res => {
-                console.log(res);
-            }, err => {
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถลบข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
+
                 console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };
