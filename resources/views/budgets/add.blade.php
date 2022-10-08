@@ -19,10 +19,12 @@
     <section
         class="content"
         ng-controller="budgetCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            expenses: {{ $expenses }}
-        }, 4);"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                expenses: {{ $expenses }}
+            }, 4);
+        "
     >
 
         <div class="row">
@@ -225,7 +227,6 @@
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
-
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="formValidate($event, '/budgets/validate', budget, 'frmNewBudget', store)"

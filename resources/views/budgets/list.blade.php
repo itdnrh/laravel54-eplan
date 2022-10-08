@@ -187,12 +187,12 @@
                                         </td> -->
                                         <td>@{{ budget.depart.depart_name }}</td>
                                         <td style="text-align: center;">
-                                            <a  href="{{ url('/monthly/detail') }}/@{{ budget.id }}"
+                                            <a  href="{{ url('/budgets/detail') }}/@{{ budget.id }}"
                                                 class="btn btn-primary btn-xs" 
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  href="{{ url('/monthly/edit') }}/@{{ budget.id }}"
+                                            <a  href="{{ url('/budgets/edit') }}/@{{ budget.id }}"
                                                 class="btn btn-warning btn-xs"
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
@@ -200,7 +200,7 @@
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
-                                                action="{{ url('/monthly/delete') }}"
+                                                action="{{ url('/budgets/delete') }}"
                                                 style="display: inline;"
                                             >
                                                 {{ csrf_field() }}
@@ -217,7 +217,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                         <div class="row">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}

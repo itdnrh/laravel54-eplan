@@ -141,11 +141,7 @@ class PlanSummaryController extends Controller
     public function getById($id)
     {
         return [
-            'budget' => PlanSummary::where('id', $id)
-                            ->with('budget','depart','division')
-                            ->with('planItem','planItem.unit')
-                            ->with('planItem.item','planItem.item.category')
-                            ->first(),
+            'budget' => PlanSummary::where('id', $id)->with('expense','depart')->first(),
         ];
     }
 
@@ -210,32 +206,34 @@ class PlanSummaryController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        return view('monthly.edit', [
-            //
+        return view('budgets.edit', [
+            "budget"        => PlanSummary::find($id),
+            "expenses"      => Expense::all(),
+            "expenseTypes"  => ExpenseType::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
         ]);
     }
 
     public function update(Request $req)
     {
         try {
-            $plan = new PlanMonthly();
-            $plan->year         = $req['year'];
-            $plan->month        = $req['month'];
-            $plan->expense_id   = $req['expense_id'];
-            $plan->total        = $req['total'];
-            $plan->remain       = $req['remain'];
-            $plan->depart_id    = $req['depart_id'];
-            $plan->reporter_id  = $req['reporter_id'];
-            $plan->remark       = $req['remark'];
-            $plan->status       = '0';
+            $budget = new PlanSummary();
+            $budget->year         = $req['year'];
+            $budget->expense_id   = $req['expense_id'];
+            $budget->budget       = currencyToNumber($req['budget']);
+            $budget->remain       = currencyToNumber($req['budget']);
+            $budget->owner_depart = $req['owner_depart'];
+            $budget->remark       = $req['remark'];
+            $budget->status       = '0';
 
             if($plan->save()) {
                 return [
                     'status'    => 1,
-                    'message'   => 'Insertion successfully',
-                    'plan'      => $plan
+                    'message'   => 'Updating successfully',
+                    'budget'    => $budget
                 ];
             } else {
                 return [
@@ -254,20 +252,23 @@ class PlanSummaryController extends Controller
     public function delete(Request $req, $id)
     {
         try {
-            $plan = Plan::find($id);
+            $budget = PlanSummary::find($id);
 
-            if($plan->delete()) {
-                if (PlanItem::where('plan_id', $id)->delete()) {
-                    return [
-                        'status'    => 1,
-                        'message'   => 'Deletion successfully!!'
-                    ];
-                }
+            if($budget->delete()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
                 'status'    => 0,
-                'message'   => 'Something went wrong!!'
+                'message'   => $ex->getMessage()
             ];
         }
         

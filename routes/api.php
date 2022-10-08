@@ -65,6 +65,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('utilities', 'UtilityController@getAll');
     Route::get('utilities/{id}', 'UtilityController@getById');
 
+    /** ประมาณการรายจ่าย */
+    Route::get('budgets/{id}', 'PlanSummaryController@getById');
+
     /** หมวดค่าใช้จ่าย */
     Route::get('plan-summary', 'PlanSummaryController@getAll');
     Route::get('plan-summary/{id}', 'PlanSummaryController@getById');

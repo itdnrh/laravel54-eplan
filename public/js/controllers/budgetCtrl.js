@@ -154,17 +154,26 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     }
 
     $scope.setEditControls = function(budget) {
-        $scope.budget.id                = budget.id;
-        $scope.budget.budget            = budget.budget;
-        $scope.budget.remain            = budget.remain;
-        $scope.budget.remark            = budget.remark;
-        
-        /** Convert int value to string */
-        $scope.budget.year              = budget.year.toString();
-        $scope.budget.expense_id        = budget.expense_id.toString();
-        $scope.budget.expense_type_id   = budget.expense_type_id.toString();
-        $scope.budget.faction_id        = budget.faction_id;
-        $scope.budget.owner_depart      = budget.owner_depart;
+        if (budget) {
+            $scope.budget.id                = budget.id;
+            $scope.budget.budget            = budget.budget;
+            $scope.budget.remain            = budget.remain;
+            $scope.budget.remark            = budget.remark;
+
+            /** Convert int value to string */
+            $scope.budget.year              = budget.year.toString();
+            $scope.budget.expense_id        = budget.expense_id.toString();
+            $scope.budget.expense_type_id   = budget.expense.expense_type_id.toString();
+            $scope.budget.faction_id        = budget.depart.faction_id.toString();
+            $scope.budget.owner_depart      = budget.owner_depart.toString();
+
+            /** Initial model values in mainCtrl */
+            $scope.onFilterExpenses(budget.expense.expense_type_id)
+            $scope.onFactionSelected(budget.depart.faction_id)
+
+            $('#expense_type_id').val(budget.expense.expense_type_id).trigger('change.select2')
+            $('#faction_id').val(budget.depart.faction_id).trigger('change.select2')
+        }
     };
 
     $scope.store = function(event, form) {
@@ -194,28 +203,29 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         window.location.href = `${CONFIG.baseUrl}/budgets/edit/${id}`;
     };
 
-    $scope.update = function(event) {
+    $scope.update = function(event, form) {
         event.preventDefault();
+        console.log($scope.budget);
     
-        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตามรหัส ${$scope.budget.id} ใช่หรือไม่?`)) {
-            $scope.budget.user = $('#user').val();
+        // if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตามรหัส ${$scope.budget.id} ใช่หรือไม่?`)) {
+        //     $scope.budget.user = $('#user').val();
 
-            $http.post(`${CONFIG.baseUrl}/budget/update/${$scope.budget.budget_id}`, $scope.budget)
-            .then(function(res) {
-                $scope.loading = false;
+        //     $http.post(`${CONFIG.baseUrl}/budget/update/${$scope.budget.id}`, $scope.budget)
+        //     .then(function(res) {
+        //         $scope.loading = false;
 
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
-                } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-                }
-            }, function(err) {
-                $scope.loading = false;
+        //         if (res.data.status == 1) {
+        //             toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+        //         } else {
+        //             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        //         }
+        //     }, function(err) {
+        //         $scope.loading = false;
 
-                console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-            });
-        }
+        //         console.log(err);
+        //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        //     });
+        // }
     };
 
     $scope.delete = function(e, id) {
