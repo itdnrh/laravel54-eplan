@@ -66,12 +66,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('utilities/{id}', 'UtilityController@getById');
 
     /** ประมาณการรายจ่าย */
-    Route::get('budgets/{id}', 'PlanSummaryController@getById');
-
-    /** หมวดค่าใช้จ่าย */
-    Route::get('plan-summary', 'PlanSummaryController@getAll');
-    Route::get('plan-summary/{id}', 'PlanSummaryController@getById');
-    Route::get('plan-summary/{year}/{expense}', 'PlanSummaryController@getByExpense');
+    Route::get('budgets', 'BudgetController@getAll');
+    Route::get('budgets/{id}', 'BudgetController@getById');
+    Route::get('budgets/{year}/{expense}', 'BudgetController@getByExpense');
 
     /** การส่งเบิกเงิน */
     Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');

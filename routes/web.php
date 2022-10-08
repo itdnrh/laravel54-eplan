@@ -218,16 +218,16 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('monthly/delete/{id}', 'MonthlyController@delete');
 
     /** ประมาณการรายจ่าย */
-    Route::post('budgets/validate', 'PlanSummaryController@formValidate');
-    Route::get('budgets/list', 'PlanSummaryController@index');
-    Route::get('budgets/summary', 'PlanSummaryController@summary');
-    Route::get('budgets/search', 'PlanSummaryController@search');
-    Route::get('budgets/add', 'PlanSummaryController@create');
-    Route::post('budgets/store', 'PlanSummaryController@store');
-    Route::get('budgets/edit/{id}', 'PlanSummaryController@edit');
-    Route::get('budgets/detail/{id}', 'PlanSummaryController@detail');
-    Route::post('budgets/update/{id}', 'PlanSummaryController@update');
-    Route::post('budgets/delete/{id}', 'PlanSummaryController@delete');
+    Route::post('budgets/validate', 'BudgetController@formValidate');
+    Route::get('budgets/list', 'BudgetController@index');
+    Route::get('budgets/summary', 'BudgetController@summary');
+    Route::get('budgets/search', 'BudgetController@search');
+    Route::get('budgets/add', 'BudgetController@create');
+    Route::post('budgets/store', 'BudgetController@store');
+    Route::get('budgets/edit/{id}', 'BudgetController@edit');
+    Route::get('budgets/detail/{id}', 'BudgetController@detail');
+    Route::post('budgets/update/{id}', 'BudgetController@update');
+    Route::post('budgets/delete/{id}', 'BudgetController@delete');
 
     /** ค่าสาธารณูปโภค */
     Route::post('utilities/validate', 'UtilityController@formValidate');

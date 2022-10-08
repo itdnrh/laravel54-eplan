@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\PlanMonthly;
-use App\Models\PlanSummary;
+use App\Models\Budget;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\Item;
@@ -22,7 +22,7 @@ use App\Models\Depart;
 use App\Models\Division;
 use PDF;
 
-class PlanSummaryController extends Controller
+class BudgetController extends Controller
 {
     public function formValidate (Request $request)
     {
@@ -101,7 +101,7 @@ class PlanSummaryController extends Controller
         $expensesList = Expense::where('expense_type_id', $type)->pluck('id');
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        $budgets = PlanSummary::with('expense','depart')
+        $budgets = Budget::with('expense','depart')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
@@ -141,14 +141,14 @@ class PlanSummaryController extends Controller
     public function getById($id)
     {
         return [
-            'budget' => PlanSummary::where('id', $id)->with('expense','depart')->first(),
+            'budget' => Budget::where('id', $id)->with('expense','depart')->first(),
         ];
     }
 
     public function getByExpense($year, $expense)
     {
         return [
-            'plan' => PlanSummary::where('year', $year)->where('expense_id', $expense)->first(),
+            'plan' => Budget::where('year', $year)->where('expense_id', $expense)->first(),
         ];
     }
 
@@ -177,7 +177,7 @@ class PlanSummaryController extends Controller
     public function store(Request $req)
     {
         try {
-            $budget = new PlanSummary();
+            $budget = new Budget();
             $budget->year         = $req['year'];
             $budget->expense_id   = $req['expense_id'];
             $budget->budget       = currencyToNumber($req['budget']);
@@ -209,7 +209,7 @@ class PlanSummaryController extends Controller
     public function edit(Request $req, $id)
     {
         return view('budgets.edit', [
-            "budget"        => PlanSummary::find($id),
+            "budget"        => Budget::find($id),
             "expenses"      => Expense::all(),
             "expenseTypes"  => ExpenseType::all(),
             "factions"      => Faction::all(),
@@ -220,7 +220,7 @@ class PlanSummaryController extends Controller
     public function update(Request $req)
     {
         try {
-            $budget = new PlanSummary();
+            $budget = new Budget();
             $budget->year         = $req['year'];
             $budget->expense_id   = $req['expense_id'];
             $budget->budget       = currencyToNumber($req['budget']);
@@ -252,7 +252,7 @@ class PlanSummaryController extends Controller
     public function delete(Request $req, $id)
     {
         try {
-            $budget = PlanSummary::find($id);
+            $budget = Budget::find($id);
 
             if($budget->delete()) {
                 return [
