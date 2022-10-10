@@ -8,6 +8,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';
+    $scope.searchKey = '';
 
     $scope.orders = [];
     $scope.pager = null;
@@ -827,7 +828,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
         let keyword = !$scope.searchKey ? '' : $scope.searchKey;
 
-        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&searchKey=${keyword}`)
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${keyword}`)
         .then(function(res) {
             $scope.setPersons(res);
 
@@ -849,7 +850,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
         let keyword = !$scope.searchKey ? '' : $scope.searchKey;
 
-        $http.get(`${url}&depart=${depart}&searchKey=${keyword}`)
+        $http.get(`${url}&depart=${depart}&name=${keyword}`)
         .then(function(res) {
             cb(res);
 

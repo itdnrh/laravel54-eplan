@@ -15,6 +15,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Faction;
 use App\Models\Depart;
+use App\Models\Division;
 use App\Models\Person;
 
 class WithdrawalController extends Controller
@@ -100,11 +101,9 @@ class WithdrawalController extends Controller
         return view('withdrawals.add', [
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
-            // "suppliers"     => Supplier::all(),
-            // "units"         => Unit::all(),
-            // "factions"      => Faction::all(),
-            // "departs"       => Depart::all(),
-            // "divisions"     => Division::all(),
+            "factions"      => Faction::all(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 

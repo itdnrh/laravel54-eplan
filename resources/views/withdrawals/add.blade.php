@@ -19,6 +19,13 @@
     <section
         class="content"
         ng-controller="withdrawalCtrl"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }}
+            });
+        "
     >
 
         <div class="row">
@@ -169,16 +176,51 @@
                                 </div>
                                 <div
                                     class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'prepaid_person')}"
+                                >
+                                    <label>สำรองเงินจ่ายโดย (ถ้ามี) :</label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="prepaid_person_detail"
+                                            name="prepaid_person_detail"
+                                            class="form-control"
+                                            ng-model="withdrawal.prepaid_person_detail"
+                                            readonly
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="prepaid_person"
+                                            name="prepaid_person"
+                                            class="form-control"
+                                            ng-model="withdrawal.prepaid_person"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showPersonList(4)"
+                                            >
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(order, 'prepaid_person')">
+                                        @{{ formError.errors.prepaid_person[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'remark')}"
                                 >
                                     <label for="">หมายเหตุ</label>
-                                    <input
-                                        type="text"
+                                    <textarea
+                                        rows="3"
                                         id="remark"
                                         name="remark"
                                         ng-model="withdrawal.remark"
                                         class="form-control"
-                                    />
+                                    ></textarea>
                                     <span class="help-block" ng-show="checkValidate(withdrawal, 'remark')">
                                         @{{ formError.errors.remark[0] }}
                                     </span>
@@ -202,6 +244,7 @@
         </div><!-- /.row -->
 
         @include('withdrawals._orders-list')
+        @include('shared._persons-list')
 
     </section>
 

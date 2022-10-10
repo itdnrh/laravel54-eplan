@@ -12,6 +12,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.withdrawal = {
         id: '',
+        year: '2566',
         order: null,
         order_id: '',
         withdraw_no: '',
@@ -22,7 +23,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         supplier_id: '',
         supplier: null,
         net_total: '',
-        year: '',
+        prepaid_person: '',
+        prepaid_person_detail: '',
         remark: '',
     };
 
@@ -218,6 +220,75 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     
             $('#order-details').modal('show');
         }
+    };
+
+    $scope.showPersonList = (_selectedMode) => {
+        /** Set default depart of persons list to same user's depart */
+        $scope.cboDepart = '2';
+
+        $('#persons-list').modal('show');
+
+        $scope.getPersons();
+
+        $scope.selectedMode = _selectedMode;
+    };
+
+    $scope.getPersons = async () => {
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
+
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${keyword}`)
+        .then(function(res) {
+            $scope.setPersons(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPersonsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
+
+        $http.get(`${url}&depart=${depart}&name=${keyword}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPersons = function(res) {
+        const { data, ...pager } = res.data.persons;
+
+        $scope.persons = data;
+        $scope.persons_pager = pager;
+    };
+
+    $scope.onSelectedPerson = (mode, person) => {
+        if (person) {
+            $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+            $scope.order.supply_officer = person.person_id;
+        }
+
+        $('#persons-list').modal('hide');
+        $scope.selectedMode = '';
     };
 
     $scope.getById = function(id) {
