@@ -77,6 +77,34 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         })
         .on('changeDate', function(event) {
             console.log(event.date);
+            $('#po_app_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $('#po_req_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date)
+        });
+
+    $('#po_app_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
+    $('#po_req_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
+    $('#spec_doc_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
         });
 
     $('#inspect_sdate')
@@ -94,27 +122,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
 
     $('#withdraw_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-    $('#po_req_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-    $('#po_app_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-    $('#spec_doc_date')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
@@ -248,6 +255,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $scope.calculateTotal();
     };
+
+    $scope.removePlanGroup = (e) => {
+        $scope.order.is_plan_group = false;
+        $scope.order.plan_group_desc = '';
+        $scope.order.plan_group_amt = 0.0;
+
+        $scope.order.details = [];
+
+        $scope.calculateTotal();
+    }
 
     $scope.editRowIndex = '';
     $scope.toggleEditRow = function(selectedIndex = '') {
@@ -948,21 +965,29 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.store = function(event, form) {
         event.preventDefault();
+
+        if ($scope.order.details.length == 0) {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณยังไม่ได้ระบุรายการที่จะจัดซื้อจัดจ้าง !!!");
+            return;
+        }
+
         $scope.loading = true;
 
         $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
         .then(res => {
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/orders/list`;
             } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
             }
 
             $scope.loading = false;
-
-            window.location.href = `${CONFIG.baseUrl}/orders/list`;
         }, err => {
             console.log(err);
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
+
             $scope.loading = false;
         });
     }
@@ -995,6 +1020,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.update = function(event, form) {
         event.preventDefault();
+
+        if ($scope.order.details.length == 0) {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณยังไม่ได้ระบุรายการที่จะจัดซื้อจัดจ้าง !!!");
+            return;
+        }
 
         if(confirm(`คุณต้องแก้ไขรายการขอยกเลิกวันลาเลขที่ ${$scope.cancellation.leave_id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();

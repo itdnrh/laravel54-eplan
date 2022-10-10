@@ -280,6 +280,16 @@
                                                     <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>
                                                     <td style="text-align: center;">@{{ order.plan_group_amt | currency:'':1 }}</td>
                                                     <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
+                                                    
+                                                    <td style="text-align: center">
+                                                        <a
+                                                            href="#"
+                                                            class="btn btn-danger btn-xs"
+                                                            ng-click="removePlanGroup($event)"
+                                                        >
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                                 <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
                                                     <td style="text-align: center">@{{ index+1 }}</td>
