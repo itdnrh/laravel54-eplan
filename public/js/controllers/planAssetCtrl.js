@@ -5,7 +5,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.pager = null;
 
     $scope.isApproved = false;
-    $scope.isInPlan = true;
+    $scope.isInPlan = 'I';
     $scope.cboPrice = '';
     $scope.cboBudget = '';
     $scope.txtItemName = '';
@@ -131,7 +131,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
         let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan ? 'I' : '';
+        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1`)
         .then(function(res) {
@@ -169,7 +169,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
         let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan ? 'I' : '';
+        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
 
         $http.get(`${url}&type=1&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
         .then(function(res) {
@@ -350,8 +350,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
             let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
             let approved    = $scope.isApproved ? 'A' : '';
-            let inPlan      = $scope.isInPlan ? 'I' : '';
-            
+            let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+
             window.location.href = `${CONFIG.baseUrl}/plans/excel?type=1&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`;
         }
     };

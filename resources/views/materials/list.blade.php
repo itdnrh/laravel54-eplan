@@ -177,6 +177,40 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ประเภทงบประมาณ</label>
+                                        <select
+                                            id="cboBudget"
+                                            name="cboBudget"
+                                            ng-model="cboBudget"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="1">เงินบำรุง</option>
+                                            <option value="3">ค่าเสื่อม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="isInPlan"
+                                            name="isInPlan"
+                                            ng-model="isInPlan"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
