@@ -115,7 +115,7 @@ class WithdrawalController extends Controller
         $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
         $withdrawal->inspection_id  = $req['inspection_id'];
         $withdrawal->supplier_id    = $req['supplier_id'];
-        $withdrawal->net_total      = $req['net_total'];
+        $withdrawal->net_total      = currencyToNumber($req['net_total']);
         $withdrawal->year           = $req['year'];
         $withdrawal->remark         = $req['remark'];
         $withdrawal->created_user   = $req['user'];

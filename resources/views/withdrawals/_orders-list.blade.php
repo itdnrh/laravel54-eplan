@@ -70,8 +70,8 @@
                                         <li ng-repeat="(index, detail) in order.details">
                                             <p style="margin: 0;">@{{ detail.item.category.name }}</p>
                                             <p style="margin: 0;">
-                                                @{{ detail.item.item_name }} จำนวน 
-                                                <span>@{{ detail.amount | currency:'':0 }}</span>
+                                                @{{ detail.item.item_name }}  @{{ detail.desc }} 
+                                                <span>จำนวน @{{ detail.amount | currency:'':0 }}</span>
                                                 <span>@{{ detail.unit.name }}</span>
                                                 <span>รวมเป็นเงิน @{{ detail.sum_price | currency:'':2 }} บาท</span>
                                                 <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
