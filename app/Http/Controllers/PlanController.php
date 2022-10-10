@@ -113,6 +113,7 @@ class PlanController extends Controller
         $name = $req->get('name');
         $price = $req->get('price');
         $budget = $req->get('budget');
+        $inPlan = $req->get('in_plan');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
@@ -199,6 +200,9 @@ class PlanController extends Controller
                     })
                     ->when($approved != '', function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when($inPlan != '', function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->when(empty($showAll), function($q) use ($showAll) {
                         $q->where('plan_items.remain_amount', '>', 0);
