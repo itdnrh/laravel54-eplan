@@ -5,6 +5,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.pager = [];
 
     $scope.isApproved = false;
+    $scope.isInPlan = true;
     $scope.cboPrice = '';
     $scope.txtItemName = '';
 
@@ -124,8 +125,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
         let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let approved    = $scope.isApproved ? 'A' : '';
+        let inPlan      = $scope.isInPlan ? 'I' : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&name=${name}&price=${price}&show_all=1`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
         .then(function(res) {
             $scope.setServices(res);
 
@@ -160,8 +162,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
         let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let approved    = $scope.isApproved ? 'A' : '';
+        let inPlan      = $scope.isInPlan ? 'I' : '';
 
-        $http.get(`${url}&type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&name=${name}&price=${price}&show_all=1`)
+        $http.get(`${url}&type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
         .then(function(res) {
             cb(res);
 
@@ -322,8 +325,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
             let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
             let approved    = $scope.isApproved ? 'A' : '';
-            
-            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&name=${name}&price=${price}&show_all=1`;
+            let inPlan      = $scope.isInPlan ? 'I' : '';
+
+            window.location.href = `${CONFIG.baseUrl}/plans/excel?type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`;
         }
     };
 });
