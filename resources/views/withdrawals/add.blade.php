@@ -84,7 +84,7 @@
                                                 <p style="margin: 0;">
                                                     @{{ index+1 }}.
                                                     @{{ item.plan.plan_no }}
-                                                    @{{ item.item.item_name }} @{{ detail.desc }}
+                                                    @{{ item.item.item_name }} @{{ item.desc }}
                                                     จำนวน @{{ item.amount | currency:'':0 }} @{{ item.unit.name }}
                                                     รวมเป็นเงิน @{{ item.sum_price | currency:'':0 }} บาท
                                                 </p>
