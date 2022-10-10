@@ -137,6 +137,7 @@ class InspectionController extends Controller
     {
         try {
             $inspection = new Inspection;
+            $inspection->year           = $req['year'];
             $inspection->order_id       = $req['order_id'];
             $inspection->deliver_seq    = $req['deliver_seq'];
             $inspection->deliver_bill   = $req['deliver_bill'];

@@ -1,7 +1,7 @@
 app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.txtDeliverNo = '';
     $scope.inspections = [];
@@ -11,6 +11,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.orders_pager = null;
 
     $scope.inspection = {
+        year: '2566',
         order_id: '',
         order: null,
         deliver_seq: '',
