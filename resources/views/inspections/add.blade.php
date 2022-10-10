@@ -118,10 +118,10 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-2"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'deliver_bill')}"
                                 >
-                                    <label for="">ประเภทเอกสารส่งมอบ</label>
+                                    <label for="">หัวบิลเจ้าหนี้</label>
                                     <input
                                         type="text"
                                         id="deliver_bill"
@@ -145,7 +145,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'deliver_no')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
@@ -161,7 +161,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'deliver_date')}"
                                 >
                                     <label for="">วันที่เอกสารส่งมอบงาน</label>
@@ -217,6 +217,8 @@
                                         @{{ inspection.inspect_total | currency:'':2 }}
                                     </div>
                                     <input
+                                        id="inspect_total"
+                                        name="inspect_total"
                                         class="form-control"
                                         ng-model="inspection.inspect_total"
                                         ng-show="inspection.order.deliver_amt !== inspection.deliver_seq"
@@ -284,6 +286,7 @@
     <script>
         $(function () {
             $('.select2').select2();
+            $('#inspect_total').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 

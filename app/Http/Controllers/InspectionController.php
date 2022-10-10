@@ -15,6 +15,8 @@ use App\Models\OrderDetail;
 use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Supplier;
+use App\Models\Support;
+use App\Models\SupportDetail;
 
 class InspectionController extends Controller
 {
@@ -142,7 +144,7 @@ class InspectionController extends Controller
             $inspection->deliver_date   = convThDateToDbDate($req['deliver_date']);
             $inspection->inspect_sdate  = convThDateToDbDate($req['inspect_sdate']);
             $inspection->inspect_edate  = convThDateToDbDate($req['inspect_edate']);
-            $inspection->inspect_total  = $req['inspect_total'];
+            $inspection->inspect_total  = currencyToNumber($req['inspect_total']);
             $inspection->inspect_result = $req['inspect_result'];
             $inspection->inspect_user   = Auth::user()->person_id;
             $inspection->remark         = $req['remark'];
@@ -155,9 +157,6 @@ class InspectionController extends Controller
                 $details = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($details as $item) {
                     $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
-
-                    /** Update status of plans to 4=ตรวจรับแล้ว */
-                    Plan::where('id', $item->plan_id)->update(['status' => 4]);
 
                     /** Update support_details's status to 4=ตรวจรับแล้ว */
                     SupportDetail::where('support_id', $item->support_id)

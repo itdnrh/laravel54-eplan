@@ -303,16 +303,24 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.store = function(event, form) {
         event.preventDefault();
+        $scope.loading = true;
 
         $http.post(`${CONFIG.baseUrl}/inspections/store`, $scope.inspection)
         .then(function(res) {
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกตรวจรับเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/orders/inspect`;
             } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกตรวจรับได้ !!!");
             }
+
+            $scope.loading = false;
         }, function(err) {
             console.log(err);
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+
+            $scope.loading = false;
         });
     }
 
