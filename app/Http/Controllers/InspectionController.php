@@ -195,31 +195,70 @@ class InspectionController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        $cancel = Cancellation::find($req['id']);
-        $cancel->reason         = $req['reason'];
-        $cancel->start_date     = convThDateToDbDate($req['start_date']);
-        $cancel->start_period   = '1';
-        $cancel->end_date       = convThDateToDbDate($req['end_date']);
-        $cancel->end_period     = $req['end_period'];
-        $cancel->days           = $req['days'];
-        $cancel->working_days   = $req['working_days'];
+        try {
+            $inspection = Inspection::find($id);
+            $inspection->year           = $req['year'];
+            $inspection->order_id       = $req['order_id'];
+            $inspection->deliver_seq    = $req['deliver_seq'];
+            $inspection->deliver_bill   = $req['deliver_bill'];
+            $inspection->deliver_no     = $req['deliver_no'];
+            $inspection->deliver_date   = convThDateToDbDate($req['deliver_date']);
+            $inspection->inspect_sdate  = convThDateToDbDate($req['inspect_sdate']);
+            $inspection->inspect_edate  = convThDateToDbDate($req['inspect_edate']);
+            $inspection->inspect_total  = currencyToNumber($req['inspect_total']);
+            $inspection->inspect_result = $req['inspect_result'];
+            $inspection->inspect_user   = Auth::user()->person_id;
+            $inspection->remark         = $req['remark'];
 
-        if ($cancel->save()) {
-            return redirect('/cancellations/list');
+            if ($inspection->save()) {
+                $order = Order::find($req['order_id']);
+                $order->status = ($order->deliver_amt != $req['deliver_seq']) ? 2 : 3; // 2=ตรวจรับแล้วบางงวด, 3=ตรวจรับทั้งหมดแล้ว
+                $order->save();
+
+                $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
+                foreach($orderDetails as $item) {
+                    $detail = OrderDetail::where('id', $item->id)->update(['received' => 1]);
+
+                    /** Update support_details's status to 4=ตรวจรับแล้ว */
+                    SupportDetail::where('id', $item->support_detail_id)->update(['status' => 4]);
+                }
+
+                return [
+                    'status'        => 1,
+                    'message'       => 'Updating successfully!!',
+                    'inspection'    => $inspection
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 
     public function delete(Request $req, $id)
     {
-        $cancel = Cancellation::find($id);
-        $leaveId = $cancel->leave_id;
+        $inspection = Inspection::find($id);
+        $deleted = $inspection;
 
-        if ($cancel->delete()) {
-            $leave = Leave::find($cancel->leave_id);
-            $leave->status = 3;
-            $leave->save();
+        if ($inspection->delete()) {
+            $order = Order::find($deleted->order_id)->update(['status' => 0]);
+
+            $orderDetails = OrderDetail::where('order_id', $deleted->order_id)->get();
+            foreach($orderDetails as $item) {
+                $detail = OrderDetail::where('id', $item->id)->update(['received' => null]);
+
+                /** Update support_details's status to 4=ตรวจรับแล้ว */
+                SupportDetail::where('id', $item->support_detail_id)->update(['status' => 3]);
+            }
 
             return redirect('/inspections/list')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
         }
