@@ -222,7 +222,7 @@ class OrderController extends Controller
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
             $order->deliver_amt     = $req['deliver_amt'];
-            $order->budget_src_id   = $req['budget_src_id'];
+            $order->budget_src_id   = '1';
             $order->supply_officer  = $req['supply_officer'];
             $order->is_plan_group   = $req['is_plan_group'] ? 1 : 0;
             $order->plan_group_desc = $req['plan_group_desc'];
