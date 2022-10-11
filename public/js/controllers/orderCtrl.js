@@ -686,10 +686,22 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         spec_doc_date: ''
     };
 
+    $scope.clearSpecCommittee = function() {
+        $scope.specCommittee = {
+            support_id: '',
+            purchase_method: '1',
+            source_price: '1',
+            spec_doc_no: '',
+            spec_doc_date: ''
+        };
+    };
+
     $scope.onPrintSpecCommittee = function(e, id) {
         $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
         .then(res => {
             if (res.data.status) {
+                $scope.clearSpecCommittee();
+
                 $('#spec-committee-form').modal('hide');
 
                 window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
