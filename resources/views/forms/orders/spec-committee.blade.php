@@ -237,7 +237,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/') }}</span>
+                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->supportOrders[0]->report_doc_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -247,7 +247,7 @@
                                 <div class="content__header-text" style="width: 89%;">
                                     <span style="margin: 0 10px;">
                                         <!-- {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($support->doc_date) }} -->
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThMonth(date('Y-m-d'))) }}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThDate($support->supportOrders[0]->report_doc_date)) }}
                                     </span>
                                 </div>
                             </div>
