@@ -457,7 +457,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&received_no=${received_no}&status=${status}`)
         .then(function(res) {
-            console.log(res);
             $scope.setReceiveds(res);
 
             $scope.loading = false;
@@ -719,8 +718,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
             $('#spec-committee-form').modal('hide');
 
-            console.log(`${CONFIG.baseUrl}/supports/${id}/print-spec-committee`);
-            // window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+            window.location.href = `${CONFIG.baseUrl}/supports/${id}/print/spec-committee`;
         } else {
             $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
             .then(res => {
@@ -729,7 +727,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
                     $('#spec-committee-form').modal('hide');
 
-                    window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+                    window.location.href = `${CONFIG.baseUrl}/supports/${id}/print/spec-committee`;
                 } else {
 
                 }
