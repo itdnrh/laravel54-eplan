@@ -181,10 +181,16 @@ class SupportController extends Controller
 
     public function getSupportDetails(Request $req)
     {
-        $year = $req->get('year');
-        $type = $req->get('type');
+        $year   = $req->get('year');
+        $type   = $req->get('type');
+        $cate   = $req->get('cate');
         $supportType = $req->get('supportType');
         $status = $req->get('status');
+
+        $plansList = PlanItem::leftJoin('items','items.id','=','plan_items.item_id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })->pluck('plan_items.plan_id');
 
         $supportsList = Support::when(!empty($year), function($q) use ($year) {
                             $q->where('supports.year', $year);
@@ -204,6 +210,9 @@ class SupportController extends Controller
                     ->with('plan.planItem.item.category','support.depart','unit')
                     ->where('status', '2')
                     ->whereIn('support_id', $supportsList)
+                    ->when(!empty($cate), function($q) use ($plansList) {
+                        $q->whereIn('plan_id', $plansList);
+                    })
                     ->paginate(10);
 
         return [

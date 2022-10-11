@@ -257,196 +257,206 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div style="display: flex;">
-                                        <table class="table table-striped table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 3%; text-align: center">ลำดับ</th>
-                                                    <th>รายการ</th>
-                                                    <th style="width: 4%; text-align: center">Spec</th>
-                                                    <th style="width: 12%; text-align: center">ราคาต่อหน่วย</th>
-                                                    <th style="width: 12%; text-align: center">หน่วยนับ</th>
-                                                    <th style="width: 8%; text-align: center">จำนวน</th>
-                                                    <th style="width: 12%; text-align: center">รวมเป็นเงิน</th>
-                                                    <th style="width: 6%; text-align: center">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-show="order.is_plan_group">
-                                                    <td style="text-align: center">@{{ index+1 }}</td>
-                                                    <td>@{{ order.plan_group_desc }}</td>
-                                                    <td></td>
-                                                    <td style="text-align: right;">@{{ order.details[0].price_per_unit | currency:'':2 }}</td>
-                                                    <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>
-                                                    <td style="text-align: center;">@{{ order.plan_group_amt | currency:'':1 }}</td>
-                                                    <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
-                                                    
-                                                    <td style="text-align: center">
-                                                        <a
-                                                            href="#"
-                                                            class="btn btn-danger btn-xs"
-                                                            ng-click="removePlanGroup($event)"
-                                                        >
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
-                                                    <td style="text-align: center">@{{ index+1 }}</td>
-                                                    <td>
-                                                        <!-- รายการ -->
-                                                        <input
-                                                            type="hidden"
-                                                            id="plan_id"
-                                                            name="plan_id"
-                                                            ng-model="newItem.plan_id"
-                                                        />
-                                                        <input
-                                                            type="hidden"
-                                                            id="item_id"
-                                                            name="item_id"
-                                                            ng-model="newItem.item_id"
-                                                        />
-                                                        <input
-                                                            type="hidden"
-                                                            id="plan_no"
-                                                            name="plan_no"
-                                                            style="text-align: center"
-                                                            ng-model="newItem.plan_no"
-                                                        />
-                                                        <p style="margin: 0;">@{{ detail.plan_depart }}</p>
-                                                        <p style="margin: 0;">@{{ detail.plan_detail }}</p>
-                                                        <p class="item__desc-text" ng-show="detail.plan_desc">
-                                                            - @{{ detail.plan_desc }}
-                                                        </p>
-                                                        <span class="item__spec-text" ng-show="detail.spec != ''">
-                                                            @{{ detail.spec }}
-                                                        </span>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <!-- spec -->
-                                                        <a href="#" class="btn bg-gray" ng-click="showSpecForm(index)">
-                                                            <i class="fa fa-bars" aria-hidden="true"></i>
-                                                        </a>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <!-- ราคาต่อหน่วย -->
-                                                        <input
-                                                            type="text"
-                                                            id="price_per_unit"
-                                                            name="price_per_unit"
-                                                            class="form-control"
-                                                            style="text-align: center"
-                                                            ng-model="newItem.price_per_unit"
-                                                            ng-keyup="calculateSumPrice($event)"
-                                                            ng-show="editRow && editRowIndex == index"
-                                                        />
-                                                        <span ng-show="!editRow || editRowIndex != index">
-                                                            @{{ detail.price_per_unit | currency:'':2 }}
-                                                        </span>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <!-- หน่วยนับ -->
-                                                        <span style="margin: 0; width: 180px;" ng-show="editRow && editRowIndex == index">
-                                                            <select
-                                                                id="unit_id_@{{ index }}"
-                                                                name="unit_id"
-                                                                class="form-control"
-                                                                ng-model="newItem.unit_id"
-                                                            >
-                                                                <option value="">-- หน่วยนับ --</option>
-                                                                @foreach($units as $unit)
-                                                                    <option value="{{ $unit->id }}">
-                                                                        {{ $unit->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </span>
-                                                        <span ng-show="!editRow || editRowIndex != index">
-                                                            @{{ detail.unit_name }}
-                                                        </span>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <!-- จำนวน -->
-                                                        <input
-                                                            type="text"
-                                                            id="amount"
-                                                            name="amount"
-                                                            class="form-control"
-                                                            style="text-align: center"
-                                                            ng-model="newItem.amount"
-                                                            ng-keyup="calculateSumPrice($event)"
-                                                            ng-show="editRow && editRowIndex == index"
-                                                        />
-                                                        <span ng-show="!editRow || editRowIndex != index">
-                                                            @{{ detail.amount | currency:'':2 }}
-                                                        </span>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <!-- รวมเป็นเงิน -->
-                                                        <input
-                                                            type="text"
-                                                            id="sum_price"
-                                                            name="sum_price"
-                                                            class="form-control"
-                                                            style="text-align: center"
-                                                            ng-model="newItem.sum_price"
-                                                            ng-show="editRow && editRowIndex == index"
-                                                        />
-                                                        <span ng-show="!editRow || editRowIndex != index">
-                                                            @{{ detail.sum_price | currency:'':2 }}
-                                                        </span>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <a
-                                                            href="#"
-                                                            class="btn btn-warning btn-xs"
-                                                            ng-click="onEditItem(index);"
-                                                            ng-show="!editRow || editRowIndex != index"
-                                                        >
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
-                                                        <a
-                                                            href="#"
-                                                            class="btn btn-danger btn-xs"
-                                                            ng-click="removeOrderItem(index)"
-                                                            ng-show="!editRow || editRowIndex != index"
-                                                        >
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
-                                                        <a
-                                                            href="#"
-                                                            class="btn btn-success btn-xs"
-                                                            ng-click="confirmEditedItem(index);"
-                                                            ng-show="editRow && editRowIndex == index"
-                                                        >
-                                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                                                        </a>
-                                                        <a
-                                                            href="#"
-                                                            class="btn btn-danger btn-xs"
-                                                            ng-click="toggleEditRow()"
-                                                            ng-show="editRow && editRowIndex == index"
-                                                        >
-                                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div style="padding-top: 5px;">
-                                            <a
-                                                href="#"
-                                                class="btn btn-primary btn-sm pull-right"
-                                                ng-click="
-                                                    onFilterCategories(order.plan_type_id);
-                                                    showPlansList(order.plan_type_id);
-                                                "
-                                            >
-                                                <i class="fa fa-plus"></i>
-                                            </a>
-                                        </div>
+                                    <div style="position: relative;">
+                                        <a
+                                            href="#"
+                                            class="btn btn-primary btn-sm pull-right"
+                                            ng-click="
+                                                onFilterCategories(order.plan_type_id);
+                                                showPlansList(order.plan_type_id);
+                                            "
+                                        >
+                                            เพิ่มรายการ
+                                        </a>
+                                        <a
+                                            href="#"
+                                            style="margin-right: 4px;"
+                                            class="btn bg-gray btn-sm pull-right"
+                                            ng-click="
+                                                onFilterCategories(order.plan_type_id);
+                                                showPlanGroupsList(order.plan_type_id);
+                                            "
+                                        >
+                                            เพิ่มรายการแบบกลุ่ม
+                                        </a>
                                     </div>
+
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 3%; text-align: center">ลำดับ</th>
+                                                <th>รายการ</th>
+                                                <th style="width: 4%; text-align: center">Spec</th>
+                                                <th style="width: 12%; text-align: center">ราคาต่อหน่วย</th>
+                                                <th style="width: 12%; text-align: center">หน่วยนับ</th>
+                                                <th style="width: 8%; text-align: center">จำนวน</th>
+                                                <th style="width: 12%; text-align: center">รวมเป็นเงิน</th>
+                                                <th style="width: 6%; text-align: center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-show="order.is_plan_group">
+                                                <td style="text-align: center">@{{ index+1 }}</td>
+                                                <td>@{{ order.plan_group_desc }}</td>
+                                                <td></td>
+                                                <td style="text-align: right;">@{{ order.details[0].price_per_unit | currency:'':2 }}</td>
+                                                <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>
+                                                <td style="text-align: center;">@{{ order.plan_group_amt | currency:'':1 }}</td>
+                                                <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
+                                                
+                                                <td style="text-align: center">
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs"
+                                                        ng-click="removePlanGroup($event)"
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
+                                                <td style="text-align: center">@{{ index+1 }}</td>
+                                                <td>
+                                                    <!-- รายการ -->
+                                                    <input
+                                                        type="hidden"
+                                                        id="plan_id"
+                                                        name="plan_id"
+                                                        ng-model="newItem.plan_id"
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        id="item_id"
+                                                        name="item_id"
+                                                        ng-model="newItem.item_id"
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        id="plan_no"
+                                                        name="plan_no"
+                                                        style="text-align: center"
+                                                        ng-model="newItem.plan_no"
+                                                    />
+                                                    <p style="margin: 0;">@{{ detail.plan_depart }}</p>
+                                                    <p style="margin: 0;">@{{ detail.plan_detail }}</p>
+                                                    <p class="item__desc-text" ng-show="detail.plan_desc">
+                                                        - @{{ detail.plan_desc }}
+                                                    </p>
+                                                    <span class="item__spec-text" ng-show="detail.spec != ''">
+                                                        @{{ detail.spec }}
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- spec -->
+                                                    <a href="#" class="btn bg-gray" ng-click="showSpecForm(index)">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- ราคาต่อหน่วย -->
+                                                    <input
+                                                        type="text"
+                                                        id="price_per_unit"
+                                                        name="price_per_unit"
+                                                        class="form-control"
+                                                        style="text-align: center"
+                                                        ng-model="newItem.price_per_unit"
+                                                        ng-keyup="calculateSumPrice($event)"
+                                                        ng-show="editRow && editRowIndex == index"
+                                                    />
+                                                    <span ng-show="!editRow || editRowIndex != index">
+                                                        @{{ detail.price_per_unit | currency:'':2 }}
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- หน่วยนับ -->
+                                                    <span style="margin: 0; width: 180px;" ng-show="editRow && editRowIndex == index">
+                                                        <select
+                                                            id="unit_id_@{{ index }}"
+                                                            name="unit_id"
+                                                            class="form-control"
+                                                            ng-model="newItem.unit_id"
+                                                        >
+                                                            <option value="">-- หน่วยนับ --</option>
+                                                            @foreach($units as $unit)
+                                                                <option value="{{ $unit->id }}">
+                                                                    {{ $unit->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </span>
+                                                    <span ng-show="!editRow || editRowIndex != index">
+                                                        @{{ detail.unit_name }}
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- จำนวน -->
+                                                    <input
+                                                        type="text"
+                                                        id="amount"
+                                                        name="amount"
+                                                        class="form-control"
+                                                        style="text-align: center"
+                                                        ng-model="newItem.amount"
+                                                        ng-keyup="calculateSumPrice($event)"
+                                                        ng-show="editRow && editRowIndex == index"
+                                                    />
+                                                    <span ng-show="!editRow || editRowIndex != index">
+                                                        @{{ detail.amount | currency:'':2 }}
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <!-- รวมเป็นเงิน -->
+                                                    <input
+                                                        type="text"
+                                                        id="sum_price"
+                                                        name="sum_price"
+                                                        class="form-control"
+                                                        style="text-align: center"
+                                                        ng-model="newItem.sum_price"
+                                                        ng-show="editRow && editRowIndex == index"
+                                                    />
+                                                    <span ng-show="!editRow || editRowIndex != index">
+                                                        @{{ detail.sum_price | currency:'':2 }}
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-warning btn-xs"
+                                                        ng-click="onEditItem(index);"
+                                                        ng-show="!editRow || editRowIndex != index"
+                                                    >
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs"
+                                                        ng-click="removeOrderItem(index)"
+                                                        ng-show="!editRow || editRowIndex != index"
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-success btn-xs"
+                                                        ng-click="confirmEditedItem(index);"
+                                                        ng-show="editRow && editRowIndex == index"
+                                                    >
+                                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                                    </a>
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs"
+                                                        ng-click="toggleEditRow()"
+                                                        ng-show="editRow && editRowIndex == index"
+                                                    >
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -574,7 +584,6 @@
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
-
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="formValidate($event, '/orders/validate', order, 'frmNewPO', store)"

@@ -9,7 +9,7 @@ use App\Models\Person;
 use App\Models\Depart;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
-use App\Models\PlanSummary;
+use App\Models\Budget;
 
 class DashboardController extends Controller
 {
@@ -112,7 +112,7 @@ class DashboardController extends Controller
         return [
             'plans'         => $plans,
             'categories'    => ItemCategory::where('plan_type_id', 1)->get(),
-            'budget'        => PlanSummary::where('year', $year)->get()
+            'budget'        => Budget::where('year', $year)->get()
         ];
     }
 
@@ -152,7 +152,7 @@ class DashboardController extends Controller
         return [
             'plans'         => $plans,
             'categories'    => ItemCategory::where('plan_type_id', 2)->get(),
-            'budget'        => PlanSummary::where('year', $year)->get()
+            'budget'        => Budget::where('year', $year)->get()
         ];
     }
 

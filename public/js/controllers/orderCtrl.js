@@ -330,13 +330,15 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.loading = true;
             $scope.plans = [];
             $scope.plans_pager = null;
-    
-            $http.get(`${CONFIG.apiUrl}/supports/details/list?type=${type}&status=2`)
+
+            let year = $scope.order.year === '' ? '' : 2566;
+
+            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&status=2`)
             .then(function(res) {
                 $scope.setPlans(res);
-    
+
                 $scope.loading = false;
-    
+
                 $('#plans-list').modal('show');
             }, function(err) {
                 console.log(err);
@@ -350,11 +352,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans = [];
         $scope.plans_pager = null;
 
+        let year = $scope.order.year === '' ? '' : 2566;
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.baseUrl}/supports/details/list?type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -373,11 +376,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.orders = [];
         $scope.pager = null;
 
+        let year = $scope.order.year === '' ? '' : 2566;
         let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${url}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&year=${year}type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
             cb(res);
 
