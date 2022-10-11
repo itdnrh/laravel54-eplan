@@ -86,7 +86,12 @@ class SupportController extends Controller
 
     public function timeline()
     {
-        return view('supports.timeline');
+        return view('supports.timeline', [
+            "planTypes"     => PlanType::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
+        ]);
     }
 
     public function search(Request $req)

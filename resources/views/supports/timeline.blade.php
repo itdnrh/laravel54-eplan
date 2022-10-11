@@ -16,10 +16,148 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="supportCtrl" ng-init="getAll()">
+    <section
+        class="content"
+        ng-controller="supportCtrl"
+        ng-init="
+            getAll();
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+            }, 2);
+            initFiltered();
+        "
+    >
 
         <div class="row">
             <div class="col-md-12">
+
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">ค้นหาข้อมูล</h3>
+                    </div>
+
+                    <form id="frmSearch" name="frmSearch" role="form">
+                        <input
+                            type="hidden"
+                            id="user"
+                            name="user"
+                            value="{{ Auth::user()->person_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="duty"
+                            name="duty"
+                            value="{{ Auth::user()->memberOf->duty_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="faction"
+                            name="faction"
+                            value="{{ Auth::user()->memberOf->faction_id }}"
+                        />
+                        <input
+                            type="hidden"
+                            id="depart"
+                            name="depart"
+                            value="{{ Auth::user()->memberOf->depart_id }}"
+                        />
+
+                        <div class="box-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6">
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="cboYear"
+                                        name="cboYear"
+                                        ng-model="cboYear"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>ประเภทแผน</label>
+                                    <select
+                                        id="cboPlanType"
+                                        name="cboPlanType"
+                                        ng-model="cboPlanType"
+                                        ng-change="getAll($event)"
+                                        class="form-control select2"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                    <div class="form-group">
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="cboFaction"
+                                            name="cboFaction"
+                                            ng-model="cboFaction"
+                                            class="form-control"
+                                            ng-change="onFactionSelected(cboFaction); getAll($event);"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($factions as $faction)
+                                                <option value="{{ $faction->faction_id }}">
+                                                    {{ $faction->faction_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลุ่มงาน</label>
+                                        <select
+                                            id="cboDepart"
+                                            name="cboDepart"
+                                            ng-model="cboDepart"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                                                @{{ dep.depart_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-hide="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="dep in forms.divisions" value="@{{ div.ward_id }}">
+                                                @{{ div.ward_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </form>
+                </div><!-- /.box -->
 
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -83,19 +221,19 @@
                                     <div class="col-md-4">
                                         <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                             <li ng-if="pager.current_page !== 1">
-                                                <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
+                                                <a href="#" ng-click="getSupportsWithUrl($event, pager.path+ '?page=1', setSupports)" aria-label="Previous">
                                                     <span aria-hidden="true">First</span>
                                                 </a>
                                             </li>
                                         
                                             <li ng-class="{'disabled': (pager.current_page==1)}">
-                                                <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
+                                                <a href="#" ng-click="getSupportsWithUrl($event, pager.prev_page_url, setSupports)" aria-label="Prev">
                                                     <span aria-hidden="true">Prev</span>
                                                 </a>
                                             </li>
 
                                             <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                                <a href="#" ng-click="getDataWithUrl($event, pager.path + '?page=' +i, setSupports)">
+                                                <a href="#" ng-click="getSupportsWithUrl($event, pager.path + '?page=' +i, setSupports)">
                                                     @{{ i }}
                                                 </a>
                                             </li> -->
@@ -107,13 +245,13 @@
                                             </li> -->
 
                                             <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                                <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
+                                                <a href="#" ng-click="getSupportsWithUrl($event, pager.next_page_url, setSupports)" aria-label="Next">
                                                     <span aria-hidden="true">Next</span>
                                                 </a>
                                             </li>
 
                                             <li ng-if="pager.current_page !== pager.last_page">
-                                                <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
+                                                <a href="#" ng-click="getSupportsWithUrl($event, pager.path+ '?page=' +pager.last_page, setSupports)" aria-label="Previous">
                                                     <span aria-hidden="true">Last</span>
                                                 </a>
                                             </li>

@@ -275,6 +275,7 @@ class OrderController extends Controller
                             }
                         }
                         $planItem->save();
+
                         /** TODO: should update plan's remain_amount by decrease from request->amount  */
 
                         /** Update plan's status to  1=ดำเนินการแล้วบางส่วน, 2=ดำเนินการครบแล้ว */
