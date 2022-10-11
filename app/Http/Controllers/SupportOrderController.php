@@ -203,6 +203,8 @@ class SupportOrderController extends Controller
             $support->source_price      = $req['source_price'];
             $support->spec_doc_no       = $req['spec_doc_no'];
             $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
+            $support->report_doc_no     = $req['report_doc_no'];
+            $support->report_doc_date   = convThDateToDbDate($req['report_doc_date']);
             
             if ($support->save()) {
                 return [

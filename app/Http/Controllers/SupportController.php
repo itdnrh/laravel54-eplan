@@ -737,6 +737,7 @@ class SupportController extends Controller
 
         /** กลุ่มงานพัสดุ */
         $departOfParcel = Depart::where('depart_id', 2)->first();
+
         /** หัวหน้ากลุ่มงานพัสดุ */
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.depart_id', '2')

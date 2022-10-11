@@ -32,6 +32,8 @@
                             <option value="2">อื่น ๆ</option>
                         </select>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="">เลขที่เอกสารขออนุมัติผู้กำหนด Spec</label>
                         <div class="input-group">
@@ -54,6 +56,33 @@
                             id="spec_doc_date"
                             name="spec_doc_date"
                             ng-model="specCommittee.spec_doc_date"
+                            class="form-control"
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="">เลขที่เอกสารรายงานขออนุมัติผู้กำหนด Spec</label>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default">นม 0033.201.2/</button>
+                            </div>
+                            <input
+                                type="text"
+                                id="report_doc_no"
+                                name="report_doc_no"
+                                ng-model="specCommittee.report_doc_no"
+                                class="form-control"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="">วันที่เอกสารรายงานขออนุมัติผู้กำหนด Spec</label>
+                        <input
+                            type="text"
+                            id="report_doc_date"
+                            name="report_doc_date"
+                            ng-model="specCommittee.report_doc_date"
                             class="form-control"
                         />
                     </div>

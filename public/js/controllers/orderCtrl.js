@@ -679,17 +679,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $scope.specCommittee.support_id = id;
 
-        if (supportOrders.length > 0) {
-            $scope.specCommittee.purchase_method = supportOrders[0].purchase_method.toString();
-            $scope.specCommittee.source_price = supportOrders[0].source_price.toString();
-            $scope.specCommittee.spec_doc_no = supportOrders[0].spec_doc_no;
-            $scope.specCommittee.spec_doc_date = supportOrders[0].spec_doc_date;
-            $scope.specCommittee.is_existed = true;
-        }
-
         $('#spec_doc_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
+            .datepicker(dtpOptions)
+            .datepicker('update', new Date());
+
+        $('#report_doc_date')
+            .datepicker(dtpOptions)
+            .datepicker('update', new Date());
+
+        if (supportOrders.length > 0) {
+            $scope.specCommittee.purchase_method    = supportOrders[0].purchase_method.toString();
+            $scope.specCommittee.source_price       = supportOrders[0].source_price.toString();
+            $scope.specCommittee.spec_doc_no        = supportOrders[0].spec_doc_no;
+            $scope.specCommittee.spec_doc_date      = supportOrders[0].spec_doc_date;
+            $scope.specCommittee.report_doc_no      = supportOrders[0].report_doc_no;
+            $scope.specCommittee.report_doc_date    = supportOrders[0].report_doc_date;
+            $scope.specCommittee.is_existed         = true;
+
+            $('#spec_doc_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(supportOrders[0].spec_doc_date).toDate());
+
+            $('#report_doc_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(supportOrders[0].report_doc_date).toDate());
+        }
     };
 
     $scope.specCommittee = {
@@ -698,6 +712,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         source_price: '1',
         spec_doc_no: '',
         spec_doc_date: '',
+        report_doc_no: '',
+        report_doc_date: '',
         is_existed: false
     };
 
@@ -708,6 +724,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             source_price: '1',
             spec_doc_no: '',
             spec_doc_date: '',
+            report_doc_no: '',
+            report_doc_date: '',
             is_existed: false
         };
     };
