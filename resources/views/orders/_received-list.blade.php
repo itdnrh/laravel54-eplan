@@ -109,10 +109,11 @@
         <tr>
             <th style="width: 3%; text-align: center;">#</th>
             <th style="width: 6%; text-align: center;">เลขที่รับ</th>
-            <th style="width: 15%; text-align: center;">เอกสาร</th>
+            <th style="width: 12%; text-align: center;">เอกสาร</th>
             <th>รายการ</th>
             <th style="width: 8%; text-align: center;">ยอดเงิน</th>
-            <th style="width: 20%; text-align: center;">หน่วยงาน</th>
+            <th style="width: 15%; text-align: center;">หน่วยงาน</th>
+            <th style="width: 12%; text-align: center;">จนท.พัสดุ</th>
             <th style="width: 10%; text-align: center;">สถานะ</th>
             <th style="width: 6%; text-align: center;">Actions</th>
         </tr>
@@ -153,6 +154,9 @@
             <td style="text-align: center;">
                 <p style="margin: 0;">@{{ support.depart.depart_name }}</p>
                 <p style="margin: 0;">@{{ support.division.ward_name }}</p>
+            </td>
+            <td style="text-align: center;">
+                @{{ support.officer.person_firstname+ ' ' +support.officer.person_lastname  }}
             </td>
             <td style="text-align: center;">
                 <span class="label label-primary" ng-show="support.status == 0">
