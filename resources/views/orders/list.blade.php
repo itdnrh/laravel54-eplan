@@ -22,7 +22,7 @@
             <div class="col-md-12">
 
                 <div class="box box-primary">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
 
@@ -106,30 +106,21 @@
                 </div><!-- /.box -->
 
                 <div class="box">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายการใบสั่งซื้อ (P/O)</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ url('/orders/add') }}" class="btn btn-primary pull-right">
+                                    สร้างใบสั่งซื้อ (P/O)
+                                </a>
+                            </div>
+                        </div>
+                    </div><!-- /.box-header -->
                     <div class="box-body">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#approved-list" data-toggle="tab">
-                                <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
-                                รายการใบสั่งซื้อ (P/O)
-                                <!-- <span class="badge badge-light">@{{ orders.length }}</span> -->
-                            </a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="active tab-pane" id="approved-list">
-                                <div class="row" style="margin: 10px 0;">
-                                    <div class="col-md-6"></div>
-                                    <div class="col-md-6">
-                                        <a href="{{ url('/orders/add') }}" class="btn btn-primary pull-right">
-                                            สร้างใบสั่งซื้อ (P/O)
-                                        </a>
-                                    </div>
-                                </div>
-
-                                @include('orders._list')
-                                @include('orders._order-details')
-
-                            </div><!-- /.tab-pane -->
-                        </div><!-- /.tab-content -->
+                        @include('orders._list')
+                        @include('orders._order-details')
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->

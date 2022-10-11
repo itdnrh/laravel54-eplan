@@ -85,11 +85,11 @@
 .collapse-box {
     height: 155px;
     overflow: hidden;
-    -moz-transition: all 1s ease-in-out;
-    -ms-transition: all 1s ease-in-out;
-    -o-transition: all 1s ease-in-out;
-    -webkit-transition: all 1s ease-in-out;
-    transition: all 1s;
+    -moz-transition: height 5s ease-in-out;
+    -ms-transition: height 5s ease-in-out;
+    -o-transition: height 5s ease-in-out;
+    -webkit-transition: height 5s ease-in-out;
+    transition: height 5s;
 }
 
 .collapse-btn {
@@ -102,4 +102,5 @@
 
 .collapse-btn:hover {
     background: #fae3d9;
+    transition: all 0.5s ease;
 }
