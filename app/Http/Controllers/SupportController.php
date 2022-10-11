@@ -598,6 +598,56 @@ class SupportController extends Controller
         }
     }
 
+    public function cancelSent(Request $req, $id)
+    {
+        try {
+            $support = Support::find($id);
+            $support->status    = 0;
+
+            if ($support->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Support have been canceled!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function cancelReceived(Request $req, $id)
+    {
+        try {
+            $support = Support::find($id);
+            $support->status = 1;
+
+            if ($support->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Received Support have been canceled!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function onReturn(Request $req, $id)
     {
         try {

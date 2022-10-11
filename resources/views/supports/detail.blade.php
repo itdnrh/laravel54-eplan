@@ -318,12 +318,12 @@
                             ส่งเอกสารไปพัสดุ
                         </button>
                         <button
-                            ng-click="send($event)"
-                            ng-show="support.status == 3"
-                            class="btn btn-primary"
+                            ng-click="cancel($event, support.id)"
+                            ng-show="support.status == 1"
+                            class="btn btn-danger"
                         >
-                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                            ส่งเอกสารไปพัสดุ
+                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            ยกเลิกการส่งเอกสาร
                         </button>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->

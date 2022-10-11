@@ -750,6 +750,30 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
+    $scope.cancel = function(e, id) {
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องการยกเลิกการส่งบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-sent`, { status: 0 })
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
+            });
+        }
+    };
+
     $scope.update = function(e, form) {
         e.preventDefault();
 

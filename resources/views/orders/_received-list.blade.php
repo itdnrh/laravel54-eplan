@@ -173,25 +173,24 @@
             </td>
             <td style="text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 2px;">
-                    <form
-                        id="frmDelete"
-                        method="POST"
-                        action="{{ url('/supports/cancel') }}"
-                        ng-show="support.status == 2"
+                    <a
+                        href="#"
+                        ng-click="cancel($event, support.id)"
+                        class="btn btn-danger btn-xs"
                     >
-                        {{ csrf_field() }}
-                        <button
-                            type="submit"
-                            ng-click="cancel($event, plan.id)"
-                            class="btn btn-danger btn-xs"
-                        >
-                            ยกเลิก
-                        </button>
-                    </form>
-                    <a href="#" class="btn btn-success btn-xs" ng-click="showSpecCommitteeForm($event, support.id)">
+                        ยกเลิก
+                    </a>
+                    <a
+                        href="#"
+                        class="btn btn-success btn-xs"
+                        ng-click="showSpecCommitteeForm($event, support.id)"
+                    >
                         ผู้กำหนด Spec
                     </a>
-                    <a href="{{ url('orders/add?support=') }}@{{ support.id }}" class="btn btn-primary btn-xs">
+                    <a
+                        href="{{ url('orders/add?support=') }}@{{ support.id }}"
+                        class="btn btn-primary btn-xs"
+                    >
                         สร้าง PO
                     </a>
                 </div>

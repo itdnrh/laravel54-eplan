@@ -608,20 +608,27 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
-    $scope.onCancelReceivePlan = function(e, plan) {
-        if(confirm(`คุณต้องการยกเลิกรับเอกสารขอสนับสนุน รหัส ${$scope.cancellation.leave_id} ใช่หรือไม่?`)) {
-            // $http.post(`${CONFIG.baseUrl}/orders/received/2`, { id: plan.id })
-            // .then(function(res) {
-            //     console.log(res);
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
-            //     } else {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            //     }
-            // }, function(err) {
-            //     console.log(err);
-            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            // });
+    $scope.cancel = function(e, id) {
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องการยกเลิกรับเอกสารขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-received`, { status: 1 })
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกรับบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/orders/received`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกรับบันทึกขอสนับสนุนได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกรับบันทึกขอสนับสนุนได้ !!!");
+            });
         }
     };
 
