@@ -32,7 +32,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/') }}</span>
+                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->supportOrders[0]->spec_doc_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -42,7 +42,7 @@
                                 <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         <!-- {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($support->doc_date) }} -->
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThMonth(date('Y-m-d'))) }}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThDate($support->supportOrders[0]->spec_doc_date)) }}
                                     </span>
                                 </div>
                             </div>
@@ -66,10 +66,12 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            <?php $purchaseMethods = [1 => 'เฉพาะเจาะจง', 2 => 'ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)']; ?>
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.ต้นเรื่อง</span>
                                 ด้วย กลุ่มงานพัสดุ โรงพยาบาลเทพรัตน์นครราชสีมา มีความประสงค์จะดำเนินการ
-                                {{$orderType}}<span>{{ $support->category->name }}</span> โดยวิธีเฉพาะเจาะจง เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
+                                {{$orderType}}<span>{{ $support->category->name }}</span>
+                                โดยวิธี{{ $purchaseMethods[$support->supportOrders[0]->purchase_method] }} เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
                                 จึงขออนุมัติ{{$orderType}}<span>{{ $support->category->name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($support->details)) }}</span> รายการ
                                 จำนวนเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
@@ -271,8 +273,8 @@
                         <td colspan="4">
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.เรื่องเดิม</span>
-                                ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                ลงวันที่&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThMonth(date('Y-m-d'))) }}</span>
+                                ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->supportOrders[0]->spec_doc_no) }}</span>
+                                ลงวันที่&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThDate($support->supportOrders[0]->spec_doc_date)) }}</span>
                                 ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}ผู้กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}
                                 <span>{{ $support->category->name }}</span> สนับสนุน การทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น
                             </p>
@@ -308,6 +310,7 @@
                         <td colspan="4">
                             <?php $spacing = strlen(baht_text($support->total)) > 80 ? '&nbsp;' : ''; ?>
                             <?php $unspacing = strlen(baht_text($support->total)) > 80 ? '' : '&nbsp;'; ?>
+                            <?php $sourcePrices = [1 => 'ราคาที่ได้จากการจัดซื้อภายใน 2 ปีงบประมาณ', 2 => 'อื่นๆ']; ?>
                             <div class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๓.ข้อพิจารณา</span>
                                 บัดนี้ ผู้กำหนดรายละเอียดคุณลักษณะ ได้กำหนดรายละเอียดคุณลักษณะ เฉพาะและราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
@@ -324,8 +327,12 @@
                                     </tr>
                                     <tr>
                                         <td style="text-align: center;">๑</td>
-                                        <td style="padding: 0 5px 2px;">ราคาที่ได้จากการจัดซื้อภายใน ๒ ปีงบประมาณ</td>
-                                        <td style="text-align: center;">{{ thainumDigit(number_format($support->total, 2)) }}</td>
+                                        <td style="padding: 0 5px 2px;">
+                                            {{ thainumDigit($sourcePrices[$support->supportOrders[0]->source_price]) }}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            {{ thainumDigit(number_format($support->total, 2)) }}
+                                        </td>
                                     </tr>
                                 </table>
                                 <p>

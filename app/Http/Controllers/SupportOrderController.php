@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Support;
 use App\Models\SupportDetail;
+use App\Models\SupportOrder;
 use App\Models\Plan;
 use App\Models\PlanItem;
 use App\Models\PlanType;
@@ -195,30 +196,13 @@ class SupportOrderController extends Controller
     public function store(Request $req)
     {
         try {
-            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
-            $doc_no_prefix = $person->memberOf->depart->memo_no;
-
-            $support = new Support;
-            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
-
-            if (!empty($req['doc_date'])) {
-                $support->doc_date          = convThDateToDbDate($req['doc_date']);
-            }
-
-            $support->year              = $req['year'];
-            $support->support_type_id   = 1;
-            $support->plan_type_id      = $req['plan_type_id'];
-            $support->category_id       = $req['category_id'];
-            $support->depart_id         = $req['depart_id'];
-            $support->division_id       = $req['division_id'];
-            $support->topic             = $req['topic'];
-            $support->total             = $req['total'];
-            $support->contact_person    = $req['contact_person'];
-            $support->reason            = $req['reason'];
-            $support->remark            = $req['remark'];
-            $support->status            = 0;
-            $support->created_user      = $req['user'];
-            $support->updated_user      = $req['user'];
+            $support = new SupportOrder;
+            // $support->year              = $req['year'];
+            $support->support_id        = $req['support_id'];
+            $support->purchase_method   = $req['purchase_method'];
+            $support->source_price      = $req['source_price'];
+            $support->spec_doc_no       = $req['spec_doc_no'];
+            $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
             
             if ($support->save()) {
                 return [
@@ -256,51 +240,26 @@ class SupportOrderController extends Controller
     public function update(Request $req, $id)
     {
         try {
-            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
-            $doc_no_prefix = $person->memberOf->depart->memo_no;
-
-            $support = Support::find($id);
-            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
-
-            if (!empty($req['doc_date'])) {
-                $support->doc_date          = convThDateToDbDate($req['doc_date']);
-            }
-
-            $support->year              = $req['year'];
-            $support->support_type_id   = 1;
-            $support->plan_type_id      = $req['plan_type_id'];
-            $support->category_id       = $req['category_id'];
-            $support->depart_id         = $req['depart_id'];
-            $support->division_id       = $req['division_id'];
-            $support->topic             = $req['topic'];
-            $support->total             = $req['total'];
-            $support->contact_person    = $req['contact_person'];
-            $support->reason            = $req['reason'];
-            $support->remark            = $req['remark'];
-            $support->status            = 0;
-            $support->created_user      = $req['user'];
-            $support->updated_user      = $req['user'];
-            
-            if ($support->save()) {
-                return [
-                    'status'    => 1,
-                    'message'   => 'Updation successfully',
-                    'supports'  => Support::with('planType','depart','division')
-                                    ->with('details','details.plan','details.plan.planItem.unit')
-                                    ->with('details.plan.planItem','details.plan.planItem.item')
-                                    ->where('year', $support->year)
-                                    ->where('depart_id', $support->depart_id)
-                                    ->where('support_type_id', '1')
-                                    ->orderBy('received_no', 'DESC')
-                                    ->paginate(10)
-                                    ->setPath('search')
-                ];
-            } else {
-                return [
-                    'status'    => 0,
-                    'message'   => 'Something went wrong!!'
-                ];
-            }
+            // if ($support->save()) {
+            //     return [
+            //         'status'    => 1,
+            //         'message'   => 'Updation successfully',
+            //         'supports'  => Support::with('planType','depart','division')
+            //                         ->with('details','details.plan','details.plan.planItem.unit')
+            //                         ->with('details.plan.planItem','details.plan.planItem.item')
+            //                         ->where('year', $support->year)
+            //                         ->where('depart_id', $support->depart_id)
+            //                         ->where('support_type_id', '1')
+            //                         ->orderBy('received_no', 'DESC')
+            //                         ->paginate(10)
+            //                         ->setPath('search')
+            //     ];
+            // } else {
+            //     return [
+            //         'status'    => 0,
+            //         'message'   => 'Something went wrong!!'
+            //     ];
+            // }
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,

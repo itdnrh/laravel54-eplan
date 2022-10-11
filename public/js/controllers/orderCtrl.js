@@ -685,17 +685,20 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         spec_doc_no: '',
         spec_doc_date: ''
     };
+
     $scope.onPrintSpecCommittee = function(e, id) {
-        console.log($scope.specCommittee);
+        $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
+        .then(res => {
+            if (res.data.status) {
+                $('#spec-committee-form').modal('hide');
 
-        // $http.post(`${CONFIG.apiUrl}/`)
-        // .then(res => {
-        //     $('#spec-committee-form').modal('hide');
-    
-            window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
-        // }, err => {
+                window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+            } else {
 
-        // });
+            }
+        }, err => {
+            console.log(err);
+        });
     };
 
     $scope.supportDetails = [];

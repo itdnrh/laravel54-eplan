@@ -668,6 +668,7 @@ class SupportController extends Controller
         $support = Support::with('depart','planType','category')
                     ->with('details','details.plan','details.unit')
                     ->with('officer','officer.prefix','officer.position')
+                    ->with('supportOrders')
                     ->find($id);
 
         $planType = PlanType::find($support->plan_type_id);

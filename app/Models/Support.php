@@ -42,4 +42,9 @@ class Support extends Model
     {
         return $this->belongsTo(Person::class, 'supply_officer', 'person_id');
     }
+
+    public function supportOrders()
+    {
+        return $this->hasMany(SupportOrder::class, 'support_id', 'id');
+    }
 }
