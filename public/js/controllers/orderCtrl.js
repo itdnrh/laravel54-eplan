@@ -675,10 +675,18 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             });
     };
 
-    $scope.showSpecCommitteeForm = function(e, id) {
+    $scope.showSpecCommitteeForm = function(e, id, supportOrders) {
         $('#spec-committee-form').modal('show');
 
         $scope.specCommittee.support_id = id;
+
+        if (supportOrders.length > 0) {
+            $scope.specCommittee.purchase_method = supportOrders[0].purchase_method.toString();
+            $scope.specCommittee.source_price = supportOrders[0].source_price.toString();
+            $scope.specCommittee.spec_doc_no = supportOrders[0].spec_doc_no;
+            $scope.specCommittee.spec_doc_date = supportOrders[0].spec_doc_date;
+            $scope.specCommittee.is_existed = true;
+        }
 
         $('#spec_doc_date')
         .datepicker(dtpOptions)
@@ -690,7 +698,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         purchase_method: '1',
         source_price: '1',
         spec_doc_no: '',
-        spec_doc_date: ''
+        spec_doc_date: '',
+        is_existed: false
     };
 
     $scope.clearSpecCommittee = function() {
@@ -699,25 +708,40 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             purchase_method: '1',
             source_price: '1',
             spec_doc_no: '',
-            spec_doc_date: ''
+            spec_doc_date: '',
+            is_existed: false
         };
     };
 
-    $scope.onPrintSpecCommittee = function(e, id) {
-        $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
-        .then(res => {
-            if (res.data.status) {
-                $scope.clearSpecCommittee();
+    $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
+        if (isExisted) {
+            $scope.clearSpecCommittee();
 
-                $('#spec-committee-form').modal('hide');
+            $('#spec-committee-form').modal('hide');
 
-                window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
-            } else {
+            window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+        } else {
+            $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
+            .then(res => {
+                if (res.data.status) {
+                    $scope.clearSpecCommittee();
 
-            }
-        }, err => {
-            console.log(err);
-        });
+                    $('#spec-committee-form').modal('hide');
+
+                    window.location.href = `${CONFIG.baseUrl}/supports/${id}/print-spec-committee`;
+                } else {
+
+                }
+            }, err => {
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.closeSpecCommitteeForm = function() {
+        $scope.clearSpecCommittee();
+
+        $('#spec-committee-form').modal('hide');
     };
 
     $scope.supportDetails = [];

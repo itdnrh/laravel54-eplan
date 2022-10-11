@@ -131,7 +131,7 @@ class SupportController extends Controller
         $supports = Support::with('planType','depart','division','details')
                     ->with('details.unit','details.plan','details.plan.planItem.unit')
                     ->with('details.plan.planItem','details.plan.planItem.item')
-                    ->with('officer')
+                    ->with('officer','supportOrders')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })

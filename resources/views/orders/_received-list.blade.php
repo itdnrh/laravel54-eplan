@@ -187,7 +187,7 @@
                     <a
                         href="#"
                         class="btn btn-success btn-xs"
-                        ng-click="showSpecCommitteeForm($event, support.id)"
+                        ng-click="showSpecCommitteeForm($event, support.id, support.support_orders)"
                     >
                         ผู้กำหนด Spec
                     </a>

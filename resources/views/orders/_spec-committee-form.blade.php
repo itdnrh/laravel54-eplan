@@ -61,13 +61,19 @@
             </div><!-- /.modal-body -->
             <div class="modal-footer" style="padding-bottom: 8px;">
                 <button
-                    ng-click="onPrintSpecCommittee($event, specCommittee.support_id)"
-                    class="btn btn-primary"
+                    ng-click="onPrintSpecCommittee($event, specCommittee.support_id, specCommittee.is_existed)"
+                    class="btn"
+                    ng-class="{ 'btn-success': specCommittee.is_existed, 'btn-primary': !specCommittee.is_existed }"
                     aria-label="Save"
                 >
-                    บันทึก
+                    <i class="fa fa-print" aria-hidden="true" ng-show="specCommittee.is_existed"></i>
+                    @{{ specCommittee.is_existed ? 'พิมพ์เอกสาร' : 'บันทึก' }}
                 </button>
-                <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                <button
+                    class="btn btn-danger" 
+                    ria-label="Close"
+                    ng-click="closeSpecCommitteeForm();"
+                >
                     ปิด
                 </button>
             </div><!-- /.modal-footer -->
