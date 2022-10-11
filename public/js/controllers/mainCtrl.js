@@ -60,6 +60,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.cboDivision = "";
     $scope.cboStatus = "";
     $scope.txtKeyword = "";
+    $scope.collapseBox = true;
 
     $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,parseInt($scope.cboYear)+2];
     $scope.monthLists = [
@@ -139,6 +140,10 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $('#po_date')
         .datepicker(dtpOptions)
         .datepicker('update', new Date());
+
+    $scope.toggleBox = function() {
+        $scope.collapseBox = !$scope.collapseBox;
+    };
 
     $scope.initForms = (data, planType) => {
         if (data) {

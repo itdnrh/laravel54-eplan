@@ -34,7 +34,7 @@
             <div class="col-md-12">
 
                 <div class="box box-primary">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
 
@@ -64,7 +64,7 @@
                             value="{{ Auth::user()->memberOf->depart_id }}"
                         />
 
-                        <div class="box-body">
+                        <div class="box-body" ng-class="{ 'collapse-box': collapseBox }">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>ปีงบประมาณ</label>
@@ -220,6 +220,24 @@
                             </div>
                         </div><!-- /.box-body -->
                     </form>
+                    <div class="box-footer" style="padding: 0;">
+                        <a
+                            href="#"
+                            class="collapse-btn pull-right"
+                            ng-show="collapseBox"
+                            ng-click="toggleBox(false)"
+                        >
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <a
+                            href="#"
+                            class="collapse-btn pull-right"
+                            ng-show="!collapseBox"
+                            ng-click="toggleBox(true)"
+                        >
+                            <i class="fa fa-angle-up" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div><!-- /.box -->
 
                 <div class="box">
