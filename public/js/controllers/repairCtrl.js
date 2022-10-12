@@ -112,7 +112,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${url}&depart=${depart}$year=${year}`)
+        $http.get(`${url}$year=${year}&stype=2&depart=${depart}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
