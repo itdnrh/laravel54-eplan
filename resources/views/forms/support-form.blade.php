@@ -154,7 +154,6 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            {{ $tableHeight }}
                             <span>เหตุผลและความจำเป็น</span>
                             <span style="margin: 0 0 0 5px;" class="text-val-dot">
                                 {{ thainumDigit($support->reason) }}
