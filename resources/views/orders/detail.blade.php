@@ -26,86 +26,121 @@
             <div class="col-md-12">
 
                 <div class="box box-primary">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <h3 class="box-title">รายละเอียดใบสั่งซื้อ (P/O)</h3>
                     </div>
 
                     <div class="box-body">
                         <div class="row">
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
-                            >
-                                <label>ปีงบประมาณ</label>
-                                <select
-                                    id="year"
-                                    name="year"
-                                    ng-model="order.year"
-                                    class="form-control"
-                                >
-                                    <option value="">-- ทั้งหมด --</option>
-                                    <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                        @{{ y }}
-                                    </option>
-                                </select>
+                            <div class="form-group col-md-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">ปีงบประมาณ</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.year }}
+                                    </div>
+                                </div>
                             </div>
-
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
-                            >
-                                <label>เจ้าหนี้ :</label>
-                                <input
-                                    id="supplier_id"
-                                    name="supplier_id"
-                                    ng-model="order.supplier_id"
-                                    class="form-control"
-                                    tabindex="2"
-                                />
+                            <div class="form-group col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">ประเภทใบขอซื้อ/จ้าง</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.order_type.name }}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(order, 'po_no')}"
-                            >
-                                <label>เลขที่ P/O :</label>
-                                <input  type="text"
-                                        id="po_no"
-                                        name="po_no"
-                                        ng-model="order.po_no"
-                                        class="form-control"
-                                        tabindex="6" />
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">เลขที่ P/O</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.po_no }}
+                                    </div>
+                                </div>
                             </div>
-
-                            <div
-                                class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(order, 'po_date')}"
-                            >
-                                <label>วันที่ใบ P/O :</label>
-                                <input
-                                    type="text"
-                                    name="po_date"
-                                    ng-model="order.po_date"
-                                    class="form-control"
-                                    tabindex="1" />
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">วันที่ใบ P/O</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.po_date }}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div
-                                class="form-group col-md-12"
-                                ng-class="{'has-error has-feedback': checkValidate(order, 'spec')}"
-                            >
-                                <label>หมายเหตุ :</label>
-                                <input
-                                    type="text"
-                                    id="spec"
-                                    name="spec"
-                                    ng-model="order.spec"
-                                    class="form-control pull-right"
-                                    tabindex="1" />
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">เลขที่รายงานขอซื้อ/จ้าง</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.po_req_no }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">วันที่รายงานขอซื้อ/จ้าง</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.po_req_date }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">เลขที่อนุมัติสั่งซื้อ/จ้าง</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.po_app_no }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">วันที่อนุมัติสั่งซื้อ/จ้าง</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.po_app_date }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">เจ้าหนี้</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.supplier.supplier_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">ประเภทแผน</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.plan_type.plan_type_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">จำนวนงวดเงิน</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ order.deliver_amt }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -128,17 +163,22 @@
                                             <td style="text-align: center">@{{ index+1 }}</td>
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>
-                                                <h4 style="margin: 0;">@{{ detail.plan.plan_item.item.category.name }}</h4>
+                                                <!-- <h4 style="margin: 0;">@{{ detail.plan.plan_item.item.category.name }}</h4> -->
+                                                <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
                                                 <p style="margin: 0;">
                                                     @{{ detail.plan.plan_item.item.item_name }}
-                                                    (@{{ detail.spec }})
                                                 </p>
-                                                <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
+                                                <p class="item__desc-text" ng-show="detail.desc">
+                                                    - @{{ detail.desc }}
+                                                </p>
+                                                <span class="item__spec-text" ng-show="detail.spec">
+                                                    @{{ detail.spec }}
+                                                </span>
                                             </td>
-                                            <td style="text-align: right">@{{ detail.price_per_unit | currency:'':0 }}</td>
+                                            <td style="text-align: right">@{{ detail.price_per_unit | currency:'':2 }}</td>
                                             <td style="text-align: center">@{{ detail.unit.name }}</td>
                                             <td style="text-align: center">@{{ detail.amount | currency:'':0 }}</td>
-                                            <td style="text-align: right">@{{ detail.sum_price | currency:'':0 }}</td>
+                                            <td style="text-align: right">@{{ detail.sum_price | currency:'':2 }}</td>
                                         </tr>
                                         <!-- ===== TOTAL ROW ===== -->
                                         <!-- <tr>
@@ -154,7 +194,13 @@
 
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-8">
+                                    <label for="">เจ้าหน้าที่พัสดุ</label>
+                                    <div class="form-control">
+                                        @{{ order.officer.prefix.prefix_name+order.officer.person_firstname+ ' ' +order.officer.person_lastname }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-8">
                                     <label>หมายเหตุ :</label>
                                     <textarea
                                         id="remark"
@@ -169,7 +215,7 @@
                                 <div class="table-responsive">
                                     <table class="table">
                                         <tr>
-                                            <th style="width:50%">รวมเป็นเงิน:</th>
+                                            <th style="width:50%">ฐานภาษี:</th>
                                             <td style="text-align: right">
                                                 @{{ order.total | currency:'':2 }}
                                             </td>
@@ -189,9 +235,11 @@
                                     </table>
                                 </div>
 
+                                <div class="col-md-12" style="text-align: right;" ng-show="order.net_total_str !== ''">
+                                    <h4>( @{{ order.net_total_str }} )</h4>
+                                </div>
                             </div>
-                        </div><!-- /.row -->
-
+                        </div>
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
                         <!-- <a

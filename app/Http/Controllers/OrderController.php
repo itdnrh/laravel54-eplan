@@ -164,10 +164,11 @@ class OrderController extends Controller
     public function getOrder($id)
     {
         $order = Order::where('id', $id)
-                    ->with('supplier','details')
+                    ->with('supplier','details','orderType','planType')
                     ->with('details.unit','details.plan','details.plan.depart')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->with('details.plan.planItem.item.category')
+                    ->with('officer','officer.prefix')
                     ->first();
 
         return [

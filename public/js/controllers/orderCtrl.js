@@ -1066,21 +1066,43 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.id = res.data.order.id;
             $scope.order.year = res.data.order.year.toString();
             $scope.order.supplier_id = res.data.order.supplier.supplier_name;
+            $scope.order.supplier = res.data.order.supplier;
             $scope.order.po_no = res.data.order.po_no;
             $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
+            $scope.order.po_req_no = res.data.order.po_req_no;
+            $scope.order.po_req_date = StringFormatService.convFromDbDate(res.data.order.po_req_date);
+            $scope.order.po_app_no = res.data.order.po_app_no;
+            $scope.order.po_app_date = StringFormatService.convFromDbDate(res.data.order.po_app_date);
             $scope.order.deliver_amt = res.data.order.deliver_amt;
             $scope.order.plan_type_id = res.data.order.plan_type_id;
-            $scope.order.remark = res.data.order.remark;
+            $scope.order.plan_type = res.data.order.plan_type;
+            $scope.order.order_type_id = res.data.order.order_type_id;
+            $scope.order.order_type = res.data.order.order_type;
+            $scope.order.supply_officer = res.data.order.supply_officer;
+            $scope.order.officer = res.data.order.officer;
+            $scope.order.is_plan_group   = res.data.order.is_plan_group;
+            $scope.order.plan_group_desc = res.data.order.plan_group_desc;
+            $scope.order.plan_group_amt  = res.data.order.plan_group_amt;
             $scope.order.total = res.data.order.total;
             $scope.order.vat_rate = res.data.order.vat_rate+'%';
             $scope.order.vat = res.data.order.vat;
             $scope.order.net_total = res.data.order.net_total;
+            $scope.order.net_total_str = res.data.order.net_total_str;
+            $scope.order.remark = res.data.order.remark;
             $scope.order.status = res.data.order.status;
             $scope.order.details = res.data.order.details;
 
-            $('#po_date')
-                .datepicker(dtpOptions)
-                .datepicker('update', moment(res.data.order.po_date).toDate());
+            // $('#po_date')
+            //     .datepicker(dtpOptions)
+            //     .datepicker('update', moment(res.data.order.po_date).toDate());
+
+            // $('#po_req_date')
+            //     .datepicker(dtpOptions)
+            //     .datepicker('update', moment(res.data.order.po_req_date).toDate());
+
+            // $('#po_app_date')
+            //     .datepicker(dtpOptions)
+            //     .datepicker('update', moment(res.data.order.po_app_date).toDate());
         }, err => {
             console.log(err);
         });
