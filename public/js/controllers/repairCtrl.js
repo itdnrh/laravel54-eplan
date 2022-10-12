@@ -112,7 +112,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${url}$year=${year}&stype=2&depart=${depart}&status=0-3`)
+        $http.get(`${url}&year=${year}&stype=2&depart=${depart}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -369,6 +369,30 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $rootScope.formValidate(e, '/supports/validate', $scope.support, 'frmNewSupport', $scope.store)
     };
 
+    $scope.cancel = function(e, id) {
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องการยกเลิกการส่งบันทึกขอจ้างซ่อม รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-sent`, { status: 0 })
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งบันทึกขอจ้างซ่อมเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/repairs/list`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอจ้างซ่อมได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอจ้างซ่อมได้ !!!");
+            });
+        }
+    };
+
     $scope.store = function() {
         $scope.loading = true;
 
@@ -384,21 +408,53 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
                 window.location.href = `${CONFIG.baseUrl}/repairs/list`;
             } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
         }, function(err) {
             $scope.loading = false;
 
             console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
+    };
+
+    $scope.update = function(e, form) {
+        e.preventDefault();
+
+        if(confirm(`คุณต้องแก้ไขบันทึกขอจ้างซ่อม รหัส ${$scope.support.id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            /** Set user props of support model by logged in user */
+            $scope.support.user = $('#user').val();
+
+            $http.post(`${CONFIG.baseUrl}/repairs/update/${$scope.support.id}`, $scope.support)
+            .then(function(res) {
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset supports model */
+                    $scope.setSupports(res);
+
+                    window.location.href = `${CONFIG.baseUrl}/repairs/list`;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            });
+        }
     };
 
     $scope.delete = function(e, id) {
         e.preventDefault();
 
         if(confirm(`คุณต้องลบบันทึกขอจ้างซ่อม รหัส ${id} ใช่หรือไม่?`)) {
-            $http.post(`${CONFIG.baseUrl}/supports/delete/${id}`)
+            $http.post(`${CONFIG.baseUrl}/repairs/delete/${id}`)
             .then(res => {
                 console.log(res);
                 if (res.data.status == 1) {
@@ -407,11 +463,11 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
                     /** TODO: Reset supports model */
                     $scope.setSupports(res);
                 } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
                 }
             }, err => {
                 console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };

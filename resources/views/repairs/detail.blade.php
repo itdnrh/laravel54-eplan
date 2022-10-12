@@ -264,7 +264,7 @@
                             class="btn btn-success"
                         >
                             <i class="fa fa-print" aria-hidden="true"></i>
-                            พิมพ์บันทึกขอสนับสนุน
+                            พิมพ์บันทึกขอจ้างซ่อม
                         </a>
                         <button
                             ng-click="showSendForm(support)"
@@ -273,6 +273,14 @@
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                             ส่งเอกสารไปพัสดุ
+                        </button>
+                        <button
+                            ng-click="cancel($event, support.id)"
+                            ng-show="support.status == 1"
+                            class="btn btn-danger"
+                        >
+                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            ยกเลิกการส่งเอกสาร
                         </button>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
