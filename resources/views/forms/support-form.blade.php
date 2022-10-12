@@ -13,6 +13,7 @@
                 <h2>บันทึกข้อความ</h2>
             </div>
             <div class="content">
+                <?php $committeeHeight = 0; ?>
                 <table style="width: 100%;">
                     <tr>
                         <td colspan="4">
@@ -169,6 +170,7 @@
                                     <?php $c1 = 1; ?>
                                     @foreach($committees as $committee)
                                         @if($committee->committee_type_id == '1')
+                                            <?php $committeeHeight += 20; ?>
                                             <li class="committee-list">
                                                 ๑.{{ thainumDigit($c1++) }}
                                                 {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
@@ -180,17 +182,26 @@
                                     @endforeach
                                 </ul>
                             </div>
+                            @if(($tableHeight <= 340 && $committeeHeight > 60) || $tableHeight > 340)
+                                <div style="height: 20px;"></div>
+                                <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                            @endif
                         </td>
                     </tr>
                     @if((float)$total >= 500000)
                         <tr>
                             <td colspan="4">
+                                @if(($tableHeight <= 340 && $committeeHeight > 60) || $tableHeight > 340)
+                                    <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๒ -</p>
+                                @endif
                                 <div style="margin: 0;">
                                     ๒. รายชื่อคณะกรรมการพิจารณาผลการประกวดราคา
                                     <ul class="committee-lists">
                                         <?php $c3 = 1; ?>
                                         @foreach($committees as $committee)
                                             @if($committee->committee_type_id == '3')
+                                                <?php $committeeHeight += 20; ?>
                                                 <li class="committee-list">
                                                     ๒.{{ thainumDigit($c3++) }}
                                                     {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
@@ -207,6 +218,10 @@
                     @endif
                     <tr>
                         <td colspan="4">
+                            @if(($tableHeight <= 340 && $committeeHeight > 60) || $tableHeight > 340)
+                                <div style="height: 20px;"></div>
+                                <p class="page-number">- ๒ -</p>
+                            @endif
                             <div style="margin: 0;">
                                 @if((float)$total >= 500000)
                                     ๓. รายชื่อคณะกรรมการตรวจรับพัสดุ
@@ -217,6 +232,7 @@
                                     <?php $c2 = 1; ?>
                                     @foreach($committees as $committee)
                                         @if($committee->committee_type_id == '2')
+                                            <?php $committeeHeight += 20; ?>
                                             <li class="committee-list">
                                                 @if((float)$total >= 500000)
                                                     ๓.{{ thainumDigit($c2++) }}
@@ -262,7 +278,7 @@
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($tableHeight >= 180)
+                                @if($tableHeight >= 180 && $tableHeight < 360)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
@@ -285,7 +301,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            @if($tableHeight > 100 || count($committees) > 6)
+                            @if(($tableHeight > 100 && $tableHeight < 360) || count($committees) > 6)
                                 <div style="height: 20px;"></div>
                                 <p class="page-number">- ๒ -</p>
                             @endif
