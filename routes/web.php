@@ -270,6 +270,18 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('kpis/delete/{id}', 'KpiController@delete');
     Route::get('kpis/print/{id}', 'KpiController@printLeaveForm');
 
+    /** คำสั่งจังหวัด */
+    Route::post('provinces/validate', 'ProvinceOrderController@formValidate');
+    Route::get('provinces/list', 'ProvinceOrderController@index');
+    Route::get('provinces/search', 'ProvinceOrderController@search');
+    Route::get('system/provinces', 'ProvinceOrderController@index');
+    Route::get('provinces/detail/{id}', 'ProvinceOrderController@detail');
+    Route::get('provinces/add', 'ProvinceOrderController@add');
+    Route::post('provinces/store', 'ProvinceOrderController@store');
+    Route::get('provinces/edit/{id}', 'ProvinceOrderController@edit');
+    Route::post('provinces/update/{id}', 'ProvinceOrderController@update');
+    Route::post('provinces/delete/{id}', 'ProvinceOrderController@delete');
+
     /** รายงาน */
     Route::get('reports/all', 'ReportController@index');
     Route::get('reports/project-faction', 'ReportController@projectByFaction');

@@ -113,6 +113,12 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('persons/{id}/rename', 'PersonController@rename');
     Route::get('persons/{id}/movings', 'PersonController@getMoving');
 
+    /** คำสั่งจังหวัด */
+    Route::get('provinces', 'ProvinceOrderController@getAll');
+    Route::get('provinces/{id}', 'ProvinceOrderController@getById');
+    Route::put('provinces/{id}/activate', 'ProvinceOrderController@activate');
+    Route::put('provinces/{id}/deactivate', 'ProvinceOrderController@deactivate');
+
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');
     Route::get('reports/project-depart', 'ReportController@getProjectByDepart');

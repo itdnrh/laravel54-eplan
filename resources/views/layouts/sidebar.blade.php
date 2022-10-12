@@ -425,6 +425,11 @@
 										<i class="fa fa-circle-o"></i> ตัวชี้วัด (KPI)
 									</a>
 								</li>
+								<li ng-class="{ 'active': submenu == 'kpis' }">
+									<a href="{{ url('/system/provinces') }}">
+										<i class="fa fa-circle-o"></i> คำสั่งจังหวัด
+									</a>
+								</li>
 							</ul>
 						</li>
 					@endif
