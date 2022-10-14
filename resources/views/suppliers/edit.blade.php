@@ -16,7 +16,11 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="supplierCtrl">
+    <section
+        class="content"
+        ng-controller="supplierCtrl"
+        ng-init="getById('{{ $supplier->supplier_id }}', setEditControls);"
+    >
 
         <div class="row">
             <div class="col-md-12">
@@ -26,7 +30,7 @@
                         <h3 class="box-title">แก้ไขเจ้าหนี้</h3>
                     </div>
 
-                    <form id="frmEditSupplier" name="frmEditSupplier" method="post" novalidate action="{{ url('/suppliers/update') }}" role="form">
+                    <form id="frmEditSupplier" name="frmEditSupplier" method="post" novalidate action="{{ url('/suppliers/update/'.$supplier->supplier_id) }}" role="form">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
                         <input type="hidden" id="depart_id" name="depart_id" value="{{ Auth::user()->memberOf->depart_id }}" />
                         <input type="hidden" id="division_id" name="division_id" value="{{ Auth::user()->memberOf->division_id }}" />

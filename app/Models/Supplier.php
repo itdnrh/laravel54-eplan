@@ -8,4 +8,6 @@ class Supplier extends Model
 {
     protected $connection = 'account';
     protected $table = "stock_supplier";
+    protected $primaryKey = "supplier_id";
+    public $incrementing = false;
 }

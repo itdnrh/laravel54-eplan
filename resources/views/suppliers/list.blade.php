@@ -98,11 +98,11 @@
                                     <td style="text-align: center;">@{{ supplier.supplier_phone }}</td>
                                     <td style="text-align: center;">@{{ supplier.supplier_taxid }}</td>
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/suppliers/detail') }}/@{{ plan.id }}"
+                                        <!-- <a  href="{{ url('/suppliers/detail') }}/@{{ plan.id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
-                                        </a>
+                                        </a> -->
                                         <a ng-click="edit(supplier.supplier_id)" class="btn btn-warning btn-xs">
                                             <i class="fa fa-edit"></i>
                                         </a>

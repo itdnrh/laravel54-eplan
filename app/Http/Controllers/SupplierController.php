@@ -97,7 +97,7 @@ class SupplierController extends Controller
     public function getById($id)
     {
         return [
-            "supplier" => Supplier::find($id),
+            "supplier" => Supplier::where('supplier_id', $id)->first(),
         ];
     }
 
@@ -141,6 +141,7 @@ class SupplierController extends Controller
             $supplier->supplier_taxrate         = $req['supplier_taxrate'];
             $supplier->supplier_note            = $req['supplier_note'];
             $supplier->first_year               = date('Y');
+            $supplier->created_user             = $req['user'];
 
             if ($supplier->save()) {
                 return [
@@ -173,7 +174,7 @@ class SupplierController extends Controller
     public function edit(Request $req, $id)
     {
         return view('suppliers.edit', [
-            "supplier"  => Supplier::find($id),
+            "supplier"  => Supplier::where('supplier_id', $id)->first(),
             "prefixes"  => SupplierPrefix::all(),
             "changwats" => Changwat::all()
         ]);
@@ -181,11 +182,70 @@ class SupplierController extends Controller
 
     public function update(Request $req, $id)
     {
+        try {
+            $supplier = Supplier::where('supplier_id', $id)->first();
+            $supplier->prename_id               = $req['prename_id'];
+            $supplier->supplier_name            = $req['supplier_name'];
+            $supplier->supplier_address1        = $req['supplier_address1'];
+            $supplier->supplier_address2        = $req['supplier_address2'];
+            $supplier->supplier_address3        = $req['supplier_address3'];
+            $supplier->chw_id                   = $req['chw_id'];
+            $supplier->supplier_zipcode         = $req['supplier_zipcode'];
+            $supplier->supplier_phone           = $req['supplier_phone'];
+            $supplier->supplier_fax             = $req['supplier_fax'];
+            $supplier->supplier_email           = $req['supplier_email'];
+            $supplier->supplier_agent_name      = $req['supplier_agent_name'];
+            $supplier->supplier_agent_contact   = $req['supplier_agent_contact'];
+            $supplier->supplier_agent_email     = $req['supplier_agent_email'];
+            $supplier->supplier_payto           = $req['supplier_name'];
+            $supplier->supplier_bank_acc        = $req['supplier_bank_acc'];
+            $supplier->supplier_credit          = $req['supplier_credit'];
+            $supplier->supplier_taxid           = $req['supplier_taxid'];
+            $supplier->supplier_taxrate         = $req['supplier_taxrate'];
+            $supplier->supplier_note            = $req['supplier_note'];
+            $supplier->updated_user             = $req['user'];
 
+            if ($supplier->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully',
+                    'supplier'  => $supplier
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
     }
 
     public function delete($id)
     {
+        try {
+            $supplier = Supplier::where('supplier_id', $id)->first();
 
+            if ($supplier->delete()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deleting successfully'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
     }
 }
