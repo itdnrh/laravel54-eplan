@@ -26,12 +26,12 @@ class SupplierController extends Controller
             // 'supplier_agent_name'       => 'required',
             // 'supplier_agent_contact'    => 'required',
             // 'supplier_agent_email'      => 'required',
-            'supplier_payto'            => 'required',
+            // 'supplier_payto'            => 'required',
             // 'supplier_bank_acc'         => 'required',
             'supplier_credit'           => 'required',
             'supplier_taxid'            => 'required',
             'supplier_taxrate'          => 'required',
-            'supplier_note'             => 'required'
+            // 'supplier_note'             => 'required'
         ];
 
         $messages = [
@@ -116,35 +116,37 @@ class SupplierController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(Request $req)
     {
         try {
             $supplier = new Supplier;
-            $supplier->prename_id                = $req['prename_id'];
-            $supplier->supplier_name             = $req['supplier_name'];
-            $supplier->supplier_address1         = $req['supplier_address1'];
-            $supplier->supplier_address2         = $req['supplier_address2'];
-            $supplier->supplier_address3         = $req['supplier_address3'];
-            $supplier->chw_id                    = $req['chw_id'];
-            $supplier->supplier_zipcode          = $req['supplier_zipcode'];
-            $supplier->supplier_phone            = $req['supplier_phone'];
-            $supplier->supplier_fax              = $req['supplier_fax'];
-            $supplier->supplier_email            = $req['supplier_email'];
-            $supplier->supplier_agent_name       = $req['supplier_agent_name'];
-            $supplier->supplier_agent_contact    = $req['supplier_agent_contact'];
-            $supplier->supplier_agent_email      = $req['supplier_agent_email'];
-            $supplier->supplier_payto            = $req['supplier_payto'];
-            $supplier->supplier_bank_acc         = $req['supplier_bank_acc'];
-            $supplier->supplier_credit           = $req['supplier_credit'];
-            $supplier->supplier_taxid            = $req['supplier_taxid'];
-            $supplier->supplier_taxrate          = $req['supplier_taxrate'];
-            $supplier->supplier_note             = $req['supplier_note'];
+            $supplier->supplier_id              = $this->generateAutoId();
+            $supplier->prename_id               = $req['prename_id'];
+            $supplier->supplier_name            = $req['supplier_name'];
+            $supplier->supplier_address1        = $req['supplier_address1'];
+            $supplier->supplier_address2        = $req['supplier_address2'];
+            $supplier->supplier_address3        = $req['supplier_address3'];
+            $supplier->chw_id                   = $req['chw_id'];
+            $supplier->supplier_zipcode         = $req['supplier_zipcode'];
+            $supplier->supplier_phone           = $req['supplier_phone'];
+            $supplier->supplier_fax             = $req['supplier_fax'];
+            $supplier->supplier_email           = $req['supplier_email'];
+            $supplier->supplier_agent_name      = $req['supplier_agent_name'];
+            $supplier->supplier_agent_contact   = $req['supplier_agent_contact'];
+            $supplier->supplier_agent_email     = $req['supplier_agent_email'];
+            $supplier->supplier_payto           = $req['supplier_name'];
+            $supplier->supplier_bank_acc        = $req['supplier_bank_acc'];
+            $supplier->supplier_credit          = $req['supplier_credit'];
+            $supplier->supplier_taxid           = $req['supplier_taxid'];
+            $supplier->supplier_taxrate         = $req['supplier_taxrate'];
+            $supplier->supplier_note            = $req['supplier_note'];
+            $supplier->first_year               = date('Y');
 
             if ($supplier->save()) {
                 return [
                     'status'    => 1,
                     'message'   => 'Insertion successfully',
-                    'support'   => $support
+                    'supplier'  => $supplier
                 ];
             } else {
                 return [
@@ -158,6 +160,14 @@ class SupplierController extends Controller
                 'message'   => $ex->getMessage()
             ];
         }
+    }
+
+    private function generateAutoId()
+    {
+        $supplier = Supplier::orderBy('supplier_id', 'DESC')->first();
+        $tmpLastId =  ((int)($supplier->supplier_id)) + 1;
+
+        return sprintf("%'.05d", $tmpLastId);
     }
 
     public function edit()

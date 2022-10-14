@@ -109,12 +109,14 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         event.preventDefault();
         $scope.loading = true;
 
-        $http.post(CONFIG.baseUrl + '/suppliers/store', $scope.type)
+        $http.post(CONFIG.baseUrl + '/suppliers/store', $scope.supplier)
         .then(function(res) {
             console.log(res);
 
             if (res.data.status == 1) {
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+
+                window.location.href = `${CONFIG.baseUrl}/system/suppliers`;
             } else {
                 toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             }
@@ -126,8 +128,6 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
             $scope.loading = false;
         });
-
-        document.getElementById(form).reset();
     }
 
     $scope.update = function(event, form) {
@@ -143,6 +143,8 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
+
+                    window.location.href = `${CONFIG.baseUrl}/system/suppliers`;
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 }
@@ -172,11 +174,11 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
+
+                    window.location.href = `${CONFIG.baseUrl}/system/suppliers`;
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 }
-
-                $scope.getData();
 
                 $scope.loading = false;
             }, function(err) {
