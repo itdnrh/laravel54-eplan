@@ -170,7 +170,7 @@ class SupplierController extends Controller
         return sprintf("%'.05d", $tmpLastId);
     }
 
-    public function edit()
+    public function edit(Request $req, $id)
     {
         return view('suppliers.edit', [
             "supplier"  => Supplier::find($id),
@@ -179,12 +179,12 @@ class SupplierController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(Request $req, $id)
     {
 
     }
 
-    public function delete()
+    public function delete($id)
     {
 
     }

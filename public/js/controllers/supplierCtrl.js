@@ -98,10 +98,8 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     }
 
-    $scope.edit = function(typeId) {
-        console.log(typeId);
-
-        window.location.href = CONFIG.baseUrl + '/asset-type/edit/' + typeId;
+    $scope.edit = function(id) {
+        window.location.href = `${CONFIG.baseUrl}/suppliers/edit/${id}`;
     };
 
 
@@ -109,7 +107,7 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         event.preventDefault();
         $scope.loading = true;
 
-        $http.post(CONFIG.baseUrl + '/suppliers/store', $scope.supplier)
+        $http.post(`${CONFIG.baseUrl}/suppliers/store`, $scope.supplier)
         .then(function(res) {
             console.log(res);
 
