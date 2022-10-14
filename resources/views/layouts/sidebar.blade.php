@@ -390,6 +390,8 @@
 					<!-- ข้อมูลระบบ -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->memberOf->depart_id == 4||
+						Auth::user()->memberOf->depart_id == 2||
 						count(Auth::user()->delegations) > 0
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'system' }">
@@ -400,36 +402,50 @@
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li ng-class="{ 'active': submenu == 'suppliers' }">
-									<a href="{{ url('/system/suppliers') }}">
-										<i class="fa fa-circle-o"></i> เจ้าหนี้
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'items' }">
-									<a href="{{ url('/system/items') }}">
-										<i class="fa fa-circle-o"></i> สินค้า/บริการ
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'expenses' }">
-									<a href="{{ url('/system/expenses') }}">
-										<i class="fa fa-circle-o"></i> รายจ่าย
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'persons' }">
-									<a href="{{ url('/system/persons') }}">
-										<i class="fa fa-circle-o"></i> ข้อมูลบุคลากร
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'kpis' }">
-									<a href="{{ url('/system/kpis') }}">
-										<i class="fa fa-circle-o"></i> ตัวชี้วัด (KPI)
-									</a>
-								</li>
-								<li ng-class="{ 'active': submenu == 'kpis' }">
-									<a href="{{ url('/system/provinces') }}">
-										<i class="fa fa-circle-o"></i> คำสั่งจังหวัด
-									</a>
-								</li>
+								@if (
+									Auth::user()->person_id == '1300200009261' ||
+									Auth::user()->memberOf->depart_id == 4||
+									Auth::user()->memberOf->depart_id == 2||
+									count(Auth::user()->delegations) > 0
+								)
+									<li ng-class="{ 'active': submenu == 'suppliers' }">
+										<a href="{{ url('/system/suppliers') }}">
+											<i class="fa fa-circle-o"></i> เจ้าหนี้
+										</a>
+									</li>
+								@endif
+
+								@if (
+									Auth::user()->person_id == '1300200009261' ||
+									Auth::user()->memberOf->depart_id == 4||
+									count(Auth::user()->delegations) > 0
+								)
+									<li ng-class="{ 'active': submenu == 'items' }">
+										<a href="{{ url('/system/items') }}">
+											<i class="fa fa-circle-o"></i> สินค้า/บริการ
+										</a>
+									</li>
+									<li ng-class="{ 'active': submenu == 'expenses' }">
+										<a href="{{ url('/system/expenses') }}">
+											<i class="fa fa-circle-o"></i> รายจ่าย
+										</a>
+									</li>
+									<li ng-class="{ 'active': submenu == 'persons' }">
+										<a href="{{ url('/system/persons') }}">
+											<i class="fa fa-circle-o"></i> ข้อมูลบุคลากร
+										</a>
+									</li>
+									<li ng-class="{ 'active': submenu == 'kpis' }">
+										<a href="{{ url('/system/kpis') }}">
+											<i class="fa fa-circle-o"></i> ตัวชี้วัด (KPI)
+										</a>
+									</li>
+									<li ng-class="{ 'active': submenu == 'kpis' }">
+										<a href="{{ url('/system/provinces') }}">
+											<i class="fa fa-circle-o"></i> คำสั่งจังหวัด
+										</a>
+									</li>
+								@endif
 							</ul>
 						</li>
 					@endif
