@@ -155,6 +155,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>เลขที่บันทึกขอสนับสนุน</label>
+                                    <input
+                                        id="txtKeyword"
+                                        name="txtKeyword"
+                                        ng-model="txtKeyword"
+                                        ng-keyup="getAll($event)"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>รายละเอียด</label>
+                                    <input
+                                        id="txtDesc"
+                                        name="txtDesc"
+                                        ng-model="txtDesc"
+                                        ng-keyup="getAll($event)"
+                                        class="form-control"
+                                    />
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

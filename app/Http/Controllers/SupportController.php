@@ -112,6 +112,7 @@ class SupportController extends Controller
                     ? $req->get('division') : Auth::user()->memberOf->ward_id;
         $docNo = $req->get('doc_no');
         $receivedNo = $req->get('received_no');
+        $desc   = $req->get('desc');
         $status = $req->get('status');
 
         if($status != '') {
@@ -128,39 +129,51 @@ class SupportController extends Controller
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
+        $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
+                            ->join('plans','plans.id','=','plan_items.plan_id')
+                            ->where('plans.year', $year)
+                            // ->where('plan_items.have_subitem', '1')
+                            ->when(!empty($desc), function($q) use ($desc) {
+                                $q->where('desc', 'like', '%'.$desc.'%');
+                            })
+                            ->pluck('support_details.support_id');
+
         $supports = Support::with('planType','depart','division','details')
-                    ->with('details.unit','details.plan','details.plan.planItem.unit')
-                    ->with('details.plan.planItem','details.plan.planItem.item')
-                    ->with('officer','supportOrders')
-                    ->when(!empty($year), function($q) use ($year) {
-                        $q->where('year', $year);
-                    })
-                    ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plan_type_id', $type);
-                    })
-                    ->when(!empty($supportType), function($q) use ($supportType) {
-                        $q->where('support_type_id', $supportType);
-                    })
-                    ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('depart_id', $departsList);
-                    })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
-                    })
-                    ->when(!empty($docNo), function($q) use ($docNo) {
-                        $q->where('doc_no', 'like', '%'.$docNo.'%');
-                    })
-                    ->when(!empty($receivedNo), function($q) use ($receivedNo) {
-                        $q->where('received_no', 'like', '%'.$receivedNo.'%');
-                    })
-                    ->when(count($conditions) > 0, function($q) use ($conditions) {
-                        $q->where($conditions);
-                    })
-                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
-                        $q->whereBetween('status', $arrStatus);
-                    })
-                    ->orderBy('sent_date', 'DESC')
-                    ->paginate(10);
+                        ->with('details.unit','details.plan','details.plan.planItem.unit')
+                        ->with('details.plan.planItem','details.plan.planItem.item')
+                        ->with('officer','supportOrders')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($type), function($q) use ($type) {
+                            $q->where('plan_type_id', $type);
+                        })
+                        ->when(!empty($supportType), function($q) use ($supportType) {
+                            $q->where('support_type_id', $supportType);
+                        })
+                        ->when(!empty($faction), function($q) use ($departsList) {
+                            $q->whereIn('depart_id', $departsList);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('depart_id', $depart);
+                        })
+                        ->when(!empty($docNo), function($q) use ($docNo) {
+                            $q->where('doc_no', 'like', '%'.$docNo.'%');
+                        })
+                        ->when(!empty($receivedNo), function($q) use ($receivedNo) {
+                            $q->where('received_no', 'like', '%'.$receivedNo.'%');
+                        })
+                        ->when(!empty($desc), function($q) use ($supportsList) {
+                            $q->whereIn('id', $supportsList);
+                        })
+                        ->when(count($conditions) > 0, function($q) use ($conditions) {
+                            $q->where($conditions);
+                        })
+                        ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                            $q->whereBetween('status', $arrStatus);
+                        })
+                        ->orderBy('sent_date', 'DESC')
+                        ->paginate(10);
 
         return [
             "supports" => $supports

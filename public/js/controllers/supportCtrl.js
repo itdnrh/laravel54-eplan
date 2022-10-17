@@ -10,6 +10,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.cboDivision = '';
     $scope.txtKeyword = '';
     $scope.searchKey == '';
+    $scope.txtDesc = '';
 
     $scope.supports = [];
     $scope.pager = [];
@@ -133,8 +134,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                         ? $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
+        let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let desc = $scope.txtDesc === '' ? '' : $scope.txtDesc;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&status=0-3`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -160,8 +163,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                         ? $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
+        let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let desc = $scope.txtDesc === '' ? '' : $scope.txtDesc;
 
-        $http.get(`${url}&year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&status=0-3`)
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
