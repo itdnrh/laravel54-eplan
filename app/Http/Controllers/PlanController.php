@@ -204,6 +204,9 @@ class PlanController extends Controller
                     ->when($inPlan != '', function($q) use ($inPlan) {
                         $q->where('plans.in_plan', $inPlan);
                     })
+                    ->when($status != '', function($q) use ($status) {
+                        $q->where('plans.status', $status);
+                    })
                     ->when(empty($showAll), function($q) use ($showAll) {
                         $q->where('plan_items.remain_amount', '>', 0);
                     })

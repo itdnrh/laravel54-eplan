@@ -672,11 +672,11 @@ class SupportController extends Controller
             $support->status    = 1;
 
             if ($support->save()) {
-                foreach($req['details'] as $detail) {
-                    /** Update support_details's status to 1=ส่งเอกสารแล้ว */
-                    SupportDetail::where('support_id', $req['id'])->update(['status' => 1]);
+                /** Update support_details's status to 1=ส่งเอกสารแล้ว */
+                SupportDetail::where('support_id', $req['id'])->update(['status' => 1]);
 
-                    /** Update plans's status to 9=อยู่ระหว่างการจัดซื้อ */
+                /** Update all plans's status to 9=อยู่ระหว่างการจัดซื้อ */
+                foreach($req['details'] as $detail) {
                     Plan::where('id', $detail['plan_id'])->update(['status' => 9]);
                 }
 
@@ -705,6 +705,15 @@ class SupportController extends Controller
             $support->status    = 0;
 
             if ($support->save()) {
+                /** Update support_details's status to 0=รอดำเนินการ */
+                SupportDetail::where('support_id', $id)->update(['status' => 0]);
+                
+                /** Update plans's status to 0=รอดำเนินการ */
+                $details = SupportDetail::where('support_id', $id)->get();
+                foreach($details as $detail) {
+                    Plan::where('id', $detail->plan_id)->update(['status' => 0]);
+                }
+
                 return [
                     'status'    => 1,
                     'message'   => 'Support have been canceled!!'
