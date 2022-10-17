@@ -95,6 +95,8 @@ class RepairController extends Controller
 
         $year   = $req->get('year');
         $type   = $req->get('type');
+        $docNo   = $req->get('doc_no');
+        $desc   = $req->get('desc');
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $status = $req->get('status');
 
@@ -114,6 +116,9 @@ class RepairController extends Controller
                         ->join('plans','plans.id','=','plan_items.plan_id')
                         ->where('plans.year', $year)
                         ->where('plan_items.have_subitem', '1')
+                        ->when(!empty($desc), function($q) use ($desc) {
+                            $q->where('desc', 'like', '%'.$desc.'%');
+                        })
                         ->pluck('support_details.support_id');
 
         $supports = Support::with('planType','depart','division')
@@ -127,6 +132,12 @@ class RepairController extends Controller
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
+                    })
+                    ->when(!empty($docNo), function($q) use ($docNo) {
+                        $q->where('doc_no', 'like', '%'.$docNo.'%');
+                    })
+                    ->when(!empty($desc), function($q) use ($supportsList) {
+                        $q->whereIn('id', $supportsList);
                     })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);

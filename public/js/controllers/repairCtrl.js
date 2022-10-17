@@ -3,6 +3,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     $scope.loading = false;
 
     $scope.searchKey = '';
+    $scope.txtDesc = '';
 
     $scope.supports = [];
     $scope.pager = [];
@@ -87,10 +88,12 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.supports = [];
         $scope.pager = null;
 
-        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let doc_no  = $scope.searchKey === '' ? '' : $scope.searchKey;
+        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let depart  = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/repairs/search?year=${year}&stype=2&depart=${depart}&status=0-3`)
+        $http.get(`${CONFIG.baseUrl}/repairs/search?year=${year}&stype=2&depart=${depart}&doc_no=${doc_no}&desc=${desc}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -110,9 +113,11 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let depart = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
+        let doc_no  = $scope.searchKey === '' ? '' : $scope.searchKey;
+        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let depart  = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${url}&year=${year}&stype=2&depart=${depart}&status=0-3`)
+        $http.get(`${url}&year=${year}&stype=2&depart=${depart}&doc_no=${doc_no}&desc=${desc}&status=0-3`)
         .then(function(res) {
             $scope.setSupports(res);
 
