@@ -86,6 +86,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('supports', 'SupportController@search');
     Route::get('supports/{id}', 'SupportController@getById');
     Route::get('supports/details/list', 'SupportController@getSupportDetails');
+    Route::get('supports/details/group', 'SupportController@getSupportDetailGroups');
     Route::put('supports/{id}/return', 'SupportController@onReturn');
     Route::put('supports/{id}/cancel-sent', 'SupportController@cancelSent');
     Route::put('supports/{id}/cancel-received', 'SupportController@cancelReceived');

@@ -297,7 +297,16 @@
                                         <tbody>
                                             <tr ng-show="order.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td>@{{ order.plan_group_desc }}</td>
+                                                <td>
+                                                    @{{ order.plan_group_desc }}
+                                                    <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
+                                                        <li ng-repeat="(index, detail) in order.details" style="margin: 0; padding: 0;">
+                                                            - @{{ detail.plan_depart }}
+                                                            @{{ currencyToNumber(detail.amount) | currency:'':0 }}
+                                                            @{{ detail.unit_name }}
+                                                        </li>
+                                                    </ul>
+                                                </td>
                                                 <td></td>
                                                 <td style="text-align: right;">@{{ order.details[0].price_per_unit | currency:'':2 }}</td>
                                                 <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>
@@ -606,6 +615,7 @@
         </div><!-- /.row -->
 
         @include('orders._plans-list')
+        @include('orders._plan-groups-list')
         @include('orders._spec-form')
         @include('shared._persons-list')
 

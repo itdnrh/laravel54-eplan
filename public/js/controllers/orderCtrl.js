@@ -239,12 +239,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.addOrderItem = () => {
-        /** เช็คซ้ำ */
-        // if ($scope.order.details.some(od => od.plan_id === $scope.newItem.plan_id)) {
-        //     toaster.pop('error', "ผลการตรวจสอบ", "คุณเลือกรายการซ้ำ !!!");
-        //     return;
-        // }
-
         $scope.order.details.push({ ...$scope.newItem });
 
         $scope.calculateNetTotal();
@@ -254,7 +248,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.removeOrderItem = (selectedIndex) => {
         $scope.order.details = $scope.order.details.filter((d, index) => index !== selectedIndex);
 
-        $scope.calculateTotal();
+        $scope.calculateNetTotal();
     };
 
     $scope.removePlanGroup = (e) => {
@@ -264,7 +258,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $scope.order.details = [];
 
-        $scope.calculateTotal();
+        $scope.calculateNetTotal();
     }
 
     $scope.editRowIndex = '';
@@ -321,6 +315,115 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.addSpec = function(e) {
         $('#spec-form').modal('hide');
+    };
+
+    $scope.showPlanGroupsList = (type) => {
+        if (type == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
+        } else {
+            $scope.loading = true;
+            $scope.planGroups = [];
+            $scope.planGroups_pager = null;
+            $scope.plans = [];
+
+            let year = $scope.order.year === '' ? '' : 2566;
+
+            $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&type=${type}&status=2`)
+            .then(function(res) {
+                $scope.setPlanGroups(res);
+
+                $scope.loading = false;
+
+                $('#plan-groups-list').modal('show');
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.getPlanGroupsList = (type) => {
+        $scope.loading = true;
+        $scope.planGroups = [];
+        $scope.planGroups_pager = null;
+        $scope.plans = [];
+
+        let year = $scope.order.year === '' ? '' : 2566;
+
+        $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&type=${type}&status=2`)
+        .then(function(res) {
+            $scope.setPlanGroups(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlanGroupsListWithUrl = (e, url, type, cb) => {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.planGroups = [];
+        $scope.planGroups_pager = null;
+        $scope.plans = [];
+
+        let year = $scope.order.year === '' ? '' : 2566;
+
+        $http.get(`${url}&year=${year}&type=${type}&status=2`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+
+            $('#plan-groups-list').modal('show');
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlanGroups = function(res) {
+        const { data, ...pager } = res.data.planGroups;
+
+        $scope.planGroups = data;
+        $scope.planGroups_pager = pager;
+        $scope.plans = res.data.plans;
+    };
+
+    $scope.onSelectedPlanGroup = function(e, planGroup) {
+        if (planGroup) {
+            $scope.order.is_plan_group = true;
+            $scope.order.plan_group_desc = planGroup.item_name;
+            $scope.order.plan_group_amt = planGroup.amount;
+
+            const plans = $scope.plans.filter(plan => plan.plan.plan_item.item_id == planGroup.item_id);
+
+            plans.forEach(plan => {
+                $scope.newItem = {
+                    plan_no: plan.plan.plan_no,
+                    plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
+                    plan_detail: `${plan.plan.plan_item.item.item_name} (${plan.plan.plan_item.item.category.name})`,
+                    plan_desc: plan.desc,
+                    plan_id: plan.plan.id,
+                    item_id: plan.plan.plan_item.item_id,
+                    support_id: plan.support.id,
+                    support_detail_id: plan.id,
+                    spec: '',
+                    price_per_unit: plan.price_per_unit,
+                    unit_id: plan.unit.id,
+                    unit_name: plan.unit.name,
+                    amount: plan.amount,
+                    sum_price: plan.sum_price
+                };
+
+                $scope.addOrderItem();
+            });
+        }
+
+        $('#plan-groups-list').modal('hide');
     };
 
     $scope.showPlansList = (type) => {

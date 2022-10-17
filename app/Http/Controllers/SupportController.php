@@ -226,6 +226,105 @@ class SupportController extends Controller
         ];
     }
 
+    public function getSupportDetailGroups(Request $req)
+    {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
+        /** Get params from query string */
+        $year   = $req->get('year');
+        $type   = $req->get('type');
+        $cate   = $req->get('cate');
+        // $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == '4') ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        // $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '4') ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        // $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->duty_id == '2' || Auth::user()->memberOf->depart_id == '4') ? $req->get('division') : '';
+        $approved   = $req->get('approved');
+        $name       = $req->get('name');
+
+        // $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $supportPlanLists = Support::leftJoin('support_details','supports.id','=','support_details.support_id')
+                                    ->where('year',$year)
+                                    ->where('support_details.status', '2')
+                                    ->distinct()
+                                    ->pluck('support_details.plan_id');
+
+        $plansList = Plan::when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($type), function($q) use ($type) {
+                            $q->where('plan_type_id', $type);
+                        })
+                        ->when($approved != '', function($q) use ($approved) {
+                            $q->where('approved', $approved);
+                        })
+                        ->whereIn('id', $supportPlanLists)
+                        // ->where('status', 0)
+                        // ->when(!empty($depart), function($q) use ($depart, $cate) {
+                        //     if (($depart == '39' && $cate == '3') || ($depart == '65' && $cate == '4')) {
+                            
+                        //     } else {
+                        //         $q->where('plans.depart_id', $depart);
+                        //     }
+                        // })
+                        ->pluck('id');
+
+        $planGroups = \DB::table('plan_items')
+                        ->select(
+                            'plan_items.item_id','items.item_name',
+                            'items.price_per_unit','items.unit_id',
+                            \DB::raw('units.name as unit_name'),
+                            \DB::raw('SUM(plan_items.amount) as amount'),
+                            \DB::raw('SUM(plan_items.sum_price) as sum_price')
+                        )
+                        ->leftJoin('items', 'plan_items.item_id', '=', 'items.id')
+                        ->leftJoin('units', 'plan_items.unit_id', '=', 'units.id')
+                        ->where('plan_items.have_subitem', 0)
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where(function($query) use ($name) {
+                                $query->where('items.item_name', 'like', '%'.$name.'%');
+                                $query->orWhere('items.en_name', 'like', '%'.$name.'%');
+                            });
+                        })
+                        ->whereIn('plan_items.plan_id', $plansList)
+                        ->groupBy('plan_items.item_id')
+                        ->groupBy('items.item_name')
+                        ->groupBy('items.price_per_unit')
+                        ->groupBy('items.unit_id')
+                        ->groupBy('units.name')
+                        ->orderBy(\DB::raw('SUM(plan_items.amount)'), 'DESC')
+                        ->paginate(10);
+
+        $planItemsList = PlanItem::leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('items.category_id', $cate);
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where(function($query) use ($name) {
+                                $query->where('items.item_name', 'like', '%'.$name.'%');
+                                $query->orWhere('items.en_name', 'like', '%'.$name.'%');
+                            });
+                        })
+                        ->whereIn('plan_items.plan_id', $plansList)
+                        ->pluck('plan_items.plan_id');
+
+        $plans = SupportDetail::with('plan','plan.planItem','plan.planItem.item')
+                        ->with('plan.planItem.item.category','support.depart','unit')
+                        ->where('status', '2')
+                        ->whereIn('plan_id', $plansList)
+                        ->get();
+
+        return [
+            'plans'         => $plans,
+            'planGroups'    => $planGroups,
+        ];
+    }
+
     public function detail($id)
     {
         return view('supports.detail', [
