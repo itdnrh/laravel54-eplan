@@ -315,9 +315,9 @@
                                                 </td>
                                                 <td>
                                                     <!-- spec -->
-                                                    <!-- <a href="#" class="btn bg-gray" ng-click="showSpecForm(index)">
+                                                    <a href="#" class="btn bg-gray" ng-click="showSpecForm(-1)">
                                                         <i class="fa fa-bars" aria-hidden="true"></i>
-                                                    </a> -->
+                                                    </a>
                                                 </td>
                                                 <td style="text-align: right;">@{{ order.details[0].price_per_unit | currency:'':2 }}</td>
                                                 <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>

@@ -314,6 +314,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.addSpec = function(e) {
+        if ($scope.selectedIndex == -1) {
+            $scope.order.details.forEach(item => {
+                item.spec = $('#spec').val();
+            });
+        }
+
         $('#spec-form').modal('hide');
     };
 
@@ -1167,6 +1173,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
 
         $scope.loading = true;
+        console.log($scope.order);
 
         $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
         .then(res => {

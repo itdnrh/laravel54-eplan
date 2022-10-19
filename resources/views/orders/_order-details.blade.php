@@ -27,7 +27,7 @@
                                 <td>
                                     <p class="item__spec-text">
                                         @{{ detail.plan.depart.depart_name }}
-                                        <span ng-show="detail.division">
+                                        <span ng-show="detail.plan.division">
                                             / @{{ detail.plan.division.ward_name }}
                                         </span>
                                     </p>
