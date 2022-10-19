@@ -168,12 +168,12 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('orders/validate', 'OrderController@formValidate');
     Route::get('orders/list', 'OrderController@index');
     Route::get('orders/search', 'OrderController@search');
+    Route::get('orders/detail/{id}', 'OrderController@detail');
+    Route::get('orders/getOrder/{id}', 'OrderController@getOrder');
     Route::get('orders/add', 'OrderController@create');
     Route::post('orders/store', 'OrderController@store');
     Route::get('orders/edit/{id}', 'OrderController@edit');
-    Route::get('orders/detail/{id}', 'OrderController@detail');
-    Route::get('orders/getOrder/{id}', 'OrderController@getOrder');
-    Route::post('orders/update', 'OrderController@update');
+    Route::post('orders/update/{id}', 'OrderController@update');
     Route::post('orders/delete/{id}', 'OrderController@delete');
     Route::get('orders/received', 'OrderController@received');
     Route::post('orders/received/{mode}', 'OrderController@onReceived');

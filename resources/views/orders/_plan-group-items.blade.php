@@ -15,10 +15,10 @@
                                 <th style="width: 5%; text-align: center;">#</th>
                                 <th>รายการ</th>
                                 <!-- <th style="width: 20%; text-align: center;">ประเภท</th> -->
-                                <th style="width: 10%; text-align: right;">ราคาต่อหน่วย</th>
+                                <th style="width: 12%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
-                                <th style="width: 10%; text-align: right;">จำนวน</th>
-                                <th style="width: 10%; text-align: right;">รวมเป็นเงิน</th>
+                                <th style="width: 10%; text-align: center;">จำนวน</th>
+                                <th style="width: 10%; text-align: center;">รวมเป็นเงิน</th>
                                 <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
@@ -28,7 +28,7 @@
                                     @{{ index+1 }}
                                 </td>
                                 <td>
-                                    <p style="margin: 0;">@{{ item.plan_depart }}</p>
+                                    <p class="item__spec-text">@{{ item.plan_depart }}</p>
                                     <p style="margin: 0;">@{{ item.plan_detail }}</p>
                                     <p style="margin: 0;">@{{ item.desc }}</p>
                                 </td>
@@ -37,9 +37,9 @@
                                     @{{ item.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ item.unit.name }}
+                                    @{{ item.unit_name }}
                                 </td>
-                                <td style="text-align: right;">
+                                <td style="text-align: center;">
                                     @{{ item.amount | currency:'':2 }}
                                 </td>
                                 <td style="text-align: right;">

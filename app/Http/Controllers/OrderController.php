@@ -324,14 +324,37 @@ class OrderController extends Controller
                         ->update(['running_no' => $poNo]);
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
+        $depart = Depart::where('depart_id', '2')->first();
+
+        if (!empty($req->get('support'))) {
+            $support = Support::with('planType','depart','division','details')
+                        ->with('details.unit','details.plan','details.plan.planItem.unit')
+                        ->with('details.plan.planItem','details.plan.planItem.item')
+                        ->with('details.plan.planItem.item.category')
+                        ->with('officer','officer.prefix','officer.position')
+                        ->find($req->get('support'));
+        } else {
+            $support = '';
+        }
+
         $order = order::with('supplier','details','details.unit')
                     ->where('id', $id)
                     ->first();
 
         return view('orders.edit', [
-            "order" => $order
+            "order"         => $order,
+            'documentNo'    => $depart->memo_no,
+            'support'       => $support,
+            "suppliers"     => Supplier::all(),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "units"         => Unit::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
+            "orderTypes"    => OrderType::all(),
         ]);
     }
 

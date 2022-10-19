@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มใบสั่งซื้อ (P/O)
+            แก้ไขใบสั่งซื้อ (P/O)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มใบสั่งซื้อ (P/O)</li>
+            <li class="breadcrumb-item active">แก้ไขใบสั่งซื้อ (P/O)</li>
         </ol>
     </section>
 
@@ -26,18 +26,19 @@
                 categories: {{ $categories }}
             });
             setSupportToOrder({{ $support }});
+            edit({{ $order->id }});
         "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มใบสั่งซื้อ (P/O)</h3>
+                        <h3 class="box-title">แก้ไขใบสั่งซื้อ (P/O) : รหัส {{ $order->id }}</h3>
                     </div>
 
-                    <form id="frmNewPO" name="frmNewPO" method="post" action="{{ url('/orders/store') }}" role="form" enctype="multipart/form-data">
+                    <form id="frmEditPO" name="frmEditPO" method="post" action="{{ url('/orders/update') }}" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
                         {{ csrf_field() }}
 
@@ -300,10 +301,10 @@
                                                 <td>
                                                     @{{ order.plan_group_desc }}
                                                     <span style="margin: 0;">(@{{ order.details[0].category_name }})</span>
-                                                    <a href="#" class="text-danger" ng-show="order.details.length > 1" ng-click="showPlanGroupItems($event, order.details);">
+                                                    <a href="#" class="text-danger" ng-show="order.details.length > 0" ng-click="showPlanGroupItems($event, order.details);">
                                                         <i class="fa fa-tags" aria-hidden="true"></i>
                                                     </a>
-                                                    <p class="item__spec-text" ng-show="order.details[0].spec != ''">
+                                                    <p class="item__spec-text" ng-show="order.details[0].spec">
                                                         @{{ order.details[0].spec }}
                                                     </p>
                                                     <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
@@ -688,10 +689,10 @@
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/orders/validate', order, 'frmNewPO', store)"
-                                class="btn btn-success pull-right"
+                                ng-click="formValidate($event, '/orders/validate', order, 'frmEditPO', update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                บันทึกการแก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

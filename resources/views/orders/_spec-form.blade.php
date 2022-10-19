@@ -19,6 +19,16 @@
                             id="spec"
                             name="spec"
                             ng-model="order.details[selectedIndex].spec"
+                            ng-show="selectedIndex != -1"
+                            rows="5"
+                            class="form-control"
+                        ></textarea>
+                        <textarea
+                            type="text"
+                            id="planGroup_spec"
+                            name="planGroup_spec"
+                            ng-model="order.details[0].spec"
+                            ng-show="selectedIndex == -1"
                             rows="5"
                             class="form-control"
                         ></textarea>

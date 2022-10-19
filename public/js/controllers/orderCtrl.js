@@ -46,11 +46,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.newItem = {
         plan_no: '',
         plan_detail: '',
+        category_name: '',
         plan_depart: '',
         support_id: '',
         support_detail_id: '',
         plan_id: '',
         item_id: '',
+        desc: '',
         spec: '',
         price_per_unit: '',
         unit: null,
@@ -147,12 +149,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 const orderItem = {
                     plan_no: item.plan.plan_no,
                     plan_depart: support.division ? support.division.ward_name : support.depart.depart_name,
-                    plan_detail: `${item.plan.plan_item.item.item_name} (${item.plan.plan_item.item.category.name})`,
-                    plan_desc: item.desc,
+                    plan_detail: item.plan.plan_item.item.item_name,
+                    category_name: item.plan.plan_item.item.category.name,
                     plan_id: item.plan.id,
                     item_id: item.plan.plan_item.item_id,
                     support_id: support.id,
                     support_detail_id: item.id,
+                    desc: item.desc,
                     spec: '',
                     price_per_unit: item.price_per_unit,
                     unit_id: item.unit.id,
@@ -334,7 +337,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.addSpec = function(e) {
         if ($scope.selectedIndex == -1) {
             $scope.order.details.forEach(item => {
-                item.spec = $('#spec').val();
+                item.spec = $('#planGroup_spec').val();
             });
         }
 
@@ -452,12 +455,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 $scope.newItem = {
                     plan_no: plan.plan.plan_no,
                     plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
-                    plan_detail: `${plan.plan.plan_item.item.item_name} (${plan.plan.plan_item.item.category.name})`,
-                    plan_desc: plan.desc,
+                    plan_detail: plan.plan.plan_item.item.item_name,
+                    category_name: plan.plan.plan_item.item.category.name,
                     plan_id: plan.plan.id,
                     item_id: plan.plan.plan_item.item_id,
                     support_id: plan.support.id,
                     support_detail_id: plan.id,
+                    desc: plan.desc,
                     spec: '',
                     price_per_unit: plan.price_per_unit,
                     unit_id: plan.unit.id,
@@ -554,12 +558,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.newItem = {
                 plan_no: plan.plan.plan_no,
                 plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
-                plan_detail: `${plan.plan.plan_item.item.item_name} (${plan.plan.plan_item.item.category.name})`,
-                plan_desc: plan.desc,
+                plan_detail: plan.plan.plan_item.item.item_name,
+                category_name: plan.plan.plan_item.item.category.name,
                 plan_id: plan.plan.id,
                 item_id: plan.plan.plan_item.item_id,
                 support_id: plan.support.id,
                 support_detail_id: plan.id,
+                desc: plan.desc,
                 spec: '',
                 price_per_unit: plan.price_per_unit,
                 unit_id: plan.unit.id,
@@ -1186,27 +1191,26 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         event.preventDefault();
 
         if ($scope.order.details.length == 0) {
-            toaster.pop('error', "ผลการตรวจสอบ", "คุณยังไม่ได้ระบุรายการที่จะจัดซื้อจัดจ้าง !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณยังไม่ได้ระบุรายการที่จะจัดซื้อ/จ้าง !!!");
             return;
         }
 
         $scope.loading = true;
-        console.log($scope.order);
 
         $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
         .then(res => {
             if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อเรียบร้อย !!!");
+                toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อ/จ้างเรียบร้อย !!!");
 
                 window.location.href = `${CONFIG.baseUrl}/orders/list`;
             } else {
-                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
             }
 
             $scope.loading = false;
         }, err => {
             console.log(err);
-            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อได้ !!!");
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
 
             $scope.loading = false;
         });
@@ -1217,7 +1221,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         .then(res => {
             $scope.order.id = res.data.order.id;
             $scope.order.year = res.data.order.year.toString();
-            $scope.order.supplier_id = res.data.order.supplier.supplier_name;
+            $scope.order.supplier_id = res.data.order.supplier.supplier_id.toString();
             $scope.order.supplier = res.data.order.supplier;
             $scope.order.po_no = res.data.order.po_no;
             $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
@@ -1226,11 +1230,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.po_app_no = res.data.order.po_app_no;
             $scope.order.po_app_date = StringFormatService.convFromDbDate(res.data.order.po_app_date);
             $scope.order.deliver_amt = res.data.order.deliver_amt;
-            $scope.order.plan_type_id = res.data.order.plan_type_id;
+            $scope.order.plan_type_id = res.data.order.plan_type_id.toString();
             $scope.order.plan_type = res.data.order.plan_type;
-            $scope.order.order_type_id = res.data.order.order_type_id;
+            $scope.order.order_type_id = res.data.order.order_type_id.toString();
             $scope.order.order_type = res.data.order.order_type;
             $scope.order.supply_officer = res.data.order.supply_officer;
+            $scope.order.supply_officer_detail = res.data.order.officer.prefix.prefix_name+res.data.order.officer.person_firstname+ ' ' +res.data.order.officer.person_lastname;
             $scope.order.officer = res.data.order.officer;
             $scope.order.is_plan_group   = res.data.order.is_plan_group;
             $scope.order.plan_group_desc = res.data.order.plan_group_desc;
@@ -1242,19 +1247,20 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.net_total_str = res.data.order.net_total_str;
             $scope.order.remark = res.data.order.remark;
             $scope.order.status = res.data.order.status;
-            $scope.order.details = res.data.order.details;
+            $scope.order.details = res.data.order.details.map(item => {
+                const { plan, unit, ...other } = item;
 
-            // $('#po_date')
-            //     .datepicker(dtpOptions)
-            //     .datepicker('update', moment(res.data.order.po_date).toDate());
+                return {
+                    plan_no: plan.plan_no,
+                    plan_detail: plan.plan_item.item.item_name,
+                    category_name: plan.plan_item.item.category.name,
+                    plan_depart: plan.depart.depart_name,
+                    unit_name: unit.name,
+                    ...other
+                }
+            });
 
-            // $('#po_req_date')
-            //     .datepicker(dtpOptions)
-            //     .datepicker('update', moment(res.data.order.po_req_date).toDate());
-
-            // $('#po_app_date')
-            //     .datepicker(dtpOptions)
-            //     .datepicker('update', moment(res.data.order.po_app_date).toDate());
+            $('#supplier_id').val(res.data.order.supplier.supplier_id).trigger('change.select2');
         }, err => {
             console.log(err);
         });
@@ -1264,12 +1270,30 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         event.preventDefault();
 
         if ($scope.order.details.length == 0) {
-            toaster.pop('error', "ผลการตรวจสอบ", "คุณยังไม่ได้ระบุรายการที่จะจัดซื้อจัดจ้าง !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณยังไม่ได้ระบุรายการที่จะจัดซื้อ/จ้าง !!!");
             return;
         }
 
-        if(confirm(`คุณต้องแก้ไขรายการขอยกเลิกวันลาเลขที่ ${$scope.cancellation.leave_id} ใช่หรือไม่?`)) {
-            $(`#${form}`).submit();
+        if(confirm(`คุณต้องแก้ไขรายการใบสั่งซื้อ/จ้าง รหัส ${$scope.order.id} ใช่หรือไม่?`)) {
+            console.log($scope.order);
+
+            // $http.post(`${CONFIG.baseUrl}/orders/update/${$scope.order.id}`, $scope.order)
+            // .then(res => {
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "แก้ไขใบสั่งซื้อ/จ้างเรียบร้อย !!!");
+
+            //         window.location.href = `${CONFIG.baseUrl}/orders/list`;
+            //     } else {
+            //         toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขใบสั่งซื้อ/จ้างได้ !!!");
+            //     }
+
+            //     $scope.loading = false;
+            // }, err => {
+            //     console.log(err);
+            //     toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขใบสั่งซื้อ/จ้างได้ !!!");
+
+            //     $scope.loading = false;
+            // });
         }
     };
 

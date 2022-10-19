@@ -150,7 +150,6 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center">ลำดับ</th>
-                                            <th style="width: 8%; text-align: center">เลขที่</th>
                                             <th>รายการ</th>
                                             <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
                                             <th style="width: 12%; text-align: center">หน่วยนับ</th>
@@ -159,14 +158,45 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="(index, detail) in order.details">
+                                        <tr ng-show="order.is_plan_group">
+                                                <td style="text-align: center">@{{ index+1 }}</td>
+                                                <td>
+                                                    @{{ order.plan_group_desc }}
+                                                    <span style="margin: 0;">(@{{ order.details[0].category_name }})</span>
+                                                    <a href="#" class="text-danger" ng-show="order.details.length > 0" ng-click="showPlanGroupItems($event, order.details);">
+                                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                                    </a>
+                                                    <p class="item__spec-text" ng-show="order.details[0].spec">
+                                                        @{{ order.details[0].spec }}
+                                                    </p>
+                                                    <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
+                                                        <li ng-repeat="(index, detail) in order.details" style="margin: 0; padding: 0;">
+                                                            - @{{ detail.plan_depart }}
+                                                            @{{ currencyToNumber(detail.amount) | currency:'':0 }}
+                                                            @{{ detail.unit_name }}
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    @{{ order.details[0].price_per_unit | currency:'':2 }}
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    @{{ order.details[0].unit_name }}
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    @{{ order.plan_group_amt | currency:'':1 }}
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    @{{ order.net_total | currency:'':2 }}
+                                                </td>
+                                        </tr>
+                                        <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
                                             <td style="text-align: center">@{{ index+1 }}</td>
-                                            <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>
-                                                <!-- <h4 style="margin: 0;">@{{ detail.plan.plan_item.item.category.name }}</h4> -->
-                                                <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p>
+                                                <p class="item__spec-text">@{{ detail.plan_depart }}</p>
                                                 <p style="margin: 0;">
-                                                    @{{ detail.plan.plan_item.item.item_name }}
+                                                    @{{ detail.plan_no }} @{{ detail.plan_detail }}
+                                                    <span style="margin: 0;">(@{{ detail.category_name }})</span>
                                                 </p>
                                                 <p class="item__desc-text" ng-show="detail.desc">
                                                     - @{{ detail.desc }}
@@ -176,17 +206,10 @@
                                                 </span>
                                             </td>
                                             <td style="text-align: right">@{{ detail.price_per_unit | currency:'':2 }}</td>
-                                            <td style="text-align: center">@{{ detail.unit.name }}</td>
+                                            <td style="text-align: center">@{{ detail.unit_name }}</td>
                                             <td style="text-align: center">@{{ detail.amount | currency:'':0 }}</td>
                                             <td style="text-align: right">@{{ detail.sum_price | currency:'':2 }}</td>
                                         </tr>
-                                        <!-- ===== TOTAL ROW ===== -->
-                                        <!-- <tr>
-                                            <td style="text-align: center" colspan="5">รวม</td>
-                                            <td style="text-align: right">@{{ 1 }}</td>
-                                            <td style="text-align: right">@{{ 2 }}</td>
-                                        </tr> -->
-                                        <!-- ===== TOTAL ROW ===== -->
                                     </tbody>
                                 </table>
                             </div>
@@ -197,7 +220,7 @@
                                 <div class="form-group col-md-8">
                                     <label for="">เจ้าหน้าที่พัสดุ</label>
                                     <div class="form-control">
-                                        @{{ order.officer.prefix.prefix_name+order.officer.person_firstname+ ' ' +order.officer.person_lastname }}
+                                        @{{ order.supply_officer_detail }}
                                     </div>
                                 </div>
                                 <div class="form-group col-md-8">
