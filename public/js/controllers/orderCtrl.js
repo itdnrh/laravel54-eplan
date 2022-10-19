@@ -270,18 +270,29 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.onEditItem = (selectedIndex) => {
         $scope.toggleEditRow(selectedIndex);
 
-        /** Set select input as select2 */
-        $(`#unit_id_${selectedIndex}`).select2({ theme: 'bootstrap' });
+        if (selectedIndex != -1) {
+            /** Set select input as select2 */
+            $(`#unit_id_${selectedIndex}`).select2({ theme: 'bootstrap' });
+    
+            let detail = $scope.order.details.find((d, index) => index === selectedIndex);
+    
+            if (detail) {
+                $scope.newItem.price_per_unit   = detail.price_per_unit;
+                $scope.newItem.unit_id          = detail.unit_id.toString();
+                $scope.newItem.amount           = detail.amount;
+                $scope.newItem.sum_price        = detail.sum_price;
+    
+                $(`#unit_id_${selectedIndex}`).val(detail.unit_id).trigger('change.select2');
+            }
+        } else {
+            $(`#unit_id`).select2({ theme: 'bootstrap' });
 
-        let detail = $scope.order.details.find((d, index) => index === selectedIndex);
+            $scope.newItem.price_per_unit   = $scope.order.details[0].price_per_unit;
+            $scope.newItem.unit_id          = $scope.order.details[0].unit_id.toString();
+            $scope.newItem.amount           = $scope.order.plan_group_amt;
+            $scope.newItem.sum_price        = $scope.order.net_total;
 
-        if (detail) {
-            $scope.newItem.price_per_unit   = detail.price_per_unit;
-            $scope.newItem.unit_id          = detail.unit_id.toString();
-            $scope.newItem.amount           = detail.amount;
-            $scope.newItem.sum_price        = detail.sum_price;
-
-            $(`#unit_id_${selectedIndex}`).val(detail.unit_id).trigger('change.select2');
+            $(`#unit_id`).val($scope.order.details[0].unit_id).trigger('change.select2');
         }
     };
 
@@ -293,6 +304,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 d.unit_name         = $(`#unit_id_${selectedIndex} option:selected`).text().replace(/^\s+|\s+$|[\r\n]+/g, "");
                 d.amount            = $scope.currencyToNumber($scope.newItem.amount);
                 d.sum_price         = $scope.currencyToNumber($scope.newItem.sum_price);
+            }
+
+            if (selectedIndex == -1) {
+                d.price_per_unit    = $scope.currencyToNumber($scope.newItem.price_per_unit);
+                d.unit_id           = $scope.newItem.unit_id;
+                d.unit_name         = $(`#unit_id option:selected`).text().replace(/^\s+|\s+$|[\r\n]+/g, "");
+                d.sum_price         = d.price_per_unit * d.amount;
             }
 
             return d;

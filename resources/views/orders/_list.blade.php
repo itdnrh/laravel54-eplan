@@ -75,7 +75,7 @@
                 <a  href="{{ url('/orders/edit') }}/@{{ order.id }}"
                     class="btn btn-warning btn-xs"
                     title="แก้ไขรายการ"
-                    ng-show="![2,3,9].includes(order.status)">
+                    ng-show="![2,3,4,5,9].includes(order.status)">
                     <i class="fa fa-edit"></i>
                 </a>
                 <form
@@ -83,7 +83,7 @@
                     method="POST"
                     action="{{ url('/orders/delete') }}"
                     style="display: inline;"
-                    ng-show="![2,3,9].includes(order.status)"
+                    ng-show="![2,3,4,5,9].includes(order.status)"
                 >
                     {{ csrf_field() }}
                     <button
