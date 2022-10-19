@@ -299,6 +299,12 @@
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td>
                                                     @{{ order.plan_group_desc }}
+                                                    <span class="item__spec-text" ng-show="details[0].spec != ''">
+                                                        @{{ details[0].spec }}
+                                                    </span>
+                                                    <a href="#" class="text-danger" ng-show="order.details.length > 1" ng-click="showPlanGroupItems($event, order.details);">
+                                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                                    </a>
                                                     <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
                                                         <li ng-repeat="(index, detail) in order.details" style="margin: 0; padding: 0;">
                                                             - @{{ detail.plan_depart }}
@@ -307,12 +313,16 @@
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <!-- spec -->
+                                                    <!-- <a href="#" class="btn bg-gray" ng-click="showSpecForm(index)">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </a> -->
+                                                </td>
                                                 <td style="text-align: right;">@{{ order.details[0].price_per_unit | currency:'':2 }}</td>
                                                 <td style="text-align: center;">@{{ order.details[0].unit_name }}</td>
                                                 <td style="text-align: center;">@{{ order.plan_group_amt | currency:'':1 }}</td>
                                                 <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
-                                                
                                                 <td style="text-align: center">
                                                     <a
                                                         href="#"
@@ -616,6 +626,7 @@
 
         @include('orders._plans-list')
         @include('orders._plan-groups-list')
+        @include('orders._plan-group-items')
         @include('orders._spec-form')
         @include('shared._persons-list')
 

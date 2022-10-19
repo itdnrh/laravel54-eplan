@@ -317,6 +317,18 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#spec-form').modal('hide');
     };
 
+    $scope.planGroupItems = [];
+    $scope.showPlanGroupItems = function(e, items) {
+        e.preventDefault();
+
+        console.log(items);
+        if (items.length > 0) {
+            $scope.planGroupItems = items;
+
+            $('#plan-group-items').modal('show');
+        }
+    };
+
     $scope.showPlanGroupsList = (type) => {
         if (type == '') {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
