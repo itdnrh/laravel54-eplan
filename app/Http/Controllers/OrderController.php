@@ -111,7 +111,7 @@ class OrderController extends Controller
                         ->pluck('orders.id');
 
         $orders = Order::with('supplier','planType','details')
-                    ->with('details.plan','details.unit','details.item')
+                    ->with('details.plan','details.plan.depart','details.unit','details.item')
                     ->with('inspections','orderType')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);

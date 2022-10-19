@@ -14,7 +14,6 @@
                             <tr>
                                 <th style="width: 3%; text-align: center;">#</th>
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                <th style="width: 30%;">หน่วยงาน</th>
                                 <th>รายการ</th>
                                 <th style="width: 10%; text-align: center;">จำนวน</th>
                                 <th style="width: 10%; text-align: center;">ราคา</th>
@@ -22,14 +21,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, detail) in assets">
+                            <tr ng-repeat="(index, detail) in orderDetails">
                                 <td style="text-align: center;">@{{ index+1 }}</td>
                                 <!-- <td style="text-align: center;">@{{ detail.year }}</td> -->
                                 <td>
-                                    <p style="margin: 0;">@{{ detail.depart.depart_name }}</p>
-                                    <p style="margin: 0;">@{{ detail.division.ward_name }}</p>
-                                </td>
-                                <td>
+                                    <p class="item__spec-text">
+                                        @{{ detail.plan.depart.depart_name }}
+                                        <span ng-show="detail.division">
+                                            / @{{ detail.plan.division.ward_name }}
+                                        </span>
+                                    </p>
                                     <p style="margin: 0;">@{{ detail.item.category.name }}</p>
                                     @{{ detail.plan.plan_no }} - @{{ detail.item.item_name }}
                                 </td>

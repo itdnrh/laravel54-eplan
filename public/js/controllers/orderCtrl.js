@@ -988,9 +988,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.pager = pager;
     };
 
+    $scope.orderDetails = [];
     $scope.showOrderDetails = (items) => {
         if (items) {
-            $scope.assets = items;
+            $scope.orderDetails = items;
     
             $('#order-details').modal('show');
         }
