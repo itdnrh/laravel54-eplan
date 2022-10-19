@@ -321,11 +321,22 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.showPlanGroupItems = function(e, items) {
         e.preventDefault();
 
-        console.log(items);
         if (items.length > 0) {
             $scope.planGroupItems = items;
 
             $('#plan-group-items').modal('show');
+        }
+    };
+
+    $scope.deletePlanGroupItem = function(e, item) {
+        e.preventDefault();
+
+        if (item) {
+            $scope.planGroupItems = $scope.planGroupItems.filter(it => it.plan_id !== item.plan_id);
+
+            $scope.order.details = $scope.order.details.filter(plan => plan.plan_id !== item.plan_id);
+
+            $scope.calculateNetTotal();
         }
     };
 

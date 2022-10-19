@@ -19,6 +19,7 @@
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
                                 <th style="width: 10%; text-align: right;">จำนวน</th>
                                 <th style="width: 10%; text-align: right;">รวมเป็นเงิน</th>
+                                <th style="width: 6%; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,6 +44,15 @@
                                 </td>
                                 <td style="text-align: right;">
                                     @{{ item.sum_price | currency:'':2 }}
+                                </td>
+                                <td style="text-align: center;">
+                                    <a
+                                        href="#"
+                                        ng-click="deletePlanGroupItem($event, item)"
+                                        class="btn btn-danger btn-xs"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
