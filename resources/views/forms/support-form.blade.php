@@ -182,7 +182,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            @if(($tableHeight <= 340 && $committeeHeight > 60) || $tableHeight > 340)
+                            @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                 <div style="height: 20px;"></div>
                                 <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                             @endif
@@ -191,7 +191,7 @@
                     @if((float)$total >= 500000)
                         <tr>
                             <td colspan="4">
-                                @if(($tableHeight <= 340 && $committeeHeight > 60) || $tableHeight > 340)
+                                @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
                                 @endif
@@ -218,7 +218,7 @@
                     @endif
                     <tr>
                         <td colspan="4">
-                            @if(($tableHeight <= 340 && $committeeHeight > 60) || $tableHeight > 340)
+                            @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                 <div style="height: 20px;"></div>
                                 <p class="page-number">- ๒ -</p>
                             @endif
