@@ -259,13 +259,19 @@
                                         <span class="label label-success" ng-show="support.status == 2">
                                             รับเอกสารแล้ว
                                         </span>
-                                        <span class="label bg-maroon" ng-show="support.status == 3">
-                                            เอกสารถูกตีกลับ
+                                        <span class="label bg-navy" ng-show="support.status == 3">
+                                            ออกใบสั่งซื้อแล้ว
                                         </span>
                                         <span class="label bg-navy" ng-show="support.status == 4">
-                                            PO แล้ว
+                                            ตรวจรับแล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="support.status == 9">
+                                        <span class="label bg-navy" ng-show="support.status == 5">
+                                            ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label bg-maroon" ng-show="support.status == 9">
+                                            เอกสารถูกตีกลับ
+                                        </span>
+                                        <span class="label label-danger" ng-show="support.status == 99">
                                             ยกเลิก
                                         </span>
                                         <p class="item__spec-text" style="margin-top: 3px;" ng-show="support.status == 1">

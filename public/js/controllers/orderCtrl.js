@@ -20,8 +20,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         po_no: '',
         po_date: '',
         po_req_no: '',
+        po_req_prefix: '',
         po_req_date: '',
         po_app_no: '',
+        po_app_prefix: '',
         po_app_date: '',
         support_order_id: '',
         year: '2566',
@@ -41,6 +43,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         supply_officer_detail: '',
         remark: '',
         details: [],
+        removed: []
     };
 
     $scope.newItem = {
@@ -1219,15 +1222,25 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.edit = function(id) {
         $http.get(`${CONFIG.baseUrl}/orders/getOrder/${id}`)
         .then(res => {
+            if (res.data.order.po_req_no) {
+                const [prefix, req_no] = res.data.order.po_req_no.split("/");
+                $scope.order.po_req_prefix = prefix;
+                $scope.order.po_req_no = req_no;
+            }
+
+            if (res.data.order.po_app_no) {
+                const [prefix, app_no] = res.data.order.po_app_no.split("/");
+                $scope.order.po_app_prefix = prefix;
+                $scope.order.po_app_no = app_no;
+            }
+
             $scope.order.id = res.data.order.id;
             $scope.order.year = res.data.order.year.toString();
             $scope.order.supplier_id = res.data.order.supplier.supplier_id.toString();
             $scope.order.supplier = res.data.order.supplier;
             $scope.order.po_no = res.data.order.po_no;
             $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
-            $scope.order.po_req_no = res.data.order.po_req_no;
             $scope.order.po_req_date = StringFormatService.convFromDbDate(res.data.order.po_req_date);
-            $scope.order.po_app_no = res.data.order.po_app_no;
             $scope.order.po_app_date = StringFormatService.convFromDbDate(res.data.order.po_app_date);
             $scope.order.deliver_amt = res.data.order.deliver_amt;
             $scope.order.plan_type_id = res.data.order.plan_type_id.toString();
@@ -1241,7 +1254,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.plan_group_desc = res.data.order.plan_group_desc;
             $scope.order.plan_group_amt  = res.data.order.plan_group_amt;
             $scope.order.total = res.data.order.total;
-            $scope.order.vat_rate = res.data.order.vat_rate+'%';
+            $scope.order.vat_rate = res.data.order.vat_rate;
             $scope.order.vat = res.data.order.vat;
             $scope.order.net_total = res.data.order.net_total;
             $scope.order.net_total_str = res.data.order.net_total_str;
@@ -1275,36 +1288,47 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
 
         if(confirm(`คุณต้องแก้ไขรายการใบสั่งซื้อ/จ้าง รหัส ${$scope.order.id} ใช่หรือไม่?`)) {
-            console.log($scope.order);
+            $http.post(`${CONFIG.baseUrl}/orders/update/${$scope.order.id}`, $scope.order)
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขใบสั่งซื้อ/จ้างเรียบร้อย !!!");
 
-            // $http.post(`${CONFIG.baseUrl}/orders/update/${$scope.order.id}`, $scope.order)
-            // .then(res => {
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "แก้ไขใบสั่งซื้อ/จ้างเรียบร้อย !!!");
+                    window.location.href = `${CONFIG.baseUrl}/orders/list`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขใบสั่งซื้อ/จ้างได้ !!!");
+                }
 
-            //         window.location.href = `${CONFIG.baseUrl}/orders/list`;
-            //     } else {
-            //         toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขใบสั่งซื้อ/จ้างได้ !!!");
-            //     }
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขใบสั่งซื้อ/จ้างได้ !!!");
 
-            //     $scope.loading = false;
-            // }, err => {
-            //     console.log(err);
-            //     toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขใบสั่งซื้อ/จ้างได้ !!!");
-
-            //     $scope.loading = false;
-            // });
+                $scope.loading = false;
+            });
         }
     };
 
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        const actionUrl = $('#frmDelete').attr('action');
-        $('#frmDelete').attr('action', `${actionUrl}/${id}`);
+        if (window.confirm(`คุณต้องลบรายการใบสั่งซื้อ/จ้าง รหัส ${id} ใช่หรือไม่?`)) {
+            // $http.post(`${CONFIG.baseUrl}/orders/delete/${$scope.order.id}`, {})
+            // .then(res => {
+            //     if (res.data.status == 1) {
+            //         toaster.pop('success', "ผลการทำงาน", "ลบใบสั่งซื้อ/จ้างเรียบร้อย !!!");
 
-        if (window.confirm(`คุณต้องลบรายการขอยกเลิกวันลาเลขที่ ${id} ใช่หรือไม่?`)) {
-            $('#frmDelete').submit();
+            //         window.location.href = `${CONFIG.baseUrl}/orders/list`;
+            //     } else {
+            //         toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบใบสั่งซื้อ/จ้างได้ !!!");
+            //     }
+
+            //     $scope.loading = false;
+            // }, err => {
+            //     console.log(err);
+            //     toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบใบสั่งซื้อ/จ้างได้ !!!");
+
+            //     $scope.loading = false;
+            // });
         }
     };
 });

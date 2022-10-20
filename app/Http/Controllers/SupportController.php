@@ -777,7 +777,7 @@ class SupportController extends Controller
             $support->returned_date     = date('Y-m-d h:i:s');
             $support->returned_reason   = $req['reason'];
             $support->returned_user     = $req['user'];
-            $support->status            = 3;
+            $support->status            = 9;
 
             if ($support->save()) {
                 return [

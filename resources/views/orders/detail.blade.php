@@ -244,7 +244,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>ภาษีมูลค่าเพิ่ม (@{{ order.vat_rate }})</th>
+                                            <th>ภาษีมูลค่าเพิ่ม (@{{ order.vat_rate }}%)</th>
                                             <td style="text-align: right">
                                                 @{{ order.vat | currency:'':2 }}
                                             </td>
