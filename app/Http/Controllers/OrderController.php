@@ -230,7 +230,7 @@ class OrderController extends Controller
             $order->plan_group_amt  = currencyToNumber($req['plan_group_amt']);
             $order->total           = currencyToNumber($req['total']);
             $order->vat_rate        = currencyToNumber($req['vat_rate']);
-            $order->vat             = currencyToNumber($req['vat']);
+            $order->vat             = $req['vat'];
             $order->net_total       = currencyToNumber($req['net_total']);
             $order->net_total_str   = $req['net_total_str'];
             $order->remark          = $req['remark'];

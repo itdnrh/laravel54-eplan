@@ -253,8 +253,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.removeOrderItem = (selectedIndex) => {
-        $scope.order.details = $scope.order.details.filter((d, index) => index !== selectedIndex);
+        const rm = $scope.order.details.find((d, index) => index === selectedIndex);
 
+        if (rm && rm.hasOwnProperty('id')) {
+            $scope.order.removed = [...new Set([...$scope.order.removed, rm.id])];
+        }
+
+        $scope.order.details = $scope.order.details.filter((d, index) => index !== selectedIndex);
         $scope.calculateNetTotal();
     };
 
