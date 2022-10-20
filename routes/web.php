@@ -189,7 +189,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('inspections/store', 'InspectionController@store');
     Route::get('inspections/edit/{id}', 'InspectionController@edit');
     Route::get('inspections/detail/{id}', 'InspectionController@detail');
-    Route::post('inspections/update', 'InspectionController@update');
+    Route::post('inspections/update/{id}', 'InspectionController@update');
     Route::post('inspections/delete/{id}', 'InspectionController@delete');
 
     /** การส่งเบิกเงิน */

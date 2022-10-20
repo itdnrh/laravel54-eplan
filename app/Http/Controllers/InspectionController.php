@@ -98,6 +98,17 @@ class InspectionController extends Controller
         ];
     }
 
+    public function getById(Request $req, $id)
+    {
+        $inspections = Inspection::with('order','order.supplier')
+                        ->with('order.details','order.details.item')
+                        ->find($id);
+
+        return [
+            "inspections" => $inspections
+        ];
+    }
+
     public function getByOrder(Request $req, $orderId)
     {
         $inspections = Inspection::with('order','order.details')
@@ -186,14 +197,17 @@ class InspectionController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        $order = order::with('supplier','details','details.unit')
-                    ->where('id', $id)
-                    ->first();
-
         return view('inspections.edit', [
-            "order" => $order
+            "inspection"    => Inspection::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            // "suppliers"     => Supplier::all(),
+            // "units"         => Unit::all(),
+            // "factions"      => Faction::all(),
+            // "departs"       => Depart::all(),
+            // "divisions"     => Division::all(),
         ]);
     }
 

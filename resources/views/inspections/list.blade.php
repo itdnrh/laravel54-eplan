@@ -205,9 +205,11 @@
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  ng-click="edit(insp.id)"
+                                            <a  
+                                                href="{{ url('/inspections/edit') }}/@{{ insp.id }}"
                                                 class="btn btn-warning btn-xs"
-                                                title="แก้ไขรายการ">
+                                                title="แก้ไขรายการ"
+                                            >
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <form

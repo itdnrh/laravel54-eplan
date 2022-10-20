@@ -324,7 +324,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     }
 
     $scope.edit = function(id) {
-        $http.get(`${CONFIG.baseUrl}/orders/getOrder/${id}`)
+        $http.get(`${CONFIG.apiUrl}/inspections/${id}`)
         .then(res => {
             $scope.order.id = res.data.order.id;
             $scope.order.year = res.data.order.year.toString();

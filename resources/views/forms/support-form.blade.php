@@ -72,51 +72,144 @@
                                 ด้วย <span>{{ $support->depart->depart_name }}</span>
                                 มีความประสงค์ขอให้ดำเนินการซื้อ / จ้าง ดังนี้
                             </p>
-                            
-                            <div class="table-container">
-                                <table style="width: 100%;" class="table" border="1">
-                                    <tr style="font-size: 16px;">
-                                        <th style="width: 5%; text-align: center;">ลำดับ</th>
-                                        <th style="text-align: center;">รายการ</th>
-                                        <th style="width: 10%; text-align: center;">จำนวนหน่วย</th>
-                                        <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
-                                        <th style="width: 15%; text-align: center;">ราคารวม</th>
-                                    </tr>
+                        </td>
+                    </tr>
 
-                                    <?php $row = 0; ?>
-                                    <?php $total = 0; ?>
-                                    <?php $tableHeight = 0; ?>
-                                    @if($support->is_plan_group == '1')
-                                        <?php $total = (float)$support->total; ?>
-                                        <tr style="min-height: 20px;">
-                                            <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
-                                            <td>
-                                                <?php $tableHeight += 20; ?>
-                                                {{ thainumDigit($support->plan_group_desc) }}
-                                                @foreach($support->details as $detail)
+                    <?php $row1 = 0; ?>
+                    <?php $row2 = 0; ?>
+                    <?php $total = 0; ?>
+                    <?php $tableHeight = 0; ?>
+                    @if (count($support->details) < 10)
+                        <tr>
+                            <td colspan="4">
+                                <div class="table-container">
+                                    <table style="width: 100%;" class="table" border="1">
+                                        <tr style="font-size: 16px;">
+                                            <th style="width: 5%; text-align: center;">ลำดับ</th>
+                                            <th style="text-align: center;">รายการ</th>
+                                            <th style="width: 10%; text-align: center;">จำนวนหน่วย</th>
+                                            <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
+                                            <th style="width: 15%; text-align: center;">ราคารวม</th>
+                                        </tr>
+                                        @if($support->is_plan_group == '1')
+                                            <?php $total = (float)$support->total; ?>
+                                            <tr style="min-height: 20px;">
+                                                <td style="text-align: center;">{{ thainumDigit(++$row1) }}</td>
+                                                <td>
                                                     <?php $tableHeight += 20; ?>
-                                                    <p style="margin: 0; padding: 0; font-size: 14px;">
-                                                        - {{ $detail->plan->depart->depart_name }}
+                                                    {{ thainumDigit($support->plan_group_desc) }}
+                                                    @foreach($support->details as $detail)
+                                                        <?php $tableHeight += 20; ?>
+                                                        <p style="margin: 0; padding: 0; font-size: 14px;">
+                                                            - {{ $detail->plan->depart->depart_name }}
+                                                            {{ thainumDigit(number_format($detail->amount)) }}
+                                                            {{ $detail->plan->planItem->unit->name }}
+                                                        </p>
+                                                    @endforeach
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    {{ thainumDigit(number_format($support->plan_group_amt)) }}
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    {{ thainumDigit(number_format($support->details[0]->price_per_unit, 2)) }}
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    {{ thainumDigit(number_format($support->total, 2)) }}
+                                                </td>
+                                            </tr>
+                                        @else
+                                            @foreach($support->details as $detail)
+                                                <?php $total += (float)$detail->sum_price; ?>
+                                                <tr style="min-height: 20px;">
+                                                    <td style="text-align: center;">{{ thainumDigit(++$row1) }}</td>
+                                                    <td>
+                                                        <?php $tableHeight += 20; ?>
+                                                        {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        @if($detail->desc != '')
+                                                            <?php $tableHeight += 20; ?>
+                                                            <p style="margin: 0 0 0 5px;">
+                                                                - {{ thainumDigit($detail->desc) }}
+                                                            </p>
+                                                        @endif
+                                                    </td>
+                                                    <td style="text-align: center;">
                                                         {{ thainumDigit(number_format($detail->amount)) }}
-                                                        {{ $detail->plan->planItem->unit->name }}
-                                                    </p>
-                                                @endforeach
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{ thainumDigit(number_format($support->plan_group_amt)) }}
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        {{ thainumDigit(number_format($detail->sum_price, 2)) }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                        <?php $tableHeight += 20; ?>
+                                        <tr>
+                                            <td style="text-align: center; font-weight: bold;" colspan="4">
+                                                รวมเป็นเงินทั้งสิ้น
                                             </td>
                                             <td style="text-align: right;">
-                                                {{ thainumDigit(number_format($support->details[0]->price_per_unit, 2)) }}
-                                            </td>
-                                            <td style="text-align: right;">
-                                                {{ thainumDigit(number_format($support->total, 2)) }}
+                                                {{ thainumDigit(number_format($total, 2)) }}
                                             </td>
                                         </tr>
-                                    @else
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td colspan="4">
+                                <div class="table-container">
+                                    <table style="width: 100%;" class="table" border="1">
+                                        <tr style="font-size: 16px;">
+                                            <th style="width: 5%; text-align: center;">ลำดับ</th>
+                                            <th style="text-align: center;">รายการ</th>
+                                            <th style="width: 10%; text-align: center;">จำนวนหน่วย</th>
+                                            <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
+                                            <th style="width: 15%; text-align: center;">ราคารวม</th>
+                                        </tr>
                                         @foreach($support->details as $detail)
+                                            @if ($row1 <= 10)
+                                                <tr style="min-height: 20px;">
+                                                    <td style="text-align: center;">{{ thainumDigit(++$row1) }}</td>
+                                                    <td>
+                                                        <?php $tableHeight += 20; ?>
+                                                        {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        @if($detail->desc != '')
+                                                            <?php $tableHeight += 20; ?>
+                                                            <p style="margin: 0 0 0 5px;">
+                                                                - {{ thainumDigit($detail->desc) }}
+                                                            </p>
+                                                        @endif
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{ thainumDigit(number_format($detail->amount)) }}
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        {{ thainumDigit(number_format($detail->sum_price, 2)) }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p class="page-number">- ๒ -</p>
+
+                                <table style="width: 100%;" class="table" border="1">
+                                    @foreach($support->details as $detail)
+                                        <?php ++$row2; ?>
+                                        @if ($row2 > 10)
                                             <?php $total += (float)$detail->sum_price; ?>
                                             <tr style="min-height: 20px;">
-                                                <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
+                                                <td style="width: 5%; text-align: center;">{{ thainumDigit($row2) }}</td>
                                                 <td>
                                                     <?php $tableHeight += 20; ?>
                                                     {{ thainumDigit($detail->plan->planItem->item->item_name) }}
@@ -127,32 +220,31 @@
                                                         </p>
                                                     @endif
                                                 </td>
-                                                <td style="text-align: center;">
+                                                <td style="width: 10%;text-align: center;">
                                                     {{ thainumDigit(number_format($detail->amount)) }}
                                                 </td>
-                                                <td style="text-align: right;">
+                                                <td style="width: 15%;text-align: right;">
                                                     {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
                                                 </td>
-                                                <td style="text-align: right;">
+                                                <td style="width: 15%;text-align: right;">
                                                     {{ thainumDigit(number_format($detail->sum_price, 2)) }}
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                    @endif
-                                    <?php $tableHeight += 20; ?>
+                                        @endif
+                                    @endforeach
 
                                     <tr>
                                         <td style="text-align: center; font-weight: bold;" colspan="4">
                                             รวมเป็นเงินทั้งสิ้น
                                         </td>
                                         <td style="text-align: right;">
-                                            {{ thainumDigit(number_format($total, 2)) }}
+                                            {{ thainumDigit(number_format($support->total, 2)) }}
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
                         <td colspan="4">
                             <span>เหตุผลและความจำเป็น</span>
@@ -182,13 +274,15 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
-                                <div style="height: 20px;"></div>
-                                <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                            @if (count($support->details) < 10)
+                                @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
+                                    <div style="height: 20px;"></div>
+                                    <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                @endif
                             @endif
                         </td>
                     </tr>
-                    @if((float)$total >= 500000)
+                    @if((float)$support->total >= 500000)
                         <tr>
                             <td colspan="4">
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
@@ -218,12 +312,14 @@
                     @endif
                     <tr>
                         <td colspan="4">
-                            @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
-                                <div style="height: 20px;"></div>
-                                <p class="page-number">- ๒ -</p>
+                            @if (count($support->details) < 10)
+                                @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
+                                    <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๒ -</p>
+                                @endif
                             @endif
                             <div style="margin: 0;">
-                                @if((float)$total >= 500000)
+                                @if((float)$support->total >= 500000)
                                     ๓. รายชื่อคณะกรรมการตรวจรับพัสดุ
                                 @else
                                     ๒. รายชื่อคณะกรรมการตรวจรับพัสดุ
@@ -234,7 +330,7 @@
                                         @if($committee->committee_type_id == '2')
                                             <?php $committeeHeight += 20; ?>
                                             <li class="committee-list">
-                                                @if((float)$total >= 500000)
+                                                @if((float)$support->total >= 500000)
                                                     ๓.{{ thainumDigit($c2++) }}
                                                 @else
                                                     ๒.{{ thainumDigit($c2++) }}
@@ -254,7 +350,7 @@
                     <tr>
                         <td colspan="4">
                             <p style="margin: 0;">
-                                @if((float)$total >= 500000)
+                                @if((float)$support->total >= 500000)
                                     ๔.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน............แผ่น
                                 @else
                                     ๓.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน............แผ่น
@@ -265,7 +361,7 @@
                     <tr>
                         <td colspan="4">
                             <p style="margin: 0;">
-                                @if((float)$total >= 500000)
+                                @if((float)$support->total >= 500000)
                                     ๕.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @else
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
@@ -282,6 +378,11 @@
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
+
+                                @if(count($support->details) > 15)
+                                    <div style="height: 20px; border: 1px solid red;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
                             @endif
 
                             @if(count($committees) > 6)
@@ -296,17 +397,31 @@
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
+
+                                @if(count($support->details) > 15)
+                                    <div style="height: 20px; border: 1px solid red;"></div>
+                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            @if(($tableHeight > 100 && $tableHeight < 360) || count($committees) > 6)
-                                <div style="height: 20px;"></div>
-                                <p class="page-number">- ๒ -</p>
+                            @if (count($support->details) <= 10)
+                                @if(($tableHeight > 100 && $tableHeight < 360) || count($committees) > 6)
+                                    <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๒ -</p>
+                                @endif
+                            @elseif (count($support->details) > 15)
+                                @if(count($committees) > 6)
+                                    <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๓ -</p>
+                                @else
+                                    <p class="page-number">- ๓ -</p>
+                                @endif
                             @endif
                             <p style="margin: 0 0 10px;">
-                                @if((float)$total >= 500000)
+                                @if((float)$support->total >= 500000)
                                     ๖.  รายชื่อผู้ประสานงาน
                                 @else
                                     ๕.  รายชื่อผู้ประสานงาน
