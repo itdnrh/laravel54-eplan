@@ -35,12 +35,14 @@ class InspectionController extends Controller
         ];
 
         $messages = [
-            'reason.required'       => 'กรุณาระบุเหตุผลการยกเลิก',
-            'start_date.required'   => 'กรุณาเลือกจากวันที่',
-            'start_date.not_in'     => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_date.required'     => 'กรุณาเลือกถึงวันที่',
-            'end_date.not_in'       => 'คุณมีการลาในวันที่ระบุแล้ว',
-            'end_period.required'   => 'กรุณาเลือกช่วงเวลา',
+            'deliver_seq.required'      => 'กรุณาระบุงวดที่',
+            'deliver_bill.required'     => 'กรุณาระบุหัวบิลเจ้าหนี้',
+            'deliver_no.required'       => 'ระบุเลขที่เอกสารส่งมอบงาน',
+            'deliver_date.required'     => 'กรุณาเลือกวันที่เอกสารส่งมอบงาน',
+            'inspect_sdate.required'    => 'กรุณาเลือกวันที่ตรวจรับ',
+            'inspect_edate.required'    => 'กรุณาเลือกถึงวันที่',
+            'inspect_total.required'    => 'กรุณาระบุยอดเงินตรวจรับ',
+            'inspect_result.required'   => 'กรุณาเลือกผลการตรวจรับ',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);

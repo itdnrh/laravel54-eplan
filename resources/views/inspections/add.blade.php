@@ -176,8 +176,30 @@
                                         @{{ formError.errors.deliver_date[0] }}
                                     </span>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'year')}"
+                                >
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="inspection.year"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'year')">
+                                        กรุณาเลือกเขียนที่
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'inspect_sdate')}"
                                 >
                                     <label for="">วันที่ตรวจรับ</label>
@@ -193,7 +215,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'inspect_edate')}"
                                 >
                                     <label for="">ถึงวันที่</label>
@@ -208,6 +230,8 @@
                                         @{{ formError.errors.inspect_edate[0] }}
                                     </span>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'inspect_total')}"
@@ -247,6 +271,8 @@
                                         @{{ formError.errors.inspect_result[0] }}
                                     </span>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(inspection, 'remark')}"

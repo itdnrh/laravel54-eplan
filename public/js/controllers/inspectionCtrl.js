@@ -4,6 +4,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.txtDeliverNo = '';
+
     $scope.inspections = [];
     $scope.pager = [];
 
@@ -231,12 +232,9 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.onSelectedOrder = (e, order) => {
         if (order) {
-            console.log(order);
-            $scope.inspection = {
-                order: order,
-                order_id: order.id,
-                inspect_total: order.net_total
-            };
+            $scope.inspection.order_id      = order.id;
+            $scope.inspection.order         = order;
+            $scope.inspection.inspect_total = order.net_total;
 
             $scope.getInspectionByOrder(order.id);
         }
