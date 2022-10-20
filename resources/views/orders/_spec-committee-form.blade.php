@@ -99,6 +99,14 @@
                     @{{ specCommittee.is_existed ? 'พิมพ์เอกสาร' : 'บันทึก' }}
                 </button>
                 <button
+                    ng-click="onUpdateSpecCommittee($event, specCommittee.id)"
+                    ng-show="specCommittee.is_existed"
+                    class="btn btn-warning"
+                    aria-label="Update"
+                >
+                    บันทึกการแก้ไข
+                </button>
+                <button
                     class="btn btn-danger" 
                     ria-label="Close"
                     ng-click="closeSpecCommitteeForm();"

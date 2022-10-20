@@ -242,26 +242,28 @@ class SupportOrderController extends Controller
     public function update(Request $req, $id)
     {
         try {
-            // if ($support->save()) {
-            //     return [
-            //         'status'    => 1,
-            //         'message'   => 'Updation successfully',
-            //         'supports'  => Support::with('planType','depart','division')
-            //                         ->with('details','details.plan','details.plan.planItem.unit')
-            //                         ->with('details.plan.planItem','details.plan.planItem.item')
-            //                         ->where('year', $support->year)
-            //                         ->where('depart_id', $support->depart_id)
-            //                         ->where('support_type_id', '1')
-            //                         ->orderBy('received_no', 'DESC')
-            //                         ->paginate(10)
-            //                         ->setPath('search')
-            //     ];
-            // } else {
-            //     return [
-            //         'status'    => 0,
-            //         'message'   => 'Something went wrong!!'
-            //     ];
-            // }
+            $support = SupportOrder::find($id);
+            // $support->year              = $req['year'];
+            $support->support_id        = $req['support_id'];
+            $support->purchase_method   = $req['purchase_method'];
+            $support->source_price      = $req['source_price'];
+            $support->spec_doc_no       = $req['spec_doc_no'];
+            $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
+            $support->report_doc_no     = $req['report_doc_no'];
+            $support->report_doc_date   = convThDateToDbDate($req['report_doc_date']);
+            
+            if ($support->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updation successfully',
+                    'support'   => $support
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,

@@ -852,12 +852,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             .datepicker('update', new Date());
 
         if (supportOrders.length > 0) {
+            $scope.specCommittee.id                 = supportOrders[0].id;
             $scope.specCommittee.purchase_method    = supportOrders[0].purchase_method.toString();
             $scope.specCommittee.source_price       = supportOrders[0].source_price.toString();
             $scope.specCommittee.spec_doc_no        = supportOrders[0].spec_doc_no;
-            $scope.specCommittee.spec_doc_date      = supportOrders[0].spec_doc_date;
+            // $scope.specCommittee.spec_doc_date      = supportOrders[0].spec_doc_date;
             $scope.specCommittee.report_doc_no      = supportOrders[0].report_doc_no;
-            $scope.specCommittee.report_doc_date    = supportOrders[0].report_doc_date;
+            // $scope.specCommittee.report_doc_date    = supportOrders[0].report_doc_date;
             $scope.specCommittee.is_existed         = true;
 
             $('#spec_doc_date')
@@ -871,6 +872,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.specCommittee = {
+        id: '',
         support_id: '',
         purchase_method: '1',
         source_price: '1',
@@ -883,6 +885,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.clearSpecCommittee = function() {
         $scope.specCommittee = {
+            id: '',
             support_id: '',
             purchase_method: '1',
             source_price: '1',
@@ -894,13 +897,28 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         };
     };
 
-    $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
+    $scope.onUpdateSpecCommittee = function(e, id) {
+        if(confirm(`คุณต้องแก้ไขรายละเอียดเอกสารขออนุมัติผู้กำหนด Spec รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/support-orders/${id}`, $scope.specCommittee)
+            .then(res => {
+                if (res.data.status) {
+                        
+                } else {
+
+                }
+            }, err => {
+                console.log(err);
+            });
+        }
+    }
+
+    $scope.onPrintSpecCommittee = function(e, supportId, isExisted=false) {
         if (isExisted) {
             $scope.clearSpecCommittee();
 
             $('#spec-committee-form').modal('hide');
 
-            window.location.href = `${CONFIG.baseUrl}/supports/${id}/print/spec-committee`;
+            window.location.href = `${CONFIG.baseUrl}/supports/${supportId}/print/spec-committee`;
         } else {
             $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
             .then(res => {
@@ -909,7 +927,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
                     $('#spec-committee-form').modal('hide');
 
-                    window.location.href = `${CONFIG.baseUrl}/supports/${id}/print/spec-committee`;
+                    window.location.href = `${CONFIG.baseUrl}/supports/${supportId}/print/spec-committee`;
                 } else {
 
                 }

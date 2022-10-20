@@ -92,6 +92,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('supports/{id}/cancel-received', 'SupportController@cancelReceived');
 
     Route::post('support-orders', 'SupportOrderController@store');
+    Route::put('support-orders/{id}', 'SupportOrderController@update');
 
     /** จ้างซ่อมแซม/บำรุงรักษา */
     Route::get('repairs', 'RepairController@getAll');
