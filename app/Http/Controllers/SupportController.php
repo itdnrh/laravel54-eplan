@@ -690,7 +690,12 @@ class SupportController extends Controller
 
                 /** Update all plans's status to 9=อยู่ระหว่างการจัดซื้อ */
                 foreach($req['details'] as $detail) {
-                    Plan::where('id', $detail['plan_id'])->update(['status' => 9]);
+                    $plan = Plan::with('planItem')->find($detail['plan_id']);
+
+                    if ($plan->planItem->calc_method == 1) {
+                        $plan->status = 9;
+                        $plan->save();
+                    }
                 }
 
                 return [

@@ -260,7 +260,7 @@ class OrderController extends Controller
                         ]);
 
                         /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
-                        Support::find($detail->support_id)->update(['status' => 3]);
+                        // Support::find($detail->support_id)->update(['status' => 3]);
 
                         /** TODO: should update plan's remain_amount by decrease from request->amount  */
                         $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
@@ -388,7 +388,7 @@ class OrderController extends Controller
                         ]);
 
                         /** Update support's status to 2=รับเอกสารแล้ว */
-                        Support::find($orderDetail->support_id)->update(['status' => 2]);
+                        // Support::find($orderDetail->support_id)->update(['status' => 2]);
 
                         /** Update plan's status to 0=รอดำเนินการ */
                         Plan::find($orderDetail->plan_id)->update(['status' => 0]);
@@ -436,7 +436,7 @@ class OrderController extends Controller
                             ]);
 
                             /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
-                            Support::find($orderDetail->support_id)->update(['status' => 3]);
+                            // Support::find($orderDetail->support_id)->update(['status' => 3]);
 
                             /** TODO: should update plan's remain_amount by decrease from req->amount  */
                             $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
@@ -466,6 +466,21 @@ class OrderController extends Controller
                     } else {
                         /** ถ้าเป็นรายการเก่า */
                         $detail = OrderDetail::find($item['id']);
+
+                        /** Revert plan's remain_amount and remain_budget  */
+                        $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
+                        /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
+                        if ($planItem->calc_method == 1) {
+                            /** กรณีตัดยอดตามจำนวน */
+                            $planItem->remain_amount = (float)$planItem->remain_amount + (float)$detail->amount;
+                            $planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;
+                        } else {
+                            /** กรณีตัดยอดตามยอดเงิน */
+                            $planItem->remain_amount = 1;
+                            $planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;
+                        }
+                        $planItem->save();
+
                         $detail->desc           = $item['desc'];
                         $detail->spec           = $item['spec'];
                         $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
@@ -474,22 +489,8 @@ class OrderController extends Controller
                         $detail->sum_price      = currencyToNumber($item['sum_price']);
 
                         if ($detail->save()) {
-                            /** Revert plan's remain_amount and remain_budget  */
-                            $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
-
-                            /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
-                            if ($planItem->calc_method == 1) {
-                                /** กรณีตัดยอดตามจำนวน */
-                                $planItem->remain_amount = (float)$planItem->remain_amount + (float)$detail->amount;
-                                $planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;
-                            } else {
-                                /** กรณีตัดยอดตามยอดเงิน */
-                                $planItem->remain_amount = 1;
-                                $planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;
-                            }
-                            $planItem->save();
-
                             /** TODO: should update plan's remain_amount by decrease from req->amount  */
+                            $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
                             /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
                             if ($planItem->calc_method == 1) {
                                 /** กรณีตัดยอดตามจำนวน */
