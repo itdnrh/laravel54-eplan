@@ -88,7 +88,7 @@ class InspectionController extends Controller
                             $q->whereIn('order_id', $ordersList);
                         })
                         ->when(!empty($deliverNo), function($q) use ($deliverNo) {
-                            $q->where('deliver_no', 'LIKE', $deliverNo.'%');
+                            $q->where('deliver_no', 'like', '%'.$deliverNo.'%');
                         })
                         ->orderBy('inspect_sdate', 'DESC')
                         ->paginate(10);
