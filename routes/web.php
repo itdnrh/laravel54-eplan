@@ -277,7 +277,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('provinces/search', 'ProvinceOrderController@search');
     Route::get('system/provinces', 'ProvinceOrderController@index');
     Route::get('provinces/detail/{id}', 'ProvinceOrderController@detail');
-    Route::get('provinces/add', 'ProvinceOrderController@add');
+    Route::get('provinces/add', 'ProvinceOrderController@create');
     Route::post('provinces/store', 'ProvinceOrderController@store');
     Route::get('provinces/edit/{id}', 'ProvinceOrderController@edit');
     Route::post('provinces/update/{id}', 'ProvinceOrderController@update');

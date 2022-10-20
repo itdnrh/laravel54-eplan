@@ -5,6 +5,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.editRow = false;
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
+    $scope.cboStatus = '0';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';

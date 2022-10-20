@@ -93,7 +93,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
         let depart  = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${CONFIG.baseUrl}/repairs/search?year=${year}&stype=2&depart=${depart}&doc_no=${doc_no}&desc=${desc}&status=0-3`)
+        $http.get(`${CONFIG.baseUrl}/repairs/search?year=${year}&stype=2&depart=${depart}&doc_no=${doc_no}&desc=${desc}&status=0-5`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -117,7 +117,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
         let depart  = $('#user').val() == '1300200009261' ? '' : $('#depart').val();
 
-        $http.get(`${url}&year=${year}&stype=2&depart=${depart}&doc_no=${doc_no}&desc=${desc}&status=0-3`)
+        $http.get(`${url}&year=${year}&stype=2&depart=${depart}&doc_no=${doc_no}&desc=${desc}&status=0-5`)
         .then(function(res) {
             $scope.setSupports(res);
 
