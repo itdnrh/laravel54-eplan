@@ -147,11 +147,11 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.onSelectedOrder = (e, order) => {
         if (order) {
-            $scope.withdrawalorder          = order;
-            $scope.withdrawalorder_id       = order.id;
-            $scope.withdrawalinspections    = order.inspections;
-            $scope.withdrawalsupplier_id    = order.supplier.supplier_id;
-            $scope.withdrawalsupplier       = order.supplier;
+            $scope.withdrawal.order          = order;
+            $scope.withdrawal.order_id       = order.id;
+            $scope.withdrawal.inspections    = order.inspections;
+            $scope.withdrawal.supplier_id    = order.supplier.supplier_id;
+            $scope.withdrawal.supplier       = order.supplier;
         }
 
         $('#orders-list').modal('hide');
@@ -391,37 +391,49 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         event.preventDefault();
         $scope.loading = true;
 
+        $scope.withdrawal.user = $('#user').val();
+
         $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
         .then(function(res) {
-            console.log(res.data);
-
             $scope.loading = false;
+
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
+            } else {
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
+            }
         }, function(err) {
             console.log(err);
+            toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้ !!!");
 
             $scope.loading = false;
         });
-
-        window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
     }
 
     $scope.edit = function(id) {
         $http.get(`${CONFIG.apiUrl}/withdrawals/${id}`)
         .then(res => {
-            console.log(res);
             const { inspection, supplier, prepaid, ...withdrawal } = res.data.withdrawal;
 
             $scope.withdrawal.id = withdrawal.id;
+            $scope.withdrawal.year = withdrawal.year.toString();
             $scope.withdrawal.order_id = inspection.order_id;
-            $scope.withdrawal.inspection = inspection;
             $scope.withdrawal.order = inspection.order;
+            $scope.withdrawal.inspection_id = withdrawal.inspection_id;
+            $scope.withdrawal.inspection = inspection;
             $scope.withdrawal.supplier_id = supplier.supplier_id;
             $scope.withdrawal.supplier = supplier;
-            $scope.withdrawal.year = withdrawal.year.toString();
+            $scope.withdrawal.deliver_seq = inspection.deliver_seq.toString();
+            $scope.withdrawal.deliver_no = inspection.deliver_no;
+            $scope.withdrawal.deliver_date = inspection.deliver_date;
             $scope.withdrawal.net_total = withdrawal.net_total;
             $scope.withdrawal.prepaid_person_detail = prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname;
             $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
             $scope.withdrawal.remark = withdrawal.remark;
+
+            $scope.withdrawal.inspections    = res.data.inspections;
 
             $('#po_date')
                 .datepicker(dtpOptions)
@@ -434,8 +446,28 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.update = function(event, form) {
         event.preventDefault();
 
-        if(confirm(`คุณต้องแก้ไขรายการขอยกเลิกวันลาเลขที่ ${$scope.cancellation.leave_id} ใช่หรือไม่?`)) {
-            $(`#${form}`).submit();
+        if(confirm(`คุณต้องแก้ไขรายการส่งเบิกเงิน รหัส ${$scope.withdrawal.id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+            $scope.withdrawal.user = $('#user').val();
+
+            $http.post(`${CONFIG.baseUrl}/withdrawals/update/${$scope.withdrawal.id}`, $scope.withdrawal)
+            .then(function(res) {
+                console.log(res);
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
+            });
         }
     };
 

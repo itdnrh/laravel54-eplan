@@ -76,11 +76,15 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="">วันที่ใบสั่งซื้อ :</label>
-                                    <div class="form-control">@{{ withdrawal.order.po_date | thdate }}</div>
+                                    <div class="form-control" readonly>
+                                        @{{ withdrawal.order.po_date | thdate }}
+                                    </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">เจ้าหนี้ :</label>
-                                    <div class="form-control">@{{ withdrawal.supplier.supplier_name }}</div>
+                                    <div class="form-control" readonly>
+                                        @{{ withdrawal.supplier.supplier_name }}
+                                    </div>
                                 </div>
                                 <div class="form-group col-md-12" ng-show="withdrawal.order">
                                     <div class="alert alert-success" style="margin: 0;">
@@ -103,7 +107,7 @@
                             </div>
                             <div class="row">
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_seq')}"
                                 >
                                     <label for="">งวดงานที่</label>
@@ -115,8 +119,8 @@
                                         ng-change="onDeliverSeqSelected(withdrawal.deliver_seq)"
                                     >
                                         <option value="">-- เลือกงวดงานที่ --</option>
-                                        <option ng-repeat="seq in range(0, withdrawal.inspection.order.deliver_amt)" value="@{{ seq+1 }}">
-                                            @{{ seq+1 }}
+                                        <option ng-repeat="insp in withdrawal.inspections" value="@{{ insp.deliver_seq }}">
+                                            @{{ insp.deliver_seq }}
                                         </option>
                                     </select>
                                     <span class="help-block" ng-show="checkValidate(withdrawal, 'deliver_seq')">
@@ -124,20 +128,25 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_no')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
-                                    <input
-                                        type="text"
-                                        id="deliver_no"
-                                        name="deliver_no"
-                                        ng-model="withdrawal.inspection.deliver_no"
-                                        class="form-control"
-                                    />
+                                    <div class="form-control" readonly>
+                                        @{{ withdrawal.deliver_no }}
+                                    </div>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-3"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_no')}"
+                                >
+                                    <label for="">วันที่เอกสารส่งมอบงาน</label>
+                                    <div class="form-control" readonly>
+                                        @{{ withdrawal.deliver_date | thdate }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="form-group col-md-3"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'year')}"
                                 >
                                     <label>ปีงบประมาณ</label>
@@ -170,6 +179,7 @@
                                         name="net_total"
                                         ng-model="withdrawal.net_total"
                                         class="form-control"
+                                        readonly
                                     />
                                     <span class="help-block" ng-show="checkValidate(withdrawal, 'net_total')">
                                         @{{ formError.errors.net_total[0] }}

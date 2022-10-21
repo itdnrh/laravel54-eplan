@@ -95,9 +95,15 @@ class WithdrawalController extends Controller
                         ->with('inspection.order.details','inspection.order.details.item')
                         ->with('prepaid','prepaid.prefix')
                         ->find($id);
+        
+        $inspections = Inspection::with('order','order.supplier')
+                                ->with('order.details','order.details.item')
+                                ->where('order_id', $withdrawal->inspection->order->id)
+                                ->get();
 
         return [
-            "withdrawal" => $withdrawal
+            "withdrawal"    => $withdrawal,
+            "inspections"   => $inspections
         ];
     }
 
@@ -152,30 +158,43 @@ class WithdrawalController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        $cancel = Withdrawal::find($req['id']);
-        $withdrawal->withdraw_no    = 'นม 0032.201.2/';
-        $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
-        $withdrawal->inspection_id  = $req['inspection_id'];
-        $withdrawal->supplier_id    = $req['supplier_id'];
-        $withdrawal->net_total      = $req['net_total'];
-        $withdrawal->year           = $req['year'];
-        $withdrawal->remark         = $req['remark'];
-        $withdrawal->created_user   = $req['user'];
-        $withdrawal->updated_user   = $req['user'];
+        try {
+            $withdrawal = Withdrawal::find($id);
+            $withdrawal->withdraw_no    = 'นม 0032.201.2/';
+            $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
+            $withdrawal->inspection_id  = $req['inspection_id'];
+            $withdrawal->supplier_id    = $req['supplier_id'];
+            $withdrawal->net_total      = $req['net_total'];
+            $withdrawal->year           = $req['year'];
+            $withdrawal->remark         = $req['remark'];
+            $withdrawal->created_user   = $req['user'];
+            $withdrawal->updated_user   = $req['user'];
 
-        if ($withdrawal->save()) {
-            $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
-            
-            /** Update status of plan data */
-            $details = OrderDetail::where('order_id', $req['order_id'])->get();
-            foreach($details as $item) {
-                $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
+            if ($withdrawal->save()) {
+                // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                
+                /** Update status of plan data */
+                // $details = OrderDetail::where('order_id', $req['order_id'])->get();
+                // foreach($details as $item) {
+                //     $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
+                // }
+                return [
+                    'status'        => 1,
+                    'message'       => 'Updating successfully!!',
+                    'withdrawal'    => $withdrawal
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
+        } catch (\Exception $ex) {
             return [
-                'withdrawal' => $withdrawal
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }

@@ -743,7 +743,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
-                // window.location.href = `${CONFIG.baseUrl}/supports/list`;
+                window.location.href = `${CONFIG.baseUrl}/supports/list`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
