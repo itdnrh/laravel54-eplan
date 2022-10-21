@@ -59,7 +59,7 @@ class WithdrawalController extends Controller
     {
         return view('withdrawals.list', [
             // "suppliers" => Supplier::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -78,10 +78,14 @@ class WithdrawalController extends Controller
 
     public function detail($id)
     {
+        /** Get depart data of supplies department */
+        $supply = Depart::where('depart_id', '2')->first();
+
         return view('withdrawals.detail', [
-            "withdrawal" => Withdrawal::find($id),
-            "factions"      => Faction::all(),
+            "withdrawal"    => Withdrawal::find($id),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
+            "doc_prefix"    => $supply->memo_no
         ]);
     }
 
@@ -101,7 +105,7 @@ class WithdrawalController extends Controller
         return view('withdrawals.add', [
             "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -177,11 +181,14 @@ class WithdrawalController extends Controller
     public function withdraw(Request $req, $id)
     {
         try {
+            /** Get depart data of supplies department */
+            $supply = Depart::where('depart_id', '2')->first();
+
             $withdrawal = Withdrawal::find($id);
-            $withdrawal->withdraw_no    = 'นม 0032.201.2/'.$req['withdraw_no'];
+            $withdrawal->withdraw_no    = $supply->memo_no.'/'.$req['withdraw_no'];
             $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
             $withdrawal->completed      = '1';
-    
+
             if ($withdrawal->save()) {
                 return [
                     'status'        => 1,

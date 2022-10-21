@@ -320,55 +320,42 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $('#withdraw-form').modal('show');
     };
 
-    $scope.errors = {};
-    $scope.withdraw = (e) => {
-        if ($('#withdraw_no').val() == '') {
-            $scope.errors = {
-                ...$scope.errors,
-                withdraw_no: ['กรุณาระบุเลขที่หนังสือส่งเบิกเงิน']
-            }
-        } else {
-            if ($scope.errors && $scope.errors.hasOwnProperty('withdraw_no')) {
-                const { withdraw_no, ...err } = $scope.errors;
+    $scope.withdraw = (e, frm) => {
+        e.preventDefault();
 
-                $scope.errors = { ...err }
-            }
+        if (frm.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
         }
 
-        if ($('#withdraw_date').val() == '') {
-            $scope.errors = {
-                ...$scope.errors,
-                withdraw_date: ['กรุณาระบุวันที่หนังสือส่งเบิกเงิน']
-            }
-        } else {
-            if ($scope.errors && $scope.errors.hasOwnProperty('withdraw_date')) {
-                const { withdraw_date, ...err } = $scope.errors;
-    
-                $scope.errors = { ...err }
-            }
-        }
+        if(confirm(`คุณต้องส่งเบิกเงิน รหัส ${$scope.withdrawal.id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
 
-        if (Object.keys($scope.errors).length == 0) {
-            console.log($scope.withdrawal);
             let data = { withdraw_no: $('#withdraw_no').val(), withdraw_date: $('#withdraw_date').val() };
 
             $http.put(`${CONFIG.apiUrl}/withdrawals/${$scope.withdrawal.id}`, data)
             .then(function(res) {
+                $scope.loading = false;
+
                 if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+                    toaster.pop('success', "ผลการทำงาน", "ส่งเบิกเงินเรียบร้อย !!!");
 
                     $scope.withdrawal.withdraw_no = res.data.withdrawal.withdraw_no;
                     $scope.withdrawal.withdraw_date = res.data.withdrawal.withdraw_date;
 
                     sendToDebt($scope.withdrawal);
+
+                    $('#withdraw-form').modal('hide');
                 } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถส่งเบิกเงินได้ !!!");
                 }
             }, function(err) {
                 console.log(err);
-            });
 
-            $('#withdraw-form').modal('hide');
+                $scope.loading = false;
+
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถส่งเบิกเงินได้ !!!");
+            });
         }
     };
 
@@ -403,12 +390,17 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.store = function(event, form) {
         event.preventDefault();
+        $scope.loading = true;
 
         $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
         .then(function(res) {
             console.log(res.data);
+
+            $scope.loading = false;
         }, function(err) {
             console.log(err);
+
+            $scope.loading = false;
         });
 
         window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
