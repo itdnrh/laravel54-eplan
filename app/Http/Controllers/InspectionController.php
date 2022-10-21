@@ -262,21 +262,39 @@ class InspectionController extends Controller
 
     public function delete(Request $req, $id)
     {
-        $inspection = Inspection::find($id);
-        $deleted = $inspection;
+        try {
+            $inspection = Inspection::find($id);
+            $deleted = $inspection;
 
-        if ($inspection->delete()) {
-            $order = Order::find($deleted->order_id)->update(['status' => 0]);
+            if ($inspection->delete()) {
+                /** Revert orders's status to 0=อยู่ระหว่างจัดซื้อจัดจ้าง */
+                $order = Order::find($deleted->order_id)->update(['status' => 0]);
 
-            $orderDetails = OrderDetail::where('order_id', $deleted->order_id)->get();
-            foreach($orderDetails as $item) {
-                $detail = OrderDetail::where('id', $item->id)->update(['received' => null]);
+                $orderDetails = OrderDetail::where('order_id', $deleted->order_id)->get();
+                foreach($orderDetails as $item) {
+                    /** Revert order_details's status to null */
+                    $detail = OrderDetail::where('id', $item->id)->update(['received' => null]);
 
-                /** Update support_details's status to 4=ตรวจรับแล้ว */
-                SupportDetail::where('id', $item->support_detail_id)->update(['status' => 3]);
+                    /** Revert support_details's status to 3=ออกใบสั่งซื้อแล้ว */
+                    SupportDetail::where('id', $item->support_detail_id)->update(['status' => 3]);
+                }
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deleting successfully!!',
+                    'id'        => $id
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
-            return redirect('/inspections/list')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 }

@@ -8,6 +8,13 @@ class Order extends Model
 {
     protected $table = "orders";
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['status'];
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
