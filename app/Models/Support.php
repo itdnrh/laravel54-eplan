@@ -8,6 +8,13 @@ class Support extends Model
 {
     protected $table = "supports";
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['status'];
+
     public function planType()
     {
         return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');

@@ -260,7 +260,7 @@ class OrderController extends Controller
                         ]);
 
                         /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
-                        // Support::find($detail->support_id)->update(['status' => 3]);
+                        Support::find($detail->support_id)->update(['status' => 3]);
 
                         /** TODO: should update plan's remain_amount by decrease from request->amount  */
                         $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
@@ -388,7 +388,7 @@ class OrderController extends Controller
                         ]);
 
                         /** Update support's status to 2=รับเอกสารแล้ว */
-                        // Support::find($orderDetail->support_id)->update(['status' => 2]);
+                        Support::find($orderDetail->support_id)->update(['status' => 2]);
 
                         /** Update plan's status to 0=รอดำเนินการ */
                         Plan::find($orderDetail->plan_id)->update(['status' => 0]);
@@ -436,7 +436,7 @@ class OrderController extends Controller
                             ]);
 
                             /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
-                            // Support::find($orderDetail->support_id)->update(['status' => 3]);
+                            Support::find($orderDetail->support_id)->update(['status' => 3]);
 
                             /** TODO: should update plan's remain_amount by decrease from req->amount  */
                             $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
@@ -540,38 +540,56 @@ class OrderController extends Controller
         try {
             $order = Order::find($id);
 
-            // if ($order->delete()) {
-                /** TODO: Revert plan_items's remain data */
-                // $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
-                // // ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน
-                // if ($planItem->calc_method == 1) {
-                //     $planItem->remain_amount = (float)$planItem->remain_amount + (float)$supportDetail->amount;
-                //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$supportDetail->sum_price;
-                // } else {
-                //     $planItem->remain_budget = (float)$planItem->remain_budget + (float)$item['sum_price'];
+            if ($order->delete()) {
+                $orderDetail = OrderDetail::where('order_id', $id)->get();
 
-                //     if ($planItem->remain_amount == 0) {
-                //         $planItem->remain_amount = 1;
-                //     }
-                // }
-                // $planItem->update();
-            // }
-            //     return [
-            //         'status'    => 1,
-            //         'message'   => 'Deleting successfully!!',
-            //         'order'     => $order
-            //     ];
-            // } else {
-            //     return [
-            //         'status'    => 0,
-            //         'message'   => 'Something went wrong!!'
-            //     ];
-            // }
+                foreach($orderDetail as $rm) {
+                    /** Update support_details's status to 2=รับเอกสารแล้ว */
+                    SupportDetail::find($rm->support_detail_id)->update([
+                        'ref_order_id'  => null,
+                        'status'        => 2
+                    ]);
+
+                    /** Update support's status to 2=รับเอกสารแล้ว */
+                    Support::find($rm->support_id)->update(['status' => 2]);
+
+                    /** Update plan's status to 0=รอดำเนินการ */
+                    Plan::find($rm->plan_id)->update(['status' => 0]);
+
+                    /** Revert plan's remain_amount and remain_budget  */
+                    $planItem = PlanItem::where('plan_id', $rm->plan_id)->first();
+                    /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
+                    if ($planItem->calc_method == 1) {
+                        /** กรณีตัดยอดตามจำนวน */
+                        $planItem->remain_amount = (float)$planItem->remain_amount + (float)$rm->amount;
+                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$rm->sum_price;
+                    } else {
+                        /** กรณีตัดยอดตามยอดเงิน */
+                        $planItem->remain_amount = 1;
+                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$rm->sum_price;
+                    }
+                    $planItem->save();
+
+                    /** Delete order_detials data that user remove from table list */
+                    OrderDetail::where('id', $rm)->delete();
+                }
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deleting successfully!!',
+                    'order'     => $order
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
         } catch (\Exception $ex) {
-            // return [
-            //     'status'    => 0,
-            //     'message'   => $ex->getMessage()
-            // ];
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
         }
     }
 
