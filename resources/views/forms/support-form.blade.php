@@ -75,11 +75,11 @@
                         </td>
                     </tr>
 
-                    <?php $row1 = 0; ?>
-                    <?php $row2 = 0; ?>
+                    <?php $row = 0; ?>
+                    <?php $restRow = 0; ?>
                     <?php $total = 0; ?>
                     <?php $tableHeight = 0; ?>
-                    @if (count($support->details) < 10)
+                    @if (count($support->details) < 12)
                         <tr>
                             <td colspan="4">
                                 <div class="table-container">
@@ -94,7 +94,7 @@
                                         @if($support->is_plan_group == '1')
                                             <?php $total = (float)$support->total; ?>
                                             <tr style="min-height: 20px;">
-                                                <td style="text-align: center;">{{ thainumDigit(++$row1) }}</td>
+                                                <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                 <td>
                                                     <?php $tableHeight += 20; ?>
                                                     {{ thainumDigit($support->plan_group_desc) }}
@@ -121,7 +121,7 @@
                                             @foreach($support->details as $detail)
                                                 <?php $total += (float)$detail->sum_price; ?>
                                                 <tr style="min-height: 20px;">
-                                                    <td style="text-align: center;">{{ thainumDigit(++$row1) }}</td>
+                                                    <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
                                                         {{ thainumDigit($detail->plan->planItem->item->item_name) }}
@@ -150,7 +150,7 @@
                                                 รวมเป็นเงินทั้งสิ้น
                                             </td>
                                             <td style="text-align: right;">
-                                                {{ thainumDigit(number_format($total, 2)) }}
+                                                {{ thainumDigit(number_format($support->total, 2)) }}
                                             </td>
                                         </tr>
                                     </table>
@@ -170,9 +170,9 @@
                                             <th style="width: 15%; text-align: center;">ราคารวม</th>
                                         </tr>
                                         @foreach($support->details as $detail)
-                                            @if ($row1 <= 10)
+                                            @if ($row < 12)
                                                 <tr style="min-height: 20px;">
-                                                    <td style="text-align: center;">{{ thainumDigit(++$row1) }}</td>
+                                                    <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
                                                         {{ thainumDigit($detail->plan->planItem->item->item_name) }}
@@ -197,6 +197,7 @@
                                         @endforeach
                                     </table>
                                 </div>
+                                <p class="next-paragraph">/{{ thainumDigit(++$row) }}...</p>
                             </td>
                         </tr>
                         <tr>
@@ -205,11 +206,11 @@
 
                                 <table style="width: 100%;" class="table" border="1">
                                     @foreach($support->details as $detail)
-                                        <?php ++$row2; ?>
-                                        @if ($row2 > 10)
+                                        <?php ++$restRow; ?>
+                                        @if ($restRow > 12)
                                             <?php $total += (float)$detail->sum_price; ?>
                                             <tr style="min-height: 20px;">
-                                                <td style="width: 5%; text-align: center;">{{ thainumDigit($row2) }}</td>
+                                                <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
                                                 <td>
                                                     <?php $tableHeight += 20; ?>
                                                     {{ thainumDigit($detail->plan->planItem->item->item_name) }}
@@ -361,9 +362,12 @@
                     <tr>
                         <td colspan="4">
                             <p style="margin: 0;">
+                                <?php $nextBullet = 0; ?>
                                 @if((float)$support->total >= 500000)
+                                    <?php $nextBullet = 5; ?>
                                     ๕.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @else
+                                    <?php $nextBullet = 4; ?>
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @endif
                             </p>
@@ -371,17 +375,17 @@
                             @if(count($committees) <= 6)
                                 @if($tableHeight > 100 && $tableHeight < 180)
                                     <div style="height: 40px;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
                                 @if($tableHeight >= 180 && $tableHeight < 360)
                                     <div style="height: 20px;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) > 15)
-                                    <div style="height: 20px; border: 1px solid red;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                @if(count($support->details) > 17)
+                                    <div style="height: 20px;"></div>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
 
@@ -389,18 +393,18 @@
                                 <!-- ประมาณไม่เกิน 2 แถวใหญ่ -->
                                 @if($tableHeight <= 100)
                                     <div style="height: {{ 100 - $tableHeight }}px;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
                                 <!-- ประมาณมากกว่า 2 แถวใหญ่ -->
                                 @if($tableHeight > 100)
                                     <div style="height: 20px;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) > 15)
+                                @if(count($support->details) > 17)
                                     <div style="height: 20px; border: 1px solid red;"></div>
-                                    <p class="next-paragraph">/๖.  รายชื่อผู้ประสานงาน...</p>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
                         </td>
@@ -412,7 +416,7 @@
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
                                 @endif
-                            @elseif (count($support->details) > 15)
+                            @elseif (count($support->details) > 17)
                                 @if(count($committees) > 6)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๓ -</p>
