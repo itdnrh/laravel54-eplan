@@ -212,20 +212,14 @@
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <form
-                                                id="frmDelete"
-                                                method="POST"
-                                                action="{{ url('/inspections/delete') }}"
+                                            <a
+                                                href="#"
+                                                ng-click="delete($event, insp.id)"
+                                                title="ลบรายการ"
+                                                class="btn btn-danger btn-xs"
                                             >
-                                                {{ csrf_field() }}
-                                                <button
-                                                    type="submit"
-                                                    ng-click="delete($event, insp.id)"
-                                                    class="btn btn-danger btn-xs"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </div>
                                     </td>             
                                 </tr>

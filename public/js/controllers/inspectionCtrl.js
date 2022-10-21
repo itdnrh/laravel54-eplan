@@ -312,13 +312,13 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
                 window.location.href = `${CONFIG.baseUrl}/orders/inspect`;
             } else {
-                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถบันทึกตรวจรับได้ !!!");
             }
 
             $scope.loading = false;
         }, function(err) {
             console.log(err);
-            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกตรวจรับได้ !!!");
+            toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถบันทึกตรวจรับได้ !!!");
 
             $scope.loading = false;
         });
@@ -358,7 +358,6 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         event.preventDefault();
 
         if(confirm(`คุณต้องแก้ไขรายการตรวจรับ รหัส ${$scope.inspection.id} ใช่หรือไม่?`)) {
-            event.preventDefault();
             $scope.loading = true;
 
             $http.post(`${CONFIG.baseUrl}/inspections/update/${$scope.inspection.id}`, $scope.inspection)
@@ -368,13 +367,13 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
                     window.location.href = `${CONFIG.baseUrl}/orders/inspect`;
                 } else {
-                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขตรวจรับได้ !!!");
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถแก้ไขตรวจรับได้ !!!");
                 }
 
                 $scope.loading = false;
             }, function(err) {
                 console.log(err);
-                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขตรวจรับได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถแก้ไขตรวจรับได้ !!!");
 
                 $scope.loading = false;
             });
@@ -384,11 +383,26 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        const actionUrl = $('#frmDelete').attr('action');
-        $('#frmDelete').attr('action', `${actionUrl}/${id}`);
+        if (window.confirm(`คุณต้องลบรายการตรวจรับ รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
 
-        if (window.confirm(`คุณต้องลบรายการขอยกเลิกวันลาเลขที่ ${id} ใช่หรือไม่?`)) {
-            $('#frmDelete').submit();
+            $http.post(`${CONFIG.baseUrl}/inspections/delete/${id}`)
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบรายการตรวจรับเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/orders/inspect`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบรายการตรวจรับได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบรายการตรวจรับได้ !!!");
+
+                $scope.loading = false;
+            });
         }
     };
 });
