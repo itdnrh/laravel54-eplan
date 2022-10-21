@@ -12,9 +12,10 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.orders_pager = null;
 
     $scope.inspection = {
-        year: '2566',
-        order_id: '',
+        id: '',
         order: null,
+        order_id: '',
+        year: '2566',
         deliver_seq: '',
         deliver_bill: '',
         deliver_no: '',
@@ -326,21 +327,28 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.edit = function(id) {
         $http.get(`${CONFIG.apiUrl}/inspections/${id}`)
         .then(res => {
-            $scope.order.id = res.data.order.id;
-            $scope.order.year = res.data.order.year.toString();
-            $scope.order.supplier_id = res.data.order.supplier.supplier_name;
-            $scope.order.po_no = res.data.order.po_no;
-            $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
-            $scope.order.remark = res.data.order.remark;
-            $scope.order.total = res.data.order.total;
-            $scope.order.vat_rate = res.data.order.vat_rate+'%';
-            $scope.order.vat = res.data.order.vat;
-            $scope.order.net_total = res.data.order.net_total;
-            $scope.order.details = res.data.order.details;
+            $scope.inspection.id = res.data.inspections.id;
+            $scope.inspection.order = res.data.inspections.order;
+            $scope.inspection.order_id = res.data.inspections.order_id;
+            $scope.inspection.year = res.data.inspections.year.toString();
+            $scope.inspection.deliver_seq = res.data.inspections.deliver_seq.toString();
+            $scope.inspection.deliver_bill = res.data.inspections.deliver_bill;
+            $scope.inspection.deliver_no = res.data.inspections.deliver_no;
+            $scope.inspection.inspect_total = res.data.inspections.inspect_total;
+            $scope.inspection.inspect_result = res.data.inspections.inspect_result.toString();
+            $scope.inspection.remark = res.data.inspections.remark;
 
-            $('#po_date')
+            $('#deliver_date')
                 .datepicker(dtpOptions)
-                .datepicker('update', moment(res.data.order.po_date).toDate());
+                .datepicker('update', moment(res.data.inspections.deliver_date).toDate());
+
+            $('#inspect_sdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(res.data.inspections.inspect_sdate).toDate());
+
+            $('#inspect_edate')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(res.data.inspections.inspect_edate).toDate());
         }, err => {
             console.log(err);
         });
@@ -349,8 +357,27 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.update = function(event, form) {
         event.preventDefault();
 
-        if(confirm(`คุณต้องแก้ไขรายการขอยกเลิกวันลาเลขที่ ${$scope.cancellation.leave_id} ใช่หรือไม่?`)) {
-            $(`#${form}`).submit();
+        if(confirm(`คุณต้องแก้ไขรายการตรวจรับ รหัส ${$scope.inspection.id} ใช่หรือไม่?`)) {
+            event.preventDefault();
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/inspections/update/${$scope.inspection.id}`, $scope.inspection)
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขตรวจรับเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/orders/inspect`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขตรวจรับได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขตรวจรับได้ !!!");
+
+                $scope.loading = false;
+            });
         }
     };
 

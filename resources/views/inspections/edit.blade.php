@@ -21,6 +21,7 @@
         ng-controller="inspectionCtrl"
         ng-init="
             initForms({ categories: {{ $categories }} }, 0);
+            edit({{ $inspection->id }});
         "
     >
 
