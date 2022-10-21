@@ -18,7 +18,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
-                                <div class="content__header-text" style="width: 77%; margin-left: 70px;">
+                                <div class="content__header-text" style="width: 87%;">
                                     <span style="margin: 0 5px;">กลุ่มงานพัสดุ</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     โทร <span style="margin: 0 5px;">{{ thainumDigit('9608') }}</span>
@@ -30,7 +30,7 @@
                         <td colspan="2" style="width: 50%;">
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
-                                <div class="content__header-text" style="width: 90%; margin-left: 12px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin: 0 5px;">{{ thainumDigit('นม 0032.201.2/') }}</span>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                         <td colspan="2">
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
-                                <div class="content__header-text" style="width: 70%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($withdrawal->withdraw_month) }}
                                     </span>
@@ -50,7 +50,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 85%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin-left: 5px;">รายงานผลการตรวจรับ</span>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                 ได้ดำเนินการส่งมอบ<span>{{ $planType->plan_type_name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
-                                (<span>{{ $withdrawal->inspection->order->net_total_str }}</span>)
+                                <span>({{ $withdrawal->inspection->order->net_total_str }})</span>
                                 ดังกล่าวเรียบร้อยแล้ว และคณะกรรมการตรวจรับพัสดุได้ทำการตรวจรับ
                                 ไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับ ตาม<span>{{ $withdrawal->inspection->order->orderType->name }}</span>
                                 เมื่อวันที่
@@ -163,7 +163,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
-                                <div class="content__header-text" style="width: 77%; margin-left: 70px;">
+                                <div class="content__header-text" style="width: 87%;">
                                     <span style="margin: 0 5px;">กลุ่มงานพัสดุ</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     โทร <span style="margin: 0 5px;">{{ thainumDigit('9608') }}</span>
@@ -175,7 +175,7 @@
                         <td colspan="2" style="width: 50%;">
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
-                                <div class="content__header-text" style="width: 90%; margin-left: 12px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin: 0 5px;">{{ thainumDigit('นม 0032.201.2/') }}</span>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
                         <td colspan="2">
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
-                                <div class="content__header-text" style="width: 70%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         {{ $withdrawal->completed == '1' ? thainumDigit(convDbDateToLongThDate($withdrawal->withdraw_date)) : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($withdrawal->withdraw_month) }}
                                     </span>
@@ -195,7 +195,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 85%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin-left: 5px;">ขอส่งเอกสารเบิกจ่ายเงิน</span>
                                 </div>
                             </div>
@@ -210,9 +210,9 @@
                             <p class="memo-paragraph with-expanded">
                                 ตามบันทึก ที่ <span>{{ thainumDigit($withdrawal->inspection->order->po_app_no) }}</span>
                                 ลงวันที่ <span>{{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->order->po_app_date)) }}</span>
-                                จังหวัดนครราชสีมา ได้อนุมัติให้สั่งเป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
-                                (<span>{{ $withdrawal->inspection->order->net_total_str }}</span>)
-                                โดยเบิกจ่ายจาก <span style="margin: 0;">{{ $withdrawal->inspection->order->budgetSource->name }}</span>โรงพยาบาลเทพรัตน์นครราชสีมา
+                                จังหวัดนครราชสีมา ได้อนุมัติให้สั่งเป็นเงินทั้งสิ้น {{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท
+                                <span>({{ $withdrawal->inspection->order->net_total_str }})</span>
+                                โดยเบิกจ่ายจาก{{ $withdrawal->inspection->order->budgetSource->name }} โรงพยาบาลเทพรัตน์นครราชสีมา
                                 ปีงบประมาณ <span>{{ thainumDigit($withdrawal->inspection->order->year) }}</span>
                             </p>
                         </td>
@@ -220,8 +220,8 @@
                     <tr>
                         <td colspan="4">
                             <p class="memo-paragraph with-expanded">
-                                <span>{{ $withdrawal->supplier->supplier_name }}</span>
-                                ได้ส่งมอบ <span>{{ $planType->plan_type_name }}</span>
+                                {{ $withdrawal->supplier->supplier_name }}
+                                ได้ส่งมอบ{{ $planType->plan_type_name }}
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 และคณะกรรมการตรวจรับพัสดุ ได้ทำการตรวจรับ
                                 ไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับแล้ว เมื่อวันที่
@@ -304,7 +304,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
-                                <div class="content__header-text" style="width: 77%; margin-left: 70px;">
+                                <div class="content__header-text" style="width: 87%;">
                                     <span style="margin: 0 5px;">กลุ่มงานพัสดุ</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     โทร <span style="margin: 0 5px;">{{ thainumDigit('9608') }}</span>
@@ -316,7 +316,7 @@
                         <td colspan="2" style="width: 50%;">
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
-                                <div class="content__header-text" style="width: 90%; margin-left: 12px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin: 0 5px;">{{ thainumDigit('นม 0032.201.2/') }}</span>
                                 </div>
                             </div>
@@ -324,7 +324,7 @@
                         <td colspan="2">
                             <div class="content-header">
                                 <span class="content__header-topic">วันที่</span>
-                                <div class="content__header-text" style="width: 70%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($withdrawal->withdraw_month) }}
                                     </span>
@@ -336,7 +336,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 85%; margin-left: 28px;">
+                                <div class="content__header-text" style="width: 95%;">
                                     <span style="margin-left: 5px;">รายงานผลการพิจารณารายละเอียดวิธีการและขั้นตอนการจัดซื้อจัดจ้าง</span>
                                 </div>
                             </div>
@@ -358,7 +358,7 @@
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 กับ <span>{{ $withdrawal->supplier->supplier_name }}</span>
                                 จำนวนเงิน <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
-                                (<span>{{ $withdrawal->inspection->order->net_total_str }}</span>)
+                                <span>({{ $withdrawal->inspection->order->net_total_str }})</span>
                                 โดยเบิกจ่ายจาก <span style="margin: 0;">{{ $withdrawal->inspection->order->budgetSource->name }}</span>โรงพยาบาลเทพรัตน์นครราชสีมา
                                 ปีงบประมาณ <span>{{ thainumDigit($withdrawal->inspection->order->year) }}</span>
                             </p>
