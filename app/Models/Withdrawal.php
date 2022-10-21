@@ -17,4 +17,9 @@ class Withdrawal extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
     }
+
+    public function prepaid()
+    {
+        return $this->belongsTo(Person::class, 'prepaid_person', 'person_id');
+    }
 }

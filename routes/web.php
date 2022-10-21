@@ -201,7 +201,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('withdrawals/store', 'WithdrawalController@store');
     Route::get('withdrawals/edit/{id}', 'WithdrawalController@edit');
     Route::get('withdrawals/detail/{id}', 'WithdrawalController@detail');
-    Route::post('withdrawals/update', 'WithdrawalController@update');
+    Route::post('withdrawals/update/{id}', 'WithdrawalController@update');
     Route::post('withdrawals/delete/{id}', 'WithdrawalController@delete');
     Route::get('withdrawals/{id}/print', 'WithdrawalController@printForm');
 

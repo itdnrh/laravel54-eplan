@@ -77,6 +77,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('inspections/{id}', 'InspectionController@getById');
 
     /** การส่งเบิกเงิน */
+    Route::get('withdrawals/{id}', 'WithdrawalController@getById');
     Route::put('withdrawals/{id}', 'WithdrawalController@withdraw');
 
     /** รายจ่าย */

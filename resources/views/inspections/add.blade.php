@@ -312,6 +312,7 @@
     <script>
         $(function () {
             $('.select2').select2();
+
             $('#inspect_total').inputmask("currency", { "placeholder": "0" });
         });
     </script>

@@ -147,13 +147,11 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.onSelectedOrder = (e, order) => {
         if (order) {
-            $scope.withdrawal = {
-                order: order,
-                order_id: order.id,
-                inspections: order.inspections,
-                supplier_id: order.supplier.supplier_id,
-                supplier: order.supplier
-            };
+            $scope.withdrawalorder          = order;
+            $scope.withdrawalorder_id       = order.id;
+            $scope.withdrawalinspections    = order.inspections;
+            $scope.withdrawalsupplier_id    = order.supplier.supplier_id;
+            $scope.withdrawalsupplier       = order.supplier;
         }
 
         $('#orders-list').modal('hide');
@@ -163,16 +161,16 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         const inspection = $scope.withdrawal.inspections.find(insp => insp.deliver_seq === parseInt(seq));
 
         $scope.withdrawal.inspection_id = inspection.id;
-        $scope.withdrawal.deliver_no = inspection.deliver_no;
-        $scope.withdrawal.net_total = inspection.inspect_total;
+        $scope.withdrawal.deliver_no    = inspection.deliver_no;
+        $scope.withdrawal.net_total     = inspection.inspect_total;
     };
 
     $scope.getAll = function() {
+        $scope.loading = true;
+
         $scope.orders = [];
         $scope.pager = null;
-        
-        $scope.loading = true;
-        
+
         // let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
         // let type    = $scope.cboLeaveType === '' ? 0 : $scope.cboLeaveType;
         // let status  = $scope.cboLeaveStatus === '' ? '-' : $scope.cboLeaveStatus;
@@ -296,6 +294,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $http.get(`${CONFIG.baseUrl}/withdrawals/get-ajax-byid/${id}`)
         .then(function(res) {
+            console.log(res);
             const { inspection, supplier, ...withdrawal } = res.data.withdrawal;
 
             $scope.withdrawal.id = withdrawal.id;
@@ -407,23 +406,26 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     }
 
     $scope.edit = function(id) {
-        $http.get(`${CONFIG.baseUrl}/withdrawals/getOrder/${id}`)
+        $http.get(`${CONFIG.apiUrl}/withdrawals/${id}`)
         .then(res => {
-            $scope.order.id = res.data.order.id;
-            $scope.order.year = res.data.order.year.toString();
-            $scope.order.supplier_id = res.data.order.supplier.supplier_name;
-            $scope.order.po_no = res.data.order.po_no;
-            $scope.order.po_date = StringFormatService.convFromDbDate(res.data.order.po_date);
-            $scope.order.remark = res.data.order.remark;
-            $scope.order.total = res.data.order.total;
-            $scope.order.vat_rate = res.data.order.vat_rate+'%';
-            $scope.order.vat = res.data.order.vat;
-            $scope.order.net_total = res.data.order.net_total;
-            $scope.order.details = res.data.order.details;
+            console.log(res);
+            const { inspection, supplier, prepaid, ...withdrawal } = res.data.withdrawal;
+
+            $scope.withdrawal.id = withdrawal.id;
+            $scope.withdrawal.order_id = inspection.order_id;
+            $scope.withdrawal.inspection = inspection;
+            $scope.withdrawal.order = inspection.order;
+            $scope.withdrawal.supplier_id = supplier.supplier_id;
+            $scope.withdrawal.supplier = supplier;
+            $scope.withdrawal.year = withdrawal.year.toString();
+            $scope.withdrawal.net_total = withdrawal.net_total;
+            $scope.withdrawal.prepaid_person_detail = prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname;
+            $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
+            $scope.withdrawal.remark = withdrawal.remark;
 
             $('#po_date')
                 .datepicker(dtpOptions)
-                .datepicker('update', moment(res.data.order.po_date).toDate());
+                .datepicker('update', moment(inspection.order.po_date).toDate());
         }, err => {
             console.log(err);
         });

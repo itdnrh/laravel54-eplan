@@ -91,8 +91,9 @@ class WithdrawalController extends Controller
 
     public function getById($id)
     {
-        $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
+        $withdrawal = Withdrawal::with('supplier','inspection','inspection.order')
                         ->with('inspection.order.details','inspection.order.details.item')
+                        ->with('prepaid','prepaid.prefix')
                         ->find($id);
 
         return [
@@ -141,12 +142,13 @@ class WithdrawalController extends Controller
 
     public function edit($id)
     {
-        $order = order::with('supplier','details','details.unit')
-                    ->where('id', $id)
-                    ->first();
-
-        return view('inspections.edit', [
-            "order" => $order
+        return view('withdrawals.edit', [
+            "withdrawal"    => Withdrawal::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 

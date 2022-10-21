@@ -101,7 +101,7 @@
                                         <button type="button" class="btn btn-default">ลงวันที่วันที่</button>
                                     </div>
                                     <div class="form-control">
-                                        @{{ withdrawal.withdraw_date }}
+                                        @{{ withdrawal.withdraw_date | thdate }}
                                     </div>
                                 </div>
                             </div>
