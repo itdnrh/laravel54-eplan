@@ -50,6 +50,13 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     };
 
     /** ==================== Add form ==================== */
+    $('#deliver_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
     $('#inspect_sdate')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
@@ -67,12 +74,11 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(event.date);
         });
 
-    $('#deliver_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
+    $scope.inspectResults = [
+        'ถูกต้องทั้งหมดและรับไว้ทั้งหมด',
+        'ถูกต้องบางส่วนและรับไว้เฉพาะที่ถูกต้อง',
+        'ยังถือว่าไม่ส่งมอบตามสัญญา'
+    ];
 
     $scope.showPopup = false;
     $scope.deliverBillsList = [];
@@ -334,6 +340,9 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.inspection.deliver_seq = res.data.inspections.deliver_seq.toString();
             $scope.inspection.deliver_bill = res.data.inspections.deliver_bill;
             $scope.inspection.deliver_no = res.data.inspections.deliver_no;
+            $scope.inspection.deliver_date = StringFormatService.convFromDbDate(res.data.inspections.deliver_date);
+            $scope.inspection.inspect_sdate = StringFormatService.convFromDbDate(res.data.inspections.inspect_sdate);
+            $scope.inspection.inspect_edate = StringFormatService.convFromDbDate(res.data.inspections.inspect_edate);
             $scope.inspection.inspect_total = res.data.inspections.inspect_total;
             $scope.inspection.inspect_result = res.data.inspections.inspect_result.toString();
             $scope.inspection.remark = res.data.inspections.remark;

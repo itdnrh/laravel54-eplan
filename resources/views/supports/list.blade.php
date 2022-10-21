@@ -280,7 +280,7 @@
                                         <p class="item__spec-text" style="margin-top: 3px;" ng-show="support.status == 2">
                                             (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.received_date | thdate }})
                                         </p>
-                                        <p class="item__spec-text" style="margin-top: 3px;" ng-show="support.status == 3">
+                                        <p class="item__spec-text" style="margin-top: 3px;" ng-show="support.status == 9">
                                             (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.returned_date | thdate }})
                                         </p>
                                     </td>

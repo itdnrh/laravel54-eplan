@@ -133,6 +133,20 @@ class InspectionController extends Controller
         ];
     }
 
+    public function detail($id)
+    {
+        return view('inspections.detail', [
+            "inspection"    => Inspection::find($id),
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            // "suppliers"     => Supplier::all(),
+            // "units"         => Unit::all(),
+            // "factions"      => Faction::all(),
+            // "departs"       => Depart::all(),
+            // "divisions"     => Division::all(),
+        ]);
+    }
+
     public function create()
     {
         return view('inspections.add', [
