@@ -185,13 +185,6 @@
                         ยกเลิก
                     </a>
                     <a
-                        href="#"
-                        class="btn btn-success btn-xs"
-                        ng-click="showSpecCommitteeForm($event, support.id, support.support_orders)"
-                    >
-                        ผู้กำหนด Spec
-                    </a>
-                    <a
                         href="{{ url('orders/add?support=') }}@{{ support.id }}"
                         class="btn btn-primary btn-xs"
                     >
