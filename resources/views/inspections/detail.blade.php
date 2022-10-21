@@ -26,7 +26,7 @@
 
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดการตรวจรับพัสดุ : รหัส {{ $inspection->id }}</h3>
+                        <h3 class="box-title">รายละเอียดการตรวจรับพัสดุ : รหัส ({{ $inspection->id }})</h3>
                     </div>
 
                     <div class="box-body">
@@ -167,7 +167,7 @@
                                         <button type="button" class="btn btn-default">ยอดเงินตรวจรับ</button>
                                     </div>
                                     <div class="form-control">
-                                        @{{ inspection.inspect_total }}
+                                        @{{ inspection.inspect_total | currency:'':2 }}
                                     </div>
                                 </div>
                             </div>

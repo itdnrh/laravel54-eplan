@@ -136,7 +136,7 @@
                                         </div> -->
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ withdraw.net_total | currency:'':0 }}
+                                        @{{ withdraw.net_total | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">
