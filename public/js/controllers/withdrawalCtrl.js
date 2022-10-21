@@ -139,7 +139,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.setOrder = function(res) {
         const { data, ...pager } = res.data.orders;
-        console.log(data);
 
         $scope.orders = data;
         $scope.orders_pager = pager;
@@ -162,6 +161,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $scope.withdrawal.inspection_id = inspection.id;
         $scope.withdrawal.deliver_no    = inspection.deliver_no;
+        $scope.withdrawal.deliver_date  = inspection.deliver_date;
         $scope.withdrawal.net_total     = inspection.inspect_total;
     };
 
@@ -417,6 +417,12 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         .then(res => {
             const { inspection, supplier, prepaid, ...withdrawal } = res.data.withdrawal;
 
+            if (withdrawal.withdraw_no) {
+                const [prefix, doc_no] = withdrawal.withdraw_no.split("/");
+                $scope.withdrawal.doc_prefix = prefix;
+                $scope.withdrawal.withdraw_no = doc_no;
+            }
+
             $scope.withdrawal.id = withdrawal.id;
             $scope.withdrawal.year = withdrawal.year.toString();
             $scope.withdrawal.order_id = inspection.order_id;
@@ -438,6 +444,10 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $('#po_date')
                 .datepicker(dtpOptions)
                 .datepicker('update', moment(inspection.order.po_date).toDate());
+
+            $('#withdraw_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(withdrawal.withdraw_date).toDate());
         }, err => {
             console.log(err);
         });

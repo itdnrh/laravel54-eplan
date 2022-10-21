@@ -55,7 +55,7 @@
                                             name="po_no"
                                             ng-model="withdrawal.order.po_no"
                                             class="form-control"
-                                            tabindex="6"
+                                            readonly
                                         />
                                         <input
                                             type="hidden"
@@ -105,9 +105,71 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div
-                                    class="form-group col-md-3"
+                                    class="form-group col-md-2"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'year')}"
+                                >
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="year"
+                                        name="year"
+                                        ng-model="withdrawal.year"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'year')">
+                                        @{{ formError.errors.year[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-5"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'year')}"
+                                >
+                                
+                                    <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default">{{ $doc_prefix }}/</button>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            id="withdraw_no"
+                                            name="withdraw_no"
+                                            ng-model="withdrawal.withdraw_no"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'year')">
+                                        กรุณาระบุเลขที่หนังสือส่งเบิกเงิน
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-5"
+                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'year')}"
+                                >
+                                    <label for="">วันที่หนังสือส่งเบิกเงิน</label>
+                                    <input
+                                        type="text"
+                                        id="withdraw_date"
+                                        name="withdraw_date"
+                                        ng-model="withdrawal.withdraw_date"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'year')">
+                                        กรุณาเลือกวันที่หนังสือส่งเบิกเงิน
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-2"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_seq')}"
                                 >
                                     <label for="">งวดงานที่</label>
@@ -128,7 +190,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-3"
+                                    class="form-group col-md-5"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_no')}"
                                 >
                                     <label for="">เลขที่เอกสารส่งมอบงาน</label>
@@ -137,33 +199,13 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="form-group col-md-3"
+                                    class="form-group col-md-5"
                                     ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'deliver_no')}"
                                 >
                                     <label for="">วันที่เอกสารส่งมอบงาน</label>
                                     <div class="form-control" readonly>
                                         @{{ withdrawal.deliver_date | thdate }}
                                     </div>
-                                </div>
-                                <div
-                                    class="form-group col-md-3"
-                                    ng-class="{'has-error has-feedback': checkValidate(withdrawal, 'year')}"
-                                >
-                                    <label>ปีงบประมาณ</label>
-                                    <select
-                                        id="year"
-                                        name="year"
-                                        ng-model="withdrawal.year"
-                                        class="form-control"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                            @{{ y }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(withdrawal, 'year')">
-                                        @{{ formError.errors.year[0] }}
-                                    </span>
                                 </div>
                             </div>
 

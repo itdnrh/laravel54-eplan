@@ -120,34 +120,59 @@ class WithdrawalController extends Controller
 
     public function store(Request $req)
     {
-        $withdrawal = new Withdrawal;
-        $withdrawal->withdraw_no    = 'นม 0032.201.2/';
-        $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
-        $withdrawal->inspection_id  = $req['inspection_id'];
-        $withdrawal->supplier_id    = $req['supplier_id'];
-        $withdrawal->net_total      = currencyToNumber($req['net_total']);
-        $withdrawal->year           = $req['year'];
-        $withdrawal->remark         = $req['remark'];
-        $withdrawal->created_user   = $req['user'];
-        $withdrawal->updated_user   = $req['user'];
+        try {
+            /** Get depart data of supplies department */
+            $supply = Depart::where('depart_id', '2')->first();
 
-        if ($withdrawal->save()) {
-            $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
-            
-            /** Update status of plan data */
-            $details = OrderDetail::where('order_id', $req['order_id'])->get();
-            foreach($details as $item) {
-                $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
+            $withdrawal = new Withdrawal;
+            $withdrawal->withdraw_no    = $supply->memo_no.'/';
+            $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
+            $withdrawal->inspection_id  = $req['inspection_id'];
+            $withdrawal->supplier_id    = $req['supplier_id'];
+            $withdrawal->net_total      = currencyToNumber($req['net_total']);
+            $withdrawal->year           = $req['year'];
+            $withdrawal->remark         = $req['remark'];
+            $withdrawal->created_user   = $req['user'];
+            $withdrawal->updated_user   = $req['user'];
+
+            if ($withdrawal->save()) {
+                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
+                // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+
+                /** Update status of OrderDetail data */
+                $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
+                foreach($orderDetails as $detail) {
+                    /** Update support_details's status to 4=ส่งเบิกเงินแล้ว */
+                    // SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
+
+                    /** Update support's status to 4=ส่งเบิกเงินแล้ว */
+                    // Support::find($detail->support_id)->update(['status' => 4]);
+                }
+
+                return [
+                    'status'        => 1,
+                    'message'       => 'Insertion successfully!!',
+                    'withdrawal'    => $withdrawal
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
             }
-
+        } catch (\Exception $ex) {
             return [
-                'withdrawal' => $withdrawal
+                'status'    => 0,
+                'message'   => $ex->getMessage()
             ];
         }
     }
 
     public function edit($id)
     {
+        /** Get depart data of supplies department */
+        $supply = Depart::where('depart_id', '2')->first();
+
         return view('withdrawals.edit', [
             "withdrawal"    => Withdrawal::find($id),
             "planTypes"     => PlanType::all(),
@@ -155,14 +180,18 @@ class WithdrawalController extends Controller
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
+            "doc_prefix"    => $supply->memo_no
         ]);
     }
 
     public function update(Request $req, $id)
     {
         try {
+            /** Get depart data of supplies department */
+            $supply = Depart::where('depart_id', '2')->first();
+
             $withdrawal = Withdrawal::find($id);
-            $withdrawal->withdraw_no    = 'นม 0032.201.2/';
+            $withdrawal->withdraw_no    = $supply->memo_no.'/';
             $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
             $withdrawal->inspection_id  = $req['inspection_id'];
             $withdrawal->supplier_id    = $req['supplier_id'];
@@ -173,6 +202,45 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
+                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
+                // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+
+                /** Update status of OrderDetail data */
+                $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
+                foreach($orderDetails as $detail) {
+                    /** Update support_details's status to 4=ส่งเบิกเงินแล้ว */
+                    // SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
+
+                    /** Update support's status to 4=ส่งเบิกเงินแล้ว */
+                    // Support::find($detail->support_id)->update(['status' => 4]);
+                }
+
+                return [
+                    'status'        => 1,
+                    'message'       => 'Updating successfully!!',
+                    'withdrawal'    => $withdrawal
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function delete(Request $req, $id)
+    {
+        try {
+            $withdrawal = Withdrawal::find($id);
+
+            if ($withdrawal->delete()) {
+                /** Revert status of all related tables */
                 // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
                 
                 /** Update status of plan data */
@@ -180,6 +248,7 @@ class WithdrawalController extends Controller
                 // foreach($details as $item) {
                 //     $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
                 // }
+
                 return [
                     'status'        => 1,
                     'message'       => 'Updating successfully!!',
@@ -230,21 +299,6 @@ class WithdrawalController extends Controller
         }
     }
 
-    public function delete(Request $req, $id)
-    {
-        $cancel = Cancellation::find($id);
-        $leaveId = $cancel->leave_id;
-
-        if ($cancel->delete()) {
-            $leave = Leave::find($cancel->leave_id);
-            $leave->status = 3;
-            $leave->save();
-
-            return redirect('/inspections/list')->with('status', 'ลบรายการขอยกเลิกวันลา ID: ' .$id. ' เรียบร้อยแล้ว !!');;
-        }
-    }
-
-    
     public function printForm($id)
     {
         $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
