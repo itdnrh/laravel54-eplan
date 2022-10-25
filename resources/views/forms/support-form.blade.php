@@ -79,6 +79,7 @@
                     <?php $restRow = 0; ?>
                     <?php $total = 0; ?>
                     <?php $tableHeight = 0; ?>
+                    <?php $nextBullet = 0; ?>
                     @if (count($support->details) < 12)
                         <tr>
                             <td colspan="4">
@@ -197,7 +198,11 @@
                                         @endforeach
                                     </table>
                                 </div>
+
+                                <!-- ############################ Pagination ############################ -->
                                 <p class="next-paragraph">/{{ thainumDigit(++$row) }}...</p>
+                                <!-- ############################ Pagination ############################ -->
+
                             </td>
                         </tr>
                         <tr>
@@ -246,9 +251,12 @@
                                     @endif
                                 </table>
 
+                                <!-- ############################ Pagination ############################ -->
                                 @if (count($support->details) > 25)
                                     <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
                                 @endif
+                                <!-- ############################ Pagination ############################ -->
+
                             </td>
                         </tr>
                         @if (count($support->details) > 28)
@@ -310,6 +318,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            <?php $nextBullet = 1; ?>
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
                             <div style="margin: 0;">
                                 ๑. รายชื่อคณะกรรมการกำหนดคุณลักษณะเฉพาะวัสดุหรือครุภัณฑ์ (กรณีงานซื้อ)/คณะกรรมการจัดทำร่างขอบเขตงาน (กรณีงานจ้าง)
@@ -329,6 +338,8 @@
                                     @endforeach
                                 </ul>
                             </div>
+
+                            <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) < 10)
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
@@ -340,11 +351,14 @@
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
+                            <!-- ############################ Pagination ############################ -->
                         </td>
                     </tr>
                     @if((float)$support->total >= 500000)
+                        <?php $nextBullet = 2; ?>
                         <tr>
                             <td colspan="4">
+                                <!-- ############################ Pagination ############################ -->
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
@@ -354,6 +368,8 @@
                                         <p class="page-number">- ๒ -</p>
                                     @endif
                                 @endif
+                                <!-- ############################ Pagination ############################ -->
+
                                 <div style="margin: 0;">
                                     ๒. รายชื่อคณะกรรมการพิจารณาผลการประกวดราคา
                                     <ul class="committee-lists">
@@ -377,6 +393,7 @@
                     @endif
                     <tr>
                         <td colspan="4">
+                            <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) < 10)
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
@@ -388,10 +405,14 @@
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @endif
+                            <!-- ############################ Pagination ############################ -->
+
                             <div style="margin: 0;">
                                 @if((float)$support->total >= 500000)
+                                    <?php $nextBullet = 3; ?>
                                     ๓. รายชื่อคณะกรรมการตรวจรับพัสดุ
                                 @else
+                                    <?php $nextBullet = 2; ?>
                                     ๒. รายชื่อคณะกรรมการตรวจรับพัสดุ
                                 @endif
                                 <ul class="committee-lists">
@@ -405,7 +426,7 @@
                                                 @else
                                                     ๒.{{ thainumDigit($c2++) }}
                                                 @endif
-                                                
+
                                                 {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
                                                 <span style="margin: 0 0 0 5px; padding: 0;">
                                                     ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}
@@ -421,17 +442,34 @@
                         <td colspan="4">
                             <p style="margin: 0;">
                                 @if((float)$support->total >= 500000)
+                                    <?php $nextBullet = 4; ?>
                                     ๔.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน............แผ่น
                                 @else
+                                    <?php $nextBullet = 3; ?>
                                     ๓.  ชื่อผู้ขาย ข้อมูลร้านค้า/ข้อมูลสินค้า/ราคาสินค้า ตามที่แนบ  จำนวน............แผ่น
                                 @endif
                             </p>
+
+                            <!-- ############################ Pagination ############################ -->
+                            @if($tableHeight > 220 && $tableHeight <= 300)
+                                <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
+                            @endif
+                            <!-- ############################ Pagination ############################ -->
+
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
+
+                            <!-- ############################ Pagination ############################ -->
+                            @if(count($committees) <= 6)
+                                @if($tableHeight > 220 && $tableHeight <= 300)
+                                    <p class="page-number">- ๒ -</p>
+                                @endif
+                            @endif
+                            <!-- ############################ Pagination ############################ -->
+
                             <p style="margin: 0;">
-                                <?php $nextBullet = 0; ?>
                                 @if((float)$support->total >= 500000)
                                     <?php $nextBullet = 5; ?>
                                     ๕.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
@@ -441,13 +479,14 @@
                                 @endif
                             </p>
 
+                            <!-- ############################ Pagination ############################ -->
                             @if(count($committees) <= 6)
-                                @if($tableHeight > 100 && $tableHeight < 180)
-                                    <div style="height: 40px;"></div>
+                                @if($tableHeight > 100 && $tableHeight <= 220)
+                                    <div style="height: 80px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($tableHeight >= 180 && $tableHeight < 360)
+                                @if($tableHeight > 220 && $tableHeight < 300)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
@@ -481,18 +520,19 @@
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
+                            <!-- ############################ Pagination ############################ -->
+
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
+                            <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) <= 10)
-                                @if(($tableHeight > 100 && $tableHeight < 360) || count($committees) > 6)
-                                    <div style="height: 20px;"></div>
+                                @if($tableHeight > 100 && $tableHeight < 300)
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @elseif (count($support->details) > 10 && count($support->details) <= 17)
                                 @if(count($committees) > 6)
-                                    <div style="height: 20px;"></div>
                                     <p class="page-number">- ๓ -</p>
                                 @endif
                             @elseif (count($support->details) > 17 && count($support->details) <= 20)
@@ -511,6 +551,8 @@
                                     <p class="page-number">- ๔ -</p>
                                 @endif
                             @endif
+                            <!-- ############################ Pagination ############################ -->
+
                             <p style="margin: 0 0 10px;">
                                 @if((float)$support->total >= 500000)
                                     ๖.  รายชื่อผู้ประสานงาน
@@ -552,21 +594,24 @@
                             </p>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="4" style="text-align: center; padding: 0;">
-                            <p style="margin: 0 0 20px 0;">
-                                <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
-                                <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
-                            </p>
-                            <p style="margin: 0;">
-                                ( นายชวศักดิ์  กนกกันฑพงษ์ )
-                            </p>
-                            <p style="margin: 0;">
-                                ผู้อำนวยการโรงพยาบาลเทพรัตน์นครราชสีมา
-                            </p>
+                        
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
+                <div style="text-align: center">
+                    <p style="margin: 0 0 20px 0;">
+                        <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
+                        <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
+                    </p>
+                    <p style="margin: 0;">
+                        ( นายชวศักดิ์  กนกกันฑพงษ์ )
+                    </p>
+                    <p style="margin: 0;">
+                        ผู้อำนวยการโรงพยาบาลเทพรัตน์นครราชสีมา
+                    </p>
+                </div>
             </div>
             <p class="print-options">พิมพ์จากระบบ E-Plan เมื่อ {{ date('Y-m-d H:i:s') }}</p>
         </div>

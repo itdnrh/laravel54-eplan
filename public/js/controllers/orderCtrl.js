@@ -1267,7 +1267,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.edit = function(id) {
         $http.get(`${CONFIG.baseUrl}/orders/getOrder/${id}`)
         .then(res => {
-            console.log(res);
             if (res.data.order.po_req_no) {
                 const [prefix, req_no] = res.data.order.po_req_no.split("/");
                 $scope.order.po_req_prefix = prefix;
