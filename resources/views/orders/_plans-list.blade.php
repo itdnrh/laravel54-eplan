@@ -26,8 +26,8 @@
                                         </option>
                                     @endforeach
                                 </select> -->
-        
-                                <select
+
+                                <!-- <select
                                     style="margin-right: 1rem;"
                                     class="form-control"
                                     ng-model="cboCategory"
@@ -37,7 +37,16 @@
                                     <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
                                             @{{ category.name }}
                                     </option>
-                                </select>
+                                </select> -->
+
+                                <input
+                                    type="text"
+                                    id="txtKeyword"
+                                    name="txtKeyword"
+                                    class="form-control"
+                                    ng-model="txtKeyword"
+                                    ng-change="getPlans(2)"
+                                />
                             </div>
                         </div><!-- /.box-body -->
                     </div>
@@ -48,7 +57,7 @@
                             <tr>
                                 <th style="width: 3%; text-align: center;">#</th>
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                <th style="width: 8%; text-align: center;">เลขที่แผน</th>
+                                <th style="width: 15%; text-align: center;">บันทึกขอสนับสนุน</th>
                                 <th>รายการ</th>
                                 <th style="width: 10%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 10%; text-align: center;">จำนวนที่ขอ</th>
@@ -61,10 +70,13 @@
                             <tr ng-repeat="(index, plan) in plans">
                                 <td style="text-align: center;">@{{ index+plans_pager.from }}</td>
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
-                                <td style="text-align: center;">@{{ plan.plan.plan_no }}</td>
+                                <td>
+                                    <p style="margin: 0;">เลขที่ @{{ plan.support.doc_no }}</p>
+                                    <p style="margin: 0;">วันที่ @{{ plan.support.doc_date | thdate }}</p>
+                                </td>
                                 <td>
                                     <p style="margin: 0; font-weight: bold;">
-                                        @{{ plan.plan.plan_item.item.category.name }}
+                                        @{{ plan.plan.plan_no }} @{{ plan.plan.plan_item.item.category.name }}
                                     </p>
                                     @{{ plan.plan.plan_item.item.item_name }}
                                     <p style="margin: 0; color: blue;">

@@ -203,12 +203,20 @@ class SupportController extends Controller
         $type   = $req->get('type');
         $cate   = $req->get('cate');
         $supportType = $req->get('supportType');
+        $name   = $req->get('name');
         $status = $req->get('status');
 
         $plansList = PlanItem::leftJoin('items','items.id','=','plan_items.item_id')
                         ->when(!empty($cate), function($q) use ($cate) {
                             $q->where('items.category_id', $cate);
-                        })->pluck('plan_items.plan_id');
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where(function($query) use ($name) {
+                                $query->where('items.item_name', 'like', '%'.$name.'%');
+                                $query->orWhere('items.en_name', 'like', '%'.$name.'%');
+                            });
+                        })
+                        ->pluck('plan_items.plan_id');
 
         $supportsList = Support::when(!empty($year), function($q) use ($year) {
                             $q->where('supports.year', $year);

@@ -4,23 +4,20 @@
             <form action="">
                 <div class="modal-header">
                     <h5 class="modal-title">รายการแผนแบบกลุ่ม</h5>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> -->
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <!-- // TODO: Filtering controls -->
                     <div class="box">
                         <div class="box-body">
                             <div style="display: flex; flex-direction: row;">
-                                <input
+                                <!-- <input
                                     type="text"
                                     id="txtKeyword"
                                     name="txtKeyword"
                                     class="form-control"
                                     ng-model="txtKeyword"
                                     ng-change="getPlanGroupsList()"
-                                />
+                                /> -->
                             </div>
                         </div><!-- /.box-body -->
                     </div>

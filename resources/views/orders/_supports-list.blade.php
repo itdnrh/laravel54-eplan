@@ -113,7 +113,7 @@
             <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
             <td>
                 <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
-                <p style="margin: 0;">เลขที่ @{{ support.doc_date | thdate }}</p>
+                <p style="margin: 0;">วันที่ @{{ support.doc_date | thdate }}</p>
                 <p class="item__spec-text">
                     (<i class="fa fa-clock-o" aria-hidden="true"></i> ส่งเมื่อ @{{ support.sent_date | thdate }})
                 </p>

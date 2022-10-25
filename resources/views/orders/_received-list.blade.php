@@ -124,7 +124,7 @@
             <td style="text-align: center;">@{{ support.received_no }}</td>
             <td>
                 <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
-                <p style="margin: 0;">เลขที่ @{{ support.doc_date | thdate }}</p>
+                <p style="margin: 0;">วันที่ @{{ support.doc_date | thdate }}</p>
             </td>
             <td>
                 <div ng-show="support.is_plan_group">

@@ -503,8 +503,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.plans_pager = null;
 
             let year = $scope.order.year === '' ? '' : 2566;
+            let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&cate=${cate}&status=2`)
+            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&cate=${cate}&name=${name}&status=2`)
             .then(function(res) {
                 $scope.setPlans(res);
 
@@ -524,11 +525,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.plans_pager = null;
 
         let year = $scope.order.year === '' ? '' : 2566;
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
+        let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -548,11 +550,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.pager = null;
 
         let year = $scope.order.year === '' ? '' : 2566;
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+        let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
+        let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}`)
         .then(function(res) {
             cb(res);
 
