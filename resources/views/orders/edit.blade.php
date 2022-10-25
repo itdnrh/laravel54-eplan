@@ -196,7 +196,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-10"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
                                 >
                                     <label>เจ้าหนี้ :</label>
@@ -218,7 +218,26 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-2"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'deliver_amt')}"
+                                >
+                                    <label>จำนวนงวดเงิน :</label>
+                                    <input
+                                        type="number"
+                                        id="deliver_amt"
+                                        name="deliver_amt"
+                                        ng-model="order.deliver_amt"
+                                        class="form-control"
+                                        tabindex="1">
+                                    <span class="help-block" ng-show="checkValidate(order, 'deliver_amt')">
+                                        กรุณาระบุจำนวนงวดเงิน
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
                                 >
                                     <label>ประเภทแผน :</label>
@@ -239,19 +258,23 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-2"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'deliver_amt')}"
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'category_id')}"
                                 >
-                                    <label>จำนวนงวดเงิน :</label>
-                                    <input
-                                        type="number"
-                                        id="deliver_amt"
-                                        name="deliver_amt"
-                                        ng-model="order.deliver_amt"
-                                        class="form-control"
-                                        tabindex="1">
-                                    <span class="help-block" ng-show="checkValidate(order, 'deliver_amt')">
-                                        กรุณาระบุจำนวนงวดเงิน
+                                    <label>ประเภทพัสดุ :</label>
+                                    <select id="category_id"
+                                            name="category_id"
+                                            ng-model="order.category_id"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'category_id')">
+                                        กรุณาเลือกประเภทพัสดุ
                                     </span>
                                 </div>
                             </div>

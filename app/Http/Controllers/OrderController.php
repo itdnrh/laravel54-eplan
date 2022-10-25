@@ -220,9 +220,11 @@ class OrderController extends Controller
             $order->po_app_no       = $supply->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
+            $order->support_id      = $req['support_id'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
+            $order->category_id     = $req['category_id'];
             $order->deliver_amt     = $req['deliver_amt'];
             $order->budget_src_id   = '1';
             $order->supply_officer  = $req['supply_officer'];
@@ -358,9 +360,11 @@ class OrderController extends Controller
             $order->po_app_no       = $supply->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
+            $order->support_id      = $req['support_id'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
+            $order->category_id     = $req['category_id'];
             $order->deliver_amt     = $req['deliver_amt'];
             $order->budget_src_id   = '1';
             $order->supply_officer  = $req['supply_officer'];

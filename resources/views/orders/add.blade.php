@@ -195,7 +195,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-10"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'supplier_id')}"
                                 >
                                     <label>เจ้าหนี้ :</label>
@@ -217,27 +217,6 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
-                                >
-                                    <label>ประเภทแผน :</label>
-                                    <select
-                                        id="plan_type_id"
-                                        name="plan_type_id"
-                                        ng-model="order.plan_type_id"
-                                        class="form-control"
-                                        tabindex="1"
-                                    >
-                                        <option value="">-- เลือกประเภทแผน --</option>
-                                        @foreach($planTypes as $planType)
-                                            <option value="{{ $planType->id }}">{{ $planType->plan_type_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(order, 'plan_type_id')">
-                                        กรุณาเลือกประเภทแผน
-                                    </span>
-                                </div>
-                                <div
                                     class="form-group col-md-2"
                                     ng-class="{'has-error has-feedback': checkValidate(order, 'deliver_amt')}"
                                 >
@@ -251,6 +230,50 @@
                                         tabindex="1">
                                     <span class="help-block" ng-show="checkValidate(order, 'deliver_amt')">
                                         กรุณาระบุจำนวนงวดเงิน
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'plan_type_id')}"
+                                >
+                                    <label>ประเภทแผน :</label>
+                                    <select
+                                        id="plan_type_id"
+                                        name="plan_type_id"
+                                        ng-model="order.plan_type_id"
+                                        ng-change="onFilterCategories(order.plan_type_id);"
+                                        class="form-control"
+                                    >
+                                        <option value="">-- เลือกประเภทแผน --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">{{ $planType->plan_type_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'plan_type_id')">
+                                        กรุณาเลือกประเภทแผน
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(order, 'category_id')}"
+                                >
+                                    <label>ประเภทพัสดุ :</label>
+                                    <select id="category_id"
+                                            name="category_id"
+                                            ng-model="order.category_id"
+                                            class="form-control select2" 
+                                            style="width: 100%; font-size: 12px;"
+                                            tabindex="2">
+                                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(order, 'category_id')">
+                                        กรุณาเลือกประเภทพัสดุ
                                     </span>
                                 </div>
                             </div>

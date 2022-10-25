@@ -30,6 +30,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         support_id: '',
         order_type_id: '',
         plan_type_id: '',
+        category_id: '',
         deliver_amt: 1,
         is_plan_group: false,
         plan_group_desc: '',
@@ -145,6 +146,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.plan_type_id = support.plan_type_id.toString();
             $scope.order.order_type_id = [1,2].includes(support.plan_type_id) ? '1' : '';
             $scope.order.support_id = support.id;
+            $scope.order.category_id = support.category_id.toString();
             $scope.order.supply_officer = support.supply_officer;
             $scope.order.supply_officer_detail = support.officer.prefix.prefix_name+support.officer.person_firstname+ ' ' +support.officer.person_lastname;
 
@@ -176,6 +178,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 $scope.order.details.push(orderItem);
             });
 
+            $scope.onFilterCategories(support.plan_type_id);
             $scope.calculateNetTotal();
         }
     };
@@ -1287,6 +1290,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.order.deliver_amt = res.data.order.deliver_amt;
             $scope.order.plan_type_id = res.data.order.plan_type_id.toString();
             $scope.order.plan_type = res.data.order.plan_type;
+            $scope.order.category_id = res.data.order.category_id.toString();
             $scope.order.order_type_id = res.data.order.order_type_id.toString();
             $scope.order.order_type = res.data.order.order_type;
             $scope.order.supply_officer = res.data.order.supply_officer;
@@ -1317,6 +1321,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
             $('#supplier_id').val(res.data.order.supplier.supplier_id).trigger('change.select2');
 
+            $scope.onFilterCategories(res.data.order.plan_type_id);
             $scope.setSpecCommitteeForm(res.data.order, res.data.order.support_orders[0]);
         }, err => {
             console.log(err);
