@@ -188,7 +188,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.showDetailsList = function(e, details) {
         e.preventDefault();
 
-        console.log(details);
         if (details.length > 0) {
             $scope.supportDetails = details;
 

@@ -207,7 +207,7 @@
                                 <table style="width: 100%;" class="table" border="1">
                                     @foreach($support->details as $detail)
                                         <?php ++$restRow; ?>
-                                        @if ($restRow > 12)
+                                        @if ($restRow > 12 && $restRow < 28)
                                             <?php $total += (float)$detail->sum_price; ?>
                                             <tr style="min-height: 20px;">
                                                 <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
@@ -233,18 +233,59 @@
                                             </tr>
                                         @endif
                                     @endforeach
-
-                                    <tr>
-                                        <td style="text-align: center; font-weight: bold;" colspan="4">
-                                            รวมเป็นเงินทั้งสิ้น
-                                        </td>
-                                        <td style="text-align: right;">
-                                            {{ thainumDigit(number_format($support->total, 2)) }}
-                                        </td>
-                                    </tr>
                                 </table>
+
+                                <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
                             </td>
                         </tr>
+                        @if (count($support->details) > 28)
+                            <?php $restRow = 0; ?>
+                            <tr>
+                                <td colspan="4">
+                                    <p class="page-number">- ๓ -</p>
+
+                                    <table style="width: 100%;" class="table" border="1">
+                                        @foreach($support->details as $detail)
+                                            <?php ++$restRow; ?>
+                                            @if ($restRow >= 28)
+                                                <?php $total += (float)$detail->sum_price; ?>
+                                                <tr style="min-height: 20px;">
+                                                    <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
+                                                    <td>
+                                                        <?php $tableHeight += 20; ?>
+                                                        {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        @if($detail->desc != '')
+                                                            <?php $tableHeight += 20; ?>
+                                                            <p style="margin: 0 0 0 5px;">
+                                                                - {{ thainumDigit($detail->desc) }}
+                                                            </p>
+                                                        @endif
+                                                    </td>
+                                                    <td style="width: 10%;text-align: center;">
+                                                        {{ thainumDigit(number_format($detail->amount)) }}
+                                                    </td>
+                                                    <td style="width: 15%;text-align: right;">
+                                                        {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                    </td>
+                                                    <td style="width: 15%;text-align: right;">
+                                                        {{ thainumDigit(number_format($detail->sum_price, 2)) }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+
+                                        <tr>
+                                            <td style="text-align: center; font-weight: bold;" colspan="4">
+                                                รวมเป็นเงินทั้งสิ้น
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {{ thainumDigit(number_format($support->total, 2)) }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        @endif
                     @endif
                     <tr>
                         <td colspan="4">
@@ -416,12 +457,26 @@
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
                                 @endif
-                            @elseif (count($support->details) > 17)
+                            @elseif (count($support->details) > 10 && count($support->details) <= 17)
                                 @if(count($committees) > 6)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๓ -</p>
                                 @else
                                     <p class="page-number">- ๓ -</p>
+                                @endif
+                            @elseif (count($support->details) > 17 && count($support->details) <= 27)
+                                @if(count($committees) > 6)
+                                    <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๔ -</p>
+                                @else
+                                    <p class="page-number">- ๔ -</p>
+                                @endif
+                            @elseif (count($support->details) > 27)
+                                @if(count($committees) > 6)
+                                    <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๔ -</p>
+                                @else
+                                    <p class="page-number">- ๔ -</p>
                                 @endif
                             @endif
                             <p style="margin: 0 0 10px;">

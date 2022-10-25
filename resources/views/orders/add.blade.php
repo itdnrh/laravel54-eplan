@@ -286,7 +286,7 @@
                                             class="btn btn-primary btn-sm pull-right"
                                             ng-click="
                                                 onFilterCategories(order.plan_type_id);
-                                                showPlansList(order.plan_type_id);
+                                                showPlansList(order.category_id);
                                             "
                                         >
                                             เพิ่มรายการ
@@ -297,7 +297,7 @@
                                             class="btn bg-gray btn-sm pull-right"
                                             ng-click="
                                                 onFilterCategories(order.plan_type_id);
-                                                showPlanGroupsList(order.plan_type_id);
+                                                showPlanGroupsList(order.category_id);
                                             "
                                         >
                                             เพิ่มรายการแบบกลุ่ม

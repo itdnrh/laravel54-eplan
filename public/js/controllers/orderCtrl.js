@@ -384,8 +384,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
-    $scope.showPlanGroupsList = (type) => {
-        if (type == '') {
+    $scope.showPlanGroupsList = (cate) => {
+        if (cate == '') {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
         } else {
             $scope.loading = true;
@@ -395,7 +395,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
             let year = $scope.order.year === '' ? '' : 2566;
 
-            $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&type=${type}&status=2`)
+            $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
             .then(function(res) {
                 $scope.setPlanGroups(res);
 
@@ -409,7 +409,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
-    $scope.getPlanGroupsList = (type) => {
+    $scope.getPlanGroupsList = (cate) => {
         $scope.loading = true;
         $scope.planGroups = [];
         $scope.planGroups_pager = null;
@@ -417,7 +417,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         let year = $scope.order.year === '' ? '' : 2566;
 
-        $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&type=${type}&status=2`)
+        $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
         .then(function(res) {
             $scope.setPlanGroups(res);
 
@@ -428,7 +428,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         });
     };
 
-    $scope.getPlanGroupsListWithUrl = (e, url, type, cb) => {
+    $scope.getPlanGroupsListWithUrl = (e, url, cate, cb) => {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -494,9 +494,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $('#plan-groups-list').modal('hide');
     };
 
-    $scope.showPlansList = (type) => {
-        if (type == '') {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
+    $scope.showPlansList = (cate) => {
+        if (cate == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
         } else {
             $scope.loading = true;
             $scope.plans = [];
@@ -504,7 +504,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
             let year = $scope.order.year === '' ? '' : 2566;
 
-            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&status=2`)
+            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&cate=${cate}&status=2`)
             .then(function(res) {
                 $scope.setPlans(res);
 
@@ -528,7 +528,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -552,7 +552,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
 
-        $http.get(`${url}&year=${year}type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&depart=${depart}&status=${status}`)
         .then(function(res) {
             cb(res);
 
