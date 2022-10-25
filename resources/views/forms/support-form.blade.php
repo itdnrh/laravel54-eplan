@@ -233,9 +233,22 @@
                                             </tr>
                                         @endif
                                     @endforeach
+
+                                    @if (count($support->details) > 17 && count($support->details) <= 25)
+                                        <tr>
+                                            <td style="text-align: center; font-weight: bold;" colspan="4">
+                                                รวมเป็นเงินทั้งสิ้น
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {{ thainumDigit(number_format($support->total, 2)) }}
+                                            </td>
+                                        </tr>
+                                    @endif
                                 </table>
 
-                                <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
+                                @if (count($support->details) > 25)
+                                    <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
+                                @endif
                             </td>
                         </tr>
                         @if (count($support->details) > 28)
@@ -322,6 +335,11 @@
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
+                            @if (count($support->details) > 17 && count($support->details) <= 25)
+                                @if($committeeHeight <= 60)
+                                    <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                @endif
+                            @endif
                         </td>
                     </tr>
                     @if((float)$support->total >= 500000)
@@ -330,6 +348,11 @@
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
+                                @endif
+                                @if (count($support->details) > 17 && count($support->details) <= 25)
+                                    @if($committeeHeight <= 60)
+                                        <p class="page-number">- ๒ -</p>
+                                    @endif
                                 @endif
                                 <div style="margin: 0;">
                                     ๒. รายชื่อคณะกรรมการพิจารณาผลการประกวดราคา
@@ -357,6 +380,11 @@
                             @if (count($support->details) < 10)
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
+                                    <p class="page-number">- ๒ -</p>
+                                @endif
+                            @endif
+                            @if (count($support->details) > 17 && count($support->details) <= 25)
+                                @if($committeeHeight <= 60)
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @endif
@@ -424,7 +452,7 @@
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) > 17)
+                                @if(count($support->details) <= 17)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
@@ -466,9 +494,6 @@
                                 @endif
                             @elseif (count($support->details) > 17 && count($support->details) <= 27)
                                 @if(count($committees) > 6)
-                                    <div style="height: 20px;"></div>
-                                    <p class="page-number">- ๔ -</p>
-                                @else
                                     <p class="page-number">- ๔ -</p>
                                 @endif
                             @elseif (count($support->details) > 27)
