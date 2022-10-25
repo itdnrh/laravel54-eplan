@@ -430,7 +430,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-success"
-                                        ng-click="onPrintSpecCommittee($event, order.id)"
+                                        ng-click="onPrintSpecCommittee($event, order.id, specCommittee.is_existed)"
                                         ng-show="!specCommittee.is_existed"
                                     >
                                         บันทึกผู้กำหนด Spec
@@ -438,7 +438,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-success"
-                                        ng-click="onPrintSpecCommittee($event, order.id)"
+                                        ng-click="onPrintSpecCommittee($event, order.id, specCommittee.is_existed)"
                                         ng-show="specCommittee.is_existed"
                                     >
                                         <i class="fa fa-print" aria-hidden="true"></i>

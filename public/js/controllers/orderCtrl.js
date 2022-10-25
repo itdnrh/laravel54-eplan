@@ -881,7 +881,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     };
 
     $scope.setSpecCommitteeForm = function(order, supportOrder) {
-        console.log(order, supportOrder);
         $scope.specCommittee.order_id   = order.id;
         $scope.specCommittee.amount     = order.details.length;
         $scope.specCommittee.net_total  = order.net_total;
@@ -924,7 +923,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     }
 
     $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
-        console.log($scope.specCommittee);
         if (isExisted) {
             $scope.clearSpecCommittee();
 
