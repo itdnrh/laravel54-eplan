@@ -280,7 +280,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div style="position: relative;">
+                                    <div style="position: relative;" ng-show="!order.support_id">
                                         <a
                                             href="#"
                                             class="btn btn-primary btn-sm pull-right"
@@ -299,6 +299,7 @@
                                                 onFilterCategories(order.plan_type_id);
                                                 showPlanGroupsList(order.category_id);
                                             "
+                                            ng-show="order.plan_type_id == 1"
                                         >
                                             เพิ่มรายการแบบกลุ่ม
                                         </a>
@@ -558,7 +559,7 @@
                                                         href="#"
                                                         class="btn btn-danger btn-xs"
                                                         ng-click="removeOrderItem(index)"
-                                                        ng-show="!editRow || editRowIndex != index"
+                                                        ng-show="!order.support_id && (!editRow || editRowIndex != index)"
                                                     >
                                                         <i class="fa fa-trash"></i>
                                                     </a>

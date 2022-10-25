@@ -386,7 +386,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.showPlanGroupsList = (cate) => {
         if (cate == '') {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนก่อน !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
         } else {
             $scope.loading = true;
             $scope.planGroups = [];
