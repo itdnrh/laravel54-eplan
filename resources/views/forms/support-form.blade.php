@@ -452,7 +452,12 @@
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) <= 17)
+                                @if(count($support->details) > 17 && count($support->details) <= 20)
+                                    <div style="height: 20px;"></div>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+
+                                @if(count($support->details) > 27)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
@@ -489,10 +494,12 @@
                                 @if(count($committees) > 6)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๓ -</p>
-                                @else
-                                    <p class="page-number">- ๓ -</p>
                                 @endif
-                            @elseif (count($support->details) > 17 && count($support->details) <= 27)
+                            @elseif (count($support->details) > 17 && count($support->details) <= 20)
+                                @if(count($committees) > 6)
+                                    <p class="page-number">- ๔ -</p>
+                                @endif
+                            @elseif (count($support->details) > 20 && count($support->details) <= 27)
                                 @if(count($committees) > 6)
                                     <p class="page-number">- ๔ -</p>
                                 @endif
