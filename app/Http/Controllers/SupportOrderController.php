@@ -198,13 +198,19 @@ class SupportOrderController extends Controller
         try {
             $support = new SupportOrder;
             // $support->year              = $req['year'];
-            $support->support_id        = $req['support_id'];
+            $support->order_id          = $req['order_id'];
             $support->purchase_method   = $req['purchase_method'];
             $support->source_price      = $req['source_price'];
             $support->spec_doc_no       = $req['spec_doc_no'];
             $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
             $support->report_doc_no     = $req['report_doc_no'];
             $support->report_doc_date   = convThDateToDbDate($req['report_doc_date']);
+            $support->amount            = $req['amount'];
+            $support->net_total         = $req['net_total'];
+
+            if (count($req['committee_ids']) > 0) {
+                $support->committees        =  implode(',', $req['committee_ids']);
+            }
             
             if ($support->save()) {
                 return [
@@ -244,13 +250,19 @@ class SupportOrderController extends Controller
         try {
             $support = SupportOrder::find($id);
             // $support->year              = $req['year'];
-            $support->support_id        = $req['support_id'];
+            $support->order_id          = $req['order_id'];
             $support->purchase_method   = $req['purchase_method'];
             $support->source_price      = $req['source_price'];
             $support->spec_doc_no       = $req['spec_doc_no'];
             $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
             $support->report_doc_no     = $req['report_doc_no'];
             $support->report_doc_date   = convThDateToDbDate($req['report_doc_date']);
+            $support->amount            = $req['amount'];
+            $support->net_total         = $req['net_total'];
+
+            if (count($req['committee_ids']) > 0) {
+                $support->committees        =  implode(',', $req['committee_ids']);
+            }
             
             if ($support->save()) {
                 return [

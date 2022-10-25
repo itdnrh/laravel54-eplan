@@ -24,7 +24,9 @@ use App\Models\OrderType;
 use App\Models\BudgetSource;
 use App\Models\Running;
 use App\Models\Person;
+use App\Models\Committee;
 use App\Models\SupportOrder;
+use App\Models\ProvinceOrder;
 
 class OrderController extends Controller
 {
@@ -163,13 +165,12 @@ class OrderController extends Controller
 
     public function getOrder($id)
     {
-        $order = Order::where('id', $id)
-                    ->with('supplier','details','orderType','planType')
+        $order = Order::with('supplier','details','orderType','planType')
                     ->with('details.unit','details.plan','details.plan.depart')
                     ->with('details.plan.planItem','details.plan.planItem.item')
                     ->with('details.plan.planItem.item.category')
-                    ->with('officer','officer.prefix')
-                    ->first();
+                    ->with('officer','officer.prefix','supportOrders')
+                    ->find($id);
 
         return [
             "order" => $order
@@ -681,5 +682,61 @@ class OrderController extends Controller
                 'message'   => $ex->getMessage()
             ];
         }
+    }
+
+    public function printSpecCommittee($id)
+    {
+        $support = SupportOrder::with('order','order.category','order.planType')
+                                ->with('order.officer','order.officer.prefix')
+                                ->with('order.officer.position','order.officer.academic')
+                                ->where('order_id', $id)
+                                ->first();
+
+        $planType = PlanType::find($support->order->plan_type_id);
+
+        if ($support->order->support_id) {
+            $committees = Committee::with('type','person','person.prefix')
+                                    ->with('person.position','person.academic')
+                                    ->where('support_id', $support->order->support_id)
+                                    ->where('committee_type_id', '1')
+                                    ->get();
+        } else {
+            $committees = Person::with('prefix','position','academic')
+                                ->whereIn('person_id', explode(',', $support->committees))
+                                ->get();
+        }
+
+        /** กลุ่มงานพัสดุ */
+        $departOfParcel = Depart::where('depart_id', 2)->first();
+
+        /** หัวหน้ากลุ่มงานพัสดุ */
+        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.depart_id', '2')
+                            ->where('level.duty_id', '2')
+                            ->with('prefix','position')
+                            ->first();
+        
+        /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
+        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->where('level.faction_id', '1')
+                            ->where('level.duty_id', '1')
+                            ->with('prefix','position')
+                            ->first();
+
+        /** คำสั่งจังหวัด */
+        $provinceOrders = ProvinceOrder::where('is_activated', 1)->get();
+
+        $data = [
+            "support"           => $support,
+            "planType"          => $planType,
+            "committees"        => $committees,
+            "departOfParcel"    => $departOfParcel,
+            "headOfDepart"      => $headOfDepart,
+            "headOfFaction"     => $headOfFaction,
+            "provinceOrders"    => $provinceOrders
+        ];
+
+        /** Invoke helper function to return view of pdf instead of laravel's view to client */
+        return renderPdf('forms.orders.spec-committee', $data);
     }
 }

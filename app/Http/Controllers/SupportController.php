@@ -138,10 +138,9 @@ class SupportController extends Controller
                             })
                             ->pluck('support_details.support_id');
 
-        $supports = Support::with('planType','depart','division','details')
+        $supports = Support::with('planType','depart','division','officer','details')
                         ->with('details.unit','details.plan','details.plan.planItem.unit')
                         ->with('details.plan.planItem','details.plan.planItem.item')
-                        ->with('officer','supportOrders')
                         ->when(!empty($year), function($q) use ($year) {
                             $q->where('year', $year);
                         })
@@ -843,54 +842,5 @@ class SupportController extends Controller
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
         return renderPdf('forms.support-form', $data);
-    }
-
-    public function printSpecCommittee($id)
-    {
-        $support = Support::with('depart','planType','category')
-                    ->with('details','details.plan','details.unit')
-                    ->with('officer','officer.prefix','officer.position')
-                    ->with('supportOrders')
-                    ->find($id);
-
-        $planType = PlanType::find($support->plan_type_id);
-        
-        $committees = Committee::with('type','person','person.prefix')
-                                ->with('person.position','person.academic')
-                                ->where('support_id', $support->id)
-                                ->where('committee_type_id', '1')
-                                ->get();
-
-        /** กลุ่มงานพัสดุ */
-        $departOfParcel = Depart::where('depart_id', 2)->first();
-
-        /** หัวหน้ากลุ่มงานพัสดุ */
-        $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
-                            ->where('level.depart_id', '2')
-                            ->where('level.duty_id', '2')
-                            ->with('prefix','position')
-                            ->first();
-        
-        /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
-        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
-                            ->where('level.faction_id', '1')
-                            ->where('level.duty_id', '1')
-                            ->with('prefix','position')
-                            ->first();
-
-        $provinceOrders = ProvinceOrder::where('is_activated', 1)->get();
-
-        $data = [
-            "support"           => $support,
-            "planType"          => $planType,
-            "committees"        => $committees,
-            "departOfParcel"    => $departOfParcel,
-            "headOfDepart"      => $headOfDepart,
-            "headOfFaction"     => $headOfFaction,
-            "provinceOrders"    => $provinceOrders
-        ];
-
-        /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.orders.spec-committee', $data);
     }
 }

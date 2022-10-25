@@ -25,6 +25,11 @@ class Order extends Model
         return $this->belongsTo(PlanType::class, 'plan_type_id', 'id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(ItemCategory::class, 'category_id', 'id');
+    }
+
     public function orderType()
     {
         return $this->belongsTo(OrderType::class, 'order_type_id', 'id');
@@ -43,6 +48,11 @@ class Order extends Model
     public function support()
     {
         return $this->belongsTo(Support::class, 'support_id', 'id');
+    }
+
+    public function supportOrders()
+    {
+        return $this->hasMany(SupportOrder::class, 'order_id', 'id');
     }
 
     public function details()

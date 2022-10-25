@@ -13,7 +13,7 @@
                 <h2>บันทึกข้อความ</h2>
             </div>
             <div class="content">
-                <?php $orderType = in_array($support->plan_type_id, [1,2]) ? 'จัดซื้อ' : '' ?>
+                <?php $orderType = in_array($planType->id, [1,2]) ? 'จัดซื้อ' : '' ?>
                 <table class="layout">
                     <tr>
                         <td colspan="4">
@@ -32,7 +32,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->supportOrders[0]->spec_doc_no) }}</span>
+                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->spec_doc_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -42,7 +42,7 @@
                                 <div class="content__header-text" style="width: 88%;">
                                     <span style="margin: 0 10px;">
                                         <!-- {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($support->doc_date) }} -->
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThDate($support->supportOrders[0]->spec_doc_date)) }}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThDate($support->spec_doc_date)) }}
                                     </span>
                                 </div>
                             </div>
@@ -70,12 +70,12 @@
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.ต้นเรื่อง</span>
                                 ด้วย กลุ่มงานพัสดุ โรงพยาบาลเทพรัตน์นครราชสีมา มีความประสงค์จะดำเนินการ
-                                {{$orderType}}<span>{{ $support->category->name }}</span>
-                                โดยวิธี{{ $purchaseMethods[$support->supportOrders[0]->purchase_method] }} เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
-                                จึงขออนุมัติ{{$orderType}}<span>{{ $support->category->name }}</span>
-                                จำนวน <span>{{ thainumDigit(count($support->details)) }}</span> รายการ
-                                จำนวนเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
-                                <span>({{ baht_text($support->total) }})</span>
+                                {{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                โดยวิธี{{ $purchaseMethods[$support->purchase_method] }} เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
+                                จึงขออนุมัติ{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                จำนวน <span>{{ thainumDigit($support->amount) }}</span> รายการ
+                                จำนวนเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
+                                <span>({{ baht_text($support->net_total) }})</span>
                             </p>
                         </td>
                     </tr>
@@ -110,18 +110,27 @@
                                     <table style="width: 100%;">
                                         <?php $index = 0;?>
                                         @foreach($committees as $committee)
-                                        <tr>
-                                            <td style="width: 40%;">
-                                                {{ thainumDigit(++$index) }}. {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
-                                            </td>
-                                            <td>ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}</td>
-                                        </tr>
+                                            @if ($support->order->support_id)
+                                                <tr>
+                                                    <td style="width: 40%;">
+                                                        {{ thainumDigit(++$index) }}. {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
+                                                    </td>
+                                                    <td>ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}</td>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td style="width: 40%;">
+                                                        {{ thainumDigit(++$index) }}. {{ $committee->prefix->prefix_name.$committee->person_firstname.' '.$committee->person_lastname }}
+                                                    </td>
+                                                    <td>ตำแหน่ง {{ $committee->position->position_name }}{{ $committee->academic ? $committee->academic->ac_name : '' }}</td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     </table>
                                 </div>
 
-                                เป็น{{ $committeeType }}ผู้รับผิดชอบจัดทำรายละเอียดคุณลักษณะเฉพาะ และราคากลางการ{{$orderType}}<span>{{ $support->category->name }}</span>
-                                จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
+                                เป็น{{ $committeeType }}ผู้รับผิดชอบจัดทำรายละเอียดคุณลักษณะเฉพาะ และราคากลางการ{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                จำนวน <span>{{ thainumDigit($support->amount) }} รายการ</span>
                                 เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่ โดยมีหน้าที่จัดทำรายละเอียดคุณลักษณะเฉพาะของพัสดุ รวมทั้งกำหนด
                                 หลักเกณฑ์พิจารณาคัดเลือกข้อเสนอด้วย</span>
                             </div>
@@ -185,10 +194,10 @@
                                     ลงชื่อ<span class="dot">.........................................เจ้าหน้าที่</span>
                                 </p>
                                 <p style="margin: 0;">
-                                    ( {{ $support->officer->prefix->prefix_name.$support->officer->person_firstname. ' ' .$support->officer->person_lastname }} )
+                                    ( {{ $support->order->officer->prefix->prefix_name.$support->order->officer->person_firstname. ' ' .$support->order->officer->person_lastname }} )
                                 </p>
                                 <p style="margin: 0;">
-                                    <span>{{ $support->officer->position->position_name }}{{ $support->officer->academic ? $support->officer->academic->ac_name : '' }}</span>
+                                    <span>{{ $support->order->officer->position->position_name }}{{ $support->order->officer->academic ? $support->order->officer->academic->ac_name : '' }}</span>
                                 </p>
                             </div>
                             <div class="signature">
@@ -237,7 +246,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->supportOrders[0]->report_doc_no) }}</span>
+                                    <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->report_doc_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -247,7 +256,7 @@
                                 <div class="content__header-text" style="width: 89%;">
                                     <span style="margin: 0 10px;">
                                         <!-- {{ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.thainumDigit($support->doc_date) }} -->
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThDate($support->supportOrders[0]->report_doc_date)) }}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ thainumDigit(convDbDateToLongThDate($support->report_doc_date)) }}
                                     </span>
                                 </div>
                             </div>
@@ -273,10 +282,10 @@
                         <td colspan="4">
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.เรื่องเดิม</span>
-                                ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->supportOrders[0]->spec_doc_no) }}</span>
-                                ลงวันที่&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThDate($support->supportOrders[0]->spec_doc_date)) }}</span>
+                                ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->spec_doc_no) }}</span>
+                                ลงวันที่&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThDate($support->spec_doc_date)) }}</span>
                                 ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}ผู้กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}
-                                <span>{{ $support->category->name }}</span> สนับสนุน การทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น
+                                <span>{{ $support->order->category->name}}</span> สนับสนุน การทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น
                             </p>
                         </td>
                     </tr>
@@ -308,15 +317,15 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <?php $spacing = strlen(baht_text($support->total)) > 80 ? '&nbsp;' : ''; ?>
-                            <?php $unspacing = strlen(baht_text($support->total)) > 80 ? '' : '&nbsp;'; ?>
+                            <?php $spacing = strlen(baht_text($support->net_total)) > 80 ? '&nbsp;' : ''; ?>
+                            <?php $unspacing = strlen(baht_text($support->net_total)) > 80 ? '' : '&nbsp;'; ?>
                             <?php $sourcePrices = [1 => 'ราคาที่ได้จากการจัดซื้อภายใน 2 ปีงบประมาณ', 2 => 'อื่นๆ']; ?>
                             <div class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๓.ข้อพิจารณา</span>
-                                บัดนี้ ผู้กำหนดรายละเอียดคุณลักษณะ ได้กำหนดรายละเอียดคุณลักษณะ เฉพาะและราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
-                                จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
-                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
-                                <span>({{ baht_text($support->total) }})</span>
+                                บัดนี้ ผู้กำหนดรายละเอียดคุณลักษณะ ได้กำหนดรายละเอียดคุณลักษณะ เฉพาะและราคากลาง{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                จำนวน <span>{{ thainumDigit($support->amount) }} รายการ</span>
+                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
+                                <span>({{ baht_text($support->net_total) }})</span>
                                 โรงพยาบาลเทพรัตน์นครราชสีมา โดยถือปฏิบัติตาม{{ $spacing }}ระเบียบกระทรวงการคลัง{{ $unspacing }}ว่าด้วยการจัดซื้อจัดจ้าง และการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐
                                 ข้อ ๒๑ และได้พิจารณาราคากลาง โดยถือปฏิบัติตามพระราชบัญญัติ การจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ มาตรา ๔
                                 <table style="width: 100%; margin: 10px;" class="table" border="1">
@@ -328,18 +337,18 @@
                                     <tr>
                                         <td style="text-align: center;">๑</td>
                                         <td style="padding: 0 5px 2px;">
-                                            {{ thainumDigit($sourcePrices[$support->supportOrders[0]->source_price]) }}
+                                            {{ thainumDigit($sourcePrices[$support->source_price]) }}
                                         </td>
                                         <td style="text-align: center;">
-                                            {{ thainumDigit(number_format($support->total, 2)) }}
+                                            {{ thainumDigit(number_format($support->net_total, 2)) }}
                                         </td>
                                     </tr>
                                 </table>
                                 <p>
-                                    ข้าพเจ้าฯ ได้สรุปรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
-                                    จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
-                                    เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
-                                    <span>({{ baht_text($support->total) }})</span>
+                                    ข้าพเจ้าฯ ได้สรุปรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                    จำนวน <span>{{ thainumDigit($support->amount) }} รายการ</span>
+                                    เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
+                                    <span>({{ baht_text($support->net_total) }})</span>
                                 </p>
                             </div>
 
@@ -351,24 +360,35 @@
                             <div class="page-number">- ๒ -</div>
                             <div class="memo-paragraph-content with-compressed with-expanded" style="margin-bottom: 10px;">
                                 <span class="memo-paragraph-topic-inline">๔.ข้อเสนอ</span>
-                                จึงเรียนมาเพื่อโปรดพิจารณา ให้ความเห็นชอบรายละเอียดคุณลักษณะเฉพาะ และราคากลาง{{$orderType}}<span>{{ $support->category->name }}</span>
-                                จำนวน <span>{{ thainumDigit(count($support->details)) }} รายการ</span>
-                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->total, 2)) }} บาท</span>
-                                <span>({{ baht_text($support->total) }})</span> ของโรงพยาบาลเทพรัตน์นครราชสีมา
+                                จึงเรียนมาเพื่อโปรดพิจารณา ให้ความเห็นชอบรายละเอียดคุณลักษณะเฉพาะ และราคากลาง{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                จำนวน <span>{{ thainumDigit($support->amount) }} รายการ</span>
+                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
+                                <span>({{ baht_text($support->net_total) }})</span> ของโรงพยาบาลเทพรัตน์นครราชสีมา
 
                                 @foreach($committees as $committee)
                                     <div class="clearfix" style="margin-left: 80px;">
                                         <p style="margin: 20px 0 0;">
                                             ลงชื่อ<span class="dot">.........................................ผู้กำหนดรายละเอียดคุณลักษณะ</span>
                                         </p>
-                                        <div style="width: 60%; text-align: center;">
-                                            <p style="margin: 0">
-                                                ( {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }} )
-                                            </p>
-                                            <p style="margin: 0">
-                                                <span>{{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}</span>
-                                            </p>
-                                        </div>
+                                        @if ($support->order->support_id)
+                                            <div style="width: 60%; text-align: center;">
+                                                <p style="margin: 0">
+                                                    ( {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }} )
+                                                </p>
+                                                <p style="margin: 0">
+                                                    <span>{{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}</span>
+                                                </p>
+                                            </div>
+                                        @else
+                                            <div style="width: 60%; text-align: center;">
+                                                <p style="margin: 0">
+                                                    ( {{ $committee->prefix->prefix_name.$committee->person_firstname.' '.$committee->person_lastname }} )
+                                                </p>
+                                                <p style="margin: 0">
+                                                    <span>{{ $committee->position->position_name }}{{ $committee->academic ? $committee->academic->ac_name : '' }}</span>
+                                                </p>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach
 
@@ -393,7 +413,7 @@
                                     ลงชื่อ<span class="dot">.........................................เจ้าหน้าที่</span>
                                 </p>
                                 <p style="margin: 0;">
-                                    ( {{ $support->officer->prefix->prefix_name.$support->officer->person_firstname. ' ' .$support->officer->person_lastname }} )
+                                    ( {{ $support->order->officer->prefix->prefix_name.$support->order->officer->person_firstname. ' ' .$support->order->officer->person_lastname }} )
                                 </p>
                                 <p style="margin: 0;">
                                     เจ้าหน้าที่พัสดุ

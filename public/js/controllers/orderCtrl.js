@@ -26,8 +26,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         po_app_no: '',
         po_app_prefix: '',
         po_app_date: '',
-        support_order_id: '',
         year: '2566',
+        support_id: '',
         order_type_id: '',
         plan_type_id: '',
         deliver_amt: 1,
@@ -72,7 +72,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         format: 'dd/mm/yyyy',
         thaiyear: true,
         todayBtn: true,
-        todayHighlight: true
+        todayHighlight: true,
+        orientation: "bottom"
     };
 
     /** ==================== Add form ==================== */
@@ -114,6 +115,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(event.date);
         });
 
+    $('#report_doc_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date());
+
     $('#inspect_sdate')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
@@ -139,7 +144,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if (support) {
             $scope.order.plan_type_id = support.plan_type_id.toString();
             $scope.order.order_type_id = [1,2].includes(support.plan_type_id) ? '1' : '';
-            // $scope.order.support_order_id = support.plan_type_id;
+            $scope.order.support_id = support.id;
             $scope.order.supply_officer = support.supply_officer;
             $scope.order.supply_officer_detail = support.officer.prefix.prefix_name+support.officer.person_firstname+ ' ' +support.officer.person_lastname;
 
@@ -838,63 +843,66 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             });
     };
 
-    $scope.showSpecCommitteeForm = function(e, id, supportOrders) {
-        $('#spec-committee-form').modal('show');
-
-        $scope.specCommittee.support_id = id;
-
-        $('#spec_doc_date')
-            .datepicker(dtpOptions)
-            .datepicker('update', new Date());
-
-        $('#report_doc_date')
-            .datepicker(dtpOptions)
-            .datepicker('update', new Date());
-
-        if (supportOrders.length > 0) {
-            $scope.specCommittee.id                 = supportOrders[0].id;
-            $scope.specCommittee.purchase_method    = supportOrders[0].purchase_method.toString();
-            $scope.specCommittee.source_price       = supportOrders[0].source_price.toString();
-            $scope.specCommittee.spec_doc_no        = supportOrders[0].spec_doc_no;
-            // $scope.specCommittee.spec_doc_date      = supportOrders[0].spec_doc_date;
-            $scope.specCommittee.report_doc_no      = supportOrders[0].report_doc_no;
-            // $scope.specCommittee.report_doc_date    = supportOrders[0].report_doc_date;
-            $scope.specCommittee.is_existed         = true;
-
-            $('#spec_doc_date')
-                .datepicker(dtpOptions)
-                .datepicker('update', moment(supportOrders[0].spec_doc_date).toDate());
-
-            $('#report_doc_date')
-                .datepicker(dtpOptions)
-                .datepicker('update', moment(supportOrders[0].report_doc_date).toDate());
-        }
-    };
-
     $scope.specCommittee = {
         id: '',
-        support_id: '',
+        order_id: '',
         purchase_method: '1',
         source_price: '1',
         spec_doc_no: '',
         spec_doc_date: '',
         report_doc_no: '',
         report_doc_date: '',
+        amount: '',
+        net_total: '',
+        committees: [],
+        committee_ids: '',
         is_existed: false
     };
 
     $scope.clearSpecCommittee = function() {
         $scope.specCommittee = {
             id: '',
-            support_id: '',
+            order_id: '',
             purchase_method: '1',
             source_price: '1',
             spec_doc_no: '',
             spec_doc_date: '',
             report_doc_no: '',
             report_doc_date: '',
+            amount: '',
+            net_total: '',
+            committees: [],
+            committee_ids: '',
             is_existed: false
         };
+    };
+
+    $scope.setSpecCommitteeForm = function(order, supportOrder) {
+        console.log(order, supportOrder);
+        $scope.specCommittee.order_id   = order.id;
+        $scope.specCommittee.amount     = order.details.length;
+        $scope.specCommittee.net_total  = order.net_total;
+
+        if (supportOrder) {
+            $scope.specCommittee.id                 = supportOrder.id;
+            $scope.specCommittee.purchase_method    = supportOrder.purchase_method.toString();
+            $scope.specCommittee.source_price       = supportOrder.source_price.toString();
+            $scope.specCommittee.spec_doc_no        = supportOrder.spec_doc_no;
+            // $scope.specCommittee.spec_doc_date      = supportOrder.spec_doc_date;
+            $scope.specCommittee.report_doc_no      = supportOrder.report_doc_no;
+            // $scope.specCommittee.report_doc_date    = supportOrder.report_doc_date;
+            $scope.specCommittee.amount      = supportOrder.amount;
+            $scope.specCommittee.net_total    = supportOrder.net_total;
+            $scope.specCommittee.is_existed         = true;
+
+            $('#spec_doc_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(supportOrder.spec_doc_date).toDate());
+
+            $('#report_doc_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(supportOrder.report_doc_date).toDate());
+        }
     };
 
     $scope.onUpdateSpecCommittee = function(e, id) {
@@ -912,22 +920,19 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     }
 
-    $scope.onPrintSpecCommittee = function(e, supportId, isExisted=false) {
+    $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
+        console.log($scope.specCommittee);
         if (isExisted) {
             $scope.clearSpecCommittee();
 
-            $('#spec-committee-form').modal('hide');
-
-            window.location.href = `${CONFIG.baseUrl}/supports/${supportId}/print/spec-committee`;
+            window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
         } else {
             $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
             .then(res => {
                 if (res.data.status) {
                     $scope.clearSpecCommittee();
 
-                    $('#spec-committee-form').modal('hide');
-
-                    window.location.href = `${CONFIG.baseUrl}/supports/${supportId}/print/spec-committee`;
+                    window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
                 } else {
 
                 }
@@ -935,12 +940,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 console.log(err);
             });
         }
-    };
-
-    $scope.closeSpecCommitteeForm = function() {
-        $scope.clearSpecCommittee();
-
-        $('#spec-committee-form').modal('hide');
     };
 
     $scope.supportDetails = [];
@@ -1123,12 +1122,28 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.selectedMode = '';
     $scope.onSelectedPerson = (mode, person) => {
         if (person) {
-            $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
-            $scope.order.supply_officer = person.person_id;
+            if (parseInt(mode) === 1) {
+                $scope.specCommittee.committees.push(person);
+
+                $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
+            } else {
+                $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.order.supply_officer = person.person_id;
+            }
         }
 
         $('#persons-list').modal('hide');
         $scope.selectedMode = '';
+    };
+
+    $scope.removePersonItem = (mode, person) => {
+        if (parseInt(mode) === 1) {
+            $scope.specCommittee.committees = $scope.specCommittee.committees.filter(sc => {
+                return sc.person_id !== person.person_id
+            });
+
+            $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
+        }
     };
 
     $scope.onInspect = (e) => {
@@ -1248,6 +1263,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.edit = function(id) {
         $http.get(`${CONFIG.baseUrl}/orders/getOrder/${id}`)
         .then(res => {
+            console.log(res);
             if (res.data.order.po_req_no) {
                 const [prefix, req_no] = res.data.order.po_req_no.split("/");
                 $scope.order.po_req_prefix = prefix;
@@ -1300,6 +1316,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             });
 
             $('#supplier_id').val(res.data.order.supplier.supplier_id).trigger('change.select2');
+
+            $scope.setSpecCommitteeForm(res.data.order, res.data.order.support_orders[0]);
         }, err => {
             console.log(err);
         });

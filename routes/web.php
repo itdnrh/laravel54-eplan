@@ -152,7 +152,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('supports/delete/{id}', 'SupportController@delete');
     Route::post('supports/send', 'SupportController@send');
     Route::get('supports/{id}/print', 'SupportController@printForm');
-    Route::get('supports/{id}/print/spec-committee', 'SupportController@printSpecCommittee');
 
     /** การขอสนับสนุนจ้างซ่อม */
     Route::post('repairs/validate', 'RepairController@formValidate');
@@ -177,7 +176,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('orders/delete/{id}', 'OrderController@delete');
     Route::get('orders/received', 'OrderController@received');
     Route::post('orders/received/{mode}', 'OrderController@onReceived');
-    Route::get('orders/print/{id}', 'OrderController@printSpecCommittee');
+    Route::get('orders/{id}/print', 'OrderController@printForm');
+    Route::get('orders/{id}/print-spec', 'OrderController@printSpecCommittee');
 
     /** ตรวจรับพัสดุ */
     Route::post('inspections/validate', 'InspectionController@formValidate');

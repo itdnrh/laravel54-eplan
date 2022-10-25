@@ -687,13 +687,6 @@
                             </div>
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <a
-                                href="#"
-                                class="btn btn-primary"
-                                ng-click="showSpecCommitteeForm($event, support.id, support.support_orders)"
-                            >
-                                ผู้กำหนด Spec
-                            </a>
                             <button
                                 ng-click="formValidate($event, '/orders/validate', order, 'frmNewPO', store)"
                                 class="btn btn-success pull-right"
@@ -719,7 +712,6 @@
         @include('orders._plan-groups-list')
         @include('orders._plan-group-items')
         @include('orders._spec-form')
-        @include('orders._spec-committee-form')
 
     </section>
 
