@@ -739,6 +739,16 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         remark: ''
     };
 
+    $scope.clearReceive = function() {
+        $scope.receive = {
+            support_id: '',
+            received_no: '',
+            received_date: '',
+            officer: '',
+            remark: ''
+        };
+    };
+
     $scope.showReceiveSupportForm = function(e, support) {
         $scope.receive.support_id = support.id;
 
@@ -770,6 +780,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                     $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
 
                     $scope.getReceiveds(2);
+                    $scope.clearReceive();
+                    form.$submitted = false;
 
                     $('#receive-form').modal('hide');
                 } else {
@@ -1245,23 +1257,25 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $scope.loading = true;
 
-        $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
-        .then(res => {
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อ/จ้างเรียบร้อย !!!");
+        console.log($scope.order);
 
-                window.location.href = `${CONFIG.baseUrl}/orders/list`;
-            } else {
-                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
-            }
+        // $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
+        // .then(res => {
+        //     if (res.data.status == 1) {
+        //         toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อ/จ้างเรียบร้อย !!!");
 
-            $scope.loading = false;
-        }, err => {
-            console.log(err);
-            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
+        //         window.location.href = `${CONFIG.baseUrl}/orders/list`;
+        //     } else {
+        //         toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
+        //     }
 
-            $scope.loading = false;
-        });
+        //     $scope.loading = false;
+        // }, err => {
+        //     console.log(err);
+        //     toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
+
+        //     $scope.loading = false;
+        // });
     }
 
     $scope.edit = function(id) {

@@ -665,7 +665,7 @@
                                     </div>
                                     <div
                                         class="form-group"
-                                        ng-class="{'has-error has-feedback': checkValidate(order, 'vat')}"
+                                        ng-class="{'has-error has-feedback': checkValidate(order, 'vat_rate')}"
                                     >
                                         <label>ภาษีมูลค่าเพิ่ม :</label>
                                         <div style="display: flex">
@@ -687,7 +687,7 @@
                                                     style="text-align: right;"
                                                     tabindex="5" />
                                         </div>
-                                        <span class="help-block" ng-show="checkValidate(order, 'vat')">
+                                        <span class="help-block" ng-show="checkValidate(order, 'vat_rate')">
                                             กรุณาระบุภาษีมูลค่าเพิ่ม
                                         </span>
                                     </div>
