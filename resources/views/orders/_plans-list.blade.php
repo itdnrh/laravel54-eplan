@@ -109,6 +109,7 @@
                                             ng-click="onSelectedPlan($event, plan)"
                                             ng-show="!isSelected(plan.id)"
                                             class="btn btn-primary btn-xs"
+                                            ng-show="!isSelected(plan.id)"
                                             title="เลือก">
                                             เลือก
                                         </a>

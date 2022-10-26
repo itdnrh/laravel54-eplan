@@ -372,6 +372,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
+    $scope.isSelected = function(planId) {
+        if ($scope.order.details.length == 0) return false;
+
+        return $scope.order.details.some(item => item.support_detail_id === planId);
+    };
+
     $scope.deletePlanGroupItem = function(e, item) {
         e.preventDefault();
 
