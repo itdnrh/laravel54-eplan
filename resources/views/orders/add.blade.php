@@ -581,6 +581,11 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            <tr ng-show="order.details.length == 0">
+                                                <td colspan="8" class="item__desc-text" style="text-align: center;">
+                                                    -- ยังไม่มีรายการ --
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
