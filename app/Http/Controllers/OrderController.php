@@ -43,6 +43,7 @@ class OrderController extends Controller
             'supplier_id'   => 'required',
             'order_type_id' => 'required',
             'plan_type_id'  => 'required',
+            'category_id'   => 'required',
             'deliver_amt'   => 'required',
             'total'         => 'required',
             'vat_rate'      => 'required',
@@ -220,7 +221,6 @@ class OrderController extends Controller
             $order->po_app_no       = $supply->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
-            $order->support_id      = $req['support_id'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
@@ -239,6 +239,14 @@ class OrderController extends Controller
             $order->remark          = $req['remark'];
             $order->status          = '0';
             // $order->created_user         = $req['user'];
+
+            /** If support_id not empty, should update supports'status to 3=ออกใบสั่งซื้อแล้ว */
+            if (!empty($req['support_id'])) {
+                $order->support_id      = $req['support_id'];
+
+                /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
+                Support::find($req['support_id'])->update(['status' => 3]);
+            }
 
             if ($order->save()) {
                 foreach($req['details'] as $item) {
@@ -262,10 +270,7 @@ class OrderController extends Controller
                             'status'        => 3
                         ]);
 
-                        /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
-                        Support::find($detail->support_id)->update(['status' => 3]);
-
-                        /** TODO: should update plan's remain_amount by decrease from request->amount  */
+                        /** ========== Update plan's remain_amount by decrease from request->amount ========== */
                         $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
 
                         /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
@@ -282,7 +287,7 @@ class OrderController extends Controller
                             }
                         }
                         $planItem->save();
-                        /** TODO: should update plan's remain_amount by decrease from request->amount  */
+                        /** ========== Update plan's remain_amount by decrease from request->amount ========== */
 
                         /** Update plan's status to  1=ดำเนินการแล้วบางส่วน, 2=ดำเนินการครบแล้ว */
                         if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
@@ -290,6 +295,16 @@ class OrderController extends Controller
                         } else {
                             Plan::find($detail->plan_id)->update(['status' => 2]);
                         }
+                    }
+
+                    /** If all support_details's status is equal to 3, should update supports's status to 3=ออกใบสั่งซื้อแล้ว  */
+                    $allSupportDetails = SupportDetail::where('support_id', $detail->support_id)->count();
+                    $supportDetailsInPO = SupportDetail::where('support_id', $detail->support_id)
+                                                        ->where('status', '3')->count();
+
+                    if (empty($req['support_id']) && $allSupportDetails == $supportDetailsInPO) {
+                        /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
+                        Support::find($detail->support_id)->update(['status' => 3]);
                     }
                 }
 
@@ -360,7 +375,6 @@ class OrderController extends Controller
             $order->po_app_no       = $supply->memo_no.'/'.$req['po_app_no'];
             $order->po_app_date     = convThDateToDbDate($req['po_app_date']);
             $order->year            = $req['year'];
-            $order->support_id      = $req['support_id'];
             $order->supplier_id     = $req['supplier_id'];
             $order->order_type_id   = $req['order_type_id'];
             $order->plan_type_id    = $req['plan_type_id'];
@@ -379,6 +393,14 @@ class OrderController extends Controller
             $order->remark          = $req['remark'];
             $order->status          = '0';
             // $order->updated_user         = $req['user'];
+
+            /** If support_id not empty, should update supports'status to 3=ออกใบสั่งซื้อแล้ว */
+            if (!empty($req['support_id'])) {
+                $order->support_id      = $req['support_id'];
+
+                /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
+                Support::find($req['support_id'])->update(['status' => 3]);
+            }
 
             if ($order->save()) {
                 /** Delete support_detials data that user remove from table list */
@@ -439,9 +461,6 @@ class OrderController extends Controller
                                 'ref_order_id'  => $order->id,
                                 'status'        => 3
                             ]);
-
-                            /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
-                            Support::find($orderDetail->support_id)->update(['status' => 3]);
 
                             /** TODO: should update plan's remain_amount by decrease from req->amount  */
                             $planItem = PlanItem::where('plan_id', $item['plan_id'])->first();
@@ -518,6 +537,16 @@ class OrderController extends Controller
                                 Plan::find($detail->plan_id)->update(['status' => 2]);
                             }
                         }
+                    }
+
+                    /** If all support_details's status is equal to 3, should update supports's status to 3=ออกใบสั่งซื้อแล้ว  */
+                    $allSupportDetails = SupportDetail::where('support_id', $detail->support_id)->count();
+                    $supportDetailsInPO = SupportDetail::where('support_id', $detail->support_id)
+                                                        ->where('status', '3')->count();
+
+                    if (empty($req['support_id']) && $allSupportDetails == $supportDetailsInPO) {
+                        /** Update support's status to 3=ออกใบสั่งซื้อแล้ว */
+                        Support::find($detail->support_id)->update(['status' => 3]);
                     }
                 }
 
