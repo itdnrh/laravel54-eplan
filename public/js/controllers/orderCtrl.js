@@ -1266,25 +1266,23 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $scope.loading = true;
 
-        console.log($scope.order);
+        $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
+        .then(res => {
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อ/จ้างเรียบร้อย !!!");
 
-        // $http.post(`${CONFIG.baseUrl}/orders/store`, $scope.order)
-        // .then(res => {
-        //     if (res.data.status == 1) {
-        //         toaster.pop('success', "ผลการทำงาน", "บันทึกใบสั่งซื้อ/จ้างเรียบร้อย !!!");
+                window.location.href = `${CONFIG.baseUrl}/orders/list`;
+            } else {
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
+            }
 
-        //         window.location.href = `${CONFIG.baseUrl}/orders/list`;
-        //     } else {
-        //         toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
-        //     }
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
 
-        //     $scope.loading = false;
-        // }, err => {
-        //     console.log(err);
-        //     toaster.pop('error', "ผลการทำงาน", "ไม่สามารถบันทึกใบสั่งซื้อ/จ้างได้ !!!");
-
-        //     $scope.loading = false;
-        // });
+            $scope.loading = false;
+        });
     }
 
     $scope.edit = function(id) {
