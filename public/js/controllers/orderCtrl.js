@@ -1382,23 +1382,23 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         e.preventDefault();
 
         if (window.confirm(`คุณต้องลบรายการใบสั่งซื้อ/จ้าง รหัส ${id} ใช่หรือไม่?`)) {
-            // $http.post(`${CONFIG.baseUrl}/orders/delete/${$scope.order.id}`, {})
-            // .then(res => {
-            //     if (res.data.status == 1) {
-            //         toaster.pop('success', "ผลการทำงาน", "ลบใบสั่งซื้อ/จ้างเรียบร้อย !!!");
+            $http.post(`${CONFIG.baseUrl}/orders/delete/${$scope.order.id}`, {})
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบใบสั่งซื้อ/จ้างเรียบร้อย !!!");
 
-            //         window.location.href = `${CONFIG.baseUrl}/orders/list`;
-            //     } else {
-            //         toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบใบสั่งซื้อ/จ้างได้ !!!");
-            //     }
+                    window.location.href = `${CONFIG.baseUrl}/orders/list`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบใบสั่งซื้อ/จ้างได้ !!!");
+                }
 
-            //     $scope.loading = false;
-            // }, err => {
-            //     console.log(err);
-            //     toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบใบสั่งซื้อ/จ้างได้ !!!");
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบใบสั่งซื้อ/จ้างได้ !!!");
 
-            //     $scope.loading = false;
-            // });
+                $scope.loading = false;
+            });
         }
     };
 });
