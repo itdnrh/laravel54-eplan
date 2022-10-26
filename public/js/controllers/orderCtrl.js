@@ -928,39 +928,42 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
-    $scope.onUpdateSpecCommittee = function(e, id) {
-        if(confirm(`คุณต้องแก้ไขรายละเอียดเอกสารขออนุมัติผู้กำหนด Spec รหัส ${id} ใช่หรือไม่?`)) {
-            $http.put(`${CONFIG.apiUrl}/support-orders/${id}`, $scope.specCommittee)
+    $scope.onSubmitSpecCommittee = function(e, form, id, isExisted=false) {
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        if (isExisted) {
+            if(confirm(`คุณต้องแก้ไขรายละเอียดเอกสารขออนุมัติผู้กำหนด Spec รหัส ${id} ใช่หรือไม่?`)) {
+                $http.put(`${CONFIG.apiUrl}/support-orders/${id}`, $scope.specCommittee)
+                .then(res => {
+                    if (res.data.status) {
+                        window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
+                    } else {
+
+                    }
+                }, err => {
+                    console.log(err);
+                });
+            }
+        } else {
+            $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
             .then(res => {
                 if (res.data.status) {
-                        
+                    window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
                 } else {
-
+    
                 }
             }, err => {
                 console.log(err);
             });
         }
-    }
+    };
 
     $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
-        if (isExisted) {
-            $scope.clearSpecCommittee();
-
+        if (isExisted && id) {
             window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
-        } else {
-            $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
-            .then(res => {
-                if (res.data.status) {
-                    $scope.clearSpecCommittee();
-
-                    window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
-                } else {
-
-                }
-            }, err => {
-                console.log(err);
-            });
         }
     };
 

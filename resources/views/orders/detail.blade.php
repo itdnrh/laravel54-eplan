@@ -285,90 +285,139 @@
 
                             </div><!-- /.tab-pane -->
                             <div class="tab-pane" id="spec-committee">
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label for="">วิธีจัดซื้อจัดจ้าง</label>
-                                        <select
-                                            id="purchase_method"
-                                            name="purchase_method"
-                                            ng-model="specCommittee.purchase_method"
-                                            class="form-control"
+                                <form
+                                    id="frmSpecCommitee"
+                                    name="frmSpecCommitee"
+                                    ng-submit="onSubmitSpecCommittee($event, frmSpecCommitee, order.id, specCommittee.is_existed)"
+                                    novalidate
+                                >
+                                    <div class="row">
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.purchase_method.$invalid}"
                                         >
-                                            <option value="1">เฉพาะเจาะจง</option>
-                                            <option value="2">ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="">แหล่งที่มาของราคาอ้างอิง</label>
-                                        <select
-                                            id="source_price"
-                                            name="source_price"
-                                            ng-model="specCommittee.source_price"
-                                            class="form-control"
-                                        >
-                                            <option value="1">ราคาที่ได้จากการจัดซื้อภายใน 2 ปีงบประมาณ</option>
-                                            <option value="2">อื่น ๆ</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label for="">เลขที่เอกสารขออนุมัติผู้กำหนด Spec</label>
-                                        <div class="input-group">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default">นม 0033.201.2/</button>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                id="spec_doc_no"
-                                                name="spec_doc_no"
-                                                ng-model="specCommittee.spec_doc_no"
+                                            <label for="">วิธีจัดซื้อจัดจ้าง</label>
+                                            <select
+                                                id="purchase_method"
+                                                name="purchase_method"
+                                                ng-model="specCommittee.purchase_method"
                                                 class="form-control"
-                                            />
+                                                required
+                                            >
+                                                <option value="1">เฉพาะเจาะจง</option>
+                                                <option value="2">ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)</option>
+                                            </select>
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.purchase_method.$error.required">
+                                                กรุณาเลือกวิธีจัดซื้อจัดจ้าง
+                                            </span>
+                                        </div>
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.purchase_method.$invalid}"
+                                        >
+                                            <label for="">แหล่งที่มาของราคาอ้างอิง</label>
+                                            <select
+                                                id="source_price"
+                                                name="source_price"
+                                                ng-model="specCommittee.source_price"
+                                                class="form-control"
+                                                required
+                                            >
+                                                <option value="1">ราคาที่ได้จากการจัดซื้อภายใน 2 ปีงบประมาณ</option>
+                                                <option value="2">อื่น ๆ</option>
+                                            </select>
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.source_price.$error.required">
+                                                กรุณาเลือกแหล่งที่มาของราคาอ้างอิง
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="">วันที่เอกสารขออนุมัติผู้กำหนด Spec</label>
-                                        <input
-                                            type="text"
-                                            id="spec_doc_date"
-                                            name="spec_doc_date"
-                                            ng-model="specCommittee.spec_doc_date"
-                                            class="form-control"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label for="">เลขที่เอกสารรายงานขออนุมัติผู้กำหนด Spec</label>
-                                        <div class="input-group">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default">นม 0033.201.2/</button>
+                                    <div class="row">
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.spec_doc_no.$invalid}"
+                                        >
+                                            <label for="">เลขที่เอกสารขออนุมัติผู้กำหนด Spec</label>
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default">นม 0033.201.2/</button>
+                                                </div>
+                                                <input
+                                                    type="text"
+                                                    id="spec_doc_no"
+                                                    name="spec_doc_no"
+                                                    ng-model="specCommittee.spec_doc_no"
+                                                    class="form-control"
+                                                    required
+                                                />
                                             </div>
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.spec_doc_no.$error.required">
+                                                กรุณาระบุเลขที่เอกสารขออนุมัติผู้กำหนด Spec
+                                            </span>
+                                        </div>
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.spec_doc_date.$invalid}"
+                                        >
+                                            <label for="">วันที่เอกสารขออนุมัติผู้กำหนด Spec</label>
                                             <input
                                                 type="text"
-                                                id="report_doc_no"
-                                                name="report_doc_no"
-                                                ng-model="specCommittee.report_doc_no"
+                                                id="spec_doc_date"
+                                                name="spec_doc_date"
+                                                ng-model="specCommittee.spec_doc_date"
                                                 class="form-control"
+                                                required
                                             />
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.spec_doc_date.$error.required">
+                                                กรุณาเลือกวันที่เอกสารขออนุมัติผู้กำหนด Spec
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="">วันที่เอกสารรายงานขออนุมัติผู้กำหนด Spec</label>
-                                        <input
-                                            type="text"
-                                            id="report_doc_date"
-                                            name="report_doc_date"
-                                            ng-model="specCommittee.report_doc_date"
-                                            class="form-control"
-                                        />
+                                    <div class="row">
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.report_doc_no.$invalid}"
+                                        >
+                                            <label for="">เลขที่เอกสารรายงานขออนุมัติผู้กำหนด Spec</label>
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default">นม 0033.201.2/</button>
+                                                </div>
+                                                <input
+                                                    type="text"
+                                                    id="report_doc_no"
+                                                    name="report_doc_no"
+                                                    ng-model="specCommittee.report_doc_no"
+                                                    class="form-control"
+                                                    required
+                                                />
+                                            </div>
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.report_doc_no.$error.required">
+                                                กรุณาระบุเลขที่เอกสารรายงานขออนุมัติผู้กำหนด Spec
+                                            </span>
+                                        </div>
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.report_doc_date.$invalid}"
+                                        >
+                                            <label for="">วันที่เอกสารรายงานขออนุมัติผู้กำหนด Spec</label>
+                                            <input
+                                                type="text"
+                                                id="report_doc_date"
+                                                name="report_doc_date"
+                                                ng-model="specCommittee.report_doc_date"
+                                                class="form-control"
+                                                required
+                                            />
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.report_doc_date.$error.required">
+                                                กรุณาเลือกวันที่เอกสารรายงานขออนุมัติผู้กำหนด Spec
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label for="">จำนวนรายการ</label>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.amount.$invalid}">
+                                            <label for="">จำนวนรายการ</label>
                                             <input
                                                 type="text"
                                                 id="amount"
@@ -376,83 +425,97 @@
                                                 ng-model="specCommittee.amount"
                                                 class="form-control"
                                             />
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="">จำนวนเงินทั้งสิ้น</label>
-                                        <input
-                                            type="text"
-                                            id="net_total"
-                                            name="net_total"
-                                            ng-model="specCommittee.net_total"
-                                            class="form-control"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div
-                                        class="form-group col-md-8"
-                                        ng-class="{'has-error has-feedback': checkValidate(specCommittee, 'committees')}"
-                                    >
-                                        <label>
-                                            คณะกรรมการกำหนดคุณลักษณะเฉพาะ/จัดทำร่างขอบเขตงาน (กรณีกำหนดใหม่) :
-                                            <button
-                                                type="button"
-                                                class="btn bg-maroon btn-sm"
-                                                ng-click="showPersonList(1)"
-                                                style="margin-left: 5px;"
-                                            >
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </label>
-                                        <div class="committee-wrapper" style="min-height: 60px;">
-                                            <ul class="committee-lists">
-                                                <li ng-repeat="person in specCommittee.committees">
-                                                    <div class="committee-item">
-                                                        <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
-                                                        <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
-                                                        <a
-                                                            href="#"
-                                                            class="btn btn-danger btn-xs" 
-                                                            ng-click="removePersonItem(1, person)"
-                                                        >
-                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.amount.$error.required">
+                                                กรุณาระบุจำนวนรายการ
+                                            </span>
                                         </div>
-                                        <span class="help-block" ng-show="checkValidate(specCommittee, 'committees')">
-                                            @{{ formError.errors.committees[0] }}
-                                        </span>
+                                        <div
+                                            class="col-md-6 form-group"
+                                            ng-class="{'has-error': frmSpecCommitee.$submitted && frmSpecCommitee.net_total.$invalid}"
+                                        >
+                                            <label for="">จำนวนเงินทั้งสิ้น</label>
+                                            <input
+                                                type="text"
+                                                id="net_total"
+                                                name="net_total"
+                                                ng-model="specCommittee.net_total"
+                                                class="form-control"
+                                            />
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.net_total.$error.required">
+                                                กรุณาระบุจำนวนเงินทั้งสิ้น
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row" style="text-align: center;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-click="onPrintSpecCommittee($event, order.id, specCommittee.is_existed)"
-                                        ng-show="!specCommittee.is_existed"
-                                    >
-                                        บันทึกผู้กำหนด Spec
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-click="onPrintSpecCommittee($event, order.id, specCommittee.is_existed)"
-                                        ng-show="specCommittee.is_existed"
-                                    >
-                                        <i class="fa fa-print" aria-hidden="true"></i>
-                                        พิมพ์ผู้เอกสารกำหนด Spec
-                                    </a>
-                                    <button
-                                        ng-click="onUpdateSpecCommittee($event, specCommittee.id)"
-                                        ng-show="specCommittee.is_existed"
-                                        class="btn btn-warning"
-                                        aria-label="Update"
-                                    >
-                                        บันทึกการแก้ไข
-                                    </button>
-                                </div>
+                                    <div class="row">
+                                        <div
+                                            class="form-group col-md-8"
+                                            ng-class="{'has-error has-feedback': frmSpecCommitee.$submitted && frmSpecCommitee.committee_ids.$invalid}"
+                                        >
+                                            <label>
+                                                คณะกรรมการกำหนดคุณลักษณะเฉพาะ/จัดทำร่างขอบเขตงาน (กรณีกำหนดใหม่) :
+                                                <button
+                                                    type="button"
+                                                    class="btn bg-maroon btn-sm"
+                                                    ng-click="showPersonList(1)"
+                                                    style="margin-left: 5px;"
+                                                >
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <input
+                                                    type="hidden"
+                                                    id="committee_ids"
+                                                    name="committee_ids"
+                                                    ng-model="specCommittee.committee_ids"
+                                                />
+                                            </label>
+                                            <div class="committee-wrapper" style="min-height: 60px;">
+                                                <ul class="committee-lists">
+                                                    <li ng-repeat="person in specCommittee.committees">
+                                                        <div class="committee-item">
+                                                            <span>@{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}</span>
+                                                            <span>ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}</span>
+                                                            <a
+                                                                href="#"
+                                                                class="btn btn-danger btn-xs" 
+                                                                ng-click="removePersonItem(1, person)"
+                                                            >
+                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.committee_ids.$error.required">
+                                                กรุณาเลือกวิธีจัดซื้อจัดจ้าง
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success"
+                                            ng-show="!specCommittee.is_existed"
+                                        >
+                                            บันทึกผู้กำหนด Spec
+                                        </button>
+                                        <a
+                                            href="#"
+                                            class="btn btn-success"
+                                            ng-click="onPrintSpecCommittee($event, order.id, specCommittee.is_existed)"
+                                            ng-show="specCommittee.is_existed"
+                                        >
+                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                            พิมพ์ผู้เอกสารกำหนด Spec
+                                        </a>
+                                        <button
+                                            type="submit"
+                                            class="btn btn-warning"
+                                            ng-show="specCommittee.is_existed"
+                                        >
+                                            บันทึกการแก้ไข
+                                        </button>
+                                    </div>
+                                </form>
                             </div><!-- /.tab-pane -->
                         </div><!-- /.tab-content -->
                     </div><!-- /.box-body -->

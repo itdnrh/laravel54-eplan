@@ -289,7 +289,6 @@
                                                 onFilterCategories(order.plan_type_id);
                                                 showPlansList(order.category_id);
                                             "
-                                            ng-show="order.plan_type_id == 1"
                                         >
                                             เพิ่มรายการ
                                         </a>
@@ -301,6 +300,7 @@
                                                 onFilterCategories(order.plan_type_id);
                                                 showPlanGroupsList(order.category_id);
                                             "
+                                            ng-show="order.plan_type_id == 1"
                                         >
                                             เพิ่มรายการแบบกลุ่ม
                                         </a>
