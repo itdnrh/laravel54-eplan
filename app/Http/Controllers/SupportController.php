@@ -390,14 +390,14 @@ class SupportController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
-            $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
-
+            
             if (count($req['planGroups']) > 0) {
+                $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
                 $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
                 $support->plan_group_amt    = $req['planGroups'][0]['amount'];
             }
 
-            $support->total             = $req['total'];
+            $support->total             = currencyToNumber($req['total']);
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
@@ -417,7 +417,7 @@ class SupportController extends Controller
 
                     $detail->desc           = $item['desc'];
                     $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
-                    $detail->unit_id        = currencyToNumber($item['unit_id']);
+                    $detail->unit_id        = $item['unit_id'];
                     $detail->amount         = currencyToNumber($item['amount']);
                     $detail->sum_price      = currencyToNumber($item['sum_price']);
                     $detail->status         = 0;
@@ -511,14 +511,17 @@ class SupportController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
-            // $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
-            // $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
-            // $support->plan_group_amt    = $req['planGroups'][0]['amount'];
-            $support->total             = $req['total'];
+            
+            if (count($req['planGroups']) > 0) {
+                $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
+                $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
+                $support->plan_group_amt    = $req['planGroups'][0]['amount'];
+            }
+
+            $support->total             = currencyToNumber($req['total']);
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
-            $support->created_user      = $req['user'];
             $support->updated_user      = $req['user'];
 
             if ($support->save()) {
@@ -541,7 +544,7 @@ class SupportController extends Controller
 
                         $detail->desc           = $item['desc'];
                         $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
-                        $detail->unit_id        = currencyToNumber($item['unit_id']);
+                        $detail->unit_id        = $item['unit_id'];
                         $detail->amount         = currencyToNumber($item['amount']);
                         $detail->sum_price      = currencyToNumber($item['sum_price']);
                         $detail->status         = 0;
@@ -557,7 +560,7 @@ class SupportController extends Controller
 
                         $detail->desc           = $item['desc'];
                         $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
-                        $detail->unit_id        = currencyToNumber($item['unit_id']);
+                        $detail->unit_id        = $item['unit_id'];
                         $detail->amount         = currencyToNumber($item['amount']);
                         $detail->sum_price      = currencyToNumber($item['sum_price']);
                         $detail->save();

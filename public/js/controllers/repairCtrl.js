@@ -19,6 +19,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
     $scope.support = {
         doc_no: '',
+        doc_prefix: '',
         doc_date: '',
         topic: '',
         depart_id: '',
@@ -32,6 +33,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         reason: '',
         remark: '',
         details: [],
+        removed: [],
         spec_committee: [],
         env_committee: [],
         insp_committee: [],
@@ -154,11 +156,11 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         }
 
         if ($scope.spec.repair_type == 1) {
-            $scope.newItem.desc = ` ${$scope.spec.desc} หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+            $scope.newItem.desc = `${$scope.spec.desc}, หมายเลขครุภัณฑ์: ${$scope.spec.parcel_no}, รายละเอียดการซ่อม: ${$scope.spec.cause}`
         } else if ($scope.spec.repair_type == 2) {
-            $scope.newItem.desc = `${$scope.spec.desc} รถราชการ ทะเบียน: ${$scope.spec.reg_no} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+            $scope.newItem.desc = `รถราชการ (${$scope.spec.desc}), ทะเบียน: ${$scope.spec.reg_no}, รายละเอียดการซ่อม: ${$scope.spec.cause}`
         } else {
-            $scope.newItem.desc = `${$scope.spec.desc} รายละเอียดการซ่อม: ${$scope.spec.cause}`
+            $scope.newItem.desc = `${$scope.spec.desc}, รายละเอียดการซ่อม: ${$scope.spec.cause}`
         }
 
         $('#spec-form').modal('hide');
@@ -187,10 +189,14 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         }
     };
 
-    $scope.removeOrderItem = (index) => {
-        console.log(index);
-        // $scope.order.details.push({ ...$scope.newItem });
+    $scope.removeOrderItem = (selectedIndex) => {
+        const rm = $scope.support.details.find((d, index) => index === selectedIndex);
 
+        if (rm) {
+            $scope.support.removed = [...new Set([...$scope.support.removed, rm.id])];
+        }
+
+        $scope.support.details = $scope.support.details.filter((d, index) => index !== selectedIndex);
         $scope.calculateTotal();
     };
 
@@ -297,7 +303,6 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
         $http.get(`${CONFIG.apiUrl}/supports/${id}`)
         .then(function(res) {
-            console.log(res);
             cb(res.data.support, res.data.committees);
 
             $scope.loading = false;
@@ -309,32 +314,44 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
     $scope.setEditControls = function(support, committees) {
         if (support) {
+            $scope.support.id               = support.id;
+
             if (support.doc_no) {
-                const [prefix, doc_no] = support.doc_no.split("/");
-                $scope.support.doc_prefix = prefix;
-                $scope.support.doc_no = doc_no;
+                const [prefix, doc_no]      = support.doc_no.split("/");
+                $scope.support.doc_prefix   = prefix;
+                $scope.support.doc_no       = doc_no;
             }
 
-            $scope.support.id = support.id;
-            $scope.support.doc_date = support.doc_date;
-            $scope.support.topic = support.topic;
-            $scope.support.total = support.total;
-            $scope.support.reason = support.reason;
-            $scope.support.remark = support.remark;
-            $scope.support.contact_person = support.contact.person_id;
-            $scope.support.contact_detail = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
-            $scope.support.details = support.details;
-            $scope.support.status = support.status;
-            
-            $scope.support.year = support.year.toString();
-            $scope.support.plan_type_id = support.plan_type_id.toString();
-            $scope.support.depart_id = support.depart_id.toString();
-            $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
+            $scope.support.doc_date         = support.doc_date ? StringFormatService.convFromDbDate(support.doc_date) : '';
+            $scope.support.topic            = support.topic;
+            $scope.support.total            = support.total;
+            $scope.support.reason           = support.reason;
+            $scope.support.remark           = support.remark;
+            $scope.support.contact_person   = support.contact.person_id;
+            $scope.support.contact_detail   = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
+            $scope.support.details          = support.details;
+            $scope.support.plan_id          = support.details.length > 0 ? support.details[0].plan_id.toString() : '';
+            $scope.support.status           = support.status;
 
-            $scope.support.spec_committee = committees.filter(com => com.committee_type_id == 1);
-            $scope.support.insp_committee = committees.filter(com => com.committee_type_id == 2);
-            $scope.support.env_committee = committees.filter(com => com.committee_type_id == 3);
+            $scope.support.year             = support.year.toString();
+            $scope.support.plan_type_id     = support.plan_type_id.toString();
+            $scope.support.depart_id        = support.depart_id.toString();
+            $scope.support.division_id      = support.division_id ? support.division_id.toString() : '';
 
+            /** Set each committees by filtering from responsed committees data */
+            $scope.support.spec_committee   = committees
+                                                .filter(com => com.committee_type_id == 1)
+                                                .map(com => com.person);
+            $scope.support.insp_committee   = committees
+                                                .filter(com => com.committee_type_id == 2)
+                                                .map(com => com.person);
+            $scope.support.env_committee    = committees
+                                                .filter(com => com.committee_type_id == 3)
+                                                .map(com => com.person);
+
+            /** Set value of .select2 dropdown input */
+            $('#plan_id').val($scope.support.plan_id).trigger('change.select2');
+            /** Set value of datepicker */
             $('#doc_date').datepicker(dtpDateOptions).datepicker('update', moment(support.doc_date).toDate());
         }
     };
@@ -365,13 +382,13 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         });
     };
 
-    $scope.onValidateForm = function(e) {
+    $scope.onValidateForm = function(e, cb) {
         e.preventDefault();
 
         $scope.support.depart_id = $('#depart_id').val();
         $scope.support.division_id = $('#division_id').val();
 
-        $rootScope.formValidate(e, '/supports/validate', $scope.support, 'frmNewSupport', $scope.store)
+        $rootScope.formValidate(e, '/supports/validate', $scope.support, 'frmNewSupport', cb)
     };
 
     $scope.cancel = function(e, id) {
@@ -439,9 +456,6 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
 
-                    /** TODO: Reset supports model */
-                    $scope.setSupports(res);
-
                     window.location.href = `${CONFIG.baseUrl}/repairs/list`;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
@@ -465,8 +479,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
 
-                    /** TODO: Reset supports model */
-                    $scope.setSupports(res);
+                    window.location.href = `${CONFIG.baseUrl}/repairs/list`;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
                 }

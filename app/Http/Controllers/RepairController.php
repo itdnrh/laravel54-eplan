@@ -293,7 +293,7 @@ class RepairController extends Controller
             $support->division_id       = $req['division_id'];
             $support->plan_type_id      = $req['plan_type_id'];
             $support->category_id       = '44';
-            $support->total             = $req['total'];
+            $support->total             = currencyToNumber($req['total']);
             $support->contact_person    = $req['contact_person'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
@@ -308,7 +308,7 @@ class RepairController extends Controller
                     $detail->plan_id        = $req['plan_id'];
                     $detail->desc           = $item['desc'];
                     $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
-                    $detail->unit_id        = currencyToNumber($item['unit_id']);
+                    $detail->unit_id        = $item['unit_id'];
                     $detail->amount         = currencyToNumber($item['amount']);
                     $detail->sum_price      = currencyToNumber($item['sum_price']);
                     $detail->status         = 0;
@@ -405,14 +405,178 @@ class RepairController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $id)
     {
-        //
+        try {
+            $support = Support::find($id);
+            $support->doc_no            = $req['doc_prefix'].'/'.$req['doc_no'];
+
+            if (!empty($req['doc_date'])) {
+                $support->doc_date          = convThDateToDbDate($req['doc_date']);
+            }
+
+            $support->support_type_id   = 2;
+            $support->topic             = $req['topic'];
+            $support->year              = $req['year'];
+            $support->depart_id         = $req['depart_id'];
+            $support->division_id       = $req['division_id'];
+            $support->plan_type_id      = $req['plan_type_id'];
+            $support->category_id       = '44';
+            $support->total             = currencyToNumber($req['total']);
+            $support->contact_person    = $req['contact_person'];
+            $support->reason            = $req['reason'];
+            $support->remark            = $req['remark'];
+            $support->status            = 0;
+            $support->updated_user      = $req['user'];
+            
+            if ($support->save()) {
+                /** Delete support_detials data that user remove from table list */
+                if (count($req['removed']) > 0) {
+                    foreach($req['removed'] as $rm) {
+                        SupportDetail::where('id', $rm)->delete();
+                    }
+                }
+
+                foreach($req['details'] as $item) {
+                    if (!array_key_exists('id', $item)) {
+                        $detail = new SupportDetail;
+                        $detail->support_id     = $support->id;
+                        $detail->plan_id        = $req['plan_id'];
+
+                        if (!empty($item['subitem_id'])) {
+                            $detail->subitem_id     = $item['subitem_id'];
+                        }
+
+                        $detail->desc           = $item['desc'];
+                        $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
+                        $detail->unit_id        = $item['unit_id'];
+                        $detail->amount         = currencyToNumber($item['amount']);
+                        $detail->sum_price      = currencyToNumber($item['sum_price']);
+                        $detail->status         = 0;
+                        $detail->save();
+                    } else {
+                        $detail = SupportDetail::find($item['id']);
+                        $detail->support_id     = $support->id;
+                        $detail->plan_id        = $req['plan_id'];
+
+                        if (!empty($item['subitem_id'])) {
+                            $detail->subitem_id     = $item['subitem_id'];
+                        }
+
+                        $detail->desc           = $item['desc'];
+                        $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
+                        $detail->unit_id        = $item['unit_id'];
+                        $detail->amount         = currencyToNumber($item['amount']);
+                        $detail->sum_price      = currencyToNumber($item['sum_price']);
+                        $detail->save();
+                    }
+                }
+
+                /** Delete all committees of updated supoorts */
+                Committee::where('support_id', $support->id)->delete();
+                
+                /** คณะกรรมการกำหนดคุณลักษณะ */
+                if (count($req['spec_committee']) > 0) {
+                    foreach($req['spec_committee'] as $spec) {
+                        $comm = new Committee;
+                        $comm->support_id           = $support->id;
+                        $comm->committee_type_id    = 1;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $spec['person_id'];
+                        $comm->save();
+                    }
+                }
+
+                /** คณะกรรมการตรวจรับ */
+                if (count($req['insp_committee']) > 0) {
+                    foreach($req['insp_committee'] as $insp) {
+                        $comm = new Committee;
+                        $comm->support_id           = $support->id;
+                        $comm->committee_type_id    = 2;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $insp['person_id'];
+                        $comm->save();
+                    }
+                }
+
+                /** คณะกรรมการเปิดซอง/พิจารณาราคา */
+                if (count($req['env_committee']) > 0) {
+                    foreach($req['env_committee'] as $env) {
+                        $comm = new Committee;
+                        $comm->support_id           = $support->id;
+                        $comm->committee_type_id    = 3;
+                        $comm->detail               = '';
+                        $comm->year                 = $req['year'];
+                        $comm->person_id            = $env['person_id'];
+                        $comm->save();
+                    }
+                }
+
+                return [
+                    'status' => 1,
+                    'message' => 'Insertion successfully'
+                ];
+            } else {
+                return [
+                    'status' => 0,
+                    'message' => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
     }
 
     public function delete(Request $req, $id)
     {
-        //
+        try {
+            $support = Support::find($id);
+            $deleted  = $support;
+
+            if ($support->delete()) {
+                /** Fetch support_details data and update plan's status */
+                $details = SupportDetail::where('support_id', $deleted->id)->get();
+                foreach($details as $item) {
+                    /** TODO: Revert plans's status to 0=รอดำเนินการ */
+                    Plan::find($item->plan_id)->update(['status' => 0]);
+                }
+
+                /** TODO: Delete support_details data */
+                SupportDetail::where('support_id', $deleted->id)->delete();
+
+                /** TODO: Delete all committee of deleted support data */
+                Committee::where('support_id', $deleted->id)->delete();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully',
+                    'supports'  => Support::with('planType','depart','division')
+                                    ->with('details','details.plan','details.plan.planItem.unit')
+                                    ->with('details.plan.planItem','details.plan.planItem.item')
+                                    ->where('year', $deleted->year)
+                                    ->where('depart_id', $deleted->depart_id)
+                                    ->where('support_type_id', '1')
+                                    ->orderBy('received_no', 'DESC')
+                                    ->paginate(10)
+                                    ->setPath('search')
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
     }
 
     public function send(Request $req)

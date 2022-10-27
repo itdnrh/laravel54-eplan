@@ -161,6 +161,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('repairs/add', 'RepairController@create');
     Route::post('repairs/store', 'RepairController@store');
     Route::post('repairs/send', 'RepairController@send');
+    Route::get('repairs/edit/{id}', 'RepairController@edit');
+    Route::post('repairs/update/{id}', 'RepairController@update');
+    Route::post('repairs/delete/{id}', 'RepairController@delete');
     Route::get('repairs/{id}/print', 'RepairController@printForm');
 
     /** จัดซื้อจัดจ้าง */

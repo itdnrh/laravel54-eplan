@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มบันทึกขอจ้างซ่อม
+            แก้ไขบันทึกขอจ้างซ่อม
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มบันทึกขอจ้างซ่อม</li>
+            <li class="breadcrumb-item active">แก้ไขบันทึกขอจ้างซ่อม</li>
         </ol>
     </section>
 
@@ -19,19 +19,22 @@
     <section
         class="content"
         ng-controller="repairCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }}
-        });"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }}
+            });
+            getById({{ $repair->id }}, setEditControls);
+        "
     >
 
         <div class="row">
             <div class="col-md-12">
 
-                <div class="box box-primary">
+                <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มบันทึกขอจ้างซ่อม</h3>
+                        <h3 class="box-title">แก้ไขบันทึกขอจ้างซ่อม : รหัส ({{ $repair->id }})</h3>
                     </div>
 
                     <form id="frmNewSupport" name="frmNewSupport" method="post" action="{{ url('/supports/store') }}" role="form" enctype="multipart/form-data">
@@ -249,10 +252,11 @@
                                                     @{{ currencyToNumber(detail.sum_price) | currency:'':2 }}
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <a href="#" class="btn btn-warning btn-xs">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a href="#" class="btn btn-danger btn-xs" ng-click="removeOrderItem(index)">
+                                                    <a
+                                                        href="#"
+                                                        class="btn btn-danger btn-xs"
+                                                        ng-click="removeOrderItem(index)"
+                                                    >
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
@@ -468,10 +472,10 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="onValidateForm($event)"
-                                class="btn btn-success pull-right"
+                                ng-click="onValidateForm($event, update)"
+                                class="btn btn-warning pull-right"
                             >
-                                บันทึก
+                                บันทึกการแก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

@@ -644,40 +644,41 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
     $scope.setEditControls = function(support, committees) {
         if (support) {
+            $scope.support.id               = support.id;
+
             if (support.doc_no) {
-                const [prefix, doc_no] = support.doc_no.split("/");
-                $scope.support.doc_prefix = prefix;
-                $scope.support.doc_no = doc_no;
+                const [prefix, doc_no]      = support.doc_no.split("/");
+                $scope.support.doc_prefix   = prefix;
+                $scope.support.doc_no       = doc_no;
             }
 
-            $scope.support.id               = support.id;
             $scope.support.doc_date         = support.doc_date ? StringFormatService.convFromDbDate(support.doc_date) : '';
             $scope.support.topic            = support.topic;
             $scope.support.is_plan_group    = support.is_plan_group;
             $scope.support.plan_group_desc  = support.plan_group_desc;
             $scope.support.plan_group_amt   = support.plan_group_amt;
-            $scope.support.total = support.total;
-            $scope.support.reason = support.reason;
-            $scope.support.remark = support.remark;
-            $scope.support.contact_person = support.contact.person_id;
-            $scope.support.contact_detail = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
-            $scope.support.details = support.details;
-            $scope.support.status = support.status;
+            $scope.support.total            = support.total;
+            $scope.support.reason           = support.reason;
+            $scope.support.remark           = support.remark;
+            $scope.support.contact_person   = support.contact.person_id;
+            $scope.support.contact_detail   = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
+            $scope.support.details          = support.details;
+            $scope.support.status           = support.status;
             
-            $scope.support.year = support.year.toString();
-            $scope.support.plan_type_id = support.plan_type_id.toString();
-            $scope.support.category_id = support.category_id.toString();
-            $scope.support.depart_id = support.depart_id.toString();
-            $scope.support.division_id = support.division_id ? support.division_id.toString() : '';
+            $scope.support.year             = support.year.toString();
+            $scope.support.plan_type_id     = support.plan_type_id.toString();
+            $scope.support.category_id      = support.category_id.toString();
+            $scope.support.depart_id        = support.depart_id.toString();
+            $scope.support.division_id      = support.division_id ? support.division_id.toString() : '';
 
             /** Set each committees by filtering from responsed committees data */
-            $scope.support.spec_committee = committees
+            $scope.support.spec_committee   = committees
                                                 .filter(com => com.committee_type_id == 1)
                                                 .map(com => com.person);
-            $scope.support.insp_committee = committees
+            $scope.support.insp_committee   = committees
                                                 .filter(com => com.committee_type_id == 2)
                                                 .map(com => com.person);
-            $scope.support.env_committee = committees
+            $scope.support.env_committee    = committees
                                                 .filter(com => com.committee_type_id == 3)
                                                 .map(com => com.person);
 

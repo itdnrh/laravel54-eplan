@@ -468,7 +468,7 @@
 
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="onValidateForm($event)"
+                                ng-click="onValidateForm($event, store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก
