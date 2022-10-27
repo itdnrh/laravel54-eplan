@@ -116,11 +116,12 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 20%;">หนังสือส่งเบิก</th>
+                                    <th style="width: 15%;">หนังสือส่งเบิก</th>
                                     <th style="width: 5%; text-align: center;">งวดที่</th>
                                     <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
                                     <th style="width: 10%; text-align: center;">ยอดเงิน</th>
+                                    <th style="width: 15%; text-align: center;">สำรองเงินจ่ายโดย</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -150,8 +151,11 @@
                                             </ul>
                                         </div> -->
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ withdraw.net_total | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{{ withdraw.prepaid.prefix.prefix_name+withdraw.prepaid.person_firstname+ ' ' +withdraw.prepaid.person_lastname }}
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">

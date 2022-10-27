@@ -290,8 +290,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.onSelectedPerson = (mode, person) => {
         if (person) {
-            $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
-            $scope.order.supply_officer = person.person_id;
+            $scope.withdrawal.prepaid_person_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+            $scope.withdrawal.prepaid_person = person.person_id;
         }
 
         $('#persons-list').modal('hide');

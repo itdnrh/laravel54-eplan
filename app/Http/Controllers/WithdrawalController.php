@@ -18,6 +18,8 @@ use App\Models\Depart;
 use App\Models\Division;
 use App\Models\Person;
 use App\Models\Supplier;
+use App\Models\Support;
+use App\Models\SupportDetail;
 
 class WithdrawalController extends Controller
 {
@@ -71,8 +73,8 @@ class WithdrawalController extends Controller
         $supplier   = $req->get('supplier');
         $docNo      = $req->get('doc_no');
 
-        $withdrawals = Withdrawal::with('inspection','supplier','inspection.order')
-                        // ->with('inspection.order.details','order.details.item')
+        $withdrawals = Withdrawal::with('inspection','supplier','prepaid','prepaid.prefix')
+                        ->with('inspection.order','inspection.order.details')
                         ->when(!empty($year), function($q) use ($year) {
                             $q->where('year', $year);
                         })
@@ -139,12 +141,13 @@ class WithdrawalController extends Controller
             $supply = Depart::where('depart_id', '2')->first();
 
             $withdrawal = new Withdrawal;
+            $withdrawal->year           = $req['year'];
             $withdrawal->withdraw_no    = $supply->memo_no.'/';
             $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
             $withdrawal->inspection_id  = $req['inspection_id'];
             $withdrawal->supplier_id    = $req['supplier_id'];
             $withdrawal->net_total      = currencyToNumber($req['net_total']);
-            $withdrawal->year           = $req['year'];
+            $withdrawal->prepaid_person = $req['prepaid_person'];
             $withdrawal->remark         = $req['remark'];
             $withdrawal->created_user   = $req['user'];
             $withdrawal->updated_user   = $req['user'];
@@ -212,14 +215,14 @@ class WithdrawalController extends Controller
             $supply = Depart::where('depart_id', '2')->first();
 
             $withdrawal = Withdrawal::find($id);
+            $withdrawal->year           = $req['year'];
             $withdrawal->withdraw_no    = $supply->memo_no.'/';
             $withdrawal->withdraw_month = convDbDateToLongThMonth(date('Y-m-d'));
             $withdrawal->inspection_id  = $req['inspection_id'];
             $withdrawal->supplier_id    = $req['supplier_id'];
             $withdrawal->net_total      = $req['net_total'];
-            $withdrawal->year           = $req['year'];
+            $withdrawal->prepaid_person = $req['prepaid_person'];
             $withdrawal->remark         = $req['remark'];
-            $withdrawal->created_user   = $req['user'];
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
