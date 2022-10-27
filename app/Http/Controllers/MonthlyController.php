@@ -232,8 +232,8 @@ class MonthlyController extends Controller
             $plan->year         = $req['year'];
             $plan->month        = $req['month'];
             $plan->expense_id   = $req['expense_id'];
-            $plan->total        = $req['total'];
-            $plan->remain       = $req['remain'];
+            $plan->total        = currencyToNumber($req['total']);
+            $plan->remain       = currencyToNumber($req['remain']);
 
             /** Check whether user is admin or not */
             if ($req['user'] == '1300200009261') {
@@ -293,8 +293,8 @@ class MonthlyController extends Controller
             $plan->year         = $req['year'];
             $plan->month        = $req['month'];
             $plan->expense_id   = $req['expense_id'];
-            $plan->total        = $req['total'];
-            $plan->remain       = $req['remain'];
+            $plan->total        = currencyToNumber($req['total']);
+            $plan->remain       = currencyToNumber($req['remain']);
 
             /** Check whether user is admin or not */
             if ($req['user'] == '1300200009261') {

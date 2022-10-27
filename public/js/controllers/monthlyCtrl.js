@@ -16,7 +16,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.monthly = {
         monthly_id: '',
-        year: '',
+        year: '2566',
         month: '',
         expense_id: '',
         total: '',
@@ -115,7 +115,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.getPlanSummaryByExpense = function(e, year, expense) {
         $scope.loading = true;
 
-        $http.get(`${CONFIG.apiUrl}/plan-summary/${year}/${expense}`)
+        $http.get(`${CONFIG.apiUrl}/budgets/${year}/${expense}`)
         .then(function(res) {
             $scope.expenseBudget = res.data.plan.budget;
             $scope.expenseRemain = res.data.plan.remain;
@@ -223,23 +223,24 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.update = function(event) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตามรหัส ${$scope.monthly.monthly_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตาม รหัส ${$scope.monthly.monthly_id} ใช่หรือไม่?`)) {
             $scope.monthly.user = $('#user').val();
+            $scope.loading = true;
 
             $http.post(`${CONFIG.baseUrl}/monthly/update/${$scope.monthly.monthly_id}`, $scope.monthly)
             .then(function(res) {
                 $scope.loading = false;
 
                 if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
                 } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }
             }, function(err) {
                 $scope.loading = false;
 
                 console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
         }
     };
@@ -247,12 +248,22 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
+        if(confirm(`คุณต้องลบข้อมูลควบคุมกำกับติดตาม รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.delete(`${CONFIG.baseUrl}/monthly/delete/${id}`)
             .then(res => {
-                console.log(res);
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
             }, err => {
+                $scope.loading = false;
                 console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถลบข้อมูลได้ !!!");
             });
         }
     };

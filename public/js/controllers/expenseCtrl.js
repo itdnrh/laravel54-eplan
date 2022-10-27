@@ -133,7 +133,7 @@ app.controller('expenseCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.loading = true;
         $scope.expense.user = $('#user').val();
 
-        $http.post(`${CONFIG.apiUrl}/expenses`, $scope.expense)
+        $http.post(`${CONFIG.baseUrl}/expenses/store`, $scope.expense)
         .then((res) => {
             $scope.loading = false;
 

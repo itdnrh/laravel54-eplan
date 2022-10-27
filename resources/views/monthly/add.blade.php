@@ -257,6 +257,8 @@
     <script>
         $(function () {
             $('.select2').select2();
+            $('#total').inputmask("currency", { "placeholder": "0" });
+            $('#remain').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 

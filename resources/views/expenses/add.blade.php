@@ -84,16 +84,16 @@
                                 </div>
                                 <div
                                     class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'expense')}"
+                                    ng-class="{'has-error has-feedback': checkValidate(expense, 'name')}"
                                 >
                                     <label>ชื่อรายจ่าย :</label>
                                     <input  type="text"
-                                            id="expense"
-                                            name="expense"
-                                            ng-model="expense.expense"
+                                            id="name"
+                                            name="name"
+                                            ng-model="expense.name"
                                             class="form-control pull-right"
                                             tabindex="8" />
-                                    <span class="help-block" ng-show="checkValidate(expense, 'expense')">
+                                    <span class="help-block" ng-show="checkValidate(expense, 'name')">
                                         @{{ formError.errors.expense[0] }}
                                     </span>
                                 </div>
