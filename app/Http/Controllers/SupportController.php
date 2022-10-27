@@ -399,6 +399,8 @@ class SupportController extends Controller
 
             $support->total             = currencyToNumber($req['total']);
             $support->contact_person    = $req['contact_person'];
+            $support->head_of_depart    = $req['head_of_depart'];
+            $support->head_of_faction   = $req['head_of_faction'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
             $support->status            = 0;
@@ -520,6 +522,8 @@ class SupportController extends Controller
 
             $support->total             = currencyToNumber($req['total']);
             $support->contact_person    = $req['contact_person'];
+            $support->head_of_depart    = $req['head_of_depart'];
+            $support->head_of_faction   = $req['head_of_faction'];
             $support->reason            = $req['reason'];
             $support->remark            = $req['remark'];
             $support->updated_user      = $req['user'];
@@ -838,13 +842,6 @@ class SupportController extends Controller
                             ->with('prefix','position')
                             ->first();
 
-        $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
-                            ->where('level.faction_id', $support->depart->faction_id)
-                            ->where('level.duty_id', '1')
-                            ->where('personal.person_state', '1')
-                            ->with('prefix','position')
-                            ->first();
-
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.depart_id', $support->depart_id)
                             ->where('level.duty_id', '2')
@@ -852,12 +849,25 @@ class SupportController extends Controller
                             ->with('prefix','position')
                             ->first();
 
+        if (empty($support->head_of_faction)) {
+            $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                                ->where('level.faction_id', $support->depart->faction_id)
+                                ->where('level.duty_id', '1')
+                                ->where('personal.person_state', '1')
+                                ->with('prefix','position')
+                                ->first();
+        } else {
+            $headOfFaction = Person::where('person_id', $support->head_of_faction)
+                                ->with('prefix','position')
+                                ->first();
+        }
+
         $data = [
             "support"       => $support,
             "contact"       => $contact,
             "committees"    => $committees,
-            "headOfFaction" => $headOfFaction,
             "headOfDepart"  => $headOfDepart,
+            "headOfFaction" => $headOfFaction,
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */

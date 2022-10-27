@@ -630,6 +630,80 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'head_of_depart')}"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '27'"
+                                >
+                                    <label>หัวหน้ากลุ่มงาน :</label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="head_of_depart_detail"
+                                            name="head_of_depart_detail"
+                                            class="form-control"
+                                            ng-model="support.head_of_depart_detail"
+                                            readonly
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="head_of_depart"
+                                            name="head_of_depart"
+                                            class="form-control"
+                                            ng-model="support.head_of_depart"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showPersonList(5)"
+                                            >
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'head_of_depart')">
+                                        @{{ formError.errors.head_of_depart[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(support, 'head_of_faction')}"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '27'"
+                                >
+                                    <label>หัวหน้ากลุ่มภารกิจ :</label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="head_of_faction_detail"
+                                            name="head_of_faction_detail"
+                                            class="form-control"
+                                            ng-model="support.head_of_faction_detail"
+                                            readonly
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="head_of_faction"
+                                            name="head_of_faction"
+                                            class="form-control"
+                                            ng-model="support.head_of_faction"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showPersonList(6)"
+                                            >
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(support, 'head_of_faction')">
+                                        @{{ formError.errors.head_of_faction[0] }}
+                                    </span>
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
 
                         <div class="box-footer clearfix">

@@ -39,6 +39,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         total: '',
         contact_detail: '',
         contact_person: '',
+        head_of_depart_detail: '',
+        head_of_depart: '',
+        head_of_faction_detail: '',
+        head_of_faction: '',
         reason: '',
         remark: '',
         details: [],
@@ -602,9 +606,15 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 $scope.support.insp_committee.push(person)
             } else if (parseInt(mode) == 3) {
                 $scope.support.env_committee.push(person)
-            } else {
+            } else if (parseInt(mode) == 4) {
                 $scope.support.contact_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname + ' โทร.' + person.person_tel;
                 $scope.support.contact_person = person.person_id;
+            } else  if (parseInt(mode) == 5) {
+                $scope.support.head_of_depart_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.support.head_of_depart = person.person_id;
+            } else {
+                $scope.support.head_of_faction_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.support.head_of_faction = person.person_id;
             }
         }
 
@@ -653,23 +663,28 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             }
 
             $scope.support.doc_date         = support.doc_date ? StringFormatService.convFromDbDate(support.doc_date) : '';
+            $scope.support.year             = support.year.toString();
+            $scope.support.plan_type_id     = support.plan_type_id.toString();
+            $scope.support.category_id      = support.category_id.toString();
             $scope.support.topic            = support.topic;
             $scope.support.is_plan_group    = support.is_plan_group;
             $scope.support.plan_group_desc  = support.plan_group_desc;
             $scope.support.plan_group_amt   = support.plan_group_amt;
             $scope.support.total            = support.total;
             $scope.support.reason           = support.reason;
-            $scope.support.remark           = support.remark;
+
             $scope.support.contact_person   = support.contact.person_id;
             $scope.support.contact_detail   = `${support.contact.person_firstname} ${support.contact.person_lastname} โทร.${support.contact.person_tel}`;
-            $scope.support.details          = support.details;
-            $scope.support.status           = support.status;
-            
-            $scope.support.year             = support.year.toString();
-            $scope.support.plan_type_id     = support.plan_type_id.toString();
-            $scope.support.category_id      = support.category_id.toString();
+            $scope.support.head_of_depart_detail = support.head_of_depart_detail;
+            $scope.support.head_of_depart   = support.head_of_depart;
+            $scope.support.head_of_faction_detail = support.head_of_faction_detail;
+            $scope.support.head_of_faction  = support.head_of_faction;
+
             $scope.support.depart_id        = support.depart_id.toString();
             $scope.support.division_id      = support.division_id ? support.division_id.toString() : '';
+            $scope.support.details          = support.details;
+            $scope.support.remark           = support.remark;
+            $scope.support.status           = support.status;
 
             /** Set each committees by filtering from responsed committees data */
             $scope.support.spec_committee   = committees
@@ -739,7 +754,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         .then(function(res) {
             $scope.loading = false;
 
-            console.log(res);
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
@@ -753,30 +767,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
-    };
-
-    $scope.cancel = function(e, id) {
-        $scope.loading = true;
-
-        if(confirm(`คุณต้องการยกเลิกการส่งบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
-            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-sent`, { status: 0 })
-            .then(function(res) {
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
-
-                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
-                } else {
-                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
-                }
-
-                $scope.loading = false;
-            }, function(err) {
-                $scope.loading = false;
-
-                console.log(err);
-                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
-            });
-        }
     };
 
     $scope.update = function(e, form) {
@@ -815,9 +805,13 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         e.preventDefault();
 
         if(confirm(`คุณต้องลบบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
             $http.post(`${CONFIG.baseUrl}/supports/delete/${id}`)
             .then(res => {
                 console.log(res);
+                $scope.loading = false;
+
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
 
@@ -828,7 +822,32 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 }
             }, err => {
                 console.log(err);
+                $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+            });
+        }
+    };
+
+    $scope.cancel = function(e, id) {
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องการยกเลิกการส่งบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-sent`, { status: 0 })
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
             });
         }
     };
