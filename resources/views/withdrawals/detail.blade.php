@@ -128,10 +128,33 @@
                             <div class="form-group col-md-5">
                                 <div class="input-group">
                                     <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">วันที่เอกสารส่งมอบงาน</button>
+                                    </div>
+                                    <div class="form-control">
+                                        @{{ withdrawal.inspection.deliver_date | thdate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
                                         <button type="button" class="btn btn-default">ยอดเงิน</button>
                                     </div>
                                     <div class="form-control">
                                         @{{ withdrawal.net_total | currency:'':2 }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default">สำรองเงินจ่ายโดย</button>
+                                    </div>
+                                    <div class="form-control">
+                                        <span ng-show="withdrawal.prepaid_person == ''">-</span>
+                                        <span ng-show="withdrawal.prepaid_person != ''">
+                                            @{{ withdrawal.prepaid_person_detail }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>

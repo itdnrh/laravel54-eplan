@@ -304,7 +304,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $http.get(`${CONFIG.baseUrl}/withdrawals/get-ajax-byid/${id}`)
         .then(function(res) {
             console.log(res);
-            const { inspection, supplier, ...withdrawal } = res.data.withdrawal;
+            const { inspection, supplier, prepaid, ...withdrawal } = res.data.withdrawal;
 
             $scope.withdrawal.id = withdrawal.id;
             $scope.withdrawal.order = inspection.order;
@@ -316,6 +316,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.withdrawal.remark = withdrawal.remark;
             $scope.withdrawal.completed = withdrawal.completed;
             $scope.withdrawal.supplier = supplier;
+            $scope.withdrawal.prepaid_person_detail = prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname;
+            $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
 
             $scope.loading = false;
         }, function(err) {
