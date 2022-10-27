@@ -17,6 +17,7 @@ use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
 use App\Models\Person;
+use App\Models\Supplier;
 
 class WithdrawalController extends Controller
 {
@@ -58,7 +59,7 @@ class WithdrawalController extends Controller
     public function index()
     {
         return view('withdrawals.list', [
-            // "suppliers" => Supplier::all(),
+            "suppliers" => Supplier::all(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
@@ -66,8 +67,21 @@ class WithdrawalController extends Controller
 
     public function search(Request $req)
     {
+        $year       = $req->get('year');
+        $supplier   = $req->get('supplier');
+        $docNo      = $req->get('doc_no');
+
         $withdrawals = Withdrawal::with('inspection','supplier','inspection.order')
                         // ->with('inspection.order.details','order.details.item')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($supplier), function($q) use ($supplier) {
+                            $q->where('supplier_id', $supplier);
+                        })
+                        ->when(!empty($docNo), function($q) use ($docNo) {
+                            $q->where('withdraw_no', 'like', '%'.$docNo.'%');
+                        })
                         ->orderBy('withdraw_date', 'DESC')
                         ->paginate(10);
 
@@ -137,16 +151,23 @@ class WithdrawalController extends Controller
 
             if ($withdrawal->save()) {
                 /** Update order's status to 4=ส่งเบิกเงินแล้ว */
-                // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($orderDetails as $detail) {
                     /** Update support_details's status to 4=ส่งเบิกเงินแล้ว */
-                    // SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
+                    SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
 
-                    /** Update support's status to 4=ส่งเบิกเงินแล้ว */
-                    // Support::find($detail->support_id)->update(['status' => 4]);
+                    /** If all support_details's status is equal to 4, should update supports's status to 4=ส่งเบิกเงินแล้ว  */
+                    $allSupportDetails = SupportDetail::where('support_id', $detail->support_id)->count();
+                    $supportDetailsInPO = SupportDetail::where('support_id', $detail->support_id)
+                                                        ->where('status', '4')->count();
+
+                    if ($allSupportDetails == $supportDetailsInPO) {
+                        /** Update support's status to 4=ส่งเบิกเงินแล้ว */
+                        Support::find($detail->support_id)->update(['status' => 4]);
+                    }
                 }
 
                 return [
@@ -203,16 +224,23 @@ class WithdrawalController extends Controller
 
             if ($withdrawal->save()) {
                 /** Update order's status to 4=ส่งเบิกเงินแล้ว */
-                // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($orderDetails as $detail) {
                     /** Update support_details's status to 4=ส่งเบิกเงินแล้ว */
-                    // SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
+                    SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
 
-                    /** Update support's status to 4=ส่งเบิกเงินแล้ว */
-                    // Support::find($detail->support_id)->update(['status' => 4]);
+                    /** If all support_details's status is equal to 4, should update supports's status to 4=ส่งเบิกเงินแล้ว  */
+                    $allSupportDetails = SupportDetail::where('support_id', $detail->support_id)->count();
+                    $supportDetailsInPO = SupportDetail::where('support_id', $detail->support_id)
+                                                        ->where('status', '4')->count();
+
+                    if ($allSupportDetails == $supportDetailsInPO) {
+                        /** Update support's status to 4=ส่งเบิกเงินแล้ว */
+                        Support::find($detail->support_id)->update(['status' => 4]);
+                    }
                 }
 
                 return [
@@ -251,7 +279,7 @@ class WithdrawalController extends Controller
 
                 return [
                     'status'        => 1,
-                    'message'       => 'Updating successfully!!',
+                    'message'       => 'Deleting successfully!!',
                     'withdrawal'    => $withdrawal
                 ];
             } else {

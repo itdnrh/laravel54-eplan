@@ -54,21 +54,36 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>ประเภท</label>
+                                    <label>เจ้าหนี้</label>
                                     <select
-                                        id="cboCategory"
-                                        name="cboCategory"
-                                        ng-model="cboCategory"
-                                        class="form-control"
+                                        id="cboSupplier"
+                                        name="cboSupplier"
+                                        ng-model="cboSupplier"
+                                        class="form-control select2"
                                         ng-change="getAll($event)"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                        </option>
+                                        @foreach($suppliers as $supplier)
+                                            <option value="{{ $supplier->supplier_id }}">
+                                                {{ $supplier->supplier_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
-                            </div><!-- /.row -->
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>เลขที่เอกสารส่งเบิกเงิน</label>
+                                    <input
+                                        id="txtWithdrawNo"
+                                        name="txtWithdrawNo"
+                                        ng-model="txtWithdrawNo"
+                                        class="form-control"
+                                        ng-keyup="getAll($event)"
+                                    />
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -180,19 +195,19 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getWithdrawalsWithUrl($event, pager.path+ '?page=1', setWithdrawals)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setAssets)" aria-label="Prev">
+                                        <a href="#" ng-click="getWithdrawalsWithUrl($event, pager.prev_page_url, setWithdrawals)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
                                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithURL(pager.path + '?page=' +i)">
+                                        <a href="#" ng-click="getWithdrawalsWithUrl(pager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
@@ -204,13 +219,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setAssets)" aria-label="Next">
+                                        <a href="#" ng-click="getWithdrawalsWithUrl($event, pager.next_page_url, setWithdrawals)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getWithdrawalsWithUrl($event, pager.path+ '?page=' +pager.last_page, setWithdrawals)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

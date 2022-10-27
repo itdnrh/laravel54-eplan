@@ -1,6 +1,10 @@
 app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
+    $scope.cboYear = '2566';
+    $scope.cboSupplier = '';
+    $scope.txtWithdrawNo = '';
+
     $scope.withdrawals = [];
     $scope.pager = null;
 
@@ -168,18 +172,40 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.getAll = function() {
         $scope.loading = true;
 
-        $scope.orders = [];
+        $scope.withdrawals = [];
         $scope.pager = null;
 
-        // let year    = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        // let type    = $scope.cboLeaveType === '' ? 0 : $scope.cboLeaveType;
+        let year     = $scope.cboYear === '' ? 0 : $scope.cboYear;
+        let supplier = $scope.cboSupplier === '' ? 0 : $scope.cboSupplier;
+        let doc_no   = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
         // let status  = $scope.cboLeaveStatus === '' ? '-' : $scope.cboLeaveStatus;
-        // let menu    = $scope.cboMenu === '' ? 0 : $scope.cboMenu;
-        // let query   = $scope.cboQuery === '' ? '' : `?${$scope.cboQuery}`;
         
-        $http.get(`${CONFIG.baseUrl}/withdrawals/search`)
+        $http.get(`${CONFIG.baseUrl}/withdrawals/search?year=${year}&doc_no=${doc_no}&supplier=${supplier}`)
         .then(function(res) {
             $scope.setWithdrawals(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getWithdrawalsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.withdrawals = [];
+        $scope.pager = null;
+
+        let year     = $scope.cboYear === '' ? 0 : $scope.cboYear;
+        let supplier = $scope.cboSupplier === '' ? 0 : $scope.cboSupplier;
+        let doc_no   = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
+
+        $http.get(`${url}&year=${year}&doc_no=${doc_no}&supplier=${supplier}`)
+        .then(function(res) {
+            cb(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -193,23 +219,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $scope.withdrawals = data;
         $scope.pager = pager;
-    };
-
-    $scope.getDataWithURL = function(e, URL, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-
-        $http.get(URL)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
     };
 
     $scope.showOrderDetails = (items) => {

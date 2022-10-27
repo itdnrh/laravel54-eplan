@@ -70,7 +70,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div><!-- /.row -->
+                            </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>เลขที่เอกสารส่งมอบงาน</label>
@@ -109,7 +109,7 @@
                                         </option>
                                     </select>
                                 </div> -->
-                            </div><!-- /.row -->
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

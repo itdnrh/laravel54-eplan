@@ -63,7 +63,11 @@
                                             ng-model="withdrawal.order_id"
                                         />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-info btn-flat" ng-click="showOrdersList($event)">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showOrdersList($event)"
+                                            >
                                                 ค้นหา
                                             </button>
                                         </span>
