@@ -253,7 +253,7 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         event.preventDefault();
         $scope.utility.user = $('#user').val();
     
-        if(confirm(`คุณต้องแก้ไขรายการค่าสาธารณูปดภค รหัส ${$scope.utility.id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขรายการค่าสาธารณูปโภค รหัส ${$scope.utility.id} ใช่หรือไม่?`)) {
             $http.post(`${CONFIG.baseUrl}/utilities/update/${$scope.utility.id}`, $scope.utility)
             .then(function(res) {
                 $scope.loading = false;
@@ -269,19 +269,23 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
     $scope.delete = function(e, id) {
         e.preventDefault();
 
-        if(confirm(`คุณต้องลบรายการค่าสาธารณูปดภค รหัส ${id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องลบรายการค่าสาธารณูปโภค รหัส ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
             .then(res => {
                 console.log(res);
             }, err => {
                 console.log(err);
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

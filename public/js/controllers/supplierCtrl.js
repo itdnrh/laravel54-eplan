@@ -184,6 +184,8 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -210,6 +212,8 @@ app.controller('supplierCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

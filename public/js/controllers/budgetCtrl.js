@@ -222,6 +222,8 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -244,10 +246,12 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
                 }
             }, function(err) {
                 $scope.loading = false;
-
+                
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อพิดผลาด ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

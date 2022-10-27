@@ -423,6 +423,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 

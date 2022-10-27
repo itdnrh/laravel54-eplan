@@ -187,7 +187,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.monthly.depart_id    = plan.depart_id;
         $scope.monthly.reporter_id  = plan.reporter_id;
         $scope.monthly.remark       = plan.remark;
-        
+
         /** Convert int value to string */
         $scope.monthly.year         = plan.year.toString();
         $scope.monthly.expense_id   = plan.expense_id.toString();
@@ -222,7 +222,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.update = function(event) {
         event.preventDefault();
-    
+
         if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตาม รหัส ${$scope.monthly.monthly_id} ใช่หรือไม่?`)) {
             $scope.monthly.user = $('#user').val();
             $scope.loading = true;
@@ -242,6 +242,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 console.log(err);
                 toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -265,6 +267,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 console.log(err);
                 toaster.pop('error', "ผลการทำงาน", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

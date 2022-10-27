@@ -466,6 +466,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -473,9 +475,13 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         e.preventDefault();
 
         if(confirm(`คุณต้องลบบันทึกขอจ้างซ่อม รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
             $http.post(`${CONFIG.baseUrl}/repairs/delete/${id}`)
             .then(res => {
+                $scope.loading = false;
                 console.log(res);
+
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
 
@@ -484,9 +490,12 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
                     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
                 }
             }, err => {
+                $scope.loading = false;
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 

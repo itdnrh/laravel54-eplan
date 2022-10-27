@@ -1375,6 +1375,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -1399,6 +1401,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

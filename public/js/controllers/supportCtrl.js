@@ -798,6 +798,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -825,6 +827,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -849,6 +853,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 console.log(err);
                 toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 

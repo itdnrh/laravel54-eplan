@@ -166,6 +166,8 @@ app.controller('provinceCtrl', function(CONFIG, $rootScope, $scope, $http, toast
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -190,6 +192,8 @@ app.controller('provinceCtrl', function(CONFIG, $rootScope, $scope, $http, toast
 
                 toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

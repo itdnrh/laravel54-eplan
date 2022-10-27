@@ -478,6 +478,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
                 toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -489,6 +491,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         if (window.confirm(`คุณต้องลบรายการขอยกเลิกวันลาเลขที่ ${id} ใช่หรือไม่?`)) {
             $('#frmDelete').submit();
+        } else {
+            $scope.loading = false;
         }
     };
 });

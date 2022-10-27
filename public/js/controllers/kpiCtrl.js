@@ -250,6 +250,8 @@ app.controller('kpiCtrl', function(CONFIG, $scope, $http, toaster, StringFormatS
             }, err => {
                 console.log(err);
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

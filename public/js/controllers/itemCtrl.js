@@ -223,6 +223,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
                 console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -252,6 +254,8 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

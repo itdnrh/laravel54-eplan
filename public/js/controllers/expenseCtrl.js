@@ -161,6 +161,7 @@ app.controller('expenseCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     
         if(confirm(`คุณต้องแก้ไขรายจ่าย รหัส ${$scope.expense.id} ใช่หรือไม่?`)) {
             $scope.expense.user = $('#user').val();
+            $scope.loading = true;
 
             $http.post(`${CONFIG.baseUrl}/expenses/update/${$scope.expense.id}`, $scope.expense)
             .then((res) => {
@@ -171,14 +172,16 @@ app.controller('expenseCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
                     window.location.href = `${CONFIG.baseUrl}/system/expenses`;
                 } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }
             }, function(err) {
                 $scope.loading = false;
 
                 console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -186,12 +189,26 @@ app.controller('expenseCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         e.preventDefault();
 
         if(confirm(`คุณต้องลบรายจ่าย รหัส ${id} ใช่หรือไม่?`)) {
-            $http.delete(`${CONFIG.baseUrl}/expenses/${id}`)
+            $scope.loading = false;
+
+            $http.post(`${CONFIG.baseUrl}/expenses/delete/${id}`)
             .then(res => {
-                console.log(res);
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/system/expenses`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
             }, err => {
+                $scope.loading = false;
                 console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถลบข้อมูลได้ !!!");
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });

@@ -386,6 +386,8 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -412,6 +414,8 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 });
