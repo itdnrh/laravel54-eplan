@@ -107,7 +107,6 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
             return type;
         });
 
-        console.log($scope.expenseTypes);
         // $scope.pager = pager;
     };
 

@@ -18,6 +18,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         monthly_id: '',
         year: '2566',
         month: '',
+        expense_type_id: '',
         expense_id: '',
         total: '',
         remain: '',
@@ -54,6 +55,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             monthly_id: '',
             year: '',
             month: '',
+            expense_type_id: '',
             expense_id: '',
             total: '',
             remain: '',
@@ -117,10 +119,16 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
         $http.get(`${CONFIG.apiUrl}/budgets/${year}/${expense}`)
         .then(function(res) {
-            $scope.expenseBudget = res.data.plan.budget;
-            $scope.expenseRemain = res.data.plan.remain;
+            if (res.data.plan) {
+                $scope.expenseBudget = res.data.plan.budget;
+                $scope.expenseRemain = res.data.plan.remain;
 
-            $scope.monthly.remain = res.data.plan.remain;
+                $scope.monthly.remain = res.data.plan.remain;
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่พบข้อมูลในรายการประมาณการรายจ่าย !!!");
+
+                $scope.monthly.expense_id = '';
+            }
 
             $scope.loading = false;
         }, function(err) {
