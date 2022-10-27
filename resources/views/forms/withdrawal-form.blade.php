@@ -50,7 +50,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 95%;">
+                                <div class="content__header-text" style="width: 94%;">
                                     <span style="margin-left: 5px;">รายงานผลการตรวจรับ</span>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 95%;">
+                                <div class="content__header-text" style="width: 94%;">
                                     <span style="margin-left: 5px;">ขอส่งเอกสารเบิกจ่ายเงิน</span>
                                 </div>
                             </div>
@@ -223,10 +223,14 @@
                                 {{ $withdrawal->supplier->supplier_name }}
                                 ได้ส่งมอบ{{ $planType->plan_type_name }}
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
-                                และคณะกรรมการตรวจรับพัสดุ ได้ทำการตรวจรับ
-                                ไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับแล้ว เมื่อวันที่
-                                <span>{{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->inspect_sdate)) }}</span>
+                                และคณะกรรมการตรวจรับพัสดุ ได้ทำการตรวจรับไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับแล้ว เมื่อ
+                                <span>วันที่ {{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->inspect_sdate)) }}</span>
                                 ดังรายละเอียดในใบส่งมอบงาน และใบตรวจรับพัสดุที่แนบมาพร้อมนี้
+                                @if($withdrawal->prepaid_person != '')
+                                    โดย <span>{{ $withdrawal->prepaid->prefix->prefix_name.$withdrawal->prepaid->person_firstname. ' ' .$withdrawal->prepaid->person_lastname }}</span>
+                                    ตำแหน่ง {{ $withdrawal->prepaid->position->position_name }}{{ $withdrawal->prepaid->academic ? $withdrawal->prepaid->academic->ac_name : '' }}
+                                    ได้สำรองเงินจ่ายไปก่อนแล้ว
+                                @endif
                             </p>
                         </td>
                     </tr>
@@ -336,7 +340,7 @@
                         <td colspan="4">
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
-                                <div class="content__header-text" style="width: 95%;">
+                                <div class="content__header-text" style="width: 94%;">
                                     <span style="margin-left: 5px;">รายงานผลการพิจารณารายละเอียดวิธีการและขั้นตอนการจัดซื้อจัดจ้าง</span>
                                 </div>
                             </div>
