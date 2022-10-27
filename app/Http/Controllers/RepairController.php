@@ -516,7 +516,7 @@ class RepairController extends Controller
 
                 return [
                     'status' => 1,
-                    'message' => 'Insertion successfully'
+                    'message' => 'Updating successfully'
                 ];
             } else {
                 return [
@@ -536,14 +536,23 @@ class RepairController extends Controller
     {
         try {
             $support = Support::find($id);
-            $deleted  = $support;
+            $deleted = $support;
 
             if ($support->delete()) {
                 /** Fetch support_details data and update plan's status */
                 $details = SupportDetail::where('support_id', $deleted->id)->get();
                 foreach($details as $item) {
-                    /** TODO: Revert plans's status to 0=รอดำเนินการ */
-                    Plan::find($item->plan_id)->update(['status' => 0]);
+                    /** TODO: Revert plans's status to 0=รอดำเนินการ or 1=ดำเนินการแล้วบางส่วน */
+                    $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
+                    if ($planItem->calc_method == 1) {
+                        Plan::find($item->plan_id)->update(['status' => 0]);
+                    } else {
+                        if ($planItem->sum_price == $planItem->remain_budget) {
+                            Plan::find($item->plan_id)->update(['status' => 0]);
+                        } else {
+                            Plan::find($item->plan_id)->update(['status' => 1]);
+                        }
+                    }
                 }
 
                 /** TODO: Delete support_details data */

@@ -641,14 +641,23 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($id);
-            $deleted  = $support;
+            $deleted = $support;
 
             if ($support->delete()) {
                 /** Fetch support_details data and update plan's status */
                 $details = SupportDetail::where('support_id', $deleted->id)->get();
                 foreach($details as $item) {
                     /** TODO: Revert plans's status to 0=รอดำเนินการ */
-                    Plan::find($item->plan_id)->update(['status' => 0]);
+                    $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
+                    if ($planItem->calc_method == 1) {
+                        Plan::find($item->plan_id)->update(['status' => 0]);
+                    } else {
+                        if ($planItem->sum_price == $planItem->remain_budget) {
+                            Plan::find($item->plan_id)->update(['status' => 0]);
+                        } else {
+                            Plan::find($item->plan_id)->update(['status' => 1]);
+                        }
+                    }
                 }
 
                 /** TODO: Delete support_details data */
