@@ -624,7 +624,7 @@
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'head_of_depart')}"
-                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '27'"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261'"
                                 >
                                     <label>หัวหน้ากลุ่มงาน :</label>
                                     <div class="input-group">
@@ -657,6 +657,7 @@
                                         @{{ formError.errors.head_of_depart[0] }}
                                     </span>
                                 </div>
+                                <div class="col-md-6" ng-show="{{ Auth::user()->person_id }} != '1300200009261'"></div>
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'head_of_faction')}"
