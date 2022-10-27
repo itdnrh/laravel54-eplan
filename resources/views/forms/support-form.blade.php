@@ -583,8 +583,12 @@
                             </p>
                         </td>
                         <td colspan="2" style="text-align: center; padding: 10px;">
-                            <p style="margin: 0;">
-                                หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
+                            @if(empty($support->head_of_faction))
+                                <p style="margin: 0;">
+                                    หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
+                                @else
+                                    <span class="dot">......................................................</span>
+                                @endif
                             </p>
                             <p style="margin: 0;">
                                 ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
