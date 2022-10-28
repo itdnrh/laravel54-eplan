@@ -141,7 +141,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let desc = $scope.txtDesc === '' ? '' : $scope.txtDesc;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-5`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-9`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -170,7 +170,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let desc = $scope.txtDesc === '' ? '' : $scope.txtDesc;
 
-        $http.get(`${url}&year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-5`)
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-9`)
         .then(function(res) {
             $scope.setSupports(res);
 
