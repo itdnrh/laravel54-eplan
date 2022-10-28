@@ -17,6 +17,8 @@ Route::group(['middleware' => 'api'], function () {
     /** Dashboard */
     Route::get('dashboard/summary-assets', 'DashboardController@getSummaryAssets');
     Route::get('dashboard/summary-materials', 'DashboardController@getSummaryMaterials');
+    Route::get('dashboard/summary-services', 'DashboardController@getSummaryServices');
+    Route::get('dashboard/summary-constructs', 'DashboardController@getSummaryConstructs');
     Route::get('dashboard/project-type', 'DashboardController@getProjectByType');
 
     /** รายการสินค้าและบริการ */

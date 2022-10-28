@@ -36,6 +36,8 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         $scope.getStat2();
         $scope.getSummaryAssets();
         $scope.getSummaryMaterials();
+        $scope.getSummaryServices();
+        $scope.getSummaryConstructs();
         $scope.getProjectTypeRatio();
     });
 
@@ -58,6 +60,8 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         $scope.getStat2();
         $scope.getSummaryAssets();
         $scope.getSummaryMaterials();
+        $scope.getSummaryServices();
+        $scope.getSummaryConstructs();
         $scope.getProjectTypeRatio();
     };
 
@@ -205,6 +209,84 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         $http.get(`${url}&year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
             cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.services = [];
+    $scope.totalService = 0;
+    $scope.getSummaryServices = function() {
+        $scope.loading = true;
+
+        // let date = $('#cboAssetDate').val() !== ''
+        //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
+        //             : moment().format('YYYY-MM-DD');
+        let year = $scope.dtpYear
+
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}`)
+        .then(function(res) {
+            console.log(res);
+            const { plans, budget, categories } = res.data;
+
+            let cates = categories.map(cate => {
+                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                cate.budget = summary ? summary.budget : 0;
+
+                return cate;
+            });
+
+            $scope.services = plans.map(plan => {
+                const cateInfo = cates.find(cate => cate.id === plan.category_id);
+                if (cateInfo) {
+                    plan.category_name = cateInfo.name;
+                    plan.budget = cateInfo.budget;
+                }
+
+                return plan;
+            });
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.constructs = [];
+    $scope.totalConstruct = 0;
+    $scope.getSummaryConstructs = function() {
+        $scope.loading = true;
+
+        // let date = $('#cboAssetDate').val() !== ''
+        //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
+        //             : moment().format('YYYY-MM-DD');
+        let year = $scope.dtpYear
+
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}`)
+        .then(function(res) {
+            console.log(res);
+            const { plans, budget, categories } = res.data;
+
+            let cates = categories.map(cate => {
+                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                cate.budget = summary ? summary.budget : 0;
+
+                return cate;
+            });
+
+            $scope.constructs = plans.map(plan => {
+                const cateInfo = cates.find(cate => cate.id === plan.category_id);
+                if (cateInfo) {
+                    plan.category_name = cateInfo.name;
+                    plan.budget = cateInfo.budget;
+                }
+
+                return plan;
+            });
 
             $scope.loading = false;
         }, function(err) {

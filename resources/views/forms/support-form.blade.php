@@ -505,7 +505,7 @@
                             @if(count($committees) > 6)
                                 <!-- ประมาณไม่เกิน 2 แถวใหญ่ -->
                                 @if($tableHeight <= 100)
-                                    <div style="height: {{ 100 - $tableHeight }}px;"></div>
+                                    <div style="height: 120px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
@@ -528,7 +528,11 @@
                         <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) <= 10)
-                                @if($tableHeight > 100 && $tableHeight < 300)
+                                @if(count($committees) <= 6)
+                                    @if($tableHeight > 100 && $tableHeight < 300)
+                                        <p class="page-number">- ๒ -</p>
+                                    @endif
+                                @else
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @elseif (count($support->details) > 10 && count($support->details) <= 17)
@@ -583,8 +587,8 @@
                             </p>
                         </td>
                         <td colspan="2" style="text-align: center; padding: 10px;">
-                            @if(empty($support->head_of_faction))
-                                <p style="margin: 0;">
+                            <p style="margin: 0;">
+                                @if(empty($support->head_of_faction))
                                     หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
                                 @else
                                     <span class="dot">......................................................</span>

@@ -149,22 +149,22 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
-                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
-                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                /** Update order's status to 5=ส่งเบิกเงินแล้ว */
+                $order = Order::where('id', $req['order_id'])->update(['status' => 5]);
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($orderDetails as $detail) {
-                    /** Update support_details's status to 4=ส่งเบิกเงินแล้ว */
-                    SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
+                    /** Update support_details's status to 5=ส่งเบิกเงินแล้ว */
+                    SupportDetail::find($detail->support_detail_id)->update(['status' => 5]);
 
-                    /** If all support_details's status is equal to 4, should update supports's status to 4=ส่งเบิกเงินแล้ว  */
+                    /** If all support_details's status is equal to 5, should update supports's status to 5=ส่งเบิกเงินแล้ว  */
                     $allSupportDetails = SupportDetail::where('support_id', $detail->support_id)->count();
                     $supportDetailsInPO = SupportDetail::where('support_id', $detail->support_id)
-                                                        ->where('status', '4')->count();
+                                                        ->where('status', '5')->count();
 
                     if ($allSupportDetails == $supportDetailsInPO) {
-                        /** Update support's status to 4=ส่งเบิกเงินแล้ว */
+                        /** Update support's status to 5=ส่งเบิกเงินแล้ว */
                         Support::find($detail->support_id)->update(['status' => 4]);
                     }
                 }
@@ -222,23 +222,23 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
-                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
-                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                /** Update order's status to 5=ส่งเบิกเงินแล้ว */
+                $order = Order::where('id', $req['order_id'])->update(['status' => 5]);
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($orderDetails as $detail) {
-                    /** Update support_details's status to 4=ส่งเบิกเงินแล้ว */
-                    SupportDetail::find($detail->support_detail_id)->update(['status' => 4]);
+                    /** Update support_details's status to 5=ส่งเบิกเงินแล้ว */
+                    SupportDetail::find($detail->support_detail_id)->update(['status' => 5]);
 
-                    /** If all support_details's status is equal to 4, should update supports's status to 4=ส่งเบิกเงินแล้ว  */
+                    /** If all support_details's status is equal to 5, should update supports's status to 5=ส่งเบิกเงินแล้ว  */
                     $allSupportDetails = SupportDetail::where('support_id', $detail->support_id)->count();
                     $supportDetailsInPO = SupportDetail::where('support_id', $detail->support_id)
-                                                        ->where('status', '4')->count();
+                                                        ->where('status', '5')->count();
 
                     if ($allSupportDetails == $supportDetailsInPO) {
-                        /** Update support's status to 4=ส่งเบิกเงินแล้ว */
-                        Support::find($detail->support_id)->update(['status' => 4]);
+                        /** Update support's status to 5=ส่งเบิกเงินแล้ว */
+                        Support::find($detail->support_id)->update(['status' => 5]);
                     }
                 }
 

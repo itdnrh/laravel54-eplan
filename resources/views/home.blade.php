@@ -66,6 +66,18 @@
         <div class="row">
             <section class="col-lg-6 connectedSortable">
 
+                @include('dashboard._services')
+
+            </section>
+            <section class="col-lg-6 connectedSortable">
+    
+                @include('dashboard._constructs')
+
+            </section>
+        </div>
+        <div class="row">
+            <section class="col-lg-6 connectedSortable">
+
                 @include('dashboard._pie-chart')
                 
             </section>
