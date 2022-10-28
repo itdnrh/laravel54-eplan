@@ -2,11 +2,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="frmWithdraw" name="frmWithdraw" novalidate ng-submit="withdraw($event, frmWithdraw)">
+                <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
+
                 <div class="modal-header">
                     <h5 class="modal-title">บันทึกส่งเบิกเงิน</h5>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> -->
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
@@ -18,13 +17,13 @@
                             <label for="">เลขที่หนังสือส่งเบิกเงิน</label>
                             <div class="input-group">
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default">{{ $doc_prefix }}/</button>
+                                    <button type="button" class="btn btn-default">@{{ withdrawal.doc_prefix }}/</button>
                                 </div>
                                 <input
                                     type="text"
                                     id="withdraw_no"
                                     name="withdraw_no"
-                                    ng-model="withdraw_no"
+                                    ng-model="withdrawal.withdraw_no"
                                     class="form-control"
                                     required
                                 />
@@ -42,7 +41,7 @@
                                 type="text"
                                 id="withdraw_date"
                                 name="withdraw_date"
-                                ng-model="withdraw_date"
+                                ng-model="withdrawal.withdraw_date"
                                 class="form-control"
                                 required
                             />

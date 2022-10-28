@@ -122,6 +122,7 @@
                                     <th>รายละเอียดใบสั่งซื้อ</th>
                                     <th style="width: 10%; text-align: center;">ยอดเงิน</th>
                                     <th style="width: 15%; text-align: center;">สำรองเงินจ่ายโดย</th>
+                                    <th style="width: 8%; text-align: center;">สถานะ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -156,6 +157,10 @@
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ withdraw.prepaid.prefix.prefix_name+withdraw.prepaid.person_firstname+ ' ' +withdraw.prepaid.person_lastname }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <span class="label label-success" ng-show="withdraw.completed">ส่งเบิกเงินแล้ว</span>
+                                        <span class="label label-danger" ng-show="!withdraw.completed">ยังไม่ได้ส่ง</span>
                                     </td>
                                     <td style="text-align: center;">
                                         <div style="display: flex; justify-content: center; gap: 2px;">

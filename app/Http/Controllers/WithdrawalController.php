@@ -94,14 +94,10 @@ class WithdrawalController extends Controller
 
     public function detail($id)
     {
-        /** Get depart data of supplies department */
-        $supply = Depart::where('depart_id', '2')->first();
-
         return view('withdrawals.detail', [
             "withdrawal"    => Withdrawal::find($id),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
-            "doc_prefix"    => $supply->memo_no
         ]);
     }
 

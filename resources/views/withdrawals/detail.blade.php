@@ -91,7 +91,7 @@
                                         <button type="button" class="btn btn-default">เลขที่หนังสือส่งเบิกเงิน</button>
                                     </div>
                                     <div class="form-control">
-                                        @{{ withdrawal.withdraw_no }}
+                                        @{{ withdrawal.doc_prefix }}/@{{ withdrawal.withdraw_no }}
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                         <button type="button" class="btn btn-default">ลงวันที่วันที่</button>
                                     </div>
                                     <div class="form-control">
-                                        @{{ withdrawal.withdraw_date | thdate }}
+                                        @{{ withdrawal.withdraw_date }}
                                     </div>
                                 </div>
                             </div>

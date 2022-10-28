@@ -199,7 +199,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('withdrawals/validate', 'WithdrawalController@formValidate');
     Route::get('orders/withdraw', 'WithdrawalController@index');
     Route::get('withdrawals/search', 'WithdrawalController@search');
-    Route::get('withdrawals/get-ajax-byid/{id}', 'WithdrawalController@getById');
     Route::get('withdrawals/add', 'WithdrawalController@create');
     Route::post('withdrawals/store', 'WithdrawalController@store');
     Route::get('withdrawals/edit/{id}', 'WithdrawalController@edit');

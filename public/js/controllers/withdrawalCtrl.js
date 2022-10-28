@@ -19,6 +19,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         year: '2566',
         order: null,
         order_id: '',
+        doc_prefix: '',
         withdraw_no: '',
         withdraw_date: '',
         inspection_id: '',
@@ -298,26 +299,12 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.selectedMode = '';
     };
 
-    $scope.getById = function(id) {
+    $scope.getById = function(id, cb) {
         $scope.loading = true;
 
-        $http.get(`${CONFIG.baseUrl}/withdrawals/get-ajax-byid/${id}`)
+        $http.get(`${CONFIG.apiUrl}/withdrawals/${id}`)
         .then(function(res) {
-            console.log(res);
-            const { inspection, supplier, prepaid, ...withdrawal } = res.data.withdrawal;
-
-            $scope.withdrawal.id = withdrawal.id;
-            $scope.withdrawal.order = inspection.order;
-            $scope.withdrawal.inspection = inspection;
-            $scope.withdrawal.withdraw_no = withdrawal.withdraw_no;
-            $scope.withdrawal.withdraw_date = withdrawal.withdraw_date;
-            $scope.withdrawal.net_total = withdrawal.net_total;
-            $scope.withdrawal.year = withdrawal.year;
-            $scope.withdrawal.remark = withdrawal.remark;
-            $scope.withdrawal.completed = withdrawal.completed;
-            $scope.withdrawal.supplier = supplier;
-            $scope.withdrawal.prepaid_person_detail = prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname;
-            $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
+            cb(res)
 
             $scope.loading = false;
         }, function(err) {
@@ -326,7 +313,35 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
+    $scope.setEditControls = function(res) {
+        const { inspection, supplier, prepaid, ...withdrawal } = res.data.withdrawal;
+
+        if (withdrawal.withdraw_no) {
+            const [prefix, doc_no] = withdrawal.withdraw_no.split("/");
+            $scope.withdrawal.doc_prefix = prefix;
+            $scope.withdrawal.withdraw_no = doc_no;
+        }
+
+        $scope.withdrawal.id = withdrawal.id;
+        $scope.withdrawal.year = withdrawal.year;
+        $scope.withdrawal.withdraw_date = withdrawal.withdraw_date;
+        $scope.withdrawal.order = inspection.order;
+        $scope.withdrawal.inspection = inspection;
+        $scope.withdrawal.supplier = supplier;
+        $scope.withdrawal.net_total = withdrawal.net_total;
+        $scope.withdrawal.prepaid_person_detail = withdrawal.prepaid_person ? prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname : '';
+        $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
+        $scope.withdrawal.completed = withdrawal.completed;
+        $scope.withdrawal.remark = withdrawal.remark;
+
+        $('#withdraw_date')
+            .datepicker(dtpOptions)
+            .datepicker('update', moment(withdrawal.withdraw_date).toDate());
+    };
+
     $scope.showWithdrawForm = (e) => {
+        $scope.loading = false;
+
         $('#withdraw-form').modal('show');
     };
 
@@ -338,7 +353,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             return;
         }
 
-        if(confirm(`คุณต้องส่งเบิกเงิน รหัส ${$scope.withdrawal.id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องการส่งเบิกเงิน รหัส ${$scope.withdrawal.id} ใช่หรือไม่?`)) {
             $scope.loading = true;
 
             let data = { withdraw_no: $('#withdraw_no').val(), withdraw_date: $('#withdraw_date').val() };
@@ -350,6 +365,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ส่งเบิกเงินเรียบร้อย !!!");
 
+                    $scope.withdrawal.completed = res.data.withdrawal.completed;
                     $scope.withdrawal.withdraw_no = res.data.withdrawal.withdraw_no;
                     $scope.withdrawal.withdraw_date = res.data.withdrawal.withdraw_date;
 
@@ -376,25 +392,30 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             deliver_date: withdrawal.inspection.deliver_date,
             year: withdrawal.year,
             supplier_id: withdrawal.supplier.supplier_id,
+            supplier_name: withdrawal.supplier.supplier_name,
             desc: `${withdrawal.inspection.remark}`,
-            po: `ใบสั่งซื้อ/จ้างเลขที่ ${withdrawal.order.po_no} วันที่ ${withdrawal.order.po_date}`,
+            po_no: withdrawal.order.po_no,
+            po_date: withdrawal.order.po_date,
             items: '',
             amount: withdrawal.order.total,
             vatrate: withdrawal.order.vat_rate,
             vat: withdrawal.order.vat,
             total: withdrawal.order.net_total,
             remark: withdrawal.remark,
+            user: $('#user').val()
         };
 
         $http.post(`${CONFIG.accApiUrl}/tmp-debts`, data)
         .then(function(res) {
             if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+                toaster.pop('success', "ผลการทำงาน", "ส่งเบิกเงินเรียบร้อย !!!");
             } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถส่งเบิกเงินได้ !!!");
             }
         }, function(err) {
             console.log(err);
+
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถส่งเบิกเงินได้ !!!");
         });
     }
 
@@ -467,7 +488,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.update = function(event, form) {
         event.preventDefault();
 
-        if(confirm(`คุณต้องแก้ไขรายการส่งเบิกเงิน รหัส ${$scope.withdrawal.id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องการแก้ไขรายการส่งเบิกเงิน รหัส ${$scope.withdrawal.id} ใช่หรือไม่?`)) {
             $scope.loading = true;
             $scope.withdrawal.user = $('#user').val();
 
@@ -500,7 +521,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         const actionUrl = $('#frmDelete').attr('action');
         $('#frmDelete').attr('action', `${actionUrl}/${id}`);
 
-        if (window.confirm(`คุณต้องลบรายการขอยกเลิกวันลาเลขที่ ${id} ใช่หรือไม่?`)) {
+        if (window.confirm(`คุณต้องการลบรายการขอยกเลิกวันลาเลขที่ ${id} ใช่หรือไม่?`)) {
             $('#frmDelete').submit();
         } else {
             $scope.loading = false;
