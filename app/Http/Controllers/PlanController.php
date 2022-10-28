@@ -473,6 +473,7 @@ class PlanController extends Controller
         $name = $req->get('name');
         $price = $req->get('price');
         $budget = $req->get('budget');
+        $inPlan = $req->get('in_plan');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
@@ -511,31 +512,31 @@ class PlanController extends Controller
                     ->with('planItem','planItem.unit')
                     ->with('planItem.item','planItem.item.category')
                     ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plan_type_id', $type);
+                        $q->where('plans.plan_type_id', $type);
                     })
                     ->when(!empty($cate), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when($inStock != '', function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($name), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($haveSubitem), function($q) use ($plansList) {
-                        $q->whereIn('id', $plansList);
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {
-                        $q->where('year', $year);
+                        $q->where('plans.year', $year);
                     })
                     ->when(!empty($faction), function($q) use ($departsList) {
-                        $q->whereIn('depart_id', $departsList);
+                        $q->whereIn('plans.depart_id', $departsList);
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
+                        $q->where('plans.depart_id', $depart);
                     })
                     ->when(!empty($division), function($q) use ($division) {
-                        $q->where('division_id', $division);
+                        $q->where('plans.division_id', $division);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         if ($price == '1') {
@@ -547,13 +548,15 @@ class PlanController extends Controller
                     ->when(!empty($budget), function($q) use ($budget) {
                         $q->where('plans.budget_src_id', $budget);
                     })
+                    ->when($inPlan != '', function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
+                    })
                     ->when($approved != '', function($q) use ($approved) {
-                        $q->where('approved', $approved);
+                        $q->where('plans.approved', $approved);
                     })
                     ->when(empty($showAll), function($q) use ($showAll) {
                         $q->where('plan_items.remain_amount', '>', 0);
                     })
-                    // ->orderBy('plan_no', 'ASC');
                     ->get();
         
         $planType = PlanType::find($type);
