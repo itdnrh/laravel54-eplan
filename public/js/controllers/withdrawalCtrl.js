@@ -329,7 +329,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.withdrawal.inspection = inspection;
         $scope.withdrawal.supplier = supplier;
         $scope.withdrawal.net_total = withdrawal.net_total;
-        $scope.withdrawal.prepaid_person_detail = withdrawal.prepaid_person ? prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname : '';
+        $scope.withdrawal.prepaid_person_detail = prepaid ? prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname : '';
         $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
         $scope.withdrawal.completed = withdrawal.completed;
         $scope.withdrawal.remark = withdrawal.remark;
@@ -467,7 +467,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.withdrawal.deliver_no = inspection.deliver_no;
             $scope.withdrawal.deliver_date = inspection.deliver_date;
             $scope.withdrawal.net_total = withdrawal.net_total;
-            $scope.withdrawal.prepaid_person_detail = prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname;
+            $scope.withdrawal.prepaid_person_detail = prepaid ? prepaid.prefix.prefix_name+prepaid.person_firstname+ ' ' +prepaid.person_lastname : '';
             $scope.withdrawal.prepaid_person = withdrawal.prepaid_person;
             $scope.withdrawal.remark = withdrawal.remark;
 
