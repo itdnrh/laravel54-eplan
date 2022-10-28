@@ -1,4 +1,4 @@
-<div class="box box-success" ng-init="getLatestOrders();">
+<div class="box box-danger" ng-init="getLatestOrders();">
     <div class="box-header">
         <h3 class="box-title">รายการใบสั่งซื้อล่าสุด</h3>
     </div>

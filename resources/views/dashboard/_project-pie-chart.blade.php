@@ -1,4 +1,4 @@
-<div class="box box-success" ng-init="getProjectTypeRatio()">
+<div class="box box-info" ng-init="getProjectTypeRatio()">
     <div class="box-header">
         <h3 class="box-title">
             สัดส่วนสัดส่วนแผนงาน/โครงการ

@@ -1,4 +1,4 @@
-<div class="box box-primary" ng-init="getSummaryConstructs();">
+<div class="box box-success" ng-init="getSummaryConstructs();">
     <div class="box-header">
         <h3 class="box-title">
             สรุปแผนก่อสร้าง
@@ -18,7 +18,7 @@
         </div> -->
     </div>
     <div class="box-body">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" style="font-size: 12px;">
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: center;">ประมาณการ</th>

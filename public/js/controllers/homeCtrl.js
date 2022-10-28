@@ -187,8 +187,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         const { data, ...pager } = plans;
         $scope.materials = data.map(plan => {
             const cateInfo = cates.find(cate => cate.id === plan.category_id);
-            plan.category_name = cateInfo.name;
-            plan.budget = cateInfo.budget;
+
+            plan.category_name = cateInfo ? cateInfo.name : '';
+            plan.budget = cateInfo ? cateInfo.budget : '';
 
             return plan;
         });
@@ -196,7 +197,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         $scope.pager = pager;
     };
 
-    $scope.getMaterialsWithURL = function(e, url, cb) {
+    $scope.getMaterialsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -229,7 +230,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            console.log(res);
             const { plans, budget, categories } = res.data;
 
             let cates = categories.map(cate => {
@@ -268,7 +268,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            console.log(res);
             const { plans, budget, categories } = res.data;
 
             let cates = categories.map(cate => {

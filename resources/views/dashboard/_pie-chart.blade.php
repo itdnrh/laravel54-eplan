@@ -1,4 +1,4 @@
-<div class="box box-success">
+<div class="box box-info">
     <div class="box-header">
         <h3 class="box-title">
             สัดส่วนสัดส่วนแผนเงินบำรุง
