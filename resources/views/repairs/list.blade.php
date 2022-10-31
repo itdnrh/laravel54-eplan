@@ -16,7 +16,17 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="repairCtrl" ng-init="getAll();">
+    <section
+        class="content"
+        ng-controller="repairCtrl"
+        ng-init="
+            getAll();
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+            }, 2);
+        "
+    >
 
         <div class="row">
             <div class="col-md-12">
@@ -42,7 +52,7 @@
 
                         <div class="box-body">
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -57,24 +67,64 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>ประเภทพัสดุ</label>
-                                    <select
-                                        id="cboSupplier"
-                                        name="cboSupplier"
-                                        ng-model="cboSupplier"
-                                        ng-change="getAll($event)"
-                                        class="form-control select2"
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        @foreach($planTypes as $planType)
-                                            <option value="{{ $planType->id }}">
-                                                {{ $planType->plan_type_name }}
+                            </div>
+
+                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                    <div class="form-group">
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="cboFaction"
+                                            name="cboFaction"
+                                            ng-model="cboFaction"
+                                            class="form-control"
+                                            ng-change="onFactionSelected(cboFaction); getAll($event);"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($factions as $faction)
+                                                <option value="{{ $faction->faction_id }}">
+                                                    {{ $faction->faction_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>กลุ่มงาน</label>
+                                        <select
+                                            id="cboDepart"
+                                            name="cboDepart"
+                                            ng-model="cboDepart"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                                                @{{ dep.depart_name }}
                                             </option>
-                                        @endforeach
-                                    </select>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-hide="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="dep in forms.divisions" value="@{{ div.ward_id }}">
+                                                @{{ div.ward_name }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>เลขที่บันทึกขอสนับสนุน</label>

@@ -82,7 +82,9 @@ class RepairController extends Controller
     public function index()
     {
         return view('repairs.list', [
-            "planTypes"     => PlanType::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"       => Depart::all(),
+            "divisions"     => Division::all(),
         ]);
     }
 
@@ -93,12 +95,16 @@ class RepairController extends Controller
         $conditions = [];
         $pattern = '/^\<|\>|\&|\-/i';
 
-        $year   = $req->get('year');
-        $type   = $req->get('type');
-        $docNo   = $req->get('doc_no');
-        $desc   = $req->get('desc');
-        $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
-        $status = $req->get('status');
+        $year       = $req->get('year');
+        $docNo      = $req->get('doc_no');
+        $desc       = $req->get('desc');
+        $faction    = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
+                        ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        $depart     = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
+                        ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $division   = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
+                        ? $req->get('division') : Auth::user()->memberOf->ward_id;
+        $status     = $req->get('status');
 
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
@@ -111,6 +117,14 @@ class RepairController extends Controller
                 array_push($conditions, ['status', '=', $status]);
             }
         }
+
+        $departsList = Depart::when(!empty($faction), function($q) use ($faction) {
+                            $q->where('faction_id', $faction);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('depart_id', $depart);
+                        })
+                        ->pluck('depart_id');
 
         $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
                         ->join('plans','plans.id','=','plan_items.plan_id')
@@ -130,8 +144,8 @@ class RepairController extends Controller
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
-                    ->when(!empty($depart), function($q) use ($depart) {
-                        $q->where('depart_id', $depart);
+                    ->when(!empty($faction) || !empty($depart), function($q) use ($departsList) {
+                        $q->whereIn('depart_id', $departsList);
                     })
                     ->when(!empty($docNo), function($q) use ($docNo) {
                         $q->where('doc_no', 'like', '%'.$docNo.'%');
