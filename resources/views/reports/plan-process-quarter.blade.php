@@ -176,13 +176,25 @@
                                     </td>
                                     <td style="text-align: right;">@{{ (plan.q1_amt * 100)/plan.q1_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.q2_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q2_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=2">
+                                            @{{ plan.q2_amt | currency:'':0 }}
+                                        </a>
+                                    </td>
                                     <td style="text-align: right;">@{{ (plan.q2_amt * 100)/plan.q2_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.q3_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q3_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=3">
+                                            @{{ plan.q3_amt | currency:'':0 }}
+                                        </a>
+                                    </td>
                                     <td style="text-align: right;">@{{ (plan.q3_amt * 100)/plan.q3_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.q4_sum | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q4_amt | currency:'':0 }}</td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=4">
+                                            @{{ plan.q4_amt | currency:'':0 }}
+                                        </a>
+                                    </td>
                                     <td style="text-align: right;">@{{ (plan.q4_amt * 100)/plan.q4_sum | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.total_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.total_amt | currency:'':0 }}</td>

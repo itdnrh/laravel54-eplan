@@ -21,7 +21,7 @@
         class="content"
         ng-controller="reportCtrl"
         ng-init="
-            getPlanProcessByDetails({{ $type }});
+            getPlanProcessByDetails({{ $type }}, {{ $quarter }});
             initForm({ 
                 factions: {{ $factions }},
                 departs: {{ $departs }}
@@ -48,7 +48,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getPlanProcessByDetails()"
+                                        ng-change="getPlanProcessByDetails({{ $type }}, {{ $quarter }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -57,56 +57,20 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>ไตรมาส</label>
+                                    <label>ประเภทพัสดุ</label>
                                     <select
-                                        id="cboPlanType"
-                                        name="cboPlanType"
-                                        ng-model="cboPlanType"
-                                        ng-change="getPlanProcessByDetails()"
+                                        id="cboCategory"
+                                        name="cboCategory"
+                                        ng-model="cboCategory"
+                                        ng-change="getPlanProcessByDetails({{ $type }}, {{ $quarter }})"
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>ราคาต่อหน่วย</label>
-                                    <select
-                                        id="cboPrice"
-                                        name="cboPrice"
-                                        ng-model="cboPrice"
-                                        class="form-control"
-                                        ng-change="getPlanProcessByDetails()"
-                                    >
-                                        <option value="">-- เลือก --</option>
-                                        <option value="1">ราคา 10,000 บาทขึ้นไป</option>
-                                        <option value="2">ราคา น้อยกว่า 10,000 บาท</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>เรียมลำดับ</label>
-                                    <select
-                                        id="cboSort"
-                                        name="cboSort"
-                                        ng-model="cboSort"
-                                        class="form-control"
-                                        ng-change="getPlanProcessByDetails()"
-                                    >
-                                        <option value="">-- เลือก --</option>
-                                        <option value="sum_price">งบประมาณ</option>
-                                        <option value="amount">จำนวนที่ขอ</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>สถานะ</label>
-                                    <select
-                                        id="cboApproved"
-                                        name="cboApproved"
-                                        ng-model="cboApproved"
-                                        class="form-control"
-                                        ng-change="getPlanProcessByDetails()"
-                                    >
-                                        <option value="">ยังไม่อนุมัติ</option>
-                                        <option value="A">อนุมัติ</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

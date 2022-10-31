@@ -610,6 +610,7 @@ class ReportController extends Controller
             "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
             "planType"  => PlanType::find($type),
+            "categories" => ItemCategory::where('plan_type_id', $type)->get(),
             "type"      => $type,
             "quarter"   => $quarter
         ]);
@@ -618,11 +619,10 @@ class ReportController extends Controller
     public function getPlanProcessByDetails(Request $req, $type)
     {
         /** Get params from query string */
-        $faction    = $req->get('faction');
         $year       = $req->get('year');
+        $faction    = $req->get('faction');
         $quarter    = $req->get('quarter');
-        // $approved   = $req->get('approved');
-        // $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
+        $cate       = $req->get('cate');
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
@@ -637,15 +637,15 @@ class ReportController extends Controller
                                     $q->whereIn('start_month', ['07','08','09']);
                                 }
                             })
+                            // ->when(!empty($approved), function($q) use ($approved) {
+                            //     $q->where('plans.approved', $approved);
+                            // })
                             ->pluck('id');
 
         $supportsList = Support::where('plan_type_id', $type)
                             ->when(!empty($year), function($q) use ($year) {
                                 $q->where('year', $year);
                             })
-                            // ->when(!empty($approved), function($q) use ($approved) {
-                            //     $q->where('plans.approved', $approved);
-                            // })
                             ->pluck('id');
 
         $plans = \DB::table('support_details')
@@ -659,13 +659,9 @@ class ReportController extends Controller
                     ->whereIn('support_details.status', [2,3,4,5,6])
                     ->whereIn('support_details.support_id', $supportsList)
                     ->whereIn('support_details.plan_id', $plansList)
-                    // ->when(!empty($price), function($q) use ($price) {
-                    //     if ($price == 1) {
-                    //         $q->where('plan_items.price_per_unit', '>=', 10000);
-                    //     } else {
-                    //         $q->where('plan_items.price_per_unit', '<', 10000);
-                    //     }
-                    // })
+                    ->when(!empty($cate), function($q) use ($cate) {
+                        $q->where('items.category_id', $cate);
+                    })
                     ->orderByRaw("items.item_name")
                     ->get();
 

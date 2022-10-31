@@ -558,7 +558,7 @@ app.controller(
             });
         };
 
-        $scope.getPlanProcessByDetails = function (type) {
+        $scope.getPlanProcessByDetails = function (type, quarter) {
             console.log(type);
             $scope.totalPlanProcessByDetails = {
                 amount: 0,
@@ -570,9 +570,10 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.cboYear;
+            let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
             let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-process-details/${type}?year=${year}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-process-details/${type}?year=${year}&cate=${cate}&quarter=${quarter}`)
             .then(function (res) {
                 console.log(res);
                 $scope.plans = res.data.plans;
