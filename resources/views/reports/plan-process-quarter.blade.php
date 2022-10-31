@@ -147,25 +147,25 @@
                                     <th style="text-align: center;" colspan="3">รวม</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
                                     <th style="width: 5%; text-align: right;">ร้อยละ</th>
-                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
                                     <th style="width: 5%; text-align: right;">ร้อยละ</th>
-                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
                                     <th style="width: 5%; text-align: right;">ร้อยละ</th>
-                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
                                     <th style="width: 5%; text-align: right;">ร้อยละ</th>
-                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 6%; text-align: right;">งบประมาณ</th>
                                     <th style="width: 6%; text-align: right;">ส่งขอสนับสนุน</th>
                                     <th style="width: 5%; text-align: right;">ร้อยละ</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in plans">
+                                <tr ng-repeat="(index, plan) in plans" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>@{{ plan.category_name }}</td>
                                     <td style="text-align: right;">@{{ plan.q1_sum | currency:'':0 }}</td>
@@ -184,7 +184,7 @@
                                     <td style="text-align: right;">@{{ plan.total_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ (plan.total_amt * 100)/plan.total_sum | currency:'':2 }}</td>
                                 </tr>
-                                <tr style="font-weight: bold;">
+                                <tr style="font-size: 12px; font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q1_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByPlanQuarters.q1_amt | currency:'':0 }}</td>
