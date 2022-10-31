@@ -510,6 +510,7 @@ app.controller(
                 $scope.plans = res.data.plans.map(plan => {
                     let cate = res.data.categories.find(c => c.id === plan.category_id);
                     plan.category_name = cate ? cate.name : '';
+                    plan.plan_type_id = cate ? cate.plan_type_id : '';
 
                     return plan;
                 });
@@ -547,6 +548,45 @@ app.controller(
                         q3_sum: 0,
                         q4_amt: 0,
                         q4_sum: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getPlanProcessByDetails = function (type) {
+            console.log(type);
+            $scope.totalPlanProcessByDetails = {
+                amount: 0,
+                sum_price: 0,
+            };
+
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-process-details/${type}?year=${year}&approved=${approved}`)
+            .then(function (res) {
+                console.log(res);
+                $scope.plans = res.data.plans;
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalPlanProcessByDetails.amount += plan.amount ? plan.amount : 0;
+                        $scope.totalPlanProcessByDetails.sum_price += plan.sum_price ? plan.sum_price : 0;
+                    });
+                } else {
+                    $scope.totalPlanProcessByDetails = {
+                        amount: 0,
+                        sum_price: 0,
                     };
                 }
 
@@ -1444,19 +1484,6 @@ app.controller(
                 console.log(err);
                 $scope.loading = false;
             });
-        };
-
-        $scope.totalAssetByCategories = {
-            vehicle: 0,
-            office: 0,
-            computer: 0,
-            medical: 0,
-            home: 0,
-            construct: 0,
-            agriculture: 0,
-            ads: 0,
-            electric: 0,
-            total: 0
         };
     }
 );

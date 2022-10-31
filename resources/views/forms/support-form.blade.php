@@ -125,7 +125,7 @@
                                                     <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
-                                                        {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                                         @if($detail->desc != '')
                                                             <?php $tableHeight += 20; ?>
                                                             <p style="margin: 0 0 0 5px;">
@@ -176,7 +176,7 @@
                                                     <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
-                                                        {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                                         @if($detail->desc != '')
                                                             <?php $tableHeight += 20; ?>
                                                             <p style="margin: 0 0 0 5px;">
@@ -218,7 +218,7 @@
                                                 <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
                                                 <td>
                                                     <?php $tableHeight += 20; ?>
-                                                    {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                    {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                                     @if($detail->desc != '')
                                                         <?php $tableHeight += 20; ?>
                                                         <p style="margin: 0 0 0 5px;">
@@ -239,7 +239,7 @@
                                         @endif
                                     @endforeach
 
-                                    @if (count($support->details) > 17 && count($support->details) <= 25)
+                                    @if (count($support->details) >= 15 && count($support->details) <= 25)
                                         <tr>
                                             <td style="text-align: center; font-weight: bold;" colspan="4">
                                                 รวมเป็นเงินทั้งสิ้น
@@ -274,7 +274,7 @@
                                                     <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
-                                                        {{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                                         @if($detail->desc != '')
                                                             <?php $tableHeight += 20; ?>
                                                             <p style="margin: 0 0 0 5px;">

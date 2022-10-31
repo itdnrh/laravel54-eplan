@@ -143,4 +143,5 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('reports/plan-type', 'ReportController@getPlanByType');
     Route::get('reports/plan-quarter', 'ReportController@getPlanByQuarter');
     Route::get('reports/plan-process-quarter', 'ReportController@getPlanProcessByQuarter');
+    Route::get('reports/plan-process-details/{type}', 'ReportController@getPlanProcessByDetails');
 });
