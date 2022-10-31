@@ -5,6 +5,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.editRow = false;
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
+    $scope.cboOfficer = '';
     $scope.cboStatus = '0';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
@@ -1006,12 +1007,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.orders = [];
         $scope.pager = null;
 
-        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
-        let po_no = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
-        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
+        let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}&po_no=${po_no}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
         .then(function(res) {
             $scope.setOrders(res);
 
@@ -1030,12 +1032,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.orders = [];
         $scope.pager = null;
 
-        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
-        let po_no = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
-        let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
+        let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${url}&year=${year}&supplier=${supplier}&po_no=${po_no}&status=${status}`)
+        $http.get(`${url}&year=${year}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
         .then(function(res) {
             cb(res);
 

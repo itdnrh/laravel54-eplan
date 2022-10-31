@@ -76,7 +76,11 @@ class OrderController extends Controller
     public function index()
     {
         return view('orders.list', [
-            "suppliers" => Supplier::all()
+            "suppliers" => Supplier::all(),
+            "officers"  => Person::with('prefix','position','academic')
+                                ->where('person_state', 1)
+                                ->whereIn('position_id', [8, 39])
+                                ->get()
         ]);
     }
 
@@ -89,6 +93,7 @@ class OrderController extends Controller
 
         $year = $req->get('year');
         $supplier = $req->get('supplier');
+        $officer = $req->get('officer');
         $type = $req->get('type');
         $cate = $req->get('cate');
         $status = $req->get('status');
@@ -115,12 +120,15 @@ class OrderController extends Controller
 
         $orders = Order::with('supplier','planType','details')
                     ->with('details.plan','details.plan.depart','details.unit','details.item')
-                    ->with('inspections','orderType')
+                    ->with('inspections','orderType','officer','officer.prefix')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
                     })
                     ->when(!empty($supplier), function($q) use ($supplier) {
                         $q->where('supplier_id', $supplier);
+                    })
+                    ->when(!empty($officer), function($q) use ($officer) {
+                        $q->where('supply_officer', $officer);
                     })
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plan_type_id', $type);

@@ -7,10 +7,10 @@
             <th>เจ้าหนี้</th>
             <th style="width: 6%; text-align: center;">ปีงบ</th>
             <th style="width: 6%; text-align: center;">จำนวนรายการ</th>
-            <th style="width: 10%; text-align: center;">ยอดจัดซื้อ</th>
+            <th style="width: 8%; text-align: center;">ยอดจัดซื้อ</th>
+            <th style="width: 12%; text-align: center;">จทน.พัสดุ</th>
             <th style="width: 10%; text-align: center;">สถานะ</th>
-            <!-- <th style="width: 5%; text-align: center;">ไฟล์แนบ</th> -->
-            <th style="width: 10%; text-align: center;">Actions</th>
+            <th style="width: 8%; text-align: center;">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +35,9 @@
             </td>
             <td style="text-align: right;">@{{ order.net_total | currency:'':2 }}</td>
             <td style="text-align: center;">
+                @{{ order.officer.person_firstname+ ' ' +order.officer.person_lastname }}
+            </td>
+            <td style="text-align: center;">
                 <span class="label label-primary" ng-show="order.status == 0">
                     อยู่ระหว่างจัดซื้อจัดจ้าง
                 </span>
@@ -57,15 +60,6 @@
                     ยกเลิก
                 </span>
             </td>
-            <!-- <td style="text-align: center;">
-                <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
-                    class="btn btn-default btn-xs"
-                    title="ไฟล์แนบ"
-                    target="_blank"
-                    ng-show="order.attachment">
-                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                </a>
-            </td> -->
             <td style="text-align: center;">
                 <a  href="{{ url('/orders/detail') }}/@{{ order.id }}"
                     class="btn btn-primary btn-xs" 

@@ -61,7 +61,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div><!-- /.row -->
+                            </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>เลขที่ใบ PO</label>
@@ -98,6 +98,25 @@
                                         <option value="9">
                                             เฉพาะรายการที่ถูกยกเลิก
                                         </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>เจ้าหน้าที่พัสดุ</label>
+                                    <select
+                                        id="cboOfficer"
+                                        name="cboOfficer"
+                                        ng-model="cboOfficer"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($officers as $officer)
+                                            <option value="{{ $officer->person_id }}">
+                                                {{ $officer->prefix->prefix_name.$officer->person_firstname.' '.$officer->person_lastname }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div><!-- /.row -->
