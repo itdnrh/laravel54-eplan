@@ -239,7 +239,7 @@
                                         @endif
                                     @endforeach
 
-                                    @if (count($support->details) >= 15 && count($support->details) <= 25)
+                                    @if (count($support->details) > 12 && count($support->details) <= 25)
                                         <tr>
                                             <td style="text-align: center; font-weight: bold;" colspan="4">
                                                 รวมเป็นเงินทั้งสิ้น
