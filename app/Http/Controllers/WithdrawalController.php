@@ -326,6 +326,32 @@ class WithdrawalController extends Controller
         }
     }
 
+    public function setDebt(Request $req, $id)
+    {
+        try {
+            $withdrawal = Withdrawal::find($id);
+            $withdrawal->ref_debt_id = $req['debt_id'];
+
+            if ($withdrawal->save()) {
+                return [
+                    'status'        => 1,
+                    'message'       => 'Set Debt successfully!!',
+                    'withdrawal'    => $withdrawal
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function printForm($id)
     {
         $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
