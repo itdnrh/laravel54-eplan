@@ -103,9 +103,9 @@ class WithdrawalController extends Controller
 
     public function getById($id)
     {
-        $withdrawal = Withdrawal::with('supplier','inspection','inspection.order')
-                        ->with('inspection.order.details','inspection.order.details.item')
-                        ->with('prepaid','prepaid.prefix')
+        $withdrawal = Withdrawal::with('supplier','inspection','prepaid','prepaid.prefix')
+                        ->with('inspection.order','inspection.order.details','inspection.order.details.item')
+                        ->with('inspection.order.details.unit')
                         ->find($id);
         
         $inspections = Inspection::with('order','order.supplier')

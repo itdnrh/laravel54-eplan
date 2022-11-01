@@ -388,12 +388,14 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     const sendToDebt = function(withdrawal) {
         const data = {
             withdraw_id: withdrawal.id,
+            withdraw_no: withdrawal.withdraw_no,
+            withdraw_date: withdrawal.withdraw_date,
             deliver_no: withdrawal.inspection.deliver_no,
             deliver_date: withdrawal.inspection.deliver_date,
             year: withdrawal.year,
             supplier_id: withdrawal.supplier.supplier_id,
             supplier_name: withdrawal.supplier.supplier_name,
-            desc: `${withdrawal.inspection.remark}`,
+            desc: '',
             po_no: withdrawal.order.po_no,
             po_date: withdrawal.order.po_date,
             items: '',
