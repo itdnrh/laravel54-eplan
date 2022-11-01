@@ -112,7 +112,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $http.get(`${CONFIG.baseUrl}/orders/search?status=2-3`)
         .then(function(res) {
-            $scope.setOrder(res);
+            $scope.setOrders(res);
 
             $scope.loading = false;
 
@@ -123,17 +123,18 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
-    $scope.getOrder = () => {
+    $scope.getOrders = () => {
         $scope.loading = true;
         $scope.orders = [];
         $scope.orders_pager = null;
 
-        let cate    = $scope.cboCategory === '' ? 0 : $scope.cboCategory;
-        let type    = $scope.cboPlanType === '' ? 1 : $scope.cboPlanType;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let po_no   = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=2-3`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&po_no=${po_no}&status=2-3`)
         .then(function(res) {
-            $scope.setOrder(res);
+            $scope.setOrders(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -142,7 +143,30 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         });
     };
 
-    $scope.setOrder = function(res) {
+    $scope.getOrdersWithUrl = (e, url, cb) => {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.orders_pager = null;
+
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let po_no   = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+        $http.get(`${url}&type=${type}&cate=${cate}&po_no=${po_no}&status=2-3`)
+        .then(function(res) {
+            $scope.setOrders(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setOrders = function(res) {
         const { data, ...pager } = res.data.orders;
 
         $scope.orders = data;
@@ -160,6 +184,11 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $('#orders-list').modal('hide');
     };
+
+    $scope.detailsCollpse = true;
+    $scope.toggleDetailsCollpse = function() {
+        $scope.detailsCollpse = !$scope.detailsCollpse;
+    }
 
     $scope.onDeliverSeqSelected = function(seq) {
         const inspection = $scope.withdrawal.inspections.find(insp => insp.deliver_seq === parseInt(seq));

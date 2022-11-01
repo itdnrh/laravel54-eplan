@@ -114,3 +114,18 @@
 .collapse-btn:hover {
     background: #fae3d9;
 }
+
+ul.order-details {
+    margin: 0 5px;
+    padding: 0;
+    list-style: none;
+}
+
+ul.order-details.collapsed {
+    height: 35px;
+    overflow: hidden;
+}
+
+ul.order-details + a {
+    font-size: 12px;
+}

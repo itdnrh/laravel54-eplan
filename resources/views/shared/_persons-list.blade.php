@@ -19,7 +19,7 @@
                                     ng-model="cboDepart"
                                     ng-change="getPersons()"
                                 >
-                                    <option value="">--เลือกกลุ่มงาน--</option>
+                                    <option value="">--กลุ่มงานทั้งหมด--</option>
                                     @foreach($departs as $depart)
                                         <option value="{{ $depart->depart_id }}">{{ $depart->depart_name }}</option>
                                     @endforeach
@@ -31,6 +31,7 @@
                                     ng-model="searchKey"
                                     ng-keyup="getPersons()"
                                     class="form-control"
+                                    placeholder="ค้นหาด้วยชื่อ"
                                 />
                             </div>
                         </div><!-- /.box-body -->

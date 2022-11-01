@@ -13,13 +13,23 @@
                     <div class="box">
                         <div class="box-body">
                             <div style="display: flex; flex-direction: row;">
+                                <input
+                                    type="text"
+                                    id="txtKeyword"
+                                    name="txtKeyword"
+                                    ng-model="txtKeyword"
+                                    class="form-control"
+                                    style="margin-right: 1rem;"
+                                    placeholder="ค้นหาเลขที่ PO"
+                                    ng-keyup="getOrders(cboPlanType, 0);"
+                                />
                                 <select
                                     style="margin-right: 1rem;"
                                     class="form-control"
                                     ng-model="cboPlanType"
-                                    ng-change="onFilterCategories(cboPlanType); getPlans(cboPlanType, 0);"
+                                    ng-change="onFilterCategories(cboPlanType); getOrders(cboPlanType, 0);"
                                 >
-                                    <option value="">-- เลือกประเภทแผน --</option>
+                                    <option value="">-- ประเภทแผนทั้งหมด --</option>
                                     @foreach($planTypes as $planType)
                                         <option value="{{ $planType->id }}">
                                             {{ $planType->plan_type_name }}
@@ -31,9 +41,9 @@
                                     style="margin-right: 1rem;"
                                     class="form-control"
                                     ng-model="cboCategory"
-                                    ng-change="getPlans(cboPlanType, 0);"
+                                    ng-change="getOrders(cboPlanType, 0);"
                                 >
-                                    <option value="">-- เลือกประเภทพัสดุ --</option>
+                                    <option value="">-- ประเภทพัสดุทั้งหมด --</option>
                                     <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
                                             @{{ category.name }}
                                     </option>
@@ -66,24 +76,29 @@
                                 </td>
                                 <td>
                                     <h4 style="margin: 0;">@{{ order.supplier.supplier_name }}</h4>
-                                    <ul style="margin: 0 5px; padding: 0 10px;">
+                                    <ul class="order-details" ng-class="{ 'collapsed': detailsCollpse }">
                                         <li ng-repeat="(index, detail) in order.details">
-                                            <p style="margin: 0;">@{{ detail.item.category.name }}</p>
-                                            <p style="margin: 0;">
-                                                @{{ detail.item.item_name }}  @{{ detail.desc }} 
-                                                <span>จำนวน @{{ detail.amount | currency:'':0 }}</span>
-                                                <span>@{{ detail.unit.name }}</span>
-                                                <span>รวมเป็นเงิน @{{ detail.sum_price | currency:'':2 }} บาท</span>
-                                                <!-- <a  href="{{ url('/'). '/uploads/' }}@{{ order.attachment }}"
-                                                    class="btn btn-default btn-xs" 
-                                                    title="ไฟล์แนบ"
-                                                    target="_blank"
-                                                    ng-show="order.attachment">
-                                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                                </a> -->
+                                            <!-- <p style="margin: 0;">@{{ detail.item.category.name }}</p> -->
+                                            <span ng-show="order.details.length > 1">
+                                                @{{ index+1 }}.
+                                            </span>@{{ detail.item.item_name }}
+                                            <p class="item__spec-text">
+                                                @{{ detail.desc }}
+                                                จำนวน @{{ detail.amount | currency:'':0 }} @{{ detail.unit.name }}
+                                                รวมเป็นเงิน @{{ detail.sum_price | currency:'':2 }} บาท
                                             </p>
                                         </li>
                                     </ul>
+                                    <a  
+                                        href="#"
+                                        title="ดูเพิ่มเติม"
+                                        ng-show="order.details.length > 1"
+                                        ng-click="toggleDetailsCollpse()"
+                                    >
+                                        ดูเพิ่มเติม (@{{ order.details.length }} รายการ)
+                                        <i class="fa fa-caret-up" aria-hidden="true" ng-show="!detailsCollpse"></i>
+                                        <i class="fa fa-caret-down" aria-hidden="true" ng-show="detailsCollpse"></i>
+                                    </a>
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ order.net_total | currency:'':0 }}
@@ -124,8 +139,8 @@
                     </table>
 
                     <!-- Loading (remove the following to stop the loading)-->
-                    <div style="width: 100%; height: 50px; text-align: center;">
-                        <div ng-show="loading" class="overlay">
+                    <div style="width: 100%; height: 50px; text-align: center;" ng-show="loading">
+                        <div class="overlay">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
