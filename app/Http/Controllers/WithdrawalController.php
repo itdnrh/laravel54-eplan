@@ -165,7 +165,7 @@ class WithdrawalController extends Controller
 
                     if ($allSupportDetails == $supportDetailsInPO) {
                         /** Update support's status to 5=ส่งเบิกเงินแล้ว */
-                        Support::find($detail->support_id)->update(['status' => 4]);
+                        Support::find($detail->support_id)->update(['status' => 5]);
                     }
                 }
 
