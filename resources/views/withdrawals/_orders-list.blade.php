@@ -60,7 +60,7 @@
                                 <th style="width: 8%; text-align: center;">ปีงบ</th>
                                 <th style="width: 12%; text-align: center;">ใบสั่งซื้อ</th>
                                 <th>รายการ</th>
-                                <th style="width: 8%; text-align: center;">ยอดเงิน</th>
+                                <th style="width: 8%; text-align: center;">ยอดเงินสุทธิ</th>
                                 <th style="width: 20%; text-align: center;">วันที่ตรวจรับ</th>
                                 <th style="width: 5%; text-align: center;">สถานะ</th>
                                 <th style="width: 6%; text-align: center;">Actions</th>
@@ -100,8 +100,8 @@
                                         <i class="fa fa-caret-down" aria-hidden="true" ng-show="detailsCollpse"></i>
                                     </a>
                                 </td>
-                                <td style="text-align: center;">
-                                    @{{ order.net_total | currency:'':0 }}
+                                <td style="text-align: right;">
+                                    @{{ order.net_total | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ order.inspections[0].inspect_sdate | thdate }} - @{{ order.inspections[0].inspect_edate | thdate }}
