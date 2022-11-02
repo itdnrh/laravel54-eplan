@@ -207,7 +207,7 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
         let po_no   = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&status=0-2`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?type=${type}&cate=${cate}&po_no=${po_no}&status=0-2`)
         .then(function(res) {
             $scope.setOrders(res);
 
