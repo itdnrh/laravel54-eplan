@@ -582,4 +582,13 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
 
         $scope.formValidate(e, endpoint, plan, frmName, callback)
     };
+
+    $scope.expandRow = '';
+    $scope.toggleDetailsCollpse = function(selectedIndex) {
+        if ($scope.expandRow == selectedIndex) {
+            $scope.expandRow = '';
+        } else {
+            $scope.expandRow = selectedIndex;
+        }
+    };
 });

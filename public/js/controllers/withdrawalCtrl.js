@@ -157,7 +157,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $http.get(`${url}&type=${type}&cate=${cate}&po_no=${po_no}&status=2-3`)
         .then(function(res) {
-            $scope.setOrders(res);
+            cb(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -184,11 +184,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $('#orders-list').modal('hide');
     };
-
-    $scope.detailsCollpse = true;
-    $scope.toggleDetailsCollpse = function() {
-        $scope.detailsCollpse = !$scope.detailsCollpse;
-    }
 
     $scope.onDeliverSeqSelected = function(seq) {
         const inspection = $scope.withdrawal.inspections.find(insp => insp.deliver_seq === parseInt(seq));

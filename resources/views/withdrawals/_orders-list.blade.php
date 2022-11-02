@@ -67,8 +67,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, order) in orders">
-                                <td style="text-align: center;">@{{ index+orders_pager.from }}</td>
+                            <tr ng-repeat="(row, order) in orders">
+                                <td style="text-align: center;">@{{ row+orders_pager.from }}</td>
                                 <td style="text-align: center;">@{{ order.year }}</td>
                                 <td>
                                     <p style="margin: 0;">เลขที่ @{{ order.po_no }}</p>
@@ -76,7 +76,7 @@
                                 </td>
                                 <td>
                                     <h4 style="margin: 0;">@{{ order.supplier.supplier_name }}</h4>
-                                    <ul class="order-details" ng-class="{ 'collapsed': detailsCollpse }">
+                                    <ul class="order-details" ng-class="{ 'collapsed': row != expandRow }">
                                         <li ng-repeat="(index, detail) in order.details">
                                             <!-- <p style="margin: 0;">@{{ detail.item.category.name }}</p> -->
                                             <span ng-show="order.details.length > 1">
@@ -93,11 +93,11 @@
                                         href="#"
                                         title="ดูเพิ่มเติม"
                                         ng-show="order.details.length > 1"
-                                        ng-click="toggleDetailsCollpse()"
+                                        ng-click="toggleDetailsCollpse(row)"
                                     >
                                         ดูเพิ่มเติม (@{{ order.details.length }} รายการ)
-                                        <i class="fa fa-caret-up" aria-hidden="true" ng-show="!detailsCollpse"></i>
-                                        <i class="fa fa-caret-down" aria-hidden="true" ng-show="detailsCollpse"></i>
+                                        <i class="fa fa-caret-up" aria-hidden="true" ng-show="row == expandRow"></i>
+                                        <i class="fa fa-caret-down" aria-hidden="true" ng-show="row != expandRow"></i>
                                     </a>
                                 </td>
                                 <td style="text-align: right;">
@@ -158,13 +158,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="orders_pager.current_page !== 1">
-                                    <a ng-click="getPlansWithUrl($event, orders_pager.path+ '?page=1', 1, setPlans)" aria-label="Previous">
+                                    <a ng-click="getOrdersWithUrl($event, orders_pager.path+ '?page=1', setOrders)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (orders_pager.current_page==1)}">
-                                    <a ng-click="getPlansWithUrl($event, orders_pager.prev_page_url, 1, setPlans)" aria-label="Prev">
+                                    <a ng-click="getOrdersWithUrl($event, orders_pager.prev_page_url, setOrders)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -176,13 +176,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (orders_pager.current_page==orders_pager.last_page)}">
-                                    <a ng-click="getPlansWithUrl($event, orders_pager.next_page_url, 1, setPlans)" aria-label="Next">
+                                    <a ng-click="getOrdersWithUrl($event, orders_pager.next_page_url, setOrders)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="orders_pager.current_page !== orders_pager.last_page">
-                                    <a ng-click="getPlansWithUrl($event, orders_pager.path+ '?page=' +orders_pager.last_page, 1, setPlans)" aria-label="Previous">
+                                    <a ng-click="getOrdersWithUrl($event, orders_pager.path+ '?page=' +orders_pager.last_page, setOrders)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>
