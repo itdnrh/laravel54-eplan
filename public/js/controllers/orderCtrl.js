@@ -1387,7 +1387,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         e.preventDefault();
 
         if (window.confirm(`คุณต้องลบรายการใบสั่งซื้อ/จ้าง รหัส ${id} ใช่หรือไม่?`)) {
-            $http.post(`${CONFIG.baseUrl}/orders/delete/${$scope.order.id}`, {})
+            $http.post(`${CONFIG.baseUrl}/orders/delete/${id}`, {})
             .then(res => {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบใบสั่งซื้อ/จ้างเรียบร้อย !!!");
