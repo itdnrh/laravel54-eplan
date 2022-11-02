@@ -585,7 +585,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
 
     $scope.expandRow = '';
     $scope.toggleDetailsCollpse = function(selectedIndex) {
-        if ($scope.expandRow == selectedIndex) {
+        if ($scope.expandRow === selectedIndex) {
             $scope.expandRow = '';
         } else {
             $scope.expandRow = selectedIndex;

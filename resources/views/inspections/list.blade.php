@@ -142,19 +142,23 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%; text-align: center;">#</th>
-                                    <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
+                                    <th style="width: 10%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th style="width: 4%; text-align: center;">งวด</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
                                     <th style="width: 15%; text-align: center;">วันที่ตรวจรับ</th>
-                                    <th style="width: 8%; text-align: center;">ยอดเงิน</th>
+                                    <th style="width: 8%; text-align: center;">ยอดเงินสุทธิ</th>
                                     <th style="width: 12%; text-align: center;">ผลการตรวจรับ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, insp) in inspections">
-                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ insp.deliver_no }}</td>
+                                <tr ng-repeat="(row, insp) in inspections">
+                                    <td style="text-align: center;">@{{ row+pager.from }}</td>
+                                    <td>
+                                        <p class="item__spec-text">@{{ insp.deliver_bill }}</p>
+                                        <p style="margin: 0;">เลขที่ <span style="font-weight: bold;">@{{ insp.deliver_no }}</span></p>
+                                        <p style="margin: 0;">วันที่ <span style="font-weight: bold;">@{{ insp.deliver_date | thdate }}</span></p>
+                                    </td>
                                     <td style="text-align: center;">
                                         @{{ insp.deliver_seq }}/@{{ insp.order.deliver_amt }}
                                     </td>
@@ -166,26 +170,39 @@
                                         <h5 style="margin: 5px 0;">
                                             เจ้าหนี้ @{{ insp.order.supplier.supplier_name }}
                                         </h5>
-                                        <div class="bg-gray disabled" style="padding: 2px 5px; border-radius: 5px;">
-                                            <p style="margin: 0; text-decoration: underline;">รายการ</p>
-                                            <ul style="list-style: none; margin: 0px; padding: 0px;">
-                                                <li ng-repeat="(index, detail) in insp.order.details" style="margin: 2px;">
-                                                    @{{ index+1 }}. @{{ detail.item.item_name }}
-                                                    <span class="item__desc-text">@{{ detail.desc }}</span>
-                                                    <span class="item__spec-text">@{{ detail.spec }}</span>
-                                                    <span ng-show="insp.order.deliver_amt !== insp.deliver_seq">
-                                                        @{{ insp.remark }}
-                                                    </span>
+                                        <div class="details-box">
+                                            <p>รายการ</p>
+                                            <ul class="order-details" ng-class="{ 'collapsed': row !== expandRow }">
+                                                <li ng-repeat="(index, detail) in insp.order.details">
+                                                    <span ng-show="insp.order.details.length > 1">    
+                                                        @{{ index+1 }}.
+                                                    </span>@{{ detail.item.item_name }}
+                                                    <p class="item__spec-text">
+                                                        @{{ detail.desc }} @{{ detail.spec }}
+                                                        <span ng-show="insp.order.deliver_amt !== insp.deliver_seq">
+                                                            @{{ insp.remark }}
+                                                        </span>
+                                                    </p>
                                                 </li>
                                             </ul>
+                                            <a  
+                                                href="#"
+                                                title="ดูเพิ่มเติม"
+                                                ng-show="insp.order.details.length > 1"
+                                                ng-click="toggleDetailsCollpse(row)"
+                                            >
+                                                ดูเพิ่มเติม (@{{ insp.order.details.length }} รายการ)
+                                                <i class="fa fa-caret-up" aria-hidden="true" ng-show="row === expandRow"></i>
+                                                <i class="fa fa-caret-down" aria-hidden="true" ng-show="row !== expandRow"></i>
+                                            </a>
                                         </div>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ insp.inspect_sdate | thdate }} - 
                                         @{{ insp.inspect_edate | thdate }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        @{{ insp.inspect_total | currency:'':0 }}
+                                    <td style="text-align: right;">
+                                        @{{ insp.inspect_total | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-success" ng-show="insp.inspect_result == 1">

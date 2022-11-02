@@ -129,3 +129,17 @@ ul.order-details.collapsed {
 ul.order-details + a {
     font-size: 12px;
 }
+
+.details-box {
+    background-color: #dadada;
+    padding: 5px;
+    border-radius: 5px;
+    color: #414141
+    /* border: 1px solid gray; */
+}
+
+.details-box > p:first-child {
+    margin: 0;
+    text-decoration: underline;
+    font-weight: bold;
+}

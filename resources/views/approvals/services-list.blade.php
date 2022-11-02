@@ -68,8 +68,9 @@
                                             @{{ category.name }}
                                         </option>
                                     </select>
-                                </div><!-- /.form group -->
-                            </div><!-- /.row -->
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -90,8 +91,8 @@
 
                                             @endforeach
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>กลุ่มงาน</label>
@@ -107,8 +108,8 @@
                                                 @{{ dep.depart_name }}
                                             </option>
                                         </select>
-                                    </div><!-- /.form group -->
-                                </div><!-- /.col-md-6 -->
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
@@ -137,7 +138,8 @@
                                             <option value="500000">500,000 บาทขึ้นไป</option>
                                         </select>
                                     </div>
-                            </div><!-- /.row -->
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </form>
                     <div class="box-footer" style="padding: 0;">
