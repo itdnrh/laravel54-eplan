@@ -123,6 +123,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('persons/{id}/rename', 'PersonController@rename');
     Route::get('persons/{id}/movings', 'PersonController@getMoving');
 
+    /** การปฏิบัติงานแทน */
+    Route::get('delegations', 'DelegationController@getAll');
+    Route::get('delegations/{id}', 'DelegationController@getById');
+
     /** คำสั่งจังหวัด */
     Route::get('provinces', 'ProvinceOrderController@getAll');
     Route::get('provinces/{id}', 'ProvinceOrderController@getById');

@@ -44,6 +44,16 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('persons/update/{id}', 'PersonController@update');
     Route::post('persons/delete/{id}', 'PersonController@delete');
 
+    /** การปฏิบัติงานแทน */
+    Route::get('system/delegations', 'DelegationController@index');
+    Route::get('delegations/list', 'DelegationController@index');
+    Route::get('delegations/search', 'DelegationController@search');
+    Route::get('delegations/departs', 'DelegationController@departs');
+    Route::get('delegations/detail/{id}', 'DelegationController@detail');
+    Route::get('delegations/edit/{id}', 'DelegationController@edit');
+    Route::post('delegations/update/{id}', 'DelegationController@update');
+    Route::post('delegations/delete/{id}', 'DelegationController@delete');
+
     /** วันหยุดราชการ */
     Route::get('holidays', 'HolidayController@getHolidays');
     Route::get('holidays/list', 'HolidayController@index');

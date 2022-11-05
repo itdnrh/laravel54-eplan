@@ -58,6 +58,6 @@ class User extends Authenticatable
     public function delegations()
     {
         return $this->setConnection('mysql')
-                    ->hasMany(Models\DutyDelegation::class, 'delegator', 'person_id');
+                    ->hasMany(Models\DutyDelegation::class, 'delegator_id', 'person_id');
     }
 }

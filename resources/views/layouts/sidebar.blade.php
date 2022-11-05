@@ -435,6 +435,11 @@
 											<i class="fa fa-circle-o"></i> ข้อมูลบุคลากร
 										</a>
 									</li>
+									<li ng-class="{ 'active': submenu == 'delegations' }">
+										<a href="{{ url('/system/delegations') }}">
+											<i class="fa fa-circle-o"></i> การปฏิบัติงานแทน
+										</a>
+									</li>
 									<li ng-class="{ 'active': submenu == 'kpis' }">
 										<a href="{{ url('/system/kpis') }}">
 											<i class="fa fa-circle-o"></i> ตัวชี้วัด (KPI)

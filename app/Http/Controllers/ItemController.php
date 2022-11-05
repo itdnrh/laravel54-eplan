@@ -233,7 +233,7 @@ class ItemController extends Controller
             $item->asset_no     = $req['asset_no'];
             $item->item_name    = $req['item_name'];
             $item->en_name      = $req['en_name'];
-            $item->price_per_unit   = $req['price_per_unit'];
+            $item->price_per_unit = currencyToNumber($req['price_per_unit']);
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
             $item->first_year   = $req['first_year'];
