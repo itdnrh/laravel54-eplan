@@ -452,6 +452,9 @@
 
                             <!-- ############################ Pagination ############################ -->
                             @if($tableHeight > 220 && $tableHeight <= 300)
+                                @if(count($committees) < 4)
+                                    <div style="height: 80px;"></div>
+                                @endif
                                 <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
                             @endif
                             <!-- ############################ Pagination ############################ -->
@@ -486,7 +489,7 @@
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($tableHeight > 220 && $tableHeight < 300)
+                                @if($tableHeight > 240 && $tableHeight < 300)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif

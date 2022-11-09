@@ -135,7 +135,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                         ? $scope.cboFaction
                         : $('#faction').val();
         let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1' || $('#depart').val() == '4')
-                        ? $scope.cboDepart
+                        ? $scope.cboDepart ? $scope.cboDepart : ''
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
         let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
@@ -164,7 +164,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
         let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
         let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
-                        ? $scope.cboDepart
+                        ? $scope.cboDepart ? $scope.cboDepart : ''
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
         let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
