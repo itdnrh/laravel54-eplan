@@ -172,6 +172,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -206,6 +207,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>ชื่อสินค้า/บริการ</label>

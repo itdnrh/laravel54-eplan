@@ -13,13 +13,22 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.cboDepart = "";
     $scope.cboStatus = "";
     $scope.cboPrice = '';
+    $scope.cboBudget = '';
     $scope.txtItemName = '';
     $scope.isApproved = false;
+    $scope.isInPlan = 'I';
 
     $scope.cboStrategic = '';
     $scope.cboStrategy = '';
     $scope.cboKpi = '';
     $scope.txtKeyword = '';
+
+    
+    $scope.setIsApproved = function(e, type, inStock) {
+        $scope.isApproved = e.target.checked;
+
+        $scope.getAll(type, inStock);
+    };
 
     $scope.plansToApproveList = [];
     $scope.onCheckedPlan = (e, plan) => {
@@ -197,8 +206,11 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
         let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
+        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+        let approved = $scope.isApproved ? 'A' : '';
+        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&&status=${status}${in_stock}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&budget=${budget}&in_plan=${inPlan}&approved=${approved}&status=${status}${in_stock}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -232,8 +244,11 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
         let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
         let in_stock = params.inStock != undefined ? `&in_stock=${params.inStock}` : '';
+        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+        let approved = $scope.isApproved ? 'A' : '';
+        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
 
-        $http.get(`${url}&type=${params.type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&&status=${status}${in_stock}`)
+        $http.get(`${url}&type=${params.type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&budget=${budget}&in_plan=${inPlan}&approved=${approved}&status=${status}${in_stock}`)
         .then(function(res) {
             cb(res);
 

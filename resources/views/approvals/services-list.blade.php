@@ -110,15 +110,25 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>ชื่อสินค้า/บริการ</label>
-                                    <input
-                                        id="txtItemName"
-                                        name="txtItemName"
-                                        class="form-control"
-                                        ng-model="txtItemName"
-                                        ng-keyup="getAll(3)"
-                                    />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll(3)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
+                                                @{{ div.ward_name }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -128,7 +138,7 @@
                                             name="cboPrice"
                                             ng-model="cboPrice"
                                             class="form-control"
-                                            ng-change="getAll(4)"
+                                            ng-change="getAll(3)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="1">ต่ำกว่า 10,000 บาท</option>
@@ -138,6 +148,54 @@
                                             <option value="500000">500,000 บาทขึ้นไป</option>
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ประเภทงบประมาณ</label>
+                                        <select
+                                            id="cboBudget"
+                                            name="cboBudget"
+                                            ng-model="cboBudget"
+                                            class="form-control"
+                                            ng-change="getAll(3)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="1">เงินบำรุง</option>
+                                            <option value="3">ค่าเสื่อม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="isInPlan"
+                                            name="isInPlan"
+                                            ng-model="isInPlan"
+                                            class="form-control"
+                                            ng-change="getAll(3)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>ชื่อสินค้า/บริการ</label>
+                                    <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keyup="getAll(3)"
+                                    />
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
@@ -167,6 +225,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">จ้างบริการ</h3>
+                                <input
+                                    type="checkbox"
+                                    id="isApproved"
+                                    ng-model="isApproved"
+                                    ng-click="setIsApproved($event, 3);"
+                                    style="margin-left: 10px;"
+                                /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
                             <div class="col-md-6">
                                 <!-- <a href="{{ url('/assets/add') }}" class="btn btn-primary pull-right">
