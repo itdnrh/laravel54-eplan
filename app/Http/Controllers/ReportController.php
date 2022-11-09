@@ -596,10 +596,10 @@ class ReportController extends Controller
         ];
     }
 
-    
     public function planProcessByDetails(Request $req, $type)
     {
         $quarter    = $req->get('quarter');
+        $cate       = $req->get('cate');
 
         $depart = '';
         if (Auth::user()->memberOf->duty_id == 2) {
@@ -612,7 +612,8 @@ class ReportController extends Controller
             "planType"  => PlanType::find($type),
             "categories" => ItemCategory::where('plan_type_id', $type)->get(),
             "type"      => $type,
-            "quarter"   => $quarter
+            "quarter"   => $quarter,
+            "cate"      => $cate
         ]);
     }
 
@@ -659,6 +660,74 @@ class ReportController extends Controller
                     ->whereIn('support_details.status', [2,3,4,5,6])
                     ->whereIn('support_details.support_id', $supportsList)
                     ->whereIn('support_details.plan_id', $plansList)
+                    ->when(!empty($cate), function($q) use ($cate) {
+                        $q->where('items.category_id', $cate);
+                    })
+                    ->orderByRaw("items.item_name")
+                    ->get();
+
+        return [
+            'plans' => $plans,
+        ];
+    }
+
+    public function planProcessByRequests(Request $req, $type)
+    {
+        $quarter    = $req->get('quarter');
+        $cate       = $req->get('cate');
+
+        $depart = '';
+        if (Auth::user()->memberOf->duty_id == 2) {
+            $depart = Auth::user()->memberOf->depart_id;
+        }
+
+        return view('reports.plan-process-requests', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
+            "planType"  => PlanType::find($type),
+            "categories" => ItemCategory::where('plan_type_id', $type)->get(),
+            "type"      => $type,
+            "quarter"   => $quarter,
+            "cate"      => $cate
+        ]);
+    }
+
+    public function getPlanProcessByRequests(Request $req, $type)
+    {
+        /** Get params from query string */
+        $year       = $req->get('year');
+        $faction    = $req->get('faction');
+        $quarter    = $req->get('quarter');
+        $cate       = $req->get('cate');
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $plans = \DB::table('plans')
+                    ->select(
+                        'plans.id','plans.plan_no',
+                        'items.item_name','plan_items.spec','plan_items.price_per_unit',
+                        'plan_items.amount','plan_items.sum_price','plan_items.calc_method'
+                    )
+                    ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
+                    ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
+                    ->where('approved', 'A')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plans.plan_type_id', $type);
+                    })
+                    ->when(!empty($quarter), function($q) use ($quarter) {
+                        if ($quarter == '1') {
+                            $q->whereIn('plans.start_month', ['10','11','12']);
+                        } else if ($quarter == '2') {
+                            $q->whereIn('plans.start_month', ['01','02','03']);
+                        } else if ($quarter == '3') {
+                            $q->whereIn('plans.start_month', ['04','05','06']);
+                        } else {
+                            $q->whereIn('plans.start_month', ['07','08','09']);
+                        }
+                    })
                     ->when(!empty($cate), function($q) use ($cate) {
                         $q->where('items.category_id', $cate);
                     })

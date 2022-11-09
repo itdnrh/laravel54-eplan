@@ -5,14 +5,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดการดำเนินการตามแผนเงินบำรุงตามไตรมาส
+            รายการแผนเงินบำรุงตามไตรมาส
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
             <li class="breadcrumb-item"><a href="{{ url('/reports/all') }}">รายงาน</a></li>
-            <li class="breadcrumb-item active">รายละเอียดการดำเนินการตามแผนเงินบำรุงตามไตรมาส</li>
+            <li class="breadcrumb-item active">รายการแผนเงินบำรุงตามไตรมาส</li>
         </ol>
     </section>
 
@@ -26,7 +26,7 @@
                 departs: {{ $departs }}
             });
             setInitialState({{ $cate }});
-            getPlanProcessByDetails({{ $type }}, {{ $quarter }});
+            getPlanProcessByRequests({{ $type }}, {{ $quarter }});
         "
     >
 
@@ -49,7 +49,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getPlanProcessByDetails({{ $type }}, {{ $quarter }})"
+                                        ng-change="getPlanProcessByRequests({{ $type }}, {{ $quarter }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -63,7 +63,7 @@
                                         id="cboCategory"
                                         name="cboCategory"
                                         ng-model="cboCategory"
-                                        ng-change="getPlanProcessByDetails({{ $type }}, {{ $quarter }})"
+                                        ng-change="getPlanProcessByRequests({{ $type }}, {{ $quarter }})"
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -85,7 +85,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <h3 class="box-title">
-                                    รายละเอียดการดำเนินการตามแผนเงินบำรุง ไตรมาสที่ {{ $quarter }} ปีงบประมาณ @{{ cboYear }}
+                                    รายการแผนเงินบำรุง ไตรมาสที่ {{ $quarter }} ปีงบประมาณ @{{ cboYear }}
                                 </h3>
                                 <p class="text-muted" style="margin-bottom: 0;">ประเภทแผน{{ $planType->plan_type_name }}</p>
                             </div>
@@ -112,7 +112,7 @@
                                 <tr ng-repeat="(index, plan) in plans" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>
-                                        @{{ plan.item_name }}
+                                        @{{ plan.plan_no }} @{{ plan.item_name }}
                                         <p class="item__desc-text" ng-show="plan.calc_method == '2'">
                                             - @{{ plan.desc }}
                                         </p>
@@ -123,8 +123,8 @@
                                 </tr>
                                 <tr style="font-size: 12px; font-weight: bold;">
                                     <td style="text-align: center;" colspan="3">รวม</td>
-                                    <td style="text-align: right;">@{{ totalPlanProcessByDetails.amount | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalPlanProcessByDetails.sum_price | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalPlanProcessByRequests.amount | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalPlanProcessByRequests.sum_price | currency:'':2 }}</td>
                                 </tr>
                             </tbody>
                         </table>

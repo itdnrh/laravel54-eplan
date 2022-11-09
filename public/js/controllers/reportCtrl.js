@@ -559,7 +559,6 @@ app.controller(
         };
 
         $scope.getPlanProcessByDetails = function (type, quarter) {
-            console.log(type);
             $scope.totalPlanProcessByDetails = {
                 amount: 0,
                 sum_price: 0,
@@ -575,7 +574,6 @@ app.controller(
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-process-details/${type}?year=${year}&cate=${cate}&quarter=${quarter}`)
             .then(function (res) {
-                console.log(res);
                 $scope.plans = res.data.plans;
 
                 // /** Sum total of plan by plan_type */
@@ -586,6 +584,48 @@ app.controller(
                     });
                 } else {
                     $scope.totalPlanProcessByDetails = {
+                        amount: 0,
+                        sum_price: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.setInitialState = function(cate) {
+            $scope.cboCategory = cate.toString();
+        };
+
+        $scope.getPlanProcessByRequests = function (type, quarter) {
+            $scope.totalPlanProcessByRequests = {
+                amount: 0,
+                sum_price: 0,
+            };
+
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let cate = $scope.cboCategory == '' ? '' : $scope.cboCategory;
+
+            $http.get(`${CONFIG.apiUrl}/reports/plan-process-requests/${type}?year=${year}&cate=${cate}&quarter=${quarter}`)
+            .then(function (res) {
+                console.log(res);
+                $scope.plans = res.data.plans;
+
+                // /** Sum total of plan by plan_type */
+                if (res.data.plans.length > 0) {
+                    res.data.plans.forEach(plan => {
+                        $scope.totalPlanProcessByRequests.amount += plan.amount ? plan.amount : 0;
+                        $scope.totalPlanProcessByRequests.sum_price += plan.sum_price ? plan.sum_price : 0;
+                    });
+                } else {
+                    $scope.totalPlanProcessByRequests = {
                         amount: 0,
                         sum_price: 0,
                     };

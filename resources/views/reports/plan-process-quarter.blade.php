@@ -168,34 +168,54 @@
                                 <tr ng-repeat="(index, plan) in plans" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>@{{ plan.category_name }}</td>
-                                    <td style="text-align: right;">@{{ plan.q1_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">
-                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=1">
+                                        <a href="{{ url('/reports/plan-process-requests') }}/@{{ plan.plan_type_id }}?quarter=1&cate=@{{ plan.category_id }}">
+                                            @{{ plan.q1_sum | currency:'':0 }}
+                                        </a>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=1&cate=@{{ plan.category_id }}">
                                             @{{ plan.q1_amt | currency:'':0 }}
                                         </a>
                                     </td>
                                     <td style="text-align: right;">@{{ (plan.q1_amt * 100)/plan.q1_sum | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q2_sum | currency:'':0 }}</td>
+
                                     <td style="text-align: right;">
-                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=2">
+                                        <a href="{{ url('/reports/plan-process-requests') }}/@{{ plan.plan_type_id }}?quarter=2&cate=@{{ plan.category_id }}">
+                                            @{{ plan.q2_sum | currency:'':0 }}
+                                        </a>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=2&cate=@{{ plan.category_id }}">
                                             @{{ plan.q2_amt | currency:'':0 }}
                                         </a>
                                     </td>
                                     <td style="text-align: right;">@{{ (plan.q2_amt * 100)/plan.q2_sum | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q3_sum | currency:'':0 }}</td>
+
                                     <td style="text-align: right;">
-                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=3">
+                                        <a href="{{ url('/reports/plan-process-requests') }}/@{{ plan.plan_type_id }}?quarter=3&cate=@{{ plan.category_id }}">
+                                            @{{ plan.q3_sum | currency:'':0 }}
+                                        </a>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=3&cate=@{{ plan.category_id }}">
                                             @{{ plan.q3_amt | currency:'':0 }}
                                         </a>
                                     </td>
                                     <td style="text-align: right;">@{{ (plan.q3_amt * 100)/plan.q3_sum | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ plan.q4_sum | currency:'':0 }}</td>
+
                                     <td style="text-align: right;">
-                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=4">
+                                        <a href="{{ url('/reports/plan-process-requests') }}/@{{ plan.plan_type_id }}?quarter=4&cate=@{{ plan.category_id }}">
+                                            @{{ plan.q4_sum | currency:'':0 }}
+                                        </a>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url('/reports/plan-process-details') }}/@{{ plan.plan_type_id }}?quarter=4&cate=@{{ plan.category_id }}">
                                             @{{ plan.q4_amt | currency:'':0 }}
                                         </a>
                                     </td>
                                     <td style="text-align: right;">@{{ (plan.q4_amt * 100)/plan.q4_sum | currency:'':2 }}</td>
+
                                     <td style="text-align: right;">@{{ plan.total_sum | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ plan.total_amt | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ (plan.total_amt * 100)/plan.total_sum | currency:'':2 }}</td>

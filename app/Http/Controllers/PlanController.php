@@ -147,12 +147,20 @@ class PlanController extends Controller
                         ->when(!empty($haveSubitem), function($q) use ($haveSubitem) {
                             $q->where('plan_items.have_subitem', $haveSubitem);
                         })
+                        ->when(empty($showAll), function($q) use ($showAll) {
+                            $q->where('plan_items.remain_amount', '>', 0);
+                        })
+                        ->when(!empty($price), function($q) use ($price) {
+                            if ($price == '1') {
+                                $q->where('plan_items.price_per_unit', '<', 10000);
+                            } else {
+                                $q->where('plan_items.price_per_unit', '>=', $price);
+                            }
+                        })
                         ->pluck('plan_items.plan_id');
 
-        $plans = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-                    ->with('budget','depart','division')
-                    ->with('planItem','planItem.unit')
-                    ->with('planItem.item','planItem.item.category')
+        $plans = Plan::with('budget','depart','division','planItem')
+                    ->with('planItem.unit','planItem.item','planItem.item.category')
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plans.plan_type_id', $type);
                     })
@@ -188,13 +196,6 @@ class PlanController extends Controller
                     ->when(!empty($division), function($q) use ($division) {
                         $q->where('plans.division_id', $division);
                     })
-                    ->when(!empty($price), function($q) use ($price) {
-                        if ($price == '1') {
-                            $q->where('plan_items.price_per_unit', '<', 10000);
-                        } else {
-                            $q->where('plan_items.price_per_unit', '>=', $price);
-                        }
-                    })
                     ->when(!empty($budget), function($q) use ($budget) {
                         $q->where('plans.budget_src_id', $budget);
                     })
@@ -207,8 +208,11 @@ class PlanController extends Controller
                     ->when($status != '', function($q) use ($status) {
                         $q->where('plans.status', $status);
                     })
-                    ->when(empty($showAll), function($q) use ($showAll) {
-                        $q->where('plan_items.remain_amount', '>', 0);
+                    ->when(!empty($price), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when(empty($showAll), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->paginate(10);
 
