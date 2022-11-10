@@ -14,7 +14,7 @@ class SupportDetail extends Model
      * @var array
      */
     protected $fillable = [
-        'status',
+        'status', 'ref_order_id'
     ];
 
     public function unit()
