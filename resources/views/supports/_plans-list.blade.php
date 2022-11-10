@@ -55,23 +55,23 @@
                                 </td>
                                 <td style="text-align: center;">
                                     <p ng-show="plan.plan_item.calc_method == 1">
-                                        @{{ plan.amount | currency:'':0 }} 
+                                        @{{ plan.plan_item.amount | currency:'':0 }} 
                                         <span>@{{ plan.plan_item.unit.name }}</span>
                                     </p>
                                     <p ng-show="plan.plan_item.calc_method == 2">-</p>
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.sum_price | currency:'':0 }}
+                                    @{{ plan.plan_item.sum_price | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
                                     <p ng-show="plan.plan_item.calc_method == 1">
-                                        @{{ plan.remain_amount | currency:'':0 }} 
+                                        @{{ plan.plan_item.remain_amount | currency:'':0 }} 
                                         <span>@{{ plan.plan_item.unit.name }}</span>
                                     </p>
                                     <p ng-show="plan.plan_item.calc_method == 2">-</p>
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.remain_budget | currency:'':0 }}
+                                    @{{ plan.plan_item.remain_budget | currency:'':0 }}
                                 </td>
                                 <td style="text-align: center;">
                                     <p style="margin: 0;">@{{ plan.depart.depart_name }}</p>
