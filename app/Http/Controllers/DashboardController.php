@@ -24,14 +24,14 @@ class DashboardController extends Controller
 
         $stats = \DB::table("plans")
                         ->select(
-                            \DB::raw("sum(plan_items.sum_price) as sum_all"),
-                            \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (2,3,4,5,6))) then support_details.sum_price end) as sum_po"),
-                            \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (5,6))) then support_details.sum_price end) as sum_insp"),
-                            \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status='9')) then support_details.sum_price end) as sum_with")
+                            \DB::raw("sum(plan_items.sum_price) as sum_all")
+                            // \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (2,3,4,5,6))) then support_details.sum_price end) as sum_po"),
+                            // \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (5,6))) then support_details.sum_price end) as sum_insp"),
+                            // \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status='9')) then support_details.sum_price end) as sum_with")
                         )
                         ->leftJoin("plan_items", "plan_items.plan_id", "=", "plans.id")
                         ->leftJoin("plan_types", "plans.plan_type_id", "=", "plan_types.id")
-                        ->leftJoin('support_details', 'support_details.plan_id', '=', 'plans.id')
+                        // ->leftJoin('support_details', 'support_details.plan_id', '=', 'plans.id')
                         ->where("plans.year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
                             if ($approved == '1') {
