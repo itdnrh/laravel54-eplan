@@ -117,17 +117,17 @@ class PlanController extends Controller
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
-        // if($status != '-') {
-        //     if (preg_match($pattern, $status, $matched) == 1) {
-        //         $arrStatus = explode($matched[0], $status);
+        if($status != '-') {
+            if (preg_match($pattern, $status, $matched) == 1) {
+                $arrStatus = explode($matched[0], $status);
 
-        //         if ($matched[0] != '-' && $matched[0] != '&') {
-        //             array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
-        //         }
-        //     } else {
-        //         array_push($conditions, ['status', '=', $status]);
-        //     }
-        // }
+                if ($matched[0] != '-' && $matched[0] != '&') {
+                    array_push($conditions, ['plans.status', $matched[0], $arrStatus[1]]);
+                }
+            } else {
+                array_push($conditions, ['plans.status', '=', $status]);
+            }
+        }
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
@@ -205,8 +205,11 @@ class PlanController extends Controller
                     ->when($inPlan != '', function($q) use ($inPlan) {
                         $q->where('plans.in_plan', $inPlan);
                     })
-                    ->when($status != '', function($q) use ($status) {
-                        $q->where('plans.status', $status);
+                    ->when(count($conditions) > 0, function($q) use ($conditions) {
+                        $q->where($conditions);
+                    })
+                    ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                        $q->whereBetween('plans.status', $arrStatus);
                     })
                     ->when(!empty($price), function($q) use ($plansList) {
                         $q->whereIn('plans.id', $plansList);
