@@ -123,7 +123,7 @@ class ExpenseController extends Controller
     public function create()
     {
         return view('expenses.add', [
-            "expenseTypes"  => ExpenseType::all(),
+            "expenseTypes"  => ExpenseType::orderBy('sort')->get(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
         ]);

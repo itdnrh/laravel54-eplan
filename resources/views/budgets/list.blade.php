@@ -132,7 +132,7 @@
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">ประมาณการรายจ่าย</h3>

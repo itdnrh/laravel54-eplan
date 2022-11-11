@@ -117,7 +117,7 @@ class PlanController extends Controller
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
 
-        if($status != '-') {
+        if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
                 $arrStatus = explode($matched[0], $status);
 
