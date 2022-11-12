@@ -346,7 +346,7 @@
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
-                            @if (count($support->details) > 17 && count($support->details) <= 25)
+                            @if (count($support->details) > 19 && count($support->details) <= 25)
                                 @if($committeeHeight <= 60)
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
@@ -363,7 +363,7 @@
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
                                 @endif
-                                @if (count($support->details) > 17 && count($support->details) <= 25)
+                                @if (count($support->details) > 19 && count($support->details) <= 25)
                                     @if($committeeHeight <= 60)
                                         <p class="page-number">- ๒ -</p>
                                     @endif
@@ -400,7 +400,7 @@
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @endif
-                            @if (count($support->details) > 17 && count($support->details) <= 25)
+                            @if (count($support->details) > 19 && count($support->details) <= 25)
                                 @if($committeeHeight <= 60)
                                     <p class="page-number">- ๒ -</p>
                                 @endif
@@ -463,7 +463,6 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-
                             <!-- ############################ Pagination ############################ -->
                             @if(count($committees) <= 6)
                                 @if($tableHeight > 220 && $tableHeight <= 300)
@@ -543,6 +542,10 @@
                                     <p class="page-number">- ๓ -</p>
                                 @endif
                             @elseif (count($support->details) > 17 && count($support->details) <= 20)
+                                @if(count($committees) <= 6)
+                                    <p class="page-number">- ๓ -</p>
+                                @endif
+
                                 @if(count($committees) > 6)
                                     <p class="page-number">- ๔ -</p>
                                 @endif
