@@ -128,8 +128,18 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            console.log(res);
-            const { plans, budget, categories } = res.data;
+            const { plans, supports, budget, categories } = res.data;
+
+            /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
+            let tmpPlans = plans.map(plan => {
+                let support = supports.find(support => plan.category_id === support.category_id);
+
+                if (support) {
+                    return { ...plan, ...support };
+                }
+
+                return plan;
+            });
 
             let cates = categories.map(cate => {
                 const summary = budget.find(bud => bud.expense_id === cate.expense_id);
@@ -138,7 +148,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 return cate;
             });
 
-            $scope.assets = plans.map(plan => {
+            $scope.assets = tmpPlans.map(plan => {
                 const cateInfo = cates.find(cate => cate.id === plan.category_id);
                 if (cateInfo) {
                     plan.category_name = cateInfo.name;
@@ -179,7 +189,18 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.setMaterials = function(res) {
-        const { plans, budget, categories } = res.data;
+        const { plans, supports, budget, categories } = res.data;
+
+        /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
+        let tmpPlans = plans.data.map(plan => {
+            let support = supports.find(support => plan.category_id === support.category_id);
+
+            if (support) {
+                return { ...plan, ...support };
+            }
+
+            return plan;
+        });
 
         let cates = categories.map(cate => {
             const summary = budget.find(bud => bud.expense_id === cate.expense_id);
@@ -189,7 +210,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         });
 
         const { data, ...pager } = plans;
-        $scope.materials = data.map(plan => {
+        $scope.materials = tmpPlans.map(plan => {
             const cateInfo = cates.find(cate => cate.id === plan.category_id);
 
             plan.category_name = cateInfo ? cateInfo.name : '';
@@ -227,14 +248,22 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.getSummaryServices = function() {
         $scope.loading = true;
 
-        // let date = $('#cboAssetDate').val() !== ''
-        //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
-        //             : moment().format('YYYY-MM-DD');
         let year = $scope.dtpYear
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            const { plans, budget, categories } = res.data;
+            const { plans, supports, budget, categories } = res.data;
+
+            /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
+            let tmpPlans = plans.map(plan => {
+                let support = supports.find(support => plan.category_id === support.category_id);
+
+                if (support) {
+                    return { ...plan, ...support };
+                }
+
+                return plan;
+            });
 
             let cates = categories.map(cate => {
                 const summary = budget.find(bud => bud.expense_id === cate.expense_id);
@@ -243,7 +272,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 return cate;
             });
 
-            $scope.services = plans.map(plan => {
+            $scope.services = tmpPlans.map(plan => {
                 const cateInfo = cates.find(cate => cate.id === plan.category_id);
                 if (cateInfo) {
                     plan.category_name = cateInfo.name;
@@ -265,14 +294,22 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.getSummaryConstructs = function() {
         $scope.loading = true;
 
-        // let date = $('#cboAssetDate').val() !== ''
-        //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
-        //             : moment().format('YYYY-MM-DD');
         let year = $scope.dtpYear
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            const { plans, budget, categories } = res.data;
+            const { plans, supports, budget, categories } = res.data;
+
+            /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
+            let tmpPlans = plans.map(plan => {
+                let support = supports.find(support => plan.category_id === support.category_id);
+
+                if (support) {
+                    return { ...plan, ...support };
+                }
+
+                return plan;
+            });
 
             let cates = categories.map(cate => {
                 const summary = budget.find(bud => bud.expense_id === cate.expense_id);
@@ -281,7 +318,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 return cate;
             });
 
-            $scope.constructs = plans.map(plan => {
+            $scope.constructs = tmpPlans.map(plan => {
                 const cateInfo = cates.find(cate => cate.id === plan.category_id);
                 if (cateInfo) {
                     plan.category_name = cateInfo.name;

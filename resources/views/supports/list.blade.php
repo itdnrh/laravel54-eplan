@@ -200,10 +200,10 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 15%; text-align: center;">บันทึก</th>
+                                    <th style="width: 14%; text-align: center;">บันทึก</th>
                                     <th style="width: 8%; text-align: center;">ประเภทแผน</th>
                                     <th style="width: 5%; text-align: center;">ปีงบ</th>
-                                    <th style="width: 20%;">หน่วยงาน</th>
+                                    <th style="width: 18%;">หน่วยงาน</th>
                                     <th style="text-align: center;">รายการ</th>
                                     <th style="width: 8%; text-align: center;">ยอดขอสนับสนุน</th>
                                     <th style="width: 10%; text-align: center;">สถานะ</th>
@@ -244,7 +244,7 @@
                                                 <span>@{{ support.details[0].unit.name }}</span>
                                                 ราคา @{{ support.details[0].price_per_unit | currency:'':0 }} บาท) 
                                                 <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
-                                                    ... ดูเพิ่ม <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                                                    ... ดูเพิ่ม (@{{ support.details.length }} รายการ) <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
                                                 </a>
                                             </p>
                                         </div>
