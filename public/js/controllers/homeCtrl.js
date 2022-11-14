@@ -66,7 +66,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
 
-    $scope.stat1Cards = [];
+    $scope.stat1Cards = null;
     $scope.stat2Cards = [];
     $scope.getStat1 = function () {
         $scope.loading = true;
@@ -75,7 +75,10 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}?approved=${$scope.approved}`)
         .then(function(res) {
-            $scope.stat1Cards = res.data.stats;
+            const { ...plans } = res.data.plans;
+            const { ...supports } = res.data.supports;
+
+            $scope.stat1Cards = { ...plans, ...supports };
 
             $scope.loading = false;
         }, function(err) {

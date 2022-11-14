@@ -7,6 +7,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Person;
 use App\Models\Depart;
+use App\Models\Plan;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\Budget;
@@ -22,16 +23,20 @@ class DashboardController extends Controller
     {
         $approved = $req->get('approved');
 
-        $stats = \DB::table("plans")
-                        ->select(
-                            \DB::raw("sum(plan_items.sum_price) as sum_all")
-                            // \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (2,3,4,5,6))) then support_details.sum_price end) as sum_po"),
-                            // \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (5,6))) then support_details.sum_price end) as sum_insp"),
-                            // \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status='9')) then support_details.sum_price end) as sum_with")
-                        )
+        $plansList = Plan::where("year", $year)
+                        ->when(!empty($approved), function($query) use ($approved) {
+                            if ($approved == '1') {
+                                $query->whereNull('approved');
+                            } else {
+                                $query->where('approved', 'A');
+                            }
+                        })
+                        ->pluck('id');
+
+        $plans = \DB::table("plans")
+                        ->select(\DB::raw("sum(plan_items.sum_price) as sum_all"))
                         ->leftJoin("plan_items", "plan_items.plan_id", "=", "plans.id")
                         ->leftJoin("plan_types", "plans.plan_type_id", "=", "plan_types.id")
-                        // ->leftJoin('support_details', 'support_details.plan_id', '=', 'plans.id')
                         ->where("plans.year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
                             if ($approved == '1') {
@@ -40,10 +45,24 @@ class DashboardController extends Controller
                                 $query->where('plans.approved', 'A');
                             }
                         })
-                        ->get();
+                        ->first();
+
+        $supports = \DB::table("supports")
+                        ->select(
+                            \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as sum_po"),
+                            \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as sum_with"),
+                            \DB::raw("sum(case when (support_details.status='9') then support_details.sum_price end) as sum_debt")
+                        )
+                        ->leftJoin('support_details', 'support_details.support_id', '=', 'supports.id')
+                        ->where("supports.year", $year)
+                        ->when(!empty($approved), function($query) use ($plansList) {
+                            $query->whereIn('support_details.plan_id', $plansList);
+                        })
+                        ->first();
 
         return [
-            'stats' => $stats
+            'plans'     => $plans,
+            'supports'  => $supports,
         ];
     }
 
