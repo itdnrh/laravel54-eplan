@@ -128,6 +128,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
+            console.log(res);
             const { plans, budget, categories } = res.data;
 
             let cates = categories.map(cate => {

@@ -299,9 +299,9 @@ class OrderController extends Controller
 
                         /** Update plan's status to  1=ดำเนินการแล้วบางส่วน, 2=ดำเนินการครบแล้ว */
                         if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
-                            Plan::find($detail->plan_id)->update(['status' => 1]);
-                        } else {
                             Plan::find($detail->plan_id)->update(['status' => 2]);
+                        } else {
+                            Plan::find($detail->plan_id)->update(['status' => 1]);
                         }
                     }
 
@@ -490,9 +490,9 @@ class OrderController extends Controller
 
                             /** Update plan's status to  1=ดำเนินการแล้วบางส่วน, 2=ดำเนินการครบแล้ว */
                             if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
-                                Plan::find($detail->plan_id)->update(['status' => 1]);
-                            } else {
                                 Plan::find($detail->plan_id)->update(['status' => 2]);
+                            } else {
+                                Plan::find($detail->plan_id)->update(['status' => 1]);
                             }
                         }
                     } else {

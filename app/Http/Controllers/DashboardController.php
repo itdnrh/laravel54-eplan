@@ -101,6 +101,16 @@ class DashboardController extends Controller
         $year = $req->get('year');
         $approved = $req->get('approved');
 
+        $plansList = Plan::where("year", $year)
+                        ->when(!empty($approved), function($query) use ($approved) {
+                            if ($approved == '1') {
+                                $query->whereNull('approved');
+                            } else {
+                                $query->where('approved', 'A');
+                            }
+                        })
+                        ->pluck('id');
+
         $plans = \DB::table('plans')
                     ->select(
                         'items.category_id',
@@ -125,7 +135,25 @@ class DashboardController extends Controller
                         }
                     })
                     ->where('plans.plan_type_id', 1)
-                    // ->where('plans.approved', 'A')
+                    ->get();
+        
+        $supports = \DB::table('supports')
+                    ->select(
+                        'supports.category_id',
+                        \DB::raw("sum(case when ( support_details where status='1')) then support_details.sum_price end) as sent"),
+                        \DB::raw("sum(case when (support_details where status='2')) then support_details.sum_price end) as received"),
+                        \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (2,3,4,5,6))) then support_details.sum_price end) as po"),
+                        \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (4,5,6))) then support_details.sum_price end) as inspect"),
+                        \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (5,6))) then support_details.sum_price end) as withdraw"),
+                        \DB::raw("sum(case when (plans.status=6) then plan_items.sum_price end) as debt")
+                    )
+                    ->leftJoin('support_details', 'support_details.plan_id', '=', 'plans.id')
+                    ->groupBy('supports.category_id')
+                    ->where('supports.year', $year)
+                    ->when(!empty($approved), function($query) use ($plansList) {
+                        $query->whereIn('support_details.plan_id', $plansList);
+                    })
+                    ->where('supports.plan_type_id', 1)
                     ->get();
 
         return [
@@ -184,11 +212,11 @@ class DashboardController extends Controller
                     ->select(
                         'items.category_id',
                         \DB::raw("sum(plan_items.sum_price) as request"),
-                        \DB::raw("sum(case when (plans.status=1 and plans.id in (select plan_id from support_details where status='1')) then support_details.sum_price end) as sent"),
-                        \DB::raw("sum(case when (plans.status=2 and plans.id in (select plan_id from support_details where status='2')) then support_details.sum_price end) as received"),
-                        \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (2,3,4,5,6))) then support_details.sum_price end) as po"),
-                        \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (4,5,6))) then support_details.sum_price end) as inspect"),
-                        \DB::raw("sum(case when (plans.id in (select plan_id from support_details where status in (5,6))) then support_details.sum_price end) as withdraw"),
+                        \DB::raw("sum(case when (support_details where status='1')) then support_details.sum_price end) as sent"),
+                        \DB::raw("sum(case when (support_details where status='2')) then support_details.sum_price end) as received"),
+                        \DB::raw("sum(case when (support_details where status in (2,3,4,5,6))) then support_details.sum_price end) as po"),
+                        \DB::raw("sum(case when (support_details where status in (4,5,6))) then support_details.sum_price end) as inspect"),
+                        \DB::raw("sum(case when (support_details where status in (5,6))) then support_details.sum_price end) as withdraw"),
                         \DB::raw("sum(case when (plans.status=6) then plan_items.sum_price end) as debt")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
