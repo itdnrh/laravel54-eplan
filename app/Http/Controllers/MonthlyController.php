@@ -109,11 +109,11 @@ class MonthlyController extends Controller
                             })->pluck('id');
 
         $plans = Monthly::with('expense','depart')
-                    ->when(!empty($type), function($q) use ($expensesList) {
-                        $q->whereIn('expense_id', $expensesList);
-                    })
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
+                    })
+                    ->when(!empty($type), function($q) use ($expensesList) {
+                        $q->whereIn('expense_id', $expensesList);
                     })
                     ->when(!empty($depart), function($q) use ($depart) {
                         $q->where('depart_id', $depart);
@@ -154,33 +154,42 @@ class MonthlyController extends Controller
     public function summary()
     {
         return view('monthly.summary', [
-            "expenses"  => Expense::all()
+            "expenseTypes"  => ExpenseType::all()
         ]);
     }
 
     public function getSummary(Request $req, $year)
     {
-        $monthly = \DB::table('plan_monthly')
+        $type = $req->get('type');
+
+        $expensesList = Expense::when(!empty($type), function($q) use ($type) {
+                                $q->where('expense_type_id', $type);
+                            })->pluck('id');
+
+        $monthly = \DB::table('monthly')
                         ->select(
-                            'plan_monthly.expense_id',
+                            'monthly.expense_id',
                             'expenses.name',
-                            \DB::raw("sum(case when (plan_monthly.month='10') then plan_monthly.total end) as oct_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='11') then plan_monthly.total end) as nov_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='12') then plan_monthly.total end) as dec_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='01') then plan_monthly.total end) as jan_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='02') then plan_monthly.total end) as feb_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='03') then plan_monthly.total end) as mar_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='04') then plan_monthly.total end) as apr_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='05') then plan_monthly.total end) as may_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='06') then plan_monthly.total end) as jun_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='07') then plan_monthly.total end) as jul_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='08') then plan_monthly.total end) as aug_total"),
-                            \DB::raw("sum(case when (plan_monthly.month='09') then plan_monthly.total end) as sep_total"),
-                            \DB::raw("sum(plan_monthly.total) as total")
+                            \DB::raw("sum(case when (monthly.month='10') then monthly.total end) as oct_total"),
+                            \DB::raw("sum(case when (monthly.month='11') then monthly.total end) as nov_total"),
+                            \DB::raw("sum(case when (monthly.month='12') then monthly.total end) as dec_total"),
+                            \DB::raw("sum(case when (monthly.month='01') then monthly.total end) as jan_total"),
+                            \DB::raw("sum(case when (monthly.month='02') then monthly.total end) as feb_total"),
+                            \DB::raw("sum(case when (monthly.month='03') then monthly.total end) as mar_total"),
+                            \DB::raw("sum(case when (monthly.month='04') then monthly.total end) as apr_total"),
+                            \DB::raw("sum(case when (monthly.month='05') then monthly.total end) as may_total"),
+                            \DB::raw("sum(case when (monthly.month='06') then monthly.total end) as jun_total"),
+                            \DB::raw("sum(case when (monthly.month='07') then monthly.total end) as jul_total"),
+                            \DB::raw("sum(case when (monthly.month='08') then monthly.total end) as aug_total"),
+                            \DB::raw("sum(case when (monthly.month='09') then monthly.total end) as sep_total"),
+                            \DB::raw("sum(monthly.total) as total")
                         )
-                        ->leftJoin('expenses', 'plan_monthly.expense_id', '=', 'expenses.id')
-                        ->groupBy('plan_monthly.expense_id', 'expenses.name')
-                        ->where('plan_monthly.year', $year)
+                        ->leftJoin('expenses', 'monthly.expense_id', '=', 'expenses.id')
+                        ->groupBy('monthly.expense_id', 'expenses.name')
+                        ->where('monthly.year', $year)
+                        ->when(!empty($type), function($q) use ($expensesList) {
+                            $q->whereIn('monthly.expense_id', $expensesList);
+                        })
                         ->get();
 
         return [

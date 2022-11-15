@@ -134,11 +134,11 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.summary = [];
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let expense = $scope.cboExpense === '' ? '' : $scope.cboExpense;
+        let type    = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?expense=${expense}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?type=${type}&depart=${depart}&status=${status}`)
         .then(function(res) {
             const { monthly, budget } = res.data;
 

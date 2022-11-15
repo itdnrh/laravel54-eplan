@@ -42,7 +42,7 @@
                                         class="form-control"
                                         ng-change="getSummary()"
                                     >
-                                        <option value="">-- ทั้งหมด --</option>
+                                        <!-- <option value="">-- ทั้งหมด --</option> -->
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
                                             @{{ y }}
                                         </option>
@@ -50,21 +50,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>รายการ</label>
+                                        <label>ประเภทค่าใช้จ่าย</label>
                                         <select
-                                            id="cboExpense"
-                                            name="cboExpense"
-                                            ng-model="cboExpense"
-                                            ng-change="getAll()"
+                                            id="cboExpenseType"
+                                            name="cboExpenseType"
+                                            ng-model="cboExpenseType"
+                                            ng-change="getSummary()"
                                             class="form-control"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            @foreach($expenses as $expense)
-
-                                                <option value="{{ $expense->id }}">
-                                                    {{ $expense->name }}
+                                            @foreach($expenseTypes as $type)
+                                                <option value="{{ $type->id }}">
+                                                    {{ $type->name }}
                                                 </option>
-
                                             @endforeach
                                         </select>
                                     </div>
@@ -128,52 +126,52 @@
                                 <tr ng-repeat="(index, sum) in summary" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>@{{ sum.name }}</td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.budget | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.oct_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.nov_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.dec_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.jan_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.feb_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.mar_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.apr_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.may_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.jun_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.jul_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.aug_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.sep_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ sum.budget - sum.total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
                                     </td>
                                 </tr>
