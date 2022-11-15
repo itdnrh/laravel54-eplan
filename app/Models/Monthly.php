@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PlanMonthly extends Model
+class Monthly extends Model
 {
-    protected $table = "plan_monthly";
+    protected $table = "monthly";
 
     public function expense()
     {

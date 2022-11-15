@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Expense;
 use App\Models\ExpenseType;
-use App\Models\PlanMonthly;
+use App\Models\Monthly;
 use App\Models\Budget;
 use App\Models\Plan;
 use App\Models\PlanItem;
@@ -108,7 +108,7 @@ class MonthlyController extends Controller
                                 $q->where('expense_type_id', $type);
                             })->pluck('id');
 
-        $plans = PlanMonthly::with('expense','depart')
+        $plans = Monthly::with('expense','depart')
                     ->when(!empty($type), function($q) use ($expensesList) {
                         $q->whereIn('expense_id', $expensesList);
                     })
@@ -144,7 +144,7 @@ class MonthlyController extends Controller
 
     public function getAll()
     {
-        // $plans = PlanMonthly::with('kpi','depart','owner','budgetSrc')->paginate(10);
+        // $plans = Monthly::with('kpi','depart','owner','budgetSrc')->paginate(10);
 
         // return [
         //     'plans' => $plans,
@@ -192,7 +192,7 @@ class MonthlyController extends Controller
     public function getById($id)
     {
         return [
-            'plan' => PlanMonthly::find($id),
+            'plan' => Monthly::find($id),
         ];
     }
 
@@ -231,7 +231,7 @@ class MonthlyController extends Controller
     public function store(Request $req)
     {
         try {
-            $plan = new PlanMonthly();
+            $plan = new Monthly();
             $plan->year         = $req['year'];
             $plan->month        = $req['month'];
             $plan->expense_id   = $req['expense_id'];
@@ -281,7 +281,7 @@ class MonthlyController extends Controller
     public function edit($id)
     {
         return view('monthly.edit', [
-            "monthly"   => PlanMonthly::find($id),
+            "monthly"   => Monthly::find($id),
             "expenses"  => Expense::all(),
             "factions"  => Faction::all(),
             "departs"   => Depart::all(),
@@ -292,7 +292,7 @@ class MonthlyController extends Controller
     public function update(Request $req, $id)
     {
         try {
-            $plan = PlanMonthly::find($id);
+            $plan = Monthly::find($id);
             $plan->year         = $req['year'];
             $plan->month        = $req['month'];
             $plan->expense_id   = $req['expense_id'];
@@ -342,7 +342,7 @@ class MonthlyController extends Controller
     public function delete(Request $req, $id)
     {
         try {
-            $plan = PlanMonthly::find($id);
+            $plan = Monthly::find($id);
             $oldMonthly = $plan;
 
             if($plan->delete()) {
