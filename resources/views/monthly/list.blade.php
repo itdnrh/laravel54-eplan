@@ -68,21 +68,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>รายการ</label>
+                                        <label>ประเภทค่าใช้จ่าย</label>
                                         <select
-                                            id="cboExpense"
-                                            name="cboExpense"
-                                            ng-model="cboExpense"
+                                            id="cboExpenseType"
+                                            name="cboExpenseType"
+                                            ng-model="cboExpenseType"
                                             ng-change="getAll()"
                                             class="form-control"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            @foreach($expenses as $expense)
-
-                                                <option value="{{ $expense->id }}">
-                                                    {{ $expense->name }}
+                                            @foreach($expenseTypes as $type)
+                                                <option value="{{ $type->id }}">
+                                                    {{ $type->name }}
                                                 </option>
-
                                             @endforeach
                                         </select>
                                     </div>
@@ -154,9 +152,9 @@
                                     <th style="width: 10%; text-align: center;">ประจำเดือน</th>
                                     <th style="width: 15%; text-align: center;">ประเภท</th>
                                     <th>หน่วยงาน</th>
+                                    <th style="width: 10%; text-align: center;">ประมาณการ</th>
                                     <th style="width: 10%; text-align: center;">ยอดการใช้</th>
                                     <th style="width: 10%; text-align: center;">ยอดคงเหลือ</th>
-                                    <!-- <th style="width: 8%; text-align: center;">สถานะ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
@@ -170,22 +168,9 @@
                                     <td>
                                         @{{ plan.depart.depart_name }}
                                     </td>
-                                    <td style="text-align: center;">@{{ plan.total | currency:'':0 }}</td>
-                                    <td style="text-align: center;">@{{ plan.remain | currency:'':0 }}</td>
-                                    <!-- <td style="text-align: center;">
-                                        <span class="label label-primary" ng-show="plan.status == 0">
-                                            รอดำเนินการ
-                                        </span>
-                                        <span class="label label-warning" ng-show="plan.status == 1">
-                                            ส่งเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="plan.status == 2">
-                                            รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="plan.status == 9">
-                                            ยกเลิก
-                                        </span>
-                                    </td> -->
+                                    <td style="text-align: right;">@{{ plan.budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.remain | currency:'':2 }}</td>
                                     <td style="text-align: center;">
                                         <a  href="{{ url('/monthly/detail') }}/@{{ plan.id }}"
                                             class="btn btn-primary btn-xs" 

@@ -169,8 +169,8 @@
                                         <td style="text-align: center;">@{{ index+1 }}</td>
                                         <td style="text-align: center;">@{{ budget.year }}</td>
                                         <td>@{{ budget.expense.name }}</td>
-                                        <td style="text-align: right;">@{{ budget.budget | currency:'':0 }}</td>
-                                        <td style="text-align: right;">@{{ budget.remain | currency:'':0 }}</td>
+                                        <td style="text-align: right;">@{{ budget.budget | currency:'':2 }}</td>
+                                        <td style="text-align: right;">@{{ budget.remain | currency:'':2 }}</td>
                                         <!-- <td style="text-align: center;">
                                             <span class="label label-primary" ng-show="budget.status == 0">
                                                 รอดำเนินการ

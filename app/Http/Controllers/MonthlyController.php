@@ -70,9 +70,9 @@ class MonthlyController extends Controller
     public function index()
     {
         return view('monthly.list', [
-            "expenses"  => Expense::all(),
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
-            "departs"   => Depart::all(),
+            "expenseTypes"  => ExpenseType::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"       => Depart::all(),
         ]);
     }
 
@@ -85,7 +85,6 @@ class MonthlyController extends Controller
 
         /** Get params from query string */
         $year = $req->get('year');
-        $expense = $req->get('expense');
         $type = $req->get('type');
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
@@ -102,18 +101,16 @@ class MonthlyController extends Controller
         //         array_push($conditions, ['status', '=', $status]);
         //     }
         // }
+
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
-        // $plansList = Plan::leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
-        //                 ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
-        //                 ->when(!empty($cate), function($q) use ($cate) {
-        //                     $q->where('items.category_id', $cate);
-        //                 })
-        //                 ->pluck('plans.id');
+        $expensesList = Expense::when(!empty($type), function($q) use ($type) {
+                                $q->where('expense_type_id', $type);
+                            })->pluck('id');
 
         $plans = PlanMonthly::with('expense','depart')
-                    ->when(!empty($expense), function($q) use ($expense) {
-                        $q->where('expense_id', $expense);
+                    ->when(!empty($type), function($q) use ($expensesList) {
+                        $q->whereIn('expense_id', $expensesList);
                     })
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
@@ -133,8 +130,15 @@ class MonthlyController extends Controller
                     ->orderBy('id', 'DESC')
                     ->paginate(10);
 
+        $budget = Budget::with('expense')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    ->get();
+
         return [
-            'plans' => $plans,
+            'plans'     => $plans,
+            'budgets'   => $budget
         ];
     }
 

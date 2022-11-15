@@ -50,7 +50,7 @@
                                 <td>
                                     <h5 style="margin: 0; font-weight: bold;">@{{ plan.plan_item.item.category.name }}</h5>
                                     @{{ plan.plan_item.item.item_name }}
-                                    ราคา <span>@{{ plan.price_per_unit | currency:'':0 }}</span>
+                                    ราคา <span>@{{ plan.plan_item.price_per_unit | currency:'':0 }}</span>
                                     <span>@{{ plan.plan_item.unit.name }}</span>
                                 </td>
                                 <td style="text-align: center;">
