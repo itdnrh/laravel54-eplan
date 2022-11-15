@@ -6,7 +6,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.summary = [];
 
-    $scope.cboYear = (moment().year() + 543).toString();
+    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboExpense = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
@@ -53,7 +53,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     const clearMonthly = function() {
         $scope.monthly = {
             monthly_id: '',
-            year: '',
+            year: '2566',
             month: '',
             expense_type_id: '',
             expense_id: '',
@@ -261,7 +261,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         if(confirm(`คุณต้องลบข้อมูลควบคุมกำกับติดตาม รหัส ${id} ใช่หรือไม่?`)) {
             $scope.loading = true;
 
-            $http.delete(`${CONFIG.baseUrl}/monthly/delete/${id}`)
+            $http.post(`${CONFIG.baseUrl}/monthly/delete/${id}`)
             .then(res => {
                 $scope.loading = false;
 

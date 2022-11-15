@@ -339,16 +339,16 @@ class MonthlyController extends Controller
     {
         try {
             $plan = PlanMonthly::find($id);
-            $old_total = $plan->total;
+            $oldMonthly = $plan;
 
             if($plan->delete()) {
                 /** TODO: redo plan_summary's remain value to before 
                  * by plus with deleted plan's total
                  */
-                $planSum = Budget::where('year', $req['year'])
-                            ->where('expense_id', $req['expense_id'])
+                $planSum = Budget::where('year', $oldMonthly->year)
+                            ->where('expense_id', $oldMonthly->expense_id)
                             ->first();
-                $planSum->remain = (double)$planSum->remain + (double)$old_total;
+                $planSum->remain = (double)$planSum->remain + (double)$oldMonthly->total;
                 $planSum->save();
 
                 return [

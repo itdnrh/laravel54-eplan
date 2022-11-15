@@ -8,6 +8,8 @@ class Withdrawal extends Model
 {
     protected $table = "withdrawals";
 
+    protected $fillable = ['completed', 'ref_debt_id'];
+
     public function inspection()
     {
         return $this->belongsTo(Inspection::class, 'inspection_id', 'id');
