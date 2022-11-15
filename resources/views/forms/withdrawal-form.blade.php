@@ -103,10 +103,10 @@
                         <td colspan="3" style="text-align: center; padding: 5px;">
                             <div class="signature">
                                 <p style="margin: 30px 0 0;">
-                                    ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
+                                    ( {{ $officer->prefix->prefix_name.$officer->person_firstname. ' ' .$officer->person_lastname }} )
                                 </p>
                                 <p style="margin: 0;">
-                                    <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>
+                                    <span>{{ $officer->position->position_name }}{{ $officer->academic ? $officer->academic->ac_name : '' }}</span>
                                 </p>
                                 <p style="margin: 0;">
                                     เจ้าหน้าที่
@@ -412,10 +412,10 @@
                         <td colspan="3" style="text-align: center; padding: 5px;">
                             <div class="signature">
                                 <p style="margin: 10px 0 0;">
-                                    ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
+                                    ( {{ $officer->prefix->prefix_name.$officer->person_firstname. ' ' .$officer->person_lastname }} )
                                 </p>
                                 <p style="margin: 0;">
-                                    <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>
+                                    <span>{{ $officer->position->position_name }}{{ $officer->academic ? $officer->academic->ac_name : '' }}</span>
                                 </p>
                                 <p style="margin: 0;">
                                     เจ้าหน้าที่

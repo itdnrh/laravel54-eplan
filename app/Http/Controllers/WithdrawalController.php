@@ -362,23 +362,28 @@ class WithdrawalController extends Controller
 
         $planType = PlanType::find($withdrawal->inspection->order->plan_type_id);
 
+        $supplyOfficer = Person::with('prefix','position','academic')
+                            ->where('person_id', $withdrawal->inspection->order->supply_officer)
+                            ->first();
+
         /** หัวหน้ากลุ่มงานพัสดุ */
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->with('prefix','position','academic')
                             ->where('level.depart_id', '2')
                             ->where('level.duty_id', '2')
-                            ->with('prefix','position')
                             ->first();
         
         /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
         $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
+                            ->with('prefix','position','academic')
                             ->where('level.faction_id', '1')
                             ->where('level.duty_id', '1')
-                            ->with('prefix','position')
                             ->first();
 
         $data = [
             "withdrawal"        => $withdrawal,
             "planType"          => $planType,
+            "officer"           => $supplyOfficer,
             "headOfDepart"      => $headOfDepart,
             "headOfFaction"     => $headOfFaction,
         ];
