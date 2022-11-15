@@ -128,7 +128,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            const { plans, supports, budget, categories } = res.data;
+            const { plans, supports, budgets, categories } = res.data;
 
             /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
             let tmpPlans = plans.map(plan => {
@@ -142,7 +142,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             });
 
             let cates = categories.map(cate => {
-                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
                 cate.budget = summary ? summary.budget : 0;
 
                 return cate;
@@ -189,7 +189,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.setMaterials = function(res) {
-        const { plans, supports, budget, categories } = res.data;
+        const { plans, supports, budgets, categories } = res.data;
 
         /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
         let tmpPlans = plans.data.map(plan => {
@@ -203,7 +203,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         });
 
         let cates = categories.map(cate => {
-            const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+            const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
             cate.budget = summary ? summary.budget : 0;
 
             return cate;
@@ -252,7 +252,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            const { plans, supports, budget, categories } = res.data;
+            const { plans, supports, budgets, categories } = res.data;
 
             /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
             let tmpPlans = plans.map(plan => {
@@ -266,7 +266,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             });
 
             let cates = categories.map(cate => {
-                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
                 cate.budget = summary ? summary.budget : 0;
 
                 return cate;
@@ -298,7 +298,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}`)
         .then(function(res) {
-            const { plans, supports, budget, categories } = res.data;
+            const { plans, supports, budgets, categories } = res.data;
 
             /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
             let tmpPlans = plans.map(plan => {
@@ -312,7 +312,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             });
 
             let cates = categories.map(cate => {
-                const summary = budget.find(bud => bud.expense_id === cate.expense_id);
+                const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
                 cate.budget = summary ? summary.budget : 0;
 
                 return cate;
@@ -345,7 +345,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let status = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&status=0&last=5`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&status=0`)
         .then(function(res) {
             const { data, ...pager } = res.data.orders;
 

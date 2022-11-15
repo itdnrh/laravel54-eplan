@@ -150,7 +150,7 @@ class DashboardController extends Controller
             'plans'         => $plans,
             'supports'      => $supports,
             'categories'    => ItemCategory::where('plan_type_id', 1)->get(),
-            'budget'        => Budget::where('year', $year)->get()
+            'budgets'       => Budget::where('year', $year)->get()
         ];
     }
 
@@ -209,7 +209,7 @@ class DashboardController extends Controller
             'plans'         => $plans,
             'supports'      => $supports,
             'categories'    => ItemCategory::where('plan_type_id', 2)->get(),
-            'budget'        => Budget::where('year', $year)->get()
+            'budgets'       => Budget::where('year', $year)->get()
         ];
     }
 
@@ -268,7 +268,7 @@ class DashboardController extends Controller
             'plans'         => $plans,
             'supports'      => $supports,
             'categories'    => ItemCategory::where('plan_type_id', 3)->get(),
-            'budget'        => Budget::where('year', $year)->get()
+            'budgets'       => Budget::where('year', $year)->get()
         ];
     }
 
@@ -327,7 +327,7 @@ class DashboardController extends Controller
             'plans'         => $plans,
             'supports'      => $supports,
             'categories'    => ItemCategory::where('plan_type_id', 4)->get(),
-            'budget'        => Budget::where('year', $year)->get()
+            'budgets'       => Budget::where('year', $year)->get()
         ];
     }
 
