@@ -58,7 +58,7 @@
                             type="hidden"
                             id="division_id"
                             name="division_id"
-                            value="{{ Auth::user()->memberOf->division_id }}"
+                            value="{{ Auth::user()->memberOf->ward_id }}"
                             ng-model="support.division_id"
                         />
                         {{ csrf_field() }}
