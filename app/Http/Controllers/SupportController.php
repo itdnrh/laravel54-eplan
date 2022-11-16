@@ -370,17 +370,27 @@ class SupportController extends Controller
         ]);
     }
 
+    /** เมธอดสำหรับดังเลขหนังสือออกของหน่วยงาน */
+    protected function getMemoNo($user) {
+        $person = Person::where('person_id', $user)
+                        ->with('memberOf','memberOf.depart','memberOf.division')
+                        ->first();
+
+        if (in_array($person->memberOf->depart->depart_id, [66,68])) {
+            return $person->memberOf->division->memo_no;
+        } else {
+            return $person->memberOf->depart->memo_no;
+        }
+    }
+
     public function store(Request $req)
     {
         try {
-            $person = Person::where('person_id', $req['user'])->with('memberOf','memberOf.depart')->first();
-            $doc_no_prefix = $person->memberOf->depart->memo_no;
-
             $support = new Support;
-            $support->doc_no            = $doc_no_prefix.'/'.$req['doc_no'];
+            $support->doc_no = $this->getMemoNo($req['user']).'/'.$req['doc_no'];
 
             if (!empty($req['doc_date'])) {
-                $support->doc_date          = convThDateToDbDate($req['doc_date']);
+                $support->doc_date = convThDateToDbDate($req['doc_date']);
             }
 
             $support->year              = $req['year'];

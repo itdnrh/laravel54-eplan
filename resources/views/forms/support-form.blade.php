@@ -21,10 +21,16 @@
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
                                     <span style="margin: 0 5px;">
-                                        {{ $support->depart_id != 37 ? $support->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
+                                        @if($support->depart_id == 37)
+                                            {{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
+                                        @elseif(in_array($support->depart_id, [66,68]))
+                                            {{ $support->depart->depart_name }}
+                                        @else
+                                            {{ $support->depart->depart_name }}
+                                        @endif
                                     </span>
-                                    <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    <span style="margin: 0 5px;">โทร {{ thainumDigit($support->depart->tel_no) }}</span>
+                                    <span style="margin: 0 1px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
+                                    <span style="margin: 0 1px;">โทร {{ thainumDigit($support->depart->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -69,7 +75,7 @@
                     <tr>
                         <td colspan="4">
                             <p class="memo-paragraph-content">
-                                ด้วย <span>{{ $support->depart->depart_name }}</span>
+                                ด้วย <span>{{ $support->depart->depart_name }} {{ in_array($support->depart_id, [66,68]) ? '('.$support->division->ward_name.')' : '' }}</span>
                                 มีความประสงค์ขอให้ดำเนินการซื้อ / จ้าง ดังนี้
                             </p>
                         </td>
