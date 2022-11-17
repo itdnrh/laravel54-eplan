@@ -151,7 +151,7 @@
                                                                     - {{ thainumDigit($detail->desc) }}
                                                                 </p>
                                                             @else
-                                                                @if (count($support->details) > 5)
+                                                                @if (count($support->details) >= 4)
                                                                     <p style="margin: 0">&nbsp;</p>
                                                                 @endif
                                                             @endif
@@ -209,7 +209,7 @@
                                                                     - {{ thainumDigit($detail->desc) }}
                                                                 </p>
                                                             @else
-                                                                @if (count($support->details) > 5)
+                                                                @if (count($support->details) >= 4)
                                                                     <p style="margin: 0">&nbsp;</p>
                                                                 @endif
                                                             @endif
@@ -261,7 +261,7 @@
                                                                 - {{ thainumDigit($detail->desc) }}
                                                             </p>
                                                         @else
-                                                            @if (count($support->details) > 5)
+                                                            @if (count($support->details) >= 4)
                                                                 <p style="margin: 0">&nbsp;</p>
                                                             @endif
                                                         @endif
@@ -325,7 +325,7 @@
                                                                     - {{ thainumDigit($detail->desc) }}
                                                                 </p>
                                                             @else
-                                                                @if (count($support->details) > 5)
+                                                                @if (count($support->details) >= 4)
                                                                     <p style="margin: 0">&nbsp;</p>
                                                                 @endif
                                                             @endif
@@ -553,9 +553,9 @@
                             </p>
                         </td>
                     </tr>
+                    <!-- ############################ Pagination ############################ -->
                     <tr>
                         <td colspan="4">
-                            <!-- ############################ Pagination ############################ -->
                             @if(count($committees) <= 2)
                                 @if ($page == 0 && (count($support->details) > 4 && count($support->details) <= 10))
                                     <?php $page = $page + 1; ?>
@@ -617,9 +617,9 @@
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
-                            <!-- ############################ Pagination ############################ -->
                         </td>
                     </tr>
+                    <!-- ############################ Pagination ############################ -->
                     <tr>
                         <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
@@ -713,7 +713,7 @@
                     </tr> -->
                 </table>
 
-                @if (count($support->details) >= 4 && count($committees) < 4)
+                @if (count($support->details) > 3 && count($committees) < 4)
                     <div style="text-align: center; position: absolute; bottom: 5px;">
                 @else
                     <div style="text-align: center; position: absolute;">
