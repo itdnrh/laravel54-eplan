@@ -325,7 +325,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     
             let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
             let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
-            let depart = ($('#user').val() != '1300200009261' && $('#depart_id').val() != 4 && $('#duty_id').val() != 1) 
+            let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
                             ? ''
                             : $('#depart_id').val();
     
@@ -351,7 +351,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
         let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
-        let depart = ($('#user').val() != '1300200009261' && $('#depart_id').val() != 4 && $('#duty_id').val() != 1) 
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
                             ? ''
                             : $('#depart_id').val();
 
@@ -377,7 +377,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
         let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
-        let depart = ($('#user').val() != '1300200009261' && $('#depart_id').val() != 4 && $('#duty_id').val() != 1) 
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
                             ? ''
                             : $('#depart_id').val();
 
