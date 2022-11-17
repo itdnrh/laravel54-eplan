@@ -607,7 +607,7 @@
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'contact_person')}"
                                 >
-                                    <label>ผู้ประสานงาน :</label>
+                                    <label>ผู้ประสานงาน <span class="required-field">*</span> :</label>
                                     <div class="input-group">
                                         <input
                                             type="text"
