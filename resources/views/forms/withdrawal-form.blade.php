@@ -81,8 +81,8 @@
                                 บัดนี้ <span>{{ $withdrawal->supplier->supplier_name }}</span>
                                 ได้ดำเนินการส่งมอบ<span>{{ $planType->plan_type_name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
-                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท</span>
-                                <span>({{ $withdrawal->inspection->order->net_total_str }})</span>
+                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total, 2)) }} บาท</span>
+                                <span>({{ baht_text($withdrawal->inspection->order->net_total) }})</span>
                                 ดังกล่าวเรียบร้อยแล้ว และคณะกรรมการตรวจรับพัสดุได้ทำการตรวจรับ
                                 ไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับ ตาม<span>{{ $withdrawal->inspection->order->orderType->name }}</span>
                                 เมื่อวันที่
