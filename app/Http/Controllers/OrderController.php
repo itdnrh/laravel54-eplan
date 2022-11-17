@@ -765,7 +765,7 @@ class OrderController extends Controller
                             ->first();
 
         /** คำสั่งจังหวัด */
-        $provinceOrders = ProvinceOrder::where('is_activated', 1)->get();
+        $provinceOrders = ProvinceOrder::where('is_activated', 1)->orderBy('type_id')->get();
 
         $data = [
             "support"           => $support,

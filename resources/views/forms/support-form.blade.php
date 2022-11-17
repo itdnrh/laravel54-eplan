@@ -98,6 +98,7 @@
                                             <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
                                             <th style="width: 15%; text-align: center;">ราคารวม</th>
                                         </tr>
+                                        <!-- ========================================= PLAN GROUP ===================================== -->
                                         @if($support->is_plan_group == '1')
                                             <?php $total = (float)$support->total; ?>
                                             <tr style="min-height: 20px;">
@@ -124,6 +125,7 @@
                                                     {{ thainumDigit(number_format($support->total, 2)) }}
                                                 </td>
                                             </tr>
+                                        <!-- ========================================= PLAN GROUP ===================================== -->
                                         @else
                                             @foreach($support->details as $detail)
                                                 <?php $total += (float)$detail->sum_price; ?>
@@ -137,6 +139,12 @@
                                                             <p style="margin: 0 0 0 5px;">
                                                                 - {{ thainumDigit($detail->desc) }}
                                                             </p>
+                                                        @else
+                                                            @if (count($support->details) > 5)
+                                                                <p style="margin: 0 0 0 5px;">
+                                                                    &nbsp;
+                                                                </p>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     <td style="text-align: center;">
@@ -188,6 +196,12 @@
                                                             <p style="margin: 0 0 0 5px;">
                                                                 - {{ thainumDigit($detail->desc) }}
                                                             </p>
+                                                        @else
+                                                            @if (count($support->details) > 5)
+                                                                <p style="margin: 0 0 0 5px;">
+                                                                    &nbsp;
+                                                                </p>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     <td style="text-align: center;">
@@ -230,6 +244,12 @@
                                                         <p style="margin: 0 0 0 5px;">
                                                             - {{ thainumDigit($detail->desc) }}
                                                         </p>
+                                                    @else
+                                                        @if (count($support->details) > 5)
+                                                            <p style="margin: 0 0 0 5px;">
+                                                                &nbsp;
+                                                            </p>
+                                                        @endif
                                                     @endif
                                                 </td>
                                                 <td style="width: 10%;text-align: center;">
@@ -286,6 +306,12 @@
                                                             <p style="margin: 0 0 0 5px;">
                                                                 - {{ thainumDigit($detail->desc) }}
                                                             </p>
+                                                        @else
+                                                            @if (count($support->details) > 5)
+                                                                <p style="margin: 0 0 0 5px;">
+                                                                    &nbsp;
+                                                                </p>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     <td style="width: 10%;text-align: center;">
@@ -620,7 +646,7 @@
                         </td>
                     </tr> -->
                 </table>
-                <div style="text-align: center">
+                <div style="text-align: center; position: absolute;">
                     <p style="margin: 0 0 20px 0;">
                         <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
                         <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>

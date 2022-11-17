@@ -63,7 +63,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
-                                    <label>ปีงบประมาณ</label>
+                                    <label>ปีงบประมาณ <span class="required-field">*</span> :</label>
                                     <select
                                         id="year"
                                         name="year"
@@ -83,7 +83,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'plan_type_id')}"
                                 >
-                                    <label>ประเภทแผน :</label>
+                                    <label>ประเภทแผน <span class="required-field">*</span> :</label>
                                     <select id="plan_type_id"
                                             name="plan_type_id"
                                             ng-model="support.plan_type_id"
@@ -110,7 +110,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'category_id')}"
                                 >
-                                    <label>ประเภทพัสดุ :</label>
+                                    <label>ประเภทพัสดุ <span class="required-field">*</span> :</label>
                                     <select id="category_id"
                                             name="category_id"
                                             ng-model="support.category_id"
@@ -138,7 +138,7 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'topic')}"
                                 >
-                                    <label>เรื่อง :</label>
+                                    <label>เรื่อง <span class="required-field">*</span> :</label>
                                     <input
                                         type="text"
                                         id="topic"
@@ -159,12 +159,22 @@
                                             <tr>
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
                                                 <th style="width: 8%; text-align: center">เลขที่</th>
-                                                <th>รายการ</th>
-                                                <th style="width: 20%;">รายละเอียด/รายการย่อย</th>
-                                                <th style="width: 10%; text-align: center">ราคาต่อหน่วย</th>
-                                                <th style="width: 10%; text-align: center">หน่วยนับ</th>
-                                                <th style="width: 8%; text-align: center">จำนวน</th>
-                                                <th style="width: 10%; text-align: center">รวมเป็นเงิน</th>
+                                                <th>รายการ <span class="required-field">*</span></th>
+                                                <th style="width: 20%;">
+                                                    รายละเอียด/รายการย่อย (ถ้ามี)
+                                                </th>
+                                                <th style="width: 10%; text-align: center">
+                                                    ราคาต่อหน่วย <span class="required-field">*</span>
+                                                </th>
+                                                <th style="width: 10%; text-align: center">
+                                                    หน่วยนับ <span class="required-field">*</span>
+                                                </th>
+                                                <th style="width: 8%; text-align: center">
+                                                    จำนวน <span class="required-field">*</span>
+                                                </th>
+                                                <th style="width: 10%; text-align: center">
+                                                    รวมเป็นเงิน <span class="required-field">*</span>
+                                                </th>
                                                 <th style="width: 5%; text-align: center">Actions</th>
                                             </tr>
                                         </thead>
@@ -443,7 +453,7 @@
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'reason')}"
                                 >
-                                    <label>เหตุผลการขอสนับสนุน :</label>
+                                    <label>เหตุผลการขอสนับสนุน <span class="required-field">*</span> :</label>
                                     <textarea
                                         rows="3"
                                         id="reason"
@@ -463,7 +473,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'spec_committee')}"
                                 >
                                     <label>
-                                        คณะกรรมการกำหนดคุณลักษณะเฉพาะ/จัดทำร่างขอบเขตงาน :
+                                        คณะกรรมการกำหนดคุณลักษณะเฉพาะ/จัดทำร่างขอบเขตงาน <span class="required-field">*</span> :
                                         <button
                                             type="button"
                                             class="btn bg-maroon btn-sm"
@@ -502,7 +512,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'env_committee')}"
                                 >
                                     <label>
-                                        คณะกรรมการพิจารณาผลการประกวดราคา :
+                                        คณะกรรมการพิจารณาผลการประกวดราคา <span class="required-field">*</span> :
                                         <button
                                             type="button"
                                             class="btn bg-maroon btn-sm"
@@ -541,7 +551,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'insp_committee')}"
                                 >
                                     <label>
-                                        คณะกรรมการตรวจรับพัสดุ :
+                                        คณะกรรมการตรวจรับพัสดุ <span class="required-field">*</span> :
                                         <button
                                             type="button"
                                             class="btn bg-maroon btn-sm"

@@ -95,7 +95,7 @@
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 ๒.๒ คำสั่งจังหวัดนครราชสีมา ที่ <span>{{ thainumDigit($provinceOrders[0]->order_no) }}</span>
                                 ลงวันที่&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThDate($provinceOrders[0]->order_date)) }}</span>
-                                เรื่อง การมอบอำนวจของผู้ว่าราชการจังหวัดนครราชสีมา ให้ผู้อำนวยการโรงพยาบาลทั่วไปโดยให้มีอำนาจภายในวงเงิน ครั้งหนึ่งไม่เกิน ๑๐,๐๐๐,๐๐๐ บาท
+                                เรื่อง การมอบอำนาจของผู้ว่าราชการจังหวัดนครราชสีมา ให้ผู้อำนวยการโรงพยาบาลทั่วไปโดยให้มีอำนาจภายในวงเงิน ครั้งหนึ่งไม่เกิน ๑๐,๐๐๐,๐๐๐ บาท
                             </p>
                         </td>
                     </tr>
