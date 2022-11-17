@@ -30,7 +30,14 @@
                                         @endif
                                     </span>
                                     <span style="margin: 0 1px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    <span style="margin: 0 1px;">โทร {{ thainumDigit($support->depart->tel_no) }}</span>
+                                    <span style="margin: 0 1px;">
+                                        @if(in_array($support->depart_id, [66,68]))
+                                            โทร {{ thainumDigit($support->division->tel_no) }}
+                                        @else
+                                            โทร {{ thainumDigit($support->depart->tel_no) }}
+                                        @endif
+                                        
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -86,6 +93,7 @@
                     <?php $total = 0; ?>
                     <?php $tableHeight = 0; ?>
                     <?php $nextBullet = 0; ?>
+                    <?php $page = 0; ?>
                     @if (count($support->details) < 12)
                         <tr>
                             <td colspan="4">
@@ -98,6 +106,7 @@
                                             <th style="width: 15%; text-align: center;">ราคาต่อหน่วย</th>
                                             <th style="width: 15%; text-align: center;">ราคารวม</th>
                                         </tr>
+
                                         <!-- ========================================= PLAN GROUP ===================================== -->
                                         @if($support->is_plan_group == '1')
                                             <?php $total = (float)$support->total; ?>
@@ -133,19 +142,20 @@
                                                     <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
-                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
-                                                        @if($detail->desc != '')
-                                                            <?php $tableHeight += 20; ?>
-                                                            <p style="margin: 0 0 0 5px;">
-                                                                - {{ thainumDigit($detail->desc) }}
-                                                            </p>
-                                                        @else
-                                                            @if (count($support->details) > 5)
-                                                                <p style="margin: 0 0 0 5px;">
-                                                                    &nbsp;
+                                                        <div class="support__detail-item">
+                                                            <span style="">{{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}</span>
+
+                                                            @if($detail->desc != '')
+                                                                <?php $tableHeight += 20; ?>
+                                                                <p class="item__desc-text">
+                                                                    - {{ thainumDigit($detail->desc) }}
                                                                 </p>
+                                                            @else
+                                                                @if (count($support->details) > 5)
+                                                                    <p style="margin: 0">&nbsp;</p>
+                                                                @endif
                                                             @endif
-                                                        @endif
+                                                        </div>
                                                     </td>
                                                     <td style="text-align: center;">
                                                         {{ thainumDigit(number_format($detail->amount)) }}
@@ -190,19 +200,20 @@
                                                     <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
-                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
-                                                        @if($detail->desc != '')
-                                                            <?php $tableHeight += 20; ?>
-                                                            <p style="margin: 0 0 0 5px;">
-                                                                - {{ thainumDigit($detail->desc) }}
-                                                            </p>
-                                                        @else
-                                                            @if (count($support->details) > 5)
-                                                                <p style="margin: 0 0 0 5px;">
-                                                                    &nbsp;
+                                                        <div class="support__detail-item">
+                                                            {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
+
+                                                            @if($detail->desc != '')
+                                                                <?php $tableHeight += 20; ?>
+                                                                <p class="item__desc-text">
+                                                                    - {{ thainumDigit($detail->desc) }}
                                                                 </p>
+                                                            @else
+                                                                @if (count($support->details) > 5)
+                                                                    <p style="margin: 0">&nbsp;</p>
+                                                                @endif
                                                             @endif
-                                                        @endif
+                                                            </div>
                                                     </td>
                                                     <td style="text-align: center;">
                                                         {{ thainumDigit(number_format($detail->amount)) }}
@@ -221,13 +232,16 @@
 
                                 <!-- ############################ Pagination ############################ -->
                                 <p class="next-paragraph">/{{ thainumDigit(++$row) }}...</p>
+                                <?php $page = $page + 1; ?>
                                 <!-- ############################ Pagination ############################ -->
 
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
+                                <!-- ############################ Pagination ############################ -->
                                 <p class="page-number">- ๒ -</p>
+                                <!-- ############################ Pagination ############################ -->
 
                                 <table style="width: 100%;" class="table" border="1">
                                     @foreach($support->details as $detail)
@@ -238,19 +252,20 @@
                                                 <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
                                                 <td>
                                                     <?php $tableHeight += 20; ?>
-                                                    {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
-                                                    @if($detail->desc != '')
-                                                        <?php $tableHeight += 20; ?>
-                                                        <p style="margin: 0 0 0 5px;">
-                                                            - {{ thainumDigit($detail->desc) }}
-                                                        </p>
-                                                    @else
-                                                        @if (count($support->details) > 5)
-                                                            <p style="margin: 0 0 0 5px;">
-                                                                &nbsp;
+                                                    <div class="support__detail-item">
+                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                        
+                                                        @if($detail->desc != '')
+                                                            <?php $tableHeight += 20; ?>
+                                                            <p class="item__desc-text">
+                                                                - {{ thainumDigit($detail->desc) }}
                                                             </p>
+                                                        @else
+                                                            @if (count($support->details) > 5)
+                                                                <p style="margin: 0">&nbsp;</p>
+                                                            @endif
                                                         @endif
-                                                    @endif
+                                                    </div>
                                                 </td>
                                                 <td style="width: 10%;text-align: center;">
                                                     {{ thainumDigit(number_format($detail->amount)) }}
@@ -280,6 +295,7 @@
                                 <!-- ############################ Pagination ############################ -->
                                 @if (count($support->details) > 25)
                                     <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
+                                    <?php $page = $page + 1; ?>
                                 @endif
                                 <!-- ############################ Pagination ############################ -->
 
@@ -300,19 +316,20 @@
                                                     <td style="width: 5%; text-align: center;">{{ thainumDigit($restRow) }}</td>
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
-                                                        {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
-                                                        @if($detail->desc != '')
-                                                            <?php $tableHeight += 20; ?>
-                                                            <p style="margin: 0 0 0 5px;">
-                                                                - {{ thainumDigit($detail->desc) }}
-                                                            </p>
-                                                        @else
-                                                            @if (count($support->details) > 5)
-                                                                <p style="margin: 0 0 0 5px;">
-                                                                    &nbsp;
+                                                        <div class="support__detail-item">
+                                                            {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
+
+                                                            @if($detail->desc != '')
+                                                                <?php $tableHeight += 20; ?>
+                                                                <p class="item__desc-text">
+                                                                    - {{ thainumDigit($detail->desc) }}
                                                                 </p>
+                                                            @else
+                                                                @if (count($support->details) > 5)
+                                                                    <p style="margin: 0">&nbsp;</p>
+                                                                @endif
                                                             @endif
-                                                        @endif
+                                                        </div>
                                                     </td>
                                                     <td style="width: 10%;text-align: center;">
                                                         {{ thainumDigit(number_format($detail->amount)) }}
@@ -348,8 +365,26 @@
                             </span>
                         </td>
                     </tr>
+
+                    <!-- ############################ Pagination ############################ -->
+                    @if (count($support->details) > 10 && count($support->details) < 12)
+                        <?php $page = $page + 1; ?>
+                        <tr>
+                            <td colspan="4">
+                                <p class="next-paragraph">/พร้อมนี้ได้ส่งข้อมูลประกอบ...</p>
+                            </td>
+                        </tr>
+                    @endif
+                    <!-- ############################ Pagination ############################ -->
+
                     <tr>
                         <td colspan="4">
+                            <!-- ############################ Pagination ############################ -->
+                            @if (count($support->details) > 10 && count($support->details) < 12)
+                                <p class="page-number">- ๒ -</p>
+                            @endif
+                            <!-- ############################ Pagination ############################ -->
+
                             <?php $nextBullet = 1; ?>
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
                             <div style="margin: 0;">
@@ -374,12 +409,15 @@
                             <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) < 10)
                                 @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
+
                             @if (count($support->details) > 19 && count($support->details) <= 25)
                                 @if($committeeHeight <= 60)
+                                    <?php $page = $page + 1; ?>
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
@@ -482,26 +520,27 @@
                                 @endif
                             </p>
 
-                            <!-- ############################ Pagination ############################ -->
-                            @if($tableHeight > 220 && $tableHeight <= 300)
+                            <!-- ############################ Page 2 ############################ -->
+                            @if($page == 0 && (count($support->details) > 7 && count($support->details) < 10))
+                                <?php $page = $page + 1; ?>
                                 @if(count($committees) < 4)
                                     <div style="height: 80px;"></div>
                                 @endif
                                 <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
                             @endif
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ Page 2 ############################ -->
 
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ Page 2 ############################ -->
                             @if(count($committees) <= 6)
-                                @if($tableHeight > 220 && $tableHeight <= 300)
+                                @if($page == 0 && (count($support->details) > 7 && count($support->details) < 10))
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @endif
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ Page 2 ############################ -->
 
                             <p style="margin: 0;">
                                 @if((float)$support->total >= 500000)
@@ -512,25 +551,46 @@
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @endif
                             </p>
-
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
-                            @if(count($committees) <= 6)
-                                @if($tableHeight > 100 && $tableHeight <= 220)
-                                    <div style="height: 80px;"></div>
+                            @if(count($committees) <= 2)
+                                @if ($page == 0 && (count($support->details) > 4 && count($support->details) <= 10))
+                                    <?php $page = $page + 1; ?>
+                                    <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+                            @endif
+
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if($page == 0 && (count($support->details) >= 4 && count($support->details) <= 7))
+                                    <?php $page = $page + 1; ?>
+                                    <div style="height: {{ (7 - count($support->details)) * 20 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($tableHeight > 240 && $tableHeight < 300)
+                                @if($page == 0 && ($tableHeight > 180 && $tableHeight < 300))
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) > 17 && count($support->details) <= 20)
+                                @if($page == 1 && (count($support->details) > 17 && count($support->details) <= 19))
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) > 27)
+                                @if ($page == 2 && count($support->details) > 19 && count($support->details) <= 27)
+                                    <?php $page = $page + 1; ?>
+                                    <div style="height: 20px;"></div>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+
+                                @if($page == 3 && count($support->details) > 27)
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
@@ -538,59 +598,65 @@
 
                             @if(count($committees) > 6)
                                 <!-- ประมาณไม่เกิน 2 แถวใหญ่ -->
-                                @if($tableHeight <= 100)
+                                @if($page == 0 && $tableHeight <= 100)
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 120px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
                                 <!-- ประมาณมากกว่า 2 แถวใหญ่ -->
-                                @if($tableHeight > 100)
+                                @if($page == 0 && $tableHeight > 100)
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if(count($support->details) > 17)
+                                @if($page == 0 && count($support->details) > 17)
+                                    <?php $page = $page + 1; ?>
                                     <div style="height: 20px; border: 1px solid red;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
                             <!-- ############################ Pagination ############################ -->
-
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
-                            @if (count($support->details) <= 10)
-                                @if(count($committees) <= 6)
+                            @if(count($committees) <= 2)
+                                @if ($page == 1 && (count($support->details) > 4 && count($support->details) <= 10))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @endif
+                            @endif
+
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if ($page == 1 && count($support->details) <= 10)
                                     @if($tableHeight > 100 && $tableHeight < 300)
-                                        <p class="page-number">- ๒ -</p>
+                                        <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                     @endif
-                                @else
-                                    <p class="page-number">- ๒ -</p>
-                                @endif
-                            @elseif (count($support->details) > 10 && count($support->details) <= 17)
-                                @if(count($committees) > 6)
-                                    <p class="page-number">- ๓ -</p>
-                                @endif
-                            @elseif (count($support->details) > 17 && count($support->details) <= 20)
-                                @if(count($committees) <= 6)
-                                    <p class="page-number">- ๓ -</p>
                                 @endif
 
-                                @if(count($committees) > 6)
-                                    <p class="page-number">- ๔ -</p>
+                                @if ($page == 2 && (count($support->details) > 17 && count($support->details) <= 19))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
-                            @elseif (count($support->details) > 20 && count($support->details) <= 27)
-                                @if(count($committees) > 6)
-                                    <p class="page-number">- ๔ -</p>
+                            @endif
+
+                            @if(count($committees) > 6)
+                                @if ($page == 2 && (count($support->details) > 10 && count($support->details) <= 17))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
-                            @elseif (count($support->details) > 27)
-                                @if(count($committees) > 6)
+
+                                @if ($page == 3 && (count($support->details) > 17 && count($support->details) <= 19))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @endif
+
+                                @if ($page == 3 && (count($support->details) > 19 && count($support->details) <= 27))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @endif
+
+                                @if ($page == 3 && count($support->details) > 27)
                                     <div style="height: 20px;"></div>
-                                    <p class="page-number">- ๔ -</p>
-                                @else
-                                    <p class="page-number">- ๔ -</p>
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
                             @endif
                             <!-- ############################ Pagination ############################ -->
@@ -646,7 +712,13 @@
                         </td>
                     </tr> -->
                 </table>
-                <div style="text-align: center; position: absolute;">
+
+                @if (count($support->details) >= 4 && count($committees) < 4)
+                    <div style="text-align: center; position: absolute; bottom: 5px;">
+                @else
+                    <div style="text-align: center; position: absolute;">
+                @endif
+
                     <p style="margin: 0 0 20px 0;">
                         <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
                         <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>

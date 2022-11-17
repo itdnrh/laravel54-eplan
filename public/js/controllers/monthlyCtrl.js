@@ -180,7 +180,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     };
 
     $scope.calculateRemain = function(total) {
-        $scope.monthly.remain = parseFloat($scope.expenseRemain) - parseFloat(total);
+        $scope.monthly.remain = parseFloat($scope.currencyToNumber($scope.expenseRemain)) - parseFloat($scope.currencyToNumber(total));
     };
 
     $scope.getById = function(id, cb) {

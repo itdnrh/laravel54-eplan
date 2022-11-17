@@ -364,3 +364,16 @@ ul.committee-lists {
   font-size: 14px;
   /* border: 1px dotted red; */
 }
+
+.support__detail-item {
+  margin: 0 0 0 5px;
+  word-wrap: break-word;
+}
+
+.item__desc-text {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: dimgray;
+  /* border: 1px solid gray; */
+}
