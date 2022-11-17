@@ -12,7 +12,7 @@
                     <!-- // TODO: Filtering controls -->
                     <div class="box">
                         <div class="box-body">
-                            <div style="display: flex; flex-direction: row;">
+                            <div style="display: flex; gap: 5px;">
                                 <input
                                     type="text"
                                     id="txtKeyword"
@@ -20,7 +20,22 @@
                                     class="form-control"
                                     ng-model="txtKeyword"
                                     ng-change="getPlans('0-1')"
+                                    placeholder="ค้นหาด้วยชื่อรายการ"
+                                    style="width: 50%;"
                                 />
+                                <select id="cboDepart"
+                                        name="cboDepart"
+                                        ng-model="cboDepart"
+                                        ng-change="getPlans('0-1')"
+                                        class="form-control select2" 
+                                        style="width: 50%; font-size: 12px;">
+                                    <option value="">-- กลุ่มงานทั้งหมด --</option>
+                                    @foreach($departs as $depart)
+                                        <option value="{{ $depart->depart_id }}">
+                                            {{ $depart->depart_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div><!-- /.box-body -->
                     </div>

@@ -210,8 +210,8 @@
                             <p class="memo-paragraph with-expanded">
                                 ตามบันทึก ที่ <span>{{ thainumDigit($withdrawal->inspection->order->po_app_no) }}</span>
                                 ลงวันที่ <span>{{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->order->po_app_date)) }}</span>
-                                จังหวัดนครราชสีมา ได้อนุมัติให้สั่งเป็นเงินทั้งสิ้น {{ thainumDigit(number_format($withdrawal->inspection->order->net_total)) }} บาท
-                                <span>({{ $withdrawal->inspection->order->net_total_str }})</span>
+                                จังหวัดนครราชสีมา ได้อนุมัติให้สั่งเป็นเงินทั้งสิ้น {{ thainumDigit(number_format($withdrawal->inspection->order->net_total, 2)) }} บาท
+                                <span>({{ baht_text($withdrawal->inspection->order->net_total) }})</span>
                                 โดยเบิกจ่ายจาก{{ $withdrawal->inspection->order->budgetSource->name }} โรงพยาบาลเทพรัตน์นครราชสีมา
                                 ปีงบประมาณ <span>{{ thainumDigit($withdrawal->inspection->order->year) }}</span>
                             </p>

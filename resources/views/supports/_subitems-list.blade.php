@@ -29,7 +29,7 @@
                                         @{{ category.name }}
                                     </option>
                                 </select>
-        
+
                                 <input
                                     type="text"
                                     id="txtKeyword"
