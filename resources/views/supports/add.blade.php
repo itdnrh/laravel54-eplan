@@ -43,6 +43,13 @@
                         />
                         <input
                             type="hidden"
+                            id="duty_id"
+                            name="duty_id"
+                            value="{{ Auth::user()->memberOf->duty_id }}"
+                            ng-model="support.duty_id"
+                        />
+                        <input
+                            type="hidden"
                             id="depart_id"
                             name="depart_id"
                             value="{{ Auth::user()->memberOf->depart_id }}"

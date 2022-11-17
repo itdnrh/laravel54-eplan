@@ -609,6 +609,13 @@
                                         />
                                         <input
                                             type="hidden"
+                                            id="duty_id"
+                                            name="duty_id"
+                                            value="{{ Auth::user()->memberOf->duty_id }}"
+                                            ng-model="support.duty_id"
+                                        />
+                                        <input
+                                            type="hidden"
                                             id="contact_person"
                                             name="contact_person"
                                             class="form-control"
