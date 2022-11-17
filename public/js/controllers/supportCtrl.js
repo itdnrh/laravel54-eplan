@@ -327,7 +327,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
             let depart = ($('#user').val() != '1300200009261' && $('#depart_id').val() != 4 && $('#duty_id').val() != 1) 
                             ? ''
-                            : depart = $('#depart_id').val();
+                            : $('#depart_id').val();
     
             $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=0-1&approved=A`)
             .then(function(res) {
@@ -353,7 +353,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
         let depart = ($('#user').val() != '1300200009261' && $('#depart_id').val() != 4 && $('#duty_id').val() != 1) 
                             ? ''
-                            : depart = $('#depart_id').val();
+                            : $('#depart_id').val();
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
@@ -379,7 +379,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
         let depart = ($('#user').val() != '1300200009261' && $('#depart_id').val() != 4 && $('#duty_id').val() != 1) 
                             ? ''
-                            : depart = $('#depart_id').val();
+                            : $('#depart_id').val();
 
         $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
