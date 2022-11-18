@@ -692,6 +692,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.support.remark           = support.remark;
             $scope.support.status           = support.status;
 
+            $scope.support.returned_date    = support.returned_date;
+            $scope.support.returned_reason  = support.returned_reason;
+
             /** Set each committees by filtering from responsed committees data */
             $scope.support.spec_committee   = committees
                                                 .filter(com => com.committee_type_id == 1)
