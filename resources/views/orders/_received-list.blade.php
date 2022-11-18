@@ -137,6 +137,8 @@
                 </div>
                 <div ng-show="!support.is_plan_group">
                     <span>@{{ support.details[0].plan.plan_no }} - @{{ support.details[0].plan.plan_item.item.item_name }}</span>
+                    <span class="label label-success label-xs" ng-show="support.details[0].plan.in_plan == 'I'">ในแผน</span>
+                    <span class="label label-danger label-xs" ng-show="support.details[0].plan.in_plan == 'O'">นอกแผน</span>
                     <p style="margin: 0; font-size: 12px; color: red;">
                         (@{{ support.details[0].desc }}
                         จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
