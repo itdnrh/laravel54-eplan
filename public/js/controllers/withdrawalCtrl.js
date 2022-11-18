@@ -80,7 +80,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
         $(`#${propName}`)
             .datepicker(dtpOptions)
-            .datepicker('update', new Date())
+            .datepicker('update', '')
 
         $scope.getAll(e);
     };

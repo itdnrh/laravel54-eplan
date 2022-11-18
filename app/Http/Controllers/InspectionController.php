@@ -76,6 +76,7 @@ class InspectionController extends Controller
         $year = $req->get('year');
         $supplier = $req->get('supplier');
         $deliverNo = $req->get('deliverNo');
+        list($sdate, $edate) = explode('-', $req->get('date'));
 
         $ordersList = Order::where('supplier_id', $supplier)->pluck('id');
 
@@ -89,6 +90,13 @@ class InspectionController extends Controller
                         })
                         ->when(!empty($deliverNo), function($q) use ($deliverNo) {
                             $q->where('deliver_no', 'like', '%'.$deliverNo.'%');
+                        })
+                        ->when($req->get('date') != '-', function($q) use ($sdate, $edate) {
+                            if ($sdate != '' && $edate != '') {
+                                $q->whereBetween('inspect_sdate', [convThDateToDbDate($sdate), convThDateToDbDate($edate)]);
+                            } else if ($edate == '') {
+                                $q->where('inspect_sdate', convThDateToDbDate($sdate));
+                            }
                         })
                         ->orderBy('inspect_sdate', 'DESC')
                         ->paginate(10);

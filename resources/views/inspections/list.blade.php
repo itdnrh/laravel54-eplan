@@ -71,6 +71,42 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>วันที่ตรวจรับ</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpSdate"
+                                            name="dtpSdate"
+                                            ng-model="dtpSdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpSdate');">
+                                                เคลียร์
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>ถึงวันที่</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpEdate"
+                                            name="dtpEdate"
+                                            ng-model="dtpEdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpEdate');">
+                                                เคลียร์
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>เลขที่เอกสารส่งมอบงาน</label>

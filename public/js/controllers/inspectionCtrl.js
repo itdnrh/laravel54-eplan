@@ -4,6 +4,8 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.txtDeliverNo = '';
+    $scope.dtpSdate = '';
+    $scope.dtpEdate = '';
 
     $scope.inspections = [];
     $scope.pager = [];
@@ -38,6 +40,12 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         amount: '',
         sum_price: ''
     };
+
+    $scope.inspectResults = [
+        'ถูกต้องทั้งหมดและรับไว้ทั้งหมด',
+        'ถูกต้องบางส่วนและรับไว้เฉพาะที่ถูกต้อง',
+        'ยังถือว่าไม่ส่งมอบตามสัญญา'
+    ];
 
     /** ============================== Init Form elements ============================== */
     let dtpOptions = {
@@ -74,11 +82,38 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
             console.log(event.date);
         });
 
-    $scope.inspectResults = [
-        'ถูกต้องทั้งหมดและรับไว้ทั้งหมด',
-        'ถูกต้องบางส่วนและรับไว้เฉพาะที่ถูกต้อง',
-        'ยังถือว่าไม่ส่งมอบตามสัญญา'
-    ];
+
+        $('#dtpSdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpSdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
+
+    $('#dtpEdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpEdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
+
+    $scope.clearDateValue = function(e, propName) {
+        $scope[propName] = '';
+
+        $(`#${propName}`)
+            .datepicker(dtpOptions)
+            .datepicker('update', '')
+
+        $scope.getAll(e);
+    };
 
     $scope.showPopup = false;
     $scope.deliverBillsList = [];
@@ -281,8 +316,10 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         let deliverNo = $scope.txtDeliverNo === '' ? '' : $scope.txtDeliverNo;
+        let sdate       = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate       = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
         
-        $http.get(`${CONFIG.baseUrl}/inspections/search?year=${year}&supplier=${supplier}&deliverNo=${deliverNo}`)
+        $http.get(`${CONFIG.baseUrl}/inspections/search?year=${year}&supplier=${supplier}&deliverNo=${deliverNo}&date=${sdate}-${edate}`)
         .then(function(res) {
             $scope.setInspections(res);
 
@@ -311,8 +348,10 @@ app.controller('inspectionCtrl', function(CONFIG, $scope, $http, toaster, String
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         let deliverNo = $scope.txtDeliverNo === '' ? '' : $scope.txtDeliverNo;
+        let sdate       = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate       = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
-        $http.get(`${url}&year=${year}&supplier=${supplier}&deliverNo=${deliverNo}`)
+        $http.get(`${url}&year=${year}&supplier=${supplier}&deliverNo=${deliverNo}&date=${sdate}-${edate}`)
         .then(function(res) {
             cb(res);
 
