@@ -4,6 +4,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.cboYear = '2566';
     $scope.cboSupplier = '';
     $scope.txtWithdrawNo = '';
+    $scope.dtpSdate = '';
+    $scope.dtpEdate = '';
 
     $scope.withdrawals = [];
     $scope.pager = null;
@@ -50,6 +52,38 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         .on('changeDate', function(event) {
             console.log(event.date);
         });
+
+    $('#dtpSdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpSdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
+
+    $('#dtpEdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpEdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
+
+    $scope.clearDateValue = function(e, propName) {
+        $scope[propName] = '';
+
+        $(`#${propName}`)
+            .datepicker(dtpOptions)
+            .datepicker('update', new Date())
+
+        $scope.getAll(e);
+    };
 
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());
@@ -200,12 +234,13 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.withdrawals = [];
         $scope.pager = null;
 
-        let year     = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let supplier = $scope.cboSupplier === '' ? 0 : $scope.cboSupplier;
-        let doc_no   = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
-        // let status  = $scope.cboLeaveStatus === '' ? '-' : $scope.cboLeaveStatus;
+        let year        = $scope.cboYear === '' ? 0 : $scope.cboYear;
+        let supplier    = $scope.cboSupplier === '' ? 0 : $scope.cboSupplier;
+        let doc_no      = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
+        let sdate       = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate       = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
         
-        $http.get(`${CONFIG.baseUrl}/withdrawals/search?year=${year}&doc_no=${doc_no}&supplier=${supplier}`)
+        $http.get(`${CONFIG.baseUrl}/withdrawals/search?year=${year}&doc_no=${doc_no}&supplier=${supplier}&date=${sdate}-${edate}`)
         .then(function(res) {
             $scope.setWithdrawals(res);
 
@@ -224,11 +259,13 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         $scope.withdrawals = [];
         $scope.pager = null;
 
-        let year     = $scope.cboYear === '' ? 0 : $scope.cboYear;
-        let supplier = $scope.cboSupplier === '' ? 0 : $scope.cboSupplier;
-        let doc_no   = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
+        let year        = $scope.cboYear === '' ? 0 : $scope.cboYear;
+        let supplier    = $scope.cboSupplier === '' ? 0 : $scope.cboSupplier;
+        let doc_no      = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
+        let sdate       = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate       = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
-        $http.get(`${url}&year=${year}&doc_no=${doc_no}&supplier=${supplier}`)
+        $http.get(`${url}&year=${year}&doc_no=${doc_no}&supplier=${supplier}&date=${sdate}-${edate}`)
         .then(function(res) {
             cb(res);
 

@@ -73,6 +73,37 @@
                             </div>
 
                             <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>วันที่ส่งเบิก</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpSdate"
+                                            name="dtpSdate"
+                                            ng-model="dtpSdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpSdate');">Clear</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>ถึงวันที่</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpEdate"
+                                            name="dtpEdate"
+                                            ng-model="dtpEdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpEdate');">Clear</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>เลขที่เอกสารส่งเบิกเงิน</label>
                                     <input

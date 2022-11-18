@@ -72,6 +72,7 @@ class WithdrawalController extends Controller
         $year       = $req->get('year');
         $supplier   = $req->get('supplier');
         $docNo      = $req->get('doc_no');
+        list($sdate, $edate) = explode('-', $req->get('date'));
 
         $withdrawals = Withdrawal::with('inspection','supplier','prepaid','prepaid.prefix')
                         ->with('inspection.order','inspection.order.details')
@@ -83,6 +84,13 @@ class WithdrawalController extends Controller
                         })
                         ->when(!empty($docNo), function($q) use ($docNo) {
                             $q->where('withdraw_no', 'like', '%'.$docNo.'%');
+                        })
+                        ->when($req->get('date') != '-', function($q) use ($sdate, $edate) {
+                            if ($sdate != '' && $edate != '') {
+                                $q->whereBetween('withdraw_date', [convThDateToDbDate($sdate), convThDateToDbDate($edate)]);
+                            } else if ($edate == '') {
+                                $q->where('withdraw_date', convThDateToDbDate($sdate));
+                            }
                         })
                         ->orderBy('withdraw_date', 'DESC')
                         ->paginate(10);
