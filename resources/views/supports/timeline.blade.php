@@ -198,9 +198,11 @@
                                                 <ul style="margin: 0 5px; padding: 0 10px;">
                                                     <li ng-repeat="(index, detail) in support.details" style="margin: 5px 0;">
                                                         <span>@{{ detail.plan.plan_no }}</span>
-                                                        <span>@{{ detail.plan.plan_item.item.item_name }} จำนวน </span>
-                                                        <span>@{{ detail.plan.plan_item.amount | currency:'':0 }}</span>
-                                                        <span>@{{ detail.plan.plan_item.unit.name }}</span>
+                                                        <span>@{{ detail.plan.plan_item.item.item_name }}</span>
+                                                        <span class="label label-success label-xs" ng-show="detail.plan.in_plan == 'I'">ในแผน</span>
+                                                        <span class="label label-danger label-xs" ng-show="detail.plan.in_plan == 'O'">นอกแผน</span>
+                                                        <span class="item__desc-text">@{{ detail.desc }}</span>
+                                                        <span>จำนวน @{{ detail.amount | currency:'':0 }} @{{ detail.unit.name }}</span>
                                                         <a href="#" class="text-aqua" ng-click="onShowTimeline(detail)">
                                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                                         </a>
