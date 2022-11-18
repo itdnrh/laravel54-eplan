@@ -63,10 +63,13 @@
                                 <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                 <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                 <td>
-                                    <h5 style="margin: 0; font-weight: bold;">@{{ plan.plan_item.item.category.name }}</h5>
+                                    <h5 style="margin: 0; font-weight: bold;">
+                                        @{{ plan.plan_item.item.category.name }}
+                                    </h5>
                                     @{{ plan.plan_item.item.item_name }}
-                                    ราคา <span>@{{ plan.plan_item.price_per_unit | currency:'':0 }}</span>
-                                    <span>@{{ plan.plan_item.unit.name }}</span>
+                                    <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
+                                    <span class="label label-success label-xs" ng-show="plan.in_plan == 'I'">ในแผน</span>
+                                    <span class="label label-danger label-xs" ng-show="plan.in_plan == 'O'">นอกแผน</span>
                                 </td>
                                 <td style="text-align: center;">
                                     <p ng-show="plan.plan_item.calc_method == 1">
