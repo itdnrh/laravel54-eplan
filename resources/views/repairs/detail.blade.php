@@ -179,13 +179,13 @@
                                 <label>คณะกรรมการกำหนดคุณลักษณะเฉพาะ/จัดทำร่างขอบเขตงาน :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped" style="width: 80%;">
-                                        <tr ng-repeat="(index, spec) in support.spec_committee">
+                                        <tr ng-repeat="(index, person) in support.spec_committee">
                                             <td style="width: 40%;">
                                                 @{{ index+1 }}. 
-                                                @{{ spec.person.prefix.prefix_name + spec.person.person_firstname +' '+ spec.person.person_lastname }}
+                                                @{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}
                                             </td>
                                             <td>
-                                                ตำแหน่ง @{{ spec.person.position.position_name + spec.person.academic.ac_name }}
+                                                ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}
                                             </td>
                                         </tr>
                                     </table>
@@ -198,13 +198,13 @@
                                 <label>คณะกรรมการตรวจรับพัสดุ :</label>
                                 <div class="table-responsive" style="margin: 0; padding: 0;">
                                     <table class="table table-striped" style="width: 80%;">
-                                        <tr ng-repeat="(index, insp) in support.insp_committee">
+                                        <tr ng-repeat="(index, person) in support.insp_committee">
                                             <td style="width: 40%;">
                                                 @{{ index+1 }}. 
-                                                @{{ insp.person.prefix.prefix_name + insp.person.person_firstname +' '+ insp.person.person_lastname }}
+                                                @{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}
                                             </td>
                                             <td>
-                                                ตำแหน่ง @{{ insp.person.position.position_name + insp.person.academic.ac_name }}
+                                                ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}
                                             </td>
                                         </tr>
                                     </table>
@@ -217,13 +217,13 @@
                                 <label>คณะกรรมการพิจารณาผลการประกวดราคา :</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped" style="width: 80%;">
-                                        <tr ng-repeat="(index, env) in support.env_committee">
+                                        <tr ng-repeat="(index, person) in support.env_committee">
                                             <td style="width: 40%;">
                                                 @{{ index+1 }}. 
-                                                @{{ env.person.prefix.prefix_name + env.person.person_firstname +' '+ env.person.person_lastname }}
+                                                @{{ person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname }}
                                             </td>
                                             <td>
-                                                ตำแหน่ง @{{ env.person.position.position_name + env.person.academic.ac_name }}
+                                                ตำแหน่ง @{{ person.position.position_name + person.academic.ac_name }}
                                             </td>
                                         </tr>
                                     </table>

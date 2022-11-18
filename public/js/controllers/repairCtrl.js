@@ -351,13 +351,13 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             $scope.support.division_id      = support.division_id ? support.division_id.toString() : '';
 
             /** Set each committees by filtering from responsed committees data */
-            $scope.support.spec_committee   = committees
+            $scope.support.spec_committee = committees
                                                 .filter(com => com.committee_type_id == 1)
                                                 .map(com => com.person);
-            $scope.support.insp_committee   = committees
+            $scope.support.insp_committee = committees
                                                 .filter(com => com.committee_type_id == 2)
                                                 .map(com => com.person);
-            $scope.support.env_committee    = committees
+            $scope.support.env_committee = committees
                                                 .filter(com => com.committee_type_id == 3)
                                                 .map(com => com.person);
 
