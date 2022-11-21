@@ -165,18 +165,25 @@
                                     <td style="text-align: right;">
                                         @{{ sum.sep_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: right;"></td>
+                                    <td style="text-align: right;">
                                         @{{ sum.total | currency:'':2 }}
                                     </td>
                                     <td style="text-align: right;">
                                         @{{ sum.budget - sum.total | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
+                                        <h4 ng-class="{
+                                            'label label-danger': ((sum.total * 100) / sum.budget) > 80,
+                                            'label label-warning': ((sum.total * 100) / sum.budget) > 60,
+                                            'label label-success': ((sum.total * 100) / sum.budget) <= 50,
+                                        }">
+                                            @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
+                                        </h4>
                                     </td>
                                 </tr>
                                 <tr style="font-size: 12px;">
-                                    <td style="text-align: center;" colspan="3">รวม</td>
+                                    <td style="text-align: center;" colspan="2">รวม</td>
+                                    <td style="text-align: right;">@{{ totalSummary.budget | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalSummary.oct | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalSummary.nov | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalSummary.dec | currency:'':2 }}</td>
@@ -190,6 +197,16 @@
                                     <td style="text-align: right;">@{{ totalSummary.aug | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalSummary.sep | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalSummary.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.remain | currency:'':2 }}</td>
+                                    <td style="text-align: center;">
+                                        <h4 ng-class="{
+                                            'label label-danger': ((totalSummary.total * 100) / totalSummary.budget) > 80,
+                                            'label label-warning': ((totalSummary.total * 100) / totalSummary.budget) > 60,
+                                            'label label-success': ((totalSummary.total * 100) / totalSummary.budget) <= 50,
+                                        }">
+                                            @{{ (totalSummary.total * 100) / totalSummary.budget | currency:'':2 }}
+                                        </h4>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

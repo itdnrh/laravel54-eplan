@@ -130,6 +130,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     };
 
     $scope.totalSummary = {
+        budget: 0,
         oct: 0,
         nov: 0,
         dec: 0,
@@ -141,13 +142,16 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         jun: 0,
         jul: 0,
         aug: 0,
-        sep: 0
+        sep: 0,
+        total: 0,
+        remain: 0,
     };
     $scope.getSummary = function(event) {
         $scope.loading = true;
         $scope.summary = [];
 
         $scope.totalSummary = {
+            budget: 0,
             oct: 0,
             nov: 0,
             dec: 0,
@@ -160,7 +164,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             jul: 0,
             aug: 0,
             sep: 0,
-            total: 0
+            total: 0,
+            remain: 0,
         };
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
@@ -181,6 +186,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
             if ($scope.summary) {
                 $scope.summary.forEach(sum => {
+                    $scope.totalSummary.budget += sum.budget,
                     $scope.totalSummary.oct += sum.oct_total,
                     $scope.totalSummary.nov += sum.nov_total;
                     $scope.totalSummary.dec += sum.dec_total;
@@ -194,9 +200,11 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                     $scope.totalSummary.aug += sum.aug_total;
                     $scope.totalSummary.sep += sum.sep_total;
                     $scope.totalSummary.total += sum.total;
+                    $scope.totalSummary.remain += sum.budget - sum.total;
                 });
             } else {
                 $scope.totalSummary = {
+                    budget: 0,
                     oct: 0,
                     nov: 0,
                     dec: 0,
@@ -208,7 +216,9 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                     jun: 0,
                     jul: 0,
                     aug: 0,
-                    sep: 0
+                    sep: 0,
+                    total: 0,
+                    remain: 0,
                 };
             }
 
