@@ -243,7 +243,13 @@
                                                                     showPlanGroupsList();
                                                                     onFilterCategories(support.plan_type_id);
                                                                 "
-                                                                ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '4' || {{ Auth::user()->memberOf->depart_id }} == '39' || {{ Auth::user()->memberOf->depart_id }} == '65'"
+                                                                ng-show="
+                                                                    support.plan_type_id == 1 &&
+                                                                    ({{ Auth::user()->person_id }} == '1300200009261' || 
+                                                                    {{ Auth::user()->memberOf->depart_id }} == '4' || 
+                                                                    {{ Auth::user()->memberOf->depart_id }} == '39' || 
+                                                                    {{ Auth::user()->memberOf->depart_id }} == '65')
+                                                                "
                                                             >
                                                                 <i class="fa fa-th" aria-hidden="true"></i>
                                                             </button>
