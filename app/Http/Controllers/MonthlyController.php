@@ -201,7 +201,7 @@ class MonthlyController extends Controller
     public function getById($id)
     {
         return [
-            'plan' => Monthly::find($id),
+            'plan' => Monthly::with('expense','depart')->find($id),
         ];
     }
 
@@ -292,6 +292,7 @@ class MonthlyController extends Controller
         return view('monthly.edit', [
             "monthly"   => Monthly::find($id),
             "expenses"  => Expense::all(),
+            "expenseTypes"  => ExpenseType::all(),
             "factions"  => Faction::all(),
             "departs"   => Depart::all(),
             "divisions" => Division::all(),

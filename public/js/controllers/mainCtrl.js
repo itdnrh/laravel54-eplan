@@ -198,6 +198,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.onFactionSelected = function(faction) {
         $scope.forms.departs = $scope.temps.departs.filter(dep => dep.faction_id == faction);
     };
+
     $scope.onDepartSelected = function(depart) {
         $scope.forms.divisions = $scope.temps.divisions.filter(div => div.depart_id == depart);
     };

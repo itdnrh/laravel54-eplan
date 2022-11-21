@@ -23,6 +23,7 @@
             initForms({
                 departs: {{ $departs }},
                 divisions: {{ $divisions }},
+                expenses: {{ $expenses }}
             }, 4);
             getById({{ $monthly->id }}, setEditControls);
         "
@@ -112,8 +113,51 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(monthly, 'expense_id')}"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                >
+                                    <label>รายการ :</label>
+                                    <select
+                                        id="expense_type_id"
+                                        name="expense_type_id"
+                                        ng-model="monthly.expense_type_id"
+                                        ng-change="onFilterExpenses(monthly.expense_type_id)"
+                                        class="form-control select2"
+                                    >
+                                        <option value="">เลือกประเภทรายจ่าย</option>
+                                        @foreach($expenseTypes as $expenseType)
+                                            <option value="{{ $expenseType->id }}">
+                                                {{ $expenseType->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(monthly, 'expense_id')}"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                >
+                                    <label>&nbsp;</label>
+                                    <select
+                                        id="expense_id"
+                                        ng-model="monthly.expense_id"
+                                        ng-change="getPlanSummaryByExpense($event, monthly.year, monthly.expense_id)"
+                                        class="form-control"
+                                    >
+                                        <option value="">เลือกรายการ</option>
+                                        <option ng-repeat="expense in forms.expenses" value="@{{ expense.id }}">
+                                            @{{ expense.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(monthly, 'expense_id')">
+                                        @{{ formError.errors.expense_id[0] }}
+                                    </span>
+                                </div>
+                                <div
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(monthly, 'expense_id')}"
+                                    ng-show="{{ Auth::user()->person_id }} != '1300200009261' && {{ Auth::user()->memberOf->depart_id }} != '4'"
                                 >
                                     <label>รายการ :</label>
                                     <select
@@ -158,7 +202,7 @@
                                     ng-class="{'has-error has-feedback': checkValidate(monthly, 'remain')}"
                                 >
                                     <label>ยอดคงเหลือ (บาท) :</label>
-                                    <div class="form-control" disabled>
+                                    <div class="form-control" style="text-align: right;" disabled>
                                         @{{ monthly.remain | currency:'':2 }}
                                     </div>
                                     <span class="help-block" ng-show="checkValidate(monthly, 'remain')">

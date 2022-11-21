@@ -266,22 +266,26 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     }
 
     $scope.setEditControls = function(plan) {
-        /** Global data */
-        $scope.planId                   = plan.id;
-        $scope.planType                 = 1;
-
-        /** ข้อมูลครุภัณฑ์ */
-        $scope.monthly.monthly_id   = plan.id;
+        $scope.monthly.id           = plan.id;
         $scope.monthly.month        = plan.month;
         $scope.monthly.total        = plan.total;
         $scope.monthly.remain       = plan.remain;
-        $scope.monthly.depart_id    = plan.depart_id;
         $scope.monthly.reporter_id  = plan.reporter_id;
         $scope.monthly.remark       = plan.remark;
 
         /** Convert int value to string */
         $scope.monthly.year         = plan.year.toString();
         $scope.monthly.expense_id   = plan.expense_id.toString();
+        $scope.monthly.expense_type_id   = plan.expense.expense_type_id.toString();
+        $scope.monthly.faction_id   = plan.depart.faction_id.toString();
+        $scope.monthly.depart_id    = plan.depart_id.toString();
+
+        $scope.getPlanSummaryByExpense(null, plan.year, plan.expense_id);
+        $scope.onFilterExpenses(plan.expense.expense_type_id);
+        $scope.onFactionSelected(plan.depart.faction_id);
+
+        $('#expense_type_id').val(plan.expense.expense_type_id).trigger('change.select2');
+        $('#faction_id').val(plan.depart.faction_id).trigger('change.select2');
     };
 
     $scope.store = function(event, form) {
@@ -296,6 +300,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/monthly/list`;
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
             }
@@ -314,16 +320,18 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.update = function(event) {
         event.preventDefault();
 
-        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตาม รหัส ${$scope.monthly.monthly_id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขข้อมูลควบคุมกำกับติดตาม รหัส ${$scope.monthly.id} ใช่หรือไม่?`)) {
             $scope.monthly.user = $('#user').val();
             $scope.loading = true;
 
-            $http.post(`${CONFIG.baseUrl}/monthly/update/${$scope.monthly.monthly_id}`, $scope.monthly)
+            $http.post(`${CONFIG.baseUrl}/monthly/update/${$scope.monthly.id}`, $scope.monthly)
             .then(function(res) {
                 $scope.loading = false;
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/monthly/list`;
                 } else {
                     toaster.pop('error', "ผลการทำงาน", "ไม่สามารถแก้ไขข้อมูลได้ !!!");
                 }
