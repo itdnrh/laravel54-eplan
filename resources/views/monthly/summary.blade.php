@@ -165,15 +165,31 @@
                                     <td style="text-align: right;">
                                         @{{ sum.sep_total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: right;">
+                                    <td style="text-align: right;"></td>
                                         @{{ sum.total | currency:'':2 }}
                                     </td>
                                     <td style="text-align: right;">
                                         @{{ sum.budget - sum.total | currency:'':2 }}
                                     </td>
-                                    <td style="text-align: right;">
+                                    <td style="text-align: center;">
                                         @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
                                     </td>
+                                </tr>
+                                <tr style="font-size: 12px;">
+                                    <td style="text-align: center;" colspan="3">รวม</td>
+                                    <td style="text-align: right;">@{{ totalSummary.oct | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.nov | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.dec | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.jan | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.feb | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.mar | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.apr | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.may | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.jun | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.jul | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.aug | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.sep | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalSummary.total | currency:'':2 }}</td>
                                 </tr>
                             </tbody>
                         </table>

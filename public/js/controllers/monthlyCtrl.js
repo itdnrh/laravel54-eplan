@@ -129,9 +129,39 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
+    $scope.totalSummary = {
+        oct: 0,
+        nov: 0,
+        dec: 0,
+        jan: 0,
+        fab: 0,
+        mar: 0,
+        apr: 0,
+        may: 0,
+        jun: 0,
+        jul: 0,
+        aug: 0,
+        sep: 0
+    };
     $scope.getSummary = function(event) {
         $scope.loading = true;
         $scope.summary = [];
+
+        $scope.totalSummary = {
+            oct: 0,
+            nov: 0,
+            dec: 0,
+            jan: 0,
+            fab: 0,
+            mar: 0,
+            apr: 0,
+            may: 0,
+            jun: 0,
+            jul: 0,
+            aug: 0,
+            sep: 0,
+            total: 0
+        };
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type    = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
@@ -148,6 +178,39 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
                 return mon;
             });
+
+            if ($scope.summary) {
+                $scope.summary.forEach(sum => {
+                    $scope.totalSummary.oct += sum.oct_total,
+                    $scope.totalSummary.nov += sum.nov_total;
+                    $scope.totalSummary.dec += sum.dec_total;
+                    $scope.totalSummary.jan += sum.jan_total;
+                    $scope.totalSummary.fab += sum.fab_total;
+                    $scope.totalSummary.mar += sum.mar_total;
+                    $scope.totalSummary.apr += sum.apr_total;
+                    $scope.totalSummary.may += sum.may_total;
+                    $scope.totalSummary.jun += sum.jun_total;
+                    $scope.totalSummary.jul += sum.jul_total;
+                    $scope.totalSummary.aug += sum.aug_total;
+                    $scope.totalSummary.sep += sum.sep_total;
+                    $scope.totalSummary.total += sum.total;
+                });
+            } else {
+                $scope.totalSummary = {
+                    oct: 0,
+                    nov: 0,
+                    dec: 0,
+                    jan: 0,
+                    fab: 0,
+                    mar: 0,
+                    apr: 0,
+                    may: 0,
+                    jun: 0,
+                    jul: 0,
+                    aug: 0,
+                    sep: 0
+                };
+            }
 
             $scope.loading = false;
         }, function(err) {
