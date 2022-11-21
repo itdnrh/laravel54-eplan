@@ -305,7 +305,7 @@
                             <div class="col-md-12">
                                 <div class="alert alert-warning alert-dismissible">
                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                    <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                                    <h4><i class="icon fa fa-warning"></i> เหตุผลการตีกลับ</h4>
                                     (<i class="fa fa-clock-o" aria-hidden="true"></i> @{{ support.returned_date | thdate }})
                                     @{{ support.returned_reason }}
                                 </div>
