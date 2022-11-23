@@ -12,7 +12,7 @@
                     <!-- // TODO: Filtering controls -->
                     <div class="box">
                         <div class="box-body">
-                            <div style="display: flex; flex-direction: row;">
+                            <div style="display: flex; flex-direction: row; gap: 5px;">
                                 <!-- <select
                                     style="margin-right: 1rem;"
                                     class="form-control"
@@ -27,18 +27,6 @@
                                     @endforeach
                                 </select> -->
 
-                                <!-- <select
-                                    style="margin-right: 1rem;"
-                                    class="form-control"
-                                    ng-model="cboCategory"
-                                    ng-change="getPlans(2);"
-                                >
-                                    <option value="">-- เลือกประเภทพัสดุ --</option>
-                                    <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
-                                            @{{ category.name }}
-                                    </option>
-                                </select> -->
-
                                 <input
                                     type="text"
                                     id="txtKeyword"
@@ -46,6 +34,16 @@
                                     class="form-control"
                                     ng-model="txtKeyword"
                                     ng-change="getPlans(2)"
+                                    placeholder="ค้นหาด้วยชื่อรายการ"
+                                />
+                                <input
+                                    type="text"
+                                    id="txtSupportNo"
+                                    name="txtSupportNo"
+                                    class="form-control"
+                                    ng-model="txtSupportNo"
+                                    ng-change="getPlans(2)"
+                                    placeholder="ค้นหาด้วยเลขที่บันทึกขอสนับสนุน"
                                 />
                             </div>
                         </div><!-- /.box-body -->
@@ -119,8 +117,8 @@
                     </table>
 
                     <!-- Loading (remove the following to stop the loading)-->
-                    <div style="width: 100%; height: 50px; text-align: center;">
-                        <div ng-show="loading" class="overlay">
+                    <div style="width: 100%; height: 50px; text-align: center;" ng-show="loading">
+                        <div class="overlay">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>

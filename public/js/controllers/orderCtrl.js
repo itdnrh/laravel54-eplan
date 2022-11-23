@@ -536,8 +536,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let doc_no = $scope.txtSupportNo === '' ? '' : $scope.txtSupportNo;
 
-        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}`)
+        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
         .then(function(res) {
             $scope.setPlans(res);
 
@@ -561,8 +562,9 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let doc_no = $scope.txtSupportNo === '' ? '' : $scope.txtSupportNo;
 
-        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
         .then(function(res) {
             cb(res);
 
@@ -603,6 +605,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.addOrderItem();
         }
 
+        /** Clear filtering inputs of _plans-list modal view */
+        $scope.txtKeyword = '';
+        $scope.txtSupportNo = '';
+
+        /** Hide _plans-list modal view */
         $('#plans-list').modal('hide');
     };
 

@@ -204,6 +204,7 @@ class SupportController extends Controller
         $cate   = $req->get('cate');
         $supportType = $req->get('supportType');
         $name   = $req->get('name');
+        $docNo  = $req->get('doc_no');
         $status = $req->get('status');
 
         $plansList = PlanItem::leftJoin('items','items.id','=','plan_items.item_id')
@@ -226,6 +227,9 @@ class SupportController extends Controller
                         })
                         ->when(!empty($supportType), function($q) use ($supportType) {
                             $q->where('supports.support_type_id', $supportType);
+                        })
+                        ->when(!empty($docNo), function($q) use ($docNo) {
+                            $q->where('supports.doc_no', 'like', '%'.$docNo.'%');
                         })
                         ->when(!empty($status), function($q) use ($status) {
                             $q->where('supports.status', $status);
