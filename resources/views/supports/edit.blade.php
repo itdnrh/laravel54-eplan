@@ -184,7 +184,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-show="{{ $support->status }} == 0">
+                                            <tr ng-show="{{ $support->status }} == 0 || {{ $support->status }} == 9">
                                                 <td style="text-align: center">#</td>
                                                 <td style="text-align: center">
                                                     <!-- เลขที่ -->
@@ -417,7 +417,7 @@
                                                         href="#"
                                                         class="btn btn-danger btn-xs"
                                                         ng-click="removeAddedItem(index)"
-                                                        ng-disabled="detail.status != 0"
+                                                        ng-disabled="support.status != 0 && support.status != 9"
                                                     >
                                                         <i class="fa fa-trash"></i>
                                                     </a>

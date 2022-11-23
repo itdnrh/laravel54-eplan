@@ -92,8 +92,10 @@
                     <?php $restRow = 0; ?>
                     <?php $total = 0; ?>
                     <?php $tableHeight = 0; ?>
+                    <?php $haveRowOvered = 0; ?>
                     <?php $nextBullet = 0; ?>
                     <?php $page = 0; ?>
+                    <!-- ========================================= รายการน้อยกว่า 12 รายการ ===================================== -->
                     @if (count($support->details) < 12)
                         <tr>
                             <td colspan="4">
@@ -107,7 +109,7 @@
                                             <th style="width: 15%; text-align: center;">ราคารวม</th>
                                         </tr>
 
-                                        <!-- ========================================= PLAN GROUP ===================================== -->
+                                        <!-- ========================================= รายการ PLAN GROUP ===================================== -->
                                         @if($support->is_plan_group == '1')
                                             <?php $total = (float)$support->total; ?>
                                             <tr style="min-height: 20px;">
@@ -134,7 +136,7 @@
                                                     {{ thainumDigit(number_format($support->total, 2)) }}
                                                 </td>
                                             </tr>
-                                        <!-- ========================================= PLAN GROUP ===================================== -->
+                                        <!-- ========================================= End รายการ PLAN GROUP ===================================== -->
                                         @else
                                             @foreach($support->details as $detail)
                                                 <?php $total += (float)$detail->sum_price; ?>
@@ -143,7 +145,13 @@
                                                     <td>
                                                         <?php $tableHeight += 20; ?>
                                                         <div class="support__detail-item">
-                                                            <span style="">{{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}</span>
+                                                            @if(strlen(thainumDigit($detail->plan->plan_no).'-'.thainumDigit($detail->plan->planItem->item->item_name)) >= 135)
+                                                                <?php $haveRowOvered++; ?>
+                                                            @endif
+
+                                                            <span>
+                                                                {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
+                                                            </span>
 
                                                             @if($detail->desc != '')
                                                                 <?php $tableHeight += 20; ?>
@@ -182,6 +190,7 @@
                                 </div>
                             </td>
                         </tr>
+                    <!-- ========================================= รายการมากกว่า 12 รายการ ===================================== -->
                     @else
                         <tr>
                             <td colspan="4">
@@ -297,10 +306,11 @@
                                     <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
                                     <?php $page = $page + 1; ?>
                                 @endif
-                                <!-- ############################ Pagination ############################ -->
+                                <!-- ############################ End Pagination ############################ -->
 
                             </td>
                         </tr>
+                        <!-- ========================================= รายการมากกว่า 28 รายการขึ้นไป ===================================== -->
                         @if (count($support->details) > 28)
                             <?php $restRow = 0; ?>
                             <tr>
@@ -356,7 +366,10 @@
                                 </td>
                             </tr>
                         @endif
+                        <!-- ========================================= End รายการมากกว่า 28 รายการขึ้นไป ===================================== -->
                     @endif
+                    <!-- ========================================= End รายการมากกว่า 12 รายการ ===================================== -->
+
                     <tr>
                         <td colspan="4">
                             <span>เหตุผลและความจำเป็น</span>
@@ -375,7 +388,7 @@
                             </td>
                         </tr>
                     @endif
-                    <!-- ############################ Pagination ############################ -->
+                    <!-- ############################ End Pagination ############################ -->
 
                     <tr>
                         <td colspan="4">
@@ -383,7 +396,7 @@
                             @if (count($support->details) > 10 && count($support->details) < 12)
                                 <p class="page-number">- ๒ -</p>
                             @endif
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ End Pagination ############################ -->
 
                             <?php $nextBullet = 1; ?>
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
@@ -421,7 +434,7 @@
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ End Pagination ############################ -->
                         </td>
                     </tr>
                     @if((float)$support->total >= 500000)
@@ -438,7 +451,7 @@
                                         <p class="page-number">- ๒ -</p>
                                     @endif
                                 @endif
-                                <!-- ############################ Pagination ############################ -->
+                                <!-- ############################ End Pagination ############################ -->
 
                                 <div style="margin: 0;">
                                     ๒. รายชื่อคณะกรรมการพิจารณาผลการประกวดราคา
@@ -475,7 +488,7 @@
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @endif
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ End Pagination ############################ -->
 
                             <div style="margin: 0;">
                                 @if((float)$support->total >= 500000)
@@ -528,7 +541,7 @@
                                 @endif
                                 <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
                             @endif
-                            <!-- ############################ Page 2 ############################ -->
+                            <!-- ############################ End Page 2 ############################ -->
 
                         </td>
                     </tr>
@@ -540,7 +553,7 @@
                                     <p class="page-number">- ๒ -</p>
                                 @endif
                             @endif
-                            <!-- ############################ Page 2 ############################ -->
+                            <!-- ############################ End Page 2 ############################ -->
 
                             <p style="margin: 0;">
                                 @if((float)$support->total >= 500000)
@@ -557,7 +570,13 @@
                     <tr>
                         <td colspan="4">
                             @if(count($committees) <= 2)
-                                @if ($page == 0 && (count($support->details) > 4 && count($support->details) <= 10))
+                                @if($page == 0 && (count($support->details) == 4 && $haveRowOvered > 0))
+                                    <?php $page = $page + 1; ?>
+                                    <div style="height: {{ 200 - ($haveRowOvered * 20) }}px;"></div>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
+
+                                @if($page == 0 && (count($support->details) > 4 && count($support->details) <= 10))
                                     <?php $page = $page + 1; ?>
                                     <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
@@ -617,11 +636,15 @@
                             @endif
                         </td>
                     </tr>
-                    <!-- ############################ Pagination ############################ -->
+                    <!-- ############################ End Pagination ############################ -->
                     <tr>
                         <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
                             @if(count($committees) <= 2)
+                                @if($page == 1 && (count($support->details) == 4 && $haveRowOvered > 0))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @endif
+
                                 @if ($page == 1 && (count($support->details) > 4 && count($support->details) <= 10))
                                     <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
@@ -661,7 +684,7 @@
                                     <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
                             @endif
-                            <!-- ############################ Pagination ############################ -->
+                            <!-- ############################ End Pagination ############################ -->
 
                             <p style="margin: 0 0 10px;">
                                 @if((float)$support->total >= 500000)
@@ -708,19 +731,9 @@
                             </p>
                         </td>
                     </tr>
-                    <!-- <tr>
-                        <td colspan="4" style="text-align: center; padding: 0;">
-                        
-                        </td>
-                    </tr> -->
                 </table>
 
-                @if (count($support->details) > 3 && count($committees) < 4)
-                    <div style="text-align: center; position: absolute;">
-                @else
-                    <div style="text-align: center; position: absolute;">
-                @endif
-
+                <div style="text-align: center; position: absolute;">
                     <p style="margin: 0 0 20px 0;">
                         <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
                         <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
