@@ -222,6 +222,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('monthly/list', 'MonthlyController@index');
     Route::get('monthly/summary', 'MonthlyController@summary');
     Route::get('monthly/search', 'MonthlyController@search');
+    Route::get('monthly/multiple-data', 'MonthlyController@getMultiple');
     Route::get('monthly/add', 'MonthlyController@create');
     Route::post('monthly/store', 'MonthlyController@store');
     Route::get('monthly/edit/{id}', 'MonthlyController@edit');

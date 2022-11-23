@@ -141,6 +141,14 @@
                                 <a href="{{ url('/monthly/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
+                                <button
+                                    type="button"
+                                    class="btn btn-success pull-right"
+                                    style="margin-right: 5px"
+                                    ng-click="showMultipleForm($event)"
+                                >
+                                    เพิ่มจาก E-Plan
+                                </button>
                             </div>
                         </div>
                     </div><!-- /.box-header -->
@@ -258,9 +266,10 @@
                     <!-- end loading -->
 
                 </div><!-- /.box -->
-
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('monthly._multiple-form')
 
     </section>
 

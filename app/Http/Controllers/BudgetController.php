@@ -132,7 +132,7 @@ class BudgetController extends Controller
         return view('budgets.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
             "periods"       => $this->periods,
@@ -144,7 +144,7 @@ class BudgetController extends Controller
         return view('budgets.add', [
             "expenses"      => Expense::all(),
             "expenseTypes"  => ExpenseType::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }

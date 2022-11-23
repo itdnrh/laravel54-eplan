@@ -15,6 +15,14 @@ app.service('DatetimeService', [function() {
         return `${year-543}-${month}`;
     };
 
+    service.fotmatYearMonthBE = function(ym) {
+        if(!ym) '';
+
+        let [year, month] = ym.split('-');
+
+        return `${month}/${parseInt(year)+543}`;
+    };
+
     service.calcAge = function(birthdate, type) {
         return moment().diff(moment(birthdate), type);
     }

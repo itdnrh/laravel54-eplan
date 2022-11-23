@@ -1,4 +1,4 @@
-app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.plans = [];
@@ -29,7 +29,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -38,8 +38,17 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         todayHighlight: true
     };
 
+    let dtpMonthOptions = {
+        autoclose: true,
+        format: 'mm/yyyy',
+        viewMode: "months", 
+        minViewMode: "months",
+        language: 'th',
+        thaiyear: true
+    };
+
     // $('#doc_date')
-    //     .datepicker(dtpOptions)
+    //     .datepicker(dtpDateOptions)
         // .datepicker('update', new Date());
         // .on('show', function (e) {
         //     $('.day').click(function(event) {
@@ -47,6 +56,19 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         //         event.stopPropagation();
         //     });
         // });
+
+    $('#dtpMonth')
+        .datepicker(dtpMonthOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            console.log(event.date);
+
+            $('#dtpMonth')
+                .datepicker(dtpMonthOptions)
+                .datepicker('update', event.date);
+
+            $scope.getMultipleData();
+        });
 
     $('#remain').prop('disabled', true);
 
@@ -286,6 +308,85 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
         $('#expense_type_id').val(plan.expense.expense_type_id).trigger('change.select2');
         $('#faction_id').val(plan.depart.faction_id).trigger('change.select2');
+    };
+
+    $scope.showMultipleForm = function(e) {
+        $scope.getMultipleData();
+
+        $('#multiple-form').modal('show');
+    };
+
+    $scope.expenses = [];
+    $scope.multipleData = {
+        year: '2566',
+        month: DatetimeService.fotmatYearMonthBE(moment().format('YYYY-MM')),
+        plan_type_id: '1',
+        expenses: [],
+        user: ''
+    };
+    $scope.getMultipleData = function() {
+        $scope.expenses = [];
+        $scope.loading = true;
+
+        let year = $scope.multipleData.year;
+        let type = $scope.multipleData.plan_type_id == '' ? '1' : $scope.multipleData.plan_type_id;
+        let month = $scope.multipleData.month == '' ? '' : DatetimeService.fotmatYearMonth($scope.multipleData.month);
+
+        $http.get(`${CONFIG.baseUrl}/monthly/multiple-data?year=${year}&type=${type}&month=${month}`)
+        .then(function(res) {
+            $scope.multipleData.expenses = res.data.expenses
+                .map(ex => {
+                    let category = res.data.categories.find(cat => cat.id == ex.category_id);
+
+                    if (category) {
+                        ex.expense_id = category.expense_id;
+                        ex.plan_type_id = category.plan_type_id;
+                    }
+
+                    return ex;
+                })
+                .map(ex => {
+                    let budget = res.data.budgets.find(bg => bg.expense_id == ex.expense_id);
+
+                    if (budget) {
+                        ex.budget = budget.budget;
+                        ex.remain = budget.remain;
+                    }
+
+                    return ex;
+                });
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.multipleStore = function(event) {
+        event.preventDefault();
+
+        $scope.loading = true;
+        $scope.multipleData.user = $('#user').val();
+        console.log($scope.multipleData);
+
+        // $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
+        // .then(function(res) {
+        //     $scope.loading = false;
+
+        //     if (res.data.status == 1) {
+        //         toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+        //         window.location.href = `${CONFIG.baseUrl}/monthly/list`;
+        //     } else {
+        //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        //     }
+        // }, function(err) {
+        //     $scope.loading = false;
+
+        //     console.log(err);
+        //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        // });
     };
 
     $scope.store = function(event, form) {
