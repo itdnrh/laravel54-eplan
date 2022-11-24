@@ -20,9 +20,10 @@ app.controller(
         $scope.cboProjectType = '';
         $scope.cboCategory = '';
         $scope.cboApproved = '';
-        $scope.chkIsFixcost = false;
         $scope.cboPrice = '';
         $scope.cboSort = '';
+        $scope.chkIsFixcost = false;
+        $scope.isInPlan = '';
 
         let dtpDateOptions = {
             autoclose: true,
@@ -347,10 +348,11 @@ app.controller(
                                 : $scope.cboYear;
             let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
             let approved    = !$scope.cboApproved ? '' : 'A';
-            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&price=${price}&in_plan=${in_plan}&sort=${sort}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let cate = res.data.categories.find(c => c.id === plan.category_id);

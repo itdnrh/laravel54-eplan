@@ -418,6 +418,7 @@ class ReportController extends Controller
         $type       = $req->get('type');
         $price      = $req->get('price');
         $approved   = $req->get('approved');
+        $inPlan     = $req->get('in_plan');
         $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
@@ -436,6 +437,9 @@ class ReportController extends Controller
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($inPlan), function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         if ($price == 1) {
