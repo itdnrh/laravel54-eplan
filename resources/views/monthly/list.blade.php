@@ -146,6 +146,7 @@
                                     class="btn btn-success pull-right"
                                     style="margin-right: 5px"
                                     ng-click="showMultipleForm($event)"
+                                    ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'"
                                 >
                                     เพิ่มจาก E-Plan
                                 </button>
