@@ -49,7 +49,7 @@
                                 <td>@{{ expense.category_name }}</td>
                                 <td style="text-align: right;">@{{ expense.budget | currency:'':2 }}</td>
                                 <td style="text-align: right;">@{{ expense.net_total | currency:'':2 }}</td>
-                                <td style="text-align: right;">@{{ expense.budget - expense.net_total | currency:'':2 }}</td>
+                                <td style="text-align: right;">@{{ expense.remain | currency:'':2 }}</td>
                             </tr>
                         </table>
                     </div>

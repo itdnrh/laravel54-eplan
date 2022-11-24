@@ -157,13 +157,13 @@
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
-                                    <th style="width: 10%; text-align: center;">ประจำเดือน</th>
+                                    <th style="width: 10%; text-align: center;">เดือน/ปีงบ</th>
                                     <th style="width: 15%; text-align: center;">ประเภท</th>
                                     <th>หน่วยงาน</th>
                                     <th style="width: 10%; text-align: center;">ประมาณการ</th>
                                     <th style="width: 10%; text-align: center;">ยอดการใช้</th>
                                     <th style="width: 10%; text-align: center;">ยอดคงเหลือ</th>
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

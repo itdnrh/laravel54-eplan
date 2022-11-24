@@ -16,7 +16,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     $scope.budget = {
         id: '',
-        year: '',
+        year: '2566',
         expense_type_id: '',
         expense_id: '',
         budget: '',
@@ -28,7 +28,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     };
 
     /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -42,7 +42,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     const clearBudget = function() {
         $scope.budget = {
             id: '',
-            year: '',
+            year: '2566',
             expense_type_id: '',
             expense_id: '',
             budget: '',

@@ -160,8 +160,8 @@
                                         <th style="width: 12%; text-align: center;">ยอดประมาณการ</th>
                                         <th style="width: 12%; text-align: center;">ยอดคงเหลือ</th>
                                         <!-- <th style="width: 8%; text-align: center;">สถานะ</th> -->
-                                        <th style="width: 15%;">หน่วยงาน</th>
-                                        <th style="width: 10%; text-align: center;">Actions</th>
+                                        <th style="width: 18%;">หน่วยงาน</th>
+                                        <th style="width: 8%; text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>

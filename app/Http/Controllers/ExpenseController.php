@@ -115,7 +115,7 @@ class ExpenseController extends Controller
         return view('expenses.detail', [
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "expenseTypes"  => ExpenseType::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -124,7 +124,7 @@ class ExpenseController extends Controller
     {
         return view('expenses.add', [
             "expenseTypes"  => ExpenseType::orderBy('sort')->get(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -165,7 +165,7 @@ class ExpenseController extends Controller
         return view('expenses.edit', [
             "expense"       => Expense::find($id),
             "expenseTypes"  => ExpenseType::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }

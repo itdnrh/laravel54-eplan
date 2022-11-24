@@ -213,7 +213,7 @@ class MonthlyController extends Controller
             "plan"          => Plan::with('asset')->where('id', $id)->first(),
             "categories"    => ItemCategory::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
             "periods"       => $this->periods,
@@ -229,9 +229,7 @@ class MonthlyController extends Controller
         $sdate = $month. '-01';
         $edate = date('Y-m-t', strtotime($sdate));
 
-        $sql = "SELECT o.category_id, c.`name` as category_name, 
-                cast(sum(o.net_total) as decimal(12,2)) as net_total, 
-                cast(sum(od.sum_price) as decimal(12,2)) as sum_price
+        $sql = "SELECT o.category_id, c.`name` as category_name, cast(sum(o.net_total) as decimal(12,2)) as net_total
                 from eplan_db.orders o
                 left join (
                     select order_id, count(id) num_rows, sum(sum_price) as sum_price
@@ -267,7 +265,7 @@ class MonthlyController extends Controller
         return view('monthly.add', [
             "expenses"      => $expenses,
             "expenseTypes"  => ExpenseType::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
         ]);
@@ -301,7 +299,8 @@ class MonthlyController extends Controller
                 $planSum = Budget::where('year', $req['year'])
                             ->where('expense_id', $req['expense_id'])
                             ->first();
-                $planSum->remain = (double)$planSum->remain - (double)$req['total'];
+
+                $planSum->remain = currencyToNumber($req['remain']);
                 $planSum->save();
 
                 return [
@@ -326,45 +325,39 @@ class MonthlyController extends Controller
     public function multipleStore(Request $req)
     {
         try {
-            // $plan = new Monthly();
-            // $plan->year         = $req['year'];
-            // $plan->month        = $req['month'];
-            // $plan->expense_id   = $req['expense_id'];
-            // $plan->total        = currencyToNumber($req['total']);
-            // $plan->remain       = currencyToNumber($req['remain']);
+            list($month, $year) = explode('/', $req['month']);
 
-            // /** Check whether user is admin or not */
-            // if ($req['user'] == '1300200009261') {
-            //     $plan->depart_id = $req['depart_id'];
-            // } else {
-            //     $person = Person::where('person_id', $req['user'])->with('memberOf')->first();
-            //     $plan->depart_id = $person->memberOf->depart_id;
-            // }
+            foreach($req['expenses'] as $expense) {
+                $monthly = new Monthly();
+                $monthly->year         = $req['year'];
+                $monthly->month        = $month;
+                $monthly->expense_id   = $expense['expense_id'];
+                $monthly->total        = currencyToNumber($expense['net_total']);
+                $monthly->remain       = currencyToNumber($expense['remain']);
+                $monthly->depart_id    = '4';
+                $monthly->reporter_id  = $req['user'];
+                $monthly->remark       = 'ข้อมูลจากระบบ E-Plan';
+                $monthly->status       = '0';
+                $monthly->created_user = $req['user'];
+                $monthly->updated_user = $req['user'];
 
-            // $plan->reporter_id  = $req['user'];
-            // $plan->remark       = $req['remark'];
-            // $plan->status       = '0';
-            // $plan->created_user = $req['user'];
-            // $plan->updated_user = $req['user'];
+                // if($monthly->save()) {
+                //     Budget::where('year', $req['year'])
+                //             ->where('expense_id', $expense['expense_id'])
+                //             ->update(['remain' => currencyToNumber($expense['remain'])]);
 
-            // if($plan->save()) {
-            //     $planSum = Budget::where('year', $req['year'])
-            //                 ->where('expense_id', $req['expense_id'])
-            //                 ->first();
-            //     $planSum->remain = (double)$planSum->remain - (double)$req['total'];
-            //     $planSum->save();
-
-            //     return [
-            //         'status'    => 1,
-            //         'message'   => 'Insertion successfully',
-            //         'plan'      => $plan
-            //     ];
-            // } else {
-            //     return [
-            //         'status'    => 0,
-            //         'message'   => 'Something went wrong!!'
-            //     ];
-            // }
+                //     return [
+                //         'status'    => 1,
+                //         'message'   => 'Insertion successfully',
+                //         'monthly'      => $monthly
+                //     ];
+                // } else {
+                //     return [
+                //         'status'    => 0,
+                //         'message'   => 'Something went wrong!!'
+                //     ];
+                // }
+            }
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,
@@ -379,7 +372,7 @@ class MonthlyController extends Controller
             "monthly"   => Monthly::find($id),
             "expenses"  => Expense::all(),
             "expenseTypes"  => ExpenseType::all(),
-            "factions"  => Faction::all(),
+            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"   => Depart::all(),
             "divisions" => Division::all(),
         ]);

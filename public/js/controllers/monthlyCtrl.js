@@ -350,7 +350,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
                     if (budget) {
                         ex.budget = budget.budget;
-                        ex.remain = budget.remain;
+                        ex.remain = parseFloat(budget.remain) - parseFloat(ex.net_total);
                     }
 
                     return ex;
@@ -368,11 +368,10 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
         $scope.loading = true;
         $scope.multipleData.user = $('#user').val();
-        console.log($scope.multipleData);
 
-        // $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
-        // .then(function(res) {
-        //     $scope.loading = false;
+        $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
+        .then(function(res) {
+            $scope.loading = false;
 
         //     if (res.data.status == 1) {
         //         toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
@@ -381,12 +380,12 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         //     } else {
         //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         //     }
-        // }, function(err) {
-        //     $scope.loading = false;
+        }, function(err) {
+            $scope.loading = false;
 
-        //     console.log(err);
-        //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        // });
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        });
     };
 
     $scope.store = function(event, form) {

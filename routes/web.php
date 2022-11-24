@@ -222,9 +222,10 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('monthly/list', 'MonthlyController@index');
     Route::get('monthly/summary', 'MonthlyController@summary');
     Route::get('monthly/search', 'MonthlyController@search');
-    Route::get('monthly/multiple-data', 'MonthlyController@getMultiple');
     Route::get('monthly/add', 'MonthlyController@create');
     Route::post('monthly/store', 'MonthlyController@store');
+    Route::get('monthly/multiple-data', 'MonthlyController@getMultiple');
+    Route::post('monthly/multiple-store', 'MonthlyController@multipleStore');
     Route::get('monthly/edit/{id}', 'MonthlyController@edit');
     Route::get('monthly/detail/{id}', 'MonthlyController@detail');
     Route::post('monthly/update/{id}', 'MonthlyController@update');
