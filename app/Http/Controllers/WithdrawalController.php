@@ -363,9 +363,10 @@ class WithdrawalController extends Controller
     public function printForm($id)
     {
         $withdrawal = Withdrawal::with('inspection','supplier','inspection.order')
-                        ->with('inspection.order.details','inspection.order.details.item')
-                        ->with('inspection.order.budgetSource','inspection.order.orderType')
-                        ->with('prepaid','prepaid.prefix','prepaid.position','prepaid.academic')
+                        ->with('inspection.order.category','inspection.order.budgetSource')
+                        ->with('inspection.order.orderType','inspection.order.details')
+                        ->with('inspection.order.details.item','prepaid','prepaid.prefix')
+                        ->with('prepaid.position','prepaid.academic')
                         ->find($id);
 
         $planType = PlanType::find($withdrawal->inspection->order->plan_type_id);
@@ -380,7 +381,7 @@ class WithdrawalController extends Controller
                             ->where('level.depart_id', '2')
                             ->where('level.duty_id', '2')
                             ->first();
-        
+
         /** หัวหน้ากลุ่มภารกิจด้านอำนวยการ */
         $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->with('prefix','position','academic')
