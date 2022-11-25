@@ -220,6 +220,28 @@ class MonthlyController extends Controller
         ]);
     }
 
+    public function checkMultiple(Request $req, $year, $month, $type, $price)
+    {
+        if ($price == '2') {
+            $categoriesList = ItemCategory::where('plan_type_id', $type)
+                                    ->whereNotNull('expense_id')
+                                    ->pluck('expense_less10k');
+        } else {
+            $categoriesList = ItemCategory::where('plan_type_id', $type)
+                                    ->whereNotNull('expense_id')
+                                    ->pluck('expense_id');
+        }
+
+        $monthly = Monthly::where('year', $year)
+                            ->where('month', $month)
+                            ->whereIn('expense_id', $categoriesList)
+                            ->count();
+
+        return [
+            'monthly' => $monthly
+        ];
+    }
+
     public function getMultiple(Request $req)
     {
         $year = $req->get('year');
@@ -354,10 +376,10 @@ class MonthlyController extends Controller
                 $monthly->created_user = $req['user'];
                 $monthly->updated_user = $req['user'];
 
-                if($monthly->save()) {
-                    Budget::where('year', $req['year'])
-                            ->where('expense_id', $expense['expense_id'])
-                            ->update(['remain' => currencyToNumber($expense['remain'])]);
+                // if($monthly->save()) {
+                //     Budget::where('year', $req['year'])
+                //             ->where('expense_id', $expense['expense_id'])
+                //             ->update(['remain' => currencyToNumber($expense['remain'])]);
 
                 //     return [
                 //         'status'    => 1,
@@ -369,7 +391,7 @@ class MonthlyController extends Controller
                 //         'status'    => 0,
                 //         'message'   => 'Something went wrong!!'
                 //     ];
-                }
+                // }
             }
         } catch (\Exception $ex) {
             return [

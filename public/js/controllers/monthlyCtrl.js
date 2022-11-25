@@ -330,7 +330,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         month: DatetimeService.fotmatYearMonthBE(moment().format('YYYY-MM')),
         plan_type_id: '1',
         expenses: [],
-        user: ''
+        user: '',
+        isExisted: false
     };
     $scope.getMultipleData = function() {
         $scope.expenses = [];
@@ -349,7 +350,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
                     let category = res.data.categories.find(cat => cat.id == ex.category_id);
 
                     if (category) {
-                        ex.expense_id = ($scope.cboPrice == '1') ? category.expense_id : category.expense_less10k;
+                        ex.expense_id = ($scope.multipleData.plan_type_id == '1' || $scope.cboPrice == '2') ? category.expense_less10k : category.expense_id;
                         ex.plan_type_id = category.plan_type_id;
                     }
 
@@ -365,6 +366,29 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
                     return ex;
                 });
+
+            checkDataExistance(moment(month).format('MM'));
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    const checkDataExistance = function(month) {
+        $scope.loading = true;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.multipleData.plan_type_id === '' ? '' : $scope.multipleData.plan_type_id;
+        let price   = $scope.cboPrice == '' ? '0' : $scope.cboPrice;
+
+        $http.get(`${CONFIG.apiUrl}/monthly/check-multiple/${year}/${month}/${type}/${price}`)
+        .then(function(res) {
+            console.log(res);
+            if (res.data.monthly > 0) {
+                $scope.multipleData.isExisted = true;
+            }
 
             $scope.loading = false;
         }, function(err) {
@@ -383,13 +407,38 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         .then(function(res) {
             $scope.loading = false;
 
-        //     if (res.data.status == 1) {
-        //         toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+            // if (res.data.status == 1) {
+            //     toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
-        //         window.location.href = `${CONFIG.baseUrl}/monthly/list`;
-        //     } else {
-        //         toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        //     }
+            //     $scope.getAll();
+            // } else {
+            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            // }
+        }, function(err) {
+            $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+        });
+    };
+
+    $scope.multipleUpdate = function(event) {
+        event.preventDefault();
+
+        $scope.loading = true;
+        $scope.multipleData.user = $('#user').val();
+
+        $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
+        .then(function(res) {
+            $scope.loading = false;
+
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+
+                $scope.getAll();
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+            }
         }, function(err) {
             $scope.loading = false;
 

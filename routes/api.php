@@ -61,6 +61,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('monthly', 'MonthlyController@getAll');
     Route::get('monthly/{id}', 'MonthlyController@getById');
     Route::get('monthly/{year}/summary', 'MonthlyController@getSummary');
+    Route::get('monthly/check-multiple/{year}/{month}/{type}/{price}', 'MonthlyController@checkMultiple');
 
     /** ค่าสาธารณูปโภค */
     Route::get('utilities/{year}/summary', 'UtilityController@getSummary');

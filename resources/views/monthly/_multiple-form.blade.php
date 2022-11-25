@@ -94,10 +94,19 @@
             <div class="modal-footer" style="padding-bottom: 8px;">
                 <button
                     ng-click="multipleStore($event)"
+                    ng-show="!multipleData.isExisted"
                     class="btn btn-primary"
                     aria-label="Save"
                 >
                     บันทึก
+                </button>
+                <button
+                    ng-click="multipleUpdate($event)"
+                    ng-show="multipleData.isExisted"
+                    class="btn btn-warning"
+                    aria-label="Save"
+                >
+                    ปรับปรุงข้อมูล
                 </button>
                 <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">
                     ปิด
