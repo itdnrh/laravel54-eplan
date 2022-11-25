@@ -8,21 +8,29 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="">ปีงบประมาณ</label>
-                        <select id="dtpYear" ng-model="multipleData.year" class="form-control">
+                        <select
+                            id="dtpYear"
+                            class="form-control"
+                            ng-model="multipleData.year"
+                            ng-change="getMultipleData();"
+                        >
                             <option value="">ปีงบประมาณ</option>
+                            <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                @{{ y }}
+                            </option>
                         </select>
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="">เดือน</label>
                         <input type="text" id="dtpMonth" ng-model="multipleData.month" class="form-control" />
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="form-group" ng-class="{ 'col-md-6': multipleData.plan_type_id != '1', 'col-md-4': multipleData.plan_type_id == '1' }">
                         <label for="">ประเภทแผน</label>
                         <select
                             id="cboPlanType"
-                            ng-model="multipleData.plan_type_id"
                             class="form-control"
-                            ng-change="getMultipleData()"
+                            ng-model="multipleData.plan_type_id"
+                            ng-change="getMultipleData();"
                         >
                             <option value="">ประเภทแผน</option>
                             @foreach($planTypes as $planType)
@@ -30,6 +38,34 @@
                                     {{ $planType->plan_type_name }}
                                 </option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group" ng-class="{ 'col-md-6': multipleData.plan_type_id != '1', 'col-md-4': multipleData.plan_type_id == '1' }">
+                        <label>ในแผน/นอกแผน</label>
+                        <select
+                            id="cboInPlan"
+                            name="cboInPlan"
+                            class="form-control"
+                            ng-model="cboInPlan"
+                            ng-change="getMultipleData();"
+                        >
+                            <option value="">-- ทั้งหมด --</option>
+                            <option value="I">ในแผน</option>
+                            <option value="O">นอกแผน</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 form-group" ng-show="multipleData.plan_type_id == '1'">
+                        <label>ราคาต่อหน่วย</label>
+                        <select
+                            id="cboPrice"
+                            name="cboPrice"
+                            class="form-control"
+                            ng-model="cboPrice"
+                            ng-change="getMultipleData();"
+                        >
+                            <option value="">-- เลือก --</option>
+                            <option value="1">ราคาตั้งแต่ 10,000 บาทขึ้นไป</option>
+                            <option value="2">ราคาน้อยกว่า 10,000 บาท</option>
                         </select>
                     </div>
                 </div>
@@ -46,7 +82,7 @@
                             </tr>
                             <tr ng-repeat="(index, expense) in multipleData.expenses">
                                 <td style="text-align: center;">@{{ index+1 }}</td>
-                                <td>@{{ expense.category_name }}</td>
+                                <td>@{{ setCategoryName(expense.category_name, multipleData.plan_type_id) }}</td>
                                 <td style="text-align: right;">@{{ expense.budget | currency:'':2 }}</td>
                                 <td style="text-align: right;">@{{ expense.net_total | currency:'':2 }}</td>
                                 <td style="text-align: right;">@{{ expense.remain | currency:'':2 }}</td>

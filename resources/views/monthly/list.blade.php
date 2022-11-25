@@ -132,7 +132,7 @@
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">รายการควบคุมกำกับติดตาม</h3>
@@ -159,7 +159,7 @@
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">เดือน/ปีงบ</th>
-                                    <th style="width: 15%; text-align: center;">ประเภท</th>
+                                    <th style="width: 20%;">ประเภท</th>
                                     <th>หน่วยงาน</th>
                                     <th style="width: 10%; text-align: center;">ประมาณการ</th>
                                     <th style="width: 10%; text-align: center;">ยอดการใช้</th>
@@ -171,12 +171,8 @@
                                 <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ plan.month }}/@{{ plan.year }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ plan.expense.name }}
-                                    </td>
-                                    <td>
-                                        @{{ plan.depart.depart_name }}
-                                    </td>
+                                    <td>@{{ plan.expense.name }}</td>
+                                    <td>@{{ plan.depart.depart_name }}</td>
                                     <td style="text-align: right;">@{{ plan.budget | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.total | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ plan.remain | currency:'':2 }}</td>

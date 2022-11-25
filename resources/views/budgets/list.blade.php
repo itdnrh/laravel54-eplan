@@ -159,8 +159,7 @@
                                         <th>ประเภท</th>
                                         <th style="width: 12%; text-align: center;">ยอดประมาณการ</th>
                                         <th style="width: 12%; text-align: center;">ยอดคงเหลือ</th>
-                                        <!-- <th style="width: 8%; text-align: center;">สถานะ</th> -->
-                                        <th style="width: 18%;">หน่วยงาน</th>
+                                        <th style="width: 20%;">หน่วยงาน</th>
                                         <th style="width: 8%; text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
@@ -171,20 +170,6 @@
                                         <td>@{{ budget.expense.name }}</td>
                                         <td style="text-align: right;">@{{ budget.budget | currency:'':2 }}</td>
                                         <td style="text-align: right;">@{{ budget.remain | currency:'':2 }}</td>
-                                        <!-- <td style="text-align: center;">
-                                            <span class="label label-primary" ng-show="budget.status == 0">
-                                                รอดำเนินการ
-                                            </span>
-                                            <span class="label label-warning" ng-show="budget.status == 1">
-                                                ส่งเอกสารแล้ว
-                                            </span>
-                                            <span class="label label-success" ng-show="budget.status == 2">
-                                                รับเอกสารแล้ว
-                                            </span>
-                                            <span class="label label-danger" ng-show="budget.status == 9">
-                                                ยกเลิก
-                                            </span>
-                                        </td> -->
                                         <td>@{{ budget.depart.depart_name }}</td>
                                         <td style="text-align: center;">
                                             <a  href="{{ url('/budgets/detail') }}/@{{ budget.id }}"

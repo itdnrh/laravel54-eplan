@@ -225,23 +225,36 @@ class MonthlyController extends Controller
         $year = $req->get('year');
         $type = $req->get('type');
         $month = $req->get('month');
+        $price = $req->get('price');
+        $inPlan = $req->get('in_plan');
 
         $sdate = $month. '-01';
         $edate = date('Y-m-t', strtotime($sdate));
 
         $sql = "SELECT o.category_id, c.`name` as category_name, cast(sum(o.net_total) as decimal(12,2)) as net_total
-                from eplan_db.orders o
-                left join (
+                from orders o
+                join (
                     select order_id, count(id) num_rows, sum(sum_price) as sum_price
-                    from eplan_db.order_details
-                    group by order_id
-                ) as od on o.id=od.order_id
+                    from order_details ";
+
+                    if (!empty($inPlan)) {
+                        $sql .= "WHERE (plan_id in (select id from plans where (in_plan = '" .$inPlan. "'))) ";
+                    }
+
+                    if (!empty($price)) {
+                        if ($price == '1') {
+                            $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit >= 10000) ";
+                        } else {
+                            $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit < 10000) ";
+                        }
+                    }
+
+                $sql .= "group by order_id) as od on o.id=od.order_id
                 left join item_categories c on (o.category_id=c.id)
                 where (o.`year` = ?)
                 and (o.plan_type_id = ?)
-                #and (o.status in (1,2,3,4,5))
                 and (o.po_date BETWEEN ? AND ?)
-                group by o.category_id, c.`name`";
+                group by o.category_id, c.`name`"; // and (o.status in (1,2,3,4,5))
 
         $expenses = \DB::select($sql, [$year, $type, $sdate, $edate]);
 
@@ -341,10 +354,10 @@ class MonthlyController extends Controller
                 $monthly->created_user = $req['user'];
                 $monthly->updated_user = $req['user'];
 
-                // if($monthly->save()) {
-                //     Budget::where('year', $req['year'])
-                //             ->where('expense_id', $expense['expense_id'])
-                //             ->update(['remain' => currencyToNumber($expense['remain'])]);
+                if($monthly->save()) {
+                    Budget::where('year', $req['year'])
+                            ->where('expense_id', $expense['expense_id'])
+                            ->update(['remain' => currencyToNumber($expense['remain'])]);
 
                 //     return [
                 //         'status'    => 1,
@@ -356,7 +369,7 @@ class MonthlyController extends Controller
                 //         'status'    => 0,
                 //         'message'   => 'Something went wrong!!'
                 //     ];
-                // }
+                }
             }
         } catch (\Exception $ex) {
             return [

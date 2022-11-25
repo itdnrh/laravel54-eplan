@@ -10,6 +10,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
     $scope.cboExpenseType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
+    $scope.cboPrice = '';
+    $scope.cboInPlan = '';
 
     $scope.expenseBudget = '';
     $scope.expenseRemain = '';
@@ -310,6 +312,12 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         $('#faction_id').val(plan.depart.faction_id).trigger('change.select2');
     };
 
+    $scope.setCategoryName = function(name, type) {
+        if (type != '1' || $scope.cboPrice == '') return name;
+
+        return ($scope.cboPrice == '1') ? name : name.replace('ครุภัณฑ์', 'ครุภัณฑ์ต่ำกว่าเกณฑ์ ');
+    };
+
     $scope.showMultipleForm = function(e) {
         $scope.getMultipleData();
 
@@ -328,18 +336,20 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         $scope.expenses = [];
         $scope.loading = true;
 
-        let year = $scope.multipleData.year;
-        let type = $scope.multipleData.plan_type_id == '' ? '1' : $scope.multipleData.plan_type_id;
-        let month = $scope.multipleData.month == '' ? '' : DatetimeService.fotmatYearMonth($scope.multipleData.month);
+        let year    = $scope.multipleData.year;
+        let month   = $scope.multipleData.month == '' ? '' : DatetimeService.fotmatYearMonth($scope.multipleData.month);
+        let type    = $scope.multipleData.plan_type_id == '' ? '1' : $scope.multipleData.plan_type_id;
+        let price   = $scope.cboPrice == '' ? '' : $scope.cboPrice;
+        let in_plan = $scope.cboInPlan == '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${CONFIG.baseUrl}/monthly/multiple-data?year=${year}&type=${type}&month=${month}`)
+        $http.get(`${CONFIG.baseUrl}/monthly/multiple-data?year=${year}&type=${type}&month=${month}&price=${price}&in_plan=${in_plan}`)
         .then(function(res) {
             $scope.multipleData.expenses = res.data.expenses
                 .map(ex => {
                     let category = res.data.categories.find(cat => cat.id == ex.category_id);
 
                     if (category) {
-                        ex.expense_id = category.expense_id;
+                        ex.expense_id = ($scope.cboPrice == '1') ? category.expense_id : category.expense_less10k;
                         ex.plan_type_id = category.plan_type_id;
                     }
 
