@@ -65,7 +65,6 @@
 
                         <div class="box-body">
                             <div class="row">
-
                                 <div class="form-group col-md-6">
                                     <label>ปีงบประมาณ</label>
                                     <select
@@ -81,6 +80,25 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="cboInPlan"
+                                            name="cboInPlan"
+                                            ng-model="cboInPlan"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>ประเภทแผน</label>
                                     <select
@@ -96,6 +114,21 @@
                                                 {{ $planType->plan_type_name }}
                                             </option>
                                         @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>ประเภทครุภัณฑ์</label>
+                                    <select
+                                        id="cboCategory"
+                                        name="cboCategory"
+                                        ng-model="cboCategory"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>

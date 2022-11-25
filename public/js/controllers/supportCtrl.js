@@ -8,6 +8,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.cboFaction = '';
     $scope.cboDepart = '';
     $scope.cboDivision = '';
+    $scope.cboCategory = '';
+    $scope.cboInPlan = '';
     $scope.txtKeyword = '';
     $scope.searchKey == '';
     $scope.txtDesc = '';
