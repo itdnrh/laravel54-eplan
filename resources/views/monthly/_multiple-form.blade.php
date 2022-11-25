@@ -14,7 +14,7 @@
                             ng-model="multipleData.year"
                             ng-change="getMultipleData();"
                         >
-                            <option value="">ปีงบประมาณ</option>
+                            <option value="">-- ปีงบประมาณ --</option>
                             <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
                                 @{{ y }}
                             </option>
@@ -32,7 +32,7 @@
                             ng-model="multipleData.plan_type_id"
                             ng-change="getMultipleData();"
                         >
-                            <option value="">ประเภทแผน</option>
+                            <option value="">-- ประเภทแผน --</option>
                             @foreach($planTypes as $planType)
                                 <option value="{{ $planType->id }}">
                                     {{ $planType->plan_type_name }}

@@ -407,31 +407,6 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         .then(function(res) {
             $scope.loading = false;
 
-            // if (res.data.status == 1) {
-            //     toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
-
-            //     $scope.getAll();
-            // } else {
-            //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-            // }
-        }, function(err) {
-            $scope.loading = false;
-
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        });
-    };
-
-    $scope.multipleUpdate = function(event) {
-        event.preventDefault();
-
-        $scope.loading = true;
-        $scope.multipleData.user = $('#user').val();
-
-        $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
-        .then(function(res) {
-            $scope.loading = false;
-
             if (res.data.status == 1) {
                 toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
 
@@ -445,6 +420,33 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
             console.log(err);
             toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
         });
+    };
+
+    $scope.multipleUpdate = function(event) {
+        event.preventDefault();
+
+        if (confirm('คุณต้องการปรับปรุงข้อมูลควบคุมกำกับติดตามใช่หรือไม่?')) {
+            $scope.loading = true;
+            $scope.multipleData.user = $('#user').val();
+
+            $http.post(`${CONFIG.baseUrl}/monthly/multiple-update`, $scope.multipleData)
+            .then(function(res) {
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ปรับปรุงข้อมูลเรียบร้อย !!!");
+
+                    $scope.getAll();
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถปรับปรุงข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถปรับปรุงข้อมูลได้ !!!");
+            });
+        }
     };
 
     $scope.store = function(event, form) {

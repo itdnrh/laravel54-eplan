@@ -401,6 +401,43 @@ class MonthlyController extends Controller
         }
     }
 
+    public function multipleUpdate(Request $req)
+    {
+        try {
+            list($month, $year) = explode('/', $req['month']);
+
+            foreach($req['expenses'] as $expense) {
+                $monthly = Monthly::find($$expense['expense_id']);
+                $monthly->total        = currencyToNumber($expense['net_total']);
+                $monthly->remain       = currencyToNumber($expense['remain']);
+                $monthly->reporter_id  = $req['user'];
+                $monthly->updated_user = $req['user'];
+
+                // if($monthly->save()) {
+                //     Budget::where('year', $req['year'])
+                //             ->where('expense_id', $expense['expense_id'])
+                //             ->update(['remain' => currencyToNumber($expense['remain'])]);
+
+                //     return [
+                //         'status'    => 1,
+                //         'message'   => 'Insertion successfully',
+                //         'monthly'      => $monthly
+                //     ];
+                // } else {
+                //     return [
+                //         'status'    => 0,
+                //         'message'   => 'Something went wrong!!'
+                //     ];
+                // }
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function edit($id)
     {
         return view('monthly.edit', [
