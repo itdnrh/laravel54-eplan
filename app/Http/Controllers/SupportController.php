@@ -78,6 +78,7 @@ class SupportController extends Controller
     {
         return view('supports.list', [
             "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
@@ -113,6 +114,8 @@ class SupportController extends Controller
         $docNo = $req->get('doc_no');
         $receivedNo = $req->get('received_no');
         $desc   = $req->get('desc');
+        $cate   = $req->get('cate');
+        $inPlan = $req->get('in_plan');
         $status = $req->get('status');
 
         if($status != '') {
@@ -132,9 +135,11 @@ class SupportController extends Controller
         $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
                             ->join('plans','plans.id','=','plan_items.plan_id')
                             ->where('plans.year', $year)
-                            // ->where('plan_items.have_subitem', '1')
                             ->when(!empty($desc), function($q) use ($desc) {
                                 $q->where('desc', 'like', '%'.$desc.'%');
+                            })
+                            ->when(!empty($inPlan), function($q) use ($inPlan) {
+                                $q->where('plans.in_plan', $inPlan);
                             })
                             ->pluck('support_details.support_id');
 
@@ -146,6 +151,9 @@ class SupportController extends Controller
                         })
                         ->when(!empty($type), function($q) use ($type) {
                             $q->where('plan_type_id', $type);
+                        })
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('category_id', $cate);
                         })
                         ->when(!empty($supportType), function($q) use ($supportType) {
                             $q->where('support_type_id', $supportType);
@@ -162,7 +170,7 @@ class SupportController extends Controller
                         ->when(!empty($receivedNo), function($q) use ($receivedNo) {
                             $q->where('received_no', 'like', '%'.$receivedNo.'%');
                         })
-                        ->when(!empty($desc), function($q) use ($supportsList) {
+                        ->when((!empty($desc) || !empty($inPlan)), function($q) use ($supportsList) {
                             $q->whereIn('id', $supportsList);
                         })
                         ->when(count($conditions) > 0, function($q) use ($conditions) {

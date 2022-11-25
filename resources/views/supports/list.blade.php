@@ -24,6 +24,7 @@
             initForms({
                 departs: {{ $departs }},
                 divisions: {{ $divisions }},
+                categories: {{ $categories }}
             }, 2);
             initFiltered();
         "
@@ -104,9 +105,12 @@
                                     <select
                                         id="cboPlanType"
                                         name="cboPlanType"
-                                        ng-model="cboPlanType"
-                                        ng-change="getAll($event)"
                                         class="form-control select2"
+                                        ng-model="cboPlanType"
+                                        ng-change="
+                                            onFilterCategories(cboPlanType);
+                                            getAll($event);
+                                        "
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         @foreach($planTypes as $planType)
@@ -123,7 +127,7 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="getAll($event);"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">

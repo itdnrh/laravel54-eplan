@@ -131,19 +131,21 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.supports = [];
         $scope.pager = null;
 
-        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
         let faction = ($('#user').val() == '1300200009261' || $('#depart').val() == '4')
                         ? $scope.cboFaction
                         : $('#faction').val();
-        let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1' || $('#depart').val() == '4')
-                        ? $scope.cboDepart ? $scope.cboDepart : ''
+        let depart  = ($('#user').val() == '1300200009261' || $('#duty').val() == '1' || $('#depart').val() == '4')
+                        ? !$scope.cboDepart ? '' : $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
-        let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let desc = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-9`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=0-9`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -163,16 +165,18 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
         let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
-        let depart = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
-                        ? $scope.cboDepart ? $scope.cboDepart : ''
+        let depart  = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
+                        ? !$scope.cboDepart ? '' : $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
-        let doc_no = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let desc = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${url}&year=${year}&stype=1&type=${type}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-9`)
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=0-9`)
         .then(function(res) {
             $scope.setSupports(res);
 
