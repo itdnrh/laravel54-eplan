@@ -586,7 +586,7 @@
                             @if(count($committees) > 2 && count($committees) <= 6)
                                 @if($page == 0 && (count($support->details) >= 4 && count($support->details) <= 7))
                                     <?php $page = $page + 1; ?>
-                                    <div style="height: {{ (7 - count($support->details)) * 20 }}px;"></div>
+                                    <div style="height: {{ (7 - count($support->details)) * 30 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
@@ -651,6 +651,10 @@
                             @endif
 
                             @if(count($committees) > 2 && count($committees) <= 6)
+                                @if($page == 1 && (count($support->details) >= 4 && count($support->details) <= 7))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @endif
+
                                 @if ($page == 1 && count($support->details) <= 10)
                                     @if($tableHeight > 100 && $tableHeight < 300)
                                         <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
