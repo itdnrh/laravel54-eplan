@@ -113,6 +113,7 @@ class ProjectController extends Controller
                     ? $req->get('depart') 
                     : Auth::user()->memberOf->depart_id;
         $name = $req->get('name');
+        $approved = $req->get('approved');
         $status = $req->get('status');
 
         // if($status != '-') {
@@ -150,6 +151,9 @@ class ProjectController extends Controller
                         // ->when($status != '', function($q) use ($status) {
                         //     $q->where('status', $status);
                         // })
+                        ->when($approved != '', function($q) use ($approved) {
+                            $q->where('approved', $approved);
+                        })
                         ->when(!empty($name), function($q) use ($name) {
                             $q->where('project_name', 'Like', $name.'%');
                         })

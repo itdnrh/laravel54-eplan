@@ -10,6 +10,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.cboDepart = '';
     $scope.txtKeyword = '';
     $scope.searchKey = '';
+    $scope.isApproved = '';
     $scope.pager = null;
     $scope.persons = [];
     $scope.persons_pager = null;
@@ -90,6 +91,12 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         };
     };
 
+    $scope.setIsApproved = function(e) {
+        $scope.isApproved = e.target.checked;
+
+        $scope.getAll(e);
+    };
+
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.projects = [];
@@ -101,10 +108,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let kpi         = !$scope.cboKpi ? '' : $scope.cboKpi;
         let faction     = !$scope.cboFaction ? '' : $scope.cboFaction;
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&approved=${approved}&status=${status}`)
         .then(function(res) {
             $scope.setProjects(res);
 
@@ -136,10 +144,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let kpi         = !$scope.cboKpi ? '' : $scope.cboKpi;
         let faction     = !$scope.cboFaction ? '' : $scope.cboFaction;
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
         let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&status=${status}`)
+        $http.get(`${url}&year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&approved=${approved}&status=${status}`)
         .then(function(res) {
             cb(res);
 
