@@ -288,7 +288,7 @@
                                             </p>
                                         </div>
                                     </td>
-                                    <td style="text-align: center;">@{{ support.total | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ support.total | currency:'':2 }}</td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="support.status == 0">
                                             รอดำเนินการ
