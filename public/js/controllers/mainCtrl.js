@@ -167,12 +167,23 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.formatReadableTime = function(time) {
         let days = moment().diff(moment(time), "days");
         let hours = moment().diff(moment(time), "hours");
+        let months = moment().diff(moment(time), "months");
         let restHours = hours - (days * 24);
 
-        if (days > 0) {
-            return `${days} วันที่แล้ว`;
+        if (months == 0) {
+            if (days > 0) {
+                if (days == 1) {
+                    return 'เมื่อวาน';
+                }
+    
+                return ` ${days} วันที่แล้ว`;
+            } else {
+                return ` ${hours} ชม.ที่แล้ว`;
+            }
+        } else if (months == 1) {
+            return 'เดือนที่แล้ว';
         } else {
-            return `${hours} ชม.ที่แล้ว`;
+            return ` ${months} เดือนที่แล้ว`;
         }
     }
 

@@ -136,7 +136,7 @@
                 <p style="margin: 0;">วันที่ @{{ support.doc_date | thdate }}</p>
                 <p class="item__spec-text">
                     (<i class="fa fa-clock-o" aria-hidden="true"></i>
-                    ส่งเมื่อ @{{ formatReadableTime(support.sent_date) }})
+                    ส่ง@{{ formatReadableTime(support.sent_date) }})
                 </p>
             </td>
             <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
