@@ -225,21 +225,14 @@
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <form
-                                                id="frmDelete"
-                                                method="POST"
-                                                action="{{ url('/withdrawals/delete') }}"
+                                            <button
+                                                type="button"
+                                                ng-click="delete($event, withdraw.id, withdraw)"
+                                                class="btn btn-danger btn-xs"
                                                 ng-show="!withdraw.completed || withdraw.completed == '0'"
                                             >
-                                                {{ csrf_field() }}
-                                                <button
-                                                    type="submit"
-                                                    ng-click="delete($event, withdraw.id)"
-                                                    class="btn btn-danger btn-xs"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>             
                                 </tr>

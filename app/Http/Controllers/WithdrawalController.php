@@ -282,16 +282,30 @@ class WithdrawalController extends Controller
         try {
             $withdrawal = Withdrawal::find($id);
 
-            if ($withdrawal->delete()) {
-                /** Revert status of all related tables */
-                // $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
-                
-                /** Update status of plan data */
-                // $details = OrderDetail::where('order_id', $req['order_id'])->get();
-                // foreach($details as $item) {
-                //     $plan = Plan::where('id', $item->plan_id)->update(['status' => 5]);
-                // }
+            /** ######################### Revert status of all related tables ######################### */
+            $inspect = Inspection::find($withdrawal->inspection_id);
 
+            /** Update status of orders */
+            $order = Order::find($req['order_id']);
+            if ((int)$order->deliver_amt - (int)$inspect->deliver_seq > 0) {
+                /** To 2=ตรวจรับแล้วบางส่วน */
+                $order->status = 2;
+            } else {
+                /** Or to 3=ตรวจรับทั้งหมดแล้ว */
+                $order->status = 3;
+            }
+            $order->save();
+
+            /** Update status of supports to 4=ตรวจรับแล้ว */
+            $details = OrderDetail::where('order_id', $req['order_id'])->get();
+            foreach($details as $item) {
+                Support::where('id', $item->support_id)->update(['status' => 4]);
+
+                SupportDetail::where('id', $item->support_detail_id)->update(['status' => 4]);
+            }
+            /** ######################### Revert status of all related tables ######################### */
+
+            if ($withdrawal->delete()) {
                 return [
                     'status'        => 1,
                     'message'       => 'Deleting successfully!!',

@@ -581,14 +581,28 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         }
     };
 
-    $scope.delete = function(e, id) {
+    $scope.delete = function(e, id, withdraw) {
         e.preventDefault();
 
-        const actionUrl = $('#frmDelete').attr('action');
-        $('#frmDelete').attr('action', `${actionUrl}/${id}`);
+        if (window.confirm(`คุณต้องการลบรายการส่งเบิกเงิน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.post(`${CONFIG.baseUrl}/withdrawals/delete/${id}`, { order_id: withdraw.inspection.order_id })
+            .then(function(res) {
+                console.log(res);
+                $scope.loading = false;
 
-        if (window.confirm(`คุณต้องการลบรายการขอยกเลิกวันลาเลขที่ ${id} ใช่หรือไม่?`)) {
-            $('#frmDelete').submit();
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถลบข้อมูลได้ !!!");
+            });
         } else {
             $scope.loading = false;
         }
