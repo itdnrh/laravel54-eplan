@@ -217,15 +217,19 @@
                                                 title="รายละเอียด">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                            <a  href="{{ url('/withdrawals/edit') }}/@{{ withdraw.id }}"
+                                            <a
+                                                href="{{ url('/withdrawals/edit') }}/@{{ withdraw.id }}"
                                                 class="btn btn-warning btn-xs"
-                                                title="แก้ไขรายการ">
+                                                title="แก้ไขรายการ"
+                                                ng-show="!withdraw.completed || withdraw.completed == '0'"
+                                            >
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <form
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/withdrawals/delete') }}"
+                                                ng-show="!withdraw.completed || withdraw.completed == '0'"
                                             >
                                                 {{ csrf_field() }}
                                                 <button
