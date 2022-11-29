@@ -108,7 +108,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label>เลขที่เอกสารส่งเบิกเงิน</label>
                                     <input
                                         id="txtWithdrawNo"
@@ -117,6 +117,19 @@
                                         class="form-control"
                                         ng-keyup="getAll($event)"
                                     />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboIsCompleted"
+                                        class="form-control"
+                                        ng-model="cboIsCompleted"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="1">ยังไม่ได้ส่ง</option>
+                                        <option value="2">ส่งเบิกเงินแล้ว</option>
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->

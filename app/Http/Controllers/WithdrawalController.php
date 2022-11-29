@@ -72,6 +72,7 @@ class WithdrawalController extends Controller
         $year       = $req->get('year');
         $supplier   = $req->get('supplier');
         $docNo      = $req->get('doc_no');
+        $completed  = $req->get('completed');
         list($sdate, $edate) = explode('-', $req->get('date'));
 
         $withdrawals = Withdrawal::with('inspection','supplier','prepaid','prepaid.prefix')
@@ -84,6 +85,13 @@ class WithdrawalController extends Controller
                         })
                         ->when(!empty($docNo), function($q) use ($docNo) {
                             $q->where('withdraw_no', 'like', '%'.$docNo.'%');
+                        })
+                        ->when(!empty($completed), function($q) use ($completed) {
+                            if ($completed == '1') {
+                                $q->where('completed', '0')->orWhereNull('completed');
+                            } else {
+                                $q->where('completed', '1');
+                            }
                         })
                         ->when($req->get('date') != '-', function($q) use ($sdate, $edate) {
                             if ($sdate != '' && $edate != '') {

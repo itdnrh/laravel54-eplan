@@ -3,6 +3,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.loading = false;
     $scope.cboYear = '2566';
     $scope.cboSupplier = '';
+    $scope.cboIsCompleted = '1';
     $scope.txtWithdrawNo = '';
     $scope.dtpSdate = '';
     $scope.dtpEdate = '';
@@ -239,8 +240,9 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         let doc_no      = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
         let sdate       = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
         let edate       = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
+        let completed   = $scope.cboIsCompleted === '' ? '' : $scope.cboIsCompleted;
         
-        $http.get(`${CONFIG.baseUrl}/withdrawals/search?year=${year}&doc_no=${doc_no}&supplier=${supplier}&date=${sdate}-${edate}`)
+        $http.get(`${CONFIG.baseUrl}/withdrawals/search?year=${year}&doc_no=${doc_no}&supplier=${supplier}&date=${sdate}-${edate}&completed=${completed}`)
         .then(function(res) {
             $scope.setWithdrawals(res);
 
@@ -264,8 +266,9 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         let doc_no      = $scope.txtWithdrawNo === '' ? 0 : $scope.txtWithdrawNo;
         let sdate       = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
         let edate       = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
+        let completed   = $scope.cboIsCompleted === '' ? '' : $scope.cboIsCompleted;
 
-        $http.get(`${url}&year=${year}&doc_no=${doc_no}&supplier=${supplier}&date=${sdate}-${edate}`)
+        $http.get(`${url}&year=${year}&doc_no=${doc_no}&supplier=${supplier}&date=${sdate}-${edate}&completed=${completed}`)
         .then(function(res) {
             cb(res);
 
