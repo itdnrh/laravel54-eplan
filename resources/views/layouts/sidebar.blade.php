@@ -285,7 +285,7 @@
 						Auth::user()->memberOf->depart_id == 1 ||
 						count(Auth::user()->delegations) > 0
 					)
-						<li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
+						<!-- <li class="treeview" ng-class="{ 'menu-open active': ['utilities'].includes(menu) }">
 							<a href="#">
 								<i class="fa fa-bolt"></i>
 								<span>ค่าสาธารณูปโภค</span>
@@ -305,7 +305,7 @@
 									</a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 					@endif
 
 					<!-- ควบคุมกำกับติดตาม -->

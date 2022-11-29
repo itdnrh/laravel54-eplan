@@ -385,7 +385,6 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
         $http.get(`${CONFIG.apiUrl}/monthly/check-multiple/${year}/${month}/${type}/${price}`)
         .then(function(res) {
-            console.log(res);
             if (res.data.monthly > 0) {
                 $scope.multipleData.isExisted = true;
             }
@@ -397,34 +396,41 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         });
     };
 
-    $scope.multipleStore = function(event) {
+    $scope.multipleStore = function(event, form) {
         event.preventDefault();
 
-        $scope.loading = true;
-        $scope.multipleData.user = $('#user').val();
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
 
-        $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
-        .then(function(res) {
-            $scope.loading = false;
-
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
-
-                $scope.getAll();
-            } else {
+        if (!$scope.multipleData.isExisted) {
+            $scope.loading = true;
+            $scope.multipleData.user = $('#user').val();
+    
+            $http.post(`${CONFIG.baseUrl}/monthly/multiple-store`, $scope.multipleData)
+            .then(function(res) {
+                $scope.loading = false;
+    
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกข้อมูลเรียบร้อย !!!");
+    
+                    $scope.getAll();
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                $scope.loading = false;
+    
+                console.log(err);
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-            }
-        }, function(err) {
-            $scope.loading = false;
-
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถบันทึกข้อมูลได้ !!!");
-        });
+            });
+        } else {
+            $scope.multipleUpdate();
+        }
     };
 
-    $scope.multipleUpdate = function(event) {
-        event.preventDefault();
-
+    $scope.multipleUpdate = function() {
         if (confirm('คุณต้องการปรับปรุงข้อมูลควบคุมกำกับติดตามใช่หรือไม่?')) {
             $scope.loading = true;
             $scope.multipleData.user = $('#user').val();
