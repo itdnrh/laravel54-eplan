@@ -163,7 +163,19 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
 
         $scope.planType = planType;
     };
-    
+
+    $scope.formatReadableTime = function(time) {
+        let days = moment().diff(moment(time), "days");
+        let hours = moment().diff(moment(time), "hours");
+        let restHours = hours - (days * 24);
+
+        if (days > 0) {
+            return `${days} วันที่แล้ว`;
+        } else {
+            return `${hours} ชม.ที่แล้ว`;
+        }
+    }
+
     $scope.inStock = 0;
     $scope.setInStock = function(value) {
         $scope.inStock = value;

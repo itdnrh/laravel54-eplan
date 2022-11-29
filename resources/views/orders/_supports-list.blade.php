@@ -115,11 +115,12 @@
                 <p style="margin: 0;">เลขที่ @{{ support.doc_no }}</p>
                 <p style="margin: 0;">วันที่ @{{ support.doc_date | thdate }}</p>
                 <p class="item__spec-text">
-                    (<i class="fa fa-clock-o" aria-hidden="true"></i> ส่งเมื่อ @{{ support.sent_date | thdate }})
+                    (<i class="fa fa-clock-o" aria-hidden="true"></i>
+                    ส่งเมื่อ @{{ formatReadableTime(support.sent_date) }})
                 </p>
             </td>
             <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
-            <td>
+            <td></td>
                 <div ng-show="support.is_plan_group">
                     @{{ support.plan_group_desc }}
                     จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
