@@ -8,6 +8,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.cboOfficer = '';
     $scope.cboStatus = '0';
     $scope.cboSupportStatus = '2';
+    $scope.cboInPlan = '';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';
@@ -695,13 +696,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supports = [];
         $scope.supports_pager = null;
 
-        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let year    = $scope.cboYear == '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         // let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let doc_no  = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=1`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=1`)
         .then(function(res) {
             $scope.loading = false;
 
@@ -722,13 +724,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.supports = [];
         $scope.supports_pager = null;
 
-        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
+        let year    = $scope.cboYear == '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
         // let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let doc_no  = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&status=1`)
+        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=1`)
         .then(function(res) {
             cb(res);
 

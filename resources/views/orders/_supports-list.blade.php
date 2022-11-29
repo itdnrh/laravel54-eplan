@@ -6,7 +6,7 @@
     <div class="box-body">
         <form id="frmSearch" name="frmSearch" role="form">
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>ปีงบประมาณ</label>
                     <select
                         id="cboYear"
@@ -21,7 +21,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>ประเภทพัสดุ</label>
                     <select
                         style="margin-right: 1rem;"
@@ -37,10 +37,26 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>ในแผน/นอกแผน</label>
+                        <select
+                            id="cboInPlan"
+                            name="cboInPlan"
+                            ng-model="cboInPlan"
+                            class="form-control"
+                            ng-change="getSupports();"
+                        >
+                            <option value="">-- ทั้งหมด --</option>
+                            <option value="I">ในแผน</option>
+                            <option value="O">นอกแผน</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>กลุ่มภารกิจ</label>
                         <select
@@ -59,7 +75,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>กลุ่มงาน</label>
                         <select
@@ -76,10 +92,7 @@
                         </select>
                     </div>
                 </div>
-            </div>
-        
-            <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>เลขที่ใบขอสนับสนุน</label>
                         <input
@@ -92,22 +105,6 @@
                         />
                     </div>
                 </div>
-                <!-- <div class="col-md-6">
-                    <div class="form-group">
-                        <label>ในแผน/นอกแผน</label>
-                        <select
-                            id="isInPlan"
-                            name="isInPlan"
-                            ng-model="isInPlan"
-                            class="form-control"
-                            ng-change="getPlanByItem()"
-                        >
-                            <option value="">-- ทั้งหมด --</option>
-                            <option value="I">ในแผน</option>
-                            <option value="O">นอกแผน</option>
-                        </select>
-                    </div>
-                </div> -->
             </div>
         </form>
     </div>
