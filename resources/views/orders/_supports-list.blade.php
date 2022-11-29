@@ -1,94 +1,117 @@
 <!-- // TODO: Filtering controls -->
-<form id="frmSearch" name="frmSearch" role="form">
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label>ปีงบประมาณ</label>
-            <select
-                id="cboYear"
-                name="cboYear"
-                ng-model="cboYear"
-                class="form-control"
-                ng-change="getSupports()"
-            >
-                <option value="">-- ทั้งหมด --</option>
-                <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                    @{{ y }}
-                </option>
-            </select>
-        </div>
-        <div class="form-group col-md-6">
-            <label>ประเภทพัสดุ</label>
-            <select
-                style="margin-right: 1rem;"
-                class="form-control"
-                ng-model="cboPlanType"
-                ng-change="getSupports();"
-            >
-                <option value="">-- เลือกประเภทพัสดุ --</option>
-                @foreach($planTypes as $planType)
-                    <option value="{{ $planType->id }}">
-                        {{ $planType->plan_type_name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="box-title">ค้นหาข้อมูล</h3>
     </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>กลุ่มภารกิจ</label>
-                <select
-                    id="cboFaction"
-                    name="cboFaction"
-                    ng-model="cboFaction"
-                    class="form-control"
-                    ng-change="onFactionSelected(cboFaction)"
-                >
-                    <option value="">-- ทั้งหมด --</option>
-                    @foreach($factions as $faction)
-                        <option value="{{ $faction->faction_id }}">
-                            {{ $faction->faction_name }}
+    <div class="box-body">
+        <form id="frmSearch" name="frmSearch" role="form">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label>ปีงบประมาณ</label>
+                    <select
+                        id="cboYear"
+                        name="cboYear"
+                        ng-model="cboYear"
+                        class="form-control"
+                        ng-change="getSupports()"
+                    >
+                        <option value="">-- ทั้งหมด --</option>
+                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                            @{{ y }}
                         </option>
-                    @endforeach
-                </select>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>ประเภทพัสดุ</label>
+                    <select
+                        style="margin-right: 1rem;"
+                        class="form-control"
+                        ng-model="cboPlanType"
+                        ng-change="getSupports();"
+                    >
+                        <option value="">-- เลือกประเภทพัสดุ --</option>
+                        @foreach($planTypes as $planType)
+                            <option value="{{ $planType->id }}">
+                                {{ $planType->plan_type_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>กลุ่มงาน</label>
-                <select
-                    id="cboDepart"
-                    name="cboDepart"
-                    ng-model="cboDepart"
-                    class="form-control"
-                    ng-change="getSupports();"
-                >
-                    <option value="">-- ทั้งหมด --</option>
-                    <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
-                        @{{ dep.depart_name }}
-                    </option>
-                </select>
+        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>กลุ่มภารกิจ</label>
+                        <select
+                            id="cboFaction"
+                            name="cboFaction"
+                            ng-model="cboFaction"
+                            class="form-control"
+                            ng-change="onFactionSelected(cboFaction)"
+                        >
+                            <option value="">-- ทั้งหมด --</option>
+                            @foreach($factions as $faction)
+                                <option value="{{ $faction->faction_id }}">
+                                    {{ $faction->faction_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>กลุ่มงาน</label>
+                        <select
+                            id="cboDepart"
+                            name="cboDepart"
+                            ng-model="cboDepart"
+                            class="form-control"
+                            ng-change="getSupports();"
+                        >
+                            <option value="">-- ทั้งหมด --</option>
+                            <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
+                                @{{ dep.depart_name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
             </div>
-        </div>
+        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>เลขที่ใบขอสนับสนุน</label>
+                        <input
+                            type="text"
+                            id="txtSupportNo"
+                            name="txtSupportNo"
+                            ng-model="txtSupportNo"
+                            class="form-control"
+                            ng-keyup="getSupports();"
+                        />
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <label>ในแผน/นอกแผน</label>
+                        <select
+                            id="isInPlan"
+                            name="isInPlan"
+                            ng-model="isInPlan"
+                            class="form-control"
+                            ng-change="getPlanByItem()"
+                        >
+                            <option value="">-- ทั้งหมด --</option>
+                            <option value="I">ในแผน</option>
+                            <option value="O">นอกแผน</option>
+                        </select>
+                    </div>
+                </div> -->
+            </div>
+        </form>
     </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>เลขที่ใบขอสนับสนุน</label>
-                <input
-                    type="text"
-                    id="txtSupportNo"
-                    name="txtSupportNo"
-                    ng-model="txtSupportNo"
-                    class="form-control"
-                    ng-keyup="getSupports();"
-                />
-            </div>
-        </div>
-    </div>
-</form>
+</div>
 <!-- // TODO: Filtering controls -->
 
 <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
@@ -120,7 +143,7 @@
                 </p>
             </td>
             <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
-            <td></td>
+            <td>
                 <div ng-show="support.is_plan_group">
                     @{{ support.plan_group_desc }}
                     จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
@@ -145,7 +168,7 @@
                 </div>
             </td>
             <td style="text-align: center;">
-                @{{ support.total | currency:'':0 }}
+                @{{ support.total | currency:'':2 }}
             </td>
             <td style="text-align: center;">
                 <p style="margin: 0;">@{{ support.depart.depart_name }}</p>

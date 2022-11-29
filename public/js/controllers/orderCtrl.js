@@ -7,6 +7,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.cboSupplier = '';
     $scope.cboOfficer = '';
     $scope.cboStatus = '0';
+    $scope.cboSupportStatus = '2';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';
