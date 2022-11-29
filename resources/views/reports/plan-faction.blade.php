@@ -35,36 +35,67 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <!-- // TODO: should use datepicker instead -->
-                            <div class="form-group col-md-6">
-                                <label>ปีงบประมาณ</label>
-                                <select
-                                    id="cboYear"
-                                    name="cboYear"
-                                    ng-model="cboYear"
-                                    class="form-control"
-                                    ng-change="getPlanByFaction()"
-                                >
-                                    <option value="">-- ทั้งหมด --</option>
-                                    <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
-                                        @{{ y }}
-                                    </option>
-                                </select>
+                            <div class="row">
+                                <!-- // TODO: should use datepicker instead -->
+                                <div class="form-group col-md-6">
+                                    <label>ปีงบประมาณ</label>
+                                    <select
+                                        id="cboYear"
+                                        name="cboYear"
+                                        ng-model="cboYear"
+                                        class="form-control"
+                                        ng-change="getPlanByFaction()"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                            @{{ y }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>ราคาต่อหน่วย</label>
+                                    <select
+                                        id="cboPrice"
+                                        name="cboPrice"
+                                        ng-model="cboPrice"
+                                        class="form-control"
+                                        ng-change="getPlanByFaction()"
+                                    >
+                                        <option value="">-- เลือก --</option>
+                                        <option value="1">ราคา 10,000 บาทขึ้นไป</option>
+                                        <option value="2">ราคา น้อยกว่า 10,000 บาท</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboApproved"
+                                        name="cboApproved"
+                                        ng-model="cboApproved"
+                                        class="form-control"
+                                        ng-change="getPlanByFaction()"
+                                    >
+                                        <option value="">ยังไม่อนุมัติ</option>
+                                        <option value="A">อนุมัติ</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="isInPlan"
+                                            name="isInPlan"
+                                            ng-model="isInPlan"
+                                            class="form-control"
+                                            ng-change="getPlanByFaction()"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>สถานะ</label>
-                                <select
-                                    id="cboApproved"
-                                    name="cboApproved"
-                                    ng-model="cboApproved"
-                                    class="form-control"
-                                    ng-change="getPlanByFaction()"
-                                >
-                                    <option value="">ยังไม่อนุมัติ</option>
-                                    <option value="A">อนุมัติ</option>
-                                </select>
-                            </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

@@ -114,8 +114,23 @@
                                         <option value="A">อนุมัติ</option>
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="isInPlan"
+                                            name="isInPlan"
+                                            ng-model="isInPlan"
+                                            class="form-control"
+                                            ng-change="getPlanProcessByQuarter()"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->

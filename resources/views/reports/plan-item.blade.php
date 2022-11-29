@@ -39,9 +39,7 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-
                             <div class="row">
-                                <!-- // TODO: should use datepicker instead -->
                                 <div class="form-group col-md-4">
                                     <label>ปีงบประมาณ</label>
                                     <select
@@ -89,7 +87,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <label>สถานะ</label>
                                     <select
                                         id="cboApproved"
@@ -101,8 +99,24 @@
                                         <option value="">ยังไม่อนุมัติ</option>
                                         <option value="A">อนุมัติ</option>
                                     </select>
+                                </div>                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="isInPlan"
+                                            name="isInPlan"
+                                            ng-model="isInPlan"
+                                            class="form-control"
+                                            ng-change="getPlanByItem()"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <label>ราคาต่อหน่วย</label>
                                     <select
                                         id="cboPrice"
@@ -116,8 +130,8 @@
                                         <option value="2">ราคา น้อยกว่า 10,000 บาท</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label>เรียมลำดับ</label>
+                                <div class="form-group col-md-6">
+                                    <label>เรียงลำดับ</label>
                                     <select
                                         id="cboSort"
                                         name="cboSort"
@@ -130,7 +144,7 @@
                                         <option value="amount">จำนวนที่ขอ</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-6">
                                     <label for="">&nbsp;</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>

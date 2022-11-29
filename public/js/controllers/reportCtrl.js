@@ -100,9 +100,10 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.cboYear;
+            let in_plan = $scope.isInPlan !== '' ? $scope.isInPlan : '';
             let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-faction?year=${year}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-faction?year=${year}&approved=${approved}&in_plan=${in_plan}`)
             .then(function (res) {
                 let departs = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
@@ -252,9 +253,10 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.cboYear;
+            let in_plan = $scope.isInPlan !== '' ? $scope.isInPlan : '';
             let approved = !$scope.cboApproved ? '' : 'A';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-depart?year=${year}&faction=${faction}&approved=${approved}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-depart?year=${year}&faction=${faction}&approved=${approved}&in_plan=${in_plan}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let dep = res.data.departs.find(d => d.depart_id === plan.depart_id);
@@ -305,9 +307,10 @@ app.controller(
             let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let isFixcost   = $scope.chkIsFixcost ? '1' : '';
             let approved    = !$scope.cboApproved ? '' : 'A';
+            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&cate=${cate}&price=${price}&approved=${approved}&isFixcost=${isFixcost}&sort=${sort}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&cate=${cate}&price=${price}&approved=${approved}&in_plan=${in_plan}&isFixcost=${isFixcost}&sort=${sort}`)
             .then(function (res) {
                 $scope.plans = res.data.plans;
 
@@ -415,10 +418,11 @@ app.controller(
                                 : $scope.cboYear;
             let type        = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
             let approved    = !$scope.cboApproved ? '' : 'A';
-            let price        = $scope.cboPrice !== '' ? $scope.cboPrice : '';
+            let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&in_plan=${in_plan}&sort=${sort}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let cate = res.data.categories.find(c => c.id === plan.category_id);
@@ -506,8 +510,9 @@ app.controller(
             let approved    = !$scope.cboApproved ? '' : 'A';
             let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
+            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
 
-            $http.get(`${CONFIG.apiUrl}/reports/plan-process-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&sort=${sort}`)
+            $http.get(`${CONFIG.apiUrl}/reports/plan-process-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&in_plan=${in_plan}&sort=${sort}`)
             .then(function (res) {
                 $scope.plans = res.data.plans.map(plan => {
                     let cate = res.data.categories.find(c => c.id === plan.category_id);

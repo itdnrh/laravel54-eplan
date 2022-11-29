@@ -253,6 +253,8 @@ class ReportController extends Controller
     {
         /** Get params from query string */
         $year       = $req->get('year');
+        $price      = $req->get('price');
+        $inPlan     = $req->get('in_plan');
         $approved   = $req->get('approved');
 
         $plans = \DB::table('plans')
@@ -268,6 +270,9 @@ class ReportController extends Controller
                     ->where('plans.year', $year)
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($inPlan), function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->groupBy('plans.depart_id')
                     ->get();
@@ -297,6 +302,8 @@ class ReportController extends Controller
         /** Get params from query string */
         $faction    = $req->get('faction');
         $year       = $req->get('year');
+        $price      = $req->get('price');
+        $inPlan     = $req->get('in_plan');
         $approved   = $req->get('approved');
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
@@ -317,6 +324,9 @@ class ReportController extends Controller
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($inPlan), function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->groupBy('plans.depart_id')
                     ->get();
@@ -345,6 +355,7 @@ class ReportController extends Controller
         $cate       = $req->get('cate');
         $price      = $req->get('price');
         $approved   = $req->get('approved');
+        $inPlan     = $req->get('in_plan');
         $isFixcost  = $req->get('isFixcost');
         $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
@@ -369,6 +380,9 @@ class ReportController extends Controller
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($inPlan), function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         if ($price == 1) {
@@ -484,6 +498,7 @@ class ReportController extends Controller
         $year       = $req->get('year');
         $type       = $req->get('type');
         $price      = $req->get('price');
+        $inPlan     = $req->get('in_plan');
         $approved   = $req->get('approved');
         $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
@@ -511,6 +526,9 @@ class ReportController extends Controller
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($inPlan), function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         if ($price == 1) {
@@ -552,6 +570,7 @@ class ReportController extends Controller
         $year       = $req->get('year');
         $type       = $req->get('type');
         $price      = $req->get('price');
+        $inPlan     = $req->get('in_plan');
         $approved   = $req->get('approved');
         $sort       = empty($req->get('sort')) ? 'sum_price' : $req->get('sort');
 
@@ -580,6 +599,9 @@ class ReportController extends Controller
                     })
                     ->when(!empty($approved), function($q) use ($approved) {
                         $q->where('plans.approved', $approved);
+                    })
+                    ->when(!empty($inPlan), function($q) use ($inPlan) {
+                        $q->where('plans.in_plan', $inPlan);
                     })
                     ->when(!empty($price), function($q) use ($price) {
                         if ($price == 1) {
