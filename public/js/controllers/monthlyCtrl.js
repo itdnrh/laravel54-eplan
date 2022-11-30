@@ -341,7 +341,6 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         $('#multiple-form').modal('show');
     };
 
-    $scope.expenses = [];
     $scope.multipleData = {
         year: '2566',
         month: DatetimeService.fotmatYearMonthBE(moment().format('YYYY-MM')),
@@ -351,8 +350,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         isExisted: false
     };
     $scope.getMultipleData = function() {
-        $scope.expenses = [];
         $scope.loading = true;
+        $scope.multipleData.expenses = [];
 
         let year    = $scope.multipleData.year;
         let month   = $scope.multipleData.month == '' ? '' : DatetimeService.fotmatYearMonth($scope.multipleData.month);
@@ -362,29 +361,49 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
         $http.get(`${CONFIG.baseUrl}/monthly/multiple-data?year=${year}&type=${type}&month=${month}&price=${price}&in_plan=${in_plan}`)
         .then(function(res) {
-            $scope.multipleData.expenses = res.data.expenses
-                .map(ex => {
+            if ($scope.multipleData.plan_type_id == '3' || $scope.multipleData.plan_type_id == '4') {
+                let exp = {};
+
+                exp.net_total = res.data.expenses.reduce((acc, curVal) => acc = acc + parseFloat(curVal.net_total), 0.0);
+
+                if ($scope.multipleData.plan_type_id == '3') {
+                    exp.category_id = 69;
+                    exp.category_name = 'จ้างเหมา';
+                    exp.expense_id = 69;
+                    exp.plan_type_id = '3';
+                } else {
+                    exp.category_id = 67;
+                    exp.category_name = 'สิ่งก่อสร้างและระบบต่างๆ';
+                    exp.expense_id = 67;
+                    exp.plan_type_id = '4';
+                }
+
+                $scope.multipleData.expenses.push(exp);
+            } else {
+                $scope.multipleData.expenses = res.data.expenses.map(ex => {
                     let category = res.data.categories.find(cat => cat.id == ex.category_id);
 
                     if (category) {
                         ex.expense_id   = ($scope.multipleData.plan_type_id == '1' && $scope.cboPrice == '2')
-                                            ? category.expense_less10k 
-                                            : category.expense_id;
+                                                ? category.expense_less10k 
+                                                : category.expense_id;
                         ex.plan_type_id = category.plan_type_id;
                     }
 
                     return ex;
-                })
-                .map(ex => {
-                    let budget = res.data.budgets.find(bg => bg.expense_id == ex.expense_id);
-
-                    if (budget) {
-                        ex.budget = budget.budget;
-                        ex.remain = parseFloat(budget.remain) - parseFloat(ex.net_total);
-                    }
-
-                    return ex;
                 });
+            }
+
+            $scope.multipleData.expenses.map(ex => {
+                let budget = res.data.budgets.find(bg => bg.expense_id == ex.expense_id);
+
+                if (budget) {
+                    ex.budget = budget.budget;
+                    ex.remain = parseFloat(budget.remain) - parseFloat(ex.net_total);
+                }
+
+                return ex;
+            });
 
             checkDataExistance(moment(month).format('MM'));
 
