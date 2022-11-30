@@ -350,7 +350,9 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
                     let category = res.data.categories.find(cat => cat.id == ex.category_id);
 
                     if (category) {
-                        ex.expense_id = ($scope.multipleData.plan_type_id == '1' || $scope.cboPrice == '2') ? category.expense_less10k : category.expense_id;
+                        ex.expense_id   = ($scope.multipleData.plan_type_id == '1' && $scope.cboPrice == '2')
+                                            ? category.expense_less10k 
+                                            : category.expense_id;
                         ex.plan_type_id = category.plan_type_id;
                     }
 
@@ -387,6 +389,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         .then(function(res) {
             if (res.data.monthly > 0) {
                 $scope.multipleData.isExisted = true;
+            } else {
+                $scope.multipleData.isExisted = false;
             }
 
             $scope.loading = false;

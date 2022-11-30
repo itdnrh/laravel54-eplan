@@ -376,22 +376,22 @@ class MonthlyController extends Controller
                 $monthly->created_user = $req['user'];
                 $monthly->updated_user = $req['user'];
 
-                // if($monthly->save()) {
-                //     Budget::where('year', $req['year'])
-                //             ->where('expense_id', $expense['expense_id'])
-                //             ->update(['remain' => currencyToNumber($expense['remain'])]);
+                if($monthly->save()) {
+                    Budget::where('year', $req['year'])
+                            ->where('expense_id', $expense['expense_id'])
+                            ->update(['remain' => currencyToNumber($expense['remain'])]);
 
-                //     return [
-                //         'status'    => 1,
-                //         'message'   => 'Insertion successfully',
-                //         'monthly'      => $monthly
-                //     ];
-                // } else {
-                //     return [
-                //         'status'    => 0,
-                //         'message'   => 'Something went wrong!!'
-                //     ];
-                // }
+                    return [
+                        'status'    => 1,
+                        'message'   => 'Insertion successfully',
+                        'monthly'      => $monthly
+                    ];
+                } else {
+                    return [
+                        'status'    => 0,
+                        'message'   => 'Something went wrong!!'
+                    ];
+                }
             }
         } catch (\Exception $ex) {
             return [
@@ -413,22 +413,22 @@ class MonthlyController extends Controller
                 $monthly->reporter_id  = $req['user'];
                 $monthly->updated_user = $req['user'];
 
-                // if($monthly->save()) {
-                //     Budget::where('year', $req['year'])
-                //             ->where('expense_id', $expense['expense_id'])
-                //             ->update(['remain' => currencyToNumber($expense['remain'])]);
+                if($monthly->save()) {
+                    Budget::where('year', $req['year'])
+                            ->where('expense_id', $expense['expense_id'])
+                            ->update(['remain' => currencyToNumber($expense['remain'])]);
 
-                //     return [
-                //         'status'    => 1,
-                //         'message'   => 'Insertion successfully',
-                //         'monthly'      => $monthly
-                //     ];
-                // } else {
-                //     return [
-                //         'status'    => 0,
-                //         'message'   => 'Something went wrong!!'
-                //     ];
-                // }
+                    return [
+                        'status'    => 1,
+                        'message'   => 'Insertion successfully',
+                        'monthly'      => $monthly
+                    ];
+                } else {
+                    return [
+                        'status'    => 0,
+                        'message'   => 'Something went wrong!!'
+                    ];
+                }
             }
         } catch (\Exception $ex) {
             return [
