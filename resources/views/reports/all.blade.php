@@ -89,6 +89,26 @@
                         </div>
 
                         <div class="row" style="margin: auto 10px;">
+                            <!-- <div class="col-md-6">
+                                <h4>การขอสนับสนุน</h4>
+                                <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/support-type') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานการขอสนับสนุน ตามประเภทแผน
+                                        </a>
+                                    </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/support-depart') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานการขอสนับสนุน ตามหน่วยงาน
+                                        </a>
+                                    </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/support-supplier') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานการขอสนับสนุน ตามเจ้าหนี้
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                             <div class="col-md-6">
                                 <h4>การสั่งซื้อ</h4>
                                 <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
@@ -102,24 +122,13 @@
                                             <i class="fa fa-circle-o"></i> รายงานใบสั่งซื้อ/สั่งจ้าง ตามหน่วยงาน
                                         </a>
                                     </li>
-                                    </li>
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/order-supplier') }}">
                                             <i class="fa fa-circle-o"></i> รายงานใบสั่งซื้อ/สั่งจ้าง ตามเจ้าหนี้
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <!-- <h4>โครงการ</h4>
-                                <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
-                                    <li style="margin: 5px;">
-                                        <a href="{{ url('reports/project-faction') }}">
-                                            <i class="fa fa-circle-o"></i> รายงานแผนงาน/โครงการตามกลุ่มภารกิจ
-                                        </a>
-                                    </li>   
-                                </ul> -->
-                            </div>
+                            </div> -->
                         </div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
