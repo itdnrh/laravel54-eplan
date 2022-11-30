@@ -172,6 +172,7 @@ class MonthlyController extends Controller
                         ->select(
                             'monthly.expense_id',
                             'expenses.name',
+                            'expenses.expense_type_id',
                             \DB::raw("sum(case when (monthly.month='10') then monthly.total end) as oct_total"),
                             \DB::raw("sum(case when (monthly.month='11') then monthly.total end) as nov_total"),
                             \DB::raw("sum(case when (monthly.month='12') then monthly.total end) as dec_total"),
@@ -187,16 +188,22 @@ class MonthlyController extends Controller
                             \DB::raw("sum(monthly.total) as total")
                         )
                         ->leftJoin('expenses', 'monthly.expense_id', '=', 'expenses.id')
-                        ->groupBy('monthly.expense_id', 'expenses.name')
                         ->where('monthly.year', $year)
                         ->when(!empty($type), function($q) use ($expensesList) {
                             $q->whereIn('monthly.expense_id', $expensesList);
                         })
+                        ->groupBy('monthly.expense_id', 'expenses.name', 'expenses.expense_type_id')
+                        ->orderBy('expenses.sort')
                         ->get();
+        
+        $expenseTypes = ExpenseType::when(!empty($type), function($q) use ($type) {
+                            $q->where('id', $type);
+                        })->get();
 
         return [
-            'monthly'   => $monthly,
-            'budget'    => Budget::where('year', $year)->get()
+            "monthly"       => $monthly,
+            "budgets"       => Budget::where('year', $year)->get(),
+            "expenseTypes"  => $expenseTypes
         ];
     }
 

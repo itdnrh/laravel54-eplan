@@ -4,7 +4,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
     $scope.plans = [];
     $scope.pager = null;
 
-    $scope.summary = [];
+    $scope.expenseTypes = [];
 
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
     $scope.cboExpenseType = '';
@@ -153,44 +153,11 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         });
     };
 
-    $scope.totalSummary = {
-        budget: 0,
-        oct: 0,
-        nov: 0,
-        dec: 0,
-        jan: 0,
-        fab: 0,
-        mar: 0,
-        apr: 0,
-        may: 0,
-        jun: 0,
-        jul: 0,
-        aug: 0,
-        sep: 0,
-        total: 0,
-        remain: 0,
-    };
+    $scope.totalSummary = [];
     $scope.getSummary = function(event) {
         $scope.loading = true;
-        $scope.summary = [];
-
-        $scope.totalSummary = {
-            budget: 0,
-            oct: 0,
-            nov: 0,
-            dec: 0,
-            jan: 0,
-            fab: 0,
-            mar: 0,
-            apr: 0,
-            may: 0,
-            jun: 0,
-            jul: 0,
-            aug: 0,
-            sep: 0,
-            total: 0,
-            remain: 0,
-        };
+        $scope.expenseTypes = [];
+        $scope.totalSummary = [];
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type    = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
@@ -199,41 +166,25 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
         $http.get(`${CONFIG.apiUrl}/monthly/${year}/summary?type=${type}&depart=${depart}&status=${status}`)
         .then(function(res) {
-            const { monthly, budget } = res.data;
+            const { monthly, budgets, expenseTypes } = res.data;
 
-            $scope.summary = monthly.map(mon => {
-                const summary = budget.find(b => b.expense_id === mon.expense_id);
+            let summaries = monthly.map(mon => {
+                const summary = budgets.find(b => b.expense_id === mon.expense_id);
                 mon.budget = summary.budget;
-
                 return mon;
             });
 
-            if ($scope.summary) {
-                $scope.summary.forEach(sum => {
-                    $scope.totalSummary.budget += sum.budget,
-                    $scope.totalSummary.oct += sum.oct_total,
-                    $scope.totalSummary.nov += sum.nov_total;
-                    $scope.totalSummary.dec += sum.dec_total;
-                    $scope.totalSummary.jan += sum.jan_total;
-                    $scope.totalSummary.fab += sum.fab_total;
-                    $scope.totalSummary.mar += sum.mar_total;
-                    $scope.totalSummary.apr += sum.apr_total;
-                    $scope.totalSummary.may += sum.may_total;
-                    $scope.totalSummary.jun += sum.jun_total;
-                    $scope.totalSummary.jul += sum.jul_total;
-                    $scope.totalSummary.aug += sum.aug_total;
-                    $scope.totalSummary.sep += sum.sep_total;
-                    $scope.totalSummary.total += sum.total;
-                    $scope.totalSummary.remain += sum.budget - sum.total;
-                });
-            } else {
-                $scope.totalSummary = {
+            $scope.expenseTypes = expenseTypes.map(et => {
+                et.summaries = summaries.filter(sum => et.id == sum.expense_type_id);
+
+                let total = {
+                    expense_type_id: '',
                     budget: 0,
                     oct: 0,
                     nov: 0,
                     dec: 0,
                     jan: 0,
-                    fab: 0,
+                    feb: 0,
                     mar: 0,
                     apr: 0,
                     may: 0,
@@ -244,13 +195,79 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
                     total: 0,
                     remain: 0,
                 };
-            }
+                if (et.summaries.length > 0) {
+                    et.summaries.forEach(sum => {
+                        total.expense_type_id = et.id;
+                        total.budget += sum.budget;
+                        total.oct += sum.oct_total;
+                        total.nov += sum.nov_total;
+                        total.dec += sum.dec_total;
+                        total.jan += sum.jan_total;
+                        total.feb += sum.feb_total;
+                        total.mar += sum.mar_total;
+                        total.apr += sum.apr_total;
+                        total.may += sum.may_total;
+                        total.jun += sum.jun_total;
+                        total.jul += sum.jul_total;
+                        total.aug += sum.aug_total;
+                        total.sep += sum.sep_total;
+                        total.total += sum.total;
+                        total.remain += sum.budget - sum.total;
+                    });
+
+                    $scope.totalSummary.push(total);
+                }
+
+                return et;
+            });
+
+            // if (summaries) {
+            //     summaries.forEach(sum => {
+            //         $scope.totalSummary.budget += sum.budget,
+            //         $scope.totalSummary.oct += sum.oct_total,
+            //         $scope.totalSummary.nov += sum.nov_total;
+            //         $scope.totalSummary.dec += sum.dec_total;
+            //         $scope.totalSummary.jan += sum.jan_total;
+            //         $scope.totalSummary.fab += sum.fab_total;
+            //         $scope.totalSummary.mar += sum.mar_total;
+            //         $scope.totalSummary.apr += sum.apr_total;
+            //         $scope.totalSummary.may += sum.may_total;
+            //         $scope.totalSummary.jun += sum.jun_total;
+            //         $scope.totalSummary.jul += sum.jul_total;
+            //         $scope.totalSummary.aug += sum.aug_total;
+            //         $scope.totalSummary.sep += sum.sep_total;
+            //         $scope.totalSummary.total += sum.total;
+            //         $scope.totalSummary.remain += sum.budget - sum.total;
+            //     });
+            // } else {
+            //     $scope.totalSummary = {
+            //         budget: 0,
+            //         oct: 0,
+            //         nov: 0,
+            //         dec: 0,
+            //         jan: 0,
+            //         fab: 0,
+            //         mar: 0,
+            //         apr: 0,
+            //         may: 0,
+            //         jun: 0,
+            //         jul: 0,
+            //         aug: 0,
+            //         sep: 0,
+            //         total: 0,
+            //         remain: 0,
+            //     };
+            // }
 
             $scope.loading = false;
         }, function(err) {
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.getExpenseTypeTotal = function(id) {
+        return $scope.totalSummary.find(t => t.expense_type_id == id);
     };
 
     $scope.getPlanSummaryByExpense = function(e, year, expense) {

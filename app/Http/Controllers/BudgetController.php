@@ -142,7 +142,7 @@ class BudgetController extends Controller
     public function create()
     {
         return view('budgets.add', [
-            "expenses"      => Expense::all(),
+            "expenses"      => Expense::orderBy('sort')->get(),
             "expenseTypes"  => ExpenseType::all(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
@@ -185,7 +185,7 @@ class BudgetController extends Controller
     {
         return view('budgets.edit', [
             "budget"        => Budget::find($id),
-            "expenses"      => Expense::all(),
+            "expenses"      => Expense::orderBy('sort')->get(),
             "expenseTypes"  => ExpenseType::all(),
             "factions"      => Faction::all(),
             "departs"       => Depart::all(),
