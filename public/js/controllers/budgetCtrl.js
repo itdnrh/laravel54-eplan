@@ -75,33 +75,15 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         });
     };
 
-    $scope.getPlanSummaryByExpense = function(e, year, expense) {
-        $scope.loading = true;
-
-        $http.get(`${CONFIG.apiUrl}/budgets/${year}/${expense}`)
-        .then(function(res) {
-            $scope.expenseBudget = res.data.plan.budget;
-            $scope.expenseRemain = res.data.plan.remain;
-
-            $scope.budget.remain = res.data.plan.remain;
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.calculateRemain = function(total) {
-        $scope.monthly.remain = parseFloat($scope.expenseRemain) - parseFloat(total);
-    };
-
     $scope.expenseTypes = [];
     $scope.setBudgets = function(res) {
         // const { data, ...pager } = res.data.budgets;
 
         $scope.expenseTypes = res.data.expenseTypes.map(type => {
-            const budgetsList = res.data.budgets.filter(budget => budget.expense.expense_type_id === type.id);
+            const budgetsList = res.data.budgets
+                                    .filter(budget => budget.expense.expense_type_id === type.id)
+                                    .sort((a, b) => a.expense.sort - b.expense.sort);
+
             type.budgets = budgetsList ? budgetsList : [];
 
             return type;
@@ -110,7 +92,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         // $scope.pager = pager;
     };
 
-    $scope.getDataWithUrl = function(e, url, cb) {
+    $scope.getBudgetsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -131,6 +113,27 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.getPlanSummaryByExpense = function(e, year, expense) {
+        $scope.loading = true;
+
+        $http.get(`${CONFIG.apiUrl}/budgets/${year}/${expense}`)
+        .then(function(res) {
+            $scope.expenseBudget = res.data.plan.budget;
+            $scope.expenseRemain = res.data.plan.remain;
+
+            $scope.budget.remain = res.data.plan.remain;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.calculateRemain = function(total) {
+        $scope.monthly.remain = parseFloat($scope.expenseRemain) - parseFloat(total);
     };
 
     $scope.getById = function(id, cb) {
