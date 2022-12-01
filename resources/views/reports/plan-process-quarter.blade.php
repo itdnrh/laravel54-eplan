@@ -118,9 +118,9 @@
                                     <div class="form-group">
                                         <label>ในแผน/นอกแผน</label>
                                         <select
-                                            id="isInPlan"
-                                            name="isInPlan"
-                                            ng-model="isInPlan"
+                                            id="cboInPlan"
+                                            name="cboInPlan"
+                                            ng-model="cboInPlan"
                                             class="form-control"
                                             ng-change="getPlanProcessByQuarter()"
                                         >
