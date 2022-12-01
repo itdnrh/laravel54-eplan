@@ -45,7 +45,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('persons/delete/{id}', 'PersonController@delete');
 
     /** การปฏิบัติงานแทน */
-    Route::get('system/delegations', 'DelegationController@index');
     Route::get('delegations/list', 'DelegationController@index');
     Route::get('delegations/search', 'DelegationController@search');
     Route::get('delegations/departs', 'DelegationController@departs');

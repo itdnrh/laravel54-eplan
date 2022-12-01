@@ -427,17 +427,12 @@
 									</li>
 									<li ng-class="{ 'active': submenu == 'expenses' }">
 										<a href="{{ url('/system/expenses') }}">
-											<i class="fa fa-circle-o"></i> รายจ่าย
+											<i class="fa fa-circle-o"></i> ค่าใช้จ่าย
 										</a>
 									</li>
 									<li ng-class="{ 'active': submenu == 'persons' }">
 										<a href="{{ url('/system/persons') }}">
 											<i class="fa fa-circle-o"></i> ข้อมูลบุคลากร
-										</a>
-									</li>
-									<li ng-class="{ 'active': submenu == 'delegations' }">
-										<a href="{{ url('/system/delegations') }}">
-											<i class="fa fa-circle-o"></i> การปฏิบัติงานแทน
 										</a>
 									</li>
 									<li ng-class="{ 'active': submenu == 'kpis' }">

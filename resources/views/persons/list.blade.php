@@ -127,7 +127,22 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">รายการบุคลากร</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">รายการบุคลากร</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ url('/persons/add') }}" class="btn btn-primary pull-right">
+                                    เพิ่มบุคลากร
+                                </a>
+                                <a href="{{ url('/duties/list') }}" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    กำหนดหัวหน้าหน่วยงาน
+                                </a>
+                                <a href="{{ url('/delegations/list') }}" class="btn bg-maroon pull-right" style="margin-right: 5px;">
+                                    ระบุผู้ปฏิบัติงานแทน
+                                </a>
+                            </div>
+                        </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
 
