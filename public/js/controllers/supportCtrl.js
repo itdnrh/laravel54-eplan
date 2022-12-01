@@ -102,7 +102,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.initFiltered = () => {
-        if ($('#duty').val() == '1') {
+        console.log($('#depart').val());
+        if ($('#duty').val() == '1' || $('#depart').val() == '65') {
             let faction = $('#faction').val();
     
             $scope.cboFaction = faction;
@@ -135,10 +136,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let faction = ($('#user').val() == '1300200009261' || $('#depart').val() == '4')
-                        ? $scope.cboFaction
-                        : $('#faction').val();
-        let depart  = ($('#user').val() == '1300200009261' || $('#duty').val() == '1' || $('#depart').val() == '4')
+        let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
+        let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
                         ? !$scope.cboDepart ? '' : $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
@@ -168,8 +167,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let faction = $('#user').val() == '1300200009261' ? $scope.cboFaction : $('#faction').val();
-        let depart  = ($('#user').val() == '1300200009261' || $('#duty').val() == '1')
+        let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
+        let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
                         ? !$scope.cboDepart ? '' : $scope.cboDepart
                         : $('#depart').val();
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';

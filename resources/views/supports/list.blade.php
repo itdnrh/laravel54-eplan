@@ -137,8 +137,8 @@
                                 </div>
                             </div>
 
-                            <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4">
-                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                            <div class="row" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4 || {{ Auth::user()->memberOf->depart_id }} == 65">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->depart_id }} == 4">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
                                         <select
@@ -157,7 +157,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->depart_id }} == 4 || {{ Auth::user()->memberOf->depart_id }} == 65">
                                     <div class="form-group">
                                         <label>กลุ่มงาน</label>
                                         <select
@@ -165,7 +165,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="onDepartSelected(cboDepart); getAll($event);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -174,7 +174,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6" ng-hide="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-6" ng-hide="{{ Auth::user()->memberOf->depart_id }} == 4">
                                     <div class="form-group">
                                         <label>งาน</label>
                                         <select
@@ -182,10 +182,10 @@
                                             name="cboDivision"
                                             ng-model="cboDivision"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="getAll($event);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            <option ng-repeat="dep in forms.divisions" value="@{{ div.ward_id }}">
+                                            <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
                                                 @{{ div.ward_name }}
                                             </option>
                                         </select>
@@ -220,7 +220,7 @@
                 </div><!-- /.box -->
 
                 <div class="box">
-                    <div class="box-header">
+                    <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title">บันทึกขอสนับสนุน</h3>
