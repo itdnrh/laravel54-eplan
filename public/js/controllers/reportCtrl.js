@@ -318,9 +318,12 @@ app.controller(
         };
 
         $scope.getPlanByItem = function () {
+            $scope.loading = true;
             $scope.totalByItem = {
                 amount: 0,
-                sum_price: 0
+                sum_price: 0,
+                remain_amount: 0,
+                remain_budget: 0
             };
 
             let year        = $scope.cboYear === ''
@@ -343,13 +346,17 @@ app.controller(
                 // /** Sum total of plan by plan_type */
                 if (res.data.plans.length > 0) {
                     res.data.plans.forEach(plan => {
-                        $scope.totalByItem.amount    += plan.amount ? plan.amount : 0;
-                        $scope.totalByItem.sum_price += plan.sum_price ? plan.sum_price : 0;
+                        $scope.totalByItem.amount           += plan.amount ? plan.amount : 0;
+                        $scope.totalByItem.sum_price        += plan.sum_price ? plan.sum_price : 0;
+                        $scope.totalByItem.remain_amount    += plan.remain_amount ? plan.remain_amount : 0;
+                        $scope.totalByItem.remain_budget    += plan.remain_budget ? plan.remain_budget : 0;
                     });
                 } else {
                     $scope.totalByItem = {
                         amount: 0,
-                        sum_price: 0
+                        sum_price: 0,
+                        remain_amount: 0,
+                        remain_budget: 0
                     };
                 }
 

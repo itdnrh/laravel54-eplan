@@ -387,12 +387,6 @@ class MonthlyController extends Controller
                     Budget::where('year', $req['year'])
                             ->where('expense_id', $expense['expense_id'])
                             ->update(['remain' => currencyToNumber($expense['remain'])]);
-
-                    return [
-                        'status'    => 1,
-                        'message'   => 'Insertion successfully',
-                        'monthly'      => $monthly
-                    ];
                 } else {
                     return [
                         'status'    => 0,
@@ -400,6 +394,15 @@ class MonthlyController extends Controller
                     ];
                 }
             }
+
+            return [
+                'status'    => 1,
+                'message'   => 'Insertion successfully',
+                'monthly'   => Monthly::where('expense_id', $expense['expense_id'])
+                                        ->where('year', $req['year'])
+                                        ->where('month', $month)
+                                        ->get()
+            ];
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,
@@ -414,7 +417,10 @@ class MonthlyController extends Controller
             list($month, $year) = explode('/', $req['month']);
 
             foreach($req['expenses'] as $expense) {
-                $monthly = Monthly::find($$expense['expense_id']);
+                $monthly = Monthly::where('expense_id', $expense['expense_id'])
+                                    ->where('year', $req['year'])
+                                    ->where('month', $month)
+                                    ->first();
                 $monthly->total        = currencyToNumber($expense['net_total']);
                 $monthly->remain       = currencyToNumber($expense['remain']);
                 $monthly->reporter_id  = $req['user'];
@@ -424,12 +430,6 @@ class MonthlyController extends Controller
                     Budget::where('year', $req['year'])
                             ->where('expense_id', $expense['expense_id'])
                             ->update(['remain' => currencyToNumber($expense['remain'])]);
-
-                    return [
-                        'status'    => 1,
-                        'message'   => 'Insertion successfully',
-                        'monthly'      => $monthly
-                    ];
                 } else {
                     return [
                         'status'    => 0,
@@ -437,6 +437,15 @@ class MonthlyController extends Controller
                     ];
                 }
             }
+
+            return [
+                'status'    => 1,
+                'message'   => 'Updating successfully',
+                'monthly'   => Monthly::where('expense_id', $expense['expense_id'])
+                                        ->where('year', $req['year'])
+                                        ->where('month', $month)
+                                        ->get()
+            ];
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,

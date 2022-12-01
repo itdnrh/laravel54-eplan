@@ -156,11 +156,11 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
                                     <th style="text-align: left;" rowspan="2">ประเภท</th>
-                                    <th style="text-align: center;" colspan="2">งบประมาณที่ขอ</th>
+                                    <th style="text-align: center;" colspan="2">ประมาณการ</th>
                                     <th style="text-align: center;" colspan="2">คงเหลือ</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 8%; text-align: center;">จำนวนที่ขอ</th>
+                                    <th style="width: 8%; text-align: center;">จำนวน</th>
                                     <th style="width: 10%; text-align: center;">งบประมาณ</th>
                                     <th style="width: 8%; text-align: center;">จำนวน</th>
                                     <th style="width: 10%; text-align: center;">งบประมาณ</th>

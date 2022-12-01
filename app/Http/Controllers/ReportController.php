@@ -369,7 +369,9 @@ class ReportController extends Controller
                         'plan_items.item_id',
                         'items.item_name',
                         \DB::raw("sum(plan_items.amount) as amount"),
-                        \DB::raw("sum(plan_items.sum_price) as sum_price")
+                        \DB::raw("sum(plan_items.sum_price) as sum_price"),
+                        \DB::raw("sum(plan_items.remain_amount) as remain_amount"),
+                        \DB::raw("sum(plan_items.remain_budget) as remain_budget")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->leftJoin('items', 'items.id', '=', 'plan_items.item_id')
