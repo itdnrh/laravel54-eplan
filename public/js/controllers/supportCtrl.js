@@ -67,7 +67,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         unit_name: '',
         amount: '',
         sum_price: '',
-        error: null
+        error: null,
+        planItem: null,
     };
 
     /** ============================== Init Form elements ============================== */
@@ -122,7 +123,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             unit_name: '',
             amount: '',
             sum_price: '',
-            error: null
+            error: null,
+            planItem: null,
         };
     };
 
@@ -418,6 +420,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.newItem.unit_name    = plan.plan_item.calc_method == 1 ? plan.plan_item.unit.name : '';
             $scope.newItem.amount       = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_amount : '';
             $scope.newItem.sum_price    = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_budget : '';
+            $scope.newItem.planItem     = plan.plan_item;
 
             if (plan.plan_item.calc_method == 1) {
                 $('#unit_id').val(plan.plan_item.unit_id).trigger("change.select2");
@@ -428,7 +431,19 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.calculateSumPrice = function(price, amount) {
-        $scope.newItem.sum_price = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+
+        /** ตรวจสอบว่ารายการที่ขอยอดเงินเกินงบประมาณที่ขอหรือไม่ */
+        if ($scope.newItem.planItem.sum_price < sumPrice) {
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้ !!!");
+
+            $scope.newItem.price_per_unit = $scope.newItem.planItem.price_per_unit;
+            $scope.newItem.amount = $scope.newItem.planItem.amount;
+
+            return;
+        }
+
+        $scope.newItem.sum_price = sumPrice;
     };
 
     $scope.calculateTotal = () => {
