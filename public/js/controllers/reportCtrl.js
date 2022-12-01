@@ -23,7 +23,7 @@ app.controller(
         $scope.cboPrice = '';
         $scope.cboSort = '';
         $scope.chkIsFixcost = false;
-        $scope.isInPlan = '';
+        $scope.cboInPlan = 'I';
 
         let dtpDateOptions = {
             autoclose: true,
@@ -100,7 +100,7 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.cboYear;
-            let in_plan = $scope.isInPlan !== '' ? $scope.isInPlan : '';
+            let in_plan = $scope.cboInPlan !== '' ? $scope.cboInPlan : '';
             let approved = !$scope.cboApproved ? '' : 'A';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-faction?year=${year}&approved=${approved}&in_plan=${in_plan}`)
@@ -239,12 +239,18 @@ app.controller(
         };
 
         $scope.getPlanByDepart = function () {
+            $scope.loading = true;
             $scope.totalByPlanTypes = {
                 asset: 0,
+                asset_budget: 0,
                 construct: 0,
+                construct_budget: 0,
                 material: 0,
+                material_budget: 0,
                 service: 0,
+                service_budget: 0,
                 total: 0,
+                total_budget: 0,
             };
 
             let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
@@ -253,7 +259,7 @@ app.controller(
                             ? moment().year() + 544
                             : moment().year() + 543 
                         : $scope.cboYear;
-            let in_plan = $scope.isInPlan !== '' ? $scope.isInPlan : '';
+            let in_plan = $scope.cboInPlan !== '' ? $scope.cboInPlan : '';
             let approved = !$scope.cboApproved ? '' : 'A';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-depart?year=${year}&faction=${faction}&approved=${approved}&in_plan=${in_plan}`)
@@ -268,21 +274,41 @@ app.controller(
                 /** Sum total of plan by plan_type */
                 if (res.data.plans.length > 0) {
                     res.data.plans.forEach(plan => {
-                        $scope.totalByPlanTypes.asset       += plan.asset ? plan.asset : 0;
-                        $scope.totalByPlanTypes.construct   += plan.construct ? plan.construct : 0;
-                        $scope.totalByPlanTypes.material    += plan.material ? plan.material : 0;
-                        $scope.totalByPlanTypes.service     += plan.service ? plan.service : 0;
-                        $scope.totalByPlanTypes.total       += plan.total ? plan.total : 0;
+                        $scope.totalByPlanTypes.asset += plan.asset ? plan.asset : 0;
+                        $scope.totalByPlanTypes.asset_budget += plan.asset_budget ? plan.asset_budget : 0;
+                        $scope.totalByPlanTypes.construct += plan.construct ? plan.construct : 0;
+                        $scope.totalByPlanTypes.construct_budget += plan.construct_budget ? plan.construct_budget : 0;
+                        $scope.totalByPlanTypes.material += plan.material ? plan.material : 0;
+                        $scope.totalByPlanTypes.material_budget += plan.material_budget ? plan.material_budget : 0;
+                        $scope.totalByPlanTypes.service += plan.service ? plan.service : 0;
+                        $scope.totalByPlanTypes.service_budget += plan.service_budget ? plan.service_budget : 0;
+                        $scope.totalByPlanTypes.total += plan.total ? plan.total : 0;
+                        $scope.totalByPlanTypes.total_budget += plan.total_budget ? plan.total_budget : 0;
                     });
                 } else {
                     $scope.totalByPlanTypes = {
                         asset: 0,
+                        asset_budget: 0,
                         construct: 0,
+                        construct_budget: 0,
                         material: 0,
+                        material_budget: 0,
                         service: 0,
+                        service_budget: 0,
                         total: 0,
+                        total_budget: 0,
                     };
                 }
+
+                /** Render chart */
+                const faction = $scope.cboFaction === '' ? '' : $('#cboFaction option:selected').text();
+                const inPlan = $scope.cboInPlan === '' ? '' : `(${$('#cboInPlan option:selected').text()})`;
+                $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนเงินบำรุง ${inPlan} ${faction} ตามประเภทแผน`, "บาท", "สัดส่วนแผนเงินบำรุง");
+                $scope.pieOptions.series[0].data.push({ name: 'ครุภัณฑ์', y: parseFloat($scope.totalByPlanTypes.asset) });
+                $scope.pieOptions.series[0].data.push({ name: 'วัสดุ', y: parseFloat($scope.totalByPlanTypes.material) });
+                $scope.pieOptions.series[0].data.push({ name: 'จ้างบริการ', y: parseFloat($scope.totalByPlanTypes.service) });
+                $scope.pieOptions.series[0].data.push({ name: 'ก่อสร้าง', y: parseFloat($scope.totalByPlanTypes.construct) });
+                let chart = new Highcharts.Chart($scope.pieOptions);
 
                 $scope.loading = false;
             }, function (err) {
@@ -307,7 +333,7 @@ app.controller(
             let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let isFixcost   = $scope.chkIsFixcost ? '1' : '';
             let approved    = !$scope.cboApproved ? '' : 'A';
-            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
+            let in_plan     = $scope.cboInPlan !== '' ? $scope.cboInPlan : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-item?year=${year}&type=${type}&cate=${cate}&price=${price}&approved=${approved}&in_plan=${in_plan}&isFixcost=${isFixcost}&sort=${sort}`)
@@ -353,7 +379,7 @@ app.controller(
             let approved    = !$scope.cboApproved ? '' : 'A';
             let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
+            let in_plan     = $scope.cboInPlan !== '' ? $scope.cboInPlan : '';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-type?year=${year}&type=${type}&approved=${approved}&price=${price}&in_plan=${in_plan}&sort=${sort}`)
             .then(function (res) {
@@ -420,7 +446,7 @@ app.controller(
             let approved    = !$scope.cboApproved ? '' : 'A';
             let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
+            let in_plan     = $scope.cboInPlan !== '' ? $scope.cboInPlan : '';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&in_plan=${in_plan}&sort=${sort}`)
             .then(function (res) {
@@ -510,7 +536,7 @@ app.controller(
             let approved    = !$scope.cboApproved ? '' : 'A';
             let price       = $scope.cboPrice !== '' ? $scope.cboPrice : '';
             let sort        = $scope.cboSort !== '' ? $scope.cboSort : '';
-            let in_plan     = $scope.isInPlan !== '' ? $scope.isInPlan : '';
+            let in_plan     = $scope.cboInPlan !== '' ? $scope.cboInPlan : '';
 
             $http.get(`${CONFIG.apiUrl}/reports/plan-process-quarter?year=${year}&type=${type}&approved=${approved}&price=${price}&in_plan=${in_plan}&sort=${sort}`)
             .then(function (res) {

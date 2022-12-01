@@ -87,9 +87,9 @@
                                     <div class="form-group">
                                         <label>ในแผน/นอกแผน</label>
                                         <select
-                                            id="isInPlan"
-                                            name="isInPlan"
-                                            ng-model="isInPlan"
+                                            id="cboInPlan"
+                                            name="cboInPlan"
+                                            ng-model="cboInPlan"
                                             class="form-control"
                                             ng-change="getPlanByDepart()"
                                         >
@@ -122,49 +122,91 @@
                         <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
-                                    <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="text-align: left;">หน่วยงาน</th>
-                                    <th style="text-align: right;">
+                                    <th style="width: 3%; text-align: center;" rowspan="2">#</th>
+                                    <th style="text-align: left;" rowspan="2">หน่วยงาน</th>
+                                    <th style="text-align: center;" colspan="2">
                                         <a href="{{ url('/reports/asset-depart') }}">ครุภัณฑ์</a>
                                     </th>
-                                    <th style="text-align: right;">
+                                    <th style="text-align: center;" colspan="2">
                                         <a href="{{ url('/reports/material-depart') }}">วัสดุ</a>
                                     </th>
-                                    <th style="text-align: right;">จ้างบริการ</th>
-                                    <th style="text-align: right;">ก่อสร้าง</th>
-                                    <th style="text-align: right;">รวม</th>
+                                    <th style="text-align: center;" colspan="2">จ้างบริการ</th>
+                                    <th style="text-align: center;" colspan="2">ก่อสร้าง</th>
+                                    <th style="text-align: center;" colspan="2">รวม</th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: center; width: 8%;">งบประมาณ</th>
+                                    <th style="text-align: center; width: 8%;">คงเหลือ</th>
+                                    <th style="text-align: center; width: 8%;">งบประมาณ</th>
+                                    <th style="text-align: center; width: 8%;">คงเหลือ</th>
+                                    <th style="text-align: center; width: 8%;">งบประมาณ</th>
+                                    <th style="text-align: center; width: 8%;">คงเหลือ</th>
+                                    <th style="text-align: center; width: 8%;">งบประมาณ</th>
+                                    <th style="text-align: center; width: 8%;">คงเหลือ</th>
+                                    <th style="text-align: center; width: 8%;">งบประมาณ</th>
+                                    <th style="text-align: center; width: 8%;">คงเหลือ</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in plans">
+                                <tr ng-repeat="(index, plan) in plans" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>
                                         @{{ plan.depart_name }}
                                     </td>
-                                    <td style="text-align: right;">@{{ plan.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.service | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.construct | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.total | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ plan.asset | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.asset_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.material | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.material_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.service | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.service_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.construct | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.construct_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ plan.total_budget | currency:'':2 }}</td>
                                 </tr>
-                                <tr style="font-weight: bold;">
+                                <tr style="font-weight: bold; font-size: 12px;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.material | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.material_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.service | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.service_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.total | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalByPlanTypes.total_budget | currency:'':2 }}</td>
                                 </tr>
-                                <tr style="font-weight: bold;">
-                                    <td style="text-align: center;" colspan="2">ร้อยละ</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.asset*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.material*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.service*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalByPlanTypes.construct*100/totalByPlanTypes.total | currency:'':2 }}</td>
-                                    <td style="text-align: right;"></td>
+                                <tr style="font-weight: bold; font-size: 12px;">
+                                    <td style="text-align: center;" colspan="2">คิดเป็น (ร้อยละ) ของทั้งหมด</td>
+                                    <td style="text-align: center;">@{{ (totalByPlanTypes.asset * 100)/totalByPlanTypes.total | currency:'':1 }}</td>
+                                    <td style="text-align: right;">&nbsp;</td>
+                                    <td style="text-align: center;">@{{ (totalByPlanTypes.material * 100)/totalByPlanTypes.total | currency:'':1 }}</td>
+                                    <td style="text-align: right;">&nbsp;</td>
+                                    <td style="text-align: center;">@{{ (totalByPlanTypes.service * 100)/totalByPlanTypes.total | currency:'':1 }}</td>
+                                    <td style="text-align: right;">&nbsp;</td>
+                                    <td style="text-align: center;">@{{ (totalByPlanTypes.construct * 100)/totalByPlanTypes.total | currency:'':1 }}</td>
+                                    <td style="text-align: right;">&nbsp;</td>
+                                    <td style="text-align: center;">100</td>
+                                    <td style="text-align: right;">&nbsp;</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div id="pieChartContainer" style="width: 100%; height: 400px; margin: 20px auto;"></div>
+
+                            </div>
+                        </div>
+
+                        <!-- Loading (remove the following to stop the loading)-->
+                        <div ng-show="loading" class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <!-- end loading -->
+
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
@@ -209,7 +251,6 @@
                             </div>
                         </div>
                     </div><!-- /.box-footer -->
-
                 </div><!-- /.box -->
 
             </div><!-- /.col -->

@@ -312,10 +312,15 @@ class ReportController extends Controller
                     ->select(
                         'plans.depart_id',
                         \DB::raw("sum(case when (plans.plan_type_id=1) then plan_items.sum_price end) as asset"),
+                        \DB::raw("sum(case when (plans.plan_type_id=1) then plan_items.remain_budget end) as asset_budget"),
                         \DB::raw("sum(case when (plans.plan_type_id=2) then plan_items.sum_price end) as material"),
+                        \DB::raw("sum(case when (plans.plan_type_id=2) then plan_items.remain_budget end) as material_budget"),
                         \DB::raw("sum(case when (plans.plan_type_id=3) then plan_items.sum_price end) as service"),
+                        \DB::raw("sum(case when (plans.plan_type_id=3) then plan_items.remain_budget end) as service_budget"),
                         \DB::raw("sum(case when (plans.plan_type_id=4) then plan_items.sum_price end) as construct"),
-                        \DB::raw("sum(plan_items.sum_price) as total")
+                        \DB::raw("sum(case when (plans.plan_type_id=4) then plan_items.remain_budget end) as construct_budget"),
+                        \DB::raw("sum(plan_items.sum_price) as total"),
+                        \DB::raw("sum(plan_items.remain_budget) as total_budget")
                     )
                     ->leftJoin('plan_items', 'plans.id', '=', 'plan_items.plan_id')
                     ->where('plans.year', $year)
