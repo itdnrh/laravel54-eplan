@@ -121,7 +121,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>ประเภทครุภัณฑ์</label>
+                                    <label>ประเภทพัสดุ</label>
                                     <select
                                         id="cboCategory"
                                         name="cboCategory"

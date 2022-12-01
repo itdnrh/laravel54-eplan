@@ -563,10 +563,10 @@
                                     <?php $nextBullet = 4; ?>
                                     ๔.  รายละเอียดคุณลักษณะเฉพาะพัสดุ/ร่างขอบเขตงาน/แบบแปลน/ใบปริมาณงาน ตามที่แนบ จำนวน............แผ่น
                                 @endif
-                                {{ $haveRowOvered * 20 }}
                             </p>
                         </td>
                     </tr>
+
                     <!-- ############################ Pagination ############################ -->
                     <tr>
                         <td colspan="4">
@@ -580,10 +580,6 @@
                                 @if($page == 0 && $haveRowOvered == 0 && (count($support->details) > 4 && count($support->details) <= 10))
                                     <?php $page = $page + 1; ?>
                                     <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
-                                @else
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: {{ $haveRowOvered * 20 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
@@ -601,7 +597,7 @@
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($page == 0 && ($tableHeight > 180 && $tableHeight < 300))
+                                @if($page == 0 && (count($support->details) > 7 && count($support->details) <= 10))
                                     <?php $page = $page + 1; ?>
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
@@ -648,6 +644,7 @@
                         </td>
                     </tr>
                     <!-- ############################ End Pagination ############################ -->
+
                     <tr>
                         <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
@@ -666,10 +663,8 @@
                                     <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
 
-                                @if ($page == 1 && count($support->details) <= 10)
-                                    @if($tableHeight > 100 && $tableHeight < 300)
-                                        <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                    @endif
+                                @if ($page == 1 && (count($support->details) > 7 && count($support->details) <= 10))
+                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
 
                                 @if ($page == 2 && (count($support->details) > 17 && count($support->details) <= 19))
