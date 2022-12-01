@@ -345,6 +345,13 @@ class MonthlyController extends Controller
                 $planSum->remain = currencyToNumber($req['remain']);
                 $planSum->save();
 
+                /** ถ้าเป็นค่ายาทั่วไปให้อัพเดตยอดคงเหลือในตาราง plan_items (item_id=1922) ด้วย */
+                if ($req['expense_id'] == '1') {
+                    PlanItem::where('item_id', '1922')->update([
+                        'remain_budget' => currencyToNumber($req['remain'])
+                    ]);
+                }
+
                 return [
                     'status'    => 1,
                     'message'   => 'Insertion successfully',

@@ -8,6 +8,7 @@ class PlanItem extends Model
 {
     protected $table = "plan_items";
     protected $primaryKey = "plan_id";
+    protected $fillable = ['remain_amount', 'remain_budget'];
 
     public function plan()
     {
