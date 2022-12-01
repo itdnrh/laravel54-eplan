@@ -118,9 +118,9 @@
                                     <div class="form-group">
                                         <label>ในแผน/นอกแผน</label>
                                         <select
-                                            id="isInPlan"
-                                            name="isInPlan"
-                                            ng-model="isInPlan"
+                                            id="cboInPlan"
+                                            name="cboInPlan"
+                                            ng-model="cboInPlan"
                                             class="form-control"
                                             ng-change="getPlanByType()"
                                         >
@@ -154,26 +154,43 @@
                         <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
-                                    <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="text-align: left;">ประเภท</th>
-                                    <th style="width: 15%; text-align: right;">จำนวนที่ขอ</th>
-                                    <th style="width: 15%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 3%; text-align: center;" rowspan="2">#</th>
+                                    <th style="text-align: left;" rowspan="2">ประเภท</th>
+                                    <th style="text-align: center;" colspan="2">งบประมาณที่ขอ</th>
+                                    <th style="text-align: center;" colspan="2">คงเหลือ</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 8%; text-align: center;">จำนวนที่ขอ</th>
+                                    <th style="width: 10%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 8%; text-align: center;">จำนวน</th>
+                                    <th style="width: 10%; text-align: center;">งบประมาณ</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>@{{ plan.category_name }}</td>
-                                    <td style="text-align: right;">@{{ plan.amount | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ plan.sum_price | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ plan.amount | currency:'':1 }}</td>
+                                    <td style="text-align: right;">@{{ plan.sum_price | currency:'':2 }}</td>
+                                    <td style="text-align: center;">@{{ plan.remain_amount | currency:'':1 }}</td>
+                                    <td style="text-align: right;">@{{ plan.remain_budget | currency:'':2 }}</td>
                                 </tr>
                                 <tr style="font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
-                                    <td style="text-align: right;">@{{ totalPlanByPlanTypes.amount | currency:'':0 }}</td>
-                                    <td style="text-align: right;">@{{ totalPlanByPlanTypes.sum_price | currency:'':0 }}</td>
+                                    <td style="text-align: center;">@{{ totalPlanByPlanTypes.amount | currency:'':1 }}</td>
+                                    <td style="text-align: right;">@{{ totalPlanByPlanTypes.sum_price | currency:'':2 }}</td>
+                                    <td style="text-align: center;">@{{ totalPlanByPlanTypes.remain_amount | currency:'':1 }}</td>
+                                    <td style="text-align: right;">@{{ totalPlanByPlanTypes.remain_budget | currency:'':2 }}</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <!-- Loading (remove the following to stop the loading)-->
+                        <div ng-show="loading" class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <!-- end loading -->
+
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
@@ -218,7 +235,6 @@
                             </div>
                         </div>
                     </div><!-- /.box-footer -->
-
                 </div><!-- /.box -->
 
             </div><!-- /.col -->
