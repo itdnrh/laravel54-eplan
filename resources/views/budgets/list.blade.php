@@ -202,7 +202,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row">
+                        <div class="row" ng-show="false">
                             <div class="col-md-4">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>
