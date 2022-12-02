@@ -356,6 +356,38 @@ class WithdrawalController extends Controller
         }
     }
 
+    // POST: /withdrawals/:id/cancel
+    public function cancel(Request $req, $id)
+    {
+        try {
+            /** Get depart data of supplies department */
+            $supply = Depart::where('depart_id', '2')->first();
+
+            $withdrawal = Withdrawal::find($id);
+            $withdrawal->withdraw_no    = $supply->memo_no.'/'.$req['withdraw_no'];
+            $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
+            $withdrawal->completed      = '1';
+
+            if ($withdrawal->save()) {
+                return [
+                    'status'        => 1,
+                    'message'       => 'Send withdraw successfully!!',
+                    'withdrawal'    => $withdrawal
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function setDebt(Request $req, $id)
     {
         try {

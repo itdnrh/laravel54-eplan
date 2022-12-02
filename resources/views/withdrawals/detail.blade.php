@@ -187,6 +187,14 @@
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                             ส่งเบิกเงิน
                         </button>
+                        <button
+                            ng-click="cancel($event, withdrawal.id, withdrawal)"
+                            ng-show="withdrawal.completed == 1"
+                            class="btn btn-danger"
+                        >
+                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            ยกเลิกการส่งเบิกเงิน
+                        </button>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 

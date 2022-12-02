@@ -607,4 +607,31 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.loading = false;
         }
     };
+
+    $scope.cancel = function(e, id, withdraw) {
+        e.preventDefault();
+
+        if (window.confirm(`คุณต้องการยกเลิกส่งเบิกเงิน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/withdrawals/delete/${id}`, { order_id: withdraw.inspection.order_id })
+            .then(function(res) {
+                console.log(res);
+                $scope.loading = false;
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/orders/withdraw`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกข้อมูลได้ !!!");
+                }
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกข้อมูลได้ !!!");
+            });
+        } else {
+            $scope.loading = false;
+        }
+    };
 });

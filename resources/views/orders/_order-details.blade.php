@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form action="">
                 <div class="modal-header">
-                    <h5 class="modal-title">รายการครุภัณฑ์</h5>
+                    <h5 class="modal-title">รายการพัสดุ</h5>
                     <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
@@ -35,14 +35,14 @@
                                     @{{ detail.plan.plan_no }} - @{{ detail.item.item_name }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <span>@{{ detail.amount | currency:'':0 }}</span>
+                                    <span>@{{ detail.amount | currency:'':1 }}</span>
                                     <span>@{{ detail.unit.name }}</span>
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ detail.price_per_unit | currency:'':0 }}
+                                    @{{ detail.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ detail.sum_price | currency:'':0 }}
+                                    @{{ detail.sum_price | currency:'':2 }}
                                 </td>
                             </tr>
                         </tbody>

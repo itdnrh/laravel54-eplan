@@ -89,14 +89,14 @@
                                     </a>
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.price_per_unit | currency:'':0 }}
+                                    @{{ plan.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.amount | currency:'':0 }}
+                                    @{{ plan.amount | currency:'':1 }}
                                     <span>@{{ plan.unit.name }}</span>
                                 </td>
                                 <td style="text-align: center;">
-                                    @{{ plan.sum_price | currency:'':0 }}
+                                    @{{ plan.sum_price | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
                                     <p style="margin: 0;">@{{ plan.support.depart.depart_name }}</p>
