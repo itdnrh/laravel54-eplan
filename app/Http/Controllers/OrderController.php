@@ -76,11 +76,13 @@ class OrderController extends Controller
     public function index()
     {
         return view('orders.list', [
-            "suppliers" => Supplier::all(),
-            "officers"  => Person::with('prefix','position','academic')
-                                ->where('person_state', 1)
-                                ->whereIn('position_id', [8, 39])
-                                ->get()
+            "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
+            "suppliers"     => Supplier::all(),
+            "officers"      => Person::with('prefix','position','academic')
+                                        ->where('person_state', 1)
+                                        ->whereIn('position_id', [8, 39])
+                                        ->get()
         ]);
     }
 
@@ -133,6 +135,9 @@ class OrderController extends Controller
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plan_type_id', $type);
                     })
+                    ->when(!empty($cate), function($q) use ($cate) {
+                        $q->where('category_id', $cate);
+                    })
                     ->when(!empty($cate), function($q) use ($ordersList) {
                         $q->whereIn('id', $ordersList);
                     })
@@ -146,15 +151,16 @@ class OrderController extends Controller
                         $q->whereBetween('status', $arrStatus);
                     })
                     ->orderBy('po_date', 'DESC')
-                    ->orderBy('po_no', 'DESC')
-                    ->paginate(10);
+                    ->orderBy('po_no', 'DESC');
+                    
 
         $plans = Plan::with('depart','division')
                     ->where('status', '>=', '3')
                     ->get();
 
         return [
-            "orders"    => $orders,
+            "sumOrders" => $orders->sum('net_total'),
+            "orders"    => $orders->paginate(10),
             "plans"     => $plans
         ];
     }

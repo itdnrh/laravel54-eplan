@@ -14,6 +14,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.txtPoNo = '';
     $scope.searchKey = '';
 
+    $scope.sumOrders = 0;
+
     $scope.orders = [];
     $scope.pager = null;
 
@@ -1019,12 +1021,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
         let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
         .then(function(res) {
             $scope.setOrders(res);
 
@@ -1044,12 +1048,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
         let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
         let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${url}&year=${year}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
         .then(function(res) {
             cb(res);
 
@@ -1063,6 +1069,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.setOrders = function (res) {
         const { data, ...pager } = res.data.orders;
 
+        $scope.sumOrders = res.data.sumOrders;
         $scope.orders = data.map(order => {
             /** ถ้าเป็นรายการตามแผนพัสดุ ให้อัพเดต details property */
             if (res.data.plans) {

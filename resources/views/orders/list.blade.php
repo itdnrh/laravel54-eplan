@@ -16,7 +16,14 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="orderCtrl" ng-init="getAll();">
+    <section
+        class="content"
+        ng-controller="orderCtrl"
+        ng-init="
+            getAll();
+            initForms({ categories: {{ $categories }} }, 0);
+        "
+    >
 
         <div class="row">
             <div class="col-md-12">
@@ -62,8 +69,47 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="form-group col-md-6">
+                                    <label>ประเภทแผน</label>
+                                    <select
+                                        id="cboPlanType"
+                                        name="cboPlanType"
+                                        class="form-control select2"
+                                        ng-model="cboPlanType"
+                                        ng-change="
+                                            onFilterCategories(cboPlanType);
+                                            getAll($event);
+                                        "
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        @foreach($planTypes as $planType)
+                                            <option value="{{ $planType->id }}">
+                                                {{ $planType->plan_type_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>ประเภทพัสดุ</label>
+                                    <select
+                                        id="cboCategory"
+                                        name="cboCategory"
+                                        ng-model="cboCategory"
+                                        class="form-control"
+                                        ng-change="getAll($event);"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
                                     <label>เลขที่ใบ PO</label>
                                     <input
                                         id="txtPoNo"
@@ -73,7 +119,7 @@
                                         ng-keyup="getAll($event)"
                                     />
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>สถานะ</label>
                                     <select
                                         id="cboStatus"
@@ -100,9 +146,7 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-4">
                                     <label>เจ้าหน้าที่พัสดุ</label>
                                     <select
                                         id="cboOfficer"
