@@ -14,6 +14,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.searchKey == '';
     $scope.txtDesc = '';
 
+    $scope.sumSupports = 0;
     $scope.supports = [];
     $scope.pager = [];
 
@@ -193,6 +194,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         $scope.supports = data;
         $scope.pager = pager;
+
+        
+        $scope.sumSupports = res.data.sumSupports;
     };
 
     $scope.supportDetails = [];
