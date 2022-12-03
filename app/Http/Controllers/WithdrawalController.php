@@ -360,18 +360,13 @@ class WithdrawalController extends Controller
     public function cancel(Request $req, $id)
     {
         try {
-            /** Get depart data of supplies department */
-            $supply = Depart::where('depart_id', '2')->first();
-
             $withdrawal = Withdrawal::find($id);
-            $withdrawal->withdraw_no    = $supply->memo_no.'/'.$req['withdraw_no'];
-            $withdrawal->withdraw_date  = convThDateToDbDate($req['withdraw_date']);
-            $withdrawal->completed      = '1';
+            $withdrawal->completed = '0';
 
             if ($withdrawal->save()) {
                 return [
                     'status'        => 1,
-                    'message'       => 'Send withdraw successfully!!',
+                    'message'       => 'Cancel sending withdraw successfully!!',
                     'withdrawal'    => $withdrawal
                 ];
             } else {

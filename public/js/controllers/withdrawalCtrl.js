@@ -634,4 +634,34 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
             $scope.loading = false;
         }
     };
+
+    const cancelSendToDebt = function(withdrawal) {
+        $http.put(`${CONFIG.accApiUrl}/tmp-debts/${withdrawal.id}/pending`)
+        .then(function(res) {
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งเบิกเงินเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถยกเลิกส่งเบิกเงินได้ !!!");
+            }
+        }, function(err) {
+            console.log(err);
+
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถยกเลิกส่งเบิกเงินได้ !!!");
+        });
+    }
+
+    const reSendToDebt = function(withdrawal) {
+        $http.put(`${CONFIG.accApiUrl}/tmp-debts/${withdrawal.id}/resend`)
+        .then(function(res) {
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "ส่งเบิกเงินเรียบร้อย !!!");
+            } else {
+                toaster.pop('error', "ผลการทำงาน", "ไม่สามารถส่งเบิกเงินได้ !!!");
+            }
+        }, function(err) {
+            console.log(err);
+
+            toaster.pop('error', "ผลการทำงาน", "ไม่สามารถส่งเบิกเงินได้ !!!");
+        });
+    }
 });
