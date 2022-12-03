@@ -10,9 +10,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.cboDivision = '';
     $scope.cboCategory = '';
     $scope.cboInPlan = '';
+    $scope.cboStatus = '';
     $scope.txtKeyword = '';
-    $scope.searchKey == '';
     $scope.txtDesc = '';
+    $scope.searchKey = '';
 
     $scope.sumSupports = 0;
     $scope.supports = [];
@@ -146,8 +147,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
         let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=0-9`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -177,8 +179,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
         let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
 
-        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=0-9`)
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
         .then(function(res) {
             $scope.setSupports(res);
 

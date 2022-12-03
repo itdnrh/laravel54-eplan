@@ -194,7 +194,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>เลขที่บันทึกขอสนับสนุน</label>
                                     <input
                                         id="txtKeyword"
@@ -204,7 +204,7 @@
                                         class="form-control"
                                     />
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>รายละเอียด</label>
                                     <input
                                         id="txtDesc"
@@ -213,6 +213,26 @@
                                         ng-keyup="getAll($event)"
                                         class="form-control"
                                     />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        ng-change="getAll($event)"
+                                        class="form-control"
+                                    >
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ส่งเอกสารแล้ว</option>
+                                        <option value="2">รับเอกสารแล้ว</option>
+                                        <option value="3-5">ออกใบสั่งซื้อแล้ว</option>
+                                        <option value="4-5">ตรวจรับแล้ว</option>
+                                        <option value="5">ส่งเบิกเงินแล้ว</option>
+                                        <option value="9">เอกสารถูกตีกลับ</option>
+                                        <!-- <option value="99">ยกเลิก</option> -->
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
