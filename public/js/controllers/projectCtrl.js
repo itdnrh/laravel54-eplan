@@ -369,6 +369,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.nextTimeline = (e, id, projectId, fieldName) => {
         e.preventDefault();
 
+        if (!id || id == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "โครงการยังไม่ผ่านขั้นตอนการส่งงานแผน !!!");
+            return;
+        }
+
         $scope.loading = true;
 
         $http.post(`${CONFIG.baseUrl}/projects/timeline`, { id, fieldName, projectId })

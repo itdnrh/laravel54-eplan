@@ -450,10 +450,10 @@ class ProjectController extends Controller
 
     public function storeTimeline(Request $req) {
         try {
-            if (empty($req['id'])) {
-                $timeline = new ProjectTimeline;
-            } else {
+            if (array_key_exists('id', $req) && !empty($req['id'])) {
                 $timeline = ProjectTimeline::find($req['id']);
+            } else {
+                $timeline = new ProjectTimeline;
                 $timeline->project_id = $req['projectId'];
             }
 
