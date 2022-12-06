@@ -29,9 +29,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span style="margin: 0 5px;">กลุ่มงานพัสดุ</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('9608') }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -41,7 +41,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit('นม 0032.201.2/') }}</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->memo_no.'/')  }}</span>
                                 </div>
                             </div>
                         </td>
@@ -174,9 +174,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span style="margin: 0 5px;">กลุ่มงานพัสดุ</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('9608') }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -186,7 +186,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit('นม 0032.201.2/') }}</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->memo_no.'/')  }}</span>
                                 </div>
                             </div>
                         </td>
@@ -320,9 +320,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span style="margin: 0 5px;">กลุ่มงานพัสดุ</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('9608') }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -332,7 +332,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit('นม 0032.201.2/') }}</span>
+                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->memo_no.'/')  }}</span>
                                 </div>
                             </div>
                         </td>

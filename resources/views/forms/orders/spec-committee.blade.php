@@ -20,7 +20,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span>กลุ่มงานพัสดุ</span>
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span>โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     <span>โทร {{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
                                 </div>
@@ -234,7 +234,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span>กลุ่มงานพัสดุ</span>
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span>โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     <span>โทร {{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
                                 </div>

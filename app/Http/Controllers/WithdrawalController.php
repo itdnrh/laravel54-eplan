@@ -420,6 +420,11 @@ class WithdrawalController extends Controller
 
         $planType = PlanType::find($withdrawal->inspection->order->plan_type_id);
 
+        
+        /** กลุ่มงานพัสดุ */
+        $departOfParcel = Depart::where('depart_id', 2)->first();
+
+        /** เจ้าหน้าที่พัสดุ */
         $supplyOfficer = Person::with('prefix','position','academic')
                             ->where('person_id', $withdrawal->inspection->order->supply_officer)
                             ->first();
@@ -441,6 +446,7 @@ class WithdrawalController extends Controller
         $data = [
             "withdrawal"        => $withdrawal,
             "planType"          => $planType,
+            "departOfParcel"    => $departOfParcel,
             "officer"           => $supplyOfficer,
             "headOfDepart"      => $headOfDepart,
             "headOfFaction"     => $headOfFaction,
