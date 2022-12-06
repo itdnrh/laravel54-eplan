@@ -187,8 +187,16 @@ class OrderController extends Controller
                     ->with('officer','officer.prefix','supportOrders')
                     ->find($id);
 
+        $committees = [];
+        foreach(explode(',', $order->supportOrders[0]->committees) as $com) {
+            $person = Person::with('prefix','position','academic')->where('person_id', $com)->first();
+
+            array_push($committees, $person);
+        }
+
         return [
-            "order" => $order
+            "order"         => $order,
+            "committees"    => $committees
         ];
     }
 
@@ -748,9 +756,12 @@ class OrderController extends Controller
                                     ->where('committee_type_id', '1')
                                     ->get();
         } else {
-            $committees = Person::with('prefix','position','academic')
-                                ->whereIn('person_id', explode(',', $support->committees))
-                                ->get();
+            $committees = [];
+            foreach(explode(',', $support->committees) as $com) {
+                $person = Person::with('prefix','position','academic')->where('person_id', $com)->first();
+
+                array_push($committees, $person);
+            }
         }
 
         /** กลุ่มงานพัสดุ */

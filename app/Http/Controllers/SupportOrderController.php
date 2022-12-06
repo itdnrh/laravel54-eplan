@@ -205,8 +205,8 @@ class SupportOrderController extends Controller
             $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
             $support->report_doc_no     = $req['report_doc_no'];
             $support->report_doc_date   = convThDateToDbDate($req['report_doc_date']);
-            $support->amount            = $req['amount'];
-            $support->net_total         = $req['net_total'];
+            $support->amount            = currencyToNumber($req['amount']);
+            $support->net_total         = currencyToNumber($req['net_total']);
 
             if (count($req['committee_ids']) > 0) {
                 $support->committees        =  implode(',', $req['committee_ids']);
@@ -257,8 +257,8 @@ class SupportOrderController extends Controller
             $support->spec_doc_date     = convThDateToDbDate($req['spec_doc_date']);
             $support->report_doc_no     = $req['report_doc_no'];
             $support->report_doc_date   = convThDateToDbDate($req['report_doc_date']);
-            $support->amount            = $req['amount'];
-            $support->net_total         = $req['net_total'];
+            $support->amount            = currencyToNumber($req['amount']);
+            $support->net_total         = currencyToNumber($req['net_total']);
 
             if (count($req['committee_ids']) > 0) {
                 $support->committees        =  implode(',', $req['committee_ids']);

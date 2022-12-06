@@ -424,6 +424,7 @@
                                                 name="amount"
                                                 ng-model="specCommittee.amount"
                                                 class="form-control"
+                                                style="text-align: right;"
                                             />
                                             <span class="help-block" ng-show="frmSpecCommitee.$submitted && frmSpecCommitee.amount.$error.required">
                                                 กรุณาระบุจำนวนรายการ

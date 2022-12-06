@@ -915,7 +915,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         };
     };
 
-    $scope.setSpecCommitteeForm = function(order, supportOrder) {
+    $scope.setSpecCommitteeForm = function(order, supportOrder, committees) {
         $scope.specCommittee.order_id   = order.id;
         $scope.specCommittee.amount     = order.details.length;
         $scope.specCommittee.net_total  = order.net_total;
@@ -925,11 +925,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.specCommittee.purchase_method    = supportOrder.purchase_method.toString();
             $scope.specCommittee.source_price       = supportOrder.source_price.toString();
             $scope.specCommittee.spec_doc_no        = supportOrder.spec_doc_no;
-            // $scope.specCommittee.spec_doc_date      = supportOrder.spec_doc_date;
+            // $scope.specCommittee.spec_doc_date   = supportOrder.spec_doc_date;
             $scope.specCommittee.report_doc_no      = supportOrder.report_doc_no;
-            // $scope.specCommittee.report_doc_date    = supportOrder.report_doc_date;
-            $scope.specCommittee.amount      = supportOrder.amount;
-            $scope.specCommittee.net_total    = supportOrder.net_total;
+            // $scope.specCommittee.report_doc_date = supportOrder.report_doc_date;
+            $scope.specCommittee.amount             = supportOrder.amount;
+            $scope.specCommittee.net_total          = supportOrder.net_total;
+            $scope.specCommittee.committees         = committees;
             $scope.specCommittee.is_existed         = true;
 
             $('#spec_doc_date')
@@ -950,7 +951,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         if (isExisted) {
             if(confirm(`คุณต้องแก้ไขรายละเอียดเอกสารขออนุมัติผู้กำหนด Spec รหัส ${id} ใช่หรือไม่?`)) {
-                $http.put(`${CONFIG.apiUrl}/support-orders/${id}`, $scope.specCommittee)
+                $http.put(`${CONFIG.apiUrl}/support-orders/${$scope.specCommittee.id}`, $scope.specCommittee)
                 .then(res => {
                     if (res.data.status) {
                         window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
@@ -1364,7 +1365,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $('#supplier_id').val(res.data.order.supplier.supplier_id).trigger('change.select2');
 
             $scope.onFilterCategories(res.data.order.plan_type_id);
-            $scope.setSpecCommitteeForm(res.data.order, res.data.order.support_orders[0]);
+            $scope.setSpecCommitteeForm(res.data.order, res.data.order.support_orders[0], res.data.committees);
         }, err => {
             console.log(err);
         });

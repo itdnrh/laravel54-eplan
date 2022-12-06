@@ -112,14 +112,14 @@
                                         @foreach($committees as $committee)
                                             @if ($support->order->support_id)
                                                 <tr>
-                                                    <td style="width: 40%;">
+                                                    <td style="width: 45%;">
                                                         {{ thainumDigit(++$index) }}. {{ $committee->person->prefix->prefix_name.$committee->person->person_firstname.' '.$committee->person->person_lastname }}
                                                     </td>
                                                     <td>ตำแหน่ง {{ $committee->person->position->position_name }}{{ $committee->person->academic ? $committee->person->academic->ac_name : '' }}</td>
                                                 </tr>
                                             @else
                                                 <tr>
-                                                    <td style="width: 40%;">
+                                                    <td style="width: 45%;">
                                                         {{ thainumDigit(++$index) }}. {{ $committee->prefix->prefix_name.$committee->person_firstname.' '.$committee->person_lastname }}
                                                     </td>
                                                     <td>ตำแหน่ง {{ $committee->position->position_name }}{{ $committee->academic ? $committee->academic->ac_name : '' }}</td>
