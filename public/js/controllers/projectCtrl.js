@@ -16,7 +16,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.persons_pager = null;
 
     $scope.project = {
-        project_id: '',
+        id: '',
         project_no: '',
         project_name: '',
         project_type_id: '',
@@ -56,8 +56,18 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         .on('changeDate', function(event) {
             console.log(event.date);
         });
-    
+
     $('#pay_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            console.log(e);
+        })
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
+    $('#dtpDate')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
         .on('show', function (e) {
@@ -69,7 +79,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     const clearProject = function() {
         $scope.project = {
-            project_id: '',
+            id: '',
             project_no: '',
             project_name: '',
             project_type_id: '',
@@ -305,8 +315,63 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
-    $scope.updateTimeline = (id, projectId, fieldName) => {
-        $http.post(`${CONFIG.baseUrl}/projects/${projectId}/${id}/timeline`, { fieldName })
+    $scope.storeTimeline = (projectId, fieldName) => {
+        $scope.loading = true;
+
+        $http.post(`${CONFIG.baseUrl}/projects/timeline`, { projectId, fieldName })
+        .then(res => {
+            $scope.timeline = res.data.timeline;
+
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+
+            $scope.loading = false;
+        });
+    };
+
+    $scope.timelineFieldName = '';
+    $scope.showTimeline = function(fieldName) {
+        $scope.timelineFieldName = fieldName;
+
+        $('#timeline-form').modal('show');
+    };
+
+    $scope.updateTimeline = (e, form, id) => {
+        let data = { fieldName: $scope.timelineFieldName, value: $('#dtpDate').val() };
+
+        if (confirm('คุณต้องการแก้ไขข้อมูล Timeline ใช่หรือไม่?')) {
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/projects/${id}/timeline`, data)
+            .then(res => {
+                $scope.timeline = res.data.timeline;
+
+                /** Hide modal popup */
+                $('#timeline-form').modal('hide');
+
+                /** Reset date picker input's value to default */
+                $('#dtpDate')
+                    .datepicker(dtpOptions)
+                    .datepicker('update', new Date());
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+            });
+        }
+
+        $scope.timelineFieldName = '';
+    };
+
+    $scope.nextTimeline = (e, id, projectId, fieldName) => {
+        e.preventDefault();
+
+        $scope.loading = true;
+
+        $http.post(`${CONFIG.baseUrl}/projects/timeline`, { id, fieldName, projectId })
         .then(res => {
             $scope.timeline = res.data.timeline;
 

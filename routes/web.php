@@ -133,8 +133,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('projects/update/{id}', 'ProjectController@update');
     Route::post('projects/delete/{id}', 'ProjectController@delete');
     Route::post('projects/{id}/payments', 'ProjectController@storePayment');
-    Route::post('projects/{id}/timeline', 'ProjectController@storeTimeline');
-    Route::post('projects/{id}/{timelineId}/timeline', 'ProjectController@updateTimeline');
+    Route::post('projects/timeline', 'ProjectController@storeTimeline');
+    Route::post('projects/{timelineId}/timeline', 'ProjectController@updateTimeline');
     Route::get('projects/print/{id}', 'ProjectController@printForm');
     Route::get('projects/excel', 'ProjectController@excel');
 

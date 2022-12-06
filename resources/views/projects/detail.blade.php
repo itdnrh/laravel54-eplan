@@ -205,6 +205,7 @@
                                         <div style="padding: 0 20px;">
 
                                             @include('projects._timelines-list')
+                                            @include('projects._timeline-form')
 
                                         </div>
                                     </div>

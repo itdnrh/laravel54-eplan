@@ -448,19 +448,35 @@ class ProjectController extends Controller
         }
     }
 
-    public function storeTimeline(Request $req, $id) {
+    public function storeTimeline(Request $req) {
         try {
-            $timeline = new ProjectTimeline;
-            $timeline->project_id = $id;
+            if (empty($req['id'])) {
+                $timeline = new ProjectTimeline;
+            } else {
+                $timeline = ProjectTimeline::find($req['id']);
+                $timeline->project_id = $req['projectId'];
+            }
+
             $timeline->$req['fieldName'] = date('Y-m-d');
 
             if ($timeline->save()) {
+                $project = Project::find($timeline->project_id);
+
+                if ($req['fieldName'] == 'sent_stg_date') {
+                    $project->status = '1';
+                } else if ($req['fieldName'] == 'sent_fin_date') {
+                    $project->status = '2';
+                } else if ($req['fieldName'] == 'approved_date') {
+                    $project->status = '3';
+                } else if ($req['fieldName'] == 'start_date') {
+                    $project->status = '4';
+                }
+                $project->save();
+
                 return [
                     'status'    => 1,
                     'message'   => 'Insertion successfully!!',
-                    'timeline'  => ProjectPayment::where('project_id', $id)
-                                    ->with('creator','creator.prefix')
-                                    ->get()
+                    'timeline'  => ProjectTimeline::where('project_id', $req['projectId'])->first()
                 ];
             } else {
                 return [
@@ -476,13 +492,13 @@ class ProjectController extends Controller
         }
     }
 
-    public function updateTimeline(Request $req, $id, $timelineId) {
+    public function updateTimeline(Request $req, $timelineId) {
         try {
             $timeline = ProjectTimeline::find($timelineId);
-            $timeline->$req['fieldName'] = date('Y-m-d');
+            $timeline->$req['fieldName'] = convThDateToDbDate($req['value']);
 
             if ($timeline->save()) {
-                $project = Project::find($id);
+                $project = Project::find($timeline->project_id);
 
                 if ($req['fieldName'] == 'sent_stg_date') {
                     $project->status = '1';
@@ -493,7 +509,6 @@ class ProjectController extends Controller
                 } else if ($req['fieldName'] == 'start_date') {
                     $project->status = '4';
                 }
-
                 $project->save();
 
                 return [

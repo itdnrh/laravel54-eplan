@@ -8,6 +8,13 @@ class Project extends Model
 {
     protected $table = "projects";
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['approved', 'status'];
+
     public function depart()
     {
         return $this->belongsTo(Depart::class, 'owner_depart', 'depart_id');
