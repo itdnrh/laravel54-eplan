@@ -273,7 +273,9 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             $scope.project.strategic_id     = project.strategy.strategic_id.toString();
             $scope.project.strategy_id      = project.strategy_id.toString();
             $scope.project.kpi_id           = project.kpi_id ? project.kpi_id.toString() : '';
+            $scope.project.project_type     = project.project_type;
             $scope.project.project_type_id  = project.project_type_id.toString();
+            $scope.project.budget_src       = project.budget_src;
             $scope.project.budget_src_id    = project.budget_src_id.toString();
             $scope.project.owner_depart     = project.owner_depart.toString();
 
@@ -541,7 +543,6 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
             $http.post(`${CONFIG.baseUrl}/projects/${projectId}/${paymentId}/payments/delete`)
             .then(res => {
-                console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบรายการเรียบร้อย !!!");
 

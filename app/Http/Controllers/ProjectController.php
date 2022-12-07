@@ -218,7 +218,7 @@ class ProjectController extends Controller
     public function getById($id)
     {
         $project = Project::where('id', $id)
-                    ->with('budgetSrc','depart','depart.faction')
+                    ->with('budgetSrc','projectType','depart','depart.faction')
                     ->with('owner','owner.prefix','owner.position','owner.academic')
                     ->with('strategy','kpi','kpi.strategy.strategic')
                     ->first();

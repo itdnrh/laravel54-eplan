@@ -107,31 +107,37 @@
                             </div>
                         </div>
 
-                            <div class="row">
+                        <div class="row">
                             <div
                                 class="form-group col-md-6"
-                                ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                                ng-class="{'has-error has-feedback': checkValidate(project, 'project_type_id')}"
                             >
-                                <label>งบประมาณ :</label>
-                                <div class="form-control">@{{ project.total_budget | currency:'':2 }}</div>
+                                <label>ประเภทโครงการ : <span class="required-field">*</span></label>
+                                <div class="form-control">
+                                    @{{ project.project_type.name }}
+                                </div>
+                                <span class="help-block" ng-show="checkValidate(project, 'project_type_id')">
+                                    @{{ formError.errors.project_type_id[0] }}
+                                </span>
                             </div>
                             <div
                                 class="form-group col-md-6"
                                 ng-class="{'has-error has-feedback': checkValidate(project, 'budget_src_id')}"
                             >
                                 <label>แหล่งงบประมาณ :</label>
-                                <select id="budget_src_id"
-                                        name="budget_src_id"
-                                        ng-model="project.budget_src_id"
-                                        class="form-control"
-                                        tabindex="2">
-                                    <option value="">-- เลือกประเภท --</option>
-                                    @foreach($budgets as $budget)
-                                        <option value="{{ $budget->id }}">
-                                            {{ $budget->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="form-control">
+                                    @{{ project.budget_src.name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div
+                                class="form-group col-md-6"
+                                ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
+                            >
+                                <label>งบประมาณ :</label>
+                                <div class="form-control">@{{ project.total_budget | currency:'':2 }}</div>
                             </div>
                         </div>
 
@@ -243,7 +249,6 @@
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
-                    
                         <a  href="{{ url('/projects/print') }}/@{{ project.id }}"
                             class="btn btn-success" 
                             title="พิมพ์บันทึกข้อความ">

@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th style="width: 4%; text-align: center;">ลำดับ</th>
-            <th style="width: 15%; text-align: center;">วันที่เบิกจ่าย</th>
+            <th style="width: 20%; text-align: center;">วันที่เบิกจ่าย</th>
             <th style="width: 20%; text-align: center;">ยอดเงิน</th>
             <th style="width: 10%; text-align: center;">AAR</th>
             <th style="text-align: center;">จนท.การเงิน</th>
@@ -39,13 +39,15 @@
             </td>           
         </tr>
         <tr>
-            <td colspan="2" style="text-align: center;">รวมทั้งสิ้น</td>
+            <td colspan="2" style="text-align: right;">รวมทั้งสิ้น</td>
             <td style="text-align: right;">@{{ totalPayment | currency:'':2 }}</td>
             <td colspan="3"></td>
         </tr>
-        <tr>
-            <td colspan="2" style="text-align: center;">คงเหลือ</td>
-            <td style="text-align: right;">@{{ project.total_budget - totalPayment | currency:'':2 }}</td>
+        <tr style="font-weight: bold;">
+            <td colspan="2" style="text-align: right;">คงเหลือ</td>
+            <td style="text-align: right;">
+                @{{ project.total_budget - totalPayment | currency:'':2 }}
+            </td>
             <td colspan="3"></td>
         </tr>
     </tbody>
