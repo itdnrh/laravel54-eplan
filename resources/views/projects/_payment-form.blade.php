@@ -5,7 +5,7 @@
                 <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
 
                 <div class="modal-header">
-                    <h5 class="modal-title">เพิ่มเพิ่มรายการเบิกจ่าย</h5>
+                    <h5 class="modal-title">เพิ่มรายการเบิกจ่าย</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">

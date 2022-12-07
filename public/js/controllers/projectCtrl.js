@@ -577,6 +577,67 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
+    $scope.showModificationForm = () => {
+        $('#modification-form').modal('show');
+    };
+
+    $scope.onSubmitModification = (e, form, modification) => {
+        e.preventDefault();
+
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณกรอกข้อมูลไม่ครบ !!!");
+            return;
+        }
+
+        if (!modification) {
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/projects/${id}/close`, data)
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกขอเปลี่ยนแปลงเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกขอเปลี่ยนแปลงได้ !!!");
+                }
+
+                $('#modification-form').modal('hide');
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกขอเปลี่ยนแปลงได้ !!!");
+
+                $scope.loading = false;
+            });
+        } else {
+            if (confirm('คุณต้องการแก้ไขขอเปลี่ยนแปลงใช่หรือไม่?')) {
+                $scope.loading = true;
+
+                $http.post(`${CONFIG.baseUrl}/projects/${id}/close`, data)
+                .then(res => {
+                    if (res.data.status == 1) {
+                        toaster.pop('success', "ผลการทำงาน", "แก้ไขขอเปลี่ยนแปลงเรียบร้อย !!!");
+                    } else {
+                        toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขขอเปลี่ยนแปลงได้ !!!");
+                    }
+
+                    $('#modification-form').modal('hide');
+
+                    $scope.loading = false;
+                }, err => {
+                    console.log(err);
+
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขขอเปลี่ยนแปลงได้ !!!");
+
+                    $scope.loading = false;
+                });
+            } else {
+                $scope.loading = false;
+            }
+        }
+    };
+
     $scope.showCloseProjectForm = () => {
         $('#close-form').modal('show');
     };

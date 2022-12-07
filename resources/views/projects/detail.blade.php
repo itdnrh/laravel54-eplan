@@ -222,26 +222,57 @@
                         <!-- ================ Payment Section ================ -->
                         <div class="box box-danger">
                             <div class="box-header with-border">
-                                <h4 style="margin: 0;">การเบิกจ่าย</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="margin: 0;">การเบิกจ่าย</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a
+                                            href="#"
+                                            class="btn btn-primary pull-right"
+                                            style="margin-bottom: 10px;"
+                                            ng-click="showPaymentForm($event, project.id, null)"
+                                            ng-show="{{ Auth::user()->memberOf->depart_id }} == '3' || {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        >
+                                            เพิ่มรายการเบิกจ่าย
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div style="padding: 0 20px;">
-                                                <a
-                                                    href="#"
-                                                    class="btn btn-primary pull-right"
-                                                    style="margin-bottom: 10px;"
-                                                    ng-click="showPaymentForm($event, project.id, null)"
-                                                    ng-show="{{ Auth::user()->memberOf->depart_id }} == '3' || {{ Auth::user()->memberOf->depart_id }} == '4'"
-                                                >
-                                                    เพิ่มรายการเบิกจ่าย
-                                                </a>
-    
-                                            @include('projects._payment-list')
-                                            @include('projects._payment-form')
-    
-                                        </div>
+                                        @include('projects._payment-list')
+                                        @include('projects._payment-form')
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================ Modification Section ================ -->
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="margin: 0;">การขอเปลี่ยนแปลงโครงการ</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a
+                                            href="#"
+                                            class="btn btn-primary pull-right"
+                                            ng-click="showModificationForm($event, project.id, null)"
+                                            ng-show="{{ Auth::user()->memberOf->depart_id }} == '3' || {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        >
+                                            เพิ่มรายการขอเปลี่ยนแปลง
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @include('projects._modify-list')
+                                        @include('projects._modify-form')
                                     </div>
                                 </div>
                             </div>
