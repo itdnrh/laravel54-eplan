@@ -401,6 +401,25 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         user: ''
     };
 
+    $scope.clearPayment = function() {
+        $scope.payment.id = '';
+        $scope.payment.project_id = '',
+        $scope.payment.received_date = '',
+        $scope.payment.pay_date = '',
+        $scope.payment.net_total = '',
+        $scope.payment.have_aar = '0',
+        $scope.payment.remark = '',
+        $scope.payment.user = '';
+
+        $('#received_date')
+            .datepicker(dtpOptions)
+            .datepicker('update', new Date());
+
+        $('#pay_date')
+            .datepicker(dtpOptions)
+            .datepicker('update', new Date());
+    };
+
     $scope.calculateTotalPayment = (payments) => {
         return payments.reduce((sum, pay) => {
             return sum = sum + pay.net_total;
@@ -424,17 +443,18 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
-    $scope.showPaymentForm = (e, payment) => {
+    $scope.showPaymentForm = (e, projectId, payment) => {
         e.preventDefault();
 
+        $scope.payment.project_id = projectId;
+
+        /** ถ้าเป็นการแก้ไขรายการ */
         if (payment) {
             $scope.payment.id = payment.id;
-            $scope.payment.project_id = payment.project_id;
             $scope.payment.net_total = payment.net_total;
             $scope.payment.have_aar = payment.have_aar;
             $scope.payment.remark = payment.remark;
 
-            
             $('#received_date')
                 .datepicker(dtpOptions)
                 .datepicker('update', moment(payment.received_date).toDate());
@@ -455,21 +475,33 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             return;
         }
 
+        $scope.loading = true;
         $scope.payment.user = $('#user').val();
 
         if (paymentId) {
             /** กรณีแก้ไขข้อมูล */
             $http.post(`${CONFIG.baseUrl}/projects/${$scope.payment.project_id}/${paymentId}/payments`, $scope.payment)
             .then(res => {
-                console.log(res);
-                $scope.payments = res.data.payments;
-                $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขรายการเรียบร้อย !!!");
+
+                    $scope.payments = res.data.payments;
+                    $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+
+                    $scope.clearPayment();
+
+                    form.$submitted = false;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขรายการได้ !!!");
+                }
 
                 $('#payment-form').modal('hide');
 
                 $scope.loading = false;
             }, err => {
                 console.log(err);
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขรายการได้ !!!");
 
                 $scope.loading = false;
             });
@@ -477,15 +509,53 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             /** กรณีเพิ่มข้อมูล */
             $http.post(`${CONFIG.baseUrl}/projects/${$scope.payment.project_id}/payments`, $scope.payment)
             .then(res => {
-                console.log(res);
-                $scope.payments = res.data.payments;
-                $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "เพิ่มรายการเรียบร้อย !!!");
+
+                    $scope.payments = res.data.payments;
+                    $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+
+                    $scope.clearPayment();
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถเพิ่มรายการได้ !!!");
+                }
 
                 $('#payment-form').modal('hide');
 
                 $scope.loading = false;
             }, err => {
                 console.log(err);
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถเพิ่มรายการได้ !!!");
+
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.deletePayment = (e, projectId, paymentId) => {
+        e.preventDefault();
+
+        if (confirm('คุณต้องการลบรายการเบิกจ่ายเงินโครงการใช่หรือไม่?')) {
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/projects/${projectId}/${paymentId}/payments/delete`)
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบรายการเรียบร้อย !!!");
+
+                    $scope.payments = res.data.payments;
+                    $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบรายการได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบรายการได้ !!!");
 
                 $scope.loading = false;
             });

@@ -414,7 +414,8 @@ class ProjectController extends Controller
         }
     }
 
-    public function storePayment(Request $req, $id) {
+    public function storePayment(Request $req, $id)
+    {
         try {
             $payment = new ProjectPayment;
             $payment->project_id    = $id;
@@ -448,7 +449,8 @@ class ProjectController extends Controller
         }
     }
 
-    public function updatePayment(Request $req, $id, $paymentId) {
+    public function updatePayment(Request $req, $id, $paymentId)
+    {
         try {
             $payment = ProjectPayment::find($paymentId);
             $payment->project_id    = $id;
@@ -481,7 +483,33 @@ class ProjectController extends Controller
         }
     }
 
-    public function storeTimeline(Request $req) {
+    public function deletePayment($id, $paymentId)
+    {
+        try {
+            $payment = ProjectPayment::find($paymentId);
+
+            if($payment->delete()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully!!',
+                    'payments'  => ProjectPayment::with('creator','creator.prefix')->get()
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function storeTimeline(Request $req)
+    {
         try {
             if ($req->has('id') && !empty($req['id'])) {
                 $timeline = ProjectTimeline::find($req['id']);
@@ -525,7 +553,8 @@ class ProjectController extends Controller
         }
     }
 
-    public function updateTimeline(Request $req, $timelineId) {
+    public function updateTimeline(Request $req, $timelineId)
+    {
         try {
             $timeline = ProjectTimeline::find($timelineId);
             $timeline->$req['fieldName'] = convThDateToDbDate($req['value']);

@@ -24,13 +24,13 @@
             <td style="text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 2px;">
                     <a  href="#"
-                        ng-click="showPaymentForm($event, payment)"
+                        ng-click="showPaymentForm($event, project.id, payment)"
                         class="btn btn-warning btn-xs"
                         title="แก้ไขรายการ">
                         <i class="fa fa-edit"></i>
                     </a>
                     <a  href="#"
-                        ng-click="deletePayment($event, payment.id)"
+                        ng-click="deletePayment($event, project.id, payment.id)"
                         class="btn btn-danger btn-xs"
                         title="ลบรายการ">
                         <i class="fa fa-trash"></i>
