@@ -660,6 +660,34 @@ class ProjectController extends Controller
         }
     }
 
+    public function close(Request $req, $id)
+    {
+        try {
+            $project = Project::find($id);
+            $project->total_actual  = currencyToNumber($req['total_actual']);
+            $project->closed_date   = convThDateToDbDate($req['closed_date']);
+            $project->status        = 8;
+
+            if ($project->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Closed project successfully!!',
+                    'project'   => $project
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function excel(Request $req)
     {
         $matched = [];

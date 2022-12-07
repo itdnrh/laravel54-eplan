@@ -251,14 +251,15 @@
                     <div class="box-footer clearfix" style="text-align: center;">
                         <a  href="{{ url('/projects/print') }}/@{{ project.id }}"
                             class="btn btn-success" 
-                            title="พิมพ์บันทึกข้อความ">
+                            title="พิมพ์บันทึกข้อความ"
+                            ng-show="project.approved == 'A'">
                             <i class="fa fa-print"></i>
                             พิมพ์บันทึกข้อความ
                         </a>
                         <button
                             class="btn btn-danger"
                             ng-click="showCloseProjectForm()"
-                            ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'"
+                            ng-show="project.approved == 'A' && {{ Auth::user()->memberOf->depart_id }} == '4'"
                         >
                             ปิดโครงการ
                         </button>

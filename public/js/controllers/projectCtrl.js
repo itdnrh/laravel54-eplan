@@ -33,6 +33,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         owner_depart: '',
         owner_person: '',
         start_month: '',
+        closed_date: '',
         attachment: '',
         remark: '',
     };
@@ -77,6 +78,16 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             console.log(event.date);
         });
 
+    $('#closed_date')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('show', function (e) {
+            console.log(e);
+        })
+        .on('changeDate', function(event) {
+            console.log(event.date);
+        });
+
     const clearProject = function() {
         $scope.project = {
             id: '',
@@ -96,6 +107,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             owner_depart: '',
             owner_person: '',
             start_month: '',
+            closed_date: '',
             attachment: '',
             remark: '',
         };
@@ -560,6 +572,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
                 $scope.loading = false;
             });
+        } else {
+            $scope.loading = false;
         }
     };
 
@@ -567,8 +581,44 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $('#close-form').modal('show');
     };
 
-    $scope.onCloseProject = () => {
+    $scope.onCloseProject = (e, form, id) => {
+        e.preventDefault();
 
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณกรอกข้อมูลไม่ครบ !!!");
+            return;
+        }
+
+        if (confirm('คุณต้องการบันทึกปิดโครงการใช่หรือไม่?')) {
+            $scope.loading = true;
+            
+            let data = {
+                total_actual: $('#total_actual').val(),
+                closed_date: $('#closed_date').val(),
+                user: $('#user').val(),
+            };
+
+            $http.post(`${CONFIG.baseUrl}/projects/${id}/close`, data)
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกปิดโครงการเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปิดโครงการได้ !!!");
+                }
+
+                $('#close-form').modal('hide');
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปิดโครงการได้ !!!");
+
+                $scope.loading = false;
+            });
+        } else {
+            $scope.loading = false;
+        }
     };
 
     $scope.store = function(event, form) {
