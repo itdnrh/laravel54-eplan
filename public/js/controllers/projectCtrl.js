@@ -390,7 +390,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.payments = [];
     $scope.totalPayment = 0;
-    $scope.newPayment = {
+    $scope.payment = {
+        id: '',
         project_id: '',
         received_date: '',
         pay_date: '',
@@ -423,29 +424,74 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
-    $scope.showPaymentForm = () => {
+    $scope.showPaymentForm = (e, payment) => {
+        e.preventDefault();
+
+        if (payment) {
+            $scope.payment.id = payment.id;
+            $scope.payment.project_id = payment.project_id;
+            $scope.payment.net_total = payment.net_total;
+            $scope.payment.have_aar = payment.have_aar;
+            $scope.payment.remark = payment.remark;
+
+            
+            $('#received_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(payment.received_date).toDate());
+
+            $('#pay_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(payment.pay_date).toDate());
+        }
+
         $('#payment-form').modal('show');
     };
 
-    $scope.createNewPayment = (e, id) => {
-        $scope.newPayment.user = $('#user').val();
+    $scope.onSubmitPayment = (e, form, paymentId) => {
+        e.preventDefault();
 
-        $http.post(`${CONFIG.baseUrl}/projects/${id}/payments`, $scope.newPayment)
-        .then(res => {
-            console.log(res);
-            $scope.payments = res.data.payments;
-            $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณกรอกข้อมูลไม่ครบ !!!");
+            return;
+        }
 
-            $scope.loading = false;
-        }, err => {
-            console.log(err);
+        $scope.payment.user = $('#user').val();
 
-            $scope.loading = false;
-        });
+        if (paymentId) {
+            /** กรณีแก้ไขข้อมูล */
+            $http.post(`${CONFIG.baseUrl}/projects/${$scope.payment.project_id}/${paymentId}/payments`, $scope.payment)
+            .then(res => {
+                console.log(res);
+                $scope.payments = res.data.payments;
+                $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
 
-        $('#payment-form').modal('hide');
+                $('#payment-form').modal('hide');
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+            });
+        } else {
+            /** กรณีเพิ่มข้อมูล */
+            $http.post(`${CONFIG.baseUrl}/projects/${$scope.payment.project_id}/payments`, $scope.payment)
+            .then(res => {
+                console.log(res);
+                $scope.payments = res.data.payments;
+                $scope.totalPayment = $scope.calculateTotalPayment(res.data.payments);
+
+                $('#payment-form').modal('hide');
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+            });
+        }
     };
-    
+
     $scope.showCloseProjectForm = () => {
         $('#close-form').modal('show');
     };

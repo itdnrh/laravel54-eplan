@@ -226,7 +226,7 @@
                                                     href="#"
                                                     class="btn btn-primary pull-right"
                                                     style="margin-bottom: 10px;"
-                                                    ng-click="showPaymentForm()"
+                                                    ng-click="showPaymentForm($event, null)"
                                                     ng-show="{{ Auth::user()->memberOf->depart_id }} == '3' || {{ Auth::user()->memberOf->depart_id }} == '4'"
                                                 >
                                                     เพิ่มรายการเบิกจ่าย

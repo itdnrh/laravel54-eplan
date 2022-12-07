@@ -188,10 +188,12 @@ class OrderController extends Controller
                     ->find($id);
 
         $committees = [];
-        foreach(explode(',', $order->supportOrders[0]->committees) as $com) {
-            $person = Person::with('prefix','position','academic')->where('person_id', $com)->first();
-
-            array_push($committees, $person);
+        if (count($order->supportOrders) > 0) {
+            foreach(explode(',', $order->supportOrders[0]->committees) as $com) {
+                $person = Person::with('prefix','position','academic')->where('person_id', $com)->first();
+    
+                array_push($committees, $person);
+            }
         }
 
         return [
