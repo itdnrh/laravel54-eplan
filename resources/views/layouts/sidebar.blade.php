@@ -432,7 +432,12 @@
 									</li>
 									<li ng-class="{ 'active': submenu == 'persons' }">
 										<a href="{{ url('/system/persons') }}">
-											<i class="fa fa-circle-o"></i> ข้อมูลบุคลากร
+											<i class="fa fa-circle-o"></i> บุคลากร
+										</a>
+									</li>
+									<li ng-class="{ 'active': submenu == 'factions' }">
+										<a href="{{ url('/system/factions') }}">
+											<i class="fa fa-circle-o"></i> หน่วยงาน
 										</a>
 									</li>
 									<li ng-class="{ 'active': submenu == 'kpis' }">

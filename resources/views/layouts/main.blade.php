@@ -111,6 +111,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/expenseCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/provinceCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/delegationCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/factionCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/report.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/stringFormat.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/pagination.js') }}"></script>

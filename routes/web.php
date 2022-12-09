@@ -291,14 +291,32 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** คำสั่งจังหวัด */
     Route::post('provinces/validate', 'ProvinceOrderController@formValidate');
     Route::get('provinces/list', 'ProvinceOrderController@index');
-    Route::get('provinces/search', 'ProvinceOrderController@search');
     Route::get('system/provinces', 'ProvinceOrderController@index');
+    Route::get('provinces/search', 'ProvinceOrderController@search');
     Route::get('provinces/detail/{id}', 'ProvinceOrderController@detail');
     Route::get('provinces/add', 'ProvinceOrderController@create');
     Route::post('provinces/store', 'ProvinceOrderController@store');
     Route::get('provinces/edit/{id}', 'ProvinceOrderController@edit');
     Route::post('provinces/update/{id}', 'ProvinceOrderController@update');
     Route::post('provinces/delete/{id}', 'ProvinceOrderController@delete');
+
+    /** ข้อมูลหน่วยงาน */
+    Route::post('factions/validate', 'FactionController@formValidate');
+    Route::get('factions/list', 'FactionController@index');
+    Route::get('system/factions', 'FactionController@index');
+    Route::get('factions/detail/{id}', 'FactionController@detail');
+
+    /** กลุ่มงาน */
+    Route::post('departs/validate', 'FactionController@formValidate');
+    Route::get('departs/list', 'FactionController@index');
+    Route::get('departs/search', 'FactionController@search');
+    Route::get('departs/detail/{id}', 'FactionController@detail');
+
+    /** งาน */
+    Route::post('divisions/validate', 'FactionController@formValidate');
+    Route::get('divisions/list', 'FactionController@index');
+    Route::get('divisions/search', 'FactionController@search');
+    Route::get('divisions/detail/{id}', 'FactionController@detail');
 
     /** รายงาน */
     Route::get('reports/all', 'ReportController@index');

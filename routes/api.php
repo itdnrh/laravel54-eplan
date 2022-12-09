@@ -135,6 +135,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('provinces/{id}/activate', 'ProvinceOrderController@activate');
     Route::put('provinces/{id}/deactivate', 'ProvinceOrderController@deactivate');
 
+    /** ข้อมูลหน่วยงาน */
+    Route::get('factions', 'FactionController@getAll');
+    Route::get('factions/{id}', 'FactionController@getById');
+
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');
     Route::get('reports/project-depart', 'ReportController@getProjectByDepart');
