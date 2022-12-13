@@ -46,6 +46,23 @@
                         </div>
                         <div
                             class="col-md-6 form-group"
+                            ng-class="{'has-error has-feedback': frmPayment.$submitted && frmPayment.desc.$invalid}"
+                        >
+                            <label for="">รายการ</label>
+                            <input
+                                type="text"
+                                id="desc"
+                                name="desc"
+                                ng-model="payment.desc"
+                                class="form-control"
+                                required
+                            />
+                            <span class="help-block" ng-show="frmPayment.$submitted && frmPayment.desc.$error.required">
+                                กรุณาระบุรายการ
+                            </span>
+                        </div>
+                        <div
+                            class="col-md-6 form-group"
                             ng-class="{'has-error has-feedback': frmPayment.$submitted && frmPayment.net_total.$invalid}"
                         >
                             <label for="">ยอดเบิกจ่าย</label>
@@ -61,9 +78,9 @@
                                 กรุณาระบุยอดเบิกจ่าย
                             </span>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-12 form-group">
                             <label for="">มี AAR</label>
-                            <div style="display: flex; gap: 30px;">
+                            <div style="display: flex; gap: 30px; padding-left: 20px;">
                                 <div>
                                     <input type="radio" ng-model="payment.have_aar" ng-value="0" /> ไม่มี 
                                 </div>

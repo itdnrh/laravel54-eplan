@@ -406,22 +406,24 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.totalPayment = 0;
     $scope.payment = {
         id: '',
+        desc: '',
         project_id: '',
         received_date: '',
         pay_date: '',
         net_total: '',
-        have_aar: '0',
+        have_aar: 0,
         remark: '',
         user: ''
     };
 
     $scope.clearPayment = function() {
         $scope.payment.id = '';
+        $scope.payment.desc = '';
         $scope.payment.project_id = '',
         $scope.payment.received_date = '',
         $scope.payment.pay_date = '',
         $scope.payment.net_total = '',
-        $scope.payment.have_aar = '0',
+        $scope.payment.have_aar = 0,
         $scope.payment.remark = '',
         $scope.payment.user = '';
 

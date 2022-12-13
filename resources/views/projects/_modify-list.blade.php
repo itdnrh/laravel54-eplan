@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th style="width: 4%; text-align: center;">ลำดับ</th>
-            <th style="width: 20%; text-align: center;">วันที่ขอเปลี่ยนแปลง</th>
-            <th style="text-align: center;">รายละเอียด</th>
+            <th style="width: 15%; text-align: center;">วันที่ขอเปลี่ยนแปลง</th>
+            <th>รายละเอียด</th>
             <th style="width: 8%; text-align: center;">ไฟล์แนบ</th>
             <th style="width: 20%; text-align: center;">ผู้ขอ</th>
             <th style="width: 10%; text-align: center;">Actions</th>
@@ -13,7 +13,7 @@
         <tr ng-repeat="(index, payment) in payments">
             <td style="text-align: center;">@{{ index+1 }}</td>
             <td style="text-align: center;">@{{ payment.pay_date | thdate}}</td>
-            <td style="text-align: right;">@{{ payment.net_total }}</td>
+            <td>@{{ payment.net_total }}</td>
             <td style="text-align: center;">
                 <i class="fa  fa-file-pdf-o text-success" aria-hidden="true"></i>
             </td>
