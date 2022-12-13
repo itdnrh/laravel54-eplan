@@ -419,8 +419,9 @@ class ProjectController extends Controller
         try {
             $payment = new ProjectPayment;
             $payment->project_id    = $id;
-            $payment->pay_date      = convThDateToDbDate($req['pay_date']);
+            $payment->desc          = $req['desc'];
             $payment->received_date = convThDateToDbDate($req['received_date']);
+            $payment->paid_date     = convThDateToDbDate($req['paid_date']);
             $payment->net_total     = currencyToNumber($req['net_total']);
             $payment->have_aar      = $req['have_aar'];
             $payment->remark        = $req['remark'];
@@ -454,8 +455,9 @@ class ProjectController extends Controller
         try {
             $payment = ProjectPayment::find($paymentId);
             $payment->project_id    = $id;
-            $payment->pay_date      = convThDateToDbDate($req['pay_date']);
+            $payment->desc          = $req['desc'];
             $payment->received_date = convThDateToDbDate($req['received_date']);
+            $payment->paid_date     = convThDateToDbDate($req['paid_date']);
             $payment->net_total     = currencyToNumber($req['net_total']);
             $payment->have_aar      = $req['have_aar'];
             $payment->remark        = $req['remark'];
