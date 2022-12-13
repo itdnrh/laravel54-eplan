@@ -666,7 +666,7 @@ class ProjectController extends Controller
             $project = Project::find($id);
             $project->total_actual  = currencyToNumber($req['total_actual']);
             $project->closed_date   = convThDateToDbDate($req['closed_date']);
-            $project->status        = 8;
+            $project->status        = 9;
 
             if ($project->save()) {
                 return [

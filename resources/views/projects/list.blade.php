@@ -320,7 +320,7 @@
                                         <span class="label bg-maroon" ng-show="project.status == 4">
                                             ดำเนินโครงการแล้ว
                                         </span>
-                                        <span class="label label-danger" ng-show="project.status == 8">
+                                        <span class="label label-danger" ng-show="project.status == 9">
                                             ปิดโครงการแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="project.status == 99">
