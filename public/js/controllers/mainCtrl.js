@@ -607,10 +607,10 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.formValidate(e, endpoint, plan, frmName, callback)
     };
 
-    $scope.expandRow = '';
+    $scope.expandRow = '-1';
     $scope.toggleDetailsCollpse = function(selectedIndex) {
         if ($scope.expandRow === selectedIndex) {
-            $scope.expandRow = '';
+            $scope.expandRow = '-1';
         } else {
             $scope.expandRow = selectedIndex;
         }
