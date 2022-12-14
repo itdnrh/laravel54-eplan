@@ -75,8 +75,8 @@
                             <p class="memo-paragraph with-expanded">
                                 จังหวัดนครราชสีมา โดยโรงพยาบาลเทพรัตน์นครราชสีมา ได้ตกลง{{ $orderType }}<span>{{ $planType->plan_type_name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
-                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total, 2)) }} บาท</span>
-                                (<span>{{ baht_text($withdrawal->inspection->order->net_total) }}</span>) กับ <span>{{ $withdrawal->supplier->supplier_name }}</span>
+                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->net_total, 2)) }} บาท</span>
+                                (<span>{{ baht_text($withdrawal->net_total) }}</span>) กับ <span>{{ $withdrawal->supplier->supplier_name }}</span>
                                 โดยเบิกจ่ายจาก <span style="margin: 0;">{{ $withdrawal->inspection->order->budgetSource->name }}</span>โรงพยาบาลเทพรัตน์นครราชสีมา
                                 ปีงบประมาณ <span>{{ thainumDigit($withdrawal->inspection->order->year) }}</span>
                                 ตามรายละเอียดใน<span>{{ $withdrawal->inspection->order->orderType->name }}</span>
@@ -91,8 +91,8 @@
                                 บัดนี้ <span>{{ $withdrawal->supplier->supplier_name }}</span>
                                 ได้ดำเนินการส่งมอบ<span>{{ $planType->plan_type_name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
-                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total, 2)) }} บาท</span>
-                                <span>({{ baht_text($withdrawal->inspection->order->net_total) }})</span>
+                                เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($withdrawal->net_total, 2)) }} บาท</span>
+                                <span>({{ baht_text($withdrawal->net_total) }})</span>
                                 ดังกล่าวเรียบร้อยแล้ว และคณะกรรมการตรวจรับพัสดุได้ทำการตรวจรับ
                                 ไว้เป็นการถูกต้อง ครบถ้วน และไม่มีค่าปรับ ตาม<span>{{ $withdrawal->inspection->order->orderType->name }}</span>
                                 เมื่อวันที่
@@ -221,8 +221,8 @@
                                 ตามบันทึก ที่ <span>{{ thainumDigit($withdrawal->inspection->order->po_app_no) }}</span>
                                 ลงวันที่ <span>{{ thainumDigit(convDbDateToLongThDate($withdrawal->inspection->order->po_app_date)) }}</span>
                                 จังหวัดนครราชสีมา ได้อนุมัติให้{{ $orderType }}{{ $withdrawal->inspection->order->category->name }}
-                                เป็นเงินทั้งสิ้น {{ thainumDigit(number_format($withdrawal->inspection->order->net_total, 2)) }} บาท
-                                <span>({{ baht_text($withdrawal->inspection->order->net_total) }})</span>
+                                เป็นเงินทั้งสิ้น {{ thainumDigit(number_format($withdrawal->net_total, 2)) }} บาท
+                                <span>({{ baht_text($withdrawal->net_total) }})</span>
                                 โดยเบิกจ่ายจาก{{ $withdrawal->inspection->order->budgetSource->name }} โรงพยาบาลเทพรัตน์นครราชสีมา
                                 ปีงบประมาณ <span>{{ thainumDigit($withdrawal->inspection->order->year) }}</span>
                             </p>
@@ -372,8 +372,8 @@
                                 จังหวัดนครราชสีมา ได้เห็นชอบให้{{ $orderType }}<span>{{ $planType->plan_type_name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 กับ <span>{{ $withdrawal->supplier->supplier_name }}</span>
-                                จำนวนเงิน <span>{{ thainumDigit(number_format($withdrawal->inspection->order->net_total, 2)) }} บาท</span>
-                                <span>({{ baht_text($withdrawal->inspection->order->net_total) }})</span>
+                                จำนวนเงิน <span>{{ thainumDigit(number_format($withdrawal->net_total, 2)) }} บาท</span>
+                                <span>({{ baht_text($withdrawal->net_total) }})</span>
                                 โดยเบิกจ่ายจาก <span style="margin: 0;">{{ $withdrawal->inspection->order->budgetSource->name }}</span>โรงพยาบาลเทพรัตน์นครราชสีมา
                                 ปีงบประมาณ <span>{{ thainumDigit($withdrawal->inspection->order->year) }}</span>
                             </p>
