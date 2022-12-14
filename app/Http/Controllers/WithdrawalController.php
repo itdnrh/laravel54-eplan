@@ -167,10 +167,15 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
-                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
-                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                /** ดึงข้อมูลการตรวจรับมาเพื่อตรวจสอบงวดการตรวจรับ */
+                $inspection = Inspection::find($req['inspection_id']);
+                
+                /** Update order's status to 2=ตรวจรับแล้วบางงวด or 4=ส่งเบิกเงินแล้ว */
+                $order = Order::find($req['order_id']);
+                $order->status = ($order->deliver_amt > $inspection->deliver_seq) ? 2 : 4;
+                $order->save();
 
-                /** Update status of OrderDetail data */
+                /** ดึงข้อมูลตาราง OrderDetail */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
                 foreach($orderDetails as $detail) {
                     /** Update support_details's status to 5=ส่งเบิกเงินแล้ว */
@@ -240,8 +245,13 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
-                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
-                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
+                /** ดึงข้อมูลการตรวจรับมาเพื่อตรวจสอบงวดการตรวจรับ */
+                $inspection = Inspection::find($req['inspection_id']);
+                
+                /** Update order's status to 2=ตรวจรับแล้วบางงวด or 4=ส่งเบิกเงินแล้ว */
+                $order = Order::find($req['order_id']);
+                $order->status = ($order->deliver_amt > $inspection->deliver_seq) ? 2 : 4;
+                $order->save();
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
