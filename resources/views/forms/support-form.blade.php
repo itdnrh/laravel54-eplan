@@ -398,8 +398,28 @@
                             @endif
                             <!-- ############################ End Pagination ############################ -->
 
-                            <?php $nextBullet = 1; ?>
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
+
+                            <!-- ############################ Pagination ############################ -->
+                            @if (count($support->details) == 10)
+                                <?php $page = $page + 1; ?>
+                                <div style="height: 40px;"></div>
+                                <p class="next-paragraph">/๑. รายชื่อคณะกรรมการกำหนด...</p>
+                            @endif
+                            <!-- ############################ End Pagination ############################ -->
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4">
+                            <?php $nextBullet = 1; ?>
+
+                            <!-- ############################ Pagination ############################ -->
+                            @if (count($support->details) == 10)
+                                <p class="page-number">- ๒ -</p>
+                            @endif
+                            <!-- ############################ End Pagination ############################ -->
+
                             <div style="margin: 0;">
                                 ๑. รายชื่อคณะกรรมการกำหนดคุณลักษณะเฉพาะวัสดุหรือครุภัณฑ์ (กรณีงานซื้อ)/คณะกรรมการจัดทำร่างขอบเขตงาน (กรณีงานจ้าง)
                                 <ul class="committee-lists">
@@ -663,7 +683,7 @@
                                     <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
 
-                                @if ($page == 1 && (count($support->details) > 7 && count($support->details) <= 10))
+                                @if ($page == 1 && (count($support->details) > 7 && count($support->details) < 10))
                                     <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
                                 @endif
 
