@@ -93,13 +93,13 @@ class OrderController extends Controller
         $conditions = [];
         $pattern = '/^\<|\>|\&|\-/i';
 
-        $year = $req->get('year');
-        $supplier = $req->get('supplier');
-        $officer = $req->get('officer');
-        $type = $req->get('type');
-        $cate = $req->get('cate');
-        $status = $req->get('status');
-        $poNo = $req->get('po_no');
+        $year       = $req->get('year');
+        $supplier   = $req->get('supplier');
+        $officer    = $req->get('officer');
+        $type       = $req->get('type');
+        $cate       = $req->get('cate');
+        $status     = $req->get('status');
+        $poNo       = $req->get('po_no');
 
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {

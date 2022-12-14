@@ -111,7 +111,7 @@
                                         <button type="button" class="btn btn-default">งวดงานที่</button>
                                     </div>
                                     <div class="form-control">
-                                        @{{ withdrawal.inspection.deliver_seq }}
+                                        @{{ withdrawal.inspection.deliver_seq }}/@{{ withdrawal.inspection.order.deliver_amt }}
                                     </div>
                                 </div>
                             </div>

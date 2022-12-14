@@ -88,7 +88,9 @@ class WithdrawalController extends Controller
                         })
                         ->when(!empty($completed), function($q) use ($completed) {
                             if ($completed == '1') {
-                                $q->where('completed', '0')->orWhereNull('completed');
+                                $q->where(function($sq) {
+                                    $sq->where('completed', '0')->orWhereNull('completed');
+                                });
                             } else {
                                 $q->where('completed', '1');
                             }
@@ -165,8 +167,8 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
-                /** Update order's status to 5=ส่งเบิกเงินแล้ว */
-                $order = Order::where('id', $req['order_id'])->update(['status' => 5]);
+                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
+                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();
@@ -238,8 +240,8 @@ class WithdrawalController extends Controller
             $withdrawal->updated_user   = $req['user'];
 
             if ($withdrawal->save()) {
-                /** Update order's status to 5=ส่งเบิกเงินแล้ว */
-                $order = Order::where('id', $req['order_id'])->update(['status' => 5]);
+                /** Update order's status to 4=ส่งเบิกเงินแล้ว */
+                $order = Order::where('id', $req['order_id'])->update(['status' => 4]);
 
                 /** Update status of OrderDetail data */
                 $orderDetails = OrderDetail::where('order_id', $req['order_id'])->get();

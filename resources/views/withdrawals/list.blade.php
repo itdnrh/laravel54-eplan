@@ -181,7 +181,9 @@
                                         <p style="margin: 0px;">เลขที่: @{{ withdraw.withdraw_no }}</p>
                                         <p style="margin: 0px;">วันที่: @{{ withdraw.withdraw_date | thdate }}</p>
                                     </td>
-                                    <td style="text-align: center;">@{{ withdraw.inspection.deliver_seq }}</td>
+                                    <td style="text-align: center;">
+                                        @{{ withdraw.inspection.deliver_seq }}/@{{ withdraw.inspection.order.deliver_amt }}
+                                    </td>
                                     <td style="text-align: center;">@{{ withdraw.inspection.deliver_no }}</td>
                                     <td>
                                         <h5 style="margin: 0; font-size: 14px;">
