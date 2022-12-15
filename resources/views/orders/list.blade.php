@@ -71,7 +71,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label>ประเภทแผน</label>
                                     <select
                                         id="cboPlanType"
@@ -91,7 +91,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label>ประเภทพัสดุ</label>
                                     <select
                                         id="cboCategory"
@@ -105,6 +105,38 @@
                                             @{{ category.name }}
                                         </option>
                                     </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>วันที่ PO</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpSdate"
+                                            name="dtpSdate"
+                                            ng-model="dtpSdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpSdate');">
+                                                เคลียร์
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>ถึงวันที่</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpEdate"
+                                            name="dtpEdate"
+                                            ng-model="dtpEdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpEdate');">
+                                                เคลียร์
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 

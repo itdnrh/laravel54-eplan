@@ -100,6 +100,7 @@ class OrderController extends Controller
         $cate       = $req->get('cate');
         $status     = $req->get('status');
         $poNo       = $req->get('po_no');
+        list($sdate, $edate) = explode('-', $req->get('date'));
 
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
@@ -143,6 +144,13 @@ class OrderController extends Controller
                     })
                     ->when(!empty($poNo), function($q) use ($poNo) {
                         $q->where('po_no', 'like', '%' .$poNo. '%');
+                    })
+                    ->when($req->get('date') != '-', function($q) use ($sdate, $edate) {
+                        if ($sdate != '' && $edate != '') {
+                            $q->whereBetween('po_date', [convThDateToDbDate($sdate), convThDateToDbDate($edate)]);
+                        } else if ($edate == '') {
+                            $q->where('po_date', convThDateToDbDate($sdate));
+                        }
                     })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);

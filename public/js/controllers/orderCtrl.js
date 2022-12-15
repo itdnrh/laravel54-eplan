@@ -13,6 +13,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';
     $scope.searchKey = '';
+    $scope.dtpSdate = '';
+    $scope.dtpEdate = '';
 
     $scope.sumOrders = 0;
 
@@ -144,6 +146,28 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
+        });
+
+    $('#dtpSdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpSdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
+
+    $('#dtpEdate')
+        .datepicker(dtpOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpEdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
         });
 
     $scope.setSupportToOrder = function(support) {
@@ -1028,8 +1052,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
         let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}&date=${sdate}-${edate}`)
         .then(function(res) {
             $scope.setOrders(res);
 
@@ -1055,8 +1081,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
         let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
-        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}`)
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}&date=${sdate}-${edate}`)
         .then(function(res) {
             cb(res);
 

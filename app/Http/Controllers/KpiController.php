@@ -242,7 +242,7 @@ class KpiController extends Controller
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::all(),
             "kpis"          => Kpi::all(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -252,7 +252,7 @@ class KpiController extends Controller
         return view('kpis.add', [
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::orderBy('strategy_no')->get(),
-            "factions"      => Faction::all(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -286,11 +286,10 @@ class KpiController extends Controller
     public function edit($id)
     {
         return view('kpis.edit', [
-            "leave"         => Leave::find($id),
-            "leave_types"   => LeaveType::all(),
-            "positions"     => Position::all(),
-            "departs"       => Depart::where('faction_id', '5')->get(),
-            "periods"       => $this->periods,
+            "strategics"    => Strategic::all(),
+            "strategies"    => Strategy::orderBy('strategy_no')->get(),
+            "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"       => Depart::all(),
         ]);
     }
 
