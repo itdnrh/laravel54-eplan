@@ -424,7 +424,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="text-align: right;">รวมเป็นเงิน</td>
+                                                <td colspan="7" style="text-align: right;">รวมเป็นเงิน</td>
                                                 <td style="text-align: center;">
                                                     <div class="form-control" style="text-align: center;" readonly>
                                                         @{{ support.total | currency:'':2 }}
