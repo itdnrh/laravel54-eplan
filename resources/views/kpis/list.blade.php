@@ -180,8 +180,8 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 5%; text-align: center;">ปีงบ</th>
                                     <th>ตัวชี้วัด</th>
-                                    <th style="width: 40%; text-align: center;">ยุทธศาสตร์/กลยุทธ์</th>
-                                    <th style="width: 20%; text-align: center;">หน่วยงาน</th>
+                                    <th style="width: 40%;">ยุทธศาสตร์/กลยุทธ์</th>
+                                    <th style="width: 20%;">หน่วยงาน</th>
                                     <!-- <th style="width: 5%; text-align: center;">อนุมัติ</th> -->
                                     <!-- <th style="width: 10%; text-align: center;">สถานะ</th> -->
                                     <th style="width: 10%; text-align: center;">Actions</th>
@@ -201,11 +201,13 @@
                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
                                         </a>
                                     </td>
-                                    <td style="text-align: center;">
-                                        <p style="font-weight: bold; margin: 0;">@{{ kpi.strategy.strategic.strategic_name }}</p>
-                                        <p style="margin: 0;">@{{ kpi.strategy_name }}</p>
+                                    <td>
+                                        <p style="font-weight: bold; margin: 0;">
+                                            @{{ kpi.strategy.strategic.strategic_name }}
+                                        </p>
+                                        <p style="margin: 0;">@{{ kpi.strategy.strategy_name }}</p>
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td>
                                         <p style="margin: 0;">@{{ kpi.depart.depart_name }}</p>
                                         <p style="margin: 0;">@{{ kpi.owner.person_firstname+ ' ' +kpi.owner.person_lastname }}</p>
                                     </td>
