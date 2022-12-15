@@ -276,7 +276,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนจ้างบริการรหัส ${$scope.service.id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนจ้างบริการ รหัส ${$scope.service.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };
@@ -285,7 +285,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         e.preventDefault();
         $scope.loading = true;
 
-        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องลบแผนจ้างบริการ รหัส ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
             .then(res => {
                 console.log(res);
@@ -307,6 +307,34 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             });
         } else {
             $scope.loading = false;
+        }
+    };
+
+    $scope.setStatus = function(e, id, status) {
+        e.preventDefault();
+        
+        if(confirm(`คุณต้องเปลี่ยนสถานะแผนจ้างบริการ รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
+
+                    /** TODO: Reset asset model */
+                    $scope.setAssets(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+            });
         }
     };
 

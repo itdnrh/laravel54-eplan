@@ -283,7 +283,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนวัสดุนอกคลังรหัส ${$scope.material.id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนวัสดุ รหัส ${$scope.material.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };
@@ -292,10 +292,9 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         e.preventDefault();
         $scope.loading = true;
 
-        if(confirm(`คุณต้องลบใบลาเลขที่ ${id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องลบวัสดุ รหัส ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
             .then(res => {
-                console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
 
@@ -314,6 +313,30 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             });
         } else {
             $scope.loading = false;
+        }
+    };
+
+    $scope.setStatus = function(e, id, status) {
+        e.preventDefault();
+        
+        if(confirm(`คุณต้องเปลี่ยนสถานะแผนวัสดุ รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+            });
         }
     };
 

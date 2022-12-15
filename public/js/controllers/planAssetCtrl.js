@@ -307,9 +307,10 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.delete = function(e, id) {
         e.preventDefault();
-        $scope.loading = true;
+        
+        if(confirm(`คุณต้องลบแผนครุภัณฑ์ รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
 
-        if(confirm(`คุณต้องลบแผนครุภัณฑ์รหัส ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
             .then(res => {
                 console.log(res);
@@ -329,8 +330,31 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
                 $scope.loading = false;
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
             });
-        } else {
-            $scope.loading = false;
+        }
+    };
+
+    $scope.setStatus = function(e, id, status) {
+        e.preventDefault();
+        
+        if(confirm(`คุณต้องเปลี่ยนสถานะแผนครุภัณฑ์ รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+            });
         }
     };
 

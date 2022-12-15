@@ -382,6 +382,35 @@
                                             <i class="fa fa-trash"></i> ลบ
                                         </button>
                                     </form>
+                                    <div class="btn-group" style="display: flex;" ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'">
+                                        <button type="button" class="btn btn-primary" style="width: 100%;">เปลี่ยนสถานะ</button>
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li ng-hide="asset.status == 0">
+                                                <a href="#" ng-click="setStatus($event, asset.id, '0')">
+                                                    รอดำเนินการ
+                                                </a>
+                                            </li>
+                                            <li ng-hide="asset.status == 1">
+                                                <a href="#" ng-click="setStatus($event, asset.id, '1')">
+                                                    ดำเนินการแล้วบางส่วน
+                                                </a>
+                                            </li>
+                                            <li ng-hide="asset.status == 2">
+                                                <a href="#" ng-click="setStatus($event, asset.id, '2')">
+                                                    ดำเนินการครบแล้ว
+                                                </a>
+                                            </li>
+                                            <!-- <li ng-hide="asset.status == 9">
+                                                <a href="#" ng-click="setStatus($event, asset.id, '9')">
+                                                    ยกเลิก
+                                                </a>
+                                            </li> -->
+                                        </ul>
+                                    </div>
                                 </div>
                                 <!-- /** Action buttons container */ -->
 

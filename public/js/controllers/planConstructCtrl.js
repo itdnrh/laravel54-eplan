@@ -295,7 +295,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.update = function(event, form) {
         event.preventDefault();
     
-        if(confirm(`คุณต้องแก้ไขแผนก่อสร้างรหัส ${$scope.construct.id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องแก้ไขแผนก่อสร้าง รหัส ${$scope.construct.id} ใช่หรือไม่?`)) {
             $(`#${form}`).submit();
         }
     };
@@ -304,7 +304,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         e.preventDefault();
         $scope.loading = true;
 
-        if(confirm(`คุณต้องลบใบลาเลขที่ ${id} ใช่หรือไม่?`)) {
+        if(confirm(`คุณต้องลบแผนก่อสร้าง รหัส ${id} ใช่หรือไม่?`)) {
             $http.delete(`${CONFIG.baseUrl}/plans/${id}`)
             .then(res => {
                 console.log(res);
@@ -326,6 +326,31 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             });
         } else {
             $scope.loading = false;
+        }
+    };
+
+    $scope.setStatus = function(e, id, status) {
+        e.preventDefault();
+        
+        if(confirm(`คุณต้องเปลี่ยนสถานะแผนก่อสร้าง รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
+            });
         }
     };
 
