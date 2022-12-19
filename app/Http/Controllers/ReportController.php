@@ -409,7 +409,6 @@ class ReportController extends Controller
                         $q->orderBy("plans.plan_type_id");
                         $q->orderBy("items.item_name", "DESC");
                     })
-                    
                     ->get();
 
         return [

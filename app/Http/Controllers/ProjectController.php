@@ -172,7 +172,7 @@ class ProjectController extends Controller
         $strategy   = $req->get('strategy');
         // $faction    = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         // $depart     = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
-        $name     = $req->get('name');
+        $name       = $req->get('name');
         $status     = $req->get('status');
 
         // $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
