@@ -89,6 +89,7 @@ class SupportController extends Controller
     {
         return view('supports.timeline', [
             "planTypes"     => PlanType::all(),
+            "categories"    => ItemCategory::all(),
             "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
@@ -163,6 +164,9 @@ class SupportController extends Controller
                         })
                         ->when(!empty($depart), function($q) use ($depart) {
                             $q->where('depart_id', $depart);
+                        })
+                        ->when(!empty($division), function($q) use ($division) {
+                            $q->where('division_id', $division);
                         })
                         ->when(!empty($docNo), function($q) use ($docNo) {
                             $q->where('doc_no', 'like', '%'.$docNo.'%');

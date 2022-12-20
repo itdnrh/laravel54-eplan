@@ -24,6 +24,7 @@
             initForms({
                 departs: {{ $departs }},
                 divisions: {{ $divisions }},
+                categories: {{ $categories }}
             }, 2);
             initFiltered();
         "
@@ -65,8 +66,7 @@
 
                         <div class="box-body">
                             <div class="row">
-
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-2">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -81,13 +81,29 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="cboInPlan"
+                                            name="cboInPlan"
+                                            ng-model="cboInPlan"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label>ประเภทแผน</label>
                                     <select
                                         id="cboPlanType"
                                         name="cboPlanType"
                                         ng-model="cboPlanType"
-                                        ng-change="getAll($event)"
+                                        ng-change="onFilterCategories(cboPlanType); getAll($event);"
                                         class="form-control select2"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -98,10 +114,25 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label>ประเภทพัสดุ</label>
+                                    <select
+                                        id="cboCategory"
+                                        name="cboCategory"
+                                        ng-model="cboCategory"
+                                        class="form-control"
+                                        ng-change="getAll($event);"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
+                                            @{{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4">
-                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-4" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
                                         <select
@@ -120,7 +151,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>กลุ่มงาน</label>
                                         <select
@@ -128,7 +159,7 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="onDepartSelected(cboDepart); getAll($event);"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -137,7 +168,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6" ng-hide="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>งาน</label>
                                         <select
@@ -148,11 +179,54 @@
                                             ng-change="getAll($event)"
                                         >
                                             <option value="">-- ทั้งหมด --</option>
-                                            <option ng-repeat="dep in forms.divisions" value="@{{ div.ward_id }}">
+                                            <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
                                                 @{{ div.ward_name }}
                                             </option>
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label>เลขที่บันทึกขอสนับสนุน</label>
+                                    <input
+                                        id="txtKeyword"
+                                        name="txtKeyword"
+                                        ng-model="txtKeyword"
+                                        ng-keyup="getAll($event)"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>รายละเอียด</label>
+                                    <input
+                                        id="txtDesc"
+                                        name="txtDesc"
+                                        ng-model="txtDesc"
+                                        ng-keyup="getAll($event)"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        ng-change="getAll($event)"
+                                        class="form-control"
+                                    >
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ส่งเอกสารแล้ว</option>
+                                        <option value="2">รับเอกสารแล้ว</option>
+                                        <option value="3-5">ออกใบสั่งซื้อแล้ว</option>
+                                        <option value="4-5">ตรวจรับแล้ว</option>
+                                        <option value="5">ส่งเบิกเงินแล้ว</option>
+                                        <option value="9">เอกสารถูกตีกลับ</option>
+                                        <!-- <option value="99">ยกเลิก</option> -->
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
