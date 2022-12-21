@@ -602,6 +602,12 @@
                                     <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
+
+                                @if($page == 0 && $haveRowOvered > 0 && (count($support->details) > 4 && count($support->details) <= 10))
+                                    <?php $page = $page + 1; ?>
+                                    <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
+                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                @endif
                             @endif
 
                             @if(count($committees) > 2 && count($committees) <= 6)
