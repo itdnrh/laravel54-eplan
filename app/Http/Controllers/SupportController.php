@@ -110,8 +110,7 @@ class SupportController extends Controller
                     ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = (Auth::user()->memberOf->duty_id == '1' || in_array(Auth::user()->memberOf->depart_id, ['2','4','65']))
                     ? $req->get('depart') : Auth::user()->memberOf->depart_id;
-        $division = (Auth::user()->memberOf->duty_id == '1' || in_array(Auth::user()->memberOf->depart_id, ['2','4','65']))
-                    ? $req->get('division') : Auth::user()->memberOf->ward_id;
+        $division = $req->get('division');
         $docNo = $req->get('doc_no');
         $receivedNo = $req->get('received_no');
         $desc   = $req->get('desc');
