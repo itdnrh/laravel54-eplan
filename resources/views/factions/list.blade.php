@@ -94,8 +94,8 @@
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="faction.is_actived == 'Y'"></i>
-                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="faction.is_actived == 'N'"></i>
+                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="faction.is_actived == '1'"></i>
+                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="faction.is_actived == '0'"></i>
                                     </td>
                                     <td style="text-align: center;">
                                         <a  href="{{ url('/factions/detail') }}/@{{ faction.id }}"

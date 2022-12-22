@@ -7,7 +7,7 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     $scope.departs = [];
     $scope.pager = null;
 
-    $scope.faction = {
+    $scope.depart = {
         depart_id: '',
         depart_name: '',
         faction_id: '',
@@ -17,7 +17,7 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     };
 
     $scope.setFaction = function(faction) {
-        $scope.cboFaction = faction.toString();
+        $scope.cboFaction = faction ? faction.toString() : '';
     };
 
     $scope.getDeparts = function(event) {
@@ -69,16 +69,12 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         $scope.pager = pager;
     };
 
-    $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/factions/edit/${id}`;
-    };
-
     $scope.getById = function(id, cb) {
         $scope.loading = true;
 
-        $http.get(`${CONFIG.apiUrl}/factions/${id}`)
+        $http.get(`${CONFIG.apiUrl}/departs/${id}`)
         .then(function(res) {
-            cb(res.data.supplier);
+            cb(res.data.depart);
 
             $scope.loading = false;
         }, function(err) {
@@ -96,6 +92,10 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
             $scope.depart.faction_id    = depart.faction_id.toString();
             $scope.depart.memo_no       = depart.memo_no;
             $scope.depart.tel_no        = depart.tel_no;
+            $scope.depart.is_actived    = depart.is_actived == 1 ? true : false;
+
+            /** Set date value to datepicker input of doc_date */
+            $('#faction_id').val(depart.faction_id).trigger('change.select2');
         }
     };
 
@@ -126,12 +126,11 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
 
     $scope.update = function(event, form) {
         event.preventDefault();
-        $scope.loading = true;
 
         if(confirm("คุณต้องแก้ไขรายการกลุ่มงาน รหัส " + $scope.depart.depart_id + " ใช่หรือไม่?")) {
-            $scope.depart.user = $('#user').val();
+            $scope.loading = true;
 
-            $http.post(`${CONFIG.baseUrl}/departs/update/${$scope.depart.depart_id}`, $scope.depart)
+            $http.put(`${CONFIG.apiUrl}/departs/${$scope.depart.depart_id}`, $scope.depart)
             .then(function(res) {
                 console.log(res);
 
@@ -152,15 +151,13 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
 
                 $scope.loading = false;
             });
-        } else {
-            $scope.loading = false;
         }
     };
 
     $scope.delete = function(id) {
-        $scope.loading = true;
-
         if(confirm("คุณต้องลบรายการกลุ่มงาน รหัส " + id + " ใช่หรือไม่?")) {
+            $scope.loading = true;
+
             $http.post(`${CONFIG.baseUrl}/departs/delete/${id}`)
             .then(function(res) {
                 console.log(res);
@@ -180,8 +177,6 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
 
                 $scope.loading = false;
             });
-        } else {
-            $scope.loading = false;
         }
     };
 });

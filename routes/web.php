@@ -310,8 +310,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('departs/validate', 'DepartController@formValidate');
     Route::get('departs/list', 'DepartController@index');
     Route::get('departs/add', 'DepartController@create');
-    Route::get('departs/{id}/detail', 'DepartController@detail');
-    Route::get('departs/{id}/edit', 'DepartController@edit');
+    Route::get('departs/detail/{id}', 'DepartController@detail');
+    Route::get('departs/edit/{id}', 'DepartController@edit');
 
     /** งาน */
     Route::post('divisions/validate', 'DivisionController@formValidate');

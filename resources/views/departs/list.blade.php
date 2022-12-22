@@ -98,21 +98,23 @@
                                     <td style="text-align: center;">@{{ depart.memo_no }}</td>
                                     <td style="text-align: center;">@{{ depart.tel_no }}</td>
                                     <td style="text-align: center;">
-                                        <a href="{{ url('departs/list') }}">
+                                        <a href="{{ url('departs/list?depart=') }}@{{ depart.depart_id }}">
                                             @{{ depart.divisions.length }} หน่วยงาน
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="depart.is_actived == 'Y'"></i>
-                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="depart.is_actived == 'N'"></i>
+                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="depart.is_actived == '1'"></i>
+                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="depart.is_actived == '0'"></i>
                                     </td>
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/departs/detail') }}/@{{ depart.id }}"
+                                        <a  href="{{ url('/departs/detail') }}/@{{ depart.depart_id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a ng-click="edit(depart.depart_id)" class="btn btn-warning btn-xs">
+                                        <a  href="{{ url('/departs/edit') }}/@{{ depart.depart_id }}"
+                                            class="btn btn-warning btn-xs" 
+                                            title="แก้ไข">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         @if(Auth::user()->person_id == '1300200009261')
