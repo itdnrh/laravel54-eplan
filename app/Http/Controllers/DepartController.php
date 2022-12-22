@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Faction;
 use App\Models\Depart;
 
 class DepartController extends Controller
@@ -12,7 +13,8 @@ class DepartController extends Controller
         $faction = $req->get('faction');
 
         return view('departs.list', [
-            'faction' => $faction
+            'factions'  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            'faction'   => $faction
         ]);
     }
 

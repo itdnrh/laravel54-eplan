@@ -33,10 +33,15 @@
                                             id="cboFaction"
                                             name="cboFaction"
                                             ng-model="cboFaction"
-                                            ng-keyup="getDeparts($event)"
+                                            ng-change="getDeparts($event)"
                                             class="form-control"
                                         >
-
+                                            <option value="">-- กรุณาเลือก --</option>
+                                            @foreach($factions as $faction)
+                                                <option value="{{ $faction->faction_id }}">
+                                                    {{ $faction->faction_name }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -78,7 +83,9 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 8%; text-align: center;">รหัส</th>
                                     <th>ชื่อกลุ่มงาน</th>
-                                    <th style="width: 10%; text-align: center;">จน.งาน</th>
+                                    <th style="width: 10%; text-align: center;">เลขหนังสือออก</th>
+                                    <th style="width: 10%; text-align: center;">เบอร์ภายใน</th>
+                                    <th style="width: 10%; text-align: center;">จน.หน่วยงาน</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
@@ -88,9 +95,11 @@
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ depart.depart_id }}</td>
                                     <td>@{{ depart.depart_name }}</td>
+                                    <td style="text-align: center;">@{{ depart.memo_no }}</td>
+                                    <td style="text-align: center;">@{{ depart.tel_no }}</td>
                                     <td style="text-align: center;">
                                         <a href="{{ url('departs/list') }}">
-                                            @{{ depart.divisions.length }} งาน
+                                            @{{ depart.divisions.length }} หน่วยงาน
                                         </a>
                                     </td>
                                     <td style="text-align: center;">

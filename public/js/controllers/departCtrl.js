@@ -2,7 +2,7 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
 /** ################################################################################## */
     $scope.loading = false;
     $scope.cboFaction = '';
-    $scope.txtKeyword = "";
+    $scope.txtKeyword = '';
 
     $scope.departs = [];
     $scope.pager = null;
@@ -13,7 +13,7 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
     };
 
     $scope.setFaction = function(faction) {
-        $scope.cboFaction = faction;
+        $scope.cboFaction = faction.toString();
     };
 
     $scope.getDeparts = function(event) {
