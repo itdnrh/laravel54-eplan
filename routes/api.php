@@ -142,6 +142,9 @@ Route::group(['middleware' => 'api'], function () {
 
     /** กลุ่มงาน */
     Route::get('departs', 'DepartController@search');
+    Route::post('departs', 'DepartController@store');
+    Route::put('departs/{id}', 'DepartController@update');
+    Route::delete('departs/{id}', 'DepartController@delete');
 
     /** งาน */
     Route::get('divisions', 'DivisionController@search');
