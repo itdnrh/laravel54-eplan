@@ -66,7 +66,7 @@
 
                         <div class="box-body">
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-2">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -81,26 +81,21 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>ในแผน/นอกแผน</label>
-                                        <select
-                                            id="cboInPlan"
-                                            name="cboInPlan"
-                                            ng-model="cboInPlan"
-                                            class="form-control"
-                                            ng-change="getAll($event)"
-                                        >
-                                            <option value="">-- ทั้งหมด --</option>
-                                            <option value="I">ในแผน</option>
-                                            <option value="O">นอกแผน</option>
-                                        </select>
-                                    </div>
+                                <div class="form-group col-md-2">
+                                    <label>ในแผน/นอกแผน</label>
+                                    <select
+                                        id="cboInPlan"
+                                        name="cboInPlan"
+                                        ng-model="cboInPlan"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="I">ในแผน</option>
+                                        <option value="O">นอกแผน</option>
+                                    </select>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ประเภทแผน</label>
                                     <select
                                         id="cboPlanType"
@@ -120,7 +115,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ประเภทพัสดุ</label>
                                     <select
                                         id="cboCategory"
@@ -138,7 +133,7 @@
                             </div>
 
                             <div class="row" ng-show="{{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4 || {{ Auth::user()->memberOf->depart_id }} == 65">
-                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-4" ng-show="{{ Auth::user()->memberOf->depart_id }} == 4">
                                     <div class="form-group">
                                         <label>กลุ่มภารกิจ</label>
                                         <select
@@ -157,7 +152,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->depart_id }} == 4 || {{ Auth::user()->memberOf->depart_id }} == 65">
+                                <div class="col-md-4" ng-show="{{ Auth::user()->memberOf->depart_id }} == 4 || {{ Auth::user()->memberOf->depart_id }} == 65">
                                     <div class="form-group">
                                         <label>กลุ่มงาน</label>
                                         <select
@@ -174,7 +169,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6" ng-hide="{{ Auth::user()->memberOf->depart_id }} == 4">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>งาน</label>
                                         <select
@@ -194,7 +189,34 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-md-4">
+                                <div
+                                    class="col-md-3"
+                                    ng-hide="
+                                        {{ Auth::user()->memberOf->duty_id }} == 1 ||
+                                        {{ Auth::user()->memberOf->depart_id }} == 4
+                                    "
+                                >
+                                    <div class="form-group">
+                                        <label>งาน</label>
+                                        <select
+                                            id="cboDivision"
+                                            name="cboDivision"
+                                            ng-model="cboDivision"
+                                            class="form-control select2"
+                                            ng-change="getAll($event);"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            @foreach($divisions as $division)
+                                                @if($division->depart_id == Auth::user()->memberOf->depart_id)
+                                                    <option value="{{ $division->ward_id }}">
+                                                        {{ $division->ward_name }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label>เลขที่บันทึกขอสนับสนุน</label>
                                     <input
                                         id="txtKeyword"
@@ -204,7 +226,13 @@
                                         class="form-control"
                                     />
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div
+                                    class="form-group"
+                                    ng-class="{
+                                        'col-md-6': {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4,
+                                        'col-md-4': {{ Auth::user()->memberOf->duty_id }} != 1 && {{ Auth::user()->memberOf->depart_id }} != 4
+                                    }"
+                                >
                                     <label>รายละเอียด</label>
                                     <input
                                         id="txtDesc"
@@ -214,7 +242,13 @@
                                         class="form-control"
                                     />
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div
+                                    class="form-group"
+                                    ng-class="{
+                                        'col-md-3': {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4,
+                                        'col-md-2': {{ Auth::user()->memberOf->duty_id }} != 1 && {{ Auth::user()->memberOf->depart_id }} != 4
+                                    }"
+                                >
                                     <label>สถานะ</label>
                                     <select
                                         id="cboStatus"
