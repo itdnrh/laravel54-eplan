@@ -47,7 +47,7 @@ class DepartController extends Controller
 
         return view('departs.list', [
             'factions'  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
-            'faction'   => $faction
+            'faction'   => empty($faction) ? 0 : $faction
         ]);
     }
 
@@ -72,7 +72,7 @@ class DepartController extends Controller
 
     public function getById($id)
     {
-        $depart = Depart::where('depart_id', $id)->with('faction','divisions')->first();
+        $depart = Depart::with('faction','divisions')->find($id);
 
         return [
             "depart" => $depart

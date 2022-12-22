@@ -316,7 +316,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** งาน */
     Route::post('divisions/validate', 'DivisionController@formValidate');
     Route::get('divisions/list', 'DivisionController@index');
+    Route::get('divisions/add', 'DivisionController@create');
     Route::get('divisions/detail/{id}', 'DivisionController@detail');
+    Route::get('divisions/edit/{id}', 'DivisionController@edit');
 
     /** รายงาน */
     Route::get('reports/all', 'ReportController@index');

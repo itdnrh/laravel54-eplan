@@ -128,12 +128,12 @@
                                         <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="division.is_actived != '1'"></i>
                                     </td>
                                     <td style="text-align: center;">
-                                        <!-- <a  href="{{ url('/divisions/detail') }}/@{{ ward.ward_id }}"
+                                        <!-- <a  href="{{ url('/divisions/detail') }}/@{{ division.ward_id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a> -->
-                                        <a  href="{{ url('/divisions/edit') }}/@{{ ward.ward_id }}"
+                                        <a  href="{{ url('/divisions/edit') }}/@{{ division.ward_id }}"
                                             class="btn btn-warning btn-xs" 
                                             title="แก้ไข">
                                             <i class="fa fa-edit"></i>

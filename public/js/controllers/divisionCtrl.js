@@ -92,7 +92,8 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
     $scope.setEditControls = function(division) {
         if (division) {
-            console.log(division);
+            $scope.onFactionSelected(division.faction_id);
+
             $scope.division.ward_id     = division.ward_id;
             $scope.division.ward_name   = division.ward_name;
             $scope.division.faction_id  = division.faction_id.toString();
@@ -109,12 +110,10 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
         $http.post(`${CONFIG.baseUrl}/divisions/store`, $scope.division)
         .then(function(res) {
-            console.log(res);
-
             if (res.data.status == 1) {
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
 
-                window.location.href = `${CONFIG.baseUrl}/divisions/list`;
+                window.location.href = `${CONFIG.baseUrl}/divisions/list?faction=&depart=`;
             } else {
                 toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             }
@@ -135,15 +134,13 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
             $scope.loading = true;
             $scope.division.user = $('#user').val();
 
-            $http.post(`${CONFIG.apiUrl}/divisions/${$scope.division.ward_id}`, $scope.division)
+            $http.put(`${CONFIG.apiUrl}/divisions/${$scope.division.ward_id}`, $scope.division)
             .then(function(res) {
-                console.log(res);
-
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
 
                 setTimeout(function (){
-                    window.location.href = `${CONFIG.baseUrl}/divisions/list`;
+                    window.location.href = `${CONFIG.baseUrl}/divisions/list?faction=&depart=`;
                 }, 2000); 
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
@@ -156,8 +153,6 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                 $scope.loading = false;
             });
-        } else {
-            $scope.loading = false;
         }
     };
 
@@ -165,14 +160,12 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         if(confirm("คุณต้องลบรายการหน่วยงาน รหัส " + id + " ใช่หรือไม่?")) {
             $scope.loading = true;
 
-            $http.post(`${CONFIG.apiUrl}/divisions/${id}`)
+            $http.delete(`${CONFIG.apiUrl}/divisions/${id}`)
             .then(function(res) {
-                console.log(res);
-
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
 
-                    window.location.href = `${CONFIG.baseUrl}/divisions/list`;
+                    window.location.href = `${CONFIG.baseUrl}/divisions/list?faction=&depart=`;
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 }
@@ -184,8 +177,6 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
                 $scope.loading = false;
             });
-        } else {
-            $scope.loading = false;
         }
     };
 });

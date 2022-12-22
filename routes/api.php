@@ -150,6 +150,9 @@ Route::group(['middleware' => 'api'], function () {
     /** งาน */
     Route::get('divisions', 'DivisionController@search');
     Route::get('divisions/{id}', 'DivisionController@getById');
+    Route::post('divisions', 'DivisionController@store');
+    Route::put('divisions/{id}', 'DivisionController@update');
+    Route::delete('divisions/{id}', 'DivisionController@delete');
 
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');
