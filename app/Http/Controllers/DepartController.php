@@ -46,7 +46,7 @@ class DepartController extends Controller
         $faction = $req->get('faction');
 
         return view('departs.list', [
-            'factions'  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            'factions'  => Faction::where('is_actived', 1)->get(),
             'faction'   => empty($faction) ? 0 : $faction
         ]);
     }
@@ -82,7 +82,7 @@ class DepartController extends Controller
     public function create()
     {
         return view('departs.add', [
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get()
+            "factions"  => Faction::where('is_actived', 1)->get()
         ]);
     }
 
@@ -120,7 +120,7 @@ class DepartController extends Controller
     {
         return view('departs.edit', [
             "depart"    => Depart::find($id),
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get()
+            "factions"  => Faction::where('is_actived', 1)->get()
         ]);
     }
 

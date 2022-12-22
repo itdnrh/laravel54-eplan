@@ -46,7 +46,7 @@ class DivisionController extends Controller
         $depart = $req->get('depart');
 
         return view('divisions.list', [
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "factions"  => Faction::where('is_actived', 1)->get(),
             'departs'   => Depart::all(),
             'faction'   => empty($faction) ? 0 : $faction,
             'depart'    => empty($depart) ? 0 : $depart
@@ -88,7 +88,7 @@ class DivisionController extends Controller
     public function create()
     {
         return view('divisions.add', [
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "factions"  => Faction::where('is_actived', 1)->get(),
             'departs'   => Depart::all(),
         ]);
     }
@@ -128,7 +128,7 @@ class DivisionController extends Controller
     {
         return view('divisions.edit', [
             "division"  => Division::find($id),
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "factions"  => Faction::where('is_actived', 1)->get(),
             'departs'   => Depart::all(),
         ]);
     }
