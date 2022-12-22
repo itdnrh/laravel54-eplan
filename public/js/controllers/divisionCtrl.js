@@ -1,32 +1,32 @@
 app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboChangwat = '';
+    $scope.cboDepart = '';
     $scope.txtKeyword = "";
 
-    $scope.factions = [];
+    $scope.divisions = [];
     $scope.pager = null;
 
-    $scope.faction = {
-        prename_id: '',
-        supplier_name: '',
+    $scope.division = {
+        ward_id: '',
+        ward_name: '',
+        faction_id: '',
+        depart_id: '',
+        memo_no: '',
+        tel_no: '',
     };
 
-    $scope.onSelectedChangwat = function(e) {
-        $scope.supplier.supplier_address3 = $('#chw_id option:selected').text().replaceAll(/\s/g,'');
-    };
-
-    $scope.getFactions = function(event) {
+    $scope.getDivisions = function(event) {
+        $scope.division = [];
+        $scope.pager = null;
         $scope.loading = true;
 
-        $scope.factions = [];
-        $scope.pager = null;
-
+        let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         
-        $http.get(`${CONFIG.apiUrl}/factions?name=${name}`)
+        $http.get(`${CONFIG.apiUrl}/divisions?depart=${depart}&name=${name}`)
         .then(function(res) {
-            $scope.setFactions(res);
+            $scope.setDivisions(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -35,18 +35,17 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     }
 
-    $scope.getFactionsWithUrl = function(e, url, cb) {
+    $scope.getDivisionsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
-        $scope.loading = true;
-
-        $scope.factions = [];
+        $scope.divisions = [];
         $scope.pager = null;
+        $scope.loading = true;
 
         let name = $scope.txtKeyword === '' ? 0 : $scope.txtKeyword;
 
-        $http.get(`${url}&name=${name}&changwat=${changwat}`)
+        $http.get(`${url}&depart=${depart}&name=${name}`)
         .then(function(res) {
             cb(res);
 
@@ -57,21 +56,21 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     }
 
-    $scope.setFactions = function(res) {
-        const { data, ...pager } = res.data.factions;
+    $scope.setDivisions = function(res) {
+        const { data, ...pager } = res.data.division;
 
-        $scope.factions = data;
+        $scope.division = data;
         $scope.pager = pager;
     };
 
     $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/factions/edit/${id}`;
+        window.location.href = `${CONFIG.baseUrl}/divisions/edit/${id}`;
     };
 
     $scope.getById = function(id, cb) {
         $scope.loading = true;
 
-        $http.get(`${CONFIG.apiUrl}/factions/${id}`)
+        $http.get(`${CONFIG.apiUrl}/divisions/${id}`)
         .then(function(res) {
             cb(res.data.supplier);
 
@@ -83,32 +82,15 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         });
     };
 
-    $scope.setEditControls = function(supplier) {
-        if (supplier) {
-            console.log(supplier);
-            $scope.supplier.id                  = supplier.supplier_id;
-            $scope.supplier.prename_id          = supplier.prename_id ? supplier.prename_id.toString() : '';
-            $scope.supplier.supplier_name       = supplier.supplier_name;
-            $scope.supplier.supplier_address1   = supplier.supplier_address1;
-            $scope.supplier.supplier_address2   = supplier.supplier_address2;
-            $scope.supplier.supplier_address3   = supplier.supplier_address3;
-            $scope.supplier.chw_id              = supplier.chw_id ? supplier.chw_id.toString() : '';
-            $scope.supplier.supplier_zipcode    = supplier.supplier_zipcode;
-            $scope.supplier.supplier_phone      = supplier.supplier_phone;
-            $scope.supplier.supplier_fax        = supplier.supplier_fax;
-            $scope.supplier.supplier_email      = supplier.supplier_email;
-            $scope.supplier.supplier_agent_name = supplier.supplier_agent_name;
-            $scope.supplier.supplier_agent_contact = supplier.supplier_agent_contact;
-            $scope.supplier.supplier_agent_email = supplier.supplier_agent_email;
-            $scope.supplier.supplier_bank_acc   = supplier.supplier_bank_acc;
-            $scope.supplier.supplier_credit     = supplier.supplier_credit;
-            $scope.supplier.supplier_taxid      = supplier.supplier_taxid;
-            $scope.supplier.supplier_taxrate    = supplier.supplier_taxrate;
-            $scope.supplier.supplier_note       = supplier.supplier_note;
-
-            /** Set date value to datepicker input of doc_date */
-            $('#prename_id').val(supplier.prename_id).trigger('change.select2');
-            $('#chw_id').val(supplier.chw_id).trigger('change.select2');
+    $scope.setEditControls = function(division) {
+        if (division) {
+            console.log(division);
+            $scope.division.ward_id     = division.ward_id;
+            $scope.division.ward_name   = division.ward_name;
+            $scope.division.faction_id  = division.faction_id.toString();
+            $scope.division.depart_id   = division.depart_id.toString();
+            $scope.division.memo_no     = division.memo_no;
+            $scope.division.tel_no      = division.tel_no;
         }
     };
 
@@ -116,14 +98,14 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         event.preventDefault();
         $scope.loading = true;
 
-        $http.post(`${CONFIG.baseUrl}/factions/store`, $scope.supplier)
+        $http.post(`${CONFIG.baseUrl}/divisions/store`, $scope.division)
         .then(function(res) {
             console.log(res);
 
             if (res.data.status == 1) {
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
 
-                window.location.href = `${CONFIG.baseUrl}/system/factions`;
+                window.location.href = `${CONFIG.baseUrl}/divisions/list`;
             } else {
                 toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             }
@@ -141,10 +123,10 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         event.preventDefault();
         $scope.loading = true;
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + $scope.supplier.id + " ใช่หรือไม่?")) {
-            $scope.supplier.user = $('#user').val();
+        if(confirm("คุณต้องแก้ไขรายการหน่วยงาน รหัส " + $scope.division.ward_id + " ใช่หรือไม่?")) {
+            $scope.division.user = $('#user').val();
 
-            $http.post(`${CONFIG.baseUrl}/factions/update/${$scope.supplier.id}`, $scope.supplier)
+            $http.post(`${CONFIG.baseUrl}/divisions/update/${$scope.division.ward_id}`, $scope.division)
             .then(function(res) {
                 console.log(res);
 
@@ -152,7 +134,7 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
                     toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
 
                 setTimeout(function (){
-                    window.location.href = `${CONFIG.baseUrl}/system/factions`;
+                    window.location.href = `${CONFIG.baseUrl}/divisions/list`;
                 }, 2000); 
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
@@ -173,15 +155,15 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.delete = function(id) {
         $scope.loading = true;
 
-        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + id + " ใช่หรือไม่?")) {
-            $http.post(`${CONFIG.baseUrl}/factions/delete/${id}`)
+        if(confirm("คุณต้องลบรายการหน่วยงาน รหัส " + id + " ใช่หรือไม่?")) {
+            $http.post(`${CONFIG.baseUrl}/divisions/delete/${id}`)
             .then(function(res) {
                 console.log(res);
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
 
-                    window.location.href = `${CONFIG.baseUrl}/system/factions`;
+                    window.location.href = `${CONFIG.baseUrl}/divisions/list`;
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 }
