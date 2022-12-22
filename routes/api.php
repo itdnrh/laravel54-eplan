@@ -140,6 +140,12 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('factions', 'FactionController@getAll');
     Route::get('factions/{id}', 'FactionController@getById');
 
+    /** กลุ่มงาน */
+    Route::get('departs', 'DepartController@search');
+
+    /** งาน */
+    Route::get('divisions', 'DivisionController@search');
+
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');
     Route::get('reports/project-depart', 'ReportController@getProjectByDepart');

@@ -89,7 +89,7 @@
                                     <td style="text-align: center;">@{{ faction.faction_id }}</td>
                                     <td>@{{ faction.faction_name }}</td>
                                     <td style="text-align: center;">
-                                        <a href="{{ url('departs/list') }}">
+                                        <a href="{{ url('departs/list?faction=') }}@{{ faction.faction_id }}">
                                             @{{ faction.departs.length }} กลุ่มงาน
                                         </a>
                                     </td>

@@ -307,16 +307,15 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('factions/detail/{id}', 'FactionController@detail');
 
     /** กลุ่มงาน */
-    Route::post('departs/validate', 'FactionController@formValidate');
-    Route::get('departs/list', 'FactionController@index');
-    Route::get('departs/search', 'FactionController@search');
-    Route::get('departs/detail/{id}', 'FactionController@detail');
+    Route::post('departs/validate', 'DepartController@formValidate');
+    Route::get('departs/list', 'DepartController@index');
+    Route::get('departs/detail/{id}', 'DepartController@detail');
 
     /** งาน */
-    Route::post('divisions/validate', 'FactionController@formValidate');
-    Route::get('divisions/list', 'FactionController@index');
-    Route::get('divisions/search', 'FactionController@search');
-    Route::get('divisions/detail/{id}', 'FactionController@detail');
+    Route::post('divisions/validate', 'DivisionController@formValidate');
+    Route::get('divisions/list', 'DivisionController@index');
+    Route::get('divisions/search', 'DivisionController@search');
+    Route::get('divisions/detail/{id}', 'DivisionController@detail');
 
     /** รายงาน */
     Route::get('reports/all', 'ReportController@index');

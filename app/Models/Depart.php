@@ -13,4 +13,9 @@ class Depart extends Model
     {
         return $this->belongsTo(Faction::class, 'faction_id', 'faction_id');
     }
+
+    public function divisions()
+    {
+        return $this->hasMany(Division::class, 'depart_id', 'depart_id');
+    }
 }

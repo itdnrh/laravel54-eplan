@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="departCtrl" ng-init="getFactions()">
+    <section class="content" ng-controller="departCtrl" ng-init="setFaction({{ $faction }}); getDeparts();">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
@@ -28,28 +28,28 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>ชื่อเจ้าหนี้</label>
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="cboFaction"
+                                            name="cboFaction"
+                                            ng-model="cboFaction"
+                                            ng-keyup="getDeparts($event)"
+                                            class="form-control"
+                                        >
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ชื่อกลุ่มงาน</label>
                                         <input
                                             type="text"
                                             id="txtKeyword"
                                             name="txtKeyword"
                                             ng-model="txtKeyword"
-                                            ng-keyup="getSuppliers($event)"
+                                            ng-keyup="getDeparts($event)"
                                             class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>จังหวัด</label>
-                                        <select
-                                            id="cboChangwat"
-                                            name="cboChangwat"
-                                            ng-model="cboChangwat"
-                                            ng-keyup="getSuppliers($event)"
-                                            class="form-control"
-                                        >
-
-                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -77,37 +77,37 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 8%; text-align: center;">รหัส</th>
-                                    <th>ชื่อกลุ่มภารกิจ</th>
-                                    <th style="width: 10%; text-align: center;">จน.กลุ่มงาน</th>
+                                    <th>ชื่อกลุ่มงาน</th>
+                                    <th style="width: 10%; text-align: center;">จน.งาน</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, faction) in factions">
+                                <tr ng-repeat="(index, depart) in departs">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ faction.faction_id }}</td>
-                                    <td>@{{ faction.faction_name }}</td>
+                                    <td style="text-align: center;">@{{ depart.depart_id }}</td>
+                                    <td>@{{ depart.depart_name }}</td>
                                     <td style="text-align: center;">
                                         <a href="{{ url('departs/list') }}">
-                                            @{{ faction.departs.length }} กลุ่มงาน
+                                            @{{ depart.divisions.length }} งาน
                                         </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="faction.is_actived == 'Y'"></i>
-                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="faction.is_actived == 'N'"></i>
+                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="depart.is_actived == 'Y'"></i>
+                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="depart.is_actived == 'N'"></i>
                                     </td>
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/factions/detail') }}/@{{ faction.id }}"
+                                        <a  href="{{ url('/departs/detail') }}/@{{ depart.id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a ng-click="edit(faction.faction_id)" class="btn btn-warning btn-xs">
+                                        <a ng-click="edit(depart.depart_id)" class="btn btn-warning btn-xs">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         @if(Auth::user()->person_id == '1300200009261')
-                                            <a ng-click="delete(faction.faction_id)" class="btn btn-danger btn-xs">
+                                            <a ng-click="delete(depart.depart_id)" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         @endif
@@ -127,12 +127,12 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a ng-click="getSuppliersWithUrl($event, pager.path+ '?page=1', setSuppliers)" aria-label="Previous">
+                                        <a ng-click="getDepartsWithUrl($event, pager.path+ '?page=1', setSuppliers)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a ng-click="getSuppliersWithUrl($event, pager.prev_page_url, setSuppliers)" aria-label="Prev">
+                                        <a ng-click="getDepartsWithUrl($event, pager.prev_page_url, setSuppliers)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -142,12 +142,12 @@
                                         </a>
                                     </li> -->
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a ng-click="getSuppliersWithUrl($event, pager.next_page_url, setSuppliers)" aria-label="Next">
+                                        <a ng-click="getDepartsWithUrl($event, pager.next_page_url, setSuppliers)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a ng-click="getSuppliersWithUrl($event, pager.path+ '?page=' +pager.last_page, setSuppliers)" aria-label="Previous">
+                                        <a ng-click="getDepartsWithUrl($event, pager.path+ '?page=' +pager.last_page, setSuppliers)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

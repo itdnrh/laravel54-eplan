@@ -7,16 +7,28 @@ use App\Models\Depart;
 
 class DepartController extends Controller
 {
-    public function index()
+    public function index(Request $req)
     {
-        return view('departs.list', [
+        $faction = $req->get('faction');
 
+        return view('departs.list', [
+            'faction' => $faction
         ]);
     }
 
-    public function search()
+    public function search(Request $req)
     {
-        $departs = Depart::all();
+        $faction = $req->get('faction');
+        $name = $req->get('name');
+
+        $departs = Depart::with('faction','divisions')
+                        ->when(!empty($faction), function($q) use ($faction) {
+                            $q->where('faction_id', $faction);
+                        })
+                        ->when(!empty($name), function($q) use ($name) {
+                            $q->where('depart_name', 'like', '%'.$name.'%');
+                        })
+                        ->paginate(10);
 
         return [
             "departs" => $departs

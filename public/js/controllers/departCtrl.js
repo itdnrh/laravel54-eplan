@@ -1,10 +1,10 @@
 app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboChangwat = '';
+    $scope.cboFaction = '';
     $scope.txtKeyword = "";
 
-    $scope.factions = [];
+    $scope.departs = [];
     $scope.pager = null;
 
     $scope.faction = {
@@ -12,21 +12,22 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         supplier_name: '',
     };
 
-    $scope.onSelectedChangwat = function(e) {
-        $scope.supplier.supplier_address3 = $('#chw_id option:selected').text().replaceAll(/\s/g,'');
+    $scope.setFaction = function(faction) {
+        $scope.cboFaction = faction;
     };
 
-    $scope.getFactions = function(event) {
+    $scope.getDeparts = function(event) {
+        $scope.departs = [];
+        $scope.pager = null;
         $scope.loading = true;
 
-        $scope.factions = [];
-        $scope.pager = null;
-
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         
-        $http.get(`${CONFIG.apiUrl}/factions?name=${name}`)
+        $http.get(`${CONFIG.apiUrl}/departs?faction=${faction}&name=${name}`)
         .then(function(res) {
-            $scope.setFactions(res);
+            $scope.setDeparts(res);
+            console.log(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -35,18 +36,18 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         });
     }
 
-    $scope.getFactionsWithUrl = function(e, url, cb) {
+    $scope.getDepartsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
+        $scope.departs = [];
+        $scope.pager = null;
         $scope.loading = true;
 
-        $scope.factions = [];
-        $scope.pager = null;
-
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
         let name = $scope.txtKeyword === '' ? 0 : $scope.txtKeyword;
 
-        $http.get(`${url}&name=${name}&changwat=${changwat}`)
+        $http.get(`${url}&faction=${faction}&name=${name}`)
         .then(function(res) {
             cb(res);
 
@@ -57,10 +58,10 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         });
     }
 
-    $scope.setFactions = function(res) {
-        const { data, ...pager } = res.data.factions;
+    $scope.setDeparts = function(res) {
+        const { data, ...pager } = res.data.departs;
 
-        $scope.factions = data;
+        $scope.departs = data;
         $scope.pager = pager;
     };
 
