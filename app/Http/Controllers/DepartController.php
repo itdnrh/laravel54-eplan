@@ -79,6 +79,43 @@ class DepartController extends Controller
         ];
     }
 
+    public function create()
+    {
+        return view('departs.add', [
+            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get()
+        ]);
+    }
+
+    public function store(Request $req)
+    {
+        try {
+            $depart = new Depart;
+            $depart->depart_name    = $req['depart_name'];
+            $depart->faction_id     = $req['faction_id'];
+            $depart->memo_no        = $req['memo_no'];
+            $depart->tel_no         = $req['tel_no'];
+            $depart->is_actived     = $req['is_actived'];
+
+            if ($depart->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Insertion successfully',
+                    'depart'    => $depart
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function edit($id)
     {
         return view('departs.edit', [
@@ -100,7 +137,7 @@ class DepartController extends Controller
             if ($depart->save()) {
                 return [
                     'status'    => 1,
-                    'message'   => 'Insertion successfully',
+                    'message'   => 'Updating successfully',
                     'depart'    => $depart
                 ];
             } else {

@@ -31,13 +31,13 @@
                     </div>
 
                     <form
+                        method="post"
                         id="frmEditDepart"
                         name="frmEditDepart"
-                        method="post"
-                        novalidate
                         action="{{ url('/departs/update/'.$depart->depart_id) }}"
-                        role="form"
                         class="form-horizontal"
+                        role="form"
+                        novalidate
                     >
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
                         <input type="hidden" id="depart_id" name="depart_id" value="{{ Auth::user()->memberOf->depart_id }}" />
