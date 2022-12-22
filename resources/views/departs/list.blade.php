@@ -107,11 +107,11 @@
                                         <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="depart.is_actived == '0'"></i>
                                     </td>
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/departs/detail') }}/@{{ depart.depart_id }}"
+                                        <!-- <a  href="{{ url('/departs/detail') }}/@{{ depart.depart_id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
-                                        </a>
+                                        </a> -->
                                         <a  href="{{ url('/departs/edit') }}/@{{ depart.depart_id }}"
                                             class="btn btn-warning btn-xs" 
                                             title="แก้ไข">

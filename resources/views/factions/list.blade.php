@@ -98,12 +98,14 @@
                                         <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="faction.is_actived == '0'"></i>
                                     </td>
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/factions/detail') }}/@{{ faction.id }}"
+                                        <!-- <a  href="{{ url('/factions/detail') }}/@{{ faction.faction_id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
-                                        </a>
-                                        <a ng-click="edit(faction.faction_id)" class="btn btn-warning btn-xs">
+                                        </a> -->
+                                        <a  href="{{ url('/factions/edit') }}/@{{ faction.faction_id }}"
+                                            class="btn btn-warning btn-xs" 
+                                            title="แก้ไข">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         @if(Auth::user()->person_id == '1300200009261')
