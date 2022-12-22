@@ -5,18 +5,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            กลุ่มงาน
+            หน่วยงาน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">กลุ่มงาน</li>
+            <li class="breadcrumb-item active">หน่วยงาน</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="departCtrl" ng-init="setFaction({{ $faction }}); getDeparts();">
+    <section class="content" ng-controller="divisionCtrl" ng-init="setDepart({{ $depart }}); getDivisions();">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
@@ -28,18 +28,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>กลุ่มภารกิจ</label>
+                                        <label>กลุ่มงาน</label>
                                         <select
-                                            id="cboFaction"
-                                            name="cboFaction"
-                                            ng-model="cboFaction"
-                                            ng-change="getDeparts($event)"
+                                            id="cboDepart"
+                                            name="cboDepart"
+                                            ng-model="cboDepart"
+                                            ng-change="getDivisions($event)"
                                             class="form-control"
                                         >
                                             <option value="">-- กรุณาเลือก --</option>
-                                            @foreach($factions as $faction)
-                                                <option value="{{ $faction->faction_id }}">
-                                                    {{ $faction->faction_name }}
+                                            @foreach($departs as $depart)
+                                                <option value="{{ $depart->depart_id }}">
+                                                    {{ $depart->depart_name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -47,13 +47,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>ชื่อกลุ่มงาน</label>
+                                        <label>ชื่อหน่วยงาน</label>
                                         <input
                                             type="text"
                                             id="txtKeyword"
                                             name="txtKeyword"
                                             ng-model="txtKeyword"
-                                            ng-keyup="getDeparts($event)"
+                                            ng-keyup="getDivisions($event)"
                                             class="form-control">
                                     </div>
                                 </div>
@@ -66,10 +66,10 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">กลุ่มงาน</h3>
+                                <h3 class="box-title">หน่วยงาน</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/departs/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/divisions/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>
@@ -82,10 +82,9 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 8%; text-align: center;">รหัส</th>
-                                    <th>ชื่อกลุ่มงาน</th>
+                                    <th>ชื่อหน่วยงาน</th>
                                     <th style="width: 10%; text-align: center;">เลขหนังสือออก</th>
                                     <th style="width: 10%; text-align: center;">เบอร์ภายใน</th>
-                                    <th style="width: 10%; text-align: center;">จน.หน่วยงาน</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
@@ -97,11 +96,6 @@
                                     <td>@{{ depart.depart_name }}</td>
                                     <td style="text-align: center;">@{{ depart.memo_no }}</td>
                                     <td style="text-align: center;">@{{ depart.tel_no }}</td>
-                                    <td style="text-align: center;">
-                                        <a href="{{ url('departs/list') }}">
-                                            @{{ depart.divisions.length }} หน่วยงาน
-                                        </a>
-                                    </td>
                                     <td style="text-align: center;">
                                         <i class="fa fa-circle text-success" aria-hidden="true" ng-show="depart.is_actived == 'Y'"></i>
                                         <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="depart.is_actived == 'N'"></i>
@@ -136,12 +130,12 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a ng-click="getDepartsWithUrl($event, pager.path+ '?page=1', getDeparts)" aria-label="Previous">
+                                        <a ng-click="getDivisionsWithUrl($event, pager.path+ '?page=1', setDivisions)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a ng-click="getDepartsWithUrl($event, pager.prev_page_url, getDeparts)" aria-label="Prev">
+                                        <a ng-click="getDivisionsWithUrl($event, pager.prev_page_url, setDivisions)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -151,12 +145,12 @@
                                         </a>
                                     </li> -->
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a ng-click="getDepartsWithUrl($event, pager.next_page_url, getDeparts)" aria-label="Next">
+                                        <a ng-click="getDivisionsWithUrl($event, pager.next_page_url, setDivisions)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a ng-click="getDepartsWithUrl($event, pager.path+ '?page=' +pager.last_page, getDeparts)" aria-label="Previous">
+                                        <a ng-click="getDivisionsWithUrl($event, pager.path+ '?page=' +pager.last_page, setDivisions)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
