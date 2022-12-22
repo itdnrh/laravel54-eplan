@@ -16,7 +16,17 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="divisionCtrl" ng-init="setDepart({{ $depart }}); getDivisions();">
+    <section
+        class="content"
+        ng-controller="divisionCtrl"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+            }, 0);
+            setDepart({{ $faction }}, {{ $depart }});
+            getDivisions();
+        "
+    >
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
@@ -28,6 +38,25 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label>กลุ่มภารกิจ</label>
+                                        <select
+                                            id="cboFaction"
+                                            name="cboFaction"
+                                            ng-model="cboFaction"
+                                            ng-change="onFactionSelected(cboFaction); getDeparts($event)"
+                                            class="form-control"
+                                        >
+                                            <option value="">-- กรุณาเลือก --</option>
+                                            @foreach($factions as $faction)
+                                                <option value="{{ $faction->faction_id }}">
+                                                    {{ $faction->faction_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label>กลุ่มงาน</label>
                                         <select
                                             id="cboDepart"
@@ -37,15 +66,13 @@
                                             class="form-control"
                                         >
                                             <option value="">-- กรุณาเลือก --</option>
-                                            @foreach($departs as $depart)
-                                                <option value="{{ $depart->depart_id }}">
-                                                    {{ $depart->depart_name }}
-                                                </option>
-                                            @endforeach
+                                            <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
+                                                @{{ depart.depart_name }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label>ชื่อหน่วยงาน</label>
                                         <input
@@ -83,34 +110,36 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 8%; text-align: center;">รหัส</th>
                                     <th>ชื่อหน่วยงาน</th>
-                                    <th style="width: 10%; text-align: center;">เลขหนังสือออก</th>
+                                    <th style="width: 15%; text-align: center;">เลขหนังสือออก</th>
                                     <th style="width: 10%; text-align: center;">เบอร์ภายใน</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, depart) in departs">
+                                <tr ng-repeat="(index, division) in divisions">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ depart.depart_id }}</td>
-                                    <td>@{{ depart.depart_name }}</td>
-                                    <td style="text-align: center;">@{{ depart.memo_no }}</td>
-                                    <td style="text-align: center;">@{{ depart.tel_no }}</td>
+                                    <td style="text-align: center;">@{{ division.ward_id }}</td>
+                                    <td>@{{ division.ward_name }}</td>
+                                    <td style="text-align: center;">@{{ division.memo_no }}</td>
+                                    <td style="text-align: center;">@{{ division.tel_no }}</td>
                                     <td style="text-align: center;">
-                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="depart.is_actived == 'Y'"></i>
-                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="depart.is_actived == 'N'"></i>
+                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="division.is_actived == '1'"></i>
+                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="division.is_actived != '1'"></i>
                                     </td>
                                     <td style="text-align: center;">
-                                        <a  href="{{ url('/departs/detail') }}/@{{ depart.id }}"
+                                        <!-- <a  href="{{ url('/divisions/detail') }}/@{{ ward.ward_id }}"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
-                                        </a>
-                                        <a ng-click="edit(depart.depart_id)" class="btn btn-warning btn-xs">
+                                        </a> -->
+                                        <a  href="{{ url('/divisions/edit') }}/@{{ ward.ward_id }}"
+                                            class="btn btn-warning btn-xs" 
+                                            title="แก้ไข">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         @if(Auth::user()->person_id == '1300200009261')
-                                            <a ng-click="delete(depart.depart_id)" class="btn btn-danger btn-xs">
+                                            <a ng-click="delete(division.division_id)" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         @endif

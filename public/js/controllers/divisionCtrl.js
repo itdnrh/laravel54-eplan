@@ -1,6 +1,7 @@
 app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
+    $scope.cboFaction = '';
     $scope.cboDepart = '';
     $scope.txtKeyword = "";
 
@@ -14,17 +15,26 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         depart_id: '',
         memo_no: '',
         tel_no: '',
+        is_actived: false
+    };
+
+    $scope.setDepart = function(faction, depart) {
+        $scope.onFactionSelected(faction);
+
+        $scope.cboFaction = faction ? faction.toString() : '';
+        $scope.cboDepart = depart ? depart.toString() : '';
     };
 
     $scope.getDivisions = function(event) {
-        $scope.division = [];
+        $scope.divisions = [];
         $scope.pager = null;
         $scope.loading = true;
 
-        let depart = $scope.cboDepart === '' ? '' : $scope.cboDepart;
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         
-        $http.get(`${CONFIG.apiUrl}/divisions?depart=${depart}&name=${name}`)
+        $http.get(`${CONFIG.apiUrl}/divisions?faction=${faction}&depart=${depart}&name=${name}`)
         .then(function(res) {
             $scope.setDivisions(res);
 
@@ -43,9 +53,11 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         $scope.pager = null;
         $scope.loading = true;
 
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
         let name = $scope.txtKeyword === '' ? 0 : $scope.txtKeyword;
 
-        $http.get(`${url}&depart=${depart}&name=${name}`)
+        $http.get(`${url}&faction=${faction}&depart=${depart}&name=${name}`)
         .then(function(res) {
             cb(res);
 
@@ -57,14 +69,10 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     }
 
     $scope.setDivisions = function(res) {
-        const { data, ...pager } = res.data.division;
+        const { data, ...pager } = res.data.divisions;
 
-        $scope.division = data;
+        $scope.divisions = data;
         $scope.pager = pager;
-    };
-
-    $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/divisions/edit/${id}`;
     };
 
     $scope.getById = function(id, cb) {
@@ -72,7 +80,7 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
         $http.get(`${CONFIG.apiUrl}/divisions/${id}`)
         .then(function(res) {
-            cb(res.data.supplier);
+            cb(res.data.division);
 
             $scope.loading = false;
         }, function(err) {
@@ -91,6 +99,7 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
             $scope.division.depart_id   = division.depart_id.toString();
             $scope.division.memo_no     = division.memo_no;
             $scope.division.tel_no      = division.tel_no;
+            $scope.division.is_actived  = division.is_actived == '1' ? true : false;
         }
     };
 
@@ -121,12 +130,12 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
 
     $scope.update = function(event, form) {
         event.preventDefault();
-        $scope.loading = true;
 
         if(confirm("คุณต้องแก้ไขรายการหน่วยงาน รหัส " + $scope.division.ward_id + " ใช่หรือไม่?")) {
+            $scope.loading = true;
             $scope.division.user = $('#user').val();
 
-            $http.post(`${CONFIG.baseUrl}/divisions/update/${$scope.division.ward_id}`, $scope.division)
+            $http.post(`${CONFIG.apiUrl}/divisions/${$scope.division.ward_id}`, $scope.division)
             .then(function(res) {
                 console.log(res);
 
@@ -153,10 +162,10 @@ app.controller('divisionCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     };
 
     $scope.delete = function(id) {
-        $scope.loading = true;
-
         if(confirm("คุณต้องลบรายการหน่วยงาน รหัส " + id + " ใช่หรือไม่?")) {
-            $http.post(`${CONFIG.baseUrl}/divisions/delete/${id}`)
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.apiUrl}/divisions/${id}`)
             .then(function(res) {
                 console.log(res);
 

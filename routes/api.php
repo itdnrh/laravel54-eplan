@@ -149,6 +149,7 @@ Route::group(['middleware' => 'api'], function () {
 
     /** งาน */
     Route::get('divisions', 'DivisionController@search');
+    Route::get('divisions/{id}', 'DivisionController@getById');
 
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');

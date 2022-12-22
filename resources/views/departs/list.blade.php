@@ -98,7 +98,7 @@
                                     <td style="text-align: center;">@{{ depart.memo_no }}</td>
                                     <td style="text-align: center;">@{{ depart.tel_no }}</td>
                                     <td style="text-align: center;">
-                                        <a href="{{ url('departs/list?depart=') }}@{{ depart.depart_id }}">
+                                        <a href="{{ url('divisions/list') }}?faction=@{{ depart.faction_id }}&depart=@{{ depart.depart_id }}">
                                             @{{ depart.divisions.length }} หน่วยงาน
                                         </a>
                                     </td>

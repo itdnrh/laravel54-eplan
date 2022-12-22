@@ -9,7 +9,7 @@ class Depart extends Model
     protected $connection = "person";
     protected $table = "depart";
     protected $primaryKey = "depart_id";
-    public $increment = false;
+    // public $increment = false;
     public $timestamps = false;
 
     public function faction()
