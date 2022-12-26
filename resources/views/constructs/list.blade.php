@@ -304,7 +304,7 @@
                                             @{{ plan.plan_item.item.item_name }} 
                                             จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
                                             <span>@{{ plan.plan_item.unit.name }}</span>
-                                            <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':0 }} บาท</span>
+                                            <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':2 }} บาท</span>
                                             <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
                                                 class="btn btn-default btn-xs" 
                                                 title="ไฟล์แนบ"
@@ -315,10 +315,10 @@
                                         </p>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.sum_price | currency:'':0 }}
+                                        @{{ plan.plan_item.sum_price | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ plan.plan_item.remain_budget | currency:'':0 }}
+                                        @{{ plan.plan_item.remain_budget | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
                                         <i class="fa fa-check-circle text-success" aria-hidden="true" ng-show="plan.in_plan == 'I'"></i>
