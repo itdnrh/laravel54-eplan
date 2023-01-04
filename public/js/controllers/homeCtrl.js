@@ -7,7 +7,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.barOptions = {};
 
     $scope.approved = '';
-    $scope.dtpYear = moment().add(1, 'years').year() + 543;
+    $scope.dtpYear = moment().month() < 8 ? moment().year() + 543 : moment().add(1, 'years').year() + 543;
 
     const dtpYearOptions = {
         autoclose: true,
