@@ -7,6 +7,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.barOptions = {};
 
     $scope.approved = '';
+    $scope.inPlan = 'I';
     $scope.dtpYear = moment().month() < 8 ? moment().year() + 543 : moment().add(1, 'years').year() + 543;
 
     const dtpYearOptions = {
@@ -65,6 +66,17 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         $scope.getProjectTypeRatio();
     };
 
+    $scope.onInPlanToggle = function(e) {
+        $scope.inPlan = $(e.target).val();
+
+        $scope.getStat1();
+        $scope.getStat2();
+        $scope.getSummaryAssets();
+        $scope.getSummaryMaterials();
+        $scope.getSummaryServices();
+        $scope.getSummaryConstructs();
+        $scope.getProjectTypeRatio();
+    };
 
     $scope.stat1Cards = null;
     $scope.stat2Cards = [];
@@ -73,7 +85,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         let year = $scope.dtpYear;
 
-        $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}?approved=${$scope.approved}`)
+        $http.get(`${CONFIG.baseUrl}/dashboard/stat1/${year}?approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             const { ...plans } = res.data.plans;
             const { ...supports } = res.data.supports;
@@ -102,7 +114,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         let year = $scope.dtpYear;
 
-        $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}?approved=${$scope.approved}`)
+        $http.get(`${CONFIG.baseUrl}/dashboard/stat2/${year}?approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             $scope.stat2Cards = res.data.stats;
 
@@ -126,7 +138,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         //             : moment().format('YYYY-MM-DD');
         let year = $scope.dtpYear
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             const { plans, supports, budgets, categories } = res.data;
 
@@ -177,7 +189,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         //             : moment().format('YYYY-MM-DD');
         let year = $scope.dtpYear;
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}&approved=${$scope.approved}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             $scope.setMaterials(res);
 
@@ -232,7 +244,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         let year = $scope.dtpYear
 
-        $http.get(`${url}&year=${year}&approved=${$scope.approved}`)
+        $http.get(`${url}&year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             cb(res);
 
@@ -250,7 +262,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         let year = $scope.dtpYear
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             const { plans, supports, budgets, categories } = res.data;
 
@@ -296,7 +308,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         let year = $scope.dtpYear
 
-        $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}`)
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
             const { plans, supports, budgets, categories } = res.data;
 

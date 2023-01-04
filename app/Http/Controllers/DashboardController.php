@@ -22,6 +22,7 @@ class DashboardController extends Controller
     public function getStat1(Request $req, $year)
     {
         $approved = $req->get('approved');
+        $inPlan = $req->get('in_plan');
 
         $plansList = Plan::where("year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
@@ -30,6 +31,9 @@ class DashboardController extends Controller
                             } else {
                                 $query->where('approved', 'A');
                             }
+                        })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
                         })
                         ->pluck('id');
 
@@ -44,6 +48,9 @@ class DashboardController extends Controller
                             } else {
                                 $query->where('plans.approved', 'A');
                             }
+                        })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
                         })
                         ->first();
 
@@ -69,6 +76,7 @@ class DashboardController extends Controller
     public function getStat2(Request $req, $year)
     {
         $approved = $req->get('approved');
+        $inPlan = $req->get('in_plan');
 
         $stats = \DB::table("plans")
                         ->select(
@@ -88,6 +96,9 @@ class DashboardController extends Controller
                                 $query->where('plans.approved', 'A');
                             }
                         })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
+                        })
                         ->get();
 
         return [
@@ -100,6 +111,7 @@ class DashboardController extends Controller
         /** Get params from query string */
         $year = $req->get('year');
         $approved = $req->get('approved');
+        $inPlan = $req->get('in_plan');
 
         $plansList = Plan::where("year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
@@ -108,6 +120,9 @@ class DashboardController extends Controller
                             } else {
                                 $query->where('approved', 'A');
                             }
+                        })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
                         })
                         ->pluck('id');
 
@@ -123,6 +138,9 @@ class DashboardController extends Controller
                         } else {
                             $query->where('plans.approved', 'A');
                         }
+                    })
+                    ->when(!empty($inPlan), function($query) use ($inPlan) {
+                        $query->where('in_plan', $inPlan);
                     })
                     ->where('plans.plan_type_id', 1)
                     ->get();
@@ -159,6 +177,7 @@ class DashboardController extends Controller
         /** Get params from query string */
         $year = $req->get('year');
         $approved = $req->get('approved');
+        $inPlan = $req->get('in_plan');
 
         $plansList = Plan::where("year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
@@ -167,6 +186,9 @@ class DashboardController extends Controller
                             } else {
                                 $query->where('approved', 'A');
                             }
+                        })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
                         })
                         ->pluck('id');
 
@@ -183,6 +205,9 @@ class DashboardController extends Controller
                         } else {
                             $query->where('plans.approved', 'A');
                         }
+                    })
+                    ->when(!empty($inPlan), function($query) use ($inPlan) {
+                        $query->where('in_plan', $inPlan);
                     })
                     ->paginate(10);
 
@@ -218,6 +243,7 @@ class DashboardController extends Controller
         /** Get params from query string */
         $year = $req->get('year');
         $approved = $req->get('approved');
+        $inPlan = $req->get('in_plan');
 
         $plansList = Plan::where("year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
@@ -226,6 +252,9 @@ class DashboardController extends Controller
                             } else {
                                 $query->where('approved', 'A');
                             }
+                        })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
                         })
                         ->pluck('id');
 
@@ -241,6 +270,9 @@ class DashboardController extends Controller
                         } else {
                             $query->where('plans.approved', 'A');
                         }
+                    })
+                    ->when(!empty($inPlan), function($query) use ($inPlan) {
+                        $query->where('in_plan', $inPlan);
                     })
                     ->where('plans.plan_type_id', 3)
                     ->get();
@@ -275,8 +307,9 @@ class DashboardController extends Controller
     public function getSummaryConstructs(Request $req)
     {
         /** Get params from query string */
-        $year = $req->get('year');
-        $approved = $req->get('approved');
+        $year       = $req->get('year');
+        $approved   = $req->get('approved');
+        $inPlan     = $req->get('in_plan');
 
         $plansList = Plan::where("year", $year)
                         ->when(!empty($approved), function($query) use ($approved) {
@@ -285,6 +318,9 @@ class DashboardController extends Controller
                             } else {
                                 $query->where('approved', 'A');
                             }
+                        })
+                        ->when(!empty($inPlan), function($query) use ($inPlan) {
+                            $query->where('in_plan', $inPlan);
                         })
                         ->pluck('id');
 
@@ -300,6 +336,9 @@ class DashboardController extends Controller
                         } else {
                             $query->where('plans.approved', 'A');
                         }
+                    })
+                    ->when(!empty($inPlan), function($query) use ($inPlan) {
+                        $query->where('in_plan', $inPlan);
                     })
                     ->where('plans.plan_type_id', 4)
                     ->get();
@@ -336,6 +375,7 @@ class DashboardController extends Controller
         /** Get params from query string */
         $year       = $req->get('year');
         $approved   = $req->get('approved');
+        // $inPlan     = $req->get('in_plan');
 
         $projects = \DB::table('projects')
                         ->select(
@@ -353,6 +393,9 @@ class DashboardController extends Controller
                                 $query->where('projects.approved', 'A');
                             }
                         })
+                        // ->when(!empty($inPlan), function($query) use ($inPlan) {
+                        //     $query->where('in_plan', $inPlan);
+                        // })
                         ->get();
 
         return [

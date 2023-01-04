@@ -19,16 +19,18 @@
         <!-- /** Filtering Tools */ -->
         <div class="row">
             <div class="col-md-12">
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                    <label for="">ประจำปี :</label>
-                    <input
-                        type="text"
-                        id="dtpYear"
-                        name="dtpYear"
-                        ng-model="dtpYear"
-                        class="form-control"
-                        style="width: 180px; margin-left: 5px;"
-                    />
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center;">
+                        <label for="">ประจำปี :</label>
+                        <input
+                            type="text"
+                            id="dtpYear"
+                            name="dtpYear"
+                            ng-model="dtpYear"
+                            class="form-control"
+                            style="width: 180px; margin-left: 5px;"
+                        />
+                    </div>
 
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left: 10px;">
                         <label class="btn btn-default active" ng-click="onApprovedToggle($event)">
@@ -40,6 +42,15 @@
                         </label>
                         <label class="btn btn-default" ng-click="onApprovedToggle($event)">
                             <input type="radio" id="approved" name="approved" value="2" autocomplete="off" /> อนุมัติ
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; align-items: center; margin-left: 20px;">
+                        <label for="">
+                            <input type="radio" name="inPlan" value="I" checked ng-click="onInPlanToggle($event)" /> ในแผน
+                        </label>
+                        <label for="">
+                            <input type="radio" name="inPlan" value="O" ng-click="onInPlanToggle($event)" /> นอกแผน
                         </label>
                     </div>
                 </div>
