@@ -21,10 +21,10 @@
         <table class="table table-striped table-bordered" style="font-size: 12px;">
             <tr>
                 <th>ประเภท</th>
-                <th style="width: 15%; text-align: center;">ประมาณการ</th>
-                <th style="width: 15%; text-align: center;">ส่งขอสนับสนุน</th>
-                <th style="width: 15%; text-align: center;">ส่งเบิกเงิน</th>
-                <th style="width: 15%; text-align: center;">ตั้งหนี้</th>
+                <th style="width: 15%; text-align: right;">ประมาณการ</th>
+                <th style="width: 15%; text-align: right;">ส่งขอซื้อ/จ้าง</th>
+                <th style="width: 15%; text-align: right;">ส่งเบิกเงิน</th>
+                <th style="width: 15%; text-align: right;">ตั้งหนี้</th>
             </tr>
             <tr ng-repeat="(index, service) in services" style="font-size: 12px;">
                 <td>@{{ index+1 }}. @{{ service.category_name }}</td>

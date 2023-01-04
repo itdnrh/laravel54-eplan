@@ -22,7 +22,7 @@
                     <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>
-                <p><h4>ส่งขอสนับสนุน</h4></p>
+                <p><h4>ส่งขอซื้อ/จ้าง</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-paper-airplane"></i>
