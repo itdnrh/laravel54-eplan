@@ -322,8 +322,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
 
-                    /** TODO: Reset asset model */
-                    $scope.setAssets(res);
+                    $scope.service.status = res.data.plan.status;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
                 }

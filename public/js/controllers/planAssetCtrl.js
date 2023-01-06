@@ -344,6 +344,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
                 console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
+
+                    $scope.asset.status = res.data.plan.status;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
                 }

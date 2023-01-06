@@ -340,6 +340,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
                 console.log(res);
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
+
+                    $scope.construct.status = res.data.plan.status;
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถเปลี่ยนสถานะได้ !!!");
                 }
