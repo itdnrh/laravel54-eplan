@@ -335,7 +335,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         if(confirm(`คุณต้องเปลี่ยนสถานะแผนก่อสร้าง รหัส ${id} ใช่หรือไม่?`)) {
             $scope.loading = true;
 
-            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            $http.put(`${CONFIG.apiUrl}/plans/${id}/status`, { status })
             .then(res => {
                 console.log(res);
                 if (res.data.status == 1) {

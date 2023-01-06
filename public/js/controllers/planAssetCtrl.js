@@ -339,7 +339,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         if(confirm(`คุณต้องเปลี่ยนสถานะแผนครุภัณฑ์ รหัส ${id} ใช่หรือไม่?`)) {
             $scope.loading = true;
 
-            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            $http.put(`${CONFIG.apiUrl}/plans/${id}/status`, { status })
             .then(res => {
                 console.log(res);
                 if (res.data.status == 1) {

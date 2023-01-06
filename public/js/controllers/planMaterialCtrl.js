@@ -322,7 +322,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         if(confirm(`คุณต้องเปลี่ยนสถานะแผนวัสดุ รหัส ${id} ใช่หรือไม่?`)) {
             $scope.loading = true;
 
-            $http.put(`${CONFIG.baseUrl}/plans/${id}/status`, { status })
+            $http.put(`${CONFIG.apiUrl}/plans/${id}/status`, { status })
             .then(res => {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "เปลี่ยนสถานะเรียบร้อย !!!");
