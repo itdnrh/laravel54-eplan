@@ -51,7 +51,7 @@
                         <div class="box-body">
                             <div class="row">
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -65,6 +65,27 @@
                                             @{{ y }}
                                         </option>
                                     </select>
+                                </div>
+                                <div
+                                    class="form-group col-md-3"
+                                    ng-class="{'has-error has-feedback': checkValidate(monthly, 'month')}"
+                                >
+                                    <label>ประจำเดือน :</label>
+                                    <select
+                                        id="cboMonth"
+                                        name="cboMonth"
+                                        ng-model="cboMonth"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="@{{ month.id }}" ng-repeat="month in monthLists">
+                                            @{{ month.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(monthly, 'month')">
+                                        @{{ formError.errors.month[0] }}
+                                    </span>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">

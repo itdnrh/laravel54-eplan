@@ -87,6 +87,7 @@ class MonthlyController extends Controller
 
         /** Get params from query string */
         $year = $req->get('year');
+        $month = $req->get('month');
         $type = $req->get('type');
         $faction = Auth::user()->person_id == '1300200009261' ? $req->get('faction') : Auth::user()->memberOf->faction_id;
         $depart = Auth::user()->person_id == '1300200009261' ? $req->get('depart') : Auth::user()->memberOf->depart_id;
@@ -113,6 +114,9 @@ class MonthlyController extends Controller
         $plans = Monthly::with('expense','depart')
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('year', $year);
+                    })
+                    ->when(!empty($month), function($q) use ($month) {
+                        $q->where('month', $month);
                     })
                     ->when(!empty($type), function($q) use ($expensesList) {
                         $q->whereIn('expense_id', $expensesList);
@@ -239,10 +243,19 @@ class MonthlyController extends Controller
                                     ->pluck('expense_id');
         }
 
-        $monthly = Monthly::where('year', $year)
-                            ->where('month', $month)
-                            ->whereIn('expense_id', $categoriesList)
-                            ->count();
+        if ($type == '3' || $type == '4') {
+            $expenseId = $type == '3' ? '69' : '67';
+
+            $monthly = Monthly::where('year', $year)
+                                ->where('month', $month)
+                                ->where('expense_id', $expenseId)
+                                ->count();
+        } else {
+            $monthly = Monthly::where('year', $year)
+                                ->where('month', $month)
+                                ->whereIn('expense_id', $categoriesList)
+                                ->count();
+        }
 
         return [
             'monthly' => $monthly

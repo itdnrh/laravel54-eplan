@@ -96,11 +96,12 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let month   = $scope.cboMonth === '' ? '' : $scope.cboMonth;
         let type    = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&type=${type}&status=${status}&depart=${depart}`)
+        $http.get(`${CONFIG.baseUrl}/monthly/search?year=${year}&month=${month}&type=${type}&status=${status}&depart=${depart}`)
         .then(function(res) {
             $scope.setMonthlys(res);
 
@@ -137,12 +138,12 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         $scope.pager = null;
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let month   = $scope.cboMonth === '' ? '' : $scope.cboMonth;
+        let type    = $scope.cboExpenseType === '' ? '' : $scope.cboExpenseType;
         let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
         let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let menu    = $scope.cboMenu === '' ? '' : $scope.cboMenu;
 
-        $http.get(`${url}&year=${year}&cate=${cate}&status=${status}&depart=${depart}&menu=${menu}`)
+        $http.get(`${url}&year=${year}&month=${month}&type=${type}&status=${status}&depart=${depart}`)
         .then(function(res) {
             cb(res);
 
@@ -405,6 +406,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
                 return ex;
             });
 
+            console.log($scope.multipleData);
             checkDataExistance(moment(month).format('MM'));
 
             $scope.loading = false;
@@ -419,7 +421,13 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
         let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
         let type    = $scope.multipleData.plan_type_id === '' ? '' : $scope.multipleData.plan_type_id;
-        let price   = $scope.cboPrice == '' ? '0' : $scope.cboPrice;
+
+        let price = '';
+        if ($scope.multipleData.plan_type_id == '1') {
+            price = $scope.cboPrice == '' ? '0' : $scope.cboPrice;
+        } else {
+            price = '0';
+        }
 
         $http.get(`${CONFIG.apiUrl}/monthly/check-multiple/${year}/${month}/${type}/${price}`)
         .then(function(res) {
