@@ -437,14 +437,31 @@ class MonthlyController extends Controller
             list($month, $year) = explode('/', $req['month']);
 
             foreach($req['expenses'] as $expense) {
-                $monthly = Monthly::where('expense_id', $expense['expense_id'])
+                $existed = Monthly::where('expense_id', $expense['expense_id'])
                                     ->where('year', $req['year'])
                                     ->where('month', $month)
                                     ->first();
-                $monthly->total        = currencyToNumber($expense['net_total']);
-                $monthly->remain       = currencyToNumber($expense['remain']);
-                $monthly->reporter_id  = $req['user'];
-                $monthly->updated_user = $req['user'];
+
+                if ($existed) {
+                    $monthly = $existed;
+                    $monthly->total        = currencyToNumber($expense['net_total']);
+                    $monthly->remain       = currencyToNumber($expense['remain']);
+                    $monthly->reporter_id  = $req['user'];
+                    $monthly->updated_user = $req['user'];
+                } else {
+                    $monthly = new Monthly();
+                    $monthly->year         = $req['year'];
+                    $monthly->month        = $month;
+                    $monthly->expense_id   = $expense['expense_id'];
+                    $monthly->total        = currencyToNumber($expense['net_total']);
+                    $monthly->remain       = currencyToNumber($expense['remain']);
+                    $monthly->depart_id    = '4';
+                    $monthly->reporter_id  = $req['user'];
+                    $monthly->remark       = 'ข้อมูลจากระบบ E-Plan';
+                    $monthly->status       = '0';
+                    $monthly->created_user = $req['user'];
+                    $monthly->updated_user = $req['user'];
+                }
 
                 if($monthly->save()) {
                     Budget::where('year', $req['year'])
@@ -461,8 +478,7 @@ class MonthlyController extends Controller
             return [
                 'status'    => 1,
                 'message'   => 'Updating successfully',
-                'monthly'   => Monthly::where('expense_id', $expense['expense_id'])
-                                        ->where('year', $req['year'])
+                'monthly'   => Monthly::where('year', $req['year'])
                                         ->where('month', $month)
                                         ->get()
             ];
