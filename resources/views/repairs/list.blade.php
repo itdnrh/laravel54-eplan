@@ -206,7 +206,7 @@
                                         </ul>
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ support.total | currency:'':0 }} บาท
+                                        @{{ support.total | currency:'':2 }} บาท
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-primary" ng-show="support.status == 0">
