@@ -119,6 +119,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.getAll(e);
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Project CRUD operations
+    |-----------------------------------------------------------------------------
+    */
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.projects = [];
@@ -181,14 +186,131 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
+    $scope.getById = function(id, cb) {
+        $http.get(`${CONFIG.apiUrl}/projects/${id}`)
+        .then(function(res) {
+            cb(res.data.project);
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    $scope.setEditControls = function(project) {
+        if (project) {
+            $scope.project.id               = project.id;
+            $scope.project.project_no       = project.project_no;
+            $scope.project.project_name     = project.project_name;
+            $scope.project.kpi              = project.kpi;
+            $scope.project.total_budget     = project.total_budget;
+            $scope.project.total_budget_str = project.total_budget_str;
+            $scope.project.total_actual     = project.total_actual;
+            $scope.project.total_actual_str = project.total_actual_str;
+            $scope.project.budget_src       = project.budget_src;
+
+            $scope.project.approved         = project.approved;
+            $scope.project.attachment       = project.attachment;
+            $scope.project.remark           = project.remark;
+            $scope.project.status           = project.status;
+
+            /** Convert int value to string */
+            $scope.project.year             = project.year.toString();
+            $scope.project.start_month      = project.start_month.toString();
+            $scope.project.strategic_id     = project.strategy.strategic_id.toString();
+            $scope.project.strategy_id      = project.strategy_id.toString();
+            $scope.project.kpi_id           = project.kpi_id ? project.kpi_id.toString() : '';
+            $scope.project.project_type     = project.project_type;
+            $scope.project.project_type_id  = project.project_type_id.toString();
+            $scope.project.budget_src       = project.budget_src;
+            $scope.project.budget_src_id    = project.budget_src_id.toString();
+            $scope.project.owner_depart     = project.owner_depart.toString();
+
+            if (project.depart) {
+                $scope.project.depart           = project.depart;
+                $scope.project.faction_id       = project.depart.faction_id.toString();
+
+                $scope.onFactionSelected(project.depart.faction_id);
+            }
+
+            $scope.project.owner_person     = project.owner_person;
+            $('#owner_person').val(project.owner_person);
+
+            if (project.owner) {
+                $scope.project.owner        = project.owner;
+            }
+
+            /** Generate departs and divisions data from plan */
+            $scope.onStrategicSelected(project.strategy.strategic_id);
+            $scope.onStrategySelected(project.strategy_id);
+            $scope.onDepartSelected(project.owner_depart);
+        }
+    };
+
+    $scope.store = function(event, form) {
+        event.preventDefault();
+
+        $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
+        $('#total_budget_str').val($scope.project.total_budget_str);
+
+        $(`#${form}`).submit();
+    }
+
+    $scope.edit = function(id) {
+        window.location.href = `${CONFIG.baseUrl}/projects/edit/${id}`;
+    };
+
+    $scope.update = function(e, form) {
+        e.preventDefault();
+    
+        if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.id} ใช่หรือไม่?`)) {
+            $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
+            $('#total_budget_str').val($scope.project.total_budget_str);
+
+            $(`#${form}`).submit();
+        }
+    };
+
+    $scope.delete = function(e, id) {
+        e.preventDefault();
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องลบโครงการเลขที่ ${id} ใช่หรือไม่?`)) {
+            $http.post(`${CONFIG.baseUrl}/projects/delete/${id}`)
+            .then(res => {
+                console.log(res);
+
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    /** TODO: Reset project model */
+                    $scope.setProjects(res);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+                $scope.loading = false;
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
+            });
+        } else {
+            $scope.loading = false;
+        }
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Person manipulation
+    |-----------------------------------------------------------------------------
+    */
+    $scope.setCboDepartFromOwnerDepart = function(depart) {
+        $scope.cboDepart = depart;
+    };
+
     $scope.showPersonList = (_selectedMode) => {
         $('#persons-list').modal('show');
 
         $scope.getPersons();
-    };
-
-    $scope.setCboDepartFromOwnerDepart = function(depart) {
-        $scope.cboDepart = depart;
     };
 
     $scope.getPersons = async () => {
@@ -253,65 +375,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $('#persons-list').modal('hide');
     };
 
-    $scope.getById = function(id, cb) {
-        $http.get(`${CONFIG.apiUrl}/projects/${id}`)
-        .then(function(res) {
-            cb(res.data.project);
-        }, function(err) {
-            console.log(err);
-        });
-    }
-
-    $scope.setEditControls = function(project) {
-        if (project) {
-            $scope.project.id               = project.id;
-            $scope.project.project_no       = project.project_no;
-            $scope.project.project_name     = project.project_name;
-            $scope.project.kpi              = project.kpi;
-            $scope.project.total_budget     = project.total_budget;
-            $scope.project.total_budget_str = project.total_budget_str;
-            $scope.project.total_actual     = project.total_actual;
-            $scope.project.total_actual_str = project.total_actual_str;
-            $scope.project.budget_src       = project.budget_src;
-
-            $scope.project.approved         = project.approved;
-            $scope.project.attachment       = project.attachment;
-            $scope.project.remark           = project.remark;
-            $scope.project.status           = project.status;
-
-            /** Convert int value to string */
-            $scope.project.year             = project.year.toString();
-            $scope.project.start_month      = project.start_month.toString();
-            $scope.project.strategic_id     = project.strategy.strategic_id.toString();
-            $scope.project.strategy_id      = project.strategy_id.toString();
-            $scope.project.kpi_id           = project.kpi_id ? project.kpi_id.toString() : '';
-            $scope.project.project_type     = project.project_type;
-            $scope.project.project_type_id  = project.project_type_id.toString();
-            $scope.project.budget_src       = project.budget_src;
-            $scope.project.budget_src_id    = project.budget_src_id.toString();
-            $scope.project.owner_depart     = project.owner_depart.toString();
-
-            if (project.depart) {
-                $scope.project.depart           = project.depart;
-                $scope.project.faction_id       = project.depart.faction_id.toString();
-
-                $scope.onFactionSelected(project.depart.faction_id);
-            }
-
-            $scope.project.owner_person     = project.owner_person;
-            $('#owner_person').val(project.owner_person);
-
-            if (project.owner) {
-                $scope.project.owner        = project.owner;
-            }
-
-            /** Generate departs and divisions data from plan */
-            $scope.onStrategicSelected(project.strategy.strategic_id);
-            $scope.onStrategySelected(project.strategy_id);
-            $scope.onDepartSelected(project.owner_depart);
-        }
-    };
-
+    /*
+    |-----------------------------------------------------------------------------
+    | Project timeline process
+    |-----------------------------------------------------------------------------
+    */
     $scope.timeline = null;
     $scope.getTimline = (id) => {
         $scope.payments = [];
@@ -402,6 +470,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Project payment process
+    |-----------------------------------------------------------------------------
+    */
     $scope.payments = [];
     $scope.totalPayment = 0;
     $scope.payment = {
@@ -579,6 +652,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Project moidfication process
+    |-----------------------------------------------------------------------------
+    */
     $scope.showModificationForm = () => {
         $('#modification-form').modal('show');
     };
@@ -640,6 +718,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Project closing process
+    |-----------------------------------------------------------------------------
+    */
     $scope.showCloseProjectForm = () => {
         $('#close-form').modal('show');
     };
@@ -684,59 +767,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         }
     };
 
-    $scope.store = function(event, form) {
-        event.preventDefault();
-
-        $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
-        $('#total_budget_str').val($scope.project.total_budget_str);
-
-        $(`#${form}`).submit();
-    }
-
-    $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/projects/edit/${id}`;
-    };
-
-    $scope.update = function(e, form) {
-        e.preventDefault();
-    
-        if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.id} ใช่หรือไม่?`)) {
-            $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
-            $('#total_budget_str').val($scope.project.total_budget_str);
-
-            $(`#${form}`).submit();
-        }
-    };
-
-    $scope.delete = function(e, id) {
-        e.preventDefault();
-        $scope.loading = true;
-
-        if(confirm(`คุณต้องลบโครงการเลขที่ ${id} ใช่หรือไม่?`)) {
-            $http.post(`${CONFIG.baseUrl}/projects/delete/${id}`)
-            .then(res => {
-                console.log(res);
-
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
-
-                    /** TODO: Reset project model */
-                    $scope.setProjects(res);
-                } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
-                }
-
-                $scope.loading = false;
-            }, err => {
-                console.log(err);
-                $scope.loading = false;
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลบข้อมูลได้ !!!");
-            });
-        } else {
-            $scope.loading = false;
-        }
-    };
-
+    /*
+    |-----------------------------------------------------------------------------
+    | Project exporting process
+    |-----------------------------------------------------------------------------
+    */
     $scope.exportListToExcel = function(e) {
         e.preventDefault();
 

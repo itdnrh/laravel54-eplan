@@ -57,6 +57,11 @@
                                 required
                             >
                                 <option value="">-- เลือกประเภทการขอ --</option>
+                                <option value="">ปรับเปลี่ยนวันที่ดำเนินการ</option>
+                                <option value="">ปรับเปลี่ยนไตรมาส</option>
+                                <option value="">ปรับเปลี่ยนวิทยากร</option>
+                                <option value="">ปรับเปลี่ยนกิจกรรมดำเนินการ</option>
+                                <option value="">ปรับเปลี่ยนงบประมาณ</option>
                             </select>
                             <span class="help-block" ng-show="frmModification.$submitted && frmModification.modification_type_id.$error.required">
                                 กรุณาเลือกประเภทการขอ
