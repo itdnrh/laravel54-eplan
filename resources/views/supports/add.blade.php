@@ -244,11 +244,10 @@
                                                                     onFilterCategories(support.plan_type_id);
                                                                 "
                                                                 ng-show="
-                                                                    support.plan_type_id == 1 &&
+                                                                    support.category_id == 3 &&
                                                                     ({{ Auth::user()->person_id }} == '1300200009261' || 
                                                                     {{ Auth::user()->memberOf->depart_id }} == '4' || 
-                                                                    {{ Auth::user()->memberOf->depart_id }} == '39' || 
-                                                                    {{ Auth::user()->memberOf->depart_id }} == '65')
+                                                                    {{ Auth::user()->memberOf->depart_id }} == '39')
                                                                 "
                                                             >
                                                                 <i class="fa fa-th" aria-hidden="true"></i>
@@ -382,6 +381,8 @@
                                                     </a>
                                                 </td>
                                             </tr>
+
+                                            <!-- ============================ Group selection ============================ -->
                                             <tr ng-repeat="(index, detail) in support.planGroups" ng-show="support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center"></td>
@@ -389,9 +390,19 @@
                                                     @{{ detail.item_name }}
                                                     <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
                                                         <li ng-repeat="(index, detail) in support.details" style="margin: 0; padding: 0;">
-                                                            - @{{ detail.plan.depart.depart_name }}
+                                                            -<span ng-show="!isRenderWardInsteadDepart(detail.plan.depart.depart_id)">
+                                                                @{{ detail.plan.depart.depart_name }}
+                                                            </span><span ng-show="isRenderWardInsteadDepart(detail.plan.depart.depart_id)">
+                                                                @{{ detail.plan.division.ward_name }}
+                                                            </span>
                                                             @{{ currencyToNumber(detail.amount) | currency:'':0 }}
                                                             @{{ detail.unit_name }}
+                                                            <span class="label label-success" ng-show="detail.plan.in_plan == 'I'">
+                                                                ในแผน
+                                                            </span>
+                                                            <span class="label label-danger" ng-show="detail.plan.in_plan == 'O'">
+                                                                นอกแผน
+                                                            </span>
                                                         </li>
                                                     </ul>
                                                 </td>
@@ -416,6 +427,8 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            <!-- ============================ Group selection ============================ -->
+
                                             <tr ng-repeat="(index, detail) in support.details" ng-show="!support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td style="text-align: center">@{{ detail.plan.plan_no }}</td>

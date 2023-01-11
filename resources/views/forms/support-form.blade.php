@@ -96,7 +96,7 @@
                     <?php $nextBullet = 0; ?>
                     <?php $page = 0; ?>
                     <!-- ========================================= รายการน้อยกว่า 12 รายการ ===================================== -->
-                    @if (count($support->details) < 12)
+                    @if (count($support->details) < 12 || $support->is_plan_group == 1)
                         <tr>
                             <td colspan="4">
                                 <div class="table-container">
@@ -110,7 +110,7 @@
                                         </tr>
 
                                         <!-- ========================================= รายการ PLAN GROUP ===================================== -->
-                                        @if($support->is_plan_group == '1')
+                                        @if($support->is_plan_group == 1)
                                             <?php $total = (float)$support->total; ?>
                                             <tr style="min-height: 20px;">
                                                 <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
@@ -120,9 +120,13 @@
                                                     @foreach($support->details as $detail)
                                                         <?php $tableHeight += 20; ?>
                                                         <p style="margin: 0; padding: 0; font-size: 14px;">
-                                                            - {{ $detail->plan->depart->depart_name }}
+                                                            - {{ !isRenderWardInsteadDepart($detail->plan->depart_id)
+                                                                ? $detail->plan->depart->depart_name
+                                                                : $detail->plan->division->ward_name }}
+
                                                             {{ thainumDigit(number_format($detail->amount)) }}
                                                             {{ $detail->plan->planItem->unit->name }}
+                                                            ({{ $detail->plan->in_plan == 'I' ? 'ในแผน' : 'นอกแผน' }})
                                                         </p>
                                                     @endforeach
                                                 </td>
@@ -137,6 +141,7 @@
                                                 </td>
                                             </tr>
                                         <!-- ========================================= End รายการ PLAN GROUP ===================================== -->
+
                                         @else
                                             @foreach($support->details as $detail)
                                                 <?php $total += (float)$detail->sum_price; ?>
@@ -406,6 +411,14 @@
                                 <div style="height: 40px;"></div>
                                 <p class="next-paragraph">/๑. รายชื่อคณะกรรมการกำหนด...</p>
                             @endif
+
+                            @if(count($committees) > 6)
+                                @if (count($support->details) > 19 && count($support->details) <= 25 && $support->is_plan_group == 1)
+                                    <?php $page = $page + 1; ?>
+                                    <div style="height: 40px;"></div>
+                                    <p class="next-paragraph">/๒. รายชื่อคณะกรรมการกำหนด...</p>
+                                @endif
+                            @endif
                             <!-- ############################ End Pagination ############################ -->
                         </td>
                     </tr>
@@ -417,6 +430,12 @@
                             <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) == 10)
                                 <p class="page-number">- ๒ -</p>
+                            @endif
+
+                            @if(count($committees) > 6)
+                                @if (count($support->details) > 19 && count($support->details) <= 25 && $support->is_plan_group == 1)
+                                <p class="page-number">- ๒ -</p>
+                                @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
 
@@ -448,8 +467,8 @@
                                 @endif
                             @endif
 
-                            @if (count($support->details) > 19 && count($support->details) <= 25)
-                                @if($committeeHeight <= 60)
+                            @if(count($committees) <= 2)
+                                @if (count($support->details) > 19 && count($support->details) <= 25 && $support->is_plan_group == 1)
                                     <?php $page = $page + 1; ?>
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
@@ -462,13 +481,16 @@
                         <tr>
                             <td colspan="4">
                                 <!-- ############################ Pagination ############################ -->
-                                @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
+                                @if(count($support->details) < 10)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
                                 @endif
-                                @if (count($support->details) > 19 && count($support->details) <= 25)
-                                    @if($committeeHeight <= 60)
-                                        <p class="page-number">- ๒ -</p>
+
+                                @if(count($committees) <= 2)
+                                    @if (count($support->details) > 19 && count($support->details) <= 25)
+                                        @if($committeeHeight <= 60)
+                                            <p class="page-number">- ๒ -</p>
+                                        @endif
                                     @endif
                                 @endif
                                 <!-- ############################ End Pagination ############################ -->
@@ -498,12 +520,10 @@
                         <td colspan="4">
                             <!-- ############################ Pagination ############################ -->
                             @if (count($support->details) < 10)
-                                @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
                                     <div style="height: 20px;"></div>
                                     <p class="page-number">- ๒ -</p>
-                                @endif
                             @endif
-                            @if (count($support->details) > 19 && count($support->details) <= 25)
+                            @if ((count($support->details) > 19 && count($support->details) <= 25) && $support->is_plan_group != 1)
                                 @if($committeeHeight <= 60)
                                     <p class="page-number">- ๒ -</p>
                                 @endif

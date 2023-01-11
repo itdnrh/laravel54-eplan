@@ -210,6 +210,10 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope[name] = value;
     }
 
+    $scope.isRenderWardInsteadDepart = function(departId) {
+        return [19,20,68].includes(departId);
+    }
+
     $scope.onStrategicSelected = function(strategic) {
         $scope.forms.strategies = $scope.temps.strategies.filter(stg => stg.strategic_id == strategic);
     };

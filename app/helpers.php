@@ -229,3 +229,7 @@ function baht_text($number, $include_unit = true, $display_zero = true)
 
     return $text;
 }
+
+function isRenderWardInsteadDepart($departId) {
+    return in_array($departId, ['19','20','68']);
+}
