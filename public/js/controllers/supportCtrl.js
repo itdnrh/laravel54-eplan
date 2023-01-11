@@ -280,11 +280,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.plansGroups_pager = null;
 
         let year = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
         let depart = $('#user').val() == '1300200009261' ? '' : $('#depart_id').val();
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
 
-        $http.get(`${CONFIG.baseUrl}/plans/search-group/${cate}?year=${year}&depart=${depart}&name=${name}&status=0&approved=A`)
+        $http.get(`${url}&year=${year}&depart=${depart}&name=${name}&status=0&approved=A`)
         .then(function(res) {
             cb(res);
 
