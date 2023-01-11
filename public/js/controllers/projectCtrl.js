@@ -657,11 +657,22 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     | Project moidfication process
     |-----------------------------------------------------------------------------
     */
-    $scope.showModificationForm = () => {
+    $scope.modification = {
+        id: '',
+        project_id: '',
+        doc_no: '',
+        doc_date: '',
+        modification_type_id: '',
+        desc: ''
+    };
+
+    $scope.showModificationForm = (e, id) => {
+        $scope.modification.project_id = id;
+
         $('#modification-form').modal('show');
     };
 
-    $scope.onSubmitModification = (e, form, modification) => {
+    $scope.onSubmitModification = (e, form, id) => {
         e.preventDefault();
 
         if (form.$invalid) {
@@ -669,10 +680,23 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             return;
         }
 
-        if (!modification) {
+        if (!id) {
             $scope.loading = true;
 
-            $http.post(`${CONFIG.baseUrl}/projects/${id}/close`, data)
+            /** Create FormData object */
+            let frmModification = new FormData();
+            frmModification.append('doc_no', $scope.modification.doc_no);
+            frmModification.append('doc_date', $scope.modification.doc_date);
+            frmModification.append('modification_type_id', $scope.modification.modification_type_id);
+            frmModification.append('desc', $scope.modification.desc);
+
+            if ($('#attachment')[0]) {
+                frmModification.append('attachment', $('#attachment')[0].files[0]);
+            }
+
+            $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/modify`, frmModification, {
+                headers: { 'Content-Type': undefined },
+            })
             .then(res => {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "บันทึกขอเปลี่ยนแปลงเรียบร้อย !!!");

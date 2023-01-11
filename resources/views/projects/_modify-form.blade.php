@@ -57,11 +57,11 @@
                                 required
                             >
                                 <option value="">-- เลือกประเภทการขอ --</option>
-                                <option value="">ปรับเปลี่ยนวันที่ดำเนินการ</option>
-                                <option value="">ปรับเปลี่ยนไตรมาส</option>
-                                <option value="">ปรับเปลี่ยนวิทยากร</option>
-                                <option value="">ปรับเปลี่ยนกิจกรรมดำเนินการ</option>
-                                <option value="">ปรับเปลี่ยนงบประมาณ</option>
+                                <option value="1">ปรับเปลี่ยนวันที่ดำเนินการ</option>
+                                <option value="2">ปรับเปลี่ยนไตรมาส</option>
+                                <option value="3">ปรับเปลี่ยนวิทยากร</option>
+                                <option value="4">ปรับเปลี่ยนกิจกรรมดำเนินการ</option>
+                                <option value="5">ปรับเปลี่ยนงบประมาณ</option>
                             </select>
                             <span class="help-block" ng-show="frmModification.$submitted && frmModification.modification_type_id.$error.required">
                                 กรุณาเลือกประเภทการขอ
@@ -88,7 +88,11 @@
                             ng-class="{'has-error has-feedback': frmModification.$submitted && frmModification.attachment.$invalid}"
                         >
                             <label for="">ไฟล์แนบ (เฉพาะไฟล์ประเภท PDF เท่านั้น)</label>
-                            <input type="file" id="attachment" name="attachment" />
+                            <input
+                                type="file"
+                                id="attachment"
+                                name="attachment"
+                            />
                             <span class="help-block" ng-show="frmModification.$submitted && frmModification.attachment.$error.required">
                                 กรุณาระบุไฟล์แนบ
                             </span>

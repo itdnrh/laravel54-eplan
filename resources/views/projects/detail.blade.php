@@ -260,7 +260,7 @@
                                         <a
                                             href="#"
                                             class="btn btn-primary pull-right"
-                                            ng-click="showModificationForm($event, project.id, null)"
+                                            ng-click="showModificationForm($event, project.id)"
                                             ng-show="{{ Auth::user()->memberOf->depart_id }} == '3' || {{ Auth::user()->memberOf->depart_id }} == '4'"
                                         >
                                             เพิ่มรายการขอเปลี่ยนแปลง

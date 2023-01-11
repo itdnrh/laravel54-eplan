@@ -11,6 +11,7 @@ use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\ProjectPayment;
 use App\Models\ProjectTimeline;
+use App\Models\ProjectModification;
 use App\Models\Person;
 use App\Models\Faction;
 use App\Models\Depart;
@@ -675,6 +676,44 @@ class ProjectController extends Controller
                     'status'    => 1,
                     'message'   => 'Closed project successfully!!',
                     'project'   => $project
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function storeModify(Request $req, $id)
+    {
+        try {
+            $modify = ProjectModification::find($id);
+            $modify->doc_no      = $req['doc_no'];
+            $modify->doc_date    = convThDateToDbDate($req['doc_date']);
+            $modify->modification_type_id = $req['modification_type_id'];
+            $modify->desc        = $req['desc'];
+
+            /** Upload attach file */
+            if($req->hasFile('attachment')) {
+                $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
+
+                if (!empty($attachment)) {
+                    $modify->attachment = $attachment;
+                }
+            }
+
+            if ($modify->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Modify project successfully!!',
+                    'modify'    => $modify
                 ];
             } else {
                 return [
