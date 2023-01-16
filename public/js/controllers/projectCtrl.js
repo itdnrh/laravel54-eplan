@@ -683,13 +683,25 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         });
     };
 
-    $scope.showModificationForm = (e, id) => {
-        $scope.modification.project_id = id;
+    $scope.showModificationForm = (e, projectId, modification = null) => {
+        $scope.modification.project_id = projectId;
+
+        if (modification) {
+            $scope.modification.id = modification.id;
+            $scope.modification.doc_no = modification.doc_no;
+            $scope.modification.doc_date = modification.doc_date;
+            $scope.modification.modify_type_id = modification.modify_type_id.toString();
+            $scope.modification.desc = modification.desc;
+
+            $('#doc_date')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(modification.doc_date).toDate());
+        }
 
         $('#modification-form').modal('show');
     };
 
-    $scope.onSubmitModification = (e, form, id) => {
+    $scope.onSubmitModification = (e, form, modificationId) => {
         e.preventDefault();
 
         if (form.$invalid) {
@@ -697,20 +709,20 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             return;
         }
 
-        if (!id) {
+        /** Create FormData object */
+        let frmModification = new FormData();
+        frmModification.append('doc_no', $scope.modification.doc_no);
+        frmModification.append('doc_date', $scope.modification.doc_date);
+        frmModification.append('modify_type_id', $scope.modification.modify_type_id);
+        frmModification.append('desc', $scope.modification.desc);
+        frmModification.append('user', $('#user').val());
+
+        if ($('#attachment')[0]) {
+            frmModification.append('attachment', $('#attachment')[0].files[0]);
+        }
+
+        if (!modificationId) {
             $scope.loading = true;
-
-            /** Create FormData object */
-            let frmModification = new FormData();
-            frmModification.append('doc_no', $scope.modification.doc_no);
-            frmModification.append('doc_date', $scope.modification.doc_date);
-            frmModification.append('modify_type_id', $scope.modification.modify_type_id);
-            frmModification.append('desc', $scope.modification.desc);
-            frmModification.append('user', $('#user').val());
-
-            if ($('#attachment')[0]) {
-                frmModification.append('attachment', $('#attachment')[0].files[0]);
-            }
 
             $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/modification`, frmModification, {
                 headers: { 'Content-Type': undefined },
@@ -733,15 +745,17 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 $scope.loading = false;
             });
         } else {
-            if (confirm('คุณต้องการแก้ไขขอเปลี่ยนแปลงใช่หรือไม่?')) {
+            if (confirm('คุณต้องการแก้ไขการเปลี่ยนแปลงโครงการใช่หรือไม่?')) {
                 $scope.loading = true;
 
-                $http.post(`${CONFIG.baseUrl}/projects/${id}/close`, data)
+                $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/${modificationId}/modification`, frmModification, {
+                    headers: { 'Content-Type': undefined },
+                })
                 .then(res => {
                     if (res.data.status == 1) {
-                        toaster.pop('success', "ผลการทำงาน", "แก้ไขขอเปลี่ยนแปลงเรียบร้อย !!!");
+                        toaster.pop('success', "ผลการทำงาน", "แก้ไขการเปลี่ยนแปลงโครงการเรียบร้อย !!!");
                     } else {
-                        toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขขอเปลี่ยนแปลงได้ !!!");
+                        toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขการเปลี่ยนแปลงโครงการได้ !!!");
                     }
 
                     $('#modification-form').modal('hide');
@@ -750,7 +764,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 }, err => {
                     console.log(err);
 
-                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขขอเปลี่ยนแปลงได้ !!!");
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขการเปลี่ยนแปลงโครงการได้ !!!");
 
                     $scope.loading = false;
                 });
