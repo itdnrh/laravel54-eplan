@@ -88,11 +88,17 @@
                             ng-class="{'has-error has-feedback': frmModification.$submitted && frmModification.attachment.$invalid}"
                         >
                             <label for="">ไฟล์แนบ (เฉพาะไฟล์ประเภท PDF เท่านั้น)</label>
-                            <input
-                                type="file"
-                                id="attachment"
-                                name="attachment"
-                            />
+                            <div style="margin-bottom: 10px;">
+                                <a
+                                    href="{{ url('/uploads/projects') }}/@{{ modification.attachment }}"
+                                    ng-show="modification.attachment"
+                                    target="_blank"
+                                >
+                                    <i class="fa  fa-file-pdf-o text-success" aria-hidden="true"></i>
+                                    @{{ modification.attachment }}
+                                </a>
+                            </div>
+                            <input type="file" id="attachment" name="attachment" />
                             <span class="help-block" ng-show="frmModification.$submitted && frmModification.attachment.$error.required">
                                 กรุณาระบุไฟล์แนบ
                             </span>
@@ -114,6 +120,7 @@
         </div>
     </div>
 </div>
+
 <script>
     $(function () {
         $('#net_total').inputmask("currency", { "placeholder": "0" });

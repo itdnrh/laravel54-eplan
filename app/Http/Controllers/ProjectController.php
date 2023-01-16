@@ -746,6 +746,45 @@ class ProjectController extends Controller
         }
     }
 
+    public function updateModification(Request $req, $id, $modificationId)
+    {
+        try {
+            $modify = ProjectModification::find($modificationId);
+            // $modify->project_id     = $id;
+            $modify->doc_no         = $req['doc_no'];
+            $modify->doc_date       = convThDateToDbDate($req['doc_date']);
+            $modify->modify_type_id = $req['modify_type_id'];
+            $modify->desc           = $req['desc'];
+
+            /** Upload attach file */
+            // if($req->hasFile('attachment')) {
+            //     $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
+
+            //     if (!empty($attachment)) {
+            //         $modify->attachment = $attachment;
+            //     }
+            // }
+
+            // if ($modify->save()) {
+            //     return [
+            //         'status'    => 1,
+            //         'message'   => 'Updating project modification successfully!!',
+            //         'modify'    => $modify
+            //     ];
+            // } else {
+            //     return [
+            //         'status'    => 0,
+            //         'message'   => 'Something went wrong!!'
+            //     ];
+            // }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function excel(Request $req)
     {
         $matched = [];

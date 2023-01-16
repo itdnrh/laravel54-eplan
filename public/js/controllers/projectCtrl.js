@@ -692,6 +692,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             $scope.modification.doc_date = modification.doc_date;
             $scope.modification.modify_type_id = modification.modify_type_id.toString();
             $scope.modification.desc = modification.desc;
+            $scope.modification.attachment = modification.attachment;
 
             $('#doc_date')
                 .datepicker(dtpOptions)
@@ -745,7 +746,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 $scope.loading = false;
             });
         } else {
-            if (confirm('คุณต้องการแก้ไขการเปลี่ยนแปลงโครงการใช่หรือไม่?')) {
+            if (confirm(`คุณต้องการแก้ไขการเปลี่ยนแปลงโครงการ รหัส ${modificationId} ใช่หรือไม่?`)) {
                 $scope.loading = true;
 
                 $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/${modificationId}/modification`, frmModification, {
