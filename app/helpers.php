@@ -233,3 +233,16 @@ function baht_text($number, $include_unit = true, $display_zero = true)
 function isRenderWardInsteadDepart($departId) {
     return in_array($departId, ['19','20','68']);
 }
+
+/** ตรวจสอบคณะกรรมการการขอสนับสนุน */
+function committeeNumber($committees, $type) {
+    $number = 0;
+
+    foreach($committees as $committee) {
+        if($committee->committee_type_id == $type) {
+            $number++;
+        }
+    }
+
+    return $number;
+}

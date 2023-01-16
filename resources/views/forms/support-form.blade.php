@@ -94,7 +94,8 @@
                     <?php $tableHeight = 0; ?>
                     <?php $haveRowOvered = 0; ?>
                     <?php $nextBullet = 0; ?>
-                    <?php $page = 0; ?>
+                    <?php $page = 1; ?>
+
                     <!-- ========================================= รายการน้อยกว่า 12 รายการ ===================================== -->
                     @if (count($support->details) < 12 || $support->is_plan_group == 1)
                         <tr>
@@ -109,8 +110,9 @@
                                             <th style="width: 15%; text-align: center;">ราคารวม</th>
                                         </tr>
 
-                                        <!-- ========================================= รายการ PLAN GROUP ===================================== -->
                                         @if($support->is_plan_group == 1)
+
+                                            <!-- ========================================= รายการ PLAN GROUP ===================================== -->
                                             <?php $total = (float)$support->total; ?>
                                             <tr style="min-height: 20px;">
                                                 <td style="text-align: center;">{{ thainumDigit(++$row) }}</td>
@@ -140,9 +142,10 @@
                                                     {{ thainumDigit(number_format($support->total, 2)) }}
                                                 </td>
                                             </tr>
-                                        <!-- ========================================= End รายการ PLAN GROUP ===================================== -->
+                                            <!-- ========================================= End รายการ PLAN GROUP ===================================== -->
 
                                         @else
+
                                             @foreach($support->details as $detail)
                                                 <?php $total += (float)$detail->sum_price; ?>
                                                 <tr style="min-height: 20px;">
@@ -182,6 +185,7 @@
                                                 </tr>
                                             @endforeach
                                         @endif
+
                                         <?php $tableHeight += 20; ?>
                                         <tr>
                                             <td style="text-align: center; font-weight: bold;" colspan="4">
@@ -246,15 +250,15 @@
 
                                 <!-- ############################ Pagination ############################ -->
                                 <p class="next-paragraph">/{{ thainumDigit(++$row) }}...</p>
-                                <?php $page = $page + 1; ?>
                                 <!-- ############################ Pagination ############################ -->
 
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
+
                                 <!-- ############################ Pagination ############################ -->
-                                <p class="page-number">- ๒ -</p>
+                                <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                 <!-- ############################ Pagination ############################ -->
 
                                 <table style="width: 100%;" class="table" border="1">
@@ -307,20 +311,20 @@
                                 </table>
 
                                 <!-- ############################ Pagination ############################ -->
-                                @if (count($support->details) > 25)
+                                @if (count($support->details) > 27)
                                     <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
-                                    <?php $page = $page + 1; ?>
                                 @endif
                                 <!-- ############################ End Pagination ############################ -->
 
                             </td>
                         </tr>
+
                         <!-- ========================================= รายการมากกว่า 28 รายการขึ้นไป ===================================== -->
                         @if (count($support->details) > 28)
                             <?php $restRow = 0; ?>
                             <tr>
                                 <td colspan="4">
-                                    <p class="page-number">- ๓ -</p>
+                                    <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
 
                                     <table style="width: 100%;" class="table" border="1">
                                         @foreach($support->details as $detail)
@@ -372,6 +376,7 @@
                             </tr>
                         @endif
                         <!-- ========================================= End รายการมากกว่า 28 รายการขึ้นไป ===================================== -->
+
                     @endif
                     <!-- ========================================= End รายการมากกว่า 12 รายการ ===================================== -->
 
@@ -385,8 +390,7 @@
                     </tr>
 
                     <!-- ############################ Pagination ############################ -->
-                    @if (count($support->details) > 10 && count($support->details) < 12)
-                        <?php $page = $page + 1; ?>
+                    @if(count($support->details) > 10 && count($support->details) < 12)
                         <tr>
                             <td colspan="4">
                                 <p class="next-paragraph">/พร้อมนี้ได้ส่งข้อมูลประกอบ...</p>
@@ -397,29 +401,40 @@
 
                     <tr>
                         <td colspan="4">
+
                             <!-- ############################ Pagination ############################ -->
-                            @if (count($support->details) > 10 && count($support->details) < 12)
-                                <p class="page-number">- ๒ -</p>
+                            @if(count($support->details) > 10 && count($support->details) < 12)
+                                <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                             @endif
                             <!-- ############################ End Pagination ############################ -->
 
                             พร้อมนี้ได้ส่งข้อมูลประกอบการดำเนินการมาด้วย คือ
 
                             <!-- ############################ Pagination ############################ -->
-                            @if (count($support->details) == 10)
-                                <?php $page = $page + 1; ?>
+                            @if(count($support->details) == 10)
                                 <div style="height: 40px;"></div>
                                 <p class="next-paragraph">/๑. รายชื่อคณะกรรมการกำหนด...</p>
                             @endif
 
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if(committeeNumber($committees, 1) == 1)
+
+                                @else
+                                    @if (count($support->details) > 19 && count($support->details) <= 25)
+                                        <div style="height: 40px;"></div>
+                                        <p class="next-paragraph">/๑. รายชื่อคณะกรรมการกำหนด...</p>
+                                    @endif
+                                @endif
+                            @endif
+
                             @if(count($committees) > 6)
                                 @if (count($support->details) > 19 && count($support->details) <= 25 && $support->is_plan_group == 1)
-                                    <?php $page = $page + 1; ?>
                                     <div style="height: 40px;"></div>
-                                    <p class="next-paragraph">/๒. รายชื่อคณะกรรมการกำหนด...</p>
+                                    <p class="next-paragraph">/๑. รายชื่อคณะกรรมการกำหนด...</p>
                                 @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
+
                         </td>
                     </tr>
 
@@ -428,13 +443,23 @@
                             <?php $nextBullet = 1; ?>
 
                             <!-- ############################ Pagination ############################ -->
-                            @if (count($support->details) == 10)
-                                <p class="page-number">- ๒ -</p>
+                            @if(count($support->details) == 10)
+                                <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                            @endif
+
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if(committeeNumber($committees, 1) == 1)
+
+                                @else
+                                    @if (count($support->details) > 19 && count($support->details) <= 25)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+                                @endif
                             @endif
 
                             @if(count($committees) > 6)
-                                @if (count($support->details) > 19 && count($support->details) <= 25 && $support->is_plan_group == 1)
-                                <p class="page-number">- ๒ -</p>
+                                @if ((count($support->details) > 19 && count($support->details)) <= 25 && $support->is_plan_group == 1)
+                                <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                 @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
@@ -459,38 +484,62 @@
                             </div>
 
                             <!-- ############################ Pagination ############################ -->
-                            @if (count($support->details) < 10)
-                                @if(($tableHeight <= 340 && $committeeHeight > 120) || $tableHeight > 340)
-                                    <?php $page = $page + 1; ?>
+                            @if(count($committees) <= 2)
+                                @if (count($support->details) == 4 && $haveRowOvered > 4)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
 
-                            @if(count($committees) <= 2)
-                                @if (count($support->details) > 19 && count($support->details) <= 25 && $support->is_plan_group == 1)
-                                    <?php $page = $page + 1; ?>
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if(committeeNumber($committees, 1) == 1)
+                                    @if(count($support->details) > 7 && count($support->details) <= 10)
+                                        <div style="height: 40px;"></div>
+                                        <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                    @endif
+
+                                    @if($page == 2 && count($support->details) == 25)
+                                        <div style="height: 20px;"></div>
+                                        <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                    @endif
+                                @else
+                                    @if($haveRowOvered == 0 && (count($support->details) > 4 && count($support->details) <= 7))
+                                        <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                    @endif
+
+                                    @if($page == 1 && (count($support->details) > 7 && count($support->details) <= 10))
+                                        <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                    @endif
+
+                                    @if($page == 2 && (count($support->details) > 19 && count($support->details) <= 25))
+                                        <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
+                                    @endif
+                                @endif
+                            @endif
+
+                            @if($support->is_plan_group == 1 && count($committees) <= 2)
+                                @if(count($support->details) > 19 && count($support->details) <= 25)
                                     <p class="next-paragraph">/๒. รายชื่อคณะกรรมการ...</p>
                                 @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
+
                         </td>
                     </tr>
+
                     @if((float)$support->total >= 500000)
                         <?php $nextBullet = 2; ?>
                         <tr>
                             <td colspan="4">
-                                <!-- ############################ Pagination ############################ -->
-                                @if(count($support->details) < 10)
-                                    <div style="height: 20px;"></div>
-                                    <p class="page-number">- ๒ -</p>
-                                @endif
 
-                                @if(count($committees) <= 2)
+                                <!-- ############################ Pagination ############################ -->
+                                @if($support->is_plan_group != 1)
+                                    @if(count($support->details) < 10 && count($support->details) > 7)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+
                                     @if (count($support->details) > 19 && count($support->details) <= 25)
-                                        @if($committeeHeight <= 60)
-                                            <p class="page-number">- ๒ -</p>
-                                        @endif
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                     @endif
                                 @endif
                                 <!-- ############################ End Pagination ############################ -->
@@ -516,16 +565,54 @@
                             </td>
                         </tr>
                     @endif
+
                     <tr>
                         <td colspan="4">
+
                             <!-- ############################ Pagination ############################ -->
-                            @if (count($support->details) < 10)
-                                    <div style="height: 20px;"></div>
-                                    <p class="page-number">- ๒ -</p>
+                            <!-- ============================== คณะกรรมการรวมไม่เกิน 2 คน ============================== -->
+                            @if(count($committees) <= 2)
+                                @if (count($support->details) == 4 && $haveRowOvered > 4)
+                                        <div style="height: 20px;"></div>
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                @endif
                             @endif
-                            @if ((count($support->details) > 19 && count($support->details) <= 25) && $support->is_plan_group != 1)
-                                @if($committeeHeight <= 60)
-                                    <p class="page-number">- ๒ -</p>
+
+                            <!-- ============================== คณะกรรมการรวมระหว่าง 3-6 คน ============================== -->
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if(committeeNumber($committees, 1) == 1)
+                                    @if(count($support->details) > 7 && count($support->details) <= 10)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+
+                                    @if($page == 2 && count($support->details) == 25)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+                                @else
+                                    <!-- แบบ 2 หน้า และ รายการในตารางอยู่ระหว่าง 5-7 -->
+                                    @if($page == 1 && $haveRowOvered > 0 && (count($support->details) > 4 && count($support->details) <= 7))
+                                        <div style="height: 20px;"></div>
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+
+                                    <!-- แบบ 2 หน้า และ รายการในตารางอยู่ระหว่าง 8-9 -->
+                                    @if($page == 1 && (count($support->details) > 7 && count($support->details) < 10))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+
+                                    @if($page == 2 && (count($support->details) > 19 && count($support->details) <= 25))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+                                @endif
+                            @endif
+
+                            <!-- ============================== คณะกรรมการรวมมากกว่า 6 คน ============================== -->
+                            @if(count($committees) > 6)
+                                @if($support->is_plan_group == 1)
+                                    <!-- <p class="page-number">- {{ thainumDigit(++$page) }} -</p> -->
+                                    
+                                @else
+                                    
                                 @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
@@ -574,12 +661,21 @@
                             </p>
 
                             <!-- ############################ Page 2 ############################ -->
-                            @if($page == 0 && (count($support->details) > 7 && count($support->details) < 10))
-                                <?php $page = $page + 1; ?>
-                                @if(count($committees) < 4)
-                                    <div style="height: 80px;"></div>
+                            <!-- ============================== คณะกรรมการรวมระหว่าง 3-6 คน ============================== -->
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if(committeeNumber($committees, '1') == 1)
+                                    @if($page == 1 && count($support->details) > 5 && count($support->details) <= 7)
+                                        <div style="height: 80px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
+                                    @endif
+                                @else
+                                    @if($page == 1 && count($support->details) >= 7 && count($support->details) < 10)
+                                        @if(count($committees) < 4)
+                                            <div style="height: 80px;"></div>
+                                        @endif
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
+                                    @endif
                                 @endif
-                                <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
                             @endif
                             <!-- ############################ End Page 2 ############################ -->
 
@@ -587,10 +683,18 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+
                             <!-- ############################ Page 2 ############################ -->
-                            @if(count($committees) <= 6)
-                                @if($page == 0 && (count($support->details) > 7 && count($support->details) < 10))
-                                    <p class="page-number">- ๒ -</p>
+                            <!-- ============================== คณะกรรมการรวมระหว่าง 3-6 คน ============================== -->
+                            @if(count($committees) > 2 && count($committees) <= 6)
+                                @if(committeeNumber($committees, '1') == 1)
+                                    @if(count($support->details) > 5 && count($support->details) < 7)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+                                @else
+                                    @if($page == 1 && (count($support->details) >= 7 && count($support->details) < 10))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
                                 @endif
                             @endif
                             <!-- ############################ End Page 2 ############################ -->
@@ -610,80 +714,83 @@
                     <!-- ############################ Pagination ############################ -->
                     <tr>
                         <td colspan="4">
+                            <!-- ============================== คณะกรรมการรวมไม่เกิน 2 คน ============================== -->
                             @if(count($committees) <= 2)
-                                @if($page == 0 && (count($support->details) == 4 && $haveRowOvered > 0))
-                                    <?php $page = $page + 1; ?>
+                                @if($page == 1 && (count($support->details) == 4 && $haveRowOvered > 0))
                                     <div style="height: {{ 200 - ($haveRowOvered * 20) }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($page == 0 && $haveRowOvered == 0 && (count($support->details) > 4 && count($support->details) <= 10))
-                                    <?php $page = $page + 1; ?>
+                                @if($page == 1 && $haveRowOvered == 0 && (count($support->details) > 4 && count($support->details) <= 10))
                                     <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($page == 0 && $haveRowOvered > 0 && (count($support->details) > 4 && count($support->details) <= 10))
-                                    <?php $page = $page + 1; ?>
+                                @if($page == 1 && $haveRowOvered > 0 && (count($support->details) > 4 && count($support->details) <= 10))
                                     <div style="height: {{ (10 - count($support->details)) * 20 }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
 
+                            <!-- ============================== คณะกรรมการรวมระหว่าง 3-6 คน ============================== -->
                             @if(count($committees) > 2 && count($committees) <= 6)
-                                @if($page == 0 && count($support->details) == 4 && $haveRowOvered > 0)
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: {{ $haveRowOvered * 20 }}px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
-                                @endif
+                                @if(committeeNumber($committees, '1') == 1)
+                                    @if($page == 1 && (count($support->details) >= 4 && count($support->details) <= 7))
+                                        <div style="height: 80px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
+    
+                                    @if($page == 2 && (count($support->details) > 19 && count($support->details) <= 23))
+                                        <div style="height: {{ (23 - count($support->details)) * 40 }}px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
+                                @else
+                                    @if($page == 1 && count($support->details) == 4 && $haveRowOvered > 0)
+                                        <div style="height: {{ $haveRowOvered * 15 }}px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
 
-                                @if($page == 0 && $haveRowOvered == 0 && (count($support->details) >= 4 && count($support->details) <= 7))
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: {{ (7 - count($support->details)) * 30 }}px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
-                                @endif
+                                    @if($page == 1 && $haveRowOvered == 0 && (count($support->details) >= 4 && count($support->details) <= 7))
+                                        <div style="height: {{ (7 - count($support->details)) * 30 }}px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
 
-                                @if($page == 0 && (count($support->details) > 7 && count($support->details) <= 10))
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: 20px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
-                                @endif
+                                    @if($page == 1 && (count($support->details) > 7 && count($support->details) <= 10))
+                                        <div style="height: 20px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
 
-                                @if($page == 1 && (count($support->details) > 17 && count($support->details) <= 19))
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: 20px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
-                                @endif
+                                    @if($page == 2 && (count($support->details) > 17 && count($support->details) <= 19))
+                                        <div style="height: 20px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
 
-                                @if ($page == 2 && count($support->details) > 19 && count($support->details) <= 27)
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: 20px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
-                                @endif
+                                    @if($page == 2 && count($support->details) > 19 && count($support->details) <= 27)
+                                        <div style="height: 20px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
 
-                                @if($page == 2 && count($support->details) > 27)
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: 20px;"></div>
-                                    <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @if($page == 3 && count($support->details) > 27)
+                                        <div style="height: 20px;"></div>
+                                        <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
+                                    @endif
                                 @endif
                             @endif
 
+                            <!-- ============================== คณะกรรมการรวมมากกว่า 6 คน ============================== -->
                             @if(count($committees) > 6)
-                                @if (count($support->details) <= 2)
-                                    <?php $page = $page + 1; ?>
+                                @if(count($support->details) <= 2)
                                     <div style="height: {{ 180 - ((count($committees) - 6) * 20) }}px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($page == 0 && count($support->details) > 2)
-                                    <?php $page = $page + 1; ?>
+                                @if($page == 1 && count($support->details) > 2)
                                     <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
 
-                                @if($page == 0 && count($support->details) > 17)
-                                    <?php $page = $page + 1; ?>
-                                    <div style="height: 20px; border: 1px solid red;"></div>
+                                @if($page == 1 && count($support->details) > 17)
+                                    <div style="height: 20px;"></div>
                                     <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายชื่อผู้ประสานงาน...</p>
                                 @endif
                             @endif
@@ -693,55 +800,77 @@
 
                     <tr>
                         <td colspan="4">
+
                             <!-- ############################ Pagination ############################ -->
+                            <!-- ============================== คณะกรรมการรวมไม่เกิน 2 คน ============================== -->
                             @if(count($committees) <= 2)
-                                @if($page == 1 && (count($support->details) == 4 && $haveRowOvered > 0))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @if($page == 1 && ((count($support->details) <= 4 && $haveRowOvered > 2) && (count($support->details) > 4 && count($support->details) <= 10) && $haveRowOvered == 0))
+                                    <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                 @endif
 
-                                @if ($page == 1 && (count($support->details) > 4 && count($support->details) <= 10))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                @if($page == 1 && (count($support->details) > 4 && count($support->details) <= 10))
+                                    <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                 @endif
                             @endif
 
+                            <!-- ============================== คณะกรรมการรวมระหว่าง 3-6 คน ============================== -->
                             @if(count($committees) > 2 && count($committees) <= 6)
-                                @if($page == 1 && (count($support->details) >= 4 && count($support->details) <= 7))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                @if(committeeNumber($committees, '1') == 1)
+                                    @if($page == 1 && (count($support->details) >= 4 && count($support->details) <= 7))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if ($page == 1 && (count($support->details) > 7 && count($support->details) < 10))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                    @if($page == 2 && (count($support->details) > 19 && count($support->details) <= 27))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+                                @else
+                                    @if($page == 1 && count($support->details) == 4)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if ($page == 2 && (count($support->details) > 17 && count($support->details) <= 19))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                    @if ($page == 1 && (count($support->details) > 7 && count($support->details) < 10))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+    
+                                    @if($page == 2 && (count($support->details) > 17 && count($support->details) <= 19))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
+    
+                                    @if($page == 2 && (count($support->details) > 19 && count($support->details) <= 27))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if($page == 3 && count($support->details) > 27)
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                    @if($page == 3 && count($support->details) > 27)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
                                 @endif
                             @endif
 
+                            <!-- ============================== คณะกรรมการรวมมากกว่า 6 คน ============================== -->
                             @if(count($committees) > 6)
-                                @if ($page == 1 && count($support->details) <= 2)
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                @if($support->is_plan_group == 1)
+                                    
+                                @else
+                                    @if($page == 2 && count($support->details) <= 2)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if ($page == 2 && (count($support->details) > 10 && count($support->details) <= 17))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                    @if($page == 2 && (count($support->details) > 10 && count($support->details) <= 17))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if ($page == 3 && (count($support->details) > 17 && count($support->details) <= 19))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                    @if($page == 3 && (count($support->details) > 17 && count($support->details) <= 19))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if ($page == 3 && (count($support->details) > 19 && count($support->details) <= 27))
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
-                                @endif
+                                    @if($page == 3 && (count($support->details) > 19 && count($support->details) <= 27))
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
 
-                                @if ($page == 3 && count($support->details) > 27)
-                                    <div style="height: 20px;"></div>
-                                    <p class="page-number">- {{ thainumDigit($page + 1) }} -</p>
+                                    @if($page == 3 && count($support->details) > 27)
+                                        <div style="height: 20px;"></div>
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
                                 @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
