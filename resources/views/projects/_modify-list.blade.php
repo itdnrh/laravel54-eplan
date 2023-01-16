@@ -3,7 +3,7 @@
         <tr>
             <th style="width: 4%; text-align: center;">ลำดับ</th>
             <th style="width: 10%; text-align: center;">วันที่ขอ</th>
-            <th style="width: 18%; text-align: center;">ประเภท</th>
+            <th style="width: 20%; text-align: center;">ประเภท</th>
             <th>รายละเอียด</th>
             <th style="width: 8%; text-align: center;">ไฟล์แนบ</th>
             <th style="width: 6%; text-align: center;">Actions</th>
