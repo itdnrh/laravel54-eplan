@@ -704,6 +704,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.onSubmitModification = (e, form, modificationId) => {
         e.preventDefault();
 
+        if ($('#attachment')[0].files[0] && $('#attachment')[0].files[0].type != 'application/pdf') {
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณระบุชนิดของไฟล์แนบไม่ถูกต้อง !!!");
+            return;
+        }
+
         if (form.$invalid) {
             toaster.pop('error', "ผลการตรวจสอบ", "คุณกรอกข้อมูลไม่ครบ !!!");
             return;
@@ -717,7 +722,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         frmModification.append('desc', $scope.modification.desc);
         frmModification.append('user', $('#user').val());
 
-        if ($('#attachment')[0]) {
+        if ($('#attachment')[0].files[0]) {
             frmModification.append('attachment', $('#attachment')[0].files[0]);
         }
 
@@ -730,6 +735,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             .then(res => {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "บันทึกรายการขอเปลี่ยนแปลงเรียบร้อย !!!");
+
+                    $scope.getModifications($scope.modification.project_id);
                 } else {
                     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกรายการขอเปลี่ยนแปลงได้ !!!");
                 }
@@ -754,6 +761,8 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 .then(res => {
                     if (res.data.status == 1) {
                         toaster.pop('success', "ผลการทำงาน", "แก้ไขรายการเรียบร้อย !!!");
+
+                        $scope.getModifications($scope.modification.project_id);
                     } else {
                         toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขรายการได้ !!!");
                     }
@@ -768,8 +777,6 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
                     $scope.loading = false;
                 });
-            } else {
-                $scope.loading = false;
             }
         }
     };

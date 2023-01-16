@@ -6,7 +6,6 @@
             <th style="width: 18%; text-align: center;">ประเภท</th>
             <th>รายละเอียด</th>
             <th style="width: 8%; text-align: center;">ไฟล์แนบ</th>
-            <th style="width: 20%; text-align: center;">ผู้ขอ</th>
             <th style="width: 6%; text-align: center;">Actions</th>
         </tr>
     </thead>
@@ -29,9 +28,6 @@
                 >
                     <i class="fa  fa-file-pdf-o text-success" aria-hidden="true"></i>
                 </a>
-            </td>
-            <td style="text-align: center;">
-                @{{ modification.creator.prefix.prefix_name+modification.creator.person_firstname+ ' ' +modification.creator.person_lastname }}
             </td>
             <td style="text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 2px;">
