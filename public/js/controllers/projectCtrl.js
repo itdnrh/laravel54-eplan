@@ -662,8 +662,25 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         project_id: '',
         doc_no: '',
         doc_date: '',
-        modification_type_id: '',
+        modify_type_id: '',
         desc: ''
+    };
+
+    $scope.modifications = [];
+    $scope.getModifications = (id) => {
+        $scope.modifications = [];
+        $scope.loading = true;
+        
+        $http.get(`${CONFIG.apiUrl}/projects/${id}/modifications`)
+        .then(res => {
+            $scope.modifications = res.data.modifications;
+
+            $scope.loading = false;
+        }, err => {
+            console.log(err);
+
+            $scope.loading = false;
+        });
     };
 
     $scope.showModificationForm = (e, id) => {
@@ -687,14 +704,15 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             let frmModification = new FormData();
             frmModification.append('doc_no', $scope.modification.doc_no);
             frmModification.append('doc_date', $scope.modification.doc_date);
-            frmModification.append('modification_type_id', $scope.modification.modification_type_id);
+            frmModification.append('modify_type_id', $scope.modification.modify_type_id);
             frmModification.append('desc', $scope.modification.desc);
+            frmModification.append('user', $('#user').val());
 
             if ($('#attachment')[0]) {
                 frmModification.append('attachment', $('#attachment')[0].files[0]);
             }
 
-            $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/modify`, frmModification, {
+            $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/modification`, frmModification, {
                 headers: { 'Content-Type': undefined },
             })
             .then(res => {

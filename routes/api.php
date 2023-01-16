@@ -34,6 +34,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('projects/{id}', 'ProjectController@getById');
     Route::get('projects/{id}/payments', 'ProjectController@getProjectPayments');
     Route::get('projects/{id}/timeline', 'ProjectController@getProjectTimeline');
+    Route::get('projects/{id}/modifications', 'ProjectController@getProjectModifications');
     Route::put('projects/{id}/approve', 'ProjectController@approve');
     Route::put('projects/{id}/cancel', 'ProjectController@cancel');
 

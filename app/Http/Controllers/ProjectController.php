@@ -263,6 +263,22 @@ class ProjectController extends Controller
         ];
     }
 
+    public function getProjectModifications($id)
+    {
+        $project = Project::where('id', $id)
+                    ->with('budgetSrc','depart','depart.faction')
+                    ->with('owner','owner.prefix','owner.position','owner.academic')
+                    ->with('kpi','kpi.strategy','kpi.strategy.strategic')
+                    ->first();
+
+        $modifications = ProjectModification::with('creator')->where('project_id', $id)->get();
+
+        return [
+            'project'   => $project,
+            'modifications'  => $modifications,
+        ];
+    }
+
     public function detail($id)
     {
         return view('projects.detail', [
@@ -691,14 +707,15 @@ class ProjectController extends Controller
         }
     }
 
-    public function storeModify(Request $req, $id)
+    public function storeModification(Request $req, $id)
     {
         try {
-            $modify = ProjectModification::find($id);
-            $modify->doc_no      = $req['doc_no'];
-            $modify->doc_date    = convThDateToDbDate($req['doc_date']);
-            $modify->modification_type_id = $req['modification_type_id'];
-            $modify->desc        = $req['desc'];
+            $modify = new ProjectModification;
+            $modify->project_id     = $id;
+            $modify->doc_no         = $req['doc_no'];
+            $modify->doc_date       = convThDateToDbDate($req['doc_date']);
+            $modify->modify_type_id = $req['modify_type_id'];
+            $modify->desc           = $req['desc'];
 
             /** Upload attach file */
             if($req->hasFile('attachment')) {
@@ -712,7 +729,7 @@ class ProjectController extends Controller
             if ($modify->save()) {
                 return [
                     'status'    => 1,
-                    'message'   => 'Modify project successfully!!',
+                    'message'   => 'Insertion project modification successfully!!',
                     'modify'    => $modify
                 ];
             } else {

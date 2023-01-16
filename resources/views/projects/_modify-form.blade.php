@@ -46,13 +46,13 @@
                         </div>
                         <div
                             class="col-md-12 form-group"
-                            ng-class="{'has-error has-feedback': frmModification.$submitted && frmModification.modification_type_id.$invalid}"
+                            ng-class="{'has-error has-feedback': frmModification.$submitted && frmModification.modify_type_id.$invalid}"
                         >
                             <label for="">ประเภทการขอ</label>
                             <select
-                                id="modification_type_id"
-                                name="modification_type_id"
-                                ng-model="modification.modification_type_id"
+                                id="modify_type_id"
+                                name="modify_type_id"
+                                ng-model="modification.modify_type_id"
                                 class="form-control"
                                 required
                             >
@@ -63,7 +63,7 @@
                                 <option value="4">ปรับเปลี่ยนกิจกรรมดำเนินการ</option>
                                 <option value="5">ปรับเปลี่ยนงบประมาณ</option>
                             </select>
-                            <span class="help-block" ng-show="frmModification.$submitted && frmModification.modification_type_id.$error.required">
+                            <span class="help-block" ng-show="frmModification.$submitted && frmModification.modify_type_id.$error.required">
                                 กรุณาเลือกประเภทการขอ
                             </span>
                         </div>

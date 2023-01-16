@@ -54,4 +54,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectPayment::class, 'project_id', 'id');
     }
+
+    public function modifications()
+    {
+        return $this->hasMany(ProjectModification::class, 'project_id', 'id');
+    }
 }

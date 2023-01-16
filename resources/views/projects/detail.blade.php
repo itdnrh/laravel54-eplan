@@ -28,6 +28,7 @@
             getById({{ $project->id }}, setEditControls);
             getPayments({{ $project->id }});
             getTimline({{ $project->id }});
+            getModifications({{ $project->id }});
         "
     >
 
