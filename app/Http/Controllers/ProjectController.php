@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Project;
@@ -757,26 +758,56 @@ class ProjectController extends Controller
             $modify->desc           = $req['desc'];
 
             /** Upload attach file */
-            // if($req->hasFile('attachment')) {
-            //     $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
+            if($req->hasFile('attachment')) {
+                $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
 
-            //     if (!empty($attachment)) {
-            //         $modify->attachment = $attachment;
-            //     }
-            // }
+                if (!empty($attachment)) {
+                    $modify->attachment = $attachment;
+                }
+            }
 
-            // if ($modify->save()) {
-            //     return [
-            //         'status'    => 1,
-            //         'message'   => 'Updating project modification successfully!!',
-            //         'modify'    => $modify
-            //     ];
-            // } else {
-            //     return [
-            //         'status'    => 0,
-            //         'message'   => 'Something went wrong!!'
-            //     ];
-            // }
+            if ($modify->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating project modification successfully!!',
+                    'modify'    => $modify
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function deleteModification(Request $req, $id, $modificationId)
+    {
+        try {
+            $modify = ProjectModification::find($modificationId);
+
+            /** Delete file attachment from server */
+            $fileToDelete = !empty($modify->attachment) ? public_path('uploads/projects/'.$modify->attachment) : '';
+            if(!empty($fileToDelete) && File::exists($fileToDelete)) {
+                File::delete($fileToDelete);
+            }
+
+            if ($modify->delete()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deleting project modification successfully!!',
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,

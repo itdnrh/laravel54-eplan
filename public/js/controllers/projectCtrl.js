@@ -667,11 +667,11 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     };
 
     $scope.modifications = [];
-    $scope.getModifications = (id) => {
+    $scope.getModifications = (projectId) => {
         $scope.modifications = [];
         $scope.loading = true;
         
-        $http.get(`${CONFIG.apiUrl}/projects/${id}/modifications`)
+        $http.get(`${CONFIG.apiUrl}/projects/${projectId}/modifications`)
         .then(res => {
             $scope.modifications = res.data.modifications;
 
@@ -689,7 +689,6 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         if (modification) {
             $scope.modification.id = modification.id;
             $scope.modification.doc_no = modification.doc_no;
-            $scope.modification.doc_date = modification.doc_date;
             $scope.modification.modify_type_id = modification.modify_type_id.toString();
             $scope.modification.desc = modification.desc;
             $scope.modification.attachment = modification.attachment;
@@ -730,9 +729,9 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             })
             .then(res => {
                 if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "บันทึกขอเปลี่ยนแปลงเรียบร้อย !!!");
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกรายการขอเปลี่ยนแปลงเรียบร้อย !!!");
                 } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกขอเปลี่ยนแปลงได้ !!!");
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกรายการขอเปลี่ยนแปลงได้ !!!");
                 }
 
                 $('#modification-form').modal('hide');
@@ -741,12 +740,12 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             }, err => {
                 console.log(err);
 
-                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกขอเปลี่ยนแปลงได้ !!!");
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกรายการขอเปลี่ยนแปลงได้ !!!");
 
                 $scope.loading = false;
             });
         } else {
-            if (confirm(`คุณต้องการแก้ไขการเปลี่ยนแปลงโครงการ รหัส ${modificationId} ใช่หรือไม่?`)) {
+            if (confirm(`คุณต้องการแก้ไขรายการการเปลี่ยนแปลงโครงการ รหัส ${modificationId} ใช่หรือไม่?`)) {
                 $scope.loading = true;
 
                 $http.post(`${CONFIG.baseUrl}/projects/${$scope.modification.project_id}/${modificationId}/modification`, frmModification, {
@@ -754,9 +753,9 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 })
                 .then(res => {
                     if (res.data.status == 1) {
-                        toaster.pop('success', "ผลการทำงาน", "แก้ไขการเปลี่ยนแปลงโครงการเรียบร้อย !!!");
+                        toaster.pop('success', "ผลการทำงาน", "แก้ไขรายการเรียบร้อย !!!");
                     } else {
-                        toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขการเปลี่ยนแปลงโครงการได้ !!!");
+                        toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขรายการได้ !!!");
                     }
 
                     $('#modification-form').modal('hide');
@@ -765,13 +764,42 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
                 }, err => {
                     console.log(err);
 
-                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขการเปลี่ยนแปลงโครงการได้ !!!");
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขรายการได้ !!!");
 
                     $scope.loading = false;
                 });
             } else {
                 $scope.loading = false;
             }
+        }
+    };
+
+    $scope.deleteModification = (e, projectId, modificationId) => {
+        e.preventDefault();
+
+        if (confirm(`คุณต้องการลบรายการการเปลี่ยนแปลงโครงการ รหัส ${modificationId} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.post(`${CONFIG.baseUrl}/projects/${projectId}/${modificationId}/modification/delete`)
+            .then(res => {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ลบรายการเรียบร้อย !!!");
+
+                    $scope.getModifications(projectId);
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบรายการได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, err => {
+                console.log(err);
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถลบรายการได้ !!!");
+
+                $scope.loading = false;
+            });
+        } else {
+            $scope.loading = false;
         }
     };
 

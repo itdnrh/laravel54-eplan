@@ -140,6 +140,7 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::post('projects/{id}/modification', 'ProjectController@storeModification');
     Route::post('projects/{id}/{modificationId}/modification', 'ProjectController@updateModification');
+    Route::post('projects/{id}/{modificationId}/modification/delete', 'ProjectController@deleteModification');
 
     Route::post('projects/{id}/close', 'ProjectController@close');
     Route::get('projects/print/{id}', 'ProjectController@printForm');
