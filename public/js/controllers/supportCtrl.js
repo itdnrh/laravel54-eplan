@@ -422,7 +422,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.newItem.price_per_unit = plan.plan_item.calc_method == 1 ? plan.plan_item.price_per_unit : '';
             $scope.newItem.unit_id      = plan.plan_item.calc_method == 1 ? plan.plan_item.unit_id.toString() : '';
             $scope.newItem.unit_name    = plan.plan_item.calc_method == 1 ? plan.plan_item.unit.name : '';
-            $scope.newItem.amount       = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_amount : '';
+            $scope.newItem.amount       = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_amount : 1;
             $scope.newItem.sum_price    = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_budget : '';
             $scope.newItem.planItem     = plan.plan_item;
 
@@ -434,16 +434,28 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#plans-list').modal('hide');
     };
 
-    $scope.calculateSumPrice = function(price, amount) {
-        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+    $scope.calculateSumPrice = function(price, amt) {
+        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amt));
 
         /** ตรวจสอบว่ารายการที่ขอยอดเงินเกินงบประมาณที่ขอหรือไม่ */
-        if ($scope.newItem.planItem.sum_price < sumPrice) {
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้ !!!");
+        const { calc_method, price_per_unit, amount, sum_price, remain_budget } = $scope.newItem.planItem;
 
-            $scope.newItem.price_per_unit = $scope.newItem.planItem.price_per_unit;
-            $scope.newItem.amount = $scope.newItem.planItem.amount;
-            $scope.newItem.sum_price = $scope.newItem.planItem.sum_price;
+        if (calc_method == 1 && sum_price < sumPrice) {
+            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${sum_price} บาท)`);
+
+            $scope.newItem.price_per_unit = price_per_unit;
+            $scope.newItem.amount = amount;
+            $scope.newItem.sum_price = sum_price;
+
+            return;
+        }
+
+        if (calc_method == 2 && remain_budget < sumPrice) {
+            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${remain_budget} บาท)`);
+
+            $scope.newItem.price_per_unit = 0;
+            $scope.newItem.amount = amount;
+            $scope.newItem.sum_price = 0;
 
             return;
         }
