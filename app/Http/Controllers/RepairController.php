@@ -104,6 +104,7 @@ class RepairController extends Controller
                         ? $req->get('depart') : Auth::user()->memberOf->depart_id;
         $division   = (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '2' || Auth::user()->memberOf->depart_id == '4')
                         ? $req->get('division') : Auth::user()->memberOf->ward_id;
+        $inPlan = $req->get('in_plan');
         $status     = $req->get('status');
 
         if($status != '') {
@@ -132,6 +133,9 @@ class RepairController extends Controller
                         ->where('plan_items.have_subitem', '1')
                         ->when(!empty($desc), function($q) use ($desc) {
                             $q->where('desc', 'like', '%'.$desc.'%');
+                        })
+                        ->when(!empty($inPlan), function($q) use ($inPlan) {
+                            $q->where('plans.in_plan', $inPlan);
                         })
                         ->pluck('support_details.support_id');
 

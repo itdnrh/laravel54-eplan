@@ -2,6 +2,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 /** ################################################################################## */
     $scope.loading = false;
 
+    $scope.cboInPlan = '';
+    $scope.cboStatus = '';
     $scope.searchKey = '';
     $scope.txtDesc = '';
 
@@ -101,8 +103,10 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
         let doc_no  = $scope.searchKey === '' ? '' : $scope.searchKey;
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
 
-        $http.get(`${CONFIG.baseUrl}/repairs/search?year=${year}&stype=2&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-5`)
+        $http.get(`${CONFIG.baseUrl}/repairs/search?year=${year}&stype=2&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -131,8 +135,10 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
         let doc_no  = $scope.searchKey === '' ? '' : $scope.searchKey;
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
 
-        $http.get(`${url}&year=${year}&stype=2&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&status=0-5`)
+        $http.get(`${url}&year=${year}&stype=2&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
         .then(function(res) {
             $scope.setSupports(res);
 

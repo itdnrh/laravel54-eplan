@@ -52,7 +52,7 @@
 
                         <div class="box-body">
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-2">
                                     <label>ปีงบประมาณ</label>
                                     <select
                                         id="cboYear"
@@ -65,6 +65,60 @@
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
                                             @{{ y }}
                                         </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>ในแผน/นอกแผน</label>
+                                    <select
+                                        id="cboInPlan"
+                                        name="cboInPlan"
+                                        ng-model="cboInPlan"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="I">ในแผน</option>
+                                        <option value="O">นอกแผน</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>เลขที่บันทึกขอสนับสนุน</label>
+                                    <input
+                                        id="searchKey"
+                                        name="searchKey"
+                                        ng-model="searchKey"
+                                        ng-keyup="getAll($event)"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>รายละเอียดการซ่อม</label>
+                                    <input
+                                        id="txtDesc"
+                                        name="txtDesc"
+                                        ng-model="txtDesc"
+                                        ng-keyup="getAll($event)"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        ng-change="getAll($event)"
+                                        class="form-control"
+                                    >
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ส่งเอกสารแล้ว</option>
+                                        <option value="2">รับเอกสารแล้ว</option>
+                                        <option value="3-5">ออกใบสั่งซื้อแล้ว</option>
+                                        <option value="4-5">ตรวจรับแล้ว</option>
+                                        <option value="5">ส่งเบิกเงินแล้ว</option>
+                                        <option value="9">เอกสารถูกตีกลับ</option>
+                                        <!-- <option value="99">ยกเลิก</option> -->
                                     </select>
                                 </div>
                             </div>
@@ -124,29 +178,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>เลขที่บันทึกขอสนับสนุน</label>
-                                    <input
-                                        id="searchKey"
-                                        name="searchKey"
-                                        ng-model="searchKey"
-                                        ng-keyup="getAll($event)"
-                                        class="form-control"
-                                    />
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>รายละเอียดการซ่อม</label>
-                                    <input
-                                        id="txtDesc"
-                                        name="txtDesc"
-                                        ng-model="txtDesc"
-                                        ng-keyup="getAll($event)"
-                                        class="form-control"
-                                    />
-                                </div>
-                            </div>
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -196,6 +227,8 @@
                                         <ul style="margin: 0; padding: 0 0 0 15px;">
                                             <li ng-repeat="(index, detail) in support.details">
                                                 <span>@{{ detail.plan.plan_no }} - @{{ detail.plan.plan_item.item.item_name }}</span>
+                                                <span class="label label-success label-xs" ng-show="detail.plan.in_plan == 'I'">ในแผน</span>
+                                                <span class="label label-danger label-xs" ng-show="detail.plan.in_plan == 'O'">นอกแผน</span>
                                                 <p style="margin: 0; font-size: 12px; color: red;">
                                                     (@{{ detail.desc }}
                                                     จำนวน <span>@{{ detail.amount | currency:'':0 }}</span>
