@@ -48,7 +48,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         unit: null,
         unit_id: '9',
         amount: '1',
-        sum_price: ''
+        sum_price: '',
+        planItem: null
     };
 
     $scope.spec = {
@@ -68,6 +69,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         todayBtn: true,
         todayHighlight: true
     };
+
     $('#po_date')
         .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
@@ -78,13 +80,18 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
             console.log(event.date);
         });
 
+    $scope.initialPlans = (plans) => {
+        $scope.plans = plans;
+    };
+
     $scope.clearNewItem = () => {
         $scope.newItem = {
             desc: '',
             price_per_unit: '',
             unit_id: '9',
             amount: '1',
-            sum_price: ''
+            sum_price: '',
+            planItem: null
         };
     };
 
@@ -158,8 +165,31 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         $scope.sumSupports = res.data.sumSupports;
     };
 
+    $scope.setTopicByPlanType = function() {
+        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_id option:selected').text().trim()}`;
+    };
+
+    $scope.onSelectedPlan = function(planId) {
+        let plan = $scope.plans.find(plan => plan.id == planId);
+
+        $scope.newItem.planItem = plan.plan_item;
+    };
+
     $scope.calculateSumPrice = function(price, amount) {
-        $scope.newItem.sum_price = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+
+        /** ตรวจสอบว่ารายการที่ขอยอดเงินเกินงบประมาณที่ขอหรือไม่ */
+        if ($scope.newItem.planItem.remain_budget < sumPrice) {
+            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${$scope.newItem.planItem.remain_budget} บาท)`);
+
+            $scope.newItem.price_per_unit = 0;
+            $scope.newItem.amount = $scope.newItem.planItem.amount;
+            $scope.newItem.sum_price = 0;
+
+            return;
+        }
+
+        $scope.newItem.sum_price = sumPrice;
     };
 
     $scope.showSpecForm = function() {
@@ -518,9 +548,5 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         } else {
             $scope.loading = false;
         }
-    };
-
-    $scope.setTopicByPlanType = function() {
-        $scope.support.topic = `ขอรับการสนับสนุน${$('#plan_id option:selected').text().trim()}`;
     };
 });

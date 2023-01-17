@@ -19,11 +19,14 @@
     <section
         class="content"
         ng-controller="repairCtrl"
-        ng-init="initForms({
-            departs: {{ $departs }},
-            divisions: {{ $divisions }},
-            categories: {{ $categories }}
-        });"
+        ng-init="
+            initForms({
+                departs: {{ $departs }},
+                divisions: {{ $divisions }},
+                categories: {{ $categories }}
+            });
+            initialPlans({{ $plans }});
+        "
     >
 
         <div class="row">
@@ -88,7 +91,7 @@
                                     <select id="plan_id"
                                             name="plan_id"
                                             ng-model="support.plan_id"
-                                            ng-change="setTopicByPlanType(support.plan_id)"
+                                            ng-change="setTopicByPlanType(support.plan_id); onSelectedPlan(support.plan_id);"
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;"
                                             tabindex="2">
