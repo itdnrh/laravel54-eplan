@@ -224,6 +224,7 @@ class OrderController extends Controller
                         ->with('details.unit','details.plan','details.plan.planItem.unit')
                         ->with('details.plan.planItem','details.plan.planItem.item')
                         ->with('details.plan.planItem.item.category')
+                        ->with('details.plan.depart','details.plan.division')
                         ->with('officer','officer.prefix','officer.position')
                         ->find($req->get('support'));
         } else {

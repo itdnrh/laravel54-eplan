@@ -188,7 +188,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             support.details.forEach(item => {
                 const orderItem = {
                     plan_no: item.plan.plan_no,
-                    plan_depart: support.division ? support.division.ward_name : support.depart.depart_name,
+                    plan_depart: $scope.isRenderWardInsteadDepart(item.plan.depart_id) ? item.plan.division.ward_name : item.plan.depart.depart_name,
                     plan_detail: item.plan.plan_item.item.item_name,
                     category_name: item.plan.plan_item.item.category.name,
                     plan_id: item.plan.id,
