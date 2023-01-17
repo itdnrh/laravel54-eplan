@@ -158,11 +158,11 @@ class RepairController extends Controller
                     })
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('status', $arrStatus);
-                    })
-                    ->paginate(10);
+                    });
 
         return [
-            "supports" => $supports
+            "sumSupports"   => $supports->sum('total'),
+            "supports"      => $supports->paginate(10)
         ];
     }
 

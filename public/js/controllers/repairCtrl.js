@@ -5,6 +5,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
     $scope.searchKey = '';
     $scope.txtDesc = '';
 
+    $scope.sumSupports = 0;
     $scope.supports = [];
     $scope.pager = [];
 
@@ -147,6 +148,8 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
 
         $scope.supports = data;
         $scope.pager = pager;
+
+        $scope.sumSupports = res.data.sumSupports;
     };
 
     $scope.calculateSumPrice = function(price, amount) {

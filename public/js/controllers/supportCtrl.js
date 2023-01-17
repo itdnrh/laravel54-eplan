@@ -198,7 +198,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.supports = data;
         $scope.pager = pager;
 
-        
         $scope.sumSupports = res.data.sumSupports;
     };
 
