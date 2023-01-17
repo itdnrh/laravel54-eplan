@@ -263,6 +263,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         /** Convert int value to string */
         $scope.asset.plan_type_id       = plan.plan_type_id.toString();
         $scope.asset.unit_id            = plan.plan_item.unit_id.toString();
+        $scope.asset.unit               = plan.plan_item.unit;
         $scope.asset.faction_id         = plan.depart.faction_id.toString();
         $scope.asset.depart_id          = plan.depart_id.toString();
         $scope.asset.division_id        = plan.division_id ? plan.division_id.toString() : '';

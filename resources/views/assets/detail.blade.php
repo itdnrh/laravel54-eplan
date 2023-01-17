@@ -116,49 +116,24 @@
 
                                 <div class="form-group col-md-6">
                                     <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="asset.desc"
-                                        class="form-control" />
+                                    <div class="form-control">@{{ asset.desc }}</div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>รายละเอียด (Spec.) :</label>
-                                    <input  type="text"
-                                            id="spec"
-                                            name="spec"
-                                            ng-model="asset.spec"
-                                            class="form-control">
+                                    <div class="form-control">@{{ asset.spec }}</div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ราคาต่อหน่วย :</label>
-                                    <input  type="text"
-                                            id="price_per_unit"
-                                            name="price_per_unit"
-                                            ng-model="asset.price_per_unit"
-                                            class="form-control" />
+                                    <div class="form-control">@{{ asset.price_per_unit | currency:'':2 }}</div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>จำนวนที่ขอ :</label>
                                     <div style="display: flex; gap: 5px;">
-                                        <input  type="text"
-                                                id="amount"
-                                                name="amount"
-                                                ng-model="asset.amount"
-                                                class="form-control" />
-
-                                        <select id="unit_id"
-                                                name="unit_id"
-                                                ng-model="asset.unit_id"
-                                                class="form-control">
-                                            @foreach($units as $unit)
-                                                <option value="{{ $unit->id }}">
-                                                    {{ $unit->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-control">@{{ asset.amount | currency:'':0 }}</div>
+                                        <div class="form-control">@{{ asset.unit.name }}</div>
                                     </div>
                                 </div>
 
@@ -167,17 +142,9 @@
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'sum_price')}"
                                 >
                                     <label>รวมเป็นเงิน :</label>
-                                    <input  type="text"
-                                            id="sum_price"
-                                            name="sum_price"
-                                            ng-model="asset.sum_price"
-                                            class="form-control pull-right"
-                                            tabindex="9" />
+                                    <div class="form-control">@{{ asset.sum_price | currency:'':2 }}</div>
                                 </div>
-                                <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'request_cause')}"
-                                >
+                                <div class="form-group col-md-4">
                                     <label>สาเหตุที่ขอ :</label>
                                     <div class="form-control checkbox-groups">
                                         <div class="checkbox-container">
@@ -204,10 +171,7 @@
                                     </div>
                                 </div>
 
-                                <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'have_amount')}"
-                                >
+                                <div class="form-group col-md-4">
                                     <label>จำนวนเดิมที่มี :</label>
                                     <input  type="text"
                                             id="have_amount"
@@ -218,10 +182,7 @@
                                             ng-change="calculateSumPrice()" />
                                 </div>
 
-                                <div
-                                    class="form-group col-md-4"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'budget_src_id')}"
-                                >
+                                <div class="form-group col-md-4">
                                     <label>แหล่งเงินงบประมาณ :</label>
                                     <select
                                         id="budget_src_id"
@@ -235,12 +196,9 @@
                                             <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
                                         @endforeach
                                     </select>
-                                    <span class="help-block" ng-show="checkValidate(asset, 'budget_src_id')">
-                                        กรุณาเลือกแหล่งเงินงบประมาณ
-                                    </span>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label>ยุทธศาสตร์ :</label>
                                     <select id="strategic_id" 
                                             name="strategic_id"
@@ -258,7 +216,7 @@
                                 </div>
 
                                 <div
-                                    class="form-group col-md-4"
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(asset, 'service_plan_id')}"
                                 >
                                     <label>Service Plan :</label>
@@ -281,7 +239,7 @@
                                     <textarea
                                         id="reason"
                                         name="reason"
-                                        row="5"
+                                        rows="4"
                                         ng-model="asset.reason"
                                         class="form-control"
                                     ></textarea>
@@ -292,7 +250,7 @@
                                     <textarea
                                         id="remark"
                                         name="remark"
-                                        row="5"
+                                        rows="4"
                                         ng-model="asset.remark"
                                         class="form-control"
                                     ></textarea>
@@ -331,19 +289,19 @@
 
                                 <div class="form-group col-md-6">
                                     <label>สถานะ :</label>
-                                    <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
-                                        <span class="label label-primary" ng-show="asset.status == 0">
+                                    <div class="form-control">
+                                        <h4 class="label label-primary" ng-show="asset.status == 0">
                                             รอดำเนินการ
-                                        </span>
-                                        <span class="label label-info" ng-show="asset.status == 1">
+                                        </h4>
+                                        <h4 class="label label-info" ng-show="asset.status == 1">
                                             ดำเนินการแล้วบางส่วน
-                                        </span>
-                                        <span class="label bg-navy" ng-show="asset.status == 2">
+                                        </h4>
+                                        <h4 class="label bg-navy" ng-show="asset.status == 2">
                                             ดำเนินการครบแล้ว
-                                        </span>
-                                        <span class="label label-default" ng-show="asset.status == 9">
+                                        </h4>
+                                        <h4 class="label label-default" ng-show="asset.status == 9">
                                             ยกเลิก
-                                        </span>
+                                        </h4>
                                     </div>
                                 </div>
                             </div>
@@ -383,7 +341,10 @@
                                         </button>
                                     </form>
                                     <div class="btn-group" style="display: flex;" ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'">
-                                        <button type="button" class="btn btn-primary" style="width: 100%;">เปลี่ยนสถานะ</button>
+                                        <button type="button" class="btn btn-primary" style="width: 100%;">
+                                            <i class="fa fa-random"></i>
+                                            เปลี่ยนสถานะ
+                                        </button>
                                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
@@ -411,6 +372,14 @@
                                             </li> -->
                                         </ul>
                                     </div>
+                                    <button
+                                        type="button"
+                                        ng-click="showAdjustForm($event, asset)"
+                                        ng-show="(asset.approved && asset.status == 0) && {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        class="btn bg-maroon"
+                                    >
+                                        <i class="fa fa-sliders"></i> ปรับแผน (6 เดือนหลัง)
+                                    </button>
                                 </div>
                                 <!-- /** Action buttons container */ -->
 
@@ -423,12 +392,21 @@
         </div><!-- /.row -->
 
         @include('shared._change-form')
+        @include('shared._adjust-form')
 
     </section>
 
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#unit_id').select2({ theme: 'bootstrap' });
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
+
+            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
+
+            $('#sum_price').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 

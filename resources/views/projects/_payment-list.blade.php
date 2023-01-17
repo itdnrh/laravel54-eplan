@@ -13,7 +13,7 @@
     <tbody>
         <tr ng-repeat="(index, payment) in payments">
             <td style="text-align: center;">@{{ index+1 }}</td>
-            <td style="text-align: center;">@{{ payment.pay_date | thdate }}</td>
+            <td style="text-align: center;">@{{ payment.paid_date | thdate }}</td>
             <td>@{{ payment.desc }}</td>
             <td style="text-align: right;">@{{ payment.net_total | currency:'':2 }}</td>
             <td style="text-align: center;">

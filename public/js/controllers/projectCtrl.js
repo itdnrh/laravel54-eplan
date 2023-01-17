@@ -58,7 +58,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             console.log(event.date);
         });
 
-    $('#pay_date')
+    $('#paid_date')
         .datepicker(dtpOptions)
         .datepicker('update', new Date())
         .on('show', function (e) {
@@ -482,7 +482,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         desc: '',
         project_id: '',
         received_date: '',
-        pay_date: '',
+        paid_date: '',
         net_total: '',
         have_aar: 0,
         remark: '',
@@ -494,7 +494,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $scope.payment.desc = '';
         $scope.payment.project_id = '',
         $scope.payment.received_date = '',
-        $scope.payment.pay_date = '',
+        $scope.payment.paid_date = '',
         $scope.payment.net_total = '',
         $scope.payment.have_aar = 0,
         $scope.payment.remark = '',
@@ -504,7 +504,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             .datepicker(dtpOptions)
             .datepicker('update', new Date());
 
-        $('#pay_date')
+        $('#paid_date')
             .datepicker(dtpOptions)
             .datepicker('update', new Date());
     };

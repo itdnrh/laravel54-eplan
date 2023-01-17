@@ -29,18 +29,18 @@
                         </div>
                         <div
                             class="col-md-6 form-group"
-                            ng-class="{'has-error has-feedback': frmPayment.$submitted && frmPayment.pay_date.$invalid}"
+                            ng-class="{'has-error has-feedback': frmPayment.$submitted && frmPayment.paid_date.$invalid}"
                         >
                             <label for="">วันที่เบิกจ่าย</label>
                             <input
                                 type="text"
-                                id="pay_date"
-                                name="pay_date"
-                                ng-model="payment.pay_date"
+                                id="paid_date"
+                                name="paid_date"
+                                ng-model="payment.paid_date"
                                 class="form-control"
                                 required
                             />
-                            <span class="help-block" ng-show="frmPayment.$submitted && frmPayment.pay_date.$error.required">
+                            <span class="help-block" ng-show="frmPayment.$submitted && frmPayment.paid_date.$error.required">
                                 กรุณาเลือกวันที่เบิกจ่าย
                             </span>
                         </div>

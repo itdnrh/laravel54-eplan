@@ -155,7 +155,6 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
             $scope.temps.strategies = data.strategies ? data.strategies : [];
             $scope.temps.kpis = data.kpis ? data.kpis : [];
             $scope.temps.expenses = data.expenses ? data.expenses : [];
-
             $scope.forms.categories = data.categories
                                         ? data.categories.filter(cate => cate.plan_type_id === parseInt(planType))
                                         : [];
@@ -618,5 +617,14 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         } else {
             $scope.expandRow = selectedIndex;
         }
+    };
+
+    $scope.adjustType = 1;
+    $scope.setAdjustType = function(type) {
+        $scope.adjustType = type;
+    };
+
+    $scope.showAdjustForm = function() {
+        $('#adjust-form').modal('show');
     };
 });
