@@ -105,7 +105,7 @@
                                 <span class="memo-paragraph-topic-inline">๓.ข้อพิจารณา</span>
                                 ในการนี้ โรงพยาบาลเทพรัตน์นครราชสีมา พิจารณาแล้ว จึงขออนุมัติแต่งตั้ง
 
-                                <?php $committeeType = count($committees) > 1 ? 'คณะ' : ''; ?>
+                                <?php $committeeType = count($committees) > 1 ? 'คณะกรรมการ' : 'ผู้'; ?>
                                 <div class="committees-paragraph">
                                     <table style="width: 100%;">
                                         <?php $index = 0;?>
@@ -284,7 +284,7 @@
                                 <span class="memo-paragraph-topic-inline">๑.เรื่องเดิม</span>
                                 ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->spec_doc_no) }}</span>
                                 ลงวันที่&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThDate($support->spec_doc_date)) }}</span>
-                                ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}ผู้กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}
+                                ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}
                                 <span>{{ $support->order->category->name}}</span> สนับสนุน การทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น
                             </p>
                         </td>
@@ -365,10 +365,14 @@
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
                                 <span>({{ baht_text($support->net_total) }})</span> ของโรงพยาบาลเทพรัตน์นครราชสีมา
 
+                                <?php $order = 1; ?>
                                 @foreach($committees as $committee)
+                                    <?php $position = count($committees) > 1 ? ($order == 1 ? 'ประธานกรรมการ' : 'กรรมการ') : 'ผู้กำหนดรายละเอียดคุณลักษณะ' ?>
+                                    <?php $order++?>
+
                                     <div class="clearfix" style="margin-left: 80px;">
                                         <p style="margin: 20px 0 0;">
-                                            ลงชื่อ<span class="dot">.........................................ผู้กำหนดรายละเอียดคุณลักษณะ</span>
+                                            ลงชื่อ<span class="dot">.........................................{{ $position }}</span>
                                         </p>
                                         @if ($support->order->support_id)
                                             <div style="width: 60%; text-align: center;">
@@ -397,11 +401,11 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            <?php $spacer = count($committees) > 1 ? ' ' : ''; ?>
                             <div class="memo-paragraph-content with-compressed with-expanded">
                                 <span>เรียนผู้ว่าราชการจังหวัดนครราชสีมา โรงพยาบาลเทพรัตน์นครราชสีมา ได้พิจารณาแล้ว
-                                ผู้กำหนดรายละเอียดคุณลักษณะเฉพาะ ได้ปฏิบัติตามข้อกฏหมาย/ระเบียบ ตามข้อ ๒
-                                เห็นควรพิจารณา ให้ความเห็นชอบรายละเอียดคุณลักษณะเฉพาะ ตามที่ผู้กำหนดรายละเอียดคุณลักษณะ
-                                เฉพาะและราคากลาง เพื่อใช้ในการดำเนินการจัดซื้อในครั้งนี้</span>
+                                {{ $committeeType }}กำหนดรายละเอียดคุณลักษณะเฉพาะ ได้ปฏิบัติตามข้อกฏหมาย/ระเบียบ ตามข้อ ๒
+                                เห็นควรพิจารณา ให้ความเห็นชอบรายละเอียดคุณลักษณะเฉพาะ ตามที่{{ $committeeType }}กำหนดรายละเอียด{{ $spacer }}คุณลักษณะเฉพาะและราคากลาง เพื่อใช้ในการดำเนินการจัดซื้อในครั้งนี้</span>
                             </div>
                         </td>
                     </tr>
