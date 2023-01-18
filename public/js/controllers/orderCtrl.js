@@ -1,6 +1,10 @@
-app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
-    /** ################################################################################## */
-    $scope.loading = false;
+app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService) {
+    /*
+    |-----------------------------------------------------------------------------
+    | Local variables and constraints initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** Filtering input controls */
     $scope.vatRates = [0,7];
     $scope.editRow = false;
     $scope.cboYear = '2566'; //(moment().year() + 543).toString();
@@ -16,14 +20,31 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.dtpSdate = '';
     $scope.dtpEdate = '';
 
-    $scope.sumOrders = 0;
-
-    $scope.orders = [];
-    $scope.pager = null;
-
+    $scope.loading = false;
     $scope.plans = [];
     $scope.plans_pager = null;
 
+    $scope.planGroups = [];
+    $scope.planGroups_pager = null;
+
+    $scope.planGroupItems = [];
+    $scope.editRowIndex = '';
+
+    $scope.inspections = [];
+    $scope.withdrawal = {
+        withdraw_no: '',
+        withdraw_date: '',
+        inspection_id: '',
+        order_id: '',
+        deliver_seq: '',
+        deliver_no: '',
+        net_total: '',
+        remark: ''
+    };
+
+    $scope.orders = [];
+    $scope.pager = null;
+    $scope.sumOrders = 0;
     $scope.order = {
         po_no: '',
         po_date: '',
@@ -73,8 +94,24 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         sum_price: ''
     };
 
-    /** ============================== Init Form elements ============================== */
-    let dtpOptions = {
+    $scope.specCommittee = {
+        id: '',
+        order_id: '',
+        purchase_method: '1',
+        source_price: '1',
+        spec_doc_no: '',
+        spec_doc_date: '',
+        report_doc_no: '',
+        report_doc_date: '',
+        amount: '',
+        net_total: '',
+        committees: [],
+        committee_ids: '',
+        is_existed: false
+    };
+
+    /** DatePicker options */
+    let dtpDateOptions = {
         autoclose: true,
         language: 'th',
         format: 'dd/mm/yyyy',
@@ -84,9 +121,14 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         orientation: "bottom"
     };
 
-    /** ==================== Add form ==================== */
+    /*
+    |-----------------------------------------------------------------------------
+    | Form controls initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** ============================ DatePicker initialization ============================ */
     $('#po_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('show', function (e) {
             console.log(e);
@@ -94,81 +136,750 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         .on('changeDate', function(event) {
             console.log(event.date);
             $('#po_app_date')
-                .datepicker(dtpOptions)
+                .datepicker(dtpDateOptions)
                 .datepicker('update', event.date);
 
             $('#po_req_date')
-                .datepicker(dtpOptions)
+                .datepicker(dtpDateOptions)
                 .datepicker('update', event.date)
         });
 
     $('#po_app_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
         });
 
     $('#po_req_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
         });
 
     $('#spec_doc_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
         });
 
     $('#report_doc_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
 
     $('#inspect_sdate')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
         });
 
     $('#inspect_edate')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
         });
 
     $('#withdraw_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
         });
 
     $('#dtpSdate')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             $('#dtpSdate')
-                .datepicker(dtpOptions)
+                .datepicker(dtpDateOptions)
                 .datepicker('update', event.date);
 
             $scope.getAll(event);
         });
 
     $('#dtpEdate')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             $('#dtpEdate')
-                .datepicker(dtpOptions)
+                .datepicker(dtpDateOptions)
                 .datepicker('update', event.date);
 
             $scope.getAll(event);
         });
+    /** ============================ End DatePicker initialization ============================ */
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan group selection processess
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showPlanGroupItems = function(e, items) {
+        e.preventDefault();
+
+        if (items.length > 0) {
+            $scope.planGroupItems = items;
+
+            $('#plan-group-items').modal('show');
+        }
+    };
+
+    $scope.deletePlanGroupItem = function(e, item) {
+        e.preventDefault();
+
+        if (item) {
+            $scope.planGroupItems = $scope.planGroupItems.filter(it => it.plan_id !== item.plan_id);
+
+            $scope.order.details = $scope.order.details.filter(plan => plan.plan_id !== item.plan_id);
+
+            $scope.calculateNetTotal();
+        }
+    };
+
+    $scope.removePlanGroup = (e) => {
+        $scope.order.is_plan_group = false;
+        $scope.order.plan_group_desc = '';
+        $scope.order.plan_group_amt = 0.0;
+
+        $scope.order.details = [];
+
+        $scope.calculateNetTotal();
+    }
+
+    $scope.showPlanGroupsList = (cate) => {
+        if (cate == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
+        } else {
+            $scope.loading = true;
+            $scope.planGroups = [];
+            $scope.planGroups_pager = null;
+            $scope.plans = [];
+
+            let year = $scope.order.year === '' ? '' : 2566;
+
+            $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
+            .then(function(res) {
+                $scope.setPlanGroups(res);
+
+                $scope.loading = false;
+
+                $('#plan-groups-list').modal('show');
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.getPlanGroupsList = (cate) => {
+        $scope.loading = true;
+        $scope.planGroups = [];
+        $scope.planGroups_pager = null;
+        $scope.plans = [];
+
+        let year = $scope.order.year === '' ? '' : 2566;
+
+        $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
+        .then(function(res) {
+            $scope.setPlanGroups(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlanGroupsListWithUrl = (e, url, cate, cb) => {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.planGroups = [];
+        $scope.planGroups_pager = null;
+        $scope.plans = [];
+
+        let year = $scope.order.year === '' ? '' : 2566;
+
+        $http.get(`${url}&year=${year}&type=${type}&status=2`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+
+            $('#plan-groups-list').modal('show');
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlanGroups = function(res) {
+        const { data, ...pager } = res.data.planGroups;
+
+        $scope.planGroups = data;
+        $scope.planGroups_pager = pager;
+        $scope.plans = res.data.plans;
+    };
+
+    $scope.onSelectedPlanGroup = function(e, planGroup) {
+        if (planGroup) {
+            $scope.order.is_plan_group = true;
+            $scope.order.plan_group_desc = planGroup.item_name;
+            $scope.order.plan_group_amt = planGroup.amount;
+
+            const plans = $scope.plans.filter(plan => plan.plan.plan_item.item_id == planGroup.item_id);
+
+            plans.forEach(plan => {
+                $scope.newItem = {
+                    plan_no: plan.plan.plan_no,
+                    plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
+                    plan_detail: plan.plan.plan_item.item.item_name,
+                    category_name: plan.plan.plan_item.item.category.name,
+                    plan_id: plan.plan.id,
+                    item_id: plan.plan.plan_item.item_id,
+                    support_id: plan.support.id,
+                    support_detail_id: plan.id,
+                    desc: plan.desc,
+                    spec: '',
+                    price_per_unit: plan.price_per_unit,
+                    unit_id: plan.unit.id,
+                    unit_name: plan.unit.name,
+                    amount: plan.amount,
+                    sum_price: plan.sum_price
+                };
+
+                $scope.addOrderItem();
+            });
+        }
+
+        $('#plan-groups-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showPlansList = (cate) => {
+        if (cate == '') {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
+        } else {
+            $scope.loading = true;
+            $scope.plans = [];
+            $scope.plans_pager = null;
+
+            let year = $scope.order.year === '' ? '' : 2566;
+            let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+
+            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&cate=${cate}&name=${name}&status=2`)
+            .then(function(res) {
+                $scope.setPlans(res);
+
+                $scope.loading = false;
+
+                $('#plans-list').modal('show');
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.getPlans = (status) => {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let year = $scope.order.year === '' ? '' : 2566;
+        let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
+        let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let doc_no = $scope.txtSupportNo === '' ? '' : $scope.txtSupportNo;
+
+        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            $scope.setPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlansWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.pager = null;
+
+        let year = $scope.order.year === '' ? '' : 2566;
+        let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
+        let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let doc_no = $scope.txtSupportNo === '' ? '' : $scope.txtSupportNo;
+
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.plans_pager = pager;
+    };
+
+    $scope.onSelectedPlan = (e, plan) => {
+        if (plan) {
+            $scope.newItem = {
+                plan_no: plan.plan.plan_no,
+                plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
+                plan_detail: plan.plan.plan_item.item.item_name,
+                category_name: plan.plan.plan_item.item.category.name,
+                plan_id: plan.plan.id,
+                item_id: plan.plan.plan_item.item_id,
+                support_id: plan.support.id,
+                support_detail_id: plan.id,
+                desc: plan.desc,
+                spec: '',
+                price_per_unit: plan.price_per_unit,
+                unit_id: plan.unit.id,
+                unit_name: plan.unit.name,
+                amount: plan.amount,
+                sum_price: plan.sum_price
+            };
+
+            $scope.addOrderItem();
+        }
+
+        /** Clear filtering inputs of _plans-list modal view */
+        $scope.txtKeyword = '';
+        $scope.txtSupportNo = '';
+
+        /** Hide _plans-list modal view */
+        $('#plans-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Printing committee of specification operations
+    |-----------------------------------------------------------------------------
+    */
+    $scope.clearSpecCommittee = function() {
+        $scope.specCommittee = {
+            id: '',
+            order_id: '',
+            purchase_method: '1',
+            source_price: '1',
+            spec_doc_no: '',
+            spec_doc_date: '',
+            report_doc_no: '',
+            report_doc_date: '',
+            amount: '',
+            net_total: '',
+            committees: [],
+            committee_ids: '',
+            is_existed: false
+        };
+    };
+
+    $scope.setSpecCommitteeForm = function(order, supportOrder, committees) {
+        $scope.specCommittee.order_id   = order.id;
+        $scope.specCommittee.amount     = order.details.length;
+        $scope.specCommittee.net_total  = order.net_total;
+
+        if (supportOrder) {
+            $scope.specCommittee.id                 = supportOrder.id;
+            $scope.specCommittee.purchase_method    = supportOrder.purchase_method.toString();
+            $scope.specCommittee.source_price       = supportOrder.source_price.toString();
+            $scope.specCommittee.spec_doc_no        = supportOrder.spec_doc_no;
+            // $scope.specCommittee.spec_doc_date   = supportOrder.spec_doc_date;
+            $scope.specCommittee.report_doc_no      = supportOrder.report_doc_no;
+            // $scope.specCommittee.report_doc_date = supportOrder.report_doc_date;
+            $scope.specCommittee.amount             = supportOrder.amount;
+            $scope.specCommittee.net_total          = supportOrder.net_total;
+            $scope.specCommittee.committees         = committees;
+            $scope.specCommittee.is_existed         = true;
+
+            $('#spec_doc_date')
+                .datepicker(dtpDateOptions)
+                .datepicker('update', moment(supportOrder.spec_doc_date).toDate());
+
+            $('#report_doc_date')
+                .datepicker(dtpDateOptions)
+                .datepicker('update', moment(supportOrder.report_doc_date).toDate());
+        }
+    };
+
+    $scope.onSubmitSpecCommittee = function(e, form, id, isExisted=false) {
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        if (isExisted) {
+            if(confirm(`คุณต้องแก้ไขรายละเอียดเอกสารขออนุมัติผู้กำหนด Spec รหัส ${id} ใช่หรือไม่?`)) {
+                $http.put(`${CONFIG.apiUrl}/support-orders/${$scope.specCommittee.id}`, $scope.specCommittee)
+                .then(res => {
+                    if (res.data.status) {
+                        window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
+                    } else {
+
+                    }
+                }, err => {
+                    console.log(err);
+                });
+            }
+        } else {
+            $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
+            .then(res => {
+                if (res.data.status) {
+                    window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
+                } else {
+    
+                }
+            }, err => {
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
+        if (isExisted && id) {
+            window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
+        }
+    };
+
+    $scope.supportDetails = [];
+    $scope.showDetailsList = function(e, details) {
+        e.preventDefault();
+
+        if (details.length > 0) {
+            $scope.supportDetails = details;
+
+            $('#details-list').modal('show');
+        }
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Fetching running number process
+    |-----------------------------------------------------------------------------
+    */
+    $scope.getRunningNo = function(orderType) {
+        $scope.loading = true;
+
+        let docType = '';
+        if (orderType == '1') {
+            docType = '7';
+        } else if (orderType == '2') {
+            docType = '8';
+        } else if (orderType == '3') {
+            docType = '9';
+        }
+
+        $http.get(`${CONFIG.apiUrl}/runnings/${docType}/doc-type`)
+        .then(function(res) {
+            $scope.order.po_no = res.data.running+ '/' +$scope.order.year;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Person selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showPersonList = (_selectedMode) => {
+        /** Set default depart of persons list to same user's depart */
+        $scope.cboDepart = '2';
+
+        $('#persons-list').modal('show');
+
+        $scope.getPersons();
+
+        $scope.selectedMode = _selectedMode;
+    };
+
+    $scope.getPersons = async () => {
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
+
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${keyword}`)
+        .then(function(res) {
+            $scope.setPersons(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPersonsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
+
+        $http.get(`${url}&depart=${depart}&name=${keyword}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPersons = function(res) {
+        const { data, ...pager } = res.data.persons;
+
+        $scope.persons = data;
+        $scope.persons_pager = pager;
+    };
+
+    $scope.selectedMode = '';
+    $scope.onSelectedPerson = (mode, person) => {
+        if (person) {
+            if (parseInt(mode) === 1) {
+                $scope.specCommittee.committees.push(person);
+
+                $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
+            } else {
+                $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.order.supply_officer = person.person_id;
+            }
+        }
+
+        $('#persons-list').modal('hide');
+        $scope.selectedMode = '';
+    };
+
+    $scope.removePersonItem = (mode, person) => {
+        if (parseInt(mode) === 1) {
+            $scope.specCommittee.committees = $scope.specCommittee.committees.filter(sc => {
+                return sc.person_id !== person.person_id
+            });
+
+            $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
+        }
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Inspection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showInspectForm = (order) => {
+        if (order) {    
+            $('#inspect-form').modal('show');
+        }
+    };
+
+    $scope.onInspect = (e) => {
+        e.preventDefault();
+
+        let data = {
+            po_id: $('#po_id').val(),
+            deliver_seq: $('#deliver_seq').val(),
+            deliver_no: $('#deliver_no').val(),
+            inspect_sdate: $('#inspect_sdate').val(),
+            inspect_edate: $('#inspect_edate').val(),
+            inspect_total: $('#inspect_total').val().replace(',', ''),
+            inspect_result: $('#inspect_result').val(),
+            inspect_user: $('#inspect_user').val(),
+            remark: $('#remark').val(),
+        };
+
+        $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
+
+        $('#inspect-form').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Withdrawal processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showWithdrawForm = (order) => {
+        if (order) {
+            $http.get(`${CONFIG.baseUrl}/inspections/${order.id}/order`)
+            .then(function(res) {
+                $scope.inspections = res.data.inspections;
+
+                $('#withdraw-form').modal('show');
+            }, function(err) {
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.onDeliverSeqSelected = (seq) => {
+        const inspection = $scope.inspections.find(insp => insp.deliver_seq === parseInt(seq));
+
+        $scope.withdrawal.inspection_id = inspection.id;
+        $scope.withdrawal.order_id = inspection.order_id;
+        $scope.withdrawal.deliver_no = inspection.deliver_no;
+        $scope.withdrawal.net_total = inspection.inspect_total;
+    };
+
+    $scope.onWithdraw = (e) => {
+        e.preventDefault();
+
+        console.log($scope.withdrawal);
+
+        $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
+        .then(function(res) {
+            console.log(res.data);
+        }, function(err) {
+            console.log(err);
+        });
+
+        $('#withdraw-form').modal('hide');
+
+        /** Clear withdrawal data */
+        $scope.withdrawal = {
+            withdraw_no: '',
+            withdraw_date: '',
+            inspection_id: '',
+            order_id: '',
+            deliver_seq: '',
+            deliver_no: '',
+            net_total: '',
+            remark: ''
+        };
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Order CRUD operations
+    |-----------------------------------------------------------------------------
+    */
+    $scope.getAll = function() {
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.pager = null;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
+        let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
+        let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
+
+        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}&date=${sdate}-${edate}`)
+        .then(function(res) {
+            $scope.setOrders(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getAllWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.orders = [];
+        $scope.pager = null;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
+        let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
+        let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
+
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}&date=${sdate}-${edate}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setOrders = function (res) {
+        const { data, ...pager } = res.data.orders;
+
+        $scope.sumOrders = res.data.sumOrders;
+        $scope.orders = data.map(order => {
+            /** ถ้าเป็นรายการตามแผนพัสดุ ให้อัพเดต details property */
+            if (res.data.plans) {
+                let newDetails = order.details.map(item => {
+                    let plan = res.data.plans.find(pl => pl.id === item.plan_id);
+
+                    return {
+                        ...item,
+                        ...plan
+                    };
+                });
+
+                order.details = newDetails;
+            }
+
+            return order;
+        });
+
+        $scope.pager = pager;
+    };
+
+    $scope.orderDetails = [];
+    $scope.showOrderDetails = (items) => {
+        if (items) {
+            $scope.orderDetails = items;
+    
+            $('#order-details').modal('show');
+        }
+    };
 
     $scope.setSupportToOrder = function(support) {
         if (support) {
@@ -282,6 +993,12 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         return $scope.order.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
     };
 
+    $scope.isSelected = function(planId) {
+        if ($scope.order.details.length == 0) return false;
+
+        return $scope.order.details.some(item => item.support_detail_id === planId);
+    };
+
     $scope.addOrderItem = () => {
         $scope.order.details.push({ ...$scope.newItem });
 
@@ -300,17 +1017,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.calculateNetTotal();
     };
 
-    $scope.removePlanGroup = (e) => {
-        $scope.order.is_plan_group = false;
-        $scope.order.plan_group_desc = '';
-        $scope.order.plan_group_amt = 0.0;
-
-        $scope.order.details = [];
-
-        $scope.calculateNetTotal();
-    }
-
-    $scope.editRowIndex = '';
     $scope.toggleEditRow = function(selectedIndex = '') {
         $scope.editRow = !$scope.editRow;
         $scope.editRowIndex = selectedIndex;
@@ -388,922 +1094,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
 
         $('#spec-form').modal('hide');
-    };
-
-    $scope.planGroupItems = [];
-    $scope.showPlanGroupItems = function(e, items) {
-        e.preventDefault();
-
-        if (items.length > 0) {
-            $scope.planGroupItems = items;
-
-            $('#plan-group-items').modal('show');
-        }
-    };
-
-    $scope.isSelected = function(planId) {
-        if ($scope.order.details.length == 0) return false;
-
-        return $scope.order.details.some(item => item.support_detail_id === planId);
-    };
-
-    $scope.deletePlanGroupItem = function(e, item) {
-        e.preventDefault();
-
-        if (item) {
-            $scope.planGroupItems = $scope.planGroupItems.filter(it => it.plan_id !== item.plan_id);
-
-            $scope.order.details = $scope.order.details.filter(plan => plan.plan_id !== item.plan_id);
-
-            $scope.calculateNetTotal();
-        }
-    };
-
-    $scope.showPlanGroupsList = (cate) => {
-        if (cate == '') {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
-        } else {
-            $scope.loading = true;
-            $scope.planGroups = [];
-            $scope.planGroups_pager = null;
-            $scope.plans = [];
-
-            let year = $scope.order.year === '' ? '' : 2566;
-
-            $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
-            .then(function(res) {
-                $scope.setPlanGroups(res);
-
-                $scope.loading = false;
-
-                $('#plan-groups-list').modal('show');
-            }, function(err) {
-                console.log(err);
-                $scope.loading = false;
-            });
-        }
-    };
-
-    $scope.getPlanGroupsList = (cate) => {
-        $scope.loading = true;
-        $scope.planGroups = [];
-        $scope.planGroups_pager = null;
-        $scope.plans = [];
-
-        let year = $scope.order.year === '' ? '' : 2566;
-
-        $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
-        .then(function(res) {
-            $scope.setPlanGroups(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPlanGroupsListWithUrl = (e, url, cate, cb) => {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.planGroups = [];
-        $scope.planGroups_pager = null;
-        $scope.plans = [];
-
-        let year = $scope.order.year === '' ? '' : 2566;
-
-        $http.get(`${url}&year=${year}&type=${type}&status=2`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-
-            $('#plan-groups-list').modal('show');
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPlanGroups = function(res) {
-        const { data, ...pager } = res.data.planGroups;
-
-        $scope.planGroups = data;
-        $scope.planGroups_pager = pager;
-        $scope.plans = res.data.plans;
-    };
-
-    $scope.onSelectedPlanGroup = function(e, planGroup) {
-        if (planGroup) {
-            $scope.order.is_plan_group = true;
-            $scope.order.plan_group_desc = planGroup.item_name;
-            $scope.order.plan_group_amt = planGroup.amount;
-
-            const plans = $scope.plans.filter(plan => plan.plan.plan_item.item_id == planGroup.item_id);
-
-            plans.forEach(plan => {
-                $scope.newItem = {
-                    plan_no: plan.plan.plan_no,
-                    plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
-                    plan_detail: plan.plan.plan_item.item.item_name,
-                    category_name: plan.plan.plan_item.item.category.name,
-                    plan_id: plan.plan.id,
-                    item_id: plan.plan.plan_item.item_id,
-                    support_id: plan.support.id,
-                    support_detail_id: plan.id,
-                    desc: plan.desc,
-                    spec: '',
-                    price_per_unit: plan.price_per_unit,
-                    unit_id: plan.unit.id,
-                    unit_name: plan.unit.name,
-                    amount: plan.amount,
-                    sum_price: plan.sum_price
-                };
-
-                $scope.addOrderItem();
-            });
-        }
-
-        $('#plan-groups-list').modal('hide');
-    };
-
-    $scope.showPlansList = (cate) => {
-        if (cate == '') {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
-        } else {
-            $scope.loading = true;
-            $scope.plans = [];
-            $scope.plans_pager = null;
-
-            let year = $scope.order.year === '' ? '' : 2566;
-            let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-
-            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&cate=${cate}&name=${name}&status=2`)
-            .then(function(res) {
-                $scope.setPlans(res);
-
-                $scope.loading = false;
-
-                $('#plans-list').modal('show');
-            }, function(err) {
-                console.log(err);
-                $scope.loading = false;
-            });
-        }
-    };
-
-    $scope.getPlans = (status) => {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let year = $scope.order.year === '' ? '' : 2566;
-        let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
-        let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let doc_no = $scope.txtSupportNo === '' ? '' : $scope.txtSupportNo;
-
-        $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPlansWithUrl = function(e, url, status, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.orders = [];
-        $scope.pager = null;
-
-        let year = $scope.order.year === '' ? '' : 2566;
-        let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
-        let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let doc_no = $scope.txtSupportNo === '' ? '' : $scope.txtSupportNo;
-
-        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
-    };
-
-    $scope.onSelectedPlan = (e, plan) => {
-        if (plan) {
-            $scope.newItem = {
-                plan_no: plan.plan.plan_no,
-                plan_depart: plan.support.division ? plan.support.division.ward_name : plan.support.depart.depart_name,
-                plan_detail: plan.plan.plan_item.item.item_name,
-                category_name: plan.plan.plan_item.item.category.name,
-                plan_id: plan.plan.id,
-                item_id: plan.plan.plan_item.item_id,
-                support_id: plan.support.id,
-                support_detail_id: plan.id,
-                desc: plan.desc,
-                spec: '',
-                price_per_unit: plan.price_per_unit,
-                unit_id: plan.unit.id,
-                unit_name: plan.unit.name,
-                amount: plan.amount,
-                sum_price: plan.sum_price
-            };
-
-            $scope.addOrderItem();
-        }
-
-        /** Clear filtering inputs of _plans-list modal view */
-        $scope.txtKeyword = '';
-        $scope.txtSupportNo = '';
-
-        /** Hide _plans-list modal view */
-        $('#plans-list').modal('hide');
-    };
-
-    $scope.onReceivePlan = function(e, plan) {
-        $http.post(`${CONFIG.baseUrl}/orders/received/1`, { id: plan.id })
-        .then(function(res) {
-            console.log(res);
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
-
-                $scope.getReceiveds(2);
-            } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            }
-        }, function(err) {
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-        });
-    };
-
-    /** ============================================================================= */
-    $scope.receiveds = [];
-    $scope.receiveds_pager = null;
-    $scope.getReceiveds = (status) => {
-        $scope.loading = true;
-        $scope.receiveds = [];
-        $scope.receiveds_pager = null;
-
-        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
-        let received_no = $scope.txtReceivedNo == '' ? '' : $scope.txtReceivedNo;
-
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&received_no=${received_no}&status=${status}`)
-        .then(function(res) {
-            $scope.setReceiveds(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getReceivedsWithUrl = function(e, url, status, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.receiveds = [];
-        $scope.receiveds_pager = null;
-
-        let year = $scope.cboYear == '' ? '' : $scope.cboYear;
-        let type = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        let depart = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let doc_no = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
-        let received_no = $scope.txtReceivedNo == '' ? '' : $scope.txtReceivedNo;
-
-        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&received_no=${received_no}&status=${status}`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setReceiveds = function(res) {
-        const { data, ...pager } = res.data.supports;
-
-        $scope.receiveds = data;
-        $scope.receiveds_pager = pager;
-    };
-
-    $scope.supports = [];
-    $scope.supports_pager = null;
-    $scope.getSupports = function(res) {
-        $scope.loading = true;
-        $scope.supports = [];
-        $scope.supports_pager = null;
-
-        let year    = $scope.cboYear == '' ? '' : $scope.cboYear;
-        let type    = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        // let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let doc_no  = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
-        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
-
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=1`)
-        .then(function(res) {
-            $scope.loading = false;
-
-            $scope.setSupports(res);
-
-            $('#supports-receive').modal('show');
-        }, function(err) {
-            $scope.loading = false;
-            console.log(err);
-        });
-    };
-
-    $scope.getSupportsWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.supports = [];
-        $scope.supports_pager = null;
-
-        let year    = $scope.cboYear == '' ? '' : $scope.cboYear;
-        let type    = $scope.cboPlanType == '' ? '' : $scope.cboPlanType;
-        // let cate = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let doc_no  = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
-        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
-
-        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setSupports = function(res) {
-        const { data, ...pager } = res.data.supports;
-
-        $scope.supports = data;
-        $scope.supports_pager = pager;
-    };
-
-    $scope.receive = {
-        support_id: '',
-        received_no: '',
-        received_date: '',
-        officer: '',
-        remark: ''
-    };
-
-    $scope.clearReceive = function() {
-        $scope.receive = {
-            support_id: '',
-            received_no: '',
-            received_date: '',
-            officer: '',
-            remark: ''
-        };
-    };
-
-    $scope.showReceiveSupportForm = function(e, support) {
-        $scope.receive.support_id = support.id;
-
-        $('#received_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-        $('#receive-form').modal('show');
-    };
-
-    $scope.onReceiveSupport = function(e, form, support) {
-        e.preventDefault();
-
-        if (form.$invalid) {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
-            return;
-        }
-
-        if (support) {
-            $http.post(`${CONFIG.baseUrl}/orders/received/2`, $scope.receive)
-            .then(function(res) {
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
-
-                    /** Remove support data that has been received */
-                    $scope.supports = $scope.supports.filter(el => el.id !== res.data.support.id);
-
-                    $scope.getReceiveds(2);
-                    $scope.clearReceive();
-                    form.$submitted = false;
-
-                    $('#receive-form').modal('hide');
-                } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-                }
-            }, function(err) {
-                console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            });
-        }
-    };
-
-    $scope.cancel = function(e, id) {
-        $scope.loading = true;
-
-        if(confirm(`คุณต้องการยกเลิกรับเอกสารขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
-            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-received`, { status: 1 })
-            .then(function(res) {
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกรับบันทึกขอสนับสนุนเรียบร้อย !!!");
-
-                    window.location.href = `${CONFIG.baseUrl}/orders/received`;
-                } else {
-                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกรับบันทึกขอสนับสนุนได้ !!!");
-                }
-
-                $scope.loading = false;
-            }, function(err) {
-                $scope.loading = false;
-
-                console.log(err);
-                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกรับบันทึกขอสนับสนุนได้ !!!");
-            });
-        }
-    };
-
-    $scope.returnData = {
-        reason: '',
-        support_id: '',
-        user: ''
-    };
-    $scope.showReturnSupportForm = function(e, support) {
-        console.log(support);
-        if (support) {
-            $scope.returnData.support_id = support.id;
-    
-            $('#return-form').modal('show');
-        }
-    };
-
-    $scope.onReturnSupport = function(e, form, id) {
-        e.preventDefault();
-
-        if (form.$invalid) {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
-            return;
-        }
-
-        /** Add user's id from laravel auth user */
-        $scope.returnData.user = $('#user').val();
-
-        $http.put(`${CONFIG.apiUrl}/supports/${id}/return`, $scope.returnData)
-            .then(function(res) {
-                if (res.data.status == 1) {
-                    toaster.pop('success', "ผลการทำงาน", "ตีกลับเอกสารเรียบร้อย !!!");
-
-                    $scope.getSupports();
-                    $scope.getReceiveds(2);
-
-                    $('#return-form').modal('hide');
-                } else {
-                    toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถตีกลับเอกสารได้ !!!");
-                }
-            }, function(err) {
-                console.log(err);
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถตีกลับเอกสารได้ !!!");
-            });
-    };
-
-    $scope.specCommittee = {
-        id: '',
-        order_id: '',
-        purchase_method: '1',
-        source_price: '1',
-        spec_doc_no: '',
-        spec_doc_date: '',
-        report_doc_no: '',
-        report_doc_date: '',
-        amount: '',
-        net_total: '',
-        committees: [],
-        committee_ids: '',
-        is_existed: false
-    };
-
-    $scope.clearSpecCommittee = function() {
-        $scope.specCommittee = {
-            id: '',
-            order_id: '',
-            purchase_method: '1',
-            source_price: '1',
-            spec_doc_no: '',
-            spec_doc_date: '',
-            report_doc_no: '',
-            report_doc_date: '',
-            amount: '',
-            net_total: '',
-            committees: [],
-            committee_ids: '',
-            is_existed: false
-        };
-    };
-
-    $scope.setSpecCommitteeForm = function(order, supportOrder, committees) {
-        $scope.specCommittee.order_id   = order.id;
-        $scope.specCommittee.amount     = order.details.length;
-        $scope.specCommittee.net_total  = order.net_total;
-
-        if (supportOrder) {
-            $scope.specCommittee.id                 = supportOrder.id;
-            $scope.specCommittee.purchase_method    = supportOrder.purchase_method.toString();
-            $scope.specCommittee.source_price       = supportOrder.source_price.toString();
-            $scope.specCommittee.spec_doc_no        = supportOrder.spec_doc_no;
-            // $scope.specCommittee.spec_doc_date   = supportOrder.spec_doc_date;
-            $scope.specCommittee.report_doc_no      = supportOrder.report_doc_no;
-            // $scope.specCommittee.report_doc_date = supportOrder.report_doc_date;
-            $scope.specCommittee.amount             = supportOrder.amount;
-            $scope.specCommittee.net_total          = supportOrder.net_total;
-            $scope.specCommittee.committees         = committees;
-            $scope.specCommittee.is_existed         = true;
-
-            $('#spec_doc_date')
-                .datepicker(dtpOptions)
-                .datepicker('update', moment(supportOrder.spec_doc_date).toDate());
-
-            $('#report_doc_date')
-                .datepicker(dtpOptions)
-                .datepicker('update', moment(supportOrder.report_doc_date).toDate());
-        }
-    };
-
-    $scope.onSubmitSpecCommittee = function(e, form, id, isExisted=false) {
-        if (form.$invalid) {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
-            return;
-        }
-
-        if (isExisted) {
-            if(confirm(`คุณต้องแก้ไขรายละเอียดเอกสารขออนุมัติผู้กำหนด Spec รหัส ${id} ใช่หรือไม่?`)) {
-                $http.put(`${CONFIG.apiUrl}/support-orders/${$scope.specCommittee.id}`, $scope.specCommittee)
-                .then(res => {
-                    if (res.data.status) {
-                        window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
-                    } else {
-
-                    }
-                }, err => {
-                    console.log(err);
-                });
-            }
-        } else {
-            $http.post(`${CONFIG.apiUrl}/support-orders`, $scope.specCommittee)
-            .then(res => {
-                if (res.data.status) {
-                    window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
-                } else {
-    
-                }
-            }, err => {
-                console.log(err);
-            });
-        }
-    };
-
-    $scope.onPrintSpecCommittee = function(e, id, isExisted=false) {
-        if (isExisted && id) {
-            window.location.href = `${CONFIG.baseUrl}/orders/${id}/print-spec`;
-        }
-    };
-
-    $scope.supportDetails = [];
-    $scope.showDetailsList = function(e, details) {
-        e.preventDefault();
-
-        if (details.length > 0) {
-            $scope.supportDetails = details;
-
-            $('#details-list').modal('show');
-        }
-    };
-
-    $scope.getRunningNo = function(orderType) {
-        $scope.loading = true;
-
-        let docType = '';
-        if (orderType == '1') {
-            docType = '7';
-        } else if (orderType == '2') {
-            docType = '8';
-        } else if (orderType == '3') {
-            docType = '9';
-        }
-
-        $http.get(`${CONFIG.apiUrl}/runnings/${docType}/doc-type`)
-        .then(function(res) {
-            $scope.order.po_no = res.data.running+ '/' +$scope.order.year;
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getAll = function() {
-        $scope.loading = true;
-        $scope.orders = [];
-        $scope.pager = null;
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
-        let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
-        let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
-        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
-
-        $http.get(`${CONFIG.baseUrl}/orders/search?year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}&date=${sdate}-${edate}`)
-        .then(function(res) {
-            $scope.setOrders(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getAllWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.orders = [];
-        $scope.pager = null;
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let supplier = $scope.cboSupplier === '' ? '' : $scope.cboSupplier;
-        let officer = $scope.cboOfficer === '' ? '' : $scope.cboOfficer;
-        let po_no   = $scope.txtPoNo === '' ? '' : $scope.txtPoNo;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
-        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
-
-        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&supplier=${supplier}&officer=${officer}&po_no=${po_no}&status=${status}&date=${sdate}-${edate}`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setOrders = function (res) {
-        const { data, ...pager } = res.data.orders;
-
-        $scope.sumOrders = res.data.sumOrders;
-        $scope.orders = data.map(order => {
-            /** ถ้าเป็นรายการตามแผนพัสดุ ให้อัพเดต details property */
-            if (res.data.plans) {
-                let newDetails = order.details.map(item => {
-                    let plan = res.data.plans.find(pl => pl.id === item.plan_id);
-
-                    return {
-                        ...item,
-                        ...plan
-                    };
-                });
-
-                order.details = newDetails;
-            }
-
-            return order;
-        });
-
-        $scope.pager = pager;
-    };
-
-    $scope.orderDetails = [];
-    $scope.showOrderDetails = (items) => {
-        if (items) {
-            $scope.orderDetails = items;
-    
-            $('#order-details').modal('show');
-        }
-    };
-
-    $scope.showInspectForm = (order) => {
-        if (order) {    
-            $('#inspect-form').modal('show');
-        }
-    };
-
-    $scope.showPersonList = (_selectedMode) => {
-        /** Set default depart of persons list to same user's depart */
-        $scope.cboDepart = '2';
-
-        $('#persons-list').modal('show');
-
-        $scope.getPersons();
-
-        $scope.selectedMode = _selectedMode;
-    };
-
-    $scope.getPersons = async () => {
-        $scope.loading = true;
-        $scope.persons = [];
-        $scope.persons_pager = null;
-
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
-
-        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${keyword}`)
-        .then(function(res) {
-            $scope.setPersons(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPersonsWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.persons = [];
-        $scope.persons_pager = null;
-
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
-
-        $http.get(`${url}&depart=${depart}&name=${keyword}`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPersons = function(res) {
-        const { data, ...pager } = res.data.persons;
-
-        $scope.persons = data;
-        $scope.persons_pager = pager;
-    };
-
-    $scope.selectedMode = '';
-    $scope.onSelectedPerson = (mode, person) => {
-        if (person) {
-            if (parseInt(mode) === 1) {
-                $scope.specCommittee.committees.push(person);
-
-                $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
-            } else {
-                $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
-                $scope.order.supply_officer = person.person_id;
-            }
-        }
-
-        $('#persons-list').modal('hide');
-        $scope.selectedMode = '';
-    };
-
-    $scope.removePersonItem = (mode, person) => {
-        if (parseInt(mode) === 1) {
-            $scope.specCommittee.committees = $scope.specCommittee.committees.filter(sc => {
-                return sc.person_id !== person.person_id
-            });
-
-            $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
-        }
-    };
-
-    $scope.onInspect = (e) => {
-        e.preventDefault();
-
-        let data = {
-            po_id: $('#po_id').val(),
-            deliver_seq: $('#deliver_seq').val(),
-            deliver_no: $('#deliver_no').val(),
-            inspect_sdate: $('#inspect_sdate').val(),
-            inspect_edate: $('#inspect_edate').val(),
-            inspect_total: $('#inspect_total').val().replace(',', ''),
-            inspect_result: $('#inspect_result').val(),
-            inspect_user: $('#inspect_user').val(),
-            remark: $('#remark').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        $('#inspect-form').modal('hide');
-    };
-
-    $scope.inspections = [];
-    $scope.withdrawal = {
-        withdraw_no: '',
-        withdraw_date: '',
-        inspection_id: '',
-        order_id: '',
-        deliver_seq: '',
-        deliver_no: '',
-        net_total: '',
-        remark: ''
-    };
-    $scope.showWithdrawForm = (order) => {
-        if (order) {
-            $http.get(`${CONFIG.baseUrl}/inspections/${order.id}/order`)
-            .then(function(res) {
-                $scope.inspections = res.data.inspections;
-
-                $('#withdraw-form').modal('show');
-            }, function(err) {
-                console.log(err);
-            });
-        }
-    };
-
-    $scope.onDeliverSeqSelected = (seq) => {
-        const inspection = $scope.inspections.find(insp => insp.deliver_seq === parseInt(seq));
-
-        $scope.withdrawal.inspection_id = inspection.id;
-        $scope.withdrawal.order_id = inspection.order_id;
-        $scope.withdrawal.deliver_no = inspection.deliver_no;
-        $scope.withdrawal.net_total = inspection.inspect_total;
-    };
-
-    $scope.onWithdraw = (e) => {
-        e.preventDefault();
-
-        console.log($scope.withdrawal);
-
-        $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        $('#withdraw-form').modal('hide');
-
-        /** Clear withdrawal data */
-        $scope.withdrawal = {
-            withdraw_no: '',
-            withdraw_date: '',
-            inspection_id: '',
-            order_id: '',
-            deliver_seq: '',
-            deliver_no: '',
-            net_total: '',
-            remark: ''
-        };
     };
 
     $scope.store = function(event, form) {

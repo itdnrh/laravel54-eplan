@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section
         class="content"
-        ng-controller="orderCtrl"
+        ng-controller="receivingCtrl"
         ng-init="
             getSupports();
             getReceiveds(2);

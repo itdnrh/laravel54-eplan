@@ -99,6 +99,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/withdrawalCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/supportCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/orderCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/receivingCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/personCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/supplierCtrl.js') }}"></script>
