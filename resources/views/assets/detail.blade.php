@@ -215,10 +215,7 @@
                                     </select>
                                 </div>
 
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(asset, 'service_plan_id')}"
-                                >
+                                <div class="form-group col-md-6">
                                     <label>Service Plan :</label>
                                     <select id="service_plan_id" 
                                             name="service_plan_id"

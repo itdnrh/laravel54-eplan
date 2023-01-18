@@ -350,6 +350,7 @@ class PlanController extends Controller
                         ->with('budget','depart','division')
                         ->with('planItem','planItem.unit')
                         ->with('planItem.item','planItem.item.category')
+                        ->with('adjustments','adjustments.unit')
                         ->first(),
         ];
     }
@@ -498,13 +499,13 @@ class PlanController extends Controller
             $oldPlan = PlanItem::with('plan')->where('plan_id', $id)->first();
 
             /** Update found plan_items table */
-            $plan = PlanItem::where('plan_id', $id)->first();
-            $plan->price_per_unit   = $req['price_per_unit'];
-            $plan->unit_id          = $req['unit_id'];
-            $plan->amount           = $req['amount'];
-            $plan->sum_price        = $req['sum_price'];
-            $plan->remain_amount    = $req['amount'];
-            $plan->remain_budget    = $req['sum_price'];
+            // $plan = PlanItem::where('plan_id', $id)->first();
+            // $plan->price_per_unit   = $req['price_per_unit'];
+            // $plan->unit_id          = $req['unit_id'];
+            // $plan->amount           = $req['amount'];
+            // $plan->sum_price        = $req['sum_price'];
+            // $plan->remain_amount    = $req['amount'];
+            // $plan->remain_budget    = $req['sum_price'];
 
             // if($plan->save()) {
                 /** Update is_adjust field of found plans table */
@@ -513,6 +514,7 @@ class PlanController extends Controller
                 /** Create new plan adjustment data */
                 $adjustment = new PlanAdjustment;
                 $adjustment->adjust_type        = $req['adjust_type'];
+                $adjustment->plan_id            = $req['plan_id'];
                 $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
                 $adjustment->old_unit_id        = $oldPlan->unit_id;
                 $adjustment->old_amount         = $oldPlan->amount;

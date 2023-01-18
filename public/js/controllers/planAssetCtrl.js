@@ -9,6 +9,8 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.cboPrice = '';
     $scope.cboBudget = '';
     $scope.txtItemName = '';
+    $scope.adjustments = [];
+    $scope.plan = null;
 
     $scope.asset = {
         id: '',
@@ -236,10 +238,16 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     }
 
     $scope.setEditControls = function(plan) {
-        /** Global data */
+        let { plan_item, ...rest } = plan;
+
+        /** Set all plan's props to plan model */
+        $scope.plan                     = { ...plan_item, ...rest };
+
+        /** Set global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 1;
-        /** ข้อมูลครุภัณฑ์ */
+
+        /** Set ข้อมูลครุภัณฑ์ */
         $scope.asset.id                 = plan.id;
         $scope.asset.in_plan            = plan.in_plan;
         $scope.asset.year               = plan.year.toString();
@@ -260,6 +268,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.approved           = plan.approved;
         $scope.asset.status             = plan.status;
         $scope.asset.is_adjust          = plan.is_adjust;
+        $scope.adjustments              = plan.adjustments;
 
         /** Convert int value to string */
         $scope.asset.plan_type_id       = plan.plan_type_id.toString();
@@ -271,7 +280,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.budget_src_id      = plan.budget_src_id.toString();
         $scope.asset.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
         $scope.asset.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
-        
+
         $scope.asset.have_subitem       = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
         $scope.asset.calc_method        = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
 
@@ -280,9 +289,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             $('#have_subitem').val(plan.plan_item.item.have_subitem);
             $('#calc_method').val(plan.plan_item.item.calc_method);
         }
-
-        /** Convert db date to thai date. */            
-        // $scope.leave.leave_date         = StringFormatService.convFromDbDate(data.leave.leave_date);
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

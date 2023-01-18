@@ -16,9 +16,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="color: gray;">รายละเอียดก่อนปรับ</td>
-                        <td style="color: gray;">รายละเอียดการปรับ</td>
+                    <tr ng-repeat="(index, adjust) in adjustments">
+                        <td style="color: gray;">
+                            <p style="margin: 0;">ราคาต่อหน่วย: @{{ adjust.old_price_per_unit | currency:'':2 }} บาท</p>
+                            <p style="margin: 0;">จำนวนที่ขอ: @{{ adjust.old_amount }} @{{ adjust.unit.name }}</p>
+                            <p style="margin: 0;">รวมเป็นเงิน: @{{ adjust.old_sum_price | currency:'':2 }} บาท</p>
+                        </td>
+                        <td style="color: gray;">
+                            <p style="margin: 0;">ราคาต่อหน่วย: @{{ plan.price_per_unit | currency:'':2 }} บาท</p>
+                            <p style="margin: 0;">จำนวนที่ขอ: @{{ plan.amount }} @{{ plan.unit.name }}</p>
+                            <p style="margin: 0;">รวมเป็นเงิน: @{{ plan.sum_price | currency:'':2 }} บาท</p>
+                        </td>
                     </tr>
                 </tbody>
             </table>

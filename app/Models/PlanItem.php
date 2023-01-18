@@ -12,7 +12,7 @@ class PlanItem extends Model
 
     public function plan()
     {
-        return $this->hasOne(Plan::class, 'plan_id', 'id');
+        return $this->hasOne(Plan::class, 'id', 'plan_id');
     }
 
     public function item()
