@@ -619,6 +619,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan adjustment processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.adjustment = {
         plan: null,
         plan_id: '',
