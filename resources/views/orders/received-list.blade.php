@@ -70,12 +70,12 @@
                         <div class="tab-content tab__container-bordered">
                             <div class="active tab-pane" id="supports-list">
 
-                                @include('orders._supports-list')
+                                @include('orders.receivings._supports-list')
 
                             </div><!-- /.tab-pane -->
                             <div class="tab-pane" id="received-list">
 
-                                @include('orders._received-list')
+                                @include('orders.receivings._received-list')
 
                             </div><!-- /.tab-pane -->
                         </div><!-- /.tab-content -->
@@ -93,9 +93,9 @@
         </div><!-- /.row -->
 
         @include('supports._details-list')
-        @include('orders._receive-list')
-        @include('orders._receive-form')
-        @include('orders._return-form')
+        @include('orders.receivings._receive-list')
+        @include('orders.receivings._receive-form')
+        @include('orders.returnings._return-form')
 
     </section>
 

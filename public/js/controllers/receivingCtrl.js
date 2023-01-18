@@ -30,6 +30,17 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         user: ''
     };
 
+    /** DatePicker options */
+    let dtpDateOptions = {
+        autoclose: true,
+        language: 'th',
+        format: 'dd/mm/yyyy',
+        thaiyear: true,
+        todayBtn: true,
+        todayHighlight: true,
+        orientation: "bottom"
+    };
+
     /*
     |-----------------------------------------------------------------------------
     | Receiving processes
@@ -103,7 +114,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.receive.support_id = support.id;
 
         $('#received_date')
-        .datepicker(dtpOptions)
+        .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
         .on('changeDate', function(event) {
             console.log(event.date);
@@ -254,7 +265,6 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
     |-----------------------------------------------------------------------------
     */
     $scope.showReturnSupportForm = function(e, support) {
-        console.log(support);
         if (support) {
             $scope.returnData.support_id = support.id;
     
