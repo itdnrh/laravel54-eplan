@@ -619,12 +619,42 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
-    $scope.adjustType = 1;
+    $scope.adjustment = {
+        plan: null,
+        plan_id: '',
+        price_per_unit: '',
+        unit_id: '',
+        amount: '',
+        sum_price: '',
+        adjust_type: 1
+    };
     $scope.setAdjustType = function(type) {
-        $scope.adjustType = type;
+        $scope.adjustment.adjust_type = type;
     };
 
-    $scope.showAdjustForm = function() {
-        $('#adjust-form').modal('show');
+    $scope.showAdjustForm = function(e, plan) {
+        if (plan) {
+            $scope.adjustment.plan = plan;
+            $scope.adjustment.plan_id = plan.id;
+    
+            $('#adjust-form').modal('show');
+        }
+    };
+
+    $scope.adjust = function(e, form, id) {
+        console.log(form);
+        if (form.$invalid) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        console.log($scope.adjustment);
+    };
+
+    $scope.calcSumPriceOfAdjustment = async function(price, amount) {
+        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amount));
+
+        $scope.adjustment.sum_price = sumPrice;
+        $('#sum_price').val(sumPrice);
     };
 });
