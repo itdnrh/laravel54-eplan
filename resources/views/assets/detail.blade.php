@@ -304,6 +304,10 @@
                                         </h4>
                                     </div>
                                 </div>
+
+                                <div class="col-md-12" ng-show="asset.is_adjust">
+                                    @include('shared._adjust-list')
+                                </div>
                             </div>
 
                             <div class="col-md-2">

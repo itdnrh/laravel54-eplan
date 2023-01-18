@@ -166,7 +166,7 @@ class PlanController extends Controller
                         })
                         ->pluck('plan_items.plan_id');
 
-        $plans = Plan::with('budget','depart','division','planItem')
+        $plans = Plan::with('budget','depart','division','planItem','adjustments')
                     ->with('planItem.unit','planItem.item','planItem.item.category')
                     ->when(!empty($type), function($q) use ($type) {
                         $q->where('plans.plan_type_id', $type);

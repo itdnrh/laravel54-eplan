@@ -648,13 +648,10 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     };
 
     $scope.adjust = function(e, form, adjustId) {
-        console.log(form);
         if (form.$invalid) {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
             return;
         }
-
-        console.log($scope.adjustment);
 
         if (!adjustId) {
             console.log('New adjust...');

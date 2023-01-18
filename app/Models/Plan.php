@@ -54,4 +54,9 @@ class Plan extends Model
     {
         return $this->hasMany(SubItem::class, 'plan_id', 'id');
     }
+
+    public function adjustments()
+    {
+        return $this->hasMany(PlanAdjustment::class, 'plan_id', 'id');
+    }
 }

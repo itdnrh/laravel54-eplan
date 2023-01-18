@@ -259,6 +259,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.remark             = plan.remark;
         $scope.asset.approved           = plan.approved;
         $scope.asset.status             = plan.status;
+        $scope.asset.is_adjust          = plan.is_adjust;
 
         /** Convert int value to string */
         $scope.asset.plan_type_id       = plan.plan_type_id.toString();
