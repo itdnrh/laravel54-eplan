@@ -25,21 +25,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     $scope.planGroups = [];
     $scope.planGroups_pager = null;
-
     $scope.planGroupItems = [];
     $scope.editRowIndex = '';
-
-    $scope.inspections = [];
-    $scope.withdrawal = {
-        withdraw_no: '',
-        withdraw_date: '',
-        inspection_id: '',
-        order_id: '',
-        deliver_seq: '',
-        deliver_no: '',
-        net_total: '',
-        remark: ''
-    };
 
     $scope.orders = [];
     $scope.pager = null;
@@ -167,27 +154,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $('#report_doc_date')
         .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
-
-    $('#inspect_sdate')
-        .datepicker(dtpDateOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-    $('#inspect_edate')
-        .datepicker(dtpDateOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
-
-    $('#withdraw_date')
-        .datepicker(dtpDateOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
 
     $('#dtpSdate')
         .datepicker(dtpDateOptions)
@@ -478,6 +444,97 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
     /*
     |-----------------------------------------------------------------------------
+    | Person selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showPersonList = (_selectedMode) => {
+        /** Set default depart of persons list to same user's depart */
+        $scope.cboDepart = '2';
+
+        $('#persons-list').modal('show');
+
+        $scope.getPersons();
+
+        $scope.selectedMode = _selectedMode;
+    };
+
+    $scope.getPersons = async () => {
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
+
+        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${keyword}`)
+        .then(function(res) {
+            $scope.setPersons(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPersonsWithUrl = function(e, url, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.persons = [];
+        $scope.persons_pager = null;
+
+        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
+        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
+
+        $http.get(`${url}&depart=${depart}&name=${keyword}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPersons = function(res) {
+        const { data, ...pager } = res.data.persons;
+
+        $scope.persons = data;
+        $scope.persons_pager = pager;
+    };
+
+    $scope.selectedMode = '';
+    $scope.onSelectedPerson = (mode, person) => {
+        if (person) {
+            if (parseInt(mode) === 1) {
+                $scope.specCommittee.committees.push(person);
+
+                $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
+            } else {
+                $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
+                $scope.order.supply_officer = person.person_id;
+            }
+        }
+
+        $('#persons-list').modal('hide');
+        $scope.selectedMode = '';
+    };
+
+    $scope.removePersonItem = (mode, person) => {
+        if (parseInt(mode) === 1) {
+            $scope.specCommittee.committees = $scope.specCommittee.committees.filter(sc => {
+                return sc.person_id !== person.person_id
+            });
+
+            $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
+        }
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
     | Printing committee of specification operations
     |-----------------------------------------------------------------------------
     */
@@ -603,187 +660,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             console.log(err);
             $scope.loading = false;
         });
-    };
-
-    /*
-    |-----------------------------------------------------------------------------
-    | Person selection processes
-    |-----------------------------------------------------------------------------
-    */
-    $scope.showPersonList = (_selectedMode) => {
-        /** Set default depart of persons list to same user's depart */
-        $scope.cboDepart = '2';
-
-        $('#persons-list').modal('show');
-
-        $scope.getPersons();
-
-        $scope.selectedMode = _selectedMode;
-    };
-
-    $scope.getPersons = async () => {
-        $scope.loading = true;
-        $scope.persons = [];
-        $scope.persons_pager = null;
-
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
-
-        $http.get(`${CONFIG.baseUrl}/persons/search?depart=${depart}&name=${keyword}`)
-        .then(function(res) {
-            $scope.setPersons(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPersonsWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.persons = [];
-        $scope.persons_pager = null;
-
-        let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
-        let keyword = !$scope.searchKey ? '' : $scope.searchKey;
-
-        $http.get(`${url}&depart=${depart}&name=${keyword}`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPersons = function(res) {
-        const { data, ...pager } = res.data.persons;
-
-        $scope.persons = data;
-        $scope.persons_pager = pager;
-    };
-
-    $scope.selectedMode = '';
-    $scope.onSelectedPerson = (mode, person) => {
-        if (person) {
-            if (parseInt(mode) === 1) {
-                $scope.specCommittee.committees.push(person);
-
-                $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
-            } else {
-                $scope.order.supply_officer_detail = person.prefix.prefix_name + person.person_firstname +' '+ person.person_lastname;
-                $scope.order.supply_officer = person.person_id;
-            }
-        }
-
-        $('#persons-list').modal('hide');
-        $scope.selectedMode = '';
-    };
-
-    $scope.removePersonItem = (mode, person) => {
-        if (parseInt(mode) === 1) {
-            $scope.specCommittee.committees = $scope.specCommittee.committees.filter(sc => {
-                return sc.person_id !== person.person_id
-            });
-
-            $scope.specCommittee.committee_ids = $scope.specCommittee.committees.map(person => person.person_id);
-        }
-    };
-
-    /*
-    |-----------------------------------------------------------------------------
-    | Inspection processes
-    |-----------------------------------------------------------------------------
-    */
-    $scope.showInspectForm = (order) => {
-        if (order) {    
-            $('#inspect-form').modal('show');
-        }
-    };
-
-    $scope.onInspect = (e) => {
-        e.preventDefault();
-
-        let data = {
-            po_id: $('#po_id').val(),
-            deliver_seq: $('#deliver_seq').val(),
-            deliver_no: $('#deliver_no').val(),
-            inspect_sdate: $('#inspect_sdate').val(),
-            inspect_edate: $('#inspect_edate').val(),
-            inspect_total: $('#inspect_total').val().replace(',', ''),
-            inspect_result: $('#inspect_result').val(),
-            inspect_user: $('#inspect_user').val(),
-            remark: $('#remark').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/inspections/store`, data)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        $('#inspect-form').modal('hide');
-    };
-
-    /*
-    |-----------------------------------------------------------------------------
-    | Withdrawal processes
-    |-----------------------------------------------------------------------------
-    */
-    $scope.showWithdrawForm = (order) => {
-        if (order) {
-            $http.get(`${CONFIG.baseUrl}/inspections/${order.id}/order`)
-            .then(function(res) {
-                $scope.inspections = res.data.inspections;
-
-                $('#withdraw-form').modal('show');
-            }, function(err) {
-                console.log(err);
-            });
-        }
-    };
-
-    $scope.onDeliverSeqSelected = (seq) => {
-        const inspection = $scope.inspections.find(insp => insp.deliver_seq === parseInt(seq));
-
-        $scope.withdrawal.inspection_id = inspection.id;
-        $scope.withdrawal.order_id = inspection.order_id;
-        $scope.withdrawal.deliver_no = inspection.deliver_no;
-        $scope.withdrawal.net_total = inspection.inspect_total;
-    };
-
-    $scope.onWithdraw = (e) => {
-        e.preventDefault();
-
-        console.log($scope.withdrawal);
-
-        $http.post(`${CONFIG.baseUrl}/withdrawals/store`, $scope.withdrawal)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        $('#withdraw-form').modal('hide');
-
-        /** Clear withdrawal data */
-        $scope.withdrawal = {
-            withdraw_no: '',
-            withdraw_date: '',
-            inspection_id: '',
-            order_id: '',
-            deliver_seq: '',
-            deliver_no: '',
-            net_total: '',
-            remark: ''
-        };
     };
 
     /*
