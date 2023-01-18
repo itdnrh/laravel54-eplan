@@ -319,13 +319,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- ================================== Plan Group ================================== -->
+                                            <!-- ================================== Plan group row ================================== -->
                                             <tr ng-show="order.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td>
                                                     @{{ order.plan_group_desc }}
                                                     <span style="margin: 0;">(@{{ order.details[0].category_name }})</span>
-                                                    <a href="#" class="text-danger" ng-show="order.details.length > 1" ng-click="showPlanGroupItems($event, order.details);">
+                                                    <a 
+                                                        href="#"
+                                                        class="text-danger" ng-show="order.details.length > 1"
+                                                        ng-click="showPlanGroupItems($event, order.details);"
+                                                    >
                                                         <i class="fa fa-tags" aria-hidden="true"></i>
                                                     </a>
                                                     <p class="item__spec-text" ng-show="order.details[0].spec != ''">
@@ -436,7 +440,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <!-- ================================== Plan Group ================================== -->
+                                            <!-- ================================== End plan group row ================================== -->
 
                                             <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>

@@ -14,6 +14,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.cboInPlan = '';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
+    $scope.cboSupportStatus = '2';
 
     $scope.receive = {
         support_id: '',

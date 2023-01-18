@@ -320,6 +320,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <!-- ================================== Plan group row ================================== -->
                                             <tr ng-show="order.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td>
@@ -436,6 +437,8 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            <!-- ================================== End plan group row ================================== -->
+
                                             <tr ng-repeat="(index, detail) in order.details" ng-show="!order.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
                                                 <td>

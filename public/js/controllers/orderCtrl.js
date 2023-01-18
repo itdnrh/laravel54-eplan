@@ -11,14 +11,13 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.cboSupplier = '';
     $scope.cboOfficer = '';
     $scope.cboStatus = '0';
-    $scope.cboSupportStatus = '2';
-    $scope.cboInPlan = '';
-    $scope.txtSupportNo = '';
-    $scope.txtReceivedNo = '';
     $scope.txtPoNo = '';
-    $scope.searchKey = '';
     $scope.dtpSdate = '';
     $scope.dtpEdate = '';
+
+    $scope.txtKeyword
+    $scope.txtSupportNo = '';
+    $scope.searchKey = '';
 
     $scope.loading = false;
     $scope.plans = [];
