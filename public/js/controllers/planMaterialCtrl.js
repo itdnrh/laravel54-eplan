@@ -250,6 +250,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.material.remark          = plan.remark;
         $scope.material.approved        = plan.approved;
         $scope.material.status          = plan.status;
+        $scope.material.is_adjust       = plan.is_adjust;
 
         /** Convert int value to string */
         $scope.material.plan_type_id    = plan.plan_type_id.toString();
@@ -269,7 +270,6 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             $('#have_subitem').val(plan.plan_item.item.have_subitem);
             $('#calc_method').val(plan.plan_item.item.calc_method);
         }
-
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

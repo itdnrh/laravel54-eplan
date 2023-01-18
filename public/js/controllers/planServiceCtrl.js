@@ -243,6 +243,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.service.remark           = plan.remark;
         $scope.service.approved         = plan.approved;
         $scope.service.status           = plan.status;
+        $scope.service.is_adjust        = plan.is_adjust;
 
         /** Convert int value to string */
         $scope.service.plan_type_id     = plan.plan_type_id.toString();
@@ -262,7 +263,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             $('#have_subitem').val(plan.plan_item.item.have_subitem);
             $('#calc_method').val(plan.plan_item.item.calc_method);
         }
-
 
         /** Generate departs and divisions data from plan */
         $scope.onFactionSelected(plan.depart.faction_id);

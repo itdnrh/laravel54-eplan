@@ -263,6 +263,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct.remark             = plan.remark;
         $scope.construct.approved           = plan.approved;
         $scope.construct.status             = plan.status;
+        $scope.construct.is_adjust          = plan.is_adjust;
 
         /** Convert int value to string */
         $scope.construct.plan_type_id       = plan.plan_type_id.toString();
