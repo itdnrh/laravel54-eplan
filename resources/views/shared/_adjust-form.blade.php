@@ -1,7 +1,7 @@
 <div class="modal fade" id="adjust-form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="frmPlanAdjustment" name="frmPlanAdjustment" novalidate ng-submit="adjust($event, frmPlanAdjustment, changeData.plan_id)">
+            <form id="frmPlanAdjustment" name="frmPlanAdjustment" novalidate ng-submit="adjust($event, frmPlanAdjustment, adjustment.id)">
                 <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
 
                 <div class="modal-header">

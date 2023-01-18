@@ -13,7 +13,7 @@ class Plan extends Model
      *
      * @var array
      */
-    protected $fillable = ['status'];
+    protected $fillable = ['is_adjust', 'status'];
 
     public function planItem()
     {

@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
 use App\Models\Plan;
 use App\Models\PlanItem;
+use App\Models\PlanAdjustment;
 use App\Models\PlanType;
 use App\Models\Item;
 use App\Models\ItemCategory;
@@ -482,6 +483,54 @@ class PlanController extends Controller
                     'message'   => 'Something went wrong!!'
                 ];
             }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function adjust(Request $req, $id)
+    {
+        try {
+            /** Get old data of found plan */
+            $oldPlan = PlanItem::with('plan')->where('plan_id', $id)->first();
+
+            /** Update found plan_items table */
+            $plan = PlanItem::where('plan_id', $id)->first();
+            $plan->price_per_unit   = $req['price_per_unit'];
+            $plan->unit_id          = $req['unit_id'];
+            $plan->amount           = $req['amount'];
+            $plan->sum_price        = $req['sum_price'];
+            $plan->remain_amount    = $req['amount'];
+            $plan->remain_budget    = $req['sum_price'];
+
+            // if($plan->save()) {
+                /** Update is_adjust field of found plans table */
+                // Plan::find($id)->update(['is_adjust' => 1]);
+
+                /** Create new plan adjustment data */
+                $adjustment = new PlanAdjustment;
+                $adjustment->adjust_type        = $req['adjust_type'];
+                $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
+                $adjustment->old_unit_id        = $oldPlan->unit_id;
+                $adjustment->old_amount         = $oldPlan->amount;
+                $adjustment->old_sum_price      = $oldPlan->sum_price;
+                $adjustment->remark             = $req['remark'];
+                $adjustment->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Adjust plan data successfully!!',
+                    'plan'      => $plan
+                ];
+            // } else {
+            //     return [
+            //         'status'    => 0,
+            //         'message'   => 'Something went wrong!!'
+            //     ];
+            // }
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,

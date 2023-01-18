@@ -625,6 +625,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     |-----------------------------------------------------------------------------
     */
     $scope.adjustment = {
+        id: '',
         plan: null,
         plan_id: '',
         price_per_unit: '',
@@ -646,7 +647,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
-    $scope.adjust = function(e, form, id) {
+    $scope.adjust = function(e, form, adjustId) {
         console.log(form);
         if (form.$invalid) {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
@@ -654,6 +655,25 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
 
         console.log($scope.adjustment);
+
+        if (!adjustId) {
+            console.log('New adjust...');
+            /** เพิ่มรายการใหม่ */
+            $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/adjust`, $scope.adjustment)
+            .then(res => {
+                console.log(res);
+            }, (err) => {
+                console.log(err);
+            })
+        } else {
+            /** แก้ไขรายการ */
+            $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/${adjustId}/adjust`, $scope.adjustment)
+            .then(res => {
+                console.log(res);
+            }, (err) => {
+                console.log(err);
+            })
+        }
     };
 
     $scope.calcSumPriceOfAdjustment = async function(price, amount) {
