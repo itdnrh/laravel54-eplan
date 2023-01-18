@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="(index, adjust) in adjustments">
+                    <tr ng-repeat="(index, adjust) in plan.adjustments">
                         <td style="color: gray;">
                             <p style="margin: 0;">ราคาต่อหน่วย: @{{ adjust.old_price_per_unit | currency:'':2 }} บาท</p>
                             <p style="margin: 0;">จำนวนที่ขอ: @{{ adjust.old_amount }} @{{ adjust.unit.name }}</p>

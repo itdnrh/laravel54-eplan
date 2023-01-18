@@ -9,7 +9,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.cboPrice = '';
     $scope.cboBudget = '';
     $scope.txtItemName = '';
-    $scope.adjustments = [];
     $scope.plan = null;
 
     $scope.asset = {
@@ -268,7 +267,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.asset.approved           = plan.approved;
         $scope.asset.status             = plan.status;
         $scope.asset.is_adjust          = plan.is_adjust;
-        $scope.adjustments              = plan.adjustments;
 
         /** Convert int value to string */
         $scope.asset.plan_type_id       = plan.plan_type_id.toString();
