@@ -299,8 +299,14 @@
                                         </span>
                                     </div>
                                 </div>
+
+                                <!-- ======================= รายละเอียดการปรับแผน ======================= -->
+                                <div class="col-md-12" ng-show="material.is_adjust">
+                                    @include('shared._adjust-list')
+                                </div>
                             </div>
 
+                            <!-- ======================= Action buttons ======================= -->
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
@@ -365,7 +371,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <!-- /** Action buttons container */ -->
+                                <!-- ======================= Action buttons ======================= -->
 
                             </div>
                         </div><!-- /.row -->

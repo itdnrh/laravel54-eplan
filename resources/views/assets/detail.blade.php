@@ -302,11 +302,13 @@
                                     </div>
                                 </div>
 
+                                <!-- ======================= รายละเอียดการปรับแผน ======================= -->
                                 <div class="col-md-12" ng-show="asset.is_adjust">
                                     @include('shared._adjust-list')
                                 </div>
                             </div>
 
+                            <!-- ======================= Action buttons ======================= -->
                             <div class="col-md-2">
                                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
                                     <a
@@ -382,7 +384,7 @@
                                         <i class="fa fa-sliders"></i> ปรับแผน (6 เดือนหลัง)
                                     </button>
                                 </div>
-                                <!-- /** Action buttons container */ -->
+                                <!-- ======================= Action buttons ======================= -->
 
                             </div>
                         </div><!-- /.row -->
