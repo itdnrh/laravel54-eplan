@@ -2,7 +2,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 /** ################################################################################## */
     $scope.loading = false;
     $scope.materials = [];
-    $scope.pager = [];
+    $scope.pager = null;
+    $scope.plan = null;
 
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
@@ -220,11 +221,16 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     };
 
     $scope.setEditControls = function(plan) {
-        /** Global data */
+        let { plan_item, ...rest } = plan;
+
+        /** Set all plan's props to plan model */
+        $scope.plan                     = { ...plan_item, ...rest };
+
+        /** Set global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 2;
 
-        /** ข้อมูลวัสดุ */
+        /** Set ข้อมูลวัสดุ */
         $scope.material.id              = plan.id;
         $scope.material.in_plan         = plan.in_plan;
         $scope.material.year            = plan.year.toString();

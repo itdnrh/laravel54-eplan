@@ -2,7 +2,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 /** ################################################################################## */
     $scope.loading = false;
     $scope.constructs = [];
-    $scope.pager = [];
+    $scope.pager = null;
+    $scope.plan = null;
 
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
@@ -230,11 +231,16 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     }
 
     $scope.setEditControls = function(plan) {
-        /** Global data */
+        let { plan_item, ...rest } = plan;
+
+        /** Set all plan's props to plan model */
+        $scope.plan                         = { ...plan_item, ...rest };
+
+        /** Set global data */
         $scope.planId                       = plan.id;
         $scope.planType                     = 1;
 
-        /** ข้อมูลงานก่อสร้าง */
+        /** Set ข้อมูลงานก่อสร้าง */
         $scope.construct.id                 = plan.id;
         $scope.construct.in_plan            = plan.in_plan;
         $scope.construct.year               = plan.year.toString();

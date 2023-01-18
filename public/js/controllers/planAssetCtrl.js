@@ -3,13 +3,13 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.loading = false;
     $scope.assets = [];
     $scope.pager = null;
-
+    $scope.plan = null;
+    
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
     $scope.cboPrice = '';
     $scope.cboBudget = '';
     $scope.txtItemName = '';
-    $scope.plan = null;
 
     $scope.asset = {
         id: '',

@@ -2,7 +2,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 /** ################################################################################## */
     $scope.loading = false;
     $scope.services = [];
-    $scope.pager = [];
+    $scope.pager = null;
+    $scope.plan = null;
 
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
@@ -214,11 +215,16 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     }
 
     $scope.setEditControls = function(plan) {
-        /** Global data */
+        let { plan_item, ...rest } = plan;
+
+        /** Set all plan's props to plan model */
+        $scope.plan                     = { ...plan_item, ...rest };
+
+        /** Set global data */
         $scope.planId                   = plan.id;
         $scope.planType                 = 3;
 
-        /** ข้อมูลจ้างบริการ */
+        /** Set ข้อมูลจ้างบริการ */
         $scope.service.id               = plan.id;
         $scope.service.in_plan          = plan.in_plan;
         $scope.service.year             = plan.year.toString();
