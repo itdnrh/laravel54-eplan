@@ -202,7 +202,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.getMonthName = function(month) {
         const monthObj = $scope.monthLists.find(m => m.id == month);
 
-        return monthObj.name;
+        return monthObj ? monthObj.name : '';
     };
 
     $scope.handleInputChange = function(name, value) {

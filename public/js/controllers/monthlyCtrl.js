@@ -314,11 +314,13 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         $scope.monthly.remain       = plan.remain;
         $scope.monthly.reporter_id  = plan.reporter_id;
         $scope.monthly.remark       = plan.remark;
+        $scope.monthly.expense      = plan.expense;
+        $scope.monthly.depart       = plan.depart;
 
         /** Convert int value to string */
         $scope.monthly.year         = plan.year.toString();
         $scope.monthly.expense_id   = plan.expense_id.toString();
-        $scope.monthly.expense_type_id   = plan.expense.expense_type_id.toString();
+        $scope.monthly.expense_type_id = plan.expense.expense_type_id.toString();
         $scope.monthly.faction_id   = plan.depart.faction_id.toString();
         $scope.monthly.depart_id    = plan.depart_id.toString();
 

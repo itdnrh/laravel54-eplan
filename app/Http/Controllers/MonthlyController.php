@@ -214,20 +214,29 @@ class MonthlyController extends Controller
     public function getById($id)
     {
         return [
-            'plan' => Monthly::with('expense','depart')->find($id),
+            'plan' => Monthly::with('expense','expense.expenseType')
+                            ->with('depart','depart.faction')
+                            ->find($id),
         ];
     }
 
     public function detail($id)
     {
+        if (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == '4') {
+            $expenses = Expense::all();
+        } else {
+            $expenses = Expense::where('owner_depart', Auth::user()->memberOf->depart_id)
+                            ->orWhere('owner_depart', 0)
+                            ->get();
+        }
+
         return view('monthly.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
-            "categories"    => ItemCategory::all(),
-            "units"         => Unit::all(),
+            "monthly"       => Monthly::find($id),
+            "expenses"      => $expenses,
+            "expenseTypes"  => ExpenseType::all(),
             "factions"      => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
             "departs"       => Depart::all(),
             "divisions"     => Division::all(),
-            "periods"       => $this->periods,
         ]);
     }
 
