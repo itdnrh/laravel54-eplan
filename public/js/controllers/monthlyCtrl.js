@@ -575,6 +575,8 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลบข้อมูลเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/monthly/list`;
                 } else {
                     toaster.pop('error', "ผลการทำงาน", "ไม่สามารถลบข้อมูลได้ !!!");
                 }

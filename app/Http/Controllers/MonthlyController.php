@@ -240,82 +240,6 @@ class MonthlyController extends Controller
         ]);
     }
 
-    public function checkMultiple(Request $req, $year, $month, $type, $price)
-    {
-        if ($price == '2') {
-            $categoriesList = ItemCategory::where('plan_type_id', $type)
-                                    ->whereNotNull('expense_id')
-                                    ->pluck('expense_less10k');
-        } else {
-            $categoriesList = ItemCategory::where('plan_type_id', $type)
-                                    ->whereNotNull('expense_id')
-                                    ->pluck('expense_id');
-        }
-
-        if ($type == '3' || $type == '4') {
-            $expenseId = $type == '3' ? '69' : '67';
-
-            $monthly = Monthly::where('year', $year)
-                                ->where('month', $month)
-                                ->where('expense_id', $expenseId)
-                                ->count();
-        } else {
-            $monthly = Monthly::where('year', $year)
-                                ->where('month', $month)
-                                ->whereIn('expense_id', $categoriesList)
-                                ->count();
-        }
-
-        return [
-            'monthly' => $monthly
-        ];
-    }
-
-    public function getMultiple(Request $req)
-    {
-        $year = $req->get('year');
-        $type = $req->get('type');
-        $month = $req->get('month');
-        $price = $req->get('price');
-        $inPlan = $req->get('in_plan');
-
-        $sdate = $month. '-01';
-        $edate = date('Y-m-t', strtotime($sdate));
-
-        $sql = "SELECT o.category_id, c.`name` as category_name, cast(sum(o.net_total) as decimal(12,2)) as net_total
-                from orders o
-                join (
-                    select order_id, count(id) num_rows, sum(sum_price) as sum_price
-                    from order_details ";
-
-                    if (!empty($inPlan)) {
-                        $sql .= "WHERE (plan_id in (select id from plans where (in_plan = '" .$inPlan. "'))) ";
-                    }
-
-                    if (!empty($price)) {
-                        if ($price == '1') {
-                            $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit >= 10000) ";
-                        } else {
-                            $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit < 10000) ";
-                        }
-                    }
-
-                $sql .= "group by order_id) as od on o.id=od.order_id
-                left join item_categories c on (o.category_id=c.id)
-                where (o.`year` = ?)
-                and (o.plan_type_id = ?)
-                and (o.po_date BETWEEN ? AND ?)
-                group by o.category_id, c.`name`"; // and (o.status in (1,2,3,4,5))
-
-        $expenses = \DB::select($sql, [$year, $type, $sdate, $edate]);
-
-        return [
-            "expenses"      => $expenses,
-            "categories"    => ItemCategory::where('plan_type_id', $type)->get(),
-            "budgets"       => Budget::where('year', $year)->get()
-        ];
-    }
-
     public function create()
     {
         if (Auth::user()->person_id == '1300200009261' || Auth::user()->memberOf->depart_id == '4') {
@@ -391,6 +315,178 @@ class MonthlyController extends Controller
                 'message'   => $ex->getMessage()
             ];
         }
+    }
+
+    public function edit($id)
+    {
+        return view('monthly.edit', [
+            "monthly"   => Monthly::find($id),
+            "expenses"  => Expense::all(),
+            "expenseTypes"  => ExpenseType::all(),
+            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
+            "departs"   => Depart::all(),
+            "divisions" => Division::all(),
+        ]);
+    }
+
+    public function update(Request $req, $id)
+    {
+        try {
+            $plan = Monthly::find($id);
+            $plan->year         = $req['year'];
+            $plan->month        = $req['month'];
+            $plan->expense_id   = $req['expense_id'];
+            $plan->total        = currencyToNumber($req['total']);
+            $plan->remain       = currencyToNumber($req['remain']);
+
+            /** Check whether user is admin or not */
+            if ($req['user'] == '1300200009261') {
+                $plan->depart_id = $req['depart_id'];
+            } else {
+                $person = Person::where('person_id', $req['user'])->with('memberOf')->first();
+                $plan->depart_id = $person->memberOf->depart_id;
+            }
+
+            $plan->reporter_id  = $req['user'];
+            $plan->remark       = $req['remark'];
+            $plan->status       = '0';
+            $plan->created_user = $req['user'];
+            $plan->updated_user = $req['user'];
+
+            if($plan->save()) {
+                $planSum = Budget::where('year', $req['year'])
+                            ->where('expense_id', $req['expense_id'])
+                            ->first();
+                $planSum->remain = (double)$planSum->remain - (double)$req['total'];
+                $planSum->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function delete(Request $req, $id)
+    {
+        try {
+            $plan = Monthly::find($id);
+            $oldMonthly = $plan;
+
+            if($plan->delete()) {
+                /** TODO: redo plan_summary's remain value to before 
+                 * by plus with deleted plan's total
+                 */
+                $planSum = Budget::where('year', $oldMonthly->year)
+                            ->where('expense_id', $oldMonthly->expense_id)
+                            ->first();
+                $planSum->remain = (double)$planSum->remain + (double)$oldMonthly->total;
+                $planSum->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Deletion successfully!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function checkMultiple(Request $req, $year, $month, $type, $price)
+    {
+        if ($price == '2') {
+            $categoriesList = ItemCategory::where('plan_type_id', $type)
+                                    ->whereNotNull('expense_id')
+                                    ->pluck('expense_less10k');
+        } else {
+            $categoriesList = ItemCategory::where('plan_type_id', $type)
+                                    ->whereNotNull('expense_id')
+                                    ->pluck('expense_id');
+        }
+
+        if ($type == '3' || $type == '4') {
+            $expenseId = $type == '3' ? '69' : '67';
+
+            $monthly = Monthly::where('year', $year)
+                                ->where('month', $month)
+                                ->where('expense_id', $expenseId)
+                                ->count();
+        } else {
+            $monthly = Monthly::where('year', $year)
+                                ->where('month', $month)
+                                ->whereIn('expense_id', $categoriesList)
+                                ->count();
+        }
+
+        return [
+            'monthly' => $monthly
+        ];
+    }
+
+    public function getMultiple(Request $req)
+    {
+        $year = $req->get('year');
+        $type = $req->get('type');
+        $month = $req->get('month');
+        $price = $req->get('price');
+        $inPlan = $req->get('in_plan');
+
+        $sdate = $month. '-01';
+        $edate = date('Y-m-t', strtotime($sdate));
+
+        $sql = "SELECT o.category_id, c.`name` as category_name, cast(sum(o.net_total) as decimal(12,2)) as net_total
+                from orders o
+                join (
+                    select order_id, count(id) num_rows, sum(sum_price) as sum_price
+                    from order_details ";
+
+                    if (!empty($inPlan)) {
+                        $sql .= "WHERE (plan_id in (select id from plans where (in_plan = '" .$inPlan. "'))) ";
+                    }
+
+                    if (!empty($price)) {
+                        if ($price == '1') {
+                            $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit >= 10000) ";
+                        } else {
+                            $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit < 10000) ";
+                        }
+                    }
+
+                $sql .= "group by order_id) as od on o.id=od.order_id
+                left join item_categories c on (o.category_id=c.id)
+                where (o.`year` = ?)
+                and (o.plan_type_id = ?)
+                and (o.po_date BETWEEN ? AND ?)
+                group by o.category_id, c.`name`"; // and (o.status in (1,2,3,4,5))
+
+        $expenses = \DB::select($sql, [$year, $type, $sdate, $edate]);
+
+        return [
+            "expenses"      => $expenses,
+            "categories"    => ItemCategory::where('plan_type_id', $type)->get(),
+            "budgets"       => Budget::where('year', $year)->get()
+        ];
     }
 
     public function multipleStore(Request $req)
@@ -497,102 +593,5 @@ class MonthlyController extends Controller
                 'message'   => $ex->getMessage()
             ];
         }
-    }
-
-    public function edit($id)
-    {
-        return view('monthly.edit', [
-            "monthly"   => Monthly::find($id),
-            "expenses"  => Expense::all(),
-            "expenseTypes"  => ExpenseType::all(),
-            "factions"  => Faction::whereNotIn('faction_id', [4, 6, 12])->get(),
-            "departs"   => Depart::all(),
-            "divisions" => Division::all(),
-        ]);
-    }
-
-    public function update(Request $req, $id)
-    {
-        try {
-            $plan = Monthly::find($id);
-            $plan->year         = $req['year'];
-            $plan->month        = $req['month'];
-            $plan->expense_id   = $req['expense_id'];
-            $plan->total        = currencyToNumber($req['total']);
-            $plan->remain       = currencyToNumber($req['remain']);
-
-            /** Check whether user is admin or not */
-            if ($req['user'] == '1300200009261') {
-                $plan->depart_id = $req['depart_id'];
-            } else {
-                $person = Person::where('person_id', $req['user'])->with('memberOf')->first();
-                $plan->depart_id = $person->memberOf->depart_id;
-            }
-
-            $plan->reporter_id  = $req['user'];
-            $plan->remark       = $req['remark'];
-            $plan->status       = '0';
-            $plan->created_user = $req['user'];
-            $plan->updated_user = $req['user'];
-
-            if($plan->save()) {
-                $planSum = Budget::where('year', $req['year'])
-                            ->where('expense_id', $req['expense_id'])
-                            ->first();
-                $planSum->remain = (double)$planSum->remain - (double)$req['total'];
-                $planSum->save();
-
-                return [
-                    'status'    => 1,
-                    'message'   => 'Updating successfully',
-                    'plan'      => $plan
-                ];
-            } else {
-                return [
-                    'status'    => 0,
-                    'message'   => 'Something went wrong!!'
-                ];
-            }
-        } catch (\Exception $ex) {
-            return [
-                'status'    => 0,
-                'message'   => $ex->getMessage()
-            ];
-        }
-    }
-
-    public function delete(Request $req, $id)
-    {
-        try {
-            $plan = Monthly::find($id);
-            $oldMonthly = $plan;
-
-            if($plan->delete()) {
-                /** TODO: redo plan_summary's remain value to before 
-                 * by plus with deleted plan's total
-                 */
-                $planSum = Budget::where('year', $oldMonthly->year)
-                            ->where('expense_id', $oldMonthly->expense_id)
-                            ->first();
-                $planSum->remain = (double)$planSum->remain + (double)$oldMonthly->total;
-                $planSum->save();
-
-                return [
-                    'status'    => 1,
-                    'message'   => 'Deletion successfully!!'
-                ];
-            } else {
-                return [
-                    'status'    => 0,
-                    'message'   => 'Something went wrong!!'
-                ];
-            }
-        } catch (\Exception $ex) {
-            return [
-                'status'    => 0,
-                'message'   => $ex->getMessage()
-            ];
-        }
-        
     }
 }
