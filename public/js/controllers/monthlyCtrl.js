@@ -530,10 +530,6 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         });
     }
 
-    $scope.edit = function(id) {
-        window.location.href = `${CONFIG.baseUrl}/leaves/edit/${id}`;
-    };
-
     $scope.update = function(event) {
         event.preventDefault();
 

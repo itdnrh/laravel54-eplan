@@ -231,13 +231,13 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('monthly/search', 'MonthlyController@search');
     Route::get('monthly/add', 'MonthlyController@create');
     Route::post('monthly/store', 'MonthlyController@store');
-    Route::get('monthly/multiple-data', 'MonthlyController@getMultiple');
-    Route::post('monthly/multiple-store', 'MonthlyController@multipleStore');
-    Route::post('monthly/multiple-update', 'MonthlyController@multipleUpdate');
     Route::get('monthly/edit/{id}', 'MonthlyController@edit');
     Route::get('monthly/detail/{id}', 'MonthlyController@detail');
     Route::post('monthly/update/{id}', 'MonthlyController@update');
     Route::post('monthly/delete/{id}', 'MonthlyController@delete');
+    Route::get('monthly/multiple-data', 'MonthlyController@getMultiple');
+    Route::post('monthly/multiple-store', 'MonthlyController@multipleStore');
+    Route::post('monthly/multiple-update', 'MonthlyController@multipleUpdate');
 
     /** ประมาณการรายจ่าย */
     Route::post('budgets/validate', 'BudgetController@formValidate');
