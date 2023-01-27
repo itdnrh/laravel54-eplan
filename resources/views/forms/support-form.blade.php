@@ -851,7 +851,7 @@
                                 @if($support->is_plan_group == 1)
                                     
                                 @else
-                                    @if($page == 2 && count($support->details) <= 2)
+                                    @if($page == 1 && count($support->details) <= 2)
                                         <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                     @endif
 
