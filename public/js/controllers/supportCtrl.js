@@ -1,6 +1,10 @@
 app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, StringFormatService) {
-/** ################################################################################## */
-    $scope.loading = false;
+    /*
+    |-----------------------------------------------------------------------------
+    | Local variables and constraints initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** Filtering input controls */
     $scope.cboYear = parseInt(moment().format('MM')) > 9
                         ? (moment().year() + 544).toString()
                         : (moment().year() + 543).toString();
@@ -15,6 +19,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.txtDesc = '';
     $scope.searchKey = '';
 
+    /** Iterating models */
+    $scope.loading = false;
     $scope.sumSupports = 0;
     $scope.supports = [];
     $scope.pager = [];
@@ -28,6 +34,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.timelinePlan = null;
     $scope.showTimeline = false;
 
+    /** Store and update models */
     $scope.support = {
         doc_prefix: '',
         doc_no: '',
@@ -73,7 +80,12 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         planItem: null,
     };
 
-    /** ============================== Init Form elements ============================== */
+    /*
+    |-----------------------------------------------------------------------------
+    | Form controls initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** ============================== Form initialize elements ============================== */
     let dtpDateOptions = {
         autoclose: true,
         language: 'th',
@@ -82,6 +94,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         todayBtn: true,
         todayHighlight: true
     };
+
     $('#po_date')
         .datepicker(dtpDateOptions)
         .datepicker('update', new Date())
@@ -92,6 +105,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             console.log(event.date);
         });
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Main functions initialization
+    |-----------------------------------------------------------------------------
+    */
     $scope.onShowTimeline = function(plan) {
         $scope.showTimeline = false;
 
@@ -131,87 +149,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         };
     };
 
-    $scope.getAll = function() {
-        $scope.loading = true;
-        $scope.supports = [];
-        $scope.pager = null;
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
-        let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
-                        ? !$scope.cboDepart ? '' : $scope.cboDepart
-                        : $('#depart').val();
-        let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
-        let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
-        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
-        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
-
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
-        .then(function(res) {
-            $scope.setSupports(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    }
-
-    $scope.getSupportsWithUrl = function(e, url, cb) {
-		/** Check whether parent of clicked a tag is .disabled just do nothing */
-		if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.supports = [];
-        $scope.pager = null;
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
-        let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
-        let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
-                        ? !$scope.cboDepart ? '' : $scope.cboDepart
-                        : $('#depart').val();
-        let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
-        let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
-        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
-        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
-        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
-
-        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
-        .then(function(res) {
-            $scope.setSupports(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setSupports = function(res) {
-        const { data, ...pager } = res.data.supports;
-
-        $scope.supports = data;
-        $scope.pager = pager;
-
-        $scope.sumSupports = res.data.sumSupports;
-    };
-
-    $scope.supportDetails = [];
-    $scope.showDetailsList = function(e, details) {
-        e.preventDefault();
-
-        if (details.length > 0) {
-            $scope.supportDetails = details;
-
-            $('#details-list').modal('show');
-        }
-    };
-
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan group selection processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.planGroups = [];
     $scope.plansGroups_pager = null;
     $scope.showPlanGroupsList = function() {
@@ -327,6 +269,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#plan-groups-list').modal('hide');
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan selection processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.showPlansList = () => {
         if (!$scope.support.plan_type_id || !$scope.support.category_id) {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
@@ -434,154 +381,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $('#plans-list').modal('hide');
     };
 
-    $scope.calculateSumPrice = function(price, amt) {
-        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amt));
-
-        /** ตรวจสอบว่ารายการที่ขอยอดเงินเกินงบประมาณที่ขอหรือไม่ */
-        const { calc_method, price_per_unit, amount, sum_price, remain_budget } = $scope.newItem.planItem;
-
-        if (calc_method == 1 && sum_price < sumPrice) {
-            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${sum_price} บาท)`);
-
-            $scope.newItem.price_per_unit = price_per_unit;
-            $scope.newItem.amount = amount;
-            $scope.newItem.sum_price = sum_price;
-
-            return;
-        }
-
-        if (calc_method == 2 && remain_budget < sumPrice) {
-            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${remain_budget} บาท)`);
-
-            $scope.newItem.price_per_unit = 0;
-            $scope.newItem.amount = amount;
-            $scope.newItem.sum_price = 0;
-
-            return;
-        }
-
-        $scope.newItem.sum_price = sumPrice;
-    };
-
-    $scope.calculateTotal = () => {
-        let total = 0;
-
-        total = $scope.support.details.reduce((sum, curVal) => {
-            return sum = sum + parseFloat($scope.currencyToNumber(curVal.sum_price));
-        }, 0);
-
-        $scope.support.total = total;
-        $('#total').val(total);
-    };
-
-    $scope.showSubitemsList = function() {
-        if ($scope.newItem.plan_id) {
-            $scope.getItems('#subitems-list', 0);
-        } else {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
-        }
-    };
-    
-    $scope.handleSubitemSelected = function(e, item) {
-        if (item) {
-            $('#subitem_id').val(item.id);
-            $scope.newItem.subitem_id       = item.id;
-            $scope.newItem.desc             = item.item_name;
-            $scope.newItem.price_per_unit   = item.price_per_unit;
-            $scope.newItem.unit_id          = item.unit_id ? item.unit_id.toString() : '';
-        }
-
-        $('#subitems-list').modal('hide');
-    };
-
-    $scope.showSpecForm = function(planId) {
-        if (planId) {
-            $('#spec-form').modal('show');
-        } else {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
-        }
-    };
-
-    $scope.addSpec = function() {
-        $('#spec-form').modal('hide');
-    };
-
-    const validateNewItem = () => {
-        if ($scope.newItem.item.have_subitem == 1 && $scope.newItem.desc == '') {
-            $scope.newItem.error = { ...$scope.newItem.error, desc: 'กรุณาระบุรายละเอียด/รายการย่อย' }
-        } else {
-            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('desc')) {
-                const { desc, ...rest } = $scope.newItem.error;
-                $scope.newItem.error = { ...rest }
-            }
-        }
-
-        if ($scope.newItem.price_per_unit == '') {
-            $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วย' }
-        } else {
-            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('price_per_unit')) {
-                const { price_per_unit, ...rest } = $scope.newItem.error;
-                $scope.newItem.error = { ...rest }
-            }
-        }
-
-        if ($scope.newItem.unit_id == '') {
-            $scope.newItem.error = { ...$scope.newItem.error, unit_id: 'กรุณาเลือกหน่วยนับ' }
-        } else {
-            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('unit_id')) {
-                const { unit_id, ...rest } = $scope.newItem.error;
-                $scope.newItem.error = { ...rest }
-            }
-        }
-
-        if ($scope.newItem.amount == '') {
-            $scope.newItem.error = { ...$scope.newItem.error, amount: 'กรุณาเลือกหน่วยนับ' }
-        } else {
-            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('amount')) {
-                const { amount, ...rest } = $scope.newItem.error;
-                $scope.newItem.error = { ...rest }
-            }
-        }
-
-        return $scope.newItem.error ? Object.keys($scope.newItem.error).length === 0 : true;
-    };
-
-    $scope.addItem = () => {
-        if ($scope.newItem.plan_id !== '') {
-            if (!validateNewItem($scope.newItem)) {
-                toaster.pop('error', "ผลการตรวจสอบ", "กรุณารายละเอียดรายการให้ครบก่อน !!!");
-            } else {
-                /** เซตชื่อหน่วยนับเพื่อแสดงผลในรายการ */
-                $scope.newItem.unit_name = $('#unit_id option:selected').text().trim();
-
-                $scope.support.details.push({ ...$scope.newItem });
-
-                $("#unit_id").val(null).trigger('change.select2');
-                $scope.calculateTotal();
-                $scope.clearNewItem();
-            }
-        } else {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
-        }
-    };
-
-    $scope.removeAddedItem = (selectedIndex) => {
-        const rm = $scope.support.details.find((d, index) => index === selectedIndex);
-
-        if (rm) {
-            $scope.support.removed = [...new Set([...$scope.support.removed, rm.id])];
-        }
-
-        $scope.support.details = $scope.support.details.filter((d, index) => index !== selectedIndex);
-        $scope.calculateTotal();
-    };
-
-    $scope.isSelected = function(planId) {
-        if ($scope.support.details.length == 0) return false;
-
-        return $scope.support.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
-    };
-
+    /*
+    |-----------------------------------------------------------------------------
+    | Person selection processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.showPersonList = (_selectedMode) => {
         /** Set default depart of persons list to same user's depart */
         $scope.cboDepart = $('#depart_id').val();
@@ -682,6 +486,125 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Send processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showSendForm = function(support) {
+        if (support) {
+            $('#support-from').modal('show');
+        }
+    };
+
+    $scope.send = function(e) {
+        $scope.loading = true;
+
+        $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
+        .then(function(res) {
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/supports/list`;
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+            }
+
+            $scope.loading = false;
+        }, function(err) {
+            $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+        });
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Support CRUD operations
+    |-----------------------------------------------------------------------------
+    */
+    $scope.getAll = function() {
+        $scope.loading = true;
+        $scope.supports = [];
+        $scope.pager = null;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
+        let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
+                        ? !$scope.cboDepart ? '' : $scope.cboDepart
+                        : $('#depart').val();
+        let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
+        let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
+        .then(function(res) {
+            $scope.setSupports(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    }
+
+    $scope.getSupportsWithUrl = function(e, url, cb) {
+		/** Check whether parent of clicked a tag is .disabled just do nothing */
+		if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.supports = [];
+        $scope.pager = null;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+        let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
+        let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
+                        ? !$scope.cboDepart ? '' : $scope.cboDepart
+                        : $('#depart').val();
+        let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
+        let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+        let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+        let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+        let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
+        .then(function(res) {
+            $scope.setSupports(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setSupports = function(res) {
+        const { data, ...pager } = res.data.supports;
+
+        $scope.supports = data;
+        $scope.pager = pager;
+
+        $scope.sumSupports = res.data.sumSupports;
+    };
+
+    $scope.supportDetails = [];
+    $scope.showDetailsList = function(e, details) {
+        e.preventDefault();
+
+        if (details.length > 0) {
+            $scope.supportDetails = details;
+
+            $('#details-list').modal('show');
+        }
+    };
+
     $scope.getById = function(id, cb) {
         $scope.loading = true;
         
@@ -754,32 +677,156 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
-    $scope.showSendForm = function(support) {
-        if (support) {
-            $('#support-from').modal('show');
+    $scope.setTopicByPlanType = function() {
+        $scope.support.topic = `ขอรับการสนับสนุน${$('#category_id option:selected').text().trim()}`;
+    };
+
+    $scope.calculateSumPrice = function(price, amt) {
+        let sumPrice = parseFloat($scope.currencyToNumber(price)) * parseFloat($scope.currencyToNumber(amt));
+
+        /** ตรวจสอบว่ารายการที่ขอยอดเงินเกินงบประมาณที่ขอหรือไม่ */
+        const { calc_method, price_per_unit, amount, sum_price, remain_budget } = $scope.newItem.planItem;
+
+        if (calc_method == 1 && sum_price < sumPrice) {
+            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${sum_price} บาท)`);
+
+            $scope.newItem.price_per_unit = price_per_unit;
+            $scope.newItem.amount = amount;
+            $scope.newItem.sum_price = sum_price;
+
+            return;
+        }
+
+        if (calc_method == 2 && remain_budget < sumPrice) {
+            toaster.pop('error', "ผลการตรวจสอบ", `ไม่สามารถระบุยอดรวมเป็นเงินเกินงบประมาณที่ขอได้!!! (คงเหลือ ${remain_budget} บาท)`);
+
+            $scope.newItem.price_per_unit = 0;
+            $scope.newItem.amount = amount;
+            $scope.newItem.sum_price = 0;
+
+            return;
+        }
+
+        $scope.newItem.sum_price = sumPrice;
+    };
+
+    $scope.calculateTotal = () => {
+        let total = 0;
+
+        total = $scope.support.details.reduce((sum, curVal) => {
+            return sum = sum + parseFloat($scope.currencyToNumber(curVal.sum_price));
+        }, 0);
+
+        $scope.support.total = total;
+        $('#total').val(total);
+    };
+
+    $scope.showSubitemsList = function() {
+        if ($scope.newItem.plan_id) {
+            $scope.getItems('#subitems-list', 0);
+        } else {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
         }
     };
 
-    $scope.send = function(e) {
-        $scope.loading = true;
+    $scope.handleSubitemSelected = function(e, item) {
+        if (item) {
+            $('#subitem_id').val(item.id);
+            $scope.newItem.subitem_id       = item.id;
+            $scope.newItem.desc             = item.item_name;
+            $scope.newItem.price_per_unit   = item.price_per_unit;
+            $scope.newItem.unit_id          = item.unit_id ? item.unit_id.toString() : '';
+        }
 
-        $http.post(`${CONFIG.baseUrl}/supports/send`, $scope.support)
-        .then(function(res) {
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+        $('#subitems-list').modal('hide');
+    };
 
-                window.location.href = `${CONFIG.baseUrl}/supports/list`;
-            } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+    $scope.showSpecForm = function(planId) {
+        if (planId) {
+            $('#spec-form').modal('show');
+        } else {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
+        }
+    };
+
+    $scope.addSpec = function() {
+        $('#spec-form').modal('hide');
+    };
+
+    const validateNewItem = () => {
+        if ($scope.newItem.item.have_subitem == 1 && $scope.newItem.desc == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, desc: 'กรุณาระบุรายละเอียด/รายการย่อย' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('desc')) {
+                const { desc, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
             }
+        }
 
-            $scope.loading = false;
-        }, function(err) {
-            $scope.loading = false;
+        if ($scope.newItem.price_per_unit == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, price_per_unit: 'กรุณาระบุราคาต่อหน่วย' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('price_per_unit')) {
+                const { price_per_unit, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
 
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
-        });
+        if ($scope.newItem.unit_id == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, unit_id: 'กรุณาเลือกหน่วยนับ' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('unit_id')) {
+                const { unit_id, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
+
+        if ($scope.newItem.amount == '') {
+            $scope.newItem.error = { ...$scope.newItem.error, amount: 'กรุณาเลือกหน่วยนับ' }
+        } else {
+            if ($scope.newItem.error && $scope.newItem.error.hasOwnProperty('amount')) {
+                const { amount, ...rest } = $scope.newItem.error;
+                $scope.newItem.error = { ...rest }
+            }
+        }
+
+        return $scope.newItem.error ? Object.keys($scope.newItem.error).length === 0 : true;
+    };
+
+    $scope.addItem = () => {
+        if ($scope.newItem.plan_id !== '') {
+            if (!validateNewItem($scope.newItem)) {
+                toaster.pop('error', "ผลการตรวจสอบ", "กรุณารายละเอียดรายการให้ครบก่อน !!!");
+            } else {
+                /** เซตชื่อหน่วยนับเพื่อแสดงผลในรายการ */
+                $scope.newItem.unit_name = $('#unit_id option:selected').text().trim();
+
+                $scope.support.details.push({ ...$scope.newItem });
+
+                $("#unit_id").val(null).trigger('change.select2');
+                $scope.calculateTotal();
+                $scope.clearNewItem();
+            }
+        } else {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกรายการแผนก่อน !!!");
+        }
+    };
+
+    $scope.removeAddedItem = (selectedIndex) => {
+        const rm = $scope.support.details.find((d, index) => index === selectedIndex);
+
+        if (rm) {
+            $scope.support.removed = [...new Set([...$scope.support.removed, rm.id])];
+        }
+
+        $scope.support.details = $scope.support.details.filter((d, index) => index !== selectedIndex);
+        $scope.calculateTotal();
+    };
+
+    $scope.isSelected = function(planId) {
+        if ($scope.support.details.length == 0) return false;
+
+        return $scope.support.details.some(item => item.plan_id === planId && item.plan.calc_method == 1);
     };
 
     $scope.onValidateForm = function(e, form, cb) {
@@ -903,9 +950,5 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         } else {
             $scope.loading = false;
         }
-    };
-
-    $scope.setTopicByPlanType = function() {
-        $scope.support.topic = `ขอรับการสนับสนุน${$('#category_id option:selected').text().trim()}`;
     };
 });
