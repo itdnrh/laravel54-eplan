@@ -4,9 +4,6 @@
             <form action="">
                 <div class="modal-header">
                     <h5 class="modal-title">รายการแผน</h5>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> -->
                 </div>
                 <div class="modal-body" style="padding-bottom: 0;">
                     <!-- // TODO: Filtering controls -->
@@ -23,18 +20,6 @@
                                     placeholder="ค้นหาด้วยชื่อรายการ"
                                     style="width: 50%;"
                                 />
-                                <!-- <select id="cboDepart"
-                                        name="cboDepart"
-                                        ng-model="cboDepart"
-                                        ng-change="getAddonItems('0-1')"
-                                        class="form-control select2">
-                                    <option value="">-- กลุ่มงานทั้งหมด --</option>
-                                    @foreach($departs as $depart)
-                                        <option value="{{ $depart->depart_id }}">
-                                            {{ $depart->depart_name }}
-                                        </option>
-                                    @endforeach
-                                </select> -->
                             </div>
                         </div><!-- /.box-body -->
                     </div>

@@ -738,6 +738,7 @@
         @include('supports._spec-form')
         @include('supports._subitems-list')
         @include('shared._persons-list')
+        @include('shared._addons-list')
 
     </section>
 
