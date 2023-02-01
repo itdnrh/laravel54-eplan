@@ -180,8 +180,11 @@
                                                     <span class="badge badge-success">+Add-on</span>
                                                 </a>
                                                 <p style="margin: 0;">@{{ detail.plan_depart }}</p>
-                                                <p style="margin: 0; font-size: 12px; color: red;" ng-show="detail.desc">
+                                                <p class="item__desc-text" ng-show="detail.desc">
                                                     - @{{ detail.desc }}
+                                                </p>
+                                                <p class="item__spec-text" ng-show="detail.addon_id">
+                                                    +งบนอกแผน @{{ detail.addon.plan_item.sum_price | currency:'':2 }} บาท
                                                 </p>
                                             </td>
                                             <td style="text-align: center">
