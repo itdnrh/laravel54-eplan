@@ -868,6 +868,7 @@ class SupportController extends Controller
         $support = Support::with('planType','depart','division')
                             ->with('details','details.plan','details.plan.planItem.unit')
                             ->with('details.plan.planItem','details.plan.planItem.item')
+                            ->with('details.addon','details.addon.planItem')
                             ->find($id);
 
         $committees = Committee::with('type','person','person.prefix')

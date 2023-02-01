@@ -157,9 +157,15 @@
                                                                 <?php $haveRowOvered++; ?>
                                                             @endif
 
-                                                            <span>
+                                                            <span style="margin: 0">
                                                                 {{ thainumDigit($detail->plan->plan_no) }}-{{ thainumDigit($detail->plan->planItem->item->item_name) }}
                                                             </span>
+
+                                                            @if($detail->addon_id)
+                                                                <p style="margin: 0">
+                                                                    (งบนอกแผน {{ thainumDigit(number_format($detail->addon->planItem->sum_price)) }} บาท)
+                                                                </p>
+                                                            @endif
 
                                                             @if($detail->desc != '')
                                                                 <?php $tableHeight += 20; ?>
@@ -177,7 +183,7 @@
                                                         {{ thainumDigit(number_format($detail->amount)) }}
                                                     </td>
                                                     <td style="text-align: right;">
-                                                        {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                        {{ thainumDigit(number_format($detail->price_per_unit + $detail->addon->planItem->sum_price, 2)) }}
                                                     </td>
                                                     <td style="text-align: right;">
                                                         {{ thainumDigit(number_format($detail->sum_price, 2)) }}
