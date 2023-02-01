@@ -623,17 +623,6 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         }
     };
 
-    $scope.supportDetails = [];
-    $scope.showDetailsList = function(e, details) {
-        e.preventDefault();
-
-        if (details.length > 0) {
-            $scope.supportDetails = details;
-
-            $('#details-list').modal('show');
-        }
-    };
-
     /*
     |-----------------------------------------------------------------------------
     | Fetching running number process

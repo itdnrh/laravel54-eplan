@@ -141,14 +141,16 @@
             </td>
             <td style="text-align: center;">@{{ support.plan_type.plan_type_name }}</td>
             <td>
+                <!-- ============================ Group selection ============================ -->
                 <div ng-show="support.is_plan_group">
                     @{{ support.plan_group_desc }}
                     จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
                     <span>@{{ support.details[0].unit.name }}</span>
-                    <a href="#" class="text-danger" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                    <a href="#" class="text-danger" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support);">
                         <i class="fa fa-tags" aria-hidden="true"></i>
                     </a>
                 </div>
+                <!-- ============================ End Group selection ============================ -->
                 <div ng-show="!support.is_plan_group">
                     <span>@{{ support.details[0].plan.plan_no }} - @{{ support.details[0].plan.plan_item.item.item_name }}</span>
                     <span class="label label-success label-xs" ng-show="support.details[0].plan.in_plan == 'I'">ในแผน</span>
@@ -158,7 +160,7 @@
                         จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
                         <span>@{{ support.details[0].unit.name }}</span>
                         ราคา @{{ support.details[0].price_per_unit | currency:'':0 }} บาท) 
-                        <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                        <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support);">
                             ... ดูเพิ่ม <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
                         </a>
                     </p>

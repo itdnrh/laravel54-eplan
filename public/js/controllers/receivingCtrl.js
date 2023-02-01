@@ -100,6 +100,17 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $scope.receiveds_pager = pager;
     };
 
+    $scope.supportDetails = [];
+    $scope.showDetailsList = function(e, support) {
+        e.preventDefault();
+
+        if (support.details.length > 0) {
+            $scope.supportDetails = support;
+
+            $('#details-list').modal('show');
+        }
+    };
+
     $scope.clearReceive = function() {
         $scope.receive = {
             support_id: '',
