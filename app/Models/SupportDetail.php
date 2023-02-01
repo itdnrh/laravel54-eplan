@@ -27,6 +27,11 @@ class SupportDetail extends Model
         return $this->belongsTo(Plan::class, 'plan_id', 'id');
     }
 
+    public function addon()
+    {
+        return $this->belongsTo(Plan::class, 'addon_id', 'id');
+    }
+
     public function support()
     {
         return $this->belongsTo(Support::class, 'support_id', 'id');
