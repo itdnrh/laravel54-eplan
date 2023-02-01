@@ -123,6 +123,7 @@ class PlanController extends Controller
         $inPlan = $req->get('in_plan');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
+        $addon = $req->get('addon');
 
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
@@ -164,6 +165,9 @@ class PlanController extends Controller
                                 $q->where('plan_items.price_per_unit', '>=', $price);
                             }
                         })
+                        ->when(!empty($addon), function($q) use ($addon) {
+                            $q->where('plan_items.addon_id', $addon);
+                        })
                         ->pluck('plan_items.plan_id');
 
         $plans = Plan::with('budget','depart','division','planItem','adjustments')
@@ -181,6 +185,9 @@ class PlanController extends Controller
                         $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($haveSubitem), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when(!empty($addon), function($q) use ($plansList) {
                         $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {
@@ -566,6 +573,7 @@ class PlanController extends Controller
         $inPlan = $req->get('in_plan');
         $showAll = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
+        $addon = $req->get('addon');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -595,6 +603,9 @@ class PlanController extends Controller
                         ->when(!empty($haveSubitem), function($q) use ($haveSubitem) {
                             $q->where('plan_items.have_subitem', $haveSubitem);
                         })
+                        ->when(!empty($addon), function($q) use ($addon) {
+                            $q->where('plan_items.addon_id', $addon);
+                        })
                         ->pluck('plan_items.plan_id');
 
         $data = Plan::join('plan_items', 'plans.id', '=', 'plan_items.plan_id')
@@ -614,6 +625,9 @@ class PlanController extends Controller
                         $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($haveSubitem), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when(!empty($addon), function($q) use ($plansList) {
                         $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {

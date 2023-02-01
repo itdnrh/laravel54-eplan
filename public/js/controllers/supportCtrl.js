@@ -70,6 +70,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         item_id: '',
         item: null,
         subitem_id: '',
+        addon_id: '',
         desc: '',
         price_per_unit: '',
         unit_id: '',
@@ -379,6 +380,82 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
 
         $('#plans-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Add-ons selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.addOns = [];
+    $scope.addOns_pager = null;
+    $scope.showAddonsList = function(e) {
+        $scope.getAddonItems(e, $scope.showAddOnsListModal)
+    };
+
+    $scope.showAddOnsListModal = function() {
+        $('#addons-list').modal('show');
+    };
+
+    $scope.getAddonItems = function(e, toggleModal=null) {
+        $scope.loading = true;
+        $scope.addOns = [];
+        $scope.addOns_pager = null;
+
+        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                        ? $scope.cboDepart
+                        : $('#depart_id').val();
+        let addon = $scope.newItem ? $scope.newItem.plan_id : '';
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0-1&approved=A&addon=${addon}`)
+        .then(function(res) {
+            if (toggleModal) toggleModal();
+
+            $scope.setAddOnItems(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getAddonItemsWithUrl = function(e, url, status, cb) {
+        $scope.loading = true;
+        $scope.addOns = [];
+        $scope.addOns_pager = null;
+
+        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                        ? $scope.cboDepart
+                        : $('#depart_id').val();
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&depart=${depart}&status=0-1&approved=A`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setAddOnItems = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.addOns = data;
+        $scope.addOns_pager = pager;
+    };
+
+    $scope.onSelectedAddOnItem = function(e, plan) {
+        if (plan) {
+            $scope.newItem.addon_id = plan.id
+            $scope.newItem.sum_price = parseFloat($scope.newItem.sum_price) + parseFloat(plan.plan_item.sum_price);
+        }
+
+        $('#addons-list').modal('hide');
     };
 
     /*

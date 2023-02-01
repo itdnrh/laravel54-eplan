@@ -165,7 +165,6 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 3%; text-align: center">ลำดับ</th>
-                                                <th style="width: 8%; text-align: center">เลขที่</th>
                                                 <th>รายการ <span class="required-field">*</span></th>
                                                 <th style="width: 20%;">
                                                     รายละเอียด/รายการย่อย (ถ้ามี)
@@ -188,29 +187,12 @@
                                         <tbody>
                                             <tr>
                                                 <td style="text-align: center">#</td>
-                                                <td style="text-align: center">
-                                                    <!-- เลขที่ -->
-                                                    <input
-                                                        type="text"
-                                                        id="plan_no"
-                                                        name="plan_no"
-                                                        class="form-control"
-                                                        style="text-align: center"
-                                                        ng-model="newItem.plan.plan_no"
-                                                        readonly
-                                                    />
-                                                </td>
                                                 <td>
                                                     <!-- รายการ -->
                                                     <div class="input-group">
-                                                        <input
-                                                            type="text"
-                                                            id="plan_detail"
-                                                            name="plan_detail"
-                                                            class="form-control"
-                                                            ng-model="newItem.plan.plan_item.item.item_name"
-                                                            readonly
-                                                        />
+                                                        <div class="form-control">
+                                                            @{{ newItem.plan.plan_no }} @{{ newItem.plan.plan_item.item.item_name }}
+                                                        </div>
                                                         <input
                                                             type="hidden"
                                                             id="plan_id"
@@ -252,7 +234,16 @@
                                                             >
                                                                 <i class="fa fa-th" aria-hidden="true"></i>
                                                             </button>
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-success" 
+                                                                ng-click="showAddonsList($event)"
+                                                                ng-show="newItem.plan_id"
+                                                            >
+                                                                <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+                                                            </button>
                                                         </span>
+                                                        @{{ newItem.planItem.addon_id }}
                                                     </div>
                                                 </td>
                                                 <td style="text-align: center">
@@ -431,13 +422,15 @@
 
                                             <tr ng-repeat="(index, detail) in support.details" ng-show="!support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                                 <td colspan="2">
-                                                    @{{ detail.plan.plan_item.item.item_name }}
+                                                    @{{ detail.plan.plan_no }} @{{ detail.plan.plan_item.item.item_name }}
                                                     <!-- <p style="margin: 0;">@{{ detail.plan.depart.depart_name }}</p> -->
                                                     <p style="margin: 0; color: red;" ng-show="detail.desc">
                                                         - @{{ detail.desc }}
                                                     </p>
+                                                    <a ng-show="detail.addon_id">
+                                                        <span class="badge badge-success">+Add-on</span>
+                                                    </a>
                                                 </td>
                                                 <td style="text-align: center">
                                                     @{{ currencyToNumber(detail.price_per_unit) | currency:'':2 }}
@@ -461,7 +454,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="7" style="text-align: right;">รวมเป็นเงิน</td>
+                                                <td colspan="6" style="text-align: right;">รวมเป็นเงิน</td>
                                                 <td style="text-align: center;">
                                                     <div class="form-control" style="text-align: center;" readonly>
                                                         @{{ support.total | currency:'':2 }}
@@ -763,6 +756,7 @@
         @include('supports._spec-form')
         @include('supports._subitems-list')
         @include('shared._persons-list')
+        @include('shared._addons-list')
 
     </section>
 
