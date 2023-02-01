@@ -415,7 +415,7 @@ class SupportController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
-            
+
             if (count($req['planGroups']) > 0) {
                 $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
                 $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
@@ -431,7 +431,7 @@ class SupportController extends Controller
             $support->status            = 0;
             $support->created_user      = $req['user'];
             $support->updated_user      = $req['user'];
-            
+
             if ($support->save()) {
                 foreach($req['details'] as $item) {
                     $detail = new SupportDetail;
@@ -442,6 +442,10 @@ class SupportController extends Controller
                         $detail->subitem_id     = $item['subitem_id'];
                     }
 
+                    if (!empty($item['addon_id'])) {
+                        $detail->addon_id     = $item['addon_id'];
+                    }
+
                     $detail->desc           = $item['desc'];
                     $detail->price_per_unit = currencyToNumber($item['price_per_unit']);
                     $detail->unit_id        = $item['unit_id'];
@@ -450,7 +454,7 @@ class SupportController extends Controller
                     $detail->status         = 0;
                     $detail->save();
                 }
-                
+
                 /** คณะกรรมการกำหนดคุณลักษณะ */
                 if (count($req['spec_committee']) > 0) {
                     foreach($req['spec_committee'] as $spec) {
@@ -538,7 +542,7 @@ class SupportController extends Controller
             $support->depart_id         = $req['depart_id'];
             $support->division_id       = $req['division_id'];
             $support->topic             = $req['topic'];
-            
+
             if (count($req['planGroups']) > 0) {
                 $support->is_plan_group     = $req['is_plan_group'] ? 1 : 0;
                 $support->plan_group_desc   = $req['planGroups'][0]['item_name'];
@@ -569,6 +573,10 @@ class SupportController extends Controller
 
                         if (!empty($item['subitem_id'])) {
                             $detail->subitem_id     = $item['subitem_id'];
+                        }
+
+                        if (!empty($item['addon_id'])) {
+                            $detail->addon_id     = $item['addon_id'];
                         }
 
                         $detail->desc           = $item['desc'];
