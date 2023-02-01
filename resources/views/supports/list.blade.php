@@ -319,6 +319,7 @@
                                         </p>
                                     </td>
                                     <td>
+                                        <!-- ============================ Plan group ============================ -->
                                         <div ng-show="support.is_plan_group">
                                             @{{ support.plan_group_desc }}
                                             จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
@@ -327,8 +328,12 @@
                                                 <i class="fa fa-tags" aria-hidden="true"></i>
                                             </a>
                                         </div>
+                                        <!-- ============================ End Plan group ============================ -->
                                         <div ng-show="!support.is_plan_group">
                                             <span>@{{ support.details[0].plan.plan_no }} - @{{ support.details[0].plan.plan_item.item.item_name }}</span>
+                                            <a ng-show="support.details[0].addon_id">
+                                                <span class="badge badge-success">+Add-on</span>
+                                            </a>
                                             <span class="label label-success label-xs" ng-show="support.details[0].plan.in_plan == 'I'">ในแผน</span>
                                             <span class="label label-danger label-xs" ng-show="support.details[0].plan.in_plan == 'O'">นอกแผน</span>
                                             <p style="margin: 0; font-size: 12px; color: red;">

@@ -141,6 +141,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <!-- ============================ Plan group ============================ -->
                                         <tr ng-show="support.is_plan_group">
                                             <td style="text-align: center">@{{ index+1 }}</td>
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
@@ -169,11 +170,15 @@
                                                 @{{ support.total | currency:'':2 }}
                                             </td>
                                         </tr>
+                                        <!-- ============================ End Plan group ============================ -->
                                         <tr ng-repeat="(index, detail) in support.details" ng-show="!support.is_plan_group">
                                             <td style="text-align: center">@{{ index+1 }}</td>
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>
                                                 @{{ detail.plan.plan_item.item.item_name }}
+                                                <a ng-show="detail.addon_id">
+                                                    <span class="badge badge-success">+Add-on</span>
+                                                </a>
                                                 <p style="margin: 0;">@{{ detail.plan_depart }}</p>
                                                 <p style="margin: 0; font-size: 12px; color: red;" ng-show="detail.desc">
                                                     - @{{ detail.desc }}
