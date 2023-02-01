@@ -325,13 +325,10 @@
                                                 <td>
                                                     @{{ order.plan_group_desc }}
                                                     <span style="margin: 0;">(@{{ order.details[0].category_name }})</span>
-                                                    <a 
-                                                        href="#"
-                                                        class="text-danger" ng-show="order.details.length > 1"
-                                                        ng-click="showPlanGroupItems($event, order.details);"
-                                                    >
+                                                    <span class="badge badge-danger" ng-show="order.details.length > 1">
                                                         <i class="fa fa-tags" aria-hidden="true"></i>
-                                                    </a>
+                                                        Groups
+                                                    </span>
                                                     <p class="item__spec-text" ng-show="order.details[0].spec != ''">
                                                         @{{ order.details[0].spec }}
                                                     </p>
