@@ -328,7 +328,7 @@
                                                 href="#"
                                                 class="badge badge-danger"
                                                 ng-show="support.details.length > 1"
-                                                ng-click="showDetailsList($event, support.details);"
+                                                ng-click="showDetailsList($event, support);"
                                             >
                                                 <i class="fa fa-tags" aria-hidden="true"></i>
                                                 Groups
@@ -350,7 +350,7 @@
                                                 <span ng-show="support.details[0].addon_id">
                                                     + @{{ support.details[0].addon.plan_item.sum_price | currency:'':0 }} บาท
                                                 </span>) 
-                                                <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                                                <a href="#" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support);">
                                                     ... ดูเพิ่ม (@{{ support.details.length }} รายการ) <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
                                                 </a>
                                             </p>

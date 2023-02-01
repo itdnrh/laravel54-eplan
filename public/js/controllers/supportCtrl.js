@@ -123,7 +123,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.initFiltered = () => {
-        console.log($('#depart').val());
         if ($('#duty').val() == '1' || $('#depart').val() == '65') {
             let faction = $('#faction').val();
     
@@ -672,11 +671,11 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     };
 
     $scope.supportDetails = [];
-    $scope.showDetailsList = function(e, details) {
+    $scope.showDetailsList = function(e, support) {
         e.preventDefault();
 
-        if (details.length > 0) {
-            $scope.supportDetails = details;
+        if (support.details.length > 0) {
+            $scope.supportDetails = support;
 
             $('#details-list').modal('show');
         }

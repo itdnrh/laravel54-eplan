@@ -14,15 +14,49 @@
                             <tr>
                                 <th style="width: 5%; text-align: center;">#</th>
                                 <th>รายการ</th>
-                                <!-- <th style="width: 20%; text-align: center;">ประเภท</th> -->
-                                <th style="width: 10%; text-align: right;">ราคาต่อหน่วย</th>
+                                <th style="width: 12%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">หน่วยนับ</th>
-                                <th style="width: 10%; text-align: right;">จำนวน</th>
-                                <th style="width: 10%; text-align: right;">รวมเป็นเงิน</th>
+                                <th style="width: 8%; text-align: center;">จำนวน</th>
+                                <th style="width: 12%; text-align: center;">รวมเป็นเงิน</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index, detail) in supportDetails">
+                            <!-- ============================ Plan group ============================ -->
+                            <tr ng-show="supportDetails.is_plan_group">
+                                <td style="text-align: center">@{{ index+1 }}</td>
+                                <td>
+                                    @{{ supportDetails.plan_group_desc }}
+                                    <span class="badge badge-danger">
+                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                        Groups
+                                    </span>
+                                    <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
+                                        <li ng-repeat="(index, detail) in supportDetails.details" style="margin: 0; padding: 0;">
+                                            -<span ng-show="!isRenderWardInsteadDepart(detail.plan.depart.depart_id)">
+                                                @{{ detail.plan.depart.depart_name }}
+                                            </span><span ng-show="isRenderWardInsteadDepart(detail.plan.depart.depart_id)">
+                                                @{{ detail.plan.division.ward_name }}
+                                            </span>
+                                            @{{ currencyToNumber(detail.amount) | currency:'':0 }}
+                                            @{{ detail.unit_name }}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td style="text-align: center">
+                                    @{{ supportDetails.details[0].price_per_unit | currency:'':2 }}
+                                </td>
+                                <td style="text-align: center">
+                                    @{{ supportDetails.details[0].unit.name }}
+                                </td>
+                                <td style="text-align: center">
+                                    @{{ supportDetails.plan_group_amt | currency:'':0 }}
+                                </td>
+                                <td style="text-align: center">
+                                    @{{ supportDetails.total | currency:'':2 }}
+                                </td>
+                            </tr>
+                            <!-- ============================ End Plan group ============================ -->
+                            <tr ng-repeat="(index, detail) in supportDetails.details" ng-show="!supportDetails.is_plan_group">
                                 <td style="text-align: center;">
                                     @{{ index+1 }}
                                 </td>
@@ -30,17 +64,16 @@
                                     @{{ detail.plan.plan_item.item.item_name }}
                                     <p>@{{ detail.desc }}</p>
                                 </td>
-                                <!-- <td>@{{ detail.category.name }}</td> -->
-                                <td style="text-align: right;">
+                                <td style="text-align: center;">
                                     @{{ detail.price_per_unit | currency:'':2 }}
                                 </td>
                                 <td style="text-align: center;">
                                     @{{ detail.unit.name }}
                                 </td>
-                                <td style="text-align: right;">
+                                <td style="text-align: center;">
                                     @{{ detail.amount | currency:'':2 }}
                                 </td>
-                                <td style="text-align: right;">
+                                <td style="text-align: center;">
                                     @{{ detail.sum_price | currency:'':2 }}
                                 </td>
                             </tr>
