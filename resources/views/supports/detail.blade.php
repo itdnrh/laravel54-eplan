@@ -147,8 +147,10 @@
                                             <td style="text-align: center">@{{ detail.plan.plan_no }}</td>
                                             <td>
                                                 @{{ support.plan_group_desc }}
-                                                จำนวน <span>@{{ support.plan_group_amt | currency:'':0 }}</span>
-                                                <span>@{{ support.details[0].unit.name }}</span>
+                                                <span class="badge badge-danger">
+                                                    <i class="fa fa-tags" aria-hidden="true"></i>
+                                                    Groups
+                                                </span>
                                                 <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
                                                     <li ng-repeat="(index, detail) in support.details" style="margin: 0; padding: 0;">
                                                         - @{{ detail.plan.depart.depart_name }}

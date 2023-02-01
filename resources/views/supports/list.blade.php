@@ -324,8 +324,14 @@
                                             @{{ support.plan_group_desc }}
                                             จำนวน <span>@{{ support.plan_group_amt | currency:'':0 }}</span>
                                             <span>@{{ support.details[0].unit.name }}</span>
-                                            <a href="#" class="text-danger" ng-show="support.details.length > 1" ng-click="showDetailsList($event, support.details);">
+                                            <a
+                                                href="#"
+                                                class="badge badge-danger"
+                                                ng-show="support.details.length > 1"
+                                                ng-click="showDetailsList($event, support.details);"
+                                            >
                                                 <i class="fa fa-tags" aria-hidden="true"></i>
+                                                Groups
                                             </a>
                                         </div>
                                         <!-- ============================ End Plan group ============================ -->

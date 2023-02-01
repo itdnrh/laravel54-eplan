@@ -356,10 +356,12 @@
                                             <!-- ============================ Group selection ============================ -->
                                             <tr ng-show="support.is_plan_group">
                                                 <td style="text-align: center">@{{ index+1 }}</td>
-                                                <td colspan="3">
+                                                <td colspan="2">
                                                     @{{ support.plan_group_desc }}
-                                                    จำนวน <span>@{{ support.details[0].amount | currency:'':0 }}</span>
-                                                    <span>@{{ support.details[0].unit.name }}</span>
+                                                    <span class="badge badge-danger">
+                                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                                        Groups
+                                                    </span>
                                                     <ul style="list-style-type: none; margin: 0; padding: 0 0 0 10px; font-size: 12px;">
                                                         <li ng-repeat="(index, detail) in support.details" style="margin: 0; padding: 0;">
                                                             - @{{ detail.plan.depart.depart_name }}
