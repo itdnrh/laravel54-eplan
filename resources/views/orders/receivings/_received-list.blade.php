@@ -228,14 +228,15 @@
                 <div style="display: flex; justify-content: center; gap: 2px;">
                     <a
                         href="#"
-                        ng-click="cancel($event, support.id)"
                         class="btn btn-danger btn-xs"
+                        ng-click="cancel($event, support.id)"
                     >
                         ยกเลิก
                     </a>
                     <a
-                        href="{{ url('orders/add?support=') }}@{{ support.id }}"
+                        href="#"
                         class="btn btn-primary btn-xs"
+                        ng-click="createPO(support)"
                     >
                         สร้าง PO
                     </a>
