@@ -183,7 +183,11 @@
                                                         {{ thainumDigit(number_format($detail->amount)) }}
                                                     </td>
                                                     <td style="text-align: right;">
-                                                        {{ thainumDigit(number_format($detail->price_per_unit + $detail->addon->planItem->sum_price, 2)) }}
+                                                        @if($detail->addon)
+                                                            {{ thainumDigit(number_format($detail->price_per_unit + $detail->addon->planItem->sum_price, 2)) }}
+                                                        @else
+                                                            {{ thainumDigit(number_format($detail->price_per_unit, 2)) }}
+                                                        @endif
                                                     </td>
                                                     <td style="text-align: right;">
                                                         {{ thainumDigit(number_format($detail->sum_price, 2)) }}
