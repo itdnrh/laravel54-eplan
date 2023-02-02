@@ -362,6 +362,13 @@ class PlanController extends Controller
         ];
     }
 
+    public function getBalance($id)
+    {
+        return [
+            'plan' => PlanItem::where('plan_id', $id)->first(),
+        ];
+    }
+
     public function store(Request $req)
     {
         $plan = new Plan();

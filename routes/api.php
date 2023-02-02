@@ -56,6 +56,7 @@ Route::group(['middleware' => 'api'], function () {
 
     /** แผนเงินบำรุง */
     Route::get('plans/{itemId}/{year}/{depart}/{division}/existed', 'PlanController@isExisted');
+    Route::get('plans/{id}/balance', 'PlanController@getBalance');
     Route::put('plans/{id}/change', 'PlanController@change');
     Route::put('plans/{id}/status', 'PlanController@setStatus');
     Route::put('plans/{id}/adjust', 'PlanController@adjust');

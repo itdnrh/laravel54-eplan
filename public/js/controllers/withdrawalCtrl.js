@@ -612,7 +612,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
         e.preventDefault();
 
         if (window.confirm(`คุณต้องการยกเลิกส่งเบิกเงิน รหัส ${id} ใช่หรือไม่?`)) {
-            $http.put(`${CONFIG.apiUrl}/withdrawals/delete/${id}`, { order_id: withdraw.inspection.order_id })
+            $http.put(`${CONFIG.apiUrl}/withdrawals/${id}/cancel`, { order_id: withdraw.inspection.order_id })
             .then(function(res) {
                 console.log(res);
                 $scope.loading = false;

@@ -679,4 +679,18 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.adjustment.sum_price = sumPrice;
         $('#sum_price').val(sumPrice);
     };
+
+    $scope.checkBalance = function(remain, sumPrice) {
+        return !(remain < 0 || remain < sumPrice);
+    };
+
+    $scope.checkAllBalance = function(plans=[]) {
+        let balance = 0;
+
+        plans.forEach(detail => {
+            balance = balance + (!$scope.checkBalance(detail.plan.plan_item.remain_budget, detail.sum_price) ? 1 : 0);
+        });
+
+        return balance;
+    };
 });

@@ -122,14 +122,21 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.showReceiveSupportForm = function(e, support) {
+        const balance = $scope.checkAllBalance(support.details);
+
+        if (balance > 0) {
+            toaster.pop('error', "ผลการตรวจสอบ", "พบรายการที่มีงบประมาณไม่เพียงพอ !!!");
+            return;
+        }
+
         $scope.receive.support_id = support.id;
 
         $('#received_date')
-        .datepicker(dtpDateOptions)
-        .datepicker('update', new Date())
-        .on('changeDate', function(event) {
-            console.log(event.date);
-        });
+            .datepicker(dtpDateOptions)
+            .datepicker('update', new Date())
+            .on('changeDate', function(event) {
+                console.log(event.date);
+            });
 
         $('#receive-form').modal('show');
     };

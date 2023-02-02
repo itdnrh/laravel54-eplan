@@ -221,7 +221,6 @@
                                         name="net_total"
                                         ng-model="withdrawal.net_total"
                                         class="form-control"
-                                        readonly
                                     />
                                     <span class="help-block" ng-show="checkValidate(withdrawal, 'net_total')">
                                         @{{ formError.errors.net_total[0] }}

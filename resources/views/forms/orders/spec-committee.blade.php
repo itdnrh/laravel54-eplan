@@ -14,6 +14,7 @@
             </div>
             <div class="content">
                 <?php $orderType = in_array($planType->id, [1,2]) ? 'จัดซื้อ' : '' ?>
+                <?php $haveRowOvered = 0; ?>
                 <table class="layout">
                     <tr>
                         <td colspan="4">
@@ -70,12 +71,20 @@
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <span class="memo-paragraph-topic-inline">๑.ต้นเรื่อง</span>
                                 ด้วย กลุ่มงานพัสดุ โรงพยาบาลเทพรัตน์นครราชสีมา มีความประสงค์จะดำเนินการ
-                                {{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                {{$orderType}}<span>{{ $support->order->category->name }}</span>
                                 โดยวิธี{{ $purchaseMethods[$support->purchase_method] }} เพื่อใช้ในการปฏิบัติงานของเจ้าหน้าที่
-                                จึงขออนุมัติ{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                จึงขออนุมัติ{{$orderType}}<span>{{ $support->order->category->name }}</span>
                                 จำนวน <span>{{ thainumDigit($support->amount) }}</span> รายการ
                                 จำนวนเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
                                 <span>({{ baht_text($support->net_total) }})</span>
+
+                                @if(
+                                    (strlen($orderType.$support->order->category->name) >= 60 && 
+                                    (strlen(baht_text($support->net_total)) >= 105 || strlen(baht_text($support->net_total)) >= 135)) ||
+                                    strlen($orderType.$support->order->category->name) >= 95
+                                )
+                                    <?php $haveRowOvered++; ?>
+                                @endif
                             </p>
                         </td>
                     </tr>
@@ -137,10 +146,15 @@
                         </td>
                     </tr>
 
-                    @if(count($committees) > 1)
+                    @if(count($committees) > 1 || $haveRowOvered > 0)
                         <tr>
                             <td colspan="4">
-                                <div style="height: 80px;"></div>
+                                @if($haveRowOvered > 0)
+                                    <div style="height: 160px;"></div>
+                                @else
+                                    <div style="height: 80px;"></div>
+                                @endif
+
                                 <p class="next-paragraph">/๔.ข้อเสนอ...</p>
                             </td>
                         </tr>
@@ -157,7 +171,7 @@
                         </tr>
                     @endif
 
-                    @if(count($committees) > 1)
+                    @if(count($committees) > 1 || $haveRowOvered > 0)
                         <tr>
                             <td colspan="4">
                                 <div class="page-number">- ๒ -</div>
