@@ -1,5 +1,10 @@
 app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
-/** ################################################################################## */
+    /*
+    |-----------------------------------------------------------------------------
+    | Local variables and constraints initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** Filtering input controls */
     $scope.loading = false;
     $scope.services = [];
     $scope.pager = null;
@@ -37,7 +42,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         remark: ''
     };
 
-    /** ============================== Init Form elements ============================== */
+    /** DatePicker options */
     let dtpDateOptions = {
         autoclose: true,
         language: 'th',
@@ -47,6 +52,12 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         todayHighlight: true
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Form controls initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** ============================ DatePicker initialization ============================ */
     $('#doc_date')
         .datepicker(dtpDateOptions)
         .datepicker('update', new Date());
@@ -57,6 +68,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         //     });
         // });
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Local methods initialization
+    |-----------------------------------------------------------------------------
+    */
     $scope.setUserInfo = function(data) {
         $scope.service.user = data.user ? data.user.toString() : '';
         $scope.service.faction_id = data.faction ? data.faction.toString() : '';
