@@ -1,25 +1,17 @@
-app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $routeParams) {
+app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, $location, $routeParams) {
     console.log(CONFIG);
 
-    /** MENU */
+    /*
+    |-----------------------------------------------------------------------------
+    | Local variables and constraints initialization
+    |-----------------------------------------------------------------------------
+    */
+    /** Sidebar's menus */
     $scope.menu = 'assets';
     $scope.submenu = 'list';
-    $scope.setActivedMenu = function() {
-        let routePath = $location.$$absUrl.replace(`${CONFIG.baseUrl}/`, '');
-        let [mnu, submnu, ...params] = routePath.split('/');
 
-        $scope.menu = mnu; 
-        $scope.submenu = submnu;
-    }
-
-    $scope.redirectTo = function(e, path) {
-        e.preventDefault();
-        window.location.href = `${CONFIG.baseUrl}/${path}`;
-    };
-
-/** ################################################################################## */
-    $scope.cboYear = '2566';
-    // $scope.cboYear = parseInt(moment().format('MM')) > 9
+    /** Filtering input models */
+    $scope.cboYear = '2566'; //parseInt(moment().format('MM')) > 9
     //                     ? (moment().year() + 544).toString()
     //                     : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
@@ -34,7 +26,8 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
     $scope.txtKeyword = "";
     $scope.collapseBox = true;
 
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,parseInt($scope.cboYear)+2];
+    /** Input control iteration models */
+    $scope.budgetYearRange = $rootScope.range(2565, parseInt($scope.cboYear) + 3);
     $scope.monthLists = [
         { id: '10', name: 'ตุลาคม' },
         { id: '11', name: 'พฤศจิกายน' },
@@ -49,26 +42,6 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         { id: '08', name: 'สิงหาคม' },
         { id: '09', name: 'กันยายน' },        
     ];
-
-    $scope.items = [];
-    $scope.items_pager = null;
-
-    $scope.newItem = {
-        plan_type_id: '',
-        category_id: '',
-        group_id: '',
-        item_name: '',
-        en_name: '',
-        price_per_unit: '',
-        unit_id: '',
-        in_stock: 0,
-        first_year: '2565',
-        have_subitem: 0,
-        calc_method: 1,
-        is_fixcost: 0,
-        remark: '',
-        error: {}
-    };
 
     $scope.forms = {
         depart: [],
@@ -86,35 +59,71 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         expenses: [],
     }
 
-    let dtpOptions = {
-        autoclose: true,
-        language: 'th',
-        format: 'dd/mm/yyyy',
-        thaiyear: true,
-        todayBtn: true,
-        todayHighlight: true
+    /** Data selection models */
+    $scope.items = [];
+    $scope.items_pager = null;
+
+    /** Data insertion models */
+    $scope.newItem = {
+        plan_type_id: '',
+        category_id: '',
+        group_id: '',
+        item_name: '',
+        en_name: '',
+        price_per_unit: '',
+        unit_id: '',
+        in_stock: 0,
+        first_year: '2565',
+        have_subitem: 0,
+        calc_method: 1,
+        is_fixcost: 0,
+        remark: '',
+        error: {}
     };
 
-    $('#doc_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
-        // .on('show', function (e) {
-        //     $('.day').click(function(event) {
-        //         event.preventDefault();
-        //         event.stopPropagation();
-        //     });
-        // });
+    /*
+    |-----------------------------------------------------------------------------
+    | Shared methods Initialization
+    |-----------------------------------------------------------------------------
+    */
+    $scope.setActivedMenu = function() {
+        let routePath = $location.$$absUrl.replace(`${CONFIG.baseUrl}/`, '');
+        let [mnu, submnu, ...params] = routePath.split('/');
 
-    $('#sent_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
+        $scope.menu = mnu; 
+        $scope.submenu = submnu;
+    }
 
-    $('#po_date')
-        .datepicker(dtpOptions)
-        .datepicker('update', new Date());
+    $scope.redirectTo = function(e, path) {
+        e.preventDefault();
+        window.location.href = `${CONFIG.baseUrl}/${path}`;
+    };
 
     $scope.toggleBox = function() {
         $scope.collapseBox = !$scope.collapseBox;
+    };
+
+    $scope.currencyToNumber = function(currency) {
+        if (typeof currency === 'number') return currency;
+        if (currency == '') return 0;
+
+        return currency.replaceAll(',', '');
+    };
+
+    $scope.isMaterial = function(planType) {
+        if (parseInt(planType) === 2) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.isService = function(planType) {
+        if (parseInt(planType) === 3) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     $scope.initForms = (data, planType) => {
@@ -185,6 +194,19 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         return [19,20,68].includes(departId);
     }
 
+    $scope.isDisabledRequest = function(e, userRole='') {
+        // if (moment().isAfter(moment('2022-08-16 17:30:00')) && userRole != 4) {
+        //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งข้อมูลได้ เนื่องจากเลยกำหนดแล้ว !!!");
+        //     e.preventDefault();
+        //     return;
+        // }
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Filtering methods Initialization
+    |-----------------------------------------------------------------------------
+    */
     $scope.onStrategicSelected = function(strategic) {
         $scope.forms.strategies = $scope.temps.strategies.filter(stg => stg.strategic_id == strategic);
     };
@@ -229,6 +251,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Item selection processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.showItemsList = function(modalId, inStock='') {
         $scope.forms.categories = $scope.temps.categories.filter(cate => cate.plan_type_id === $scope.planType);
 
@@ -297,6 +324,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         cb(event, item);
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Item insertion processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.showNewItemForm = function() {
         $scope.newItem.plan_type_id = $scope.planType.toString();
         $scope.newItem.in_stock = $scope.inStock;
@@ -406,97 +438,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         };
     };
 
-    $scope.isMaterial = function(planType) {
-        if (parseInt(planType) === 2) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    $scope.isService = function(planType) {
-        if (parseInt(planType) === 3) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    $scope.planId = "";
-    $scope.showSupportedForm = function() {
-        $('#supported-from').modal('show');
-    };
-
-    $scope.sendSupportedDoc = (e, type, id) => {
-        e.preventDefault();
-
-        let data = {
-            doc_no: $('#doc_no').val(),
-            doc_date: $('#doc_date').val(),
-            sent_date: $('#sent_date').val(),
-            sent_user: $('#sent_user').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/plans/send-supported/${id}`, data)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        /** Redirect to list view */
-        if (type == 1) {
-            window.location.href = `${CONFIG.baseUrl}/plans/assets`;
-        } else if (type == 2) {
-            window.location.href = `${CONFIG.baseUrl}/plans/materials`;
-        } else if (type == 3) {
-            window.location.href = `${CONFIG.baseUrl}/plans/services`;
-        } else if (type == 4) {
-            window.location.href = `${CONFIG.baseUrl}/plans/constructs`;
-        }
-    };
-
-    $scope.showPoForm = function() {
-        $('#po-form').modal('show');
-    };
-
-    $scope.createPO = (e, type, id) => {
-        e.preventDefault();
-
-        let data = {
-            po_no: $('#po_no').val(),
-            po_date: $('#po_date').val(),
-            po_net_total: $('#po_net_total').val(),
-            po_user: $('#po_user').val(),
-        };
-
-        $http.post(`${CONFIG.baseUrl}/plans/create-po/${id}`, data)
-        .then(function(res) {
-            console.log(res.data);
-        }, function(err) {
-            console.log(err);
-        });
-
-        /** Redirect to list view */
-        if (type == 1) {
-            window.location.href = `${CONFIG.baseUrl}/plans/assets`;
-        } else if (type == 2) {
-            window.location.href = `${CONFIG.baseUrl}/plans/materials`;
-        } else if (type == 3) {
-            window.location.href = `${CONFIG.baseUrl}/plans/services`;
-        } else if (type == 4) {
-            window.location.href = `${CONFIG.baseUrl}/plans/constructs`;
-        }
-    };
-
-    $scope.isDisabledRequest = function(e, userRole='') {
-        // if (moment().isAfter(moment('2022-08-16 17:30:00')) && userRole != 4) {
-        //     toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งข้อมูลได้ เนื่องจากเลยกำหนดแล้ว !!!");
-        //     e.preventDefault();
-        //     return;
-        // }
-    };
-
+    /*
+    |-----------------------------------------------------------------------------
+    | Change plan's plan_type_id processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.changeData = {
         plan_id: '',
         item_id: '',
@@ -564,13 +510,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         }
     };
 
-    $scope.currencyToNumber = function(currency) {
-        if (typeof currency === 'number') return currency;
-        if (currency == '') return 0;
-
-        return currency.replaceAll(',', '');
-    };
-
+    /*
+    |-----------------------------------------------------------------------------
+    | Item validation processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.onValidateForm = function(e, endpoint, plan, frmName, callback) {
         e.preventDefault();
 
@@ -582,6 +526,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $scope.formValidate(e, endpoint, plan, frmName, callback)
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Detail collapse processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.expandRow = '-1';
     $scope.toggleDetailsCollpse = function(selectedIndex) {
         if ($scope.expandRow === selectedIndex) {

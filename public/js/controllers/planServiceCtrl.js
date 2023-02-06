@@ -362,8 +362,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     */
     $scope.onSelectedItem = function(event, item) {
         if (item) {
-            console.log(item);
-
             /** Check existed data by depart */
             let depart = $scope.service.depart_id === '' ? 0 : $scope.service.depart_id;
 
