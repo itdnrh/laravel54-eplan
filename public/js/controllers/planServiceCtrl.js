@@ -5,15 +5,15 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     |-----------------------------------------------------------------------------
     */
     /** Filtering input controls */
-    $scope.loading = false;
-    $scope.services = [];
-    $scope.pager = null;
-    $scope.plan = null;
-
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
     $scope.cboPrice = '';
     $scope.txtItemName = '';
+
+    $scope.loading = false;
+    $scope.services = [];
+    $scope.pager = null;
+    $scope.plan = null;
 
     $scope.service = {
         id: '',

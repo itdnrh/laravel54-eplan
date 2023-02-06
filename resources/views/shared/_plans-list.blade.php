@@ -15,20 +15,20 @@
                             <div style="display: flex; gap: 5px;">
                                 <input
                                     type="text"
-                                    id="txtKeyword"
                                     name="txtKeyword"
-                                    class="form-control"
-                                    ng-model="txtKeyword"
-                                    ng-change="getAllPlans('0-1')"
                                     placeholder="ค้นหาด้วยชื่อรายการ"
+                                    class="form-control"
                                     style="width: 50%;"
+                                    ng-model="txtKeyword"
+                                    ng-keyup="handleInputChange('txtKeyword', txtKeyword); getAllPlans('0-1');"
                                 />
-                                <select id="cboDepart"
-                                        name="cboDepart"
-                                        ng-model="cboDepart"
-                                        ng-change="getAllPlans('0-1')"
-                                        class="form-control select2" 
-                                        style="width: 50%; font-size: 12px;">
+                                <select
+                                    name="cboDepart"
+                                    ng-model="cboDepart"
+                                    ng-change="handleInputChange('cboDepart', cboDepart); getAllPlans('0-1');"
+                                    class="form-control select2" 
+                                    style="width: 50%; font-size: 12px;"
+                                >
                                     <option value="">-- กลุ่มงานทั้งหมด --</option>
                                     @foreach($departs as $depart)
                                         <option value="{{ $depart->depart_id }}">

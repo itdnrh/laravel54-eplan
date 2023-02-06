@@ -724,7 +724,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
                         ? $scope.cboDepart
                         : $('#depart_id').val();
 
-        $http.get(`${url}&type=-&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        $http.get(`${url}&type=3&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
         .then(function(res) {
             cb(res);
 
