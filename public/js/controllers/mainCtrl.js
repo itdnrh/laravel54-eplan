@@ -1,6 +1,4 @@
 app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, $location, $routeParams) {
-    console.log(CONFIG);
-
     /*
     |-----------------------------------------------------------------------------
     | Local variables and constraints initialization
@@ -155,7 +153,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
                 if (days == 1) {
                     return 'เมื่อวาน';
                 }
-    
+
                 return ` ${days} วันที่แล้ว`;
             } else {
                 return ` ${hours} ชม.ที่แล้ว`;
