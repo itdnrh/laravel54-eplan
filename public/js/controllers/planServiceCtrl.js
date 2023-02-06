@@ -30,6 +30,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
+        is_addon: false,
+        addon_id: '',
+        addon_detail: null,
         reason: '',
         remark: ''
     };
@@ -99,6 +102,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             strategic_id: '',
             service_plan_id: '',
             start_month: '',
+            is_addon: false,
+            addon_id: '',
+            addon_detail: null,
             reason: '',
             remark: ''
         };
@@ -112,6 +118,11 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $('#sum_price').val(price * amount);
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan service CRUD operations
+    |-----------------------------------------------------------------------------
+    */
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.services = [];
@@ -174,35 +185,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             console.log(err);
             $scope.loading = false;
         });
-    };
-
-    $scope.onSelectedItem = function(event, item) {
-        if (item) {
-            /** Check existed data by depart */
-            let depart = $scope.service.depart_id === '' ? 0 : $scope.service.depart_id;
-
-            // $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.service.year}/${depart}/existed`)
-            // .then(function(res) {
-            //     if (res.data.isExisted) {
-            //         toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
-            //     } else {
-                    $('#item_id').val(item.id);
-                    $scope.service.item_id = item.id;
-                    $scope.service.desc = item.item_name;
-                    $scope.service.price_per_unit = item.price_per_unit;
-                    $scope.service.unit_id = item.unit_id.toString();
-                    $scope.service.have_subitem = item.have_subitem;
-                    $scope.service.calc_method = item.calc_method;
-
-                    $('#have_subitem').val(item.have_subitem);
-                    $('#calc_method').val(item.calc_method);
-            //     }
-            // }, function(err) {
-            //     console.log(err);
-            // });
-        }
-
-        $('#items-list').modal('hide');
     };
 
     $scope.getById = function(id, cb) {
@@ -343,6 +325,124 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showPlansList = () => {
+        if (!$scope.service.depart_id) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกหน่วยงานก่อน !!!");
+            return;
+        }
+
+        $scope.getPlans('0-1', true);
+    };
+
+    $scope.getPlans = (status, toggleModal=false) => {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                        ? $scope.cboDepart
+                        : $('#depart_id').val();
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        .then(function(res) {
+            if (toggleModal) $('#plans-list').modal('show');
+
+            $scope.setPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getPlansWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                        ? $scope.cboDepart
+                        : $('#depart_id').val();
+
+        $http.get(`${url}&type=-&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.plans_pager = pager;
+    };
+
+    $scope.onSelectedPlan = (e, plan) => {
+        if (plan) {
+            $scope.service.addon_detail = plan;
+            $scope.service.addon_id     = plan.id;
+        }
+
+        $('#plans-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Item selection operations
+    |-----------------------------------------------------------------------------
+    */
+    $scope.onSelectedItem = function(event, item) {
+        if (item) {
+            console.log(item);
+
+            /** Check existed data by depart */
+            let depart = $scope.service.depart_id === '' ? 0 : $scope.service.depart_id;
+
+            // $http.get(`${CONFIG.apiUrl}/plans/${item.id}/${$scope.service.year}/${depart}/existed`)
+            // .then(function(res) {
+            //     if (res.data.isExisted) {
+            //         toaster.pop('error', "ผลการตรวจสอบ", "รายการที่คุณเลือกมีอยู่ในแผนแล้ว !!!");
+            //     } else {
+                    $('#item_id').val(item.id);
+                    $scope.service.item_id = item.id;
+                    $scope.service.desc = item.item_name;
+                    $scope.service.price_per_unit = item.price_per_unit;
+                    $scope.service.unit_id = item.unit_id.toString();
+                    $scope.service.have_subitem = item.have_subitem;
+                    $scope.service.calc_method = item.calc_method;
+                    $scope.is_addon = item.is_addon === 1;
+                    $('#have_subitem').val(item.have_subitem);
+                    $('#calc_method').val(item.calc_method);
+            //     }
+            // }, function(err) {
+            //     console.log(err);
+            // });
+        }
+
+        $('#items-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Export data operations
+    |-----------------------------------------------------------------------------
+    */
     $scope.exportListToExcel = function(e) {
         e.preventDefault();
 

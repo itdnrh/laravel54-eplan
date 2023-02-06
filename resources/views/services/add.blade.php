@@ -444,6 +444,44 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(service, 'addon_id')}"
+                                    ng-show="is_addon"
+                                >
+                                    <label>ใช้กับแผนจ้างบริการ (ที่ได้รับการอนุมัติแล้ว) :</label>
+                                    <div class="input-group">
+                                        <div class="form-control" readonly>
+                                            @{{ service.addon_detail.plan_no }}
+                                            @{{ service.addon_detail.plan_item.item.item_name }}
+                                            <span ng-show="service.addon_detail">
+                                                งบประมาณ @{{ service.addon_detail.plan_item.sum_price | currency:'':2 }} บาท
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="hidden"
+                                            id="addon_id"
+                                            name="addon_id"
+                                            class="form-control"
+                                            ng-model="support.addon_id"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showPlansList();"
+                                            >
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(service, 'addon_id')">
+                                        @{{ formError.errors.addon_id[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'reason')}"
                                 >
@@ -506,6 +544,7 @@
 
         @include('shared._items-list')
         @include('shared._item-form')
+        @include('shared._plans-list')
 
     </section>
 

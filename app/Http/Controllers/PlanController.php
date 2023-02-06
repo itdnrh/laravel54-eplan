@@ -165,8 +165,12 @@ class PlanController extends Controller
                                 $q->where('plan_items.price_per_unit', '>=', $price);
                             }
                         })
-                        ->when(!empty($addon), function($q) use ($addon) {
-                            $q->where('plan_items.addon_id', $addon);
+                        ->when($addon != '', function($q) use ($addon) {
+                            if ($addon == '0') {
+                                $q->whereNull('plan_items.addon_id');
+                            } else {
+                                $q->where('plan_items.addon_id', $addon);
+                            }
                         })
                         ->pluck('plan_items.plan_id');
 
@@ -187,7 +191,7 @@ class PlanController extends Controller
                     ->when(!empty($haveSubitem), function($q) use ($plansList) {
                         $q->whereIn('plans.id', $plansList);
                     })
-                    ->when(!empty($addon), function($q) use ($plansList) {
+                    ->when($addon != '', function($q) use ($plansList) {
                         $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($year), function($q) use ($year) {
