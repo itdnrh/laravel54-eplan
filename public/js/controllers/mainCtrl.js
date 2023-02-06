@@ -665,7 +665,10 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         let balance = 0;
 
         plans.forEach(detail => {
-            balance = balance + (!$scope.checkBalance(detail.plan.plan_item.remain_budget, detail.sum_price) ? 1 : 0);
+            const addon = detail.addon ? detail.addon.plan_item.sum_price : 0;
+            const remain = detail.addon ? (detail.plan.plan_item.remain_budget + addon) : detail.plan.plan_item.remain_budget;
+
+            balance = balance + (!$scope.checkBalance(remain, detail.sum_price) ? 1 : 0);
         });
 
         return balance;
