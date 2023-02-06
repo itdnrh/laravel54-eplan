@@ -468,7 +468,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-info btn-flat"
-                                                ng-click="showPlansList();"
+                                                ng-click="showAllPlansList('0-1', service.depart_id);"
                                             >
                                                 ...
                                             </button>

@@ -19,14 +19,14 @@
                                     name="txtKeyword"
                                     class="form-control"
                                     ng-model="txtKeyword"
-                                    ng-change="getPlans('0-1')"
+                                    ng-change="getAllPlans('0-1')"
                                     placeholder="ค้นหาด้วยชื่อรายการ"
                                     style="width: 50%;"
                                 />
                                 <select id="cboDepart"
                                         name="cboDepart"
                                         ng-model="cboDepart"
-                                        ng-change="getPlans('0-1')"
+                                        ng-change="getAllPlans('0-1')"
                                         class="form-control select2" 
                                         style="width: 50%; font-size: 12px;">
                                     <option value="">-- กลุ่มงานทั้งหมด --</option>
@@ -129,13 +129,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="plans_pager.current_page !== 1">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1', '0-1', setPlans)" aria-label="Previous">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.path+ '?page=1', '0-1', setAllPlans)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==1)}">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.prev_page_url, '0-1', setPlans)" aria-label="Prev">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.prev_page_url, '0-1', setAllPlans)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -147,13 +147,13 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.next_page_url, '0-1', setPlans)" aria-label="Next">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.next_page_url, '0-1', setAllPlans)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
 
                                 <li ng-if="plans_pager.current_page !== plans_pager.last_page">
-                                    <a ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, '0-1', setPlans)" aria-label="Previous">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, '0-1', setAllPlans)" aria-label="Previous">
                                         <span aria-hidden="true">Last</span>
                                     </a>
                                 </li>

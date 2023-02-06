@@ -1,35 +1,6 @@
 app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $routeParams) {
-/** ################################################################################## */
     console.log(CONFIG);
-/** ################################################################################## */
-    //################## autocomplete ##################
-    // $scope.maintenanceList = [];
-    // $scope.fillinMaintenanceList = function(event) {
-    //     console.log(event.keyCode);
-    //     if (event.which === 13) {
-    //         event.preventDefault();
-    //         $scope.maintenanceList.push($(event.target).val());
 
-    //         //เคลียร์ค่าใน text searchProduct
-    //         $(event.target).val('');
-
-    //         var maindetained_detail = "";
-    //         var count = 0;
-    //         angular.forEach($scope.maintenanceList, function(maintained) {
-    //             if(count != $scope.maintenanceList.length - 1){
-    //                 maindetained_detail += maintained + ",";
-    //             } else {
-    //                 maindetained_detail += maintained
-    //             }
-
-    //             count++;
-    //         });
-
-    //         $('#detail').val(maindetained_detail);
-    //     }
-    // }
-
-/** ################################################################################## */
     /** MENU */
     $scope.menu = 'assets';
     $scope.submenu = 'list';
@@ -45,6 +16,7 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         e.preventDefault();
         window.location.href = `${CONFIG.baseUrl}/${path}`;
     };
+
 /** ################################################################################## */
     $scope.cboYear = '2566';
     // $scope.cboYear = parseInt(moment().format('MM')) > 9
@@ -680,6 +652,11 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         $('#sum_price').val(sumPrice);
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan balance checking processes
+    |-----------------------------------------------------------------------------
+    */
     $scope.checkBalance = function(remain, sumPrice) {
         return !(remain < 0 || remain < sumPrice);
     };
@@ -692,5 +669,73 @@ app.controller('mainCtrl', function(CONFIG, $scope, $http, toaster, $location, $
         });
 
         return balance;
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showAllPlansList = (status, depart) => {
+        if (!depart) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกหน่วยงานก่อน !!!");
+            return;
+        }
+
+        $scope.getAllPlans(status, true);
+    };
+
+    $scope.getAllPlans = (status, toggleModal=false) => {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                        ? $scope.cboDepart
+                        : $('#depart_id').val();
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        .then(function(res) {
+            if (toggleModal) $('#plans-list').modal('show');
+
+            $scope.setAllPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getAllPlansWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.plans_pager = null;
+
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                        ? $scope.cboDepart
+                        : $('#depart_id').val();
+
+        $http.get(`${url}&type=-&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.setAllPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.plans_pager = pager;
     };
 });

@@ -346,69 +346,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     | Plan selection processes
     |-----------------------------------------------------------------------------
     */
-    $scope.showPlansList = () => {
-        if (!$scope.service.depart_id) {
-            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกหน่วยงานก่อน !!!");
-            return;
-        }
-
-        $scope.getPlans('0-1', true);
-    };
-
-    $scope.getPlans = (status, toggleModal=false) => {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
-        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
-                        ? $scope.cboDepart
-                        : $('#depart_id').val();
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
-        .then(function(res) {
-            if (toggleModal) $('#plans-list').modal('show');
-
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.getPlansWithUrl = function(e, url, status, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
-
-        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
-        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
-                        ? $scope.cboDepart
-                        : $('#depart_id').val();
-
-        $http.get(`${url}&type=-&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
-    };
-
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
             $scope.service.addon_detail = plan;
