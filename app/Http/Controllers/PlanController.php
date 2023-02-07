@@ -176,26 +176,11 @@ class PlanController extends Controller
 
         $plans = Plan::with('budget','depart','division','planItem','adjustments')
                     ->with('planItem.unit','planItem.item','planItem.item.category')
-                    ->when(!empty($type), function($q) use ($type) {
-                        $q->where('plans.plan_type_id', $type);
-                    })
-                    ->when(!empty($cate), function($q) use ($plansList) {
-                        $q->whereIn('plans.id', $plansList);
-                    })
-                    ->when($inStock != '', function($q) use ($plansList) {
-                        $q->whereIn('plans.id', $plansList);
-                    })
-                    ->when(!empty($name), function($q) use ($plansList) {
-                        $q->whereIn('plans.id', $plansList);
-                    })
-                    ->when(!empty($haveSubitem), function($q) use ($plansList) {
-                        $q->whereIn('plans.id', $plansList);
-                    })
-                    ->when($addon != '', function($q) use ($plansList) {
-                        $q->whereIn('plans.id', $plansList);
-                    })
                     ->when(!empty($year), function($q) use ($year) {
                         $q->where('plans.year', $year);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('plans.plan_type_id', $type);
                     })
                     ->when(!empty($faction), function($q) use ($departsList, $depart, $cate) {
                         if ((Auth::user()->memberOf->depart_id == '39' && $cate == '3') || (Auth::user()->memberOf->depart_id == '65' && $cate == '4')) {
@@ -228,6 +213,21 @@ class PlanController extends Controller
                     })
                     ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                         $q->whereBetween('plans.status', $arrStatus);
+                    })
+                    ->when(!empty($cate), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when($inStock != '', function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when(!empty($name), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when(!empty($haveSubitem), function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
+                    })
+                    ->when($addon != '', function($q) use ($plansList) {
+                        $q->whereIn('plans.id', $plansList);
                     })
                     ->when(!empty($price), function($q) use ($plansList) {
                         $q->whereIn('plans.id', $plansList);
