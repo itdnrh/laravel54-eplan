@@ -79,6 +79,8 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         error: {}
     };
 
+    $scope.plansTotal = 0;
+
     /*
     |-----------------------------------------------------------------------------
     | Shared methods Initialization
