@@ -96,8 +96,11 @@ class PlanController extends Controller
 
     public function search(Request $req)
     {
+        $plans = $this->getData($req);
+
         return [
-            "plans"     => $this->getData($req)->paginate(10)
+            "plansTotal"    => $plans->get(),
+            "plans"         => $plans->paginate(10)
         ];
     }
 

@@ -202,6 +202,12 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         // }
     };
 
+    $scope.calculatePlansTotal = function(plans) {
+        return plans.reduce((sum, curVal) => {
+            return sum + curVal.plan_item.sum_price;
+        }, 0);
+    };
+
     /*
     |-----------------------------------------------------------------------------
     | Filtering methods Initialization
