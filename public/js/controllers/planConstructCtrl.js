@@ -160,6 +160,8 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
         $scope.constructs = data;
         $scope.pager = pager;
+
+        $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
     };
 
     $scope.getDataWithUrl = function(e, url, cb) {

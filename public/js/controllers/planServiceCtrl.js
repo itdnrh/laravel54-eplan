@@ -171,6 +171,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
 
         $scope.services = data;
         $scope.pager = pager;
+
+        $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
     };
 
     $scope.getDataWithUrl = function(e, url, cb) {
