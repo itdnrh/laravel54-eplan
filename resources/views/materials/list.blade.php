@@ -400,7 +400,7 @@
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
+                                จำนวน @{{ pager.total }} รายการ | ยอดขอทั้งสิ้น <b>@{{ plansTotal | currency:'':2 }}</b> บาท
                             </div>
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
