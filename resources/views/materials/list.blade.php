@@ -259,6 +259,7 @@
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/materials/add?in_stock='.$in_stock) }}" class="btn btn-primary pull-right" ng-click="isDisabledRequest($event, {{ Auth::user()->memberOf->depart_id }})"><!-- // -->
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
                                     เพิ่มรายการ
                                 </a>
                                 <!-- <a
@@ -270,7 +271,12 @@
                                     เพิ่มรายการจากปีที่แล้ว
                                 </a> -->
                                 <a href="#" ng-show="materials.length" ng-click="exportListToExcel($event, {{ $in_stock }})" class="btn btn-success pull-right" style="margin-right: 5px;">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                     Excel
+                                </a>
+                                <a href="#" ng-show="materials.length" ng-click="exportListToPdf($event, {{ $in_stock }})" class="btn btn-danger pull-right" style="margin-right: 5px;">
+                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                    พิมพ์รายการ
                                 </a>
                             </div>
                         </div>

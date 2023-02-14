@@ -421,33 +421,6 @@ class PlanController extends Controller
         }
     }
 
-    public function excel(Request $req)
-    {
-        $planType = PlanType::find($req->get('type'));
-
-        $fileName = 'plans-list-' . date('YmdHis') . '.xlsx';
-        $options = [
-            'plan_type_id' => $planType->id,
-            'plan_type_name' => $planType->plan_type_name,
-            'year' => $req->get('year'),
-        ];
-        
-        $this->exportExcel($fileName, 'exports.plans-list-excel', $this->getData($req)->get(), $options);
-    }
-
-    private function exportExcel($fileName, $view, $data, $options)
-    {
-        return \Excel::create($fileName, function($excel) use ($view, $data, $options) {
-            $excel->sheet('sheet1', function($sheet) use ($view, $data, $options)
-            {
-                $sheet->loadView($view, [
-                    'data' => $data,
-                    'options' => $options
-                ]);                
-            });
-        })->download();
-    }
-
     public function getData(Request $req)
     {
         $matched = [];
@@ -456,28 +429,28 @@ class PlanController extends Controller
         $pattern = '/^\<|\>|\&|\-/i';
 
         /** Get params from query string */
-        $year   = $req->get('year');
-        $type   = $req->get('type');
-        $cate   = $req->get('cate');
-        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == '4')
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $cate       = $req->get('cate');
+        $faction    = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == '4')
                         ? $req->get('faction')
                         : Auth::user()->memberOf->faction_id;
-        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '4')
+        $depart     = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->depart_id == '4')
                         ? $req->get('depart')
                         : Auth::user()->memberOf->depart_id;
-        $division = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->duty_id == '2' || Auth::user()->memberOf->depart_id == '4')
+        $division   = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->duty_id == '1' || Auth::user()->memberOf->duty_id == '2' || Auth::user()->memberOf->depart_id == '4')
                         ? $req->get('division')
                         : '';
-        $status = $req->get('status');
-        $approved = $req->get('approved');
-        $inStock = $req->get('in_stock');
-        $name = $req->get('name');
-        $price = $req->get('price');
-        $budget = $req->get('budget');
-        $inPlan = $req->get('in_plan');
-        $showAll = $req->get('show_all');
+        $status     = $req->get('status');
+        $approved   = $req->get('approved');
+        $inStock    = $req->get('in_stock');
+        $name       = $req->get('name');
+        $price      = $req->get('price');
+        $budget     = $req->get('budget');
+        $inPlan     = $req->get('in_plan');
+        $showAll    = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
-        $addon = $req->get('addon');
+        $addon      = $req->get('addon');
 
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
@@ -593,13 +566,50 @@ class PlanController extends Controller
         return $plans;
     }
 
-    public function printForm($id)
+    public function excel(Request $req)
     {
+        $planType = PlanType::find($req->get('type'));
+
+        $fileName = 'plans-list-' . date('YmdHis') . '.xlsx';
+        $options = [
+            'plan_type_id' => $planType->id,
+            'plan_type_name' => $planType->plan_type_name,
+            'year' => $req->get('year'),
+        ];
+        
+        $this->exportExcel($fileName, 'exports.plans-list-excel', $this->getData($req)->get(), $options);
+    }
+
+    private function exportExcel($fileName, $view, $data, $options)
+    {
+        return \Excel::create($fileName, function($excel) use ($view, $data, $options) {
+            $excel->sheet('sheet1', function($sheet) use ($view, $data, $options)
+            {
+                $sheet->loadView($view, [
+                    'data' => $data,
+                    'options' => $options
+                ]);                
+            });
+        })->download();
+    }
+
+    public function printForm(Request $req)
+    {
+        $plans = $this->getData($req)->get();
+        $inStock = array_key_exists('in_stock', $req->all()) ? $req->get('in_stock') : '';
+
         $data = [
-            'plan' => $this->getData($req)->get()
+            "plans"     => $plans,
+            "planType"  => PlanType::find($req->get('type')),
+            "inStock"   => $inStock == '' ? '' : ($inStock == '0' ? 'นอกคลัง' : 'ในคลัง')
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.form02', $data);
+        $customPaper = [
+            'size'          => 'a4',
+            'orientation'   => 'landscape'
+        ];
+
+        return renderPdf('forms.plans-list', $data, 'download', $customPaper);
     }
 }

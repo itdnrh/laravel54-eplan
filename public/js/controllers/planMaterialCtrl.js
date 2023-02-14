@@ -8,6 +8,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
     $scope.cboPrice = '';
+    $scope.cboBudget = '';
     $scope.txtItemName = '';
 
     $scope.material = {
@@ -374,6 +375,28 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
 
             window.location.href = `${CONFIG.baseUrl}/plans/excel?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`;
+        }
+    };
+
+    $scope.exportListToPdf = function(e, inStock) {
+        e.preventDefault();
+
+        if($scope.materials.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+            let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+            let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+            let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+            let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+            let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+            let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+            let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+            let approved    = $scope.isApproved ? 'A' : '';
+            let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+
+            window.location.href = `${CONFIG.baseUrl}/materials/print?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&in_stock=${inStock}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`;
         }
     };
 });

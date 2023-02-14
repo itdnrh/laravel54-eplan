@@ -241,7 +241,7 @@
                                                                     <p style="margin: 0">&nbsp;</p>
                                                                 @endif
                                                             @endif
-                                                            </div>
+                                                        </div>
                                                     </td>
                                                     <td style="text-align: center;">
                                                         {{ thainumDigit(number_format($detail->amount)) }}

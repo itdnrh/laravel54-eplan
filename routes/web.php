@@ -89,7 +89,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('assets/edit/{id}', 'PlanAssetController@edit');
     Route::post('assets/update/{id}', 'PlanAssetController@update');
     Route::post('assets/delete/{id}', 'PlanAssetController@delete');
-    Route::get('assets/print/{id}', 'PlanAssetController@printLeaveForm');
+    Route::get('assets/print', 'PlanController@printForm');
 
     /** แผนวัสดุ */
     Route::post('materials/validate', 'PlanMaterialController@formValidate');
@@ -99,7 +99,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('materials/edit/{id}', 'PlanMaterialController@edit');
     Route::post('materials/update/{id}', 'PlanMaterialController@update');
     Route::post('materials/delete/{id}', 'PlanMaterialController@delete');
-    Route::get('materials/print/{id}', 'PlanMaterialController@printLeaveForm');
+    Route::get('materials/print', 'PlanController@printForm');
 
     /** แผนจ้างบริการ */
     Route::post('services/validate', 'PlanServiceController@formValidate');
@@ -109,7 +109,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('services/edit/{id}', 'PlanServiceController@edit');
     Route::post('services/update/{id}', 'PlanServiceController@update');
     Route::post('services/delete/{id}', 'PlanServiceController@delete');
-    Route::get('services/print/{id}', 'PlanServiceController@printLeaveForm');
+    Route::get('services/print', 'PlanController@printForm');
 
     /** แผนก่อสร้าง */
     Route::post('constructs/validate', 'PlanConstructController@formValidate');
@@ -119,7 +119,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('constructs/edit/{id}', 'PlanConstructController@edit');
     Route::post('constructs/update/{id}', 'PlanConstructController@update');
     Route::post('constructs/delete/{id}', 'PlanConstructController@delete');
-    Route::get('constructs/print/{id}', 'PlanConstructController@printLeaveForm');
+    Route::get('constructs/print', 'PlanController@printForm');
 
     /** แผนโครงการ */
     Route::post('projects/validate', 'ProjectController@formValidate');

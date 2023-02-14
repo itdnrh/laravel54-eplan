@@ -118,9 +118,13 @@ function convDbDateToLongThMonth($dbDate)
 /**
  * $renderType should be 'preview' | 'download'
  */
-function renderPdf($view, $data, $renderType = 'preview')
+function renderPdf($view, $data, $renderType = 'preview', $paper = null)
 {
     $pdf = PDF::loadView($view, $data);
+
+    if ($paper) {
+        $pdf->setPaper($paper['size'], $paper['orientation']);
+    }
 
     /** แบบนี้จะ stream มา preview */
     if ($renderType == 'preview') {
@@ -128,7 +132,7 @@ function renderPdf($view, $data, $renderType = 'preview')
     }
 
     /** แบบนี้จะดาวโหลดเลย */
-    return $pdf->download('test.pdf');
+    return $pdf->download(date('dmY').'-'.uniqid().'.pdf');
 }
 
 function thainumDigit($num){

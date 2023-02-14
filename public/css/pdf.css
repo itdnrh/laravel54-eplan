@@ -44,18 +44,23 @@ body {
   width: 100%;
   padding: 0;
   margin: 0 1.2cm 0 2cm;
-  /* background-image: url("assets/img/print_bg.png"); */
-  /* background-repeat: repeat; */
-  /* background-position: center; */
+  /* border: 1px dashed red; */
+}
+
+.list-container {
+  width: 100%;
+  padding: 0;
+  margin: 0 1cm 0 1cm;
+  page-break-inside: avoid !important;
   /* border: 1px dashed red; */
 }
 
 .header {
-  margin: 0 0 0 0;
-  padding: 5px 5px 0;
+  margin: 0;
+  padding: 0 5px;
   text-align: center;
   position: relative;
-  border: 1px dotted gray;
+  /* border: 1px dotted gray; */
 }
 
 .memo-header {
@@ -143,23 +148,6 @@ body {
   /* border: 1px dashed red; */
 }
 
-table.layout {
-  width: 100%;
-  border-collapse: collapse;
-  /* border: 1px solid black; */
-}
-
-table.layout tr {
-  line-height: 16px;
-}
-
-table.layout th,
-table.layout td {
-  margin: 0;
-  padding: 0;
-  vertical-align: text-top;
-}
-
 .content {
   padding: 0;
   height: auto;
@@ -217,27 +205,46 @@ table.layout td {
   /* border: 1px solid black; */
 }
 
+table.layout {
+  width: 100%;
+  border-collapse: collapse;
+  page-break-inside: avoid !important;
+  /* border: 1px solid black; */
+}
+
+table.layout tr {
+  line-height: 16px;
+}
+
+table.layout th,
+table.layout td {
+  margin: 0;
+  padding: 0;
+  vertical-align: text-top;
+}
+
 .table-container {
   margin: 5px 0;
   padding: 0 5px 0 0;
+  page-break-inside: avoid !important;
   /* border: 1px solid red; */
 }
 
 .table {
   border-collapse: collapse;
+  page-break-inside: avoid !important;
 }
 
 .table th,
 .table td {
   margin: 0;
-  padding: 0 5px;
+  padding: 0;
   vertical-align: text-top;
-  padding-left: 5px;
 }
 
-td p {
+td > p {
   margin: 0;
-  padding: 0;
+  padding: 0 5px;
 }
 
 .with-expanded {
