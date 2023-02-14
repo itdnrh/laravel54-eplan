@@ -208,7 +208,6 @@ body {
 table.layout {
   width: 100%;
   border-collapse: collapse;
-  page-break-inside: avoid !important;
   /* border: 1px solid black; */
 }
 
@@ -240,6 +239,10 @@ table.layout td {
   margin: 0;
   padding: 0;
   vertical-align: text-top;
+}
+
+tr, td, th, tbody, thead, tfoot {
+  page-break-inside: avoid !important;
 }
 
 td > p {

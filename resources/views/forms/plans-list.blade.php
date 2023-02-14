@@ -4,14 +4,14 @@
         <title>รายการแผนคำขอประจำปี</title>
         <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
     </head>
-    <body>
+    <body style="margin: 20px 0;">
         <?php $row = 0; ?>
         <?php $total = 0; ?>
         <div class="list-container">
             <div class="header" style="margin-top: 20px;">
                 <h2 style="margin: 0">รายการแผนคำขอประจำปี</h2>
                 <h3 style="margin: 0">
-                    ประเภท {{ $planType->plan_type_name.$inStock }}
+                    ประเภท{{ $planType->plan_type_name.$inStock }}
                     จำนวน {{ count($plans) }} รายการ
                 </h3>
             </div>
