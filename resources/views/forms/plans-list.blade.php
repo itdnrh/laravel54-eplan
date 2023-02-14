@@ -35,12 +35,12 @@
                                 <p>{{ $plan->planItem->item->category->name }}</p>
                             </td>
                             <td>
-                                <div style="padding: 0 5px;">
+                                <div style="padding: 0;">
                                     {{ $plan->plan_no }}-{{ $plan->planItem->item->item_name }}
                                 </div>
                             </td>
                             <td>
-                                <div style="padding: 0 5px;">
+                                <div style="padding: 0">
                                     {{ $plan->depart->depart_name }}
 
                                     @if($plan->division)
@@ -52,10 +52,10 @@
                                 {{ number_format($plan->planItem->amount) }}
                             </td>
                             <td style="text-align: right;">
-                                <p>{{ number_format($plan->planItem->price_per_unit, 2) }}</p>
+                                {{ number_format($plan->planItem->price_per_unit, 2) }}
                             </td>
                             <td style="text-align: right;">
-                                <p>{{ number_format($plan->planItem->sum_price, 2) }}</p>
+                                {{ number_format($plan->planItem->sum_price, 2) }}
                             </td>
                         </tr>
 
@@ -67,7 +67,7 @@
                             รวมเป็นเงินทั้งสิ้น
                         </td>
                         <td style="text-align: right;">
-                            <p>{{ number_format($total, 2) }}</p>
+                            {{ number_format($total, 2) }}
                         </td>
                     </tr>
                 </table>
