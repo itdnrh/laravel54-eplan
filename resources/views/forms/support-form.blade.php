@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
     </head>
     <body>
-        <div class="container">
+        <div class="memo-container-narrow">
             <div class="memo-header-narrow">
                 <div class="logo-krut">
                     <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
@@ -14,6 +14,7 @@
             </div>
             <div class="content">
                 <?php $committeeHeight = 0; ?>
+
                 <table style="width: 100%;">
                     <tr>
                         <td colspan="4">

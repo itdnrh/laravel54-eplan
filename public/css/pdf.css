@@ -40,14 +40,12 @@ body {
   /* border: 1px solid red; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* กรอบแบบพิพม์ทั่วไป
+*---------------------------------------------------------------------------
+*/
 .container {
-  width: 100%;
-  padding: 0;
-  margin: 0 1.2cm 0 2cm;
-  /* border: 1px dashed red; */
-}
-
-.list-container {
   width: 100%;
   padding: 0;
   margin: 0 1cm 0 1cm;
@@ -63,6 +61,19 @@ body {
   /* border: 1px dotted gray; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* บันทึกข้อความแบบปกติ
+*---------------------------------------------------------------------------
+*/
+.memo-container {
+  width: 100%;
+  padding: 0;
+  margin: 0 2cm 0 3cm;
+  font-size: 16pt;
+  /* border: 1px dashed red; */
+}
+
 .memo-header {
   margin: 0 0 0 0;
   padding: 5px 5px 0;
@@ -71,22 +82,8 @@ body {
   /* border: 1px dotted gray; */
 }
 
-.memo-header-narrow {
-  margin: 0 0 0 0;
-  padding: 5px 5px 0;
-  text-align: center;
-  height: 2cm;
-  /* border: 1px dotted gray; */
-}
-
 .memo-header > h2 {
   margin: 2.4cm 0 0;
-  padding: 0;
-  /* border: 1px solid red; */
-}
-
-.memo-header-narrow > h2 {
-  margin: 1.4cm 0 0;
   padding: 0;
   /* border: 1px solid red; */
 }
@@ -100,6 +97,32 @@ body {
   /* border: 1px solid red; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* บันทึกข้อความแบบกรอบแคบ
+*---------------------------------------------------------------------------
+*/
+.memo-container-narrow {
+  width: 100%;
+  padding: 0;
+  margin: 0 1.2cm 0 2cm;
+  /* border: 1px dashed red; */
+}
+
+.memo-header-narrow {
+  margin: 0 0 0 0;
+  padding: 5px 5px 0;
+  text-align: center;
+  height: 2cm;
+  /* border: 1px dotted gray; */
+}
+
+.memo-header-narrow > h2 {
+  margin: 1.4cm 0 0;
+  padding: 0;
+  /* border: 1px solid red; */
+}
+
 .memo-header-narrow .logo-krut {
   margin: 0;
   width: 1.6cm;
@@ -109,6 +132,11 @@ body {
   /* border: 1px solid red; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* ส่วนหัวของบันทึกข้อความ
+*---------------------------------------------------------------------------
+*/
 .logo-krut img {
   width: 99%;
   height: 99%;
@@ -120,9 +148,6 @@ body {
   padding: 0;
   line-height: 20px;
   position: relative;
-  /* display: flex;
-  flex-direction: row;
-  align-items: flex-start; */
   /* border: 1px dashed red; */
 }
 
@@ -148,27 +173,53 @@ body {
   /* border: 1px dashed red; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* ส่วนเนื้อหาของบันทึกข้อความ
+*---------------------------------------------------------------------------
+*/
 .content {
   padding: 0;
   height: auto;
   /* border: 1px dotted gray; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* โครงร่างของบันทึกข้อความ
+*---------------------------------------------------------------------------
+*/
+table.layout {
+  width: 100%;
+  border-collapse: collapse;
+  /* border: 1px solid black; */
+}
+
+table.layout tr {
+  line-height: 16px;
+}
+
+table.layout th,
+table.layout td {
+  margin: 0;
+  padding: 0;
+  vertical-align: text-top;
+}
+
+/*
+*---------------------------------------------------------------------------
+* ส่วนล่างของบันทึกข้อความ
+*---------------------------------------------------------------------------
+*/
 .footer {
   border: 1px solid red;
 }
 
-.memo-container {
-  width: 100%;
-  padding: 0;
-  margin: 0 2cm 0 3cm;
-  font-size: 16pt;
-  /* background-image: url("assets/img/print_bg.png"); */
-  /* background-repeat: repeat; */
-  /* background-position: center; */
-  /* border: 1px dashed red; */
-}
-
+/*
+*---------------------------------------------------------------------------
+* ย่อหน้าของบันทึกข้อความ
+*---------------------------------------------------------------------------
+*/
 .memo-paragraph {
   width: 100%;
   margin: 10px 0 0 0;
@@ -178,6 +229,11 @@ body {
   /* border: 1px solid black; */
 }
 
+/*
+*---------------------------------------------------------------------------
+* ย่อหน้าของบันทึกข้อความแบบมีหัวข้อ
+*---------------------------------------------------------------------------
+*/
 .memo-paragraph-topic {
   width: 100%;
   margin: 5px 0 0 0;
@@ -205,23 +261,11 @@ body {
   /* border: 1px solid black; */
 }
 
-table.layout {
-  width: 100%;
-  border-collapse: collapse;
-  /* border: 1px solid black; */
-}
-
-table.layout tr {
-  line-height: 16px;
-}
-
-table.layout th,
-table.layout td {
-  margin: 0;
-  padding: 0;
-  vertical-align: text-top;
-}
-
+/*
+*---------------------------------------------------------------------------
+* ส่วนเนื้อหาที่เป็นรูปแบบตาราง
+*---------------------------------------------------------------------------
+*/
 .table-container {
   margin: 5px 0;
   padding: 0 5px 0 0;
@@ -237,7 +281,7 @@ table.layout td {
 .table th,
 .table td {
   margin: 0;
-  padding: 0;
+  padding: 0 5px;
   vertical-align: text-top;
 }
 
@@ -250,6 +294,11 @@ td > p {
   padding: 0 5px;
 }
 
+/*
+*---------------------------------------------------------------------------
+* ขยาย/บีบข้อมูลในแต่ละแถวของบันทึกข้อความ
+*---------------------------------------------------------------------------
+*/
 .with-expanded {
   text-align: justify;
 }
@@ -258,10 +307,20 @@ td > p {
   letter-spacing: 0.001mm;
 }
 
+/*
+*---------------------------------------------------------------------------
+* การตัดหน้า (ขึ้นหน้าใหม่)
+*---------------------------------------------------------------------------
+*/
 .page-break {
   page-break-after: always;
 }
 
+/*
+*---------------------------------------------------------------------------
+* ...
+*---------------------------------------------------------------------------
+*/
 .dot {
   padding: 0;
   margin: 0;
@@ -294,6 +353,46 @@ span.text-val-dot {
   padding: 0 20px;
 }
 
+.w80 {
+  width: 80%;
+}
+
+.w90 {
+  width: 90%;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.clearfix {
+  overflow: auto;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.support__detail-item {
+  margin: 0 0 0 5px;
+  word-wrap: break-word;
+}
+
+.item__desc-text {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: dimgray;
+  /* border: 1px solid gray; */
+}
+
+/*
+*---------------------------------------------------------------------------
+* การแสดงผลของรายชื่อคณะกรรมการฯ
+*---------------------------------------------------------------------------
+*/
 ul.committee-lists {
   margin: 0;
   padding: 0;
@@ -314,18 +413,11 @@ ul.committee-lists {
   margin-bottom: 2px;
 }
 
-.w80 {
-  width: 80%;
-}
-
-.w90 {
-  width: 90%;
-}
-
-.w100 {
-  width: 100%;
-}
-
+/*
+*---------------------------------------------------------------------------
+* ส่วนการลงนาม
+*---------------------------------------------------------------------------
+*/
 .signature {
   width: 100%;
   margin: 0 0 0 40px;
@@ -340,16 +432,11 @@ ul.committee-lists {
   /* border: 1px solid red; */
 }
 
-.clearfix {
-  overflow: auto;
-}
-
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
+/*
+*---------------------------------------------------------------------------
+* การแสดงเลขหน้า
+*---------------------------------------------------------------------------
+*/
 .next-paragraph {
   position: relative;
   width: 100%;
@@ -373,17 +460,4 @@ ul.committee-lists {
   position: absolute;
   font-size: 14px;
   /* border: 1px dotted red; */
-}
-
-.support__detail-item {
-  margin: 0 0 0 5px;
-  word-wrap: break-word;
-}
-
-.item__desc-text {
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: dimgray;
-  /* border: 1px solid gray; */
 }

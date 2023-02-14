@@ -307,7 +307,7 @@
 
         <!-- ==================================== PAGE 3 ==================================== -->
         <div class="memo-container">
-            <div class="memo-header-narrow">
+            <div class="memo-header">
                 <div class="logo-krut">
                     <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
                 </div>
