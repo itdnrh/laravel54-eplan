@@ -48,6 +48,18 @@ class Handler extends ExceptionHandler
             return redirect('/')->with('status', 'A database connection attempt failed!!');
         }
 
+        if ($exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException) {
+            return response()->view('errors.500', [], 500);
+        }
+
+        if ($this->isHttpException($exception) && $exception->getStatusCode() === 500) {
+            return response()->view('errors.500', [], 500);
+        }
+
+        if ($this->isHttpException($exception) && $exception->getStatusCode() === 404) {
+            return response()->view('errors.404', [], 404);
+        }
+
         return parent::render($request, $exception);
     }
 
