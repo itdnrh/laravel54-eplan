@@ -312,6 +312,67 @@ class ReportController extends Controller
         ];
     }
 
+    public function projectStrategyByQuarter($strategy)
+    {
+        return view('reports.project-strategy-quarter', [
+            "strategics"    => Strategic::all(),
+            "projectTypes"  => ProjectType::all(),
+            'strategy'      => Strategy::find($strategy)
+        ]);
+    }
+
+    public function getProjectStrategyByQuarter(Request $req, $strategy)
+    {
+        /** Get params from query string */
+        $year       = $req->get('year');
+        $type       = $req->get('type');
+        $strategic  = $req->get('strategic');
+        $approved   = $req->get('approved');
+
+        $strategiesList = Strategy::where('strategic_id', $strategic)->pluck('id');
+
+        $projects = Project::with('kpi','depart','owner','budgetSrc','timeline','payments')
+                        ->where('projects.year', $year)
+                        ->when(!empty($strategic), function($q) use ($strategiesList) {
+                            $q->whereIn('projects.strategy_id', $strategiesList);
+                        })
+                        ->when(!empty($strategy), function($q) use ($strategy) {
+                            $q->where('strategy_id', $strategy);
+                        })
+                        ->when(!empty($type), function($q) use ($type) {
+                            $q->where('projects.project_type_id', $type);
+                        })
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('projects.approved', $approved);
+                        })
+                        ->get();
+
+        $payments = \DB::table('project_payments')
+                    ->select(
+                        "project_payments.project_id",
+                        \DB::raw("sum(project_payments.net_total) as total_paid")
+                    )
+                    ->leftJoin('projects', 'projects.id', '=', 'project_payments.project_id')
+                    ->where('projects.year', $year)
+                    ->when(!empty($strategic), function($q) use ($strategiesList) {
+                        $q->whereIn('projects.strategy_id', $strategiesList);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('projects.project_type_id', $type);
+                    })
+                    ->when(!empty($approved), function($q) use ($approved) {
+                        $q->where('projects.approved', $approved);
+                    })
+                    ->groupBy("project_payments.project_id")
+                    ->get();
+
+        return [
+            'projects'      => $projects,
+            'payments'      => $payments,
+            'strategies'    => Strategy::all(),
+        ];
+    }
+
     public function planByFaction()
     {
         $depart = '';

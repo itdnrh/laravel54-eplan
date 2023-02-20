@@ -5,14 +5,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายงานแผนงาน/โครงการตามไตรมาส
+            รายงานการดำเนินงานของแผนงาน/โครงการ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
             <li class="breadcrumb-item"><a href="{{ url('/reports/all') }}">รายงาน</a></li>
-            <li class="breadcrumb-item active">รายงานแผนงาน/โครงการตามไตรมาส</li>
+            <li class="breadcrumb-item active">รายงานการดำเนินงานของแผนงาน/โครงการ</li>
         </ol>
     </section>
 
@@ -20,7 +20,7 @@
     <section
         class="content"
         ng-controller="reportCtrl"
-        ng-init="getProjectProcessByQuarter();"
+        ng-init="getProjectStrategyByQuarter({{ $strategy->id }});"
     >
 
         <div class="row">
@@ -42,7 +42,7 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getProjectProcessByQuarter()"
+                                        ng-change="getProjectStrategyByQuarter({{ $strategy->id }})"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -56,7 +56,7 @@
                                         id="cboProjectType"
                                         name="cboProjectType"
                                         ng-model="cboProjectType"
-                                        ng-change="getProjectProcessByQuarter()"
+                                        ng-change="getProjectStrategyByQuarter({{ $strategy->id }})"
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
@@ -74,7 +74,7 @@
                                         name="cboApproved"
                                         ng-model="cboApproved"
                                         class="form-control"
-                                        ng-change="getProjectProcessByQuarter()"
+                                        ng-change="getProjectStrategyByQuarter({{ $strategy->id }})"
                                     >
                                         <option value="">ยังไม่อนุมัติ</option>
                                         <option value="A">อนุมัติ</option>
@@ -90,7 +90,11 @@
                     <div class="box-header with-border table-striped">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">รายงานแผนงาน/โครงการตามไตรมาส ปีงบประมาณ @{{ cboYear }}</h3>
+                                <h3 class="box-title">รายงานแผนงาน/โครงการ ปีงบประมาณ @{{ cboYear }}</h3>
+                                <h5>
+                                    <span style="font-weight: bold;">กลยุทธ์</span>
+                                    {{ $strategy->strategy_name }}
+                                </h5>
                             </div>
                             <div class="col-md-6">
                                 <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
@@ -104,71 +108,41 @@
                         <table class="table table-bordered table-striped" id="tableData">
                             <thead>
                                 <tr>
-                                    <th style="width: 3%; text-align: center;" rowspan="2">#</th>
-                                    <th style="text-align: left;" rowspan="2">กลยุทธ์</th>
-                                    <th style="text-align: center;" rowspan="2">ยุทธศาสตร์ที่</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 1</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 2</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 3</th>
-                                    <th style="text-align: center;" colspan="2">ไตรมาส 4</th>
-                                    <th style="text-align: center;" colspan="2">รวม</th>
-                                </tr>
-                                <tr>
-                                    <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
-                                    <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
-                                    <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
-                                    <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
-                                    <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
+                                    <th style="width: 3%; text-align: center;">#</th>
+                                    <th style="text-align: left;">โครงการ</th>
+                                    <!-- <th style="text-align: center;">ยุทธศาสตร์ที่</th> -->
+                                    <th style="width: 8%; text-align: right;">งบประมาณ</th>
+                                    <th style="width: 8%; text-align: center;">ใช้ไป</th>
+                                    <th style="width: 8%; text-align: center;">คงเหลือ</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="(index, project) in projects">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>
-                                        <a href="{{ url('/reports/project-strategy-quarter') }}/@{{ project.strategy_id }}">
-                                            @{{ project.strategy_name }}
+                                        <a href="{{ url('/projects/detail') }}/@{{ project.id }}">
+                                            @{{ project.project_no }} @{{ project.project_name }}
                                         </a>
                                     </td>
-                                    <td style="text-align: center;">@{{ project.strategic_id }}</td>
-                                    <td style="text-align: right;">@{{ project.q1_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ project.q1_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ project.q2_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ project.q2_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ project.q3_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ project.q3_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ project.q4_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ project.q4_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ project.total_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ project.total_amt | currency:'':2 }}</td>
+                                    <!-- <td style="text-align: center;">@{{ project.strategic_id }}</td> -->
+                                    <td style="text-align: right;">@{{ project.total_budget | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ project.total_paid | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ project.total_budget - project.total_paid | currency:'':2 }}</td>
                                 </tr>
                                 <tr style="font-weight: bold;">
-                                    <td style="text-align: center;" colspan="3">รวม</td>
-                                    <td style="text-align: right;">@{{ totalProjectByQuarters.q1_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ totalProjectByQuarters.q1_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalProjectByQuarters.q2_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ totalProjectByQuarters.q2_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalProjectByQuarters.q3_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ totalProjectByQuarters.q3_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalProjectByQuarters.q4_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ totalProjectByQuarters.q4_amt | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalProjectByQuarters.total_bud | currency:'':2 }}</td>
-                                    <td style="text-align: center;">@{{ totalProjectByQuarters.total_amt | currency:'':2 }}</td>
+                                    <td style="text-align: center;" colspan="2">รวม</td>
+                                    <td style="text-align: right;">
+                                        @{{ totalProjectStrategyByQuarters.total_budget | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: right;">
+                                        @{{ totalProjectStrategyByQuarters.total_paid | currency:'':2 }}
+                                    </td>
+                                    <td style="text-align: right;">
+                                        @{{ totalProjectStrategyByQuarters.total_budget - totalProjectStrategyByQuarters.total_paid | currency:'':2 }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <div id="pieChartContainer" style="width: 100%; height: 400px; margin: 20px auto;"></div>
-
-                            </div>
-                        </div>
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">

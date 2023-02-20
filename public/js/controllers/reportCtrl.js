@@ -19,7 +19,7 @@ app.controller(
         $scope.cboPlanType = '';
         $scope.cboProjectType = '';
         $scope.cboCategory = '';
-        $scope.cboApproved = '';
+        $scope.cboApproved = 'A';
         $scope.cboPrice = '';
         $scope.cboSort = '';
         $scope.chkIsFixcost = false;
@@ -1656,6 +1656,56 @@ app.controller(
                         q4_bud: 0,
                         total_amt: 0,
                         total_bud: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getProjectStrategyByQuarter = function (strategy) {
+            $scope.totalProjectStrategyByQuarters = {
+                total_budget: 0,
+                total_paid: 0
+            };
+
+            // let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let type = $scope.cboProjectType === '' ? '' : $scope.cboProjectType;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-strategy-quarter/${strategy}?year=${year}&type=${type}&approved=${approved}`)
+            .then(function (res) {
+                console.log(res.data);
+                $scope.projects = res.data.projects.map(project => {
+                    let stg = res.data.strategies.find(s => s.id === project.strategy_id);
+                    if (stg) {
+                        project.strategic_id = stg.strategic_id;
+                    }
+
+                    let paidTotal = res.data.payments.find(p => p.project_id === project.id);
+                    project.total_paid = paidTotal ? paidTotal.total_paid : 0;
+
+                    return project;
+                }); //.sort((a, b) => a.strategic_id - b.strategic_id);
+
+                /** Sum total of plan by plan_type */
+                if (res.data.projects.length > 0) {
+                    res.data.projects.forEach(project => {
+                        $scope.totalProjectStrategyByQuarters.total_budget += project.total_budget;
+                        $scope.totalProjectStrategyByQuarters.total_paid += project.total_paid;
+                    });
+                } else {
+                    $scope.totalProjectStrategyByQuarters = {
+                        total_budget: 0,
+                        total_paid: 0
                     };
                 }
 
