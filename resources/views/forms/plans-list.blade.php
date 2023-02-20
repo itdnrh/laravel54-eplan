@@ -40,7 +40,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div style="padding: 0">
+                                <div style="padding: 0; overflow: hidden;">
                                     {{ $plan->depart->depart_name }}
 
                                     @if($plan->division)
