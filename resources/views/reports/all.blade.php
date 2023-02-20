@@ -86,7 +86,7 @@
                                     </li>
                                     <li style="margin: 5px;">
                                         <a href="{{ url('reports/project-process-quarter') }}">
-                                            <i class="fa fa-circle-o"></i> รายงานการดำเนินการตามแผนงาน/โครงการตามไตรมาส
+                                            <i class="fa fa-circle-o"></i> รายงานการดำเนินงานตามแผนงาน/โครงการตามไตรมาส
                                         </a>
                                     </li>
                                 </ul>

@@ -5,14 +5,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายงานแผนงาน/โครงการตามไตรมาส
+            รายงานการดำเนินงานตามแผนงาน/โครงการตามไตรมาส
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
             <li class="breadcrumb-item"><a href="{{ url('/reports/all') }}">รายงาน</a></li>
-            <li class="breadcrumb-item active">รายงานแผนงาน/โครงการตามไตรมาส</li>
+            <li class="breadcrumb-item active">รายงานการดำเนินงานตามแผนงาน/โครงการตามไตรมาส</li>
         </ol>
     </section>
 
@@ -90,7 +90,7 @@
                     <div class="box-header with-border table-striped">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">รายงานแผนงาน/โครงการตามไตรมาส ปีงบประมาณ @{{ cboYear }}</h3>
+                                <h3 class="box-title">รายงานการดำเนินงานตามแผนงาน/โครงการตามไตรมาส ปีงบประมาณ @{{ cboYear }}</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
