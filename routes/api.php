@@ -163,6 +163,8 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('reports/project-strategic', 'ReportController@getProjectByStrategic');
     Route::get('reports/project-quarter', 'ReportController@getProjectByQuarter');
     Route::get('reports/project-summary', 'ReportController@getProjectSummary');
+    Route::get('reports/project-process-quarter', 'ReportController@getProjectProcessByQuarter');
+
     Route::get('reports/plan-faction', 'ReportController@getPlanByFaction');
     Route::get('reports/plan-depart', 'ReportController@getPlanByDepart');
     Route::get('reports/asset-faction', 'ReportController@getAssetByFaction');

@@ -1525,7 +1525,98 @@ app.controller(
             .then(function (res) {
                 $scope.projects = res.data.projects.map(project => {
                     let stg = res.data.strategies.find(s => s.id === project.strategy_id);
-                    project.strategic_id = stg.strategic_id;
+
+                    if (stg) {
+                        project.strategic_id = stg.strategic_id;
+                    }
+
+                    return project;
+                }).sort((a, b) => a.strategic_id - b.strategic_id);
+
+                /** Sum total of plan by plan_type */
+                if (res.data.projects.length > 0) {
+                    res.data.projects.forEach(project => {
+                        $scope.totalProjectByQuarters.q1_amt += project.q1_amt ? project.q1_amt : 0;
+                        $scope.totalProjectByQuarters.q1_bud += project.q1_bud ? project.q1_bud : 0;
+                        $scope.totalProjectByQuarters.q2_amt += project.q2_amt ? project.q2_amt : 0;
+                        $scope.totalProjectByQuarters.q2_bud += project.q2_bud ? project.q2_bud : 0;
+                        $scope.totalProjectByQuarters.q3_amt += project.q3_amt ? project.q3_amt : 0;
+                        $scope.totalProjectByQuarters.q3_bud += project.q3_bud ? project.q3_bud : 0;
+                        $scope.totalProjectByQuarters.q4_amt += project.q4_amt ? project.q4_amt : 0;
+                        $scope.totalProjectByQuarters.q4_bud += project.q4_bud ? project.q4_bud : 0;
+                        $scope.totalProjectByQuarters.total_amt += project.total_amt ? project.total_amt : 0;
+                        $scope.totalProjectByQuarters.total_bud += project.total_bud ? project.total_bud : 0;
+                    });
+
+                    /** Render chart */
+                    const typeName = type === '' ? '' : `(${$('#cboProjectType option:selected').text()})`;
+                    $scope.pieOptions = ChartService.initPieChart("pieChartContainer", `สัดส่วนแผนงาน/โครงการ ${typeName} รายไตรมาส`, "บาท", "สัดส่วนแผนงาน/โครงการ");
+                    $scope.pieOptions.series[0].data.push({ name: 'Q1', y: parseInt($scope.totalProjectByQuarters.q1_bud) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q2', y: parseInt($scope.totalProjectByQuarters.q2_bud) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q3', y: parseInt($scope.totalProjectByQuarters.q3_bud) });
+                    $scope.pieOptions.series[0].data.push({ name: 'Q4', y: parseInt($scope.totalProjectByQuarters.q4_bud) });
+                    let chart = new Highcharts.Chart($scope.pieOptions);
+                } else {
+                    $scope.totalProjectByQuarters = {
+                        q1_amt: 0,
+                        q1_bud: 0,
+                        q2_amt: 0,
+                        q2_bud: 0,
+                        q3_amt: 0,
+                        q3_bud: 0,
+                        q4_amt: 0,
+                        q4_bud: 0,
+                        total_amt: 0,
+                        total_bud: 0,
+                    };
+                }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.getProjectProcessByQuarter = function () {
+            $scope.totalProjectByQuarters = {
+                q1_amt: 0,
+                q1_bud: 0,
+                q2_amt: 0,
+                q2_bud: 0,
+                q3_amt: 0,
+                q3_bud: 0,
+                q4_amt: 0,
+                q4_bud: 0,
+                total_amt: 0,
+                total_bud: 0,
+            };
+
+            let strategic = $scope.cboStrategic === '' ? '' : $scope.cboStrategic;
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let type = $scope.cboProjectType === '' ? '' : $scope.cboProjectType;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/project-process-quarter?year=${year}&strategic=${strategic}&type=${type}&approved=${approved}`)
+            .then(function (res) {
+                $scope.projects = res.data.projects.map(project => {
+                    let stg = res.data.strategies.find(s => s.id === project.strategy_id);
+                    if (stg) {
+                        project.strategic_id = stg.strategic_id;
+                    }
+
+                    let paidTotal = res.data.payments.find(p => p.strategy_id === project.strategy_id);
+                    if (paidTotal) {
+                        project.q1_amt = paidTotal.q1_amt ? paidTotal.q1_amt : 0;
+                        project.q2_amt = paidTotal.q2_amt ? paidTotal.q2_amt : 0;
+                        project.q3_amt = paidTotal.q3_amt ? paidTotal.q3_amt : 0;
+                        project.q4_amt = paidTotal.q4_amt ? paidTotal.q4_amt : 0;
+                        project.total_amt = paidTotal.total_amt ? paidTotal.total_amt : 0;
+                    }
 
                     return project;
                 }).sort((a, b) => a.strategic_id - b.strategic_id);
