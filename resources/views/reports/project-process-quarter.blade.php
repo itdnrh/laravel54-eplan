@@ -115,15 +115,15 @@
                                 </tr>
                                 <tr>
                                     <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
+                                    <th style="width: 6%; text-align: center;">ใช้ไป</th>
                                     <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
+                                    <th style="width: 6%; text-align: center;">ใช้ไป</th>
                                     <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
+                                    <th style="width: 6%; text-align: center;">ใช้ไป</th>
                                     <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
+                                    <th style="width: 6%; text-align: center;">ใช้ไป</th>
                                     <th style="width: 7%; text-align: right;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">คงเหลือ</th>
+                                    <th style="width: 6%; text-align: center;">ใช้ไป</th>
                                 </tr>
                             </thead>
                             <tbody>
