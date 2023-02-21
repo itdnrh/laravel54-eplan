@@ -33,15 +33,15 @@
                     </div>
 
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left: 10px;">
-                        <label class="btn btn-default active" ng-click="onApprovedToggle($event)">
-                            <input type="radio" id="all" name="approved" value="" autocomplete="off" checked /> ทั้งหมด
+                        <label class="btn btn-default" ng-click="onApprovedToggle($event)">
+                            <input type="radio" id="all" name="approved" value="" autocomplete="off" /> ทั้งหมด
                         </label>
                         <label class="btn btn-default" ng-click="onApprovedToggle($event)">
                             <input type="radio" id="none" name="approved" value="1" autocomplete="off" /> ไม่อนุมัติ
                         </label>
                         </label>
-                        <label class="btn btn-default" ng-click="onApprovedToggle($event)">
-                            <input type="radio" id="approved" name="approved" value="2" autocomplete="off" /> อนุมัติ
+                        <label class="btn btn-default active" ng-click="onApprovedToggle($event)">
+                            <input type="radio" id="approved" name="approved" value="2" autocomplete="off" checked /> อนุมัติ
                         </label>
                     </div>
 

@@ -6,7 +6,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     $scope.pieOptions = {};
     $scope.barOptions = {};
 
-    $scope.approved = '';
+    $scope.approved = '2';
     $scope.inPlan = 'I';
     $scope.dtpYear = moment().month() < 8 ? moment().year() + 543 : moment().add(1, 'years').year() + 543;
 
