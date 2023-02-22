@@ -634,7 +634,6 @@
                             @if(count($committees) > 6)
                                 @if($support->is_plan_group == 1)
                                     <!-- <p class="page-number">- {{ thainumDigit(++$page) }} -</p> -->
-                                    
                                 @else
                                     
                                 @endif
@@ -689,7 +688,9 @@
                             @if(count($committees) > 2 && count($committees) <= 6)
                                 @if(committeeNumber($committees, '1') == 1)
                                     @if($page == 1 && count($support->details) > 5 && count($support->details) <= 7)
-                                        <div style="height: 80px;"></div>
+                                        @if(count($committees) <= 4)
+                                            <div style="height: 60px;"></div>
+                                        @endif
                                         <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
                                     @endif
                                 @else
@@ -712,7 +713,7 @@
                             <!-- ============================== คณะกรรมการรวมระหว่าง 3-6 คน ============================== -->
                             @if(count($committees) > 2 && count($committees) <= 6)
                                 @if(committeeNumber($committees, '1') == 1)
-                                    @if(count($support->details) > 5 && count($support->details) < 7)
+                                    @if(count($support->details) > 5 && count($support->details) <= 7)
                                         <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                     @endif
                                 @else
