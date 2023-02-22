@@ -309,7 +309,7 @@
                                         @endif
                                     @endforeach
 
-                                    @if (count($support->details) > 12 && count($support->details) <= 25)
+                                    @if(count($support->details) > 12 && count($support->details) <= 28)
                                         <tr>
                                             <td style="text-align: center; font-weight: bold;" colspan="4">
                                                 รวมเป็นเงินทั้งสิ้น
@@ -322,7 +322,7 @@
                                 </table>
 
                                 <!-- ############################ Pagination ############################ -->
-                                @if (count($support->details) > 27)
+                                @if(count($support->details) > 28)
                                     <p class="next-paragraph">/{{ thainumDigit(28) }}...</p>
                                 @endif
                                 <!-- ############################ End Pagination ############################ -->
@@ -408,6 +408,15 @@
                             </td>
                         </tr>
                     @endif
+
+                    @if(count($support->details) > 12 && count($support->details) <= 28)
+                        <tr>
+                            <td colspan="4">
+                                <div style="height: 40px;"></div>
+                                <p class="next-paragraph">/พร้อมนี้ได้ส่งข้อมูลประกอบ...</p>
+                            </td>
+                        </tr>
+                    @endif
                     <!-- ############################ End Pagination ############################ -->
 
                     <tr>
@@ -415,6 +424,10 @@
 
                             <!-- ############################ Pagination ############################ -->
                             @if(count($support->details) > 10 && count($support->details) < 12)
+                                <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                            @endif
+                            
+                            @if(count($support->details) > 12 && count($support->details) <= 28)
                                 <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                             @endif
                             <!-- ############################ End Pagination ############################ -->
