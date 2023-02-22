@@ -183,8 +183,8 @@
                                         <td style="text-align: center;">
                                             <h4 ng-class="{
                                                 'label label-danger': ((sum.total * 100) / sum.budget) > 80,
-                                                'label label-warning': ((sum.total * 100) / sum.budget) > 60,
-                                                'label label-success': ((sum.total * 100) / sum.budget) <= 50,
+                                                'label label-warning': ((sum.total * 100) / sum.budget) > 60 && ((sum.total * 100) / sum.budget) <= 80,
+                                                'label label-success': ((sum.total * 100) / sum.budget) <= 60,
                                             }">
                                                 @{{ (sum.total * 100) / sum.budget | currency:'':1 }}
                                             </h4>
@@ -210,8 +210,8 @@
                                         <td style="text-align: center;">
                                             <h4 ng-class="{
                                                 'label label-danger': ((getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget) > 80,
-                                                'label label-warning': ((getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget) > 60,
-                                                'label label-success': ((getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget) <= 50,
+                                                'label label-warning': ((getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget) > 60 && ((getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget) <= 80,
+                                                'label label-success': ((getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget) <= 60,
                                             }">
                                                 @{{ (getExpenseTypeTotal(expenseType.id).total * 100) / getExpenseTypeTotal(expenseType.id).budget | currency:'':2 }}
                                             </h4>
