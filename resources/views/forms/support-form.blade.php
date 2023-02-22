@@ -689,7 +689,7 @@
                                 @if(committeeNumber($committees, '1') == 1)
                                     @if($page == 1 && count($support->details) > 5 && count($support->details) <= 7)
                                         @if(count($committees) <= 4)
-                                            <div style="height: 60px;"></div>
+                                            <div style="height: {{ (40 + (4 - count($committees)) * 10) }}px;"></div>
                                         @endif
                                         <p class="next-paragraph">/{{ thainumDigit(++$nextBullet) }}.  รายละเอียดคุณลักษณะ...</p>
                                     @endif
