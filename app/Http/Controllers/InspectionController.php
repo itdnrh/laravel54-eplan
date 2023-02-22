@@ -297,7 +297,10 @@ class InspectionController extends Controller
                     /** Revert order_details's status to null */
                     $detail = OrderDetail::where('id', $item->id)->update(['received' => null]);
 
-                    /** Revert support_details's status to 3=ออกใบสั่งซื้อแล้ว */
+                    
+                    /** Revert supports's status and support_details's status to 3=ออกใบสั่งซื้อแล้ว */
+                    Support::where('id', $item->support_id)->update(['status' => 4]);
+
                     SupportDetail::where('id', $item->support_detail_id)->update(['status' => 3]);
                 }
 
