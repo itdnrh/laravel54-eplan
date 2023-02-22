@@ -643,7 +643,7 @@ class OrderController extends Controller
                     $planItem->save();
 
                     /** Delete order_detials data that user remove from table list */
-                    OrderDetail::where('id', $rm)->delete();
+                    OrderDetail::where('id', $rm->id)->delete();
                 }
 
                 return [
