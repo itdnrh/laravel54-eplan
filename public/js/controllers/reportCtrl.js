@@ -61,7 +61,6 @@ app.controller(
                 $('#dtpDate').datepicker('update', moment(event.date).toDate());
 
                 $scope.dtpMonth = StringFormatService.convToThMonth(moment(event.date).format('YYYY-MM-DD'));
-                $scope.getOrderCompareSupport();
             });
 
         $scope.exportToExcel = function (tableId) {
@@ -1750,8 +1749,53 @@ app.controller(
 
             $http.get(`${CONFIG.apiUrl}/reports/order-compare-support?year=${year}&month=${month}&type=${type}&approved=${approved}`)
             .then(function (res) {
-                console.log(res.data);
                 $scope.supports = res.data.supports;
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.orders = [];
+        $scope.totalOrderBackwardMonth = {
+            all_po: 0,
+            all_net: 0,
+            back_po: 0,
+            back_net: 0
+        };
+
+        $scope.getOrderBackwardMonth = function() {
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let month = $scope.dtpMonth === '' ? '' : StringFormatService.thMonthToDbMonth($scope.dtpMonth);
+            let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/order-backward-month?year=${year}&month=${month}&type=${type}&approved=${approved}`)
+            .then(function (res) {
+                $scope.orders = res.data.orders;
+
+                /** Sum total of plan by plan_type */
+                if (res.data.orders.length > 0) {
+                    res.data.orders.forEach(order => {
+                        $scope.totalOrderBackwardMonth.all_po += order.all_po;
+                        $scope.totalOrderBackwardMonth.all_net += order.all_net;
+                        $scope.totalOrderBackwardMonth.back_po += order.back_po;
+                        $scope.totalOrderBackwardMonth.back_net += order.back_net;
+                    });
+                } else {
+                    $scope.totalOrderBackwardMonth = {
+                        all_po: 0,
+                        all_net: 0,
+                        back_po: 0,
+                        back_net: 0
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {

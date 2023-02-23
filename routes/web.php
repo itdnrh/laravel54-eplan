@@ -349,4 +349,5 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('reports/plan-process-requests/{type}', 'ReportController@planProcessByRequests');
 
     Route::get('reports/order-compare-support', 'ReportController@orderCompareSupport');
+    Route::get('reports/order-backward-month', 'ReportController@orderBackwardMonth');
 });

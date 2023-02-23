@@ -122,6 +122,11 @@
                                             <i class="fa fa-circle-o"></i> รายงานจำนวนการออกใบสั่งซื้อ/จ้างประจำเดือน
                                         </a>
                                     </li>
+                                    <li style="margin: 5px;">
+                                        <a href="{{ url('reports/order-backward-month') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานจำนวนการออกใบสั่งซื้อ/จ้างย้อนหลังประจำเดือน
+                                        </a>
+                                    </li>
                                     <!-- <li style="margin: 5px;">
                                         <a href="{{ url('reports/order-type') }}">
                                             <i class="fa fa-circle-o"></i> รายงานใบสั่งซื้อ/สั่งจ้าง ตามประเภทแผน

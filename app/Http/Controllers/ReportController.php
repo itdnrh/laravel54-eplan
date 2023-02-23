@@ -1108,4 +1108,50 @@ class ReportController extends Controller
             "supports"  => $supports,
         ];
     }
+
+    public function orderBackwardMonth()
+    {
+        return view('reports.order-backward-month', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
+            "planTypes" => PlanType::all(),
+        ]);
+    }
+
+    public function getOrderBackwardMonth(Request $req)
+    {
+        $year = $req->get('year');
+        $month = $req->get('month');
+        $type = $req->get('type');
+
+        $orders = \DB::table('orders')
+                    ->select(
+                        'orders.category_id',
+                        'item_categories.name',
+                        \DB::raw("count(orders.id) as all_po"),
+                        \DB::raw("sum(orders.net_total) as all_net"),
+                        \DB::raw("count(case when(datediff(date(orders.created_at), orders.po_date) > 30) then orders.id end) as back_po"),
+                        \DB::raw("sum(case when(datediff(date(orders.created_at), orders.po_date) > 30) then orders.net_total end) as back_net")
+                    )
+                    ->leftJoin('item_categories', 'orders.category_id', '=', 'item_categories.id')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('orders.year', $year);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('orders.plan_type_id', $type);
+                    })
+                    ->when(!empty($month), function($q) use ($month) {
+                        $sdate = $month. '-01';
+                        $edate = date('Y-m-t', strtotime($sdate));
+
+                        $q->whereBetween('orders.po_date', [$sdate, $edate]);
+                    })
+                    ->groupBy('orders.category_id')
+                    ->groupBy('item_categories.name')
+                    ->get();
+
+        return [
+            "orders"  => $orders,
+        ];
+    }
 }

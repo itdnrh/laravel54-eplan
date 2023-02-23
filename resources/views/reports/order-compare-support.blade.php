@@ -83,6 +83,7 @@
                                         id="dtpMonth"
                                         name="dtpMonth"
                                         ng-model="dtpMonth"
+                                        ng-change="getOrderCompareSupport()"
                                         class="form-control"
                                     />
                                 </div>
@@ -109,7 +110,7 @@
                     <div class="box-body">
                         <table class="table table-bordered">
                             <tr>
-                                <th style="text-align: center; width: 5%;">#</th>
+                                <th style="text-align: center; width: 4%;">#</th>
                                 <th>ประเภท</th>
                                 <th style="text-align: center; width: 10%;">ส่งเอกสารแล้ว</th>
                                 <th style="text-align: center; width: 10%;">ออก PO แล้ว</th>
@@ -133,6 +134,13 @@
                                         @{{ (support.ordered * 100)/support.sent | currency:'':1 }}
                                     </span>
                                 </td>
+                            </tr>
+                            <tr style="font-weight: bold;">
+                                <td style="text-align: center;" colspan="2">รวม</td>
+                                <td style="text-align: center;">@{{ support.sent }}</td>
+                                <td style="text-align: center;">@{{ support.ordered }}</td>
+                                <td style="text-align: center;">@{{ support.sent - support.ordered }}</td>
+                                <td style="text-align: center;">@{{ (support.ordered * 100)/support.sent | currency:'':1 }}</td>
                             </tr>
                         </table>
 
