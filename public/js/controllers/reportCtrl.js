@@ -15,6 +15,7 @@ app.controller(
         $scope.cboDepart = '';
         $scope.cboDivision = '';
         $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
+        $scope.dtpMonth = StringFormatService.convToThMonth(moment().format('YYYY-MM-DD'));
         $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
         $scope.cboPlanType = '';
         $scope.cboProjectType = '';
@@ -33,7 +34,17 @@ app.controller(
             todayBtn: true,
             todayHighlight: true
         };
-    
+
+        let dtpMonthOptions = {
+            autoclose: true,
+			format: 'mm/yyyy',
+			viewMode: "months", 
+			minViewMode: "months",
+			language: 'th',
+			thaiyear: true,
+            orientation: 'bottom'
+        };
+
         $('#dtpDate')
             .datepicker(dtpDateOptions)
             .datepicker('update', new Date())
@@ -41,6 +52,16 @@ app.controller(
                 $('#dtpDate').datepicker('update', moment(event.date).toDate());
 
                 $scope.getDaily();
+            });
+
+        $('#dtpMonth')
+            .datepicker(dtpMonthOptions)
+            .datepicker('update', new Date())
+            .on('changeDate', function(event) {
+                $('#dtpDate').datepicker('update', moment(event.date).toDate());
+
+                $scope.dtpMonth = StringFormatService.convToThMonth(moment(event.date).format('YYYY-MM-DD'));
+                $scope.getOrderCompareSupport();
             });
 
         $scope.exportToExcel = function (tableId) {
@@ -1708,6 +1729,29 @@ app.controller(
                         total_paid: 0
                     };
                 }
+
+                $scope.loading = false;
+            }, function (err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.supports = [];
+        $scope.getOrderCompareSupport = function() {
+            let year = $scope.cboYear === ''
+                        ? $scope.cboYear = parseInt(moment().format('MM')) > 9
+                            ? moment().year() + 544
+                            : moment().year() + 543 
+                        : $scope.cboYear;
+            let month = $scope.dtpMonth === '' ? '' : StringFormatService.thMonthToDbMonth($scope.dtpMonth);
+            let type = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let approved = !$scope.cboApproved ? '' : 'A';
+
+            $http.get(`${CONFIG.apiUrl}/reports/order-compare-support?year=${year}&month=${month}&type=${type}&approved=${approved}`)
+            .then(function (res) {
+                console.log(res.data);
+                $scope.supports = res.data.supports;
 
                 $scope.loading = false;
             }, function (err) {

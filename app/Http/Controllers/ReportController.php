@@ -1063,4 +1063,49 @@ class ReportController extends Controller
             'departs'   => Depart::all()
         ];
     }
+
+    public function orderCompareSupport()
+    {
+        return view('reports.order-compare-support', [
+            "factions"  => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "departs"   => Depart::orderBy('depart_name', 'ASC')->get(),
+            "planTypes" => PlanType::all(),
+        ]);
+    }
+
+    public function getOrderCompareSupport(Request $req)
+    {
+        $year = $req->get('year');
+        $month = $req->get('month');
+        $type = $req->get('type');
+
+        $supports = \DB::table('supports')
+                    ->select(
+                        'supports.category_id',
+                        'item_categories.name',
+                        \DB::raw("count(case when (supports.status in (1,2,3,4,5,6,99)) then supports.id end) as sent"),
+                        \DB::raw("count(case when (supports.status in (2,3,4,5,6,99)) then supports.id end) as received"),
+                        \DB::raw("count(case when (supports.status in (3,4,5,6,99)) then supports.id end) as ordered")
+                    )
+                    ->leftJoin('item_categories', 'supports.category_id', '=', 'item_categories.id')
+                    ->when(!empty($year), function($q) use ($year) {
+                        $q->where('year', $year);
+                    })
+                    ->when(!empty($type), function($q) use ($type) {
+                        $q->where('supports.plan_type_id', $type);
+                    })
+                    ->when(!empty($month), function($q) use ($month) {
+                        $sdate = $month. '-01';
+                        $edate = date('Y-m-t', strtotime($sdate));
+
+                        $q->whereBetween('supports.sent_date', [$sdate, $edate]);
+                    })
+                    ->groupBy('supports.category_id')
+                    ->groupBy('item_categories.name')
+                    ->get();
+
+        return [
+            "supports"  => $supports,
+        ];
+    }
 }

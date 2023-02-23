@@ -113,11 +113,16 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="col-md-6">
+                            </div> -->
+                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'">
                                 <h4>การสั่งซื้อ</h4>
                                 <ul style="list-style: none; padding: 5px 5px 5px 20px; font-size: 16px;">
                                     <li style="margin: 5px;">
+                                        <a href="{{ url('reports/order-compare-support') }}">
+                                            <i class="fa fa-circle-o"></i> รายงานจำนวนการออกใบสั่งซื้อ/จ้างประจำเดือน
+                                        </a>
+                                    </li>
+                                    <!-- <li style="margin: 5px;">
                                         <a href="{{ url('reports/order-type') }}">
                                             <i class="fa fa-circle-o"></i> รายงานใบสั่งซื้อ/สั่งจ้าง ตามประเภทแผน
                                         </a>
@@ -131,9 +136,9 @@
                                         <a href="{{ url('reports/order-supplier') }}">
                                             <i class="fa fa-circle-o"></i> รายงานใบสั่งซื้อ/สั่งจ้าง ตามเจ้าหนี้
                                         </a>
-                                    </li>
+                                    </li> -->
                                 </ul>
-                            </div> -->
+                            </div>
                         </div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
