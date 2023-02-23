@@ -38,7 +38,6 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-
                             <div class="row">
                                 <!-- // TODO: should use datepicker instead -->
                                 <div class="form-group col-md-6">
@@ -74,21 +73,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label>ประจำเดือน</label>
-                                    <input
-                                        type="text"
-                                        id="dtpMonth"
-                                        name="dtpMonth"
-                                        ng-model="dtpMonth"
-                                        ng-change="getOrderBackwardMonth()"
-                                        class="form-control"
-                                    />
-                                </div>
-                            </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -96,10 +80,23 @@
                 <div class="box">
                     <div class="box-header with-border table-striped">
                         <div class="row">
-                            <div class="col-md-6">
-                                <h3 class="box-title">รายงานจำนวนการออกใบสั่งซื้อ/จ้างย้อนหลังประจำเดือน</h3>
+                            <div class="col-md-8">
+                                <div style="display: flex; align-items: center; gap: 5px;">
+                                    <h3 class="box-title">
+                                        รายงานจำนวนการออกใบสั่งซื้อ/จ้างย้อนหลัง (30 วันขึ้นไป) ประจำเดือน : 
+                                    </h3>
+                                    <input
+                                        type="text"
+                                        id="dtpMonth"
+                                        name="dtpMonth"
+                                        ng-model="dtpMonth"
+                                        ng-change="getOrderBackwardMonth()"
+                                        class="form-control"
+                                        style="width: 20%;"
+                                    />
+                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
                                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                     Excel
@@ -139,8 +136,7 @@
                             </tr>
                         </table>
                     </div><!-- /.box-body -->
-                    <div class="box-footer clearfix">
-                        
+                    <div class="box-footer clearfix" ng-show="false">
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 

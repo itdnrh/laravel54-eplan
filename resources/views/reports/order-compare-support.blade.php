@@ -38,7 +38,6 @@
                     </div>
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-
                             <div class="row">
                                 <!-- // TODO: should use datepicker instead -->
                                 <div class="form-group col-md-6">
@@ -74,21 +73,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label>ประจำเดือน</label>
-                                    <input
-                                        type="text"
-                                        id="dtpMonth"
-                                        name="dtpMonth"
-                                        ng-model="dtpMonth"
-                                        ng-change="getOrderCompareSupport()"
-                                        class="form-control"
-                                    />
-                                </div>
-                            </div>
-
                         </div><!-- /.box-body -->
                     </form>
                 </div><!-- /.box -->
@@ -97,7 +81,18 @@
                     <div class="box-header with-border table-striped">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">รายงานจำนวนการออกใบสั่งซื้อ/จ้างประจำเดือน</h3>
+                                <div style="display: flex; align-items: center; gap: 5px;">
+                                    <h3 class="box-title">รายงานจำนวนการออกใบสั่งซื้อ/จ้าง ประจำเดือน :</h3>
+                                    <input
+                                        type="text"
+                                        id="dtpMonth"
+                                        name="dtpMonth"
+                                        ng-model="dtpMonth"
+                                        ng-change="getOrderCompareSupport()"
+                                        class="form-control"
+                                        style="width: 20%;"
+                                    />
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <a href="#" class="btn btn-success pull-right" ng-click="exportToExcel('#tableData')">
@@ -112,7 +107,7 @@
                             <tr>
                                 <th style="text-align: center; width: 4%;">#</th>
                                 <th>ประเภท</th>
-                                <th style="text-align: center; width: 10%;">ส่งเอกสารแล้ว</th>
+                                <th style="text-align: center; width: 10%;">รับเอกสารแล้ว</th>
                                 <th style="text-align: center; width: 10%;">ออก PO แล้ว</th>
                                 <th style="text-align: center; width: 10%;">คงเหลือ</th>
                                 <th style="text-align: center; width: 10%;">คิดเป็น (%)</th>
@@ -120,73 +115,36 @@
                             <tr ng-repeat="(index, support) in supports">
                                 <td style="text-align: center;">@{{ index+1 }}</td>
                                 <td>@{{ support.name }}</td>
-                                <td style="text-align: center;">@{{ support.sent }}</td>
+                                <td style="text-align: center;">@{{ support.received }}</td>
                                 <td style="text-align: center;">@{{ support.ordered }}</td>
-                                <td style="text-align: center;">@{{ support.sent - support.ordered }}</td>
+                                <td style="text-align: center;">@{{ support.received - support.ordered }}</td>
                                 <td style="text-align: center;">
-                                    <span class="label label-success" ng-show="((support.ordered * 100)/support.sent) > 90">
-                                        @{{ (support.ordered * 100)/support.sent | currency:'':1 }}
+                                    <span class="label label-success" ng-show="((support.ordered * 100)/support.received) > 90">
+                                        @{{ (support.ordered * 100)/support.received | currency:'':1 }}
                                     </span>
-                                    <span class="label label-warning" ng-show="((support.ordered * 100)/support.sent) > 60 && ((support.ordered * 100)/support.sent) <= 90">
-                                        @{{ (support.ordered * 100)/support.sent | currency:'':1 }}
+                                    <span class="label label-warning" ng-show="((support.ordered * 100)/support.received) > 60 && ((support.ordered * 100)/support.received) <= 90">
+                                        @{{ (support.ordered * 100)/support.received | currency:'':1 }}
                                     </span>
-                                    <span class="label label-danger" ng-show="((support.ordered * 100)/support.sent) <= 60">
-                                        @{{ (support.ordered * 100)/support.sent | currency:'':1 }}
+                                    <span class="label label-danger" ng-show="((support.ordered * 100)/support.received) <= 60">
+                                        @{{ (support.ordered * 100)/support.received | currency:'':1 }}
                                     </span>
                                 </td>
                             </tr>
                             <tr style="font-weight: bold;">
                                 <td style="text-align: center;" colspan="2">รวม</td>
-                                <td style="text-align: center;">@{{ support.sent }}</td>
-                                <td style="text-align: center;">@{{ support.ordered }}</td>
-                                <td style="text-align: center;">@{{ support.sent - support.ordered }}</td>
-                                <td style="text-align: center;">@{{ (support.ordered * 100)/support.sent | currency:'':1 }}</td>
+                                <td style="text-align: center;">@{{ totalOrderCompareSupport.received }}</td>
+                                <td style="text-align: center;">@{{ totalOrderCompareSupport.ordered }}</td>
+                                <td style="text-align: center;">
+                                    @{{ totalOrderCompareSupport.received - totalOrderCompareSupport.ordered }}
+                                </td>
+                                <td style="text-align: center;">
+                                    @{{ (totalOrderCompareSupport.ordered * 100)/totalOrderCompareSupport.received | currency:'':1 }}
+                                </td>
                             </tr>
                         </table>
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" ng-show="false">
-                        <div class="row">
-                            <div class="col-md-4">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
-                            </div>
-                            <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
-                            </div>
-                            <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right">
-                                    <li ng-if="pager.current_page !== 1">
-                                        <a ng-click="getDataWithURL(pager.path+ '?page=1')" aria-label="Previous">
-                                            <span aria-hidden="true">First</span>
-                                        </a>
-                                    </li>
-                                
-                                    <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a ng-click="getDataWithURL(pager.prev_page_url)" aria-label="Prev">
-                                            <span aria-hidden="true">Prev</span>
-                                        </a>
-                                    </li>
-        
-                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                        <a href="@{{ pager.url(pager.current_page + 10) }}">
-                                            ...
-                                        </a>
-                                    </li> -->
-                                
-                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a ng-click="getDataWithURL(pager.next_page_url)" aria-label="Next">
-                                            <span aria-hidden="true">Next</span>
-                                        </a>
-                                    </li>
-        
-                                    <li ng-if="pager.current_page !== pager.last_page">
-                                        <a ng-click="getDataWithURL(pager.path+ '?page=' +pager.last_page)" aria-label="Previous">
-                                            <span aria-hidden="true">Last</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 

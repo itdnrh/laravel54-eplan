@@ -1737,7 +1737,18 @@ app.controller(
         };
 
         $scope.supports = [];
+        $scope.totalOrderCompareSupport = {
+            sent: 0,
+            received: 0,
+            ordered: 0
+        };
         $scope.getOrderCompareSupport = function() {
+            $scope.totalOrderCompareSupport = {
+                sent: 0,
+                received: 0,
+                ordered: 0
+            };
+
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
@@ -1750,6 +1761,21 @@ app.controller(
             $http.get(`${CONFIG.apiUrl}/reports/order-compare-support?year=${year}&month=${month}&type=${type}&approved=${approved}`)
             .then(function (res) {
                 $scope.supports = res.data.supports;
+
+                /** Sum total of plan by plan_type */
+                if (res.data.supports.length > 0) {
+                    res.data.supports.forEach(support => {
+                        $scope.totalOrderCompareSupport.sent += support.sent;
+                        $scope.totalOrderCompareSupport.received += support.received;
+                        $scope.totalOrderCompareSupport.ordered += support.ordered;
+                    });
+                } else {
+                    $scope.totalOrderCompareSupport = {
+                        sent: 0,
+                        received: 0,
+                        ordered: 0
+                    };
+                }
 
                 $scope.loading = false;
             }, function (err) {
@@ -1767,6 +1793,13 @@ app.controller(
         };
 
         $scope.getOrderBackwardMonth = function() {
+            $scope.totalOrderBackwardMonth = {
+                all_po: 0,
+                all_net: 0,
+                back_po: 0,
+                back_net: 0
+            };
+
             let year = $scope.cboYear === ''
                         ? $scope.cboYear = parseInt(moment().format('MM')) > 9
                             ? moment().year() + 544
