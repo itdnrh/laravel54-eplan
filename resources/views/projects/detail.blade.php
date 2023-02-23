@@ -189,11 +189,11 @@
                             </div>
                         </div>
 
-                        <div class="row" ng-show="project.attachment">
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>ไฟล์ 13 ช่อง :</label>
                                 <div class="form-control">
-                                    <a href="{{ url('/uploads/projects') }}/@{{ project.attachment }}" target="_blank">
+                                    <a href="{{ url('/uploads/projects') }}/@{{ project.attachment }}" target="_blank" ng-show="project.attachment">
                                         <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                         @{{ project.attachment }}
                                     </a>
@@ -202,7 +202,7 @@
                             <div class="form-group col-md-6">
                                 <label>ไฟล์โครงการ :</label>
                                 <div class="form-control">
-                                    <a href="{{ url('/uploads/projects') }}/@{{ project.project_file }}" target="_blank">
+                                    <a href="{{ url('/uploads/projects') }}/@{{ project.project_file }}" target="_blank" ng-show="project.project_file">
                                         <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                         @{{ project.project_file }}
                                     </a>
