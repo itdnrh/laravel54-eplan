@@ -349,10 +349,10 @@
                             </div>
                             <div class="row">
                                 <div
-                                    class="form-group col-md-12"
+                                    class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'attachment')}"
                                 >
-                                    <label>ไฟล์แนบ :</label>
+                                    <label>แนบไฟล์ 13 ช่อง :</label>
                                     <input
                                         type="file"
                                         id="attachment" 
@@ -361,6 +361,21 @@
                                     />
                                     <span class="help-block" ng-show="checkValidate(project, 'attachment')">
                                         @{{ formError.errors.attachment[0] }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="form-group col-md-6"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'project_file')}"
+                                >
+                                    <label>แนบไฟล์โครงการ :</label>
+                                    <input
+                                        type="file"
+                                        id="project_file" 
+                                        name="project_file"
+                                        class="form-control"
+                                    />
+                                    <span class="help-block" ng-show="checkValidate(project, 'project_file')">
+                                        @{{ formError.errors.project_file[0] }}
                                     </span>
                                 </div>
                             </div>

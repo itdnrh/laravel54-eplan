@@ -333,6 +333,11 @@ class ProjectController extends Controller
                 $project->attachment = $attachment;
             }
 
+            $project_file = uploadFile($req->file('project_file'), 'uploads/projects/');
+            if (!empty($project_file)) {
+                $project->project_file = $project_file;
+            }
+
             if($project->save()) {
                 return redirect('/projects/list')
                         ->with([
@@ -395,6 +400,11 @@ class ProjectController extends Controller
         $attachment = uploadFile($req->file('attachment'), 'uploads/projects/');
         if (!empty($attachment)) {
             $project->attachment = $attachment;
+        }
+
+        $project_file = uploadFile($req->file('project_file'), 'uploads/projects/');
+        if (!empty($project_file)) {
+            $project->project_file = $project_file;
         }
 
         if($project->save()) {

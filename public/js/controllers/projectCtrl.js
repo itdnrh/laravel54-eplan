@@ -35,6 +35,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         start_month: '',
         closed_date: '',
         attachment: '',
+        project_file: '',
         remark: '',
     };
 
@@ -209,6 +210,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
             $scope.project.approved         = project.approved;
             $scope.project.attachment       = project.attachment;
+            $scope.project.project_file     = project.project_file;
             $scope.project.remark           = project.remark;
             $scope.project.status           = project.status;
 
