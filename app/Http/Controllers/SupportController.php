@@ -118,6 +118,10 @@ class SupportController extends Controller
         $inPlan = $req->get('in_plan');
         $status = $req->get('status');
 
+        list($sdate, $edate) = array_key_exists('date', $req->all())
+                                ? explode('-', $req->get('date'))
+                                : explode('-', '-');
+
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
                 $arrStatus = explode($matched[0], $status);
@@ -183,6 +187,13 @@ class SupportController extends Controller
                         })
                         ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
                             $q->whereBetween('status', $arrStatus);
+                        })
+                        ->when(array_key_exists('date', $req->all()) && $req->get('date') != '-', function($q) use ($sdate, $edate) {
+                            if ($sdate != '' && $edate != '') {
+                                $q->whereBetween('doc_date', [convThDateToDbDate($sdate), convThDateToDbDate($edate)]);
+                            } else if ($edate == '') {
+                                $q->where('doc_date', convThDateToDbDate($sdate));
+                            }
                         })
                         ->orderBy('sent_date', 'DESC');
 

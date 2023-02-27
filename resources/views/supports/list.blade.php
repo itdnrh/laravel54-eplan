@@ -95,7 +95,27 @@
                                         <option value="O">นอกแผน</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-2">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        ng-change="getAll($event)"
+                                        class="form-control"
+                                    >
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ส่งเอกสารแล้ว</option>
+                                        <option value="2">รับเอกสารแล้ว</option>
+                                        <option value="3-5">ออกใบสั่งซื้อแล้ว</option>
+                                        <option value="4-5">ตรวจรับแล้ว</option>
+                                        <option value="5">ส่งเบิกเงินแล้ว</option>
+                                        <option value="9">เอกสารถูกตีกลับ</option>
+                                        <!-- <option value="99">ยกเลิก</option> -->
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label>ประเภทแผน</label>
                                     <select
                                         id="cboPlanType"
@@ -115,7 +135,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <label>ประเภทพัสดุ</label>
                                     <select
                                         id="cboCategory"
@@ -216,7 +236,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>เลขที่บันทึกขอสนับสนุน</label>
                                     <input
                                         id="txtKeyword"
@@ -230,7 +250,7 @@
                                     class="form-group"
                                     ng-class="{
                                         'col-md-6': {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4,
-                                        'col-md-4': {{ Auth::user()->memberOf->duty_id }} != 1 && {{ Auth::user()->memberOf->depart_id }} != 4
+                                        'col-md-3': {{ Auth::user()->memberOf->duty_id }} != 1 && {{ Auth::user()->memberOf->depart_id }} != 4
                                     }"
                                 >
                                     <label>รายละเอียด</label>
@@ -242,31 +262,37 @@
                                         class="form-control"
                                     />
                                 </div>
-                                <div
-                                    class="form-group"
-                                    ng-class="{
-                                        'col-md-3': {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4,
-                                        'col-md-2': {{ Auth::user()->memberOf->duty_id }} != 1 && {{ Auth::user()->memberOf->depart_id }} != 4
-                                    }"
-                                >
-                                    <label>สถานะ</label>
-                                    <select
-                                        id="cboStatus"
-                                        name="cboStatus"
-                                        ng-model="cboStatus"
-                                        ng-change="getAll($event)"
-                                        class="form-control"
-                                    >
-                                        <option value="">ทั้งหมด</option>
-                                        <option value="0">รอดำเนินการ</option>
-                                        <option value="1">ส่งเอกสารแล้ว</option>
-                                        <option value="2">รับเอกสารแล้ว</option>
-                                        <option value="3-5">ออกใบสั่งซื้อแล้ว</option>
-                                        <option value="4-5">ตรวจรับแล้ว</option>
-                                        <option value="5">ส่งเบิกเงินแล้ว</option>
-                                        <option value="9">เอกสารถูกตีกลับ</option>
-                                        <!-- <option value="99">ยกเลิก</option> -->
-                                    </select>
+                                <div class="form-group col-md-2">
+                                    <label>วันที่บันทึกขอสนับสนุน</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpSdate"
+                                            name="dtpSdate"
+                                            ng-model="dtpSdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpSdate');">
+                                                เคลียร์
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>ถึงวันที่</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="dtpEdate"
+                                            name="dtpEdate"
+                                            ng-model="dtpEdate"
+                                            class="form-control"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpEdate');">
+                                                เคลียร์
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
@@ -287,7 +313,7 @@
                         </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" style="font-size: 14px; margin: 10px auto;">
+                        <table class="table table-bordered table-striped" style="font-size: 14px; margin-bottom: 10px;">
                             <thead>
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>

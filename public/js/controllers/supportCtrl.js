@@ -18,6 +18,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.txtKeyword = '';
     $scope.txtDesc = '';
     $scope.searchKey = '';
+    $scope.dtpSdate = '';
+    $scope.dtpEdate = '';
 
     /** Iterating models */
     $scope.loading = false;
@@ -106,6 +108,27 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             console.log(event.date);
         });
 
+    $('#dtpSdate')
+        .datepicker(dtpDateOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpSdate')
+                .datepicker(dtpDateOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
+
+    $('#dtpEdate')
+        .datepicker(dtpDateOptions)
+        .datepicker('update', new Date())
+        .on('changeDate', function(event) {
+            $('#dtpEdate')
+                .datepicker(dtpDateOptions)
+                .datepicker('update', event.date);
+
+            $scope.getAll(event);
+        });
     /*
     |-----------------------------------------------------------------------------
     | Main functions initialization
@@ -617,8 +640,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
         let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}&date=${sdate}-${edate}`)
         .then(function(res) {
             $scope.setSupports(res);
 
@@ -649,8 +674,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
         let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+        let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+        let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
-        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}`)
+        $http.get(`${url}&year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}&date=${sdate}-${edate}`)
         .then(function(res) {
             $scope.setSupports(res);
 
