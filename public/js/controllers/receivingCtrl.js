@@ -141,23 +141,6 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         $('#receive-form').modal('show');
     };
 
-    $scope.onReceivePlan = function(e, plan) {
-        $http.post(`${CONFIG.baseUrl}/orders/received/1`, { id: plan.id })
-        .then(function(res) {
-            console.log(res);
-            if (res.data.status == 1) {
-                toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");
-
-                $scope.getReceiveds(2);
-            } else {
-                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-            }
-        }, function(err) {
-            console.log(err);
-            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถลงรับเอกสารได้ !!!");
-        });
-    };
-
     $scope.onReceiveSupport = function(e, form, support) {
         e.preventDefault();
 
@@ -167,7 +150,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         }
 
         if (support) {
-            $http.post(`${CONFIG.baseUrl}/orders/received/2`, $scope.receive)
+            $http.put(`${CONFIG.baseUrl}/supports/${$scope.receive.support_id}/receive`, $scope.receive)
             .then(function(res) {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");

@@ -700,61 +700,6 @@ class OrderController extends Controller
         ]);
     }
 
-    public function onReceived(Request $req, $mode)
-    {
-        try {
-            if ($mode == 1) {
-                $plan = Plan::find($req['plan_id']);
-                $plan->received_date = date('Y-m-d');
-                $plan->received_user = Auth::user()->person_id;
-                $plan->status = 2;
-            
-                if ($plan->save()) {
-                    return [
-                        'status'    => 1,
-                        'plan'      => $plan,
-                    ];
-                }
-            } else if ($mode == 2) {
-                $support = Support::find($req['support_id']);
-                $support->received_no       = $req['received_no'];
-                $support->received_date     = convThDateToDbDate($req['received_date']);
-                $support->received_user     = Auth::user()->person_id;
-                $support->supply_officer    = $req['officer'];
-                $support->status            = 2; 
-
-                if ($support->save()) {
-                    /** Update running number table of doc_type_id = 10 */
-                    // $running = Running::where('doc_type_id', '10')
-                    //                 ->where('year', $support->year)
-                    //                 ->update(['running_no' => $support->received_no]);
-
-                    /** Get all support's details */
-                    $details = SupportDetail::where('support_id', $req['support_id'])->get();
-                    foreach($details as $detail) {
-                        /** Update support_details's status to 2=รับเอกสารแล้ว */
-                        SupportDetail::find($detail->id)->update(['status' => 2]);
-                    }
-
-                    return [
-                        'status'    => 1,
-                        'support'   => $support,
-                    ];
-                } else {
-                    return [
-                        'status'    => 0,
-                        'message'   => 'Something went wrong!!'
-                    ];
-                }
-            }
-        } catch (\Exception $ex) {
-            return [
-                'status'    => 0,
-                'message'   => $ex->getMessage()
-            ];
-        }
-    }
-
     public function printSpecCommittee($id)
     {
         $support = SupportOrder::with('order','order.category','order.planType')

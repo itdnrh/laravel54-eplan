@@ -821,6 +821,48 @@ class SupportController extends Controller
         }
     }
 
+    // PUT /suports/:id/receive
+    public function onReceive(Request $req, $id)
+    {
+        try {
+            $support = Support::find($id);
+            $support->received_no       = $req['received_no'];
+            $support->received_date     = convThDateToDbDate($req['received_date']);
+            $support->received_user     = Auth::user()->person_id;
+            $support->supply_officer    = $req['officer'];
+            $support->status            = 2; 
+
+            if ($support->save()) {
+                /** Update running number table of doc_type_id = 10 */
+                // $running = Running::where('doc_type_id', '10')
+                //                 ->where('year', $support->year)
+                //                 ->update(['running_no' => $support->received_no]);
+
+                /** Get all support's details */
+                $details = SupportDetail::where('support_id', $id)->get();
+                foreach($details as $detail) {
+                    /** Update support_details's status to 2=รับเอกสารแล้ว */
+                    SupportDetail::find($detail->id)->update(['status' => 2]);
+                }
+
+                return [
+                    'status'    => 1,
+                    'support'   => $support,
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function cancelReceived(Request $req, $id)
     {
         try {
@@ -856,6 +898,15 @@ class SupportController extends Controller
             $support->status            = 9;
 
             if ($support->save()) {
+                /** Update support_details's status to 0=รอดำเนินการ */
+                SupportDetail::where('support_id', $id)->update(['status' => 0]);
+
+                /** Update plans's status to 0=รอดำเนินการ */
+                $details = SupportDetail::where('support_id', $id)->get();
+                foreach($details as $detail) {
+                    Plan::where('id', $detail->plan_id)->update(['status' => 0]);
+                }
+
                 return [
                     'status'    => 1,
                     'message'   => 'Support have been returned!!'

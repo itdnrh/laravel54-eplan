@@ -195,7 +195,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('orders/update/{id}', 'OrderController@update');
     Route::post('orders/delete/{id}', 'OrderController@delete');
     Route::get('orders/received', 'OrderController@received');
-    Route::post('orders/received/{mode}', 'OrderController@onReceived');
     Route::get('orders/{id}/print', 'OrderController@printForm');
     Route::get('orders/{id}/print-spec', 'OrderController@printSpecCommittee');
 
