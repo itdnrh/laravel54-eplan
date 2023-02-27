@@ -98,7 +98,7 @@
                     <?php $page = 1; ?>
 
                     <!-- ========================================= รายการน้อยกว่า 12 รายการ ===================================== -->
-                    @if (count($support->details) < 12 || $support->is_plan_group == 1)
+                    @if (count($support->details) <= 12 || $support->is_plan_group == 1)
                         <tr>
                             <td colspan="4">
                                 <div class="table-container">
@@ -210,6 +210,18 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- ############################ Pagination ############################ -->
+                        @if(count($support->details) == 12)
+                            <tr>
+                                <td colspan="4">
+                                    <div style="height: 20px;"></div>
+                                    <p class="next-paragraph">/เหตุผลและความจำเป็น...</p>
+                                </td>
+                            </tr>
+                        @endif
+                        <!-- ############################ Pagination ############################ -->
+
                     <!-- ========================================= รายการมากกว่า 12 รายการ ===================================== -->
                     @else
                         <tr>
@@ -393,6 +405,12 @@
 
                     <tr>
                         <td colspan="4">
+                            <!-- ############################ Pagination ############################ -->
+                            @if(count($support->details) == 12)
+                            <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                            @endif
+                            <!-- ############################ Pagination ############################ -->
+
                             <span>เหตุผลและความจำเป็น</span>
                             <span style="margin: 0 0 0 5px;" class="text-val-dot">
                                 {{ thainumDigit($support->reason) }}
