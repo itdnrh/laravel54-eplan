@@ -573,15 +573,16 @@ class SupportController extends Controller
             $support->updated_user      = $req['user'];
 
             if ($support->save()) {
-                /** Delete support_detials data that user remove from table list */
+                /** Delete support_detials data that user remove from table list of supports/list view */
                 if (count($req['removed']) > 0) {
                     foreach($req['removed'] as $rm) {
+                        /** ลบรายการในตาราง support_details */
                         SupportDetail::where('id', $rm)->delete();
                     }
                 }
 
                 foreach($req['details'] as $item) {
-                    if (!array_key_exists('id', $item)) {
+                    if (!array_key_exists('id', $item)) {/** ถ้าเป็นรายการเดิม */
                         $detail = new SupportDetail;
                         $detail->support_id     = $support->id;
                         $detail->plan_id        = $item['plan_id'];
@@ -601,7 +602,7 @@ class SupportController extends Controller
                         $detail->sum_price      = currencyToNumber($item['sum_price']);
                         $detail->status         = 0;
                         $detail->save();
-                    } else {
+                    } else {/** ถ้าเป็นรายการใหม่ */
                         $detail = SupportDetail::find($item['id']);
                         $detail->support_id     = $support->id;
                         $detail->plan_id        = $item['plan_id'];
@@ -698,16 +699,18 @@ class SupportController extends Controller
             if ($support->delete()) {
                 /** Fetch support_details data and update plan's status */
                 $details = SupportDetail::where('support_id', $deleted->id)->get();
-                foreach($details as $item) {
-                    /** TODO: Revert plans's status to 0=รอดำเนินการ */
-                    $planItem = PlanItem::where('plan_id', $item->plan_id)->first();
+                foreach($details as $detail) {
+                    /** TODO:: (Duplicated code) Revert plans's status to 0=รอดำเนินการ หรือ 1=ดำเนินการแล้วบางส่วน */
+                    $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
                     if ($planItem->calc_method == 1) {
-                        Plan::find($item->plan_id)->update(['status' => 0]);
+                        /** ถ้าเป็นกรณีคำนวณยอดตามจำนวน */
+                        Plan::find($detail->plan_id)->update(['status' => 0]);
                     } else {
+                        /** ถ้าเป็นกรณีคำนวณยอดตามงบประมาณ */
                         if ($planItem->sum_price == $planItem->remain_budget) {
-                            Plan::find($item->plan_id)->update(['status' => 0]);
+                            Plan::find($detail->plan_id)->update(['status' => 0]);
                         } else {
-                            Plan::find($item->plan_id)->update(['status' => 1]);
+                            Plan::find($detail->plan_id)->update(['status' => 1]);
                         }
                     }
                 }
@@ -745,6 +748,7 @@ class SupportController extends Controller
         }
     }
 
+    // POST /supports/send
     public function send(Request $req)
     {
         try {
@@ -787,6 +791,7 @@ class SupportController extends Controller
         }
     }
 
+    // PUT /supports/:id/cancel-sent
     public function cancelSent(Request $req, $id)
     {
         try {
@@ -833,11 +838,6 @@ class SupportController extends Controller
             $support->status            = 2; 
 
             if ($support->save()) {
-                /** Update running number table of doc_type_id = 10 */
-                // $running = Running::where('doc_type_id', '10')
-                //                 ->where('year', $support->year)
-                //                 ->update(['running_no' => $support->received_no]);
-
                 /** Get all support's details */
                 $details = SupportDetail::where('support_id', $id)->get();
                 foreach($details as $detail) {
@@ -863,6 +863,7 @@ class SupportController extends Controller
         }
     }
 
+    // PUT /supports/:id/cancel-received
     public function cancelReceived(Request $req, $id)
     {
         try {
@@ -888,6 +889,7 @@ class SupportController extends Controller
         }
     }
 
+    // PUT /supports/:id/return
     public function onReturn(Request $req, $id)
     {
         try {
