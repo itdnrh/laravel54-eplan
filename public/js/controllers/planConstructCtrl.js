@@ -1,8 +1,8 @@
 app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
-    $scope.loading = false;
-    $scope.constructs = [];
-    $scope.pager = null;
+    // $scope.loading = false;
+    // $scope.constructs = [];
+    // $scope.pager = null;
     $scope.plan = null;
 
     $scope.isApproved = false;
@@ -86,12 +86,6 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         }
     };
 
-    $scope.setIsApproved = function(e) {
-        $scope.isApproved = e.target.checked;
-
-        $scope.getAll(e);
-    };
-
     $scope.clearConstruct = function() {
         $scope.construct = {
             id: '',
@@ -130,74 +124,6 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $('#sum_price').val(price * amount);
     };
 
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getAll = function(event) {
-        $scope.constructs = [];
-        $scope.loading = true;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=4&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            $scope.setConstructs(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setConstructs = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.constructs = data;
-        $scope.pager = pager;
-
-        $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getDataWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.constructs = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${url}&type=4&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
     $scope.onSelectedItem = function(event, item) {
         if (item) {
             /** Check existed data by depart */
@@ -234,7 +160,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         }, function(err) {
             console.log(err);
         });
-    }
+    };
 
     $scope.setEditControls = function(plan) {
         let { plan_item, ...rest } = plan;
@@ -299,7 +225,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         event.preventDefault();
 
         $(`#${form}`).submit();
-    }
+    };
 
     $scope.edit = function(id) {
         window.location.href = `${CONFIG.baseUrl}/constructs/edit/${id}`;
