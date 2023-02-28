@@ -11,9 +11,9 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.cboPrice = '';
     $scope.txtItemName = '';
 
-    $scope.loading = false;
-    $scope.services = [];
-    $scope.pager = null;
+    // $scope.loading = false;
+    // $scope.services = [];
+    // $scope.pager = null;
     $scope.plan = null;
 
     $scope.service = {
@@ -92,12 +92,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         }
     };
 
-    $scope.setIsApproved = function(e) {
-        $scope.isApproved = e.target.checked;
-
-        $scope.getAll(e);
-    };
-
     $scope.clearService = function() {
         $scope.service = {
             id: '',
@@ -140,75 +134,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     | Plan service CRUD operations
     |-----------------------------------------------------------------------------
     */
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getAll = function(event) {
-        $scope.loading = true;
-        $scope.services = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            $scope.setServices(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setServices = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.services = data;
-        $scope.pager = pager;
-
-        $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getDataWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.services = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${url}&type=3&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
     $scope.getById = function(id, cb) {
         $http.get(`${CONFIG.apiUrl}/services/${id}`)
         .then(function(res) {
