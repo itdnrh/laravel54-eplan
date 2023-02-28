@@ -20,7 +20,7 @@
         class="content"
         ng-controller="approvalCtrl"
         ng-init="
-            getAll(3);
+            getPlans(3, '', setPlans);
             initForms({
                 departs: {{ $departs }},
                 categories: {{ $categories }}
@@ -46,7 +46,10 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll(3)"
+                                        ng-change="
+                                            handleInputChange('cboYear', cboYear);
+                                            getPlans(3, '', setPlans);
+                                        "
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -61,7 +64,10 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll(3)"
+                                        ng-change="
+                                            handleInputChange('cboCategory', cboCategory);
+                                            getPlans(3, '', setPlans);
+                                        "
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -80,7 +86,11 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction); getAll(3)"
+                                            ng-change="
+                                                handleInputChange('cboFaction', cboFaction);
+                                                onFactionSelected(cboFaction);
+                                                getPlans(3, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -101,7 +111,11 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="getAll(3)"
+                                            ng-change="
+                                                handleInputChange('cboDepart', cboDepart);
+                                                onDepartSelected(cboDepart);
+                                                getPlans(3, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -121,7 +135,10 @@
                                             name="cboDivision"
                                             ng-model="cboDivision"
                                             class="form-control select2"
-                                            ng-change="getAll(3)"
+                                            ng-change="
+                                                handleInputChange('cboDivision', cboDivision);
+                                                getPlans(3, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
@@ -138,7 +155,10 @@
                                             name="cboPrice"
                                             ng-model="cboPrice"
                                             class="form-control"
-                                            ng-change="getAll(3)"
+                                            ng-change="
+                                                handleInputChange('cboPrice', cboPrice);
+                                                getPlans(3, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="1">ต่ำกว่า 10,000 บาท</option>
@@ -160,7 +180,10 @@
                                             name="cboBudget"
                                             ng-model="cboBudget"
                                             class="form-control"
-                                            ng-change="getAll(3)"
+                                            ng-change="
+                                                handleInputChange('cboBudget', cboBudget);
+                                                getPlans(3, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="1">เงินบำรุง</option>
@@ -176,7 +199,10 @@
                                             name="isInPlan"
                                             ng-model="isInPlan"
                                             class="form-control"
-                                            ng-change="getAll(3)"
+                                            ng-change="
+                                                handleInputChange('isInPlan', isInPlan);
+                                                getPlans(3, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="I">ในแผน</option>
@@ -194,7 +220,10 @@
                                         name="txtItemName"
                                         class="form-control"
                                         ng-model="txtItemName"
-                                        ng-keyup="getAll(3)"
+                                        ng-keyup="
+                                            handleInputChange('txtItemName', txtItemName);
+                                            getPlans(3, '', setPlans);
+                                        "
                                     />
                                 </div>
                             </div>
@@ -229,7 +258,7 @@
                                     type="checkbox"
                                     id="isApproved"
                                     ng-model="isApproved"
-                                    ng-click="setIsApproved($event, 3);"
+                                    ng-click="setIsApproved($event, 3, '', setPlans);"
                                     style="margin-left: 10px;"
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>

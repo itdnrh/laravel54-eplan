@@ -769,12 +769,4 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             $scope.loading = false;
         });
     };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.pager = pager;
-    };
 });

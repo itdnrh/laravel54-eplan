@@ -214,6 +214,14 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         }
     };
 
+    /** TODO: shold reflactor this method to be global method */
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.pager = pager;
+    };
+
     $scope.getProjects = function(event) {
         $scope.loading = true;
         $scope.projects = [];
