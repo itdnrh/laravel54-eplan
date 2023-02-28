@@ -24,13 +24,6 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.cboKpi = '';
     $scope.txtKeyword = '';
 
-    $scope.setIsApproved = function(e, type, inStock, cb) {
-        $scope.isApproved = e.target.checked;
-        $scope.handleInputChange('isApproved', e.target.checked);
-
-        $scope.getPlans(type, inStock, cb);
-    };
-
     // $scope.createPlansQueryString = function(url='', type, inStock) {
     //     let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
     //     let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
@@ -212,14 +205,6 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
                 $(chk).prop("checked", false);
             });
         }
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.pager = pager;
     };
 
     $scope.getProjects = function(event) {

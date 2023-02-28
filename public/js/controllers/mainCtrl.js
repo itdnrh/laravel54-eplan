@@ -769,4 +769,23 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             $scope.loading = false;
         });
     };
+
+    /** TODO: shold reflactor this method to be global method */
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.pager = pager;
+
+        if (res.data.plansTotal) {
+            $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
+        }
+    };
+
+    $scope.setIsApproved = function(e, type, inStock, cb) {
+        $scope.isApproved = e.target.checked;
+        $scope.handleInputChange('isApproved', e.target.checked);
+
+        $scope.getPlans(type, inStock, cb);
+    };
 });

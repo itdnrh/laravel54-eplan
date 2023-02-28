@@ -1,9 +1,9 @@
 app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
-    $scope.loading = false;
-    $scope.assets = [];
-    $scope.pager = null;
     $scope.plan = null;
+    // $scope.loading = false;
+    // $scope.assets = [];
+    // $scope.pager = null;
     
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
@@ -109,83 +109,6 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
         $scope.asset.sum_price = price * amount;
         $('#sum_price').val(price * amount);
-    };
-
-    $scope.setIsApproved = function(e) {
-        $scope.isApproved = e.target.checked;
-
-        $scope.getAll(e);
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getAll = function(event) {
-        $scope.loading = true;
-        $scope.assets = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=1&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1`)
-        .then(function(res) {
-            $scope.setAssets(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setAssets = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.assets = data;
-        $scope.pager = pager;
-
-        $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getDataWithUrl = function(e, url, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.assets = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${url}&type=1&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
     };
 
     $scope.onShowItemsList = function() {

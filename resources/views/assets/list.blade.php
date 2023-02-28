@@ -20,13 +20,13 @@
         class="content"
         ng-controller="planAssetCtrl"
         ng-init="
-            getAll();
             initForms({
                 departs: {{ $departs }},
                 divisions: {{ $divisions }},
                 categories: {{ $categories }}
             }, 1);
-            initFiltered()
+            initFiltered();
+            getPlans(1, '', setPlans);
         "
     >
 
@@ -73,7 +73,10 @@
                                         name="cboYear"
                                         ng-model="cboYear"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="
+                                            handleInputChange('cboYear', cboYear);
+                                            getPlans(1, '', setPlans);
+                                        "
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
@@ -88,7 +91,10 @@
                                         name="cboCategory"
                                         ng-model="cboCategory"
                                         class="form-control"
-                                        ng-change="getAll($event)"
+                                        ng-change="
+                                            handleInputChange('cboCategory', cboCategory);
+                                            getPlans(1, '', setPlans);
+                                        "
                                     >
                                         <option value="">-- ทั้งหมด --</option>
                                         <option ng-repeat="category in forms.categories" value="@{{ category.id }}">
@@ -107,7 +113,11 @@
                                             name="cboFaction"
                                             ng-model="cboFaction"
                                             class="form-control"
-                                            ng-change="onFactionSelected(cboFaction); getAll($event);"
+                                            ng-change="
+                                                onFactionSelected(cboFaction);
+                                                handleInputChange('cboFaction', cboFaction);
+                                                getPlans(1, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             @foreach($factions as $faction)
@@ -126,7 +136,11 @@
                                             name="cboDepart"
                                             ng-model="cboDepart"
                                             class="form-control select2"
-                                            ng-change="onDepartSelected(cboDepart); getAll($event)"
+                                            ng-change="
+                                                onDepartSelected(cboDepart);
+                                                handleInputChange('cboDepart', cboDepart);
+                                                getPlans(1, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="dep in forms.departs" value="@{{ dep.depart_id }}">
@@ -143,7 +157,10 @@
                                             name="cboDivision"
                                             ng-model="cboDivision"
                                             class="form-control select2"
-                                            ng-change="getAll($event)"
+                                            ng-change="
+                                                handleInputChange('cboDivision', cboDivision);
+                                                getPlans(1, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option ng-repeat="div in forms.divisions" value="@{{ div.ward_id }}">
@@ -160,7 +177,10 @@
                                             name="cboPrice"
                                             ng-model="cboPrice"
                                             class="form-control"
-                                            ng-change="getAll($event)"
+                                            ng-change="
+                                                handleInputChange('cboPrice', cboPrice);
+                                                getPlans(1, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="1">ต่ำกว่า 10,000 บาท</option>
@@ -182,7 +202,10 @@
                                             name="cboBudget"
                                             ng-model="cboBudget"
                                             class="form-control"
-                                            ng-change="getAll($event)"
+                                            ng-change="
+                                                handleInputChange('cboBudget', cboBudget);
+                                                getPlans(1, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="1">เงินบำรุง</option>
@@ -198,7 +221,10 @@
                                             name="isInPlan"
                                             ng-model="isInPlan"
                                             class="form-control"
-                                            ng-change="getAll($event)"
+                                            ng-change="
+                                                handleInputChange('isInPlan', isInPlan);
+                                                getPlans(1, '', setPlans);
+                                            "
                                         >
                                             <option value="">-- ทั้งหมด --</option>
                                             <option value="I">ในแผน</option>
@@ -216,7 +242,10 @@
                                         name="txtItemName"
                                         class="form-control"
                                         ng-model="txtItemName"
-                                        ng-keyup="getAll($event)"
+                                        ng-keyup="
+                                            handleInputChange('txtItemName', txtItemName);
+                                            getPlans(1, '', setPlans);
+                                        "
                                     />
                                 </div>
                             </div>
@@ -251,7 +280,7 @@
                                     type="checkbox"
                                     id="isApproved"
                                     ng-model="isApproved"
-                                    ng-click="setIsApproved($event);"
+                                    ng-click="setIsApproved($event, 1, '', setPlans);"
                                     style="margin-left: 10px;"
                                 /> แสดงเฉพาะรายการที่อนุมัติแล้ว
                             </div>
@@ -298,7 +327,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, plan) in assets">
+                                <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
                                     <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
@@ -401,19 +430,19 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getPlansWithUrl($event, pager.path+ '?page=1', 1, '', setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, setAssets)" aria-label="Prev">
+                                        <a href="#" ng-click="getPlansWithUrl($event, pager.prev_page_url, 1, '', setPlans)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
                                     <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl(pager.path + '?page=' +i)">
+                                        <a href="#" ng-click="getPlansWithUrl(pager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
@@ -425,13 +454,13 @@
                                     </li> -->
 
                                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, setAssets)" aria-label="Next">
+                                        <a href="#" ng-click="getPlansWithUrl($event, pager.next_page_url, 1, '', setPlans)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, setAssets)" aria-label="Previous">
+                                        <a href="#" ng-click="getPlansWithUrl($event, pager.path+ '?page=' +pager.last_page, 1, '', setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>
