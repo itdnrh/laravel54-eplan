@@ -119,6 +119,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $('#sum_price').val(price * amount);
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getAll = function(inStock) {
         $scope.loading = true;
         $scope.materials = [];
@@ -146,6 +147,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         });
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.setMaterials = function(res) {
         const { data, ...pager } = res.data.plans;
 
@@ -155,6 +157,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getDataWithUrl = function(e, url, inStock, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;

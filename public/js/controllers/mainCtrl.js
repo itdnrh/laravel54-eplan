@@ -8,6 +8,9 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.menu = 'assets';
     $scope.submenu = 'list';
 
+    $scope.collapseBox = true;
+    $scope.loading = false;
+
     /** Filtering input models */
     $scope.cboYear = '2566'; //parseInt(moment().format('MM')) > 9
     //                     ? (moment().year() + 544).toString()
@@ -22,7 +25,11 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.cboDivision = "";
     $scope.cboStatus = "";
     $scope.txtKeyword = "";
-    $scope.collapseBox = true;
+    $scope.txtItemName = '';
+    $scope.cboPrice = '';
+    $scope.cboBudget = '';
+    $scope.isApproved = false;
+    $scope.isInPlan = 'I';
 
     /** Input control iteration models */
     $scope.budgetYearRange = $rootScope.range(2565, parseInt($scope.cboYear) + 3);
@@ -58,6 +65,8 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     }
 
     /** Data selection models */
+    $scope.plans = [];
+    $scope.pager = null;
     $scope.items = [];
     $scope.items_pager = null;
 
@@ -187,6 +196,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     };
 
     $scope.handleInputChange = function(name, value) {
+        console.log(name, value);
         $scope[name] = value;
     }
 
@@ -695,5 +705,76 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
 
         $scope.plans = data;
         $scope.plans_pager = pager;
+    };
+
+    /** TODO: shold reflactor this method to be global method */
+    $scope.getPlans = function(type, inStock, cb) {
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.pager = null;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let approved = $scope.isApproved ? 'A' : '';
+        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+        let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1${in_stock}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    /** TODO: shold reflactor this method to be global method */
+    $scope.getPlansWithUrl = function(e, url, type, inStock, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.plans = [];
+        $scope.pager = null;
+
+        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let approved = $scope.isApproved ? 'A' : '';
+        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+        let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
+
+        $http.get(`${url}&type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1${in_stock}`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    /** TODO: shold reflactor this method to be global method */
+    $scope.setPlans = function(res) {
+        const { data, ...pager } = res.data.plans;
+
+        $scope.plans = data;
+        $scope.pager = pager;
     };
 });

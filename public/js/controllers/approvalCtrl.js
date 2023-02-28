@@ -1,16 +1,17 @@
 app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
-    $scope.plans = [];
-    $scope.pager = null;
+    // $scope.plans = [];
+    // $scope.pager = null;
     $scope.projects = [];
     $scope.projects_pager = null;
-    $scope.loading = false;
+    // $scope.loading = false;
 
     $scope.cboYear = '2566', //(moment().year() + 543).toString(),
     $scope.cboPlanType = "";
     $scope.cboCategory = "";
     $scope.cboFaction = "";
     $scope.cboDepart = "";
+    $scope.cboDivision = "";
     $scope.cboStatus = "";
     $scope.cboPrice = '';
     $scope.cboBudget = '';
@@ -23,12 +24,32 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.cboKpi = '';
     $scope.txtKeyword = '';
 
-    
-    $scope.setIsApproved = function(e, type, inStock) {
+    $scope.setIsApproved = function(e, type, inStock, cb) {
         $scope.isApproved = e.target.checked;
+        $scope.handleInputChange('isApproved', e.target.checked);
 
-        $scope.getAll(type, inStock);
+        $scope.getPlans(type, inStock, cb);
     };
+
+    // $scope.createPlansQueryString = function(url='', type, inStock) {
+    //     let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+    //     let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+    //     let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+    //     let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
+    //     let division = !$scope.cboDivision ? '' : $scope.cboDivision;
+    //     let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+    //     let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+    //     let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+    //     let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+    //     let approved = $scope.isApproved ? 'A' : '';
+    //     let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+    //     let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
+
+    //     const queryString = `type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1${in_stock}`;
+    //     const endpoint = url == '' ? `${CONFIG.baseUrl}/plans/search?${queryString}` : `${url}&${queryString}`;
+
+    //     $scope.getPlans(endpoint, cb);
+    // };
 
     $scope.plansToApproveList = [];
     $scope.onCheckedPlan = (e, plan) => {
@@ -193,73 +214,6 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         }
     };
 
-    $scope.getAll = function(type, inStock) {
-        $scope.loading = true;
-        $scope.plans = [];
-        $scope.pager = null;
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
-        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
-        let approved = $scope.isApproved ? 'A' : '';
-        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&budget=${budget}&in_plan=${inPlan}&approved=${approved}&status=${status}${in_stock}`)
-        .then(function(res) {
-            $scope.setPlans(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.pager = pager;
-    };
-
-    $scope.getDataWithUrl = function(e, url, params, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.plans = [];
-        $scope.pager = null;
-        $scope.loading = true;
-
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart  = $scope.cboDepart === '' ? '' : $scope.cboDepart;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let in_stock = params.inStock != undefined ? `&in_stock=${params.inStock}` : '';
-        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
-        let approved = $scope.isApproved ? 'A' : '';
-        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${url}&type=${params.type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&name=${name}&price=${price}&budget=${budget}&in_plan=${inPlan}&approved=${approved}&status=${status}${in_stock}`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    
     $scope.getProjects = function(event) {
         $scope.loading = true;
         $scope.projects = [];

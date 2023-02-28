@@ -130,6 +130,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $('#sum_price').val(price * amount);
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getAll = function(event) {
         $scope.constructs = [];
         $scope.loading = true;
@@ -156,6 +157,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         });
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.setConstructs = function(res) {
         const { data, ...pager } = res.data.plans;
 
@@ -165,6 +167,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;

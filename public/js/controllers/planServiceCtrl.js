@@ -140,6 +140,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     | Plan service CRUD operations
     |-----------------------------------------------------------------------------
     */
+    /** TODO: shold reflactor this method to be global method */
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.services = [];
@@ -167,6 +168,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         });
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.setServices = function(res) {
         const { data, ...pager } = res.data.plans;
 
@@ -176,6 +178,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getDataWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
