@@ -168,6 +168,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('supports/update/{id}', 'SupportController@update');
     Route::post('supports/delete/{id}', 'SupportController@delete');
     Route::post('supports/send', 'SupportController@send');
+    Route::post('supports/receive', 'SupportController@onReceive');
     Route::get('supports/{id}/print', 'SupportController@printForm');
 
     /** การขอสนับสนุนจ้างซ่อม */

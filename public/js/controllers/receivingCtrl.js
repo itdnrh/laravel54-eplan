@@ -150,7 +150,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         }
 
         if (support) {
-            $http.put(`${CONFIG.apiUrl}/supports/${$scope.receive.support_id}/receive`, $scope.receive)
+            $http.post(`${CONFIG.baseUrl}/supports/receive`, $scope.receive)
             .then(function(res) {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ลงรับเอกสารเรียบร้อย !!!");

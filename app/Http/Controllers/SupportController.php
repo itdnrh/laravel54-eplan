@@ -791,7 +791,7 @@ class SupportController extends Controller
         }
     }
 
-    // PUT /supports/:id/cancel-sent
+    // PUT /api/supports/:id/cancel-sent
     public function cancelSent(Request $req, $id)
     {
         try {
@@ -826,20 +826,20 @@ class SupportController extends Controller
         }
     }
 
-    // PUT /suports/:id/receive
-    public function onReceive(Request $req, $id)
+    // POST /suports/:id/receive
+    public function onReceive(Request $req)
     {
         try {
-            $support = Support::find($id);
+            $support = Support::find($req['support_id']);
             $support->received_no       = $req['received_no'];
             $support->received_date     = convThDateToDbDate($req['received_date']);
             $support->received_user     = Auth::user()->person_id;
             $support->supply_officer    = $req['officer'];
-            $support->status            = 2; 
+            $support->status            = 2;
 
             if ($support->save()) {
                 /** Get all support's details */
-                $details = SupportDetail::where('support_id', $id)->get();
+                $details = SupportDetail::where('support_id', $req['support_id'])->get();
                 foreach($details as $detail) {
                     /** Update support_details's status to 2=รับเอกสารแล้ว */
                     SupportDetail::find($detail->id)->update(['status' => 2]);
@@ -863,7 +863,7 @@ class SupportController extends Controller
         }
     }
 
-    // PUT /supports/:id/cancel-received
+    // PUT /api/supports/:id/cancel-received
     public function cancelReceived(Request $req, $id)
     {
         try {
@@ -889,7 +889,7 @@ class SupportController extends Controller
         }
     }
 
-    // PUT /supports/:id/return
+    // PUT /api/supports/:id/return
     public function onReturn(Request $req, $id)
     {
         try {
