@@ -392,7 +392,7 @@ class ProjectController extends Controller
         $project->owner_person      = $req['owner_person'];
         $project->start_month       = $req['start_month'];
         $project->remark            = $req['remark'];
-        $project->status            = '0';
+        // $project->status            = '0';
         $project->created_user      = Auth::user()->person_id;
         $project->updated_user      = Auth::user()->person_id;
 
