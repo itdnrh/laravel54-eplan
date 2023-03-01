@@ -11,7 +11,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
     $scope.cboFaction = '';
     $scope.cboDepart = '';
     $scope.cboPrice = '';
-    $scope.cboInPlan = '';
+    $scope.cboInPlan = 'I';
 
     $scope.expenseBudget = '';
     $scope.expenseRemain = '';

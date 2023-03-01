@@ -115,7 +115,7 @@
                             >
                                 <option value="">-- เลือก --</option>
                                 <option value="1">ราคาตั้งแต่ 10,000 บาทขึ้นไป</option>
-                                <option value="2">ราคาน้อยกว่า 10,000 บาท</option>
+                                <option value="2">ราคาน้อยกว่า 10,000 บาท (ครุภัณฑ์ต่ำกว่าเกณฑ์)</option>
                             </select>
                             <span class="help-block" ng-show="frmMultiple.$submitted && frmMultiple.cboPrice.$error.required">
                                 กรุณาเลือกราคาต่อหน่วย

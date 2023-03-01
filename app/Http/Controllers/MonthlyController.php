@@ -461,11 +461,13 @@ class MonthlyController extends Controller
                     select order_id, count(id) num_rows, sum(sum_price) as sum_price
                     from order_details ";
 
+                    /** ถ้ามีการระบุสถานะในแผน/นอกแผนมา ให้เพิ่มเงื่อนไขฟิลด์ in_plan */
                     if (!empty($inPlan)) {
                         $sql .= "WHERE (plan_id in (select id from plans where (in_plan = '" .$inPlan. "'))) ";
                     }
 
-                    if (!empty($price)) {
+                    /** กรณีแผนครุภัณฑ์ (type=1) ต้องมีการระบุราคามาด้วย และให้เพิ่มเงื่อนไขฟิลด์ price_per_unit ต่ำกว่าหรือมากกว่า 10,000 บาท */
+                    if ($type == 1 && !empty($price)) {
                         if ($price == '1') {
                             $sql .= (!empty($inPlan) ? "AND" : "WHERE") . " (price_per_unit >= 10000) ";
                         } else {
