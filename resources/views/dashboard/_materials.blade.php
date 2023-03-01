@@ -47,37 +47,25 @@
             </div>
             <div class="col-md-4">
                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                    <li ng-if="pager.current_page !== 1">
+                    <li ng-class="{'disabled': (pager.current_page == 1)}">
                         <a href="#" ng-click="getMaterialsWithUrl($event, pager.path+ '?page=1', setMaterials)" aria-label="Previous">
                             <span aria-hidden="true">First</span>
                         </a>
                     </li>
-                
-                    <li ng-class="{'disabled': (pager.current_page==1)}">
+
+                    <!-- <li ng-class="{'disabled': (pager.current_page==1)}">
                         <a href="#" ng-click="getMaterialsWithUrl($event, pager.prev_page_url, setMaterials)" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
 
-                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                        <a href="#" ng-click="getMaterialsWithUrl($event, pager.path + '?page=' +i, setMaterials)">
-                            @{{ i }}
-                        </a>
-                    </li> -->
-
-                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                        <a href="#" ng-click="pager.path">
-                            ...
-                        </a>
-                    </li> -->
-
                     <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
                         <a href="#" ng-click="getMaterialsWithUrl($event, pager.next_page_url, setMaterials)" aria-label="Next">
                             <span aria-hidden="true">Next</span>
                         </a>
-                    </li>
+                    </li> -->
 
-                    <li ng-if="pager.current_page !== pager.last_page">
+                    <li ng-class="{'disabled': (pager.current_page == pager.last_page)}">
                         <a href="#" ng-click="getMaterialsWithUrl($event, pager.path+ '?page=' +pager.last_page, setMaterials)" aria-label="Previous">
                             <span aria-hidden="true">Last</span>
                         </a>

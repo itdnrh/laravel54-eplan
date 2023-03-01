@@ -191,6 +191,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-materials?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
+            console.log(res);
             $scope.setMaterials(res);
 
             $scope.loading = false;
