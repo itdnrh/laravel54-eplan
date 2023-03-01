@@ -376,14 +376,6 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setPlans = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.plans = data;
-        $scope.plans_pager = pager;
-    };
-
     $scope.onSelectedPlan = (e, plan) => {
         if (plan) {
             $scope.newItem.plan         = plan;

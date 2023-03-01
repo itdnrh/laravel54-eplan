@@ -66,7 +66,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
 
     /** Data selection models */
     $scope.plans = [];
-    $scope.pager = null;
+    $scope.plans_pager = null;
     $scope.items = [];
     $scope.items_pager = null;
 
@@ -771,7 +771,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         const { data, ...pager } = res.data.plans;
 
         $scope.plans = data;
-        $scope.pager = pager;
+        $scope.plans_pager = pager;
 
         if (res.data.plansTotal) {
             $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
