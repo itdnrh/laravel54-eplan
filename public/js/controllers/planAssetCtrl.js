@@ -1,9 +1,6 @@
 app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
     $scope.plan = null;
-    // $scope.loading = false;
-    // $scope.assets = [];
-    // $scope.pager = null;
     
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
@@ -297,7 +294,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.exportListToExcel = function(e) {
         e.preventDefault();
 
-        if($scope.assets.length == 0) {
+        if($scope.plans.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
@@ -319,7 +316,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.exportListToPdf = function(e) {
         e.preventDefault();
 
-        if($scope.assets.length == 0) {
+        if($scope.plans.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;

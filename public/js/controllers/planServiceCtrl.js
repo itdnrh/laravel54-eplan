@@ -11,9 +11,6 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.cboPrice = '';
     $scope.txtItemName = '';
 
-    // $scope.loading = false;
-    // $scope.services = [];
-    // $scope.pager = null;
     $scope.plan = null;
 
     $scope.service = {
@@ -328,7 +325,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.exportListToExcel = function(e) {
         e.preventDefault();
 
-        if($scope.services.length == 0) {
+        if($scope.plans.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
@@ -349,7 +346,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.exportListToPdf = function(e) {
         e.preventDefault();
 
-        if($scope.services.length == 0) {
+        if($scope.plans.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
