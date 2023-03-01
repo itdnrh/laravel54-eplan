@@ -325,6 +325,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         }
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getPlans = (status) => {
         $scope.loading = true;
         $scope.plans = [];
@@ -348,6 +349,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.getPlansWithUrl = function(e, url, status, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
@@ -374,6 +376,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         });
     };
 
+    /** TODO: shold reflactor this method to be global method */
     $scope.setPlans = function(res) {
         const { data, ...pager } = res.data.plans;
 

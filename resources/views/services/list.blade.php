@@ -242,7 +242,7 @@
                                         class="form-control"
                                         ng-model="txtItemName"
                                         ng-keyup="
-                                            handleInputChange('cboYear', cboYear);
+                                            handleInputChange('txtItemName', txtItemName);
                                             getPlans(3, '', setPlans);
                                         "
                                     />
