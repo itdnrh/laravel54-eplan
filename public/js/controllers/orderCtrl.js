@@ -14,15 +14,11 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.txtPoNo = '';
     $scope.dtpSdate = '';
     $scope.dtpEdate = '';
-
     $scope.txtKeyword
     $scope.txtSupportNo = '';
     $scope.searchKey = '';
 
-    $scope.loading = false;
-    $scope.plans = [];
-    $scope.plans_pager = null;
-
+    /** Iterating models */
     $scope.planGroups = [];
     $scope.planGroups_pager = null;
     $scope.planGroupItems = [];
@@ -31,6 +27,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.orders = [];
     $scope.pager = null;
     $scope.sumOrders = 0;
+
+    /** Store and update models */
     $scope.order = {
         po_no: '',
         po_date: '',
@@ -333,33 +331,17 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     $scope.showPlansList = (cate) => {
         if (cate == '') {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทพัสดุก่อน !!!");
-        } else {
-            $scope.loading = true;
-            $scope.plans = [];
-            $scope.plans_pager = null;
-
-            let year = $scope.order.year === '' ? '' : 2566;
-            let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-
-            $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&cate=${cate}&name=${name}&status=2`)
-            .then(function(res) {
-                $scope.setPlans(res);
-
-                $scope.loading = false;
-
-                $('#plans-list').modal('show');
-            }, function(err) {
-                console.log(err);
-                $scope.loading = false;
-            });
+            return;
         }
+
+        $scope.getPlans('2', true);
     };
 
     /** TODO: shold reflactor this method to be global method */
-    $scope.getPlans = (status) => {
+    $scope.getPlans = (status, toggleModal=false) => {
         $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
+        $scope.handleInputChange("plans", []);
+        $scope.handleInputChange("plans_pager", null);
 
         let year = $scope.order.year === '' ? '' : 2566;
         let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
@@ -370,6 +352,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
 
         $http.get(`${CONFIG.apiUrl}/supports/details/list?year=${year}&type=${type}&cate=${cate}&name=${name}&doc_no=${doc_no}&depart=${depart}&status=${status}`)
         .then(function(res) {
+            if (toggleModal) $('#plans-list').modal('show');
+
             $scope.setPlans(res);
 
             $scope.loading = false;
@@ -385,8 +369,8 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.orders = [];
-        $scope.pager = null;
+        $scope.handleInputChange("plans", []);
+        $scope.handleInputChange("plans_pager", null);
 
         let year = $scope.order.year === '' ? '' : 2566;
         let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;

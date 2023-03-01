@@ -22,13 +22,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.dtpEdate = '';
 
     /** Iterating models */
-    $scope.loading = false;
     $scope.sumSupports = 0;
     $scope.supports = [];
     $scope.pager = [];
-
-    $scope.plans = [];
-    $scope.plans_pager = null;
 
     $scope.persons = [];
     $scope.persons_pager = null;
@@ -300,36 +296,17 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     $scope.showPlansList = () => {
         if (!$scope.support.plan_type_id || !$scope.support.category_id) {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
-        } else {
-            $scope.loading = true;
-            $scope.plans = [];
-            $scope.plans_pager = null;
-    
-            let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
-            let cate = $scope.support.category_id === '' ? 1 : $scope.support.category_id;
-            let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
-                            ? $scope.cboDepart
-                            : $('#depart_id').val();
-    
-            $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&depart=${depart}&status=0-1&approved=A`)
-            .then(function(res) {
-                $scope.setPlans(res);
-    
-                $scope.loading = false;
-    
-                $('#plans-list').modal('show');
-            }, function(err) {
-                console.log(err);
-                $scope.loading = false;
-            });
+            return;
         }
+
+        $scope.getPlans("0-1", true);
     };
 
     /** TODO: shold reflactor this method to be global method */
-    $scope.getPlans = (status) => {
+    $scope.getPlans = (status, toggleModal=false) => {
         $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
+        $scope.handleInputChange("plans", []);
+        $scope.handleInputChange("plans_pager", null);
 
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
@@ -340,6 +317,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
+            if (toggleModal) $('#plans-list').modal('show');
+
             $scope.setPlans(res);
 
             $scope.loading = false;
@@ -355,8 +334,8 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
         $scope.loading = true;
-        $scope.plans = [];
-        $scope.plans_pager = null;
+        $scope.handleInputChange("plans", []);
+        $scope.handleInputChange("plans_pager", null);
 
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
