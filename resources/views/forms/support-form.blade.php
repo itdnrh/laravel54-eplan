@@ -428,12 +428,14 @@
                     @endif
 
                     @if(count($support->details) > 12 && count($support->details) <= 28)
-                        <tr>
-                            <td colspan="4">
-                                <div style="height: 40px;"></div>
-                                <p class="next-paragraph">/พร้อมนี้ได้ส่งข้อมูลประกอบ...</p>
-                            </td>
-                        </tr>
+                        @if(count($support->details) == 28)
+                            <tr>
+                                <td colspan="4">
+                                    <div style="height: 40px;"></div>
+                                    <p class="next-paragraph">/พร้อมนี้ได้ส่งข้อมูลประกอบ...</p>
+                                </td>
+                            </tr>
+                        @endif
                     @endif
                     <!-- ############################ End Pagination ############################ -->
 
@@ -446,7 +448,9 @@
                             @endif
                             
                             @if(count($support->details) > 12 && count($support->details) <= 28)
-                                <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                @if(count($support->details) == 28)
+                                    <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                @endif
                             @endif
                             <!-- ############################ End Pagination ############################ -->
 
@@ -460,7 +464,10 @@
 
                             @if(count($committees) > 2 && count($committees) <= 6)
                                 @if(committeeNumber($committees, 1) == 1)
-
+                                    @if (count($support->details) == 26)
+                                        <div style="height: 40px;"></div>
+                                        <p class="next-paragraph">/๑. รายชื่อคณะกรรมการกำหนด...</p>
+                                    @endif
                                 @else
                                     @if (count($support->details) > 19 && count($support->details) <= 25)
                                         <div style="height: 40px;"></div>
@@ -491,7 +498,9 @@
 
                             @if(count($committees) > 2 && count($committees) <= 6)
                                 @if(committeeNumber($committees, 1) == 1)
-
+                                    @if (count($support->details) == 26)
+                                        <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
+                                    @endif
                                 @else
                                     @if (count($support->details) > 19 && count($support->details) <= 25)
                                         <p class="page-number">- {{ thainumDigit(++$page) }} -</p>

@@ -32,6 +32,12 @@
                 <td style="text-align: right;">@{{ construct.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ construct.withdraw | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ construct.debt | currency:'':0 }}</td>
+            </tr><tr>
+                <td style="text-align: center;">รวม</td>
+                <td style="text-align: right;">@{{ totalConstruct.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalConstruct.po | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalConstruct.withdraw | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalConstruct.debt | currency:'':0 }}</td>
             </tr>
         </table>
     </div><!-- /.box-body -->

@@ -1,4 +1,4 @@
-<div class="box box-danger" ng-init="getSummaryServices();">
+<div class="box box-info" ng-init="getSummaryServices();">
     <div class="box-header">
         <h3 class="box-title">
             สรุปแผนจ้างบริการ
@@ -32,6 +32,12 @@
                 <td style="text-align: right;">@{{ service.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ service.withdraw | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ service.debt | currency:'':0 }}</td>
+            </tr><tr>
+                <td style="text-align: center;">รวม</td>
+                <td style="text-align: right;">@{{ totalService.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalService.po | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalService.withdraw | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalService.debt | currency:'':0 }}</td>
             </tr>
         </table>
     </div><!-- /.box-body -->

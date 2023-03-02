@@ -56,7 +56,7 @@ class DashboardController extends Controller
 
         $supports = \DB::table("supports")
                         ->select(
-                            \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as sum_po"),
+                            \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as sum_po"),
                             \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as sum_with"),
                             \DB::raw("sum(case when (support_details.status='9') then support_details.sum_price end) as sum_debt")
                         )
@@ -143,14 +143,14 @@ class DashboardController extends Controller
                         $query->where('in_plan', $inPlan);
                     })
                     ->where('plans.plan_type_id', 1)
-                    ->get();
+                    ->paginate(20);
 
         $supports = \DB::table('supports')
                     ->select(
                         'supports.category_id',
                         \DB::raw("sum(case when (support_details.status='1') then support_details.sum_price end) as sent"),
                         \DB::raw("sum(case when (support_details.status='2') then support_details.sum_price end) as received"),
-                        \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as po"),
+                        \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
                         \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")
@@ -209,14 +209,14 @@ class DashboardController extends Controller
                     ->when(!empty($inPlan), function($query) use ($inPlan) {
                         $query->where('in_plan', $inPlan);
                     })
-                    ->paginate(10);
+                    ->paginate(20);
 
         $supports = \DB::table('supports')
                     ->select(
                         'supports.category_id',
                         \DB::raw("sum(case when (support_details.status='1') then support_details.sum_price end) as sent"),
                         \DB::raw("sum(case when (support_details.status='2') then support_details.sum_price end) as received"),
-                        \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as po"),
+                        \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
                         \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")
@@ -282,7 +282,7 @@ class DashboardController extends Controller
                         'supports.category_id',
                         \DB::raw("sum(case when (support_details.status='1') then support_details.sum_price end) as sent"),
                         \DB::raw("sum(case when (support_details.status='2') then support_details.sum_price end) as received"),
-                        \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as po"),
+                        \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
                         \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")
@@ -348,7 +348,7 @@ class DashboardController extends Controller
                         'supports.category_id',
                         \DB::raw("sum(case when (support_details.status='1') then support_details.sum_price end) as sent"),
                         \DB::raw("sum(case when (support_details.status='2') then support_details.sum_price end) as received"),
-                        \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as po"),
+                        \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
                         \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")

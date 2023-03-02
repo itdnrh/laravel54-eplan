@@ -33,38 +33,44 @@
                 <td style="text-align: right;">@{{ asset.withdraw | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.debt | currency:'':0 }}</td>
             </tr>
+            <tr>
+                <td style="text-align: center;">รวม</td>
+                <td style="text-align: right;">@{{ totalAsset.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalAsset.po | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalAsset.withdraw | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalAsset.debt | currency:'':0 }}</td>
+            </tr>
         </table>
     </div><!-- /.box-body -->
-    <div class="box-footer">
-        <div class="row" ng-show="assets.length > 0">
+    <div class="box-footer" ng-show="false">
+        <div class="row" ng-show="asseassets_pager.last_page > 1">
             <div class="col-md-4">
                 <span style="margin-top: 5px;" ng-show="false">
-                    หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
+                    หน้า @{{ assets_pager.current_page }} จาก @{{ assets_pager.last_page }}
                 </span>
             </div>
             <div class="col-md-4" style="text-align: center;">
                 จำนวน @{{ assets.length }} รายการ
             </div>
             <div class="col-md-4">
-                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                    <li ng-if="false">
-                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=1', setDepartLeaves)" aria-label="Previous">
+                <ul class="pagination pagination-sm no-margin pull-right" ng-show="assets_pager.last_page > 1">
+                    <li ng-class="{'disabled': (assets_pager.current_page == 1)}">
+                        <a href="#" ng-click="getDataWithURL($event, assets_pager.path+ '?page=1', setDepartLeaves)" aria-label="Previous">
                             <span aria-hidden="true">First</span>
                         </a>
                     </li>
-                    <li ng-class="{'disabled': true}">
-                        <a href="#" ng-click="getDataWithURL($event, pager.prev_page_url, setDepartLeaves)" aria-label="Prev">
+                    <!-- <li ng-class="{'disabled': true}">
+                        <a href="#" ng-click="getDataWithURL($event, assets_pager.prev_page_url, setDepartLeaves)" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
                     <li ng-class="{'disabled': true}">
-                        <a href="#" ng-click="getDataWithURL($event, pager.next_page_url, setDepartLeaves)" aria-label="Next">
+                        <a href="#" ng-click="getDataWithURL($event, assets_pager.next_page_url, setDepartLeaves)" aria-label="Next">
                             <span aria-hidden="true">Next</span>
                         </a>
-                    </li>
-
-                    <li ng-if="false">
-                        <a href="#" ng-click="getDataWithURL($event, pager.path+ '?page=' +pager.last_page, setDepartLeaves)" aria-label="Previous">
+                    </li> -->
+                    <li ng-class="{'disabled': (assets_pager.current_page == assets_pager.last_page)}">
+                        <a href="#" ng-click="getDataWithURL($event, assets_pager.path+ '?page=' +assets_pager.last_page, setDepartLeaves)" aria-label="Previous">
                             <span aria-hidden="true">Last</span>
                         </a>
                     </li>

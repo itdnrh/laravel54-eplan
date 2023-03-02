@@ -1,7 +1,7 @@
 app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, ChartService) {
 /** ################################################################################## */
-    $scope.loading = false;
-    $scope.pager = null;
+    $scope.assets_pager = null;
+    $scope.materials_pager = null;
 
     $scope.pieOptions = {};
     $scope.barOptions = {};
@@ -129,9 +129,30 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.assets = [];
-    $scope.totalAsset = 0;
+    $scope.totalAsset = {
+        budget: 0,
+        request: 0,
+        sent: 0,
+        received: 0,
+        po: 0,
+        inspect: 0,
+        withdraw: 0,
+        debt: 0,
+    };
     $scope.getSummaryAssets = function() {
         $scope.loading = true;
+        $scope.assets = [];
+        $scope.assets_pager = null;
+        $scope.totalAsset = {
+            budget: 0,
+            request: 0,
+            sent: 0,
+            received: 0,
+            po: 0,
+            inspect: 0,
+            withdraw: 0,
+            debt: 0,
+        };
 
         // let date = $('#cboAssetDate').val() !== ''
         //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
@@ -143,7 +164,8 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             const { plans, supports, budgets, categories } = res.data;
 
             /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
-            let tmpPlans = plans.map(plan => {
+            const { data, ...pager } = plans;
+            let tmpPlans = data.map(plan => {
                 let support = supports.find(support => plan.category_id === support.category_id);
 
                 if (support) {
@@ -170,6 +192,19 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 return plan;
             });
 
+            $scope.assets.forEach(asset => {
+                $scope.totalAsset.budget    += asset.budget || 0;
+                $scope.totalAsset.request   += asset.request || 0;
+                $scope.totalAsset.sent      += asset.sent || 0;
+                $scope.totalAsset.received  += asset.received || 0;
+                $scope.totalAsset.po        += asset.po || 0;
+                $scope.totalAsset.inspect   += asset.inspect || 0;
+                $scope.totalAsset.withdraw  += asset.withdraw || 0;
+                $scope.totalAsset.debt      += asset.debt || 0;
+            });
+
+            $scope.assets_pager = pager;
+
             $scope.loading = false;
         }, function(err) {
             console.log(err);
@@ -178,11 +213,29 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.materials = [];
-    $scope.totalMaterial = 0;
+    $scope.totalMaterial = {
+        budget: 0,
+        request: 0,
+        sent: 0,
+        received: 0,
+        po: 0,
+        inspect: 0,
+        withdraw: 0,
+        debt: 0,
+    };
     $scope.getSummaryMaterials = function() {
         $scope.materials = [];
-        $scope.pager = null;
-        $scope.loading = true;
+        $scope.materials_pager = null;
+        $scope.totalMaterial = {
+            budget: 0,
+            request: 0,
+            sent: 0,
+            received: 0,
+            po: 0,
+            inspect: 0,
+            withdraw: 0,
+            debt: 0,
+        };
 
         // let date = $('#cboAssetDate').val() !== ''
         //             ? StringFormatService.convToDbDate($('#cboAssetDate').val())
@@ -204,7 +257,8 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         const { plans, supports, budgets, categories } = res.data;
 
         /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
-        let tmpPlans = plans.data.map(plan => {
+        const { data, ...pager } = plans;
+        let tmpPlans = data.map(plan => {
             let support = supports.find(support => plan.category_id === support.category_id);
 
             if (support) {
@@ -221,7 +275,6 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             return cate;
         });
 
-        const { data, ...pager } = plans;
         $scope.materials = tmpPlans.map(plan => {
             const cateInfo = cates.find(cate => cate.id === plan.category_id);
 
@@ -231,16 +284,37 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             return plan;
         });
 
-        $scope.pager = pager;
+        $scope.materials.forEach(material => {
+            $scope.totalMaterial.budget    += material.budget || 0;
+            $scope.totalMaterial.request   += material.request || 0;
+            $scope.totalMaterial.sent      += material.sent || 0;
+            $scope.totalMaterial.received  += material.received || 0;
+            $scope.totalMaterial.po        += material.po || 0;
+            $scope.totalMaterial.inspect   += material.inspect || 0;
+            $scope.totalMaterial.withdraw  += material.withdraw || 0;
+            $scope.totalMaterial.debt      += material.debt || 0;
+        });
+
+        $scope.materials_pager = pager;
     };
 
     $scope.getMaterialsWithUrl = function(e, url, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
+        $scope.loading = true;
         $scope.materials = [];
         $scope.pager = null;
-        $scope.loading = true;
+        $scope.totalMaterial = {
+            budget: 0,
+            request: 0,
+            sent: 0,
+            received: 0,
+            po: 0,
+            inspect: 0,
+            withdraw: 0,
+            debt: 0,
+        };
 
         let year = $scope.dtpYear
 
@@ -256,9 +330,29 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.services = [];
-    $scope.totalService = 0;
+    $scope.totalService = {
+        budget: 0,
+        request: 0,
+        sent: 0,
+        received: 0,
+        po: 0,
+        inspect: 0,
+        withdraw: 0,
+        debt: 0,
+    };
     $scope.getSummaryServices = function() {
         $scope.loading = true;
+        $scope.services = [];
+        $scope.totalService = {
+            budget: 0,
+            request: 0,
+            sent: 0,
+            received: 0,
+            po: 0,
+            inspect: 0,
+            withdraw: 0,
+            debt: 0,
+        };
 
         let year = $scope.dtpYear
 
@@ -294,6 +388,17 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 return plan;
             });
 
+            $scope.services.forEach(service => {
+                $scope.totalService.budget    += service.budget || 0;
+                $scope.totalService.request   += service.request || 0;
+                $scope.totalService.sent      += service.sent || 0;
+                $scope.totalService.received  += service.received || 0;
+                $scope.totalService.po        += service.po || 0;
+                $scope.totalService.inspect   += service.inspect || 0;
+                $scope.totalService.withdraw  += service.withdraw || 0;
+                $scope.totalService.debt      += service.debt || 0;
+            });
+
             $scope.loading = false;
         }, function(err) {
             console.log(err);
@@ -302,9 +407,29 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.constructs = [];
-    $scope.totalConstruct = 0;
+    $scope.totalConstruct = {
+        budget: 0,
+        request: 0,
+        sent: 0,
+        received: 0,
+        po: 0,
+        inspect: 0,
+        withdraw: 0,
+        debt: 0,
+    };
     $scope.getSummaryConstructs = function() {
         $scope.loading = true;
+        $scope.constructs = [];
+        $scope.totalConstruct = {
+            budget: 0,
+            request: 0,
+            sent: 0,
+            received: 0,
+            po: 0,
+            inspect: 0,
+            withdraw: 0,
+            debt: 0,
+        };
 
         let year = $scope.dtpYear
 
@@ -338,6 +463,17 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 }
 
                 return plan;
+            });
+
+            $scope.constructs.forEach(construct => {
+                $scope.totalConstruct.budget    += construct.budget || 0;
+                $scope.totalConstruct.request   += construct.request || 0;
+                $scope.totalConstruct.sent      += construct.sent || 0;
+                $scope.totalConstruct.received  += construct.received || 0;
+                $scope.totalConstruct.po        += construct.po || 0;
+                $scope.totalConstruct.inspect   += construct.inspect || 0;
+                $scope.totalConstruct.withdraw  += construct.withdraw || 0;
+                $scope.totalConstruct.debt      += construct.debt || 0;
             });
 
             $scope.loading = false;

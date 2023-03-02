@@ -67,22 +67,14 @@
 
                 @include('dashboard._assets')
 
+                @include('dashboard._services')
+
+                @include('dashboard._constructs')
+
             </section>
             <section class="col-lg-6 connectedSortable">
     
                 @include('dashboard._materials')
-
-            </section>
-        </div>
-        <div class="row">
-            <section class="col-lg-6 connectedSortable">
-
-                @include('dashboard._services')
-
-            </section>
-            <section class="col-lg-6 connectedSortable">
-    
-                @include('dashboard._constructs')
 
             </section>
         </div>
