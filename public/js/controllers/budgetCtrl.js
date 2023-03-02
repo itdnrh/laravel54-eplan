@@ -1,4 +1,4 @@
-app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
+app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.budgets = [];
@@ -19,6 +19,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         year: '2566',
         expense_type_id: '',
         expense_id: '',
+        plan_id: '',
         budget: '',
         remain: '',
         faction_id: '',
@@ -54,6 +55,101 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
         };
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.showPlansList = () => {
+        if (!$scope.budget.expense_id) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกประเภทแผนและประเภทพัสดุก่อน !!!");
+            return;
+        }
+
+        $scope.getPlans("", true);
+    };
+
+    /** TODO: shold reflactor this method to be global method */
+    $scope.getPlans = (status, toggleModal=false) => {
+        $scope.loading = true;
+        $scope.handleInputChange("plans", []);
+        $scope.handleInputChange("plans_pager", null);
+
+        let type = $scope.budget.expense_id === '' ? 1 : $scope.budget.expense_id;
+        let cate = '';
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                            ? $scope.cboDepart
+                            : $('#depart_id').val();
+
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
+        .then(function(res) {
+            if (toggleModal) $('#plans-list').modal('show');
+
+            $scope.setPlans(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    /** TODO: shold reflactor this method to be global method */
+    $scope.getPlansWithUrl = function(e, url, status, cb) {
+        /** Check whether parent of clicked a tag is .disabled just do nothing */
+        if ($(e.currentTarget).parent().is('li.disabled')) return;
+
+        $scope.loading = true;
+        $scope.handleInputChange("plans", []);
+        $scope.handleInputChange("plans_pager", null);
+
+        let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
+        let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
+        let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
+        let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
+                            ? $scope.cboDepart
+                            : $('#depart_id').val();
+
+        $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
+        .then(function(res) {
+            cb(res);
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.onSelectedPlan = (e, plan) => {
+        if (plan) {
+            $scope.newItem.plan         = plan;
+            $scope.newItem.plan_id      = plan.id;
+            $scope.newItem.item_id      = plan.plan_item.item_id;
+            $scope.newItem.item         = plan.plan_item.item;
+            $scope.newItem.subitem_id   = '';
+            $scope.newItem.desc         = '';
+            $scope.newItem.price_per_unit = plan.plan_item.calc_method == 1 ? plan.plan_item.price_per_unit : '';
+            $scope.newItem.unit_id      = plan.plan_item.calc_method == 1 ? plan.plan_item.unit_id.toString() : '';
+            $scope.newItem.unit_name    = plan.plan_item.calc_method == 1 ? plan.plan_item.unit.name : '';
+            $scope.newItem.amount       = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_amount : 1;
+            $scope.newItem.sum_price    = plan.plan_item.calc_method == 1 ? plan.plan_item.remain_budget : '';
+            $scope.newItem.planItem     = plan.plan_item;
+
+            if (plan.plan_item.calc_method == 1) {
+                $('#unit_id').val(plan.plan_item.unit_id).trigger("change.select2");
+            }
+        }
+
+        $('#plans-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Budget CRUD operations
+    |-----------------------------------------------------------------------------
+    */
     $scope.getAll = function(event) {
         $scope.loading = true;
         $scope.budgets = [];

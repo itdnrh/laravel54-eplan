@@ -111,6 +111,45 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(budget, 'plan_detail')}"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261'"
+                                >
+                                    <label>ตัดยอดจาก (แผนคำขอประจำปี) :</label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="plan_detail"
+                                            name="plan_detail"
+                                            class="form-control"
+                                            ng-model="budget.plan_detail"
+                                            readonly
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="plan_id"
+                                            name="plan_id"
+                                            class="form-control"
+                                            ng-model="budget.plan_id"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showPlansList()"
+                                            >
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(budget, 'plan_id')">
+                                        @{{ formError.errors.plan_id[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(budget, 'year')}"
                                 >
@@ -244,6 +283,8 @@
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        @include('budgets._plans-list')
 
     </section>
 
