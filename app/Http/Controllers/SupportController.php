@@ -10,6 +10,7 @@ use App\Models\Support;
 use App\Models\SupportDetail;
 use App\Models\Plan;
 use App\Models\PlanItem;
+use App\Models\Item;
 use App\Models\PlanType;
 use App\Models\ItemCategory;
 use App\Models\Unit;
@@ -136,11 +137,19 @@ class SupportController extends Controller
 
         $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
 
+        $itemsList = Item::when(!empty($desc), function($q) use ($desc) {
+                            $q->where('item_name', 'like', '%'.$desc.'%');
+                        })
+                        ->pluck('id');
+
         $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
-                            ->join('plans','plans.id','=','plan_items.plan_id')
+                            ->leftJoin('plans','plans.id','=','plan_items.plan_id')
                             ->where('plans.year', $year)
-                            ->when(!empty($desc), function($q) use ($desc) {
+                            ->when(!empty($desc), function($q) use ($desc, $itemsList) {
                                 $q->where('desc', 'like', '%'.$desc.'%');
+                                $q->orWhere(function($sq) use ($itemsList) {
+                                    $sq->whereIn('plan_items.item_id', $itemsList);
+                                });
                             })
                             ->when(!empty($inPlan), function($q) use ($inPlan) {
                                 $q->where('plans.in_plan', $inPlan);
