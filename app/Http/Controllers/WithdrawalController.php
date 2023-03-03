@@ -91,8 +91,8 @@ class WithdrawalController extends Controller
                                 $q->where(function($sq) {
                                     $sq->where('completed', '0')->orWhereNull('completed');
                                 });
-                            } else {
-                                $q->where('completed', '1');
+                            } else if ($completed == '3') {
+                                $q->where('completed', '1')->whereNotNull('ref_debt_id');
                             }
                         })
                         ->when($req->get('date') != '-', function($q) use ($sdate, $edate) {
