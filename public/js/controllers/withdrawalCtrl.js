@@ -8,6 +8,8 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     $scope.dtpSdate = '';
     $scope.dtpEdate = '';
 
+    /** Iterating models */
+    $scope.sumWithdrawals = 0;
     $scope.withdrawals = [];
     $scope.pager = null;
 
@@ -280,10 +282,13 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
     };
 
     $scope.setWithdrawals = function (res) {
+        console.log(res);
         const { data, ...pager } = res.data.withdrawals;
 
         $scope.withdrawals = data;
         $scope.pager = pager;
+
+        $scope.sumWithdrawals = res.data.sumWithdrawals;
     };
 
     $scope.showOrderDetails = (items) => {

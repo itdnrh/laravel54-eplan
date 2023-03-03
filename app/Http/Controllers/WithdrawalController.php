@@ -102,11 +102,11 @@ class WithdrawalController extends Controller
                                 $q->where('withdraw_date', convThDateToDbDate($sdate));
                             }
                         })
-                        ->orderBy('withdraw_date', 'DESC')
-                        ->paginate(10);
+                        ->orderBy('withdraw_date', 'DESC');
 
         return [
-            "withdrawals" => $withdrawals
+            "sumWithdrawals"    => $withdrawals->sum('net_total'),
+            "withdrawals"       => $withdrawals->paginate(10)
         ];
     }
 

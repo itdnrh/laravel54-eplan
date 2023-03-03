@@ -209,7 +209,13 @@
                                         @{{ withdraw.prepaid.prefix.prefix_name+withdraw.prepaid.person_firstname+ ' ' +withdraw.prepaid.person_lastname }}
                                     </td>
                                     <td style="text-align: center;">
-                                        <span class="label label-success" ng-show="withdraw.completed">ส่งเบิกเงินแล้ว</span>
+                                        <span class="label label-success" ng-show="withdraw.completed">
+                                            ส่งเบิกเงินแล้ว
+                                        </span>
+                                        <span class="label label-danger" ng-show="withdraw.ref_debt_id">
+                                            <i class="fa fa-calculator" aria-hidden="true"></i>
+                                            ตั้งหนี้แล้ว
+                                        </span>
                                         <span class="label label-danger" ng-show="!withdraw.completed">ยังไม่ได้ส่ง</span>
                                     </td>
                                     <td style="text-align: center;">
@@ -246,7 +252,7 @@
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
+                                จำนวน <b>@{{ pager.total }}</b> รายการ | ยอดขอสนับสนุนทั้งสิ้น <b>@{{ sumWithdrawals | currency:'':2 }}</b> บาท
                             </div>
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
