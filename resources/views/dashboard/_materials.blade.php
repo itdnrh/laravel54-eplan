@@ -22,8 +22,8 @@
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: right;">ประมาณการ</th>
-                <th style="width: 15%; text-align: right;">รับเอกสารแล้ว</th>
-                <th style="width: 15%; text-align: right;">ส่งขอซื้อ/จ้าง</th>
+                <th style="width: 15%; text-align: right;">รับเอกสาร</th>
+                <th style="width: 15%; text-align: right;">ออกใบซื้อ/จ้าง</th>
                 <th style="width: 15%; text-align: right;">ส่งเบิกเงิน</th>
                 <!-- <th style="width: 15%; text-align: right;">ตั้งหนี้</th> -->
             </tr>

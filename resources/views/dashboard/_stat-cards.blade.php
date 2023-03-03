@@ -37,7 +37,7 @@
                     @{{ stat1Cards.sum_po | currency:'':0 }}
                     <span style="font-size: 14px;">บาท</span>
                 </h3>
-                <p><h4>ส่งขอซื้อ/จ้าง</h4></p>
+                <p><h4>ออกใบซื้อ/จ้างแล้ว</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
