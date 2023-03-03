@@ -262,28 +262,28 @@ class MonthlyController extends Controller
     public function store(Request $req)
     {
         try {
-            $plan = new Monthly();
-            $plan->year         = $req['year'];
-            $plan->month        = $req['month'];
-            $plan->expense_id   = $req['expense_id'];
-            $plan->total        = currencyToNumber($req['total']);
-            $plan->remain       = currencyToNumber($req['remain']);
+            $monthly = new Monthly();
+            $monthly->year         = $req['year'];
+            $monthly->month        = $req['month'];
+            $monthly->expense_id   = $req['expense_id'];
+            $monthly->total        = currencyToNumber($req['total']);
+            $monthly->remain       = currencyToNumber($req['remain']);
 
             /** Check whether user is admin or not */
             if ($req['user'] == '1300200009261') {
-                $plan->depart_id = $req['depart_id'];
+                $monthly->depart_id = $req['depart_id'];
             } else {
                 $person = Person::where('person_id', $req['user'])->with('memberOf')->first();
-                $plan->depart_id = $person->memberOf->depart_id;
+                $monthly->depart_id = $person->memberOf->depart_id;
             }
 
-            $plan->reporter_id  = $req['user'];
-            $plan->remark       = $req['remark'];
-            $plan->status       = '0';
-            $plan->created_user = $req['user'];
-            $plan->updated_user = $req['user'];
+            $monthly->reporter_id  = $req['user'];
+            $monthly->remark       = $req['remark'];
+            $monthly->status       = '0';
+            $monthly->created_user = $req['user'];
+            $monthly->updated_user = $req['user'];
 
-            if($plan->save()) {
+            if($monthly->save()) {
                 $planSum = Budget::where('year', $req['year'])
                             ->where('expense_id', $req['expense_id'])
                             ->first();
@@ -291,11 +291,16 @@ class MonthlyController extends Controller
                 $planSum->remain = currencyToNumber($req['remain']);
                 $planSum->save();
 
-                /** ถ้าเป็นค่ายาทั่วไปให้อัพเดตยอดคงเหลือในตาราง plan_items (item_id=1922) ด้วย */
-                if ($req['expense_id'] == '1') {
-                    PlanItem::where('item_id', '1922')->update([
-                        'remain_budget' => currencyToNumber($req['remain'])
-                    ]);
+                /** ถ้ามีการผูกรายการแผนคำขอไว้ (plan_id != '') ให้อัพเดตยอดคงเหลือในตาราง plan_items */
+                if ($req['plan_id'] != '') {
+                    $plan = PlanItem::where('plan_id', $req['plan_id'])->first();
+                    $plan->remain_budget = currencyToNumber($req['remain']);
+
+                    if ($plan->remain_budget <= 0) {
+                        $plan->remain_amount = 0;
+                    }
+
+                    $plan->save();
                 }
 
                 return [
@@ -360,6 +365,18 @@ class MonthlyController extends Controller
                 $planSum->remain = (double)$planSum->remain - (double)$req['total'];
                 $planSum->save();
 
+                /** ถ้ามีการผูกรายการแผนคำขอไว้ (plan_id != '') ให้อัพเดตยอดคงเหลือในตาราง plan_items */
+                // if ($req['plan_id'] != '') {
+                //     $plan = PlanItem::where('plan_id', $req['plan_id'])->first();
+                //     $plan->remain_budget = currencyToNumber($req['remain']);
+
+                //     if ($plan->remain_budget <= 0) {
+                //         $plan->remain_amount = 0;
+                //     }
+
+                //     $plan->save();
+                // }
+
                 return [
                     'status'    => 1,
                     'message'   => 'Updating successfully',
@@ -386,14 +403,24 @@ class MonthlyController extends Controller
             $oldMonthly = $plan;
 
             if($plan->delete()) {
-                /** TODO: redo plan_summary's remain value to before 
-                 * by plus with deleted plan's total
-                 */
+                /** TODO: Revert budget's remain value to before by plus with deleted plan's total */
                 $planSum = Budget::where('year', $oldMonthly->year)
                             ->where('expense_id', $oldMonthly->expense_id)
                             ->first();
                 $planSum->remain = (double)$planSum->remain + (double)$oldMonthly->total;
                 $planSum->save();
+
+                /** ถ้ามีการผูกรายการแผนคำขอไว้ (plan_id != '') ให้อัพเดตยอดคงเหลือในตาราง plan_items */
+                // if ($req['plan_id'] != '') {
+                //     $plan = PlanItem::where('plan_id', $req['plan_id'])->first();
+                //     $plan->remain_budget += currencyToNumber($req['remain']);
+
+                //     if ($plan->remain_amount == 0) {
+                //         $plan->remain_amount = 1;
+                //     }
+
+                //     $plan->save();
+                // }
 
                 return [
                     'status'    => 1,

@@ -123,7 +123,7 @@ class BudgetController extends Controller
     public function getByExpense($year, $expense)
     {
         return [
-            'plan' => Budget::where('year', $year)->where('expense_id', $expense)->first(),
+            'budget' => Budget::where('year', $year)->where('expense_id', $expense)->first(),
         ];
     }
 

@@ -22,6 +22,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
         month: '',
         expense_type_id: '',
         expense_id: '',
+        plan_id: '',
         total: '',
         remain: '',
         depart_id: '',
@@ -75,19 +76,18 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
     $('#remain').prop('disabled', true);
 
     const clearMonthly = function() {
-        $scope.monthly = {
-            monthly_id: '',
-            year: '2566',
-            month: '',
-            expense_type_id: '',
-            expense_id: '',
-            total: '',
-            remain: '',
-            depart_id: '',
-            reporter_id: '',
-            remark: '',
-            user: ''
-        };
+        $scope.monthly.monthly_id = '';
+        $scope.monthly.year = '2566';
+        $scope.monthly.month = '';
+        $scope.monthly.expense_type_id = '';
+        $scope.monthly.expense_id = '';
+        $scope.monthly.plan_id = '';
+        $scope.monthly.total = '';
+        $scope.monthly.remain = '';
+        $scope.monthly.depart_id = '';
+        $scope.monthly.reporter_id = '';
+        $scope.monthly.remark = '';
+        $scope.monthly.user = '';
     };
 
     $scope.getAll = function(event) {
@@ -276,11 +276,12 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
         $http.get(`${CONFIG.apiUrl}/budgets/${year}/${expense}`)
         .then(function(res) {
-            if (res.data.plan) {
-                $scope.expenseBudget = res.data.plan.budget;
-                $scope.expenseRemain = res.data.plan.remain;
+            if (res.data.budget) {
+                $scope.expenseBudget = res.data.budget.budget;
+                $scope.expenseRemain = res.data.budget.remain;
 
-                $scope.monthly.remain = res.data.plan.remain;
+                $scope.monthly.remain = res.data.budget.remain;
+                $scope.monthly.plan_id = res.data.budget.plan_id || '';
             } else {
                 toaster.pop('error', "ผลการตรวจสอบ", "ไม่พบข้อมูลในรายการประมาณการรายจ่าย !!!");
 
