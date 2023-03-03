@@ -56,6 +56,7 @@ class DashboardController extends Controller
 
         $supports = \DB::table("supports")
                         ->select(
+                            \DB::raw("sum(case when (support_details.status in (2,3,4,5,6)) then support_details.sum_price end) as sum_rec"),
                             \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as sum_po"),
                             \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as sum_with"),
                             \DB::raw("sum(case when (support_details.status='9') then support_details.sum_price end) as sum_debt")

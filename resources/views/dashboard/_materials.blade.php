@@ -22,23 +22,26 @@
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: right;">ประมาณการ</th>
+                <th style="width: 15%; text-align: right;">รับเอกสารแล้ว</th>
                 <th style="width: 15%; text-align: right;">ส่งขอซื้อ/จ้าง</th>
                 <th style="width: 15%; text-align: right;">ส่งเบิกเงิน</th>
-                <th style="width: 15%; text-align: right;">ตั้งหนี้</th>
+                <!-- <th style="width: 15%; text-align: right;">ตั้งหนี้</th> -->
             </tr>
             <tr ng-repeat="(index, material) in materials" style="font-size: 12px;">
                 <td>@{{ materials_pager.from+index }}. @{{ material.category_name }}</td>
                 <td style="text-align: right;">@{{ material.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ material.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.withdraw | currency:'':0 }}</td>
-                <td style="text-align: right;">@{{ material.debt | currency:'':0 }}</td>
+                <!-- <td style="text-align: right;">@{{ material.debt | currency:'':0 }}</td> -->
             </tr>
             <tr>
                 <td style="text-align: center;">รวม</td>
                 <td style="text-align: right;">@{{ totalMaterial.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalMaterial.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalMaterial.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalMaterial.withdraw | currency:'':0 }}</td>
-                <td style="text-align: right;">@{{ totalMaterial.debt | currency:'':0 }}</td>
+                <!-- <td style="text-align: right;">@{{ totalMaterial.debt | currency:'':0 }}</td> -->
             </tr>
         </table>
     </div><!-- /.box-body -->
