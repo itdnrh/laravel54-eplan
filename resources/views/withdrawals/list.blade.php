@@ -207,7 +207,14 @@
                                         @{{ withdraw.net_total | currency:'':2 }}
                                     </td>
                                     <td style="text-align: center;">
-                                        @{{ withdraw.prepaid.prefix.prefix_name+withdraw.prepaid.person_firstname+ ' ' +withdraw.prepaid.person_lastname }}
+                                        <a
+                                            href="#"
+                                            data-toggle="tooltip"
+                                            ng-show="withdraw.prepaid"
+                                            title="@{{ withdraw.prepaid.prefix.prefix_name+withdraw.prepaid.person_firstname+ ' ' +withdraw.prepaid.person_lastname }}"
+                                        >
+                                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                                        </a>
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="label label-success" ng-show="withdraw.completed">
