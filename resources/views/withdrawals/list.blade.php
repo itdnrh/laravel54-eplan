@@ -129,6 +129,7 @@
                                         <option value="">ทั้งหมด</option>
                                         <option value="1">ยังไม่ได้ส่ง</option>
                                         <option value="2">ส่งเบิกเงินแล้ว</option>
+                                        <option value="3">ตั้งหนี้แล้ว</option>
                                     </select>
                                 </div>
                             </div>
@@ -169,9 +170,9 @@
                                     <th style="width: 15%; text-align: center;">เอกสารส่งมอบงาน</th>
                                     <th>รายละเอียดใบสั่งซื้อ</th>
                                     <th style="width: 10%; text-align: center;">ยอดเงิน</th>
-                                    <th style="width: 15%; text-align: center;">สำรองเงินจ่ายโดย</th>
+                                    <th style="width: 8%; text-align: center;">สำรองจ่าย</th>
                                     <th style="width: 8%; text-align: center;">สถานะ</th>
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

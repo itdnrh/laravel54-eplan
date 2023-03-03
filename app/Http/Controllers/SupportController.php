@@ -938,12 +938,8 @@ class SupportController extends Controller
 
     public function excel(Request $req)
     {
-        // $planType = PlanType::find($req->get('type'));
-
         $fileName = 'supports-list-' . date('YmdHis') . '.xlsx';
         $options = [
-            // 'plan_type_id' => $planType->id,
-            // 'plan_type_name' => $planType->plan_type_name,
             // 'year' => $req->get('year'),
         ];
         

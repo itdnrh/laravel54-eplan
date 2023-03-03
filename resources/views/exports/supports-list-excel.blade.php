@@ -44,7 +44,7 @@
                             <!-- ============================ Plan group ============================ -->
                                 @if(count($support->details) > 0)
                                     {{ $support->plan_group_desc }}
-                                    จำนวน {{ number_format($support->plan_group_amt) }} {{ $support.details[0].unit.name }}
+                                    จำนวน {{ number_format($support->plan_group_amt) }} {{ $support->details[0]->unit->name }}
                                 @endif
                             <!-- ============================ End Plan group ============================ -->
                             @else
