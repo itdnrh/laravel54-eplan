@@ -51,7 +51,7 @@
                             {{ $plan->planItem->unit->name }}
                         </td>
                         <td style="text-align: center;">
-                            {{ number_format($plan->planItem->sum_price) }}
+                            {{ number_format($plan->planItem->sum_price, 2) }}
                         </td>
                         <!-- <td style="text-align: center;">
                             @if($plan->in_plan == 'I')

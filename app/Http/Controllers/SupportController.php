@@ -936,6 +936,132 @@ class SupportController extends Controller
         }
     }
 
+    public function excel(Request $req)
+    {
+        // $planType = PlanType::find($req->get('type'));
+
+        $fileName = 'supports-list-' . date('YmdHis') . '.xlsx';
+        $options = [
+            // 'plan_type_id' => $planType->id,
+            // 'plan_type_name' => $planType->plan_type_name,
+            // 'year' => $req->get('year'),
+        ];
+        
+        exportExcel($fileName, 'exports.supports-list-excel', $this->getData($req)->get(), $options);
+    }
+
+    private function getData(Request $req)
+    {
+        $matched = [];
+        $arrStatus = [];
+        $conditions = [];
+        $pattern = '/^\<|\>|\&|\-/i';
+
+        $year = $req->get('year');
+        $type = $req->get('type');
+        $supportType = $req->get('stype');
+        $faction = in_array(Auth::user()->memberOf->depart_id, ['2','4'])
+                    ? $req->get('faction') : Auth::user()->memberOf->faction_id;
+        $depart = (Auth::user()->memberOf->duty_id == '1' || in_array(Auth::user()->memberOf->depart_id, ['2','4','65']))
+                    ? $req->get('depart') : Auth::user()->memberOf->depart_id;
+        $division = $req->get('division');
+        $docNo = $req->get('doc_no');
+        $receivedNo = $req->get('received_no');
+        $desc   = $req->get('desc');
+        $cate   = $req->get('cate');
+        $inPlan = $req->get('in_plan');
+        $status = $req->get('status');
+
+        list($sdate, $edate) = array_key_exists('date', $req->all())
+                                ? explode('-', $req->get('date'))
+                                : explode('-', '-');
+
+        if($status != '') {
+            if (preg_match($pattern, $status, $matched) == 1) {
+                $arrStatus = explode($matched[0], $status);
+
+                if ($matched[0] != '-' && $matched[0] != '&') {
+                    array_push($conditions, ['status', $matched[0], $arrStatus[1]]);
+                }
+            } else {
+                array_push($conditions, ['status', '=', $status]);
+            }
+        }
+
+        $departsList = Depart::where('faction_id', $faction)->pluck('depart_id');
+
+        $itemsList = Item::when(!empty($desc), function($q) use ($desc) {
+                            $q->where('item_name', 'like', '%'.$desc.'%');
+                        })
+                        ->pluck('id');
+
+        $supportsList = SupportDetail::leftJoin('plan_items','plan_items.plan_id','=','support_details.plan_id')
+                            ->leftJoin('plans','plans.id','=','plan_items.plan_id')
+                            ->where('plans.year', $year)
+                            ->when(!empty($desc), function($q) use ($desc, $itemsList) {
+                                $q->where('desc', 'like', '%'.$desc.'%');
+                                $q->orWhere(function($sq) use ($itemsList) {
+                                    $sq->whereIn('plan_items.item_id', $itemsList);
+                                });
+                            })
+                            ->when(!empty($inPlan), function($q) use ($inPlan) {
+                                $q->where('plans.in_plan', $inPlan);
+                            })
+                            ->pluck('support_details.support_id');
+
+        $supports = Support::with('planType','depart','division','officer','details')
+                        ->with('details.unit','details.plan','details.plan.planItem.unit')
+                        ->with('details.plan.planItem','details.plan.planItem.item')
+                        ->with('details.plan.depart','details.plan.division')
+                        ->with('details.addon','details.addon.planItem')
+                        ->when(!empty($year), function($q) use ($year) {
+                            $q->where('year', $year);
+                        })
+                        ->when(!empty($type), function($q) use ($type) {
+                            $q->where('plan_type_id', $type);
+                        })
+                        ->when(!empty($cate), function($q) use ($cate) {
+                            $q->where('category_id', $cate);
+                        })
+                        ->when(!empty($supportType), function($q) use ($supportType) {
+                            $q->where('support_type_id', $supportType);
+                        })
+                        ->when(!empty($faction), function($q) use ($departsList) {
+                            $q->whereIn('depart_id', $departsList);
+                        })
+                        ->when(!empty($depart), function($q) use ($depart) {
+                            $q->where('depart_id', $depart);
+                        })
+                        ->when(!empty($division), function($q) use ($division) {
+                            $q->where('division_id', $division);
+                        })
+                        ->when(!empty($docNo), function($q) use ($docNo) {
+                            $q->where('doc_no', 'like', '%'.$docNo.'%');
+                        })
+                        ->when(!empty($receivedNo), function($q) use ($receivedNo) {
+                            $q->where('received_no', 'like', '%'.$receivedNo.'%');
+                        })
+                        ->when((!empty($desc) || !empty($inPlan)), function($q) use ($supportsList) {
+                            $q->whereIn('id', $supportsList);
+                        })
+                        ->when(count($conditions) > 0, function($q) use ($conditions) {
+                            $q->where($conditions);
+                        })
+                        ->when(count($matched) > 0 && $matched[0] == '-', function($q) use ($arrStatus) {
+                            $q->whereBetween('status', $arrStatus);
+                        })
+                        ->when(array_key_exists('date', $req->all()) && $req->get('date') != '-', function($q) use ($sdate, $edate) {
+                            if ($sdate != '' && $edate != '') {
+                                $q->whereBetween('doc_date', [convThDateToDbDate($sdate), convThDateToDbDate($edate)]);
+                            } else if ($edate == '') {
+                                $q->where('doc_date', convThDateToDbDate($sdate));
+                            }
+                        })
+                        ->orderBy('sent_date', 'DESC');
+
+        return $supports;
+    }
+
     public function printForm($id)
     {
         $support = Support::with('planType','depart','division')

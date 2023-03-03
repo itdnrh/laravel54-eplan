@@ -1,6 +1,7 @@
 <?php
 
 use Intervention\Image\ImageManagerStatic as Image;
+// use Maatwebsite\Excel\Facades\Excel;
 
 function uploadFile ($file, $destPath)
 {
@@ -249,4 +250,17 @@ function committeeNumber($committees, $type) {
     }
 
     return $number;
+}
+
+function exportExcel($fileName, $view, $data, $options)
+{
+    return \Excel::create($fileName, function($excel) use ($view, $data, $options) {
+        $excel->sheet('sheet1', function($sheet) use ($view, $data, $options)
+        {
+            $sheet->loadView($view, [
+                'data' => $data,
+                'options' => $options
+            ]);                
+        });
+    })->download();
 }

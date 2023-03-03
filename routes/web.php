@@ -170,6 +170,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('supports/send', 'SupportController@send');
     Route::post('supports/receive', 'SupportController@onReceive');
     Route::get('supports/{id}/print', 'SupportController@printForm');
+    Route::get('supports/excel', 'SupportController@excel');
 
     /** การขอสนับสนุนจ้างซ่อม */
     Route::post('repairs/validate', 'RepairController@formValidate');

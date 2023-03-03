@@ -1028,4 +1028,34 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
             $scope.loading = false;
         }
     };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Export processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.exportListToExcel = function(e) {
+        e.preventDefault();
+
+        if($scope.supports.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
+            let type    = $scope.cboPlanType === '' ? '' : $scope.cboPlanType;
+            let faction = $('#depart').val() == '4' ? $scope.cboFaction : $('#faction').val();
+            let depart  = ($('#duty').val() == '1' || ['4','65'].includes($('#depart').val()))
+                            ? !$scope.cboDepart ? '' : $scope.cboDepart
+                            : $('#depart').val();
+            let division = $scope.cboDivision != '' ? $scope.cboDivision : '';
+            let doc_no  = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
+            let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
+            let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
+            let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
+            let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+            let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
+            let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
+
+            window.location.href = `${CONFIG.baseUrl}/supports/excel?year=${year}&stype=1&type=${type}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&doc_no=${doc_no}&desc=${desc}&in_plan=${in_plan}&status=${status}&date=${sdate}-${edate}`;
+        }
+    };
 });
