@@ -64,6 +64,10 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
                 .datepicker(dtpOptions)
                 .datepicker('update', event.date);
 
+            $('#dtpEdate')
+                .datepicker(dtpOptions)
+                .datepicker('update', moment(event.date).endOf('month').toDate());
+
             $scope.getAll(event);
         });
 
@@ -77,16 +81,6 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
             $scope.getAll(event);
         });
-
-    $scope.clearDateValue = function(e, propName) {
-        $scope[propName] = '';
-
-        $(`#${propName}`)
-            .datepicker(dtpOptions)
-            .datepicker('update', '')
-
-        $scope.getAll(e);
-    };
 
     $scope.calculateSumPrice = function() {
         let price = parseFloat($(`#price_per_unit`).val());

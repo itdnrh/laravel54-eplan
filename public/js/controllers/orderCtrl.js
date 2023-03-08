@@ -161,6 +161,10 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
                 .datepicker(dtpDateOptions)
                 .datepicker('update', event.date);
 
+            $('#dtpEdate')
+                .datepicker(dtpDateOptions)
+                .datepicker('update', moment(event.date).endOf('month').toDate());
+
             $scope.getAll(event);
         });
 

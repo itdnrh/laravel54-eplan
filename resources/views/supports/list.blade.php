@@ -272,7 +272,7 @@
                                             class="form-control"
                                         />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpSdate');">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpSdate', getAll);">
                                                 เคลียร์
                                             </button>
                                         </span>
@@ -288,7 +288,7 @@
                                             class="form-control"
                                         />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpEdate');">
+                                            <button type="button" class="btn btn-danger" ng-click="clearDateValue($event, 'dtpEdate', getAll);">
                                                 เคลียร์
                                             </button>
                                         </span>

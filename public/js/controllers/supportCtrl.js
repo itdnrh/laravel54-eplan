@@ -112,6 +112,10 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                 .datepicker(dtpDateOptions)
                 .datepicker('update', event.date);
 
+            $('#dtpEdate')
+                .datepicker(dtpDateOptions)
+                .datepicker('update', moment(event.date).endOf('month').toDate());
+
             $scope.getAll(event);
         });
 

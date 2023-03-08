@@ -90,6 +90,15 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
 
     $scope.plansTotal = 0;
 
+    let dtpOptions = {
+        autoclose: true,
+        language: 'th',
+        format: 'dd/mm/yyyy',
+        thaiyear: true,
+        todayBtn: true,
+        todayHighlight: true
+    };
+
     /*
     |-----------------------------------------------------------------------------
     | Shared methods Initialization
@@ -783,5 +792,15 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         $scope.handleInputChange('isApproved', e.target.checked);
 
         $scope.getPlans(type, inStock, cb);
+    };
+
+    $scope.clearDateValue = function(e, propName, cb) {
+        $scope[propName] = '';
+
+        $(`#${propName}`)
+            .datepicker(dtpOptions)
+            .datepicker('update', '')
+
+        cb(e)
     };
 });
