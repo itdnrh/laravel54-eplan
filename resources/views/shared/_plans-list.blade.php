@@ -34,6 +34,7 @@
                                         handleInputChange('cboDepart', cboDepart);
                                         getAllPlans(planType, '0-1');
                                     "
+                                    disabled
                                 >
                                     <option value="">-- กลุ่มงานทั้งหมด --</option>
                                     @foreach($departs as $depart)

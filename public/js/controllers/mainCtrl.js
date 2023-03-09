@@ -658,6 +658,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             return;
         }
 
+        $scope.handleInputChange('cboDepart', depart);
         $scope.getAllPlans(type, status, true);
     };
 
