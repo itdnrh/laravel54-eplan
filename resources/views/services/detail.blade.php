@@ -290,7 +290,7 @@
                                             ดำเนินการครบแล้ว
                                         </span>
                                         <span class="label label-default" ng-show="service.status == 9">
-                                            ยกเลิก
+                                            อยู่ระหว่างการจัดซื้อ
                                         </span>
                                     </div>
                                 </div>

@@ -368,11 +368,11 @@
                                                     ดำเนินการครบแล้ว
                                                 </a>
                                             </li>
-                                            <!-- <li ng-hide="asset.status == 9">
+                                            <li ng-hide="asset.status == 9">
                                                 <a href="#" ng-click="setStatus($event, asset.id, '9')">
-                                                    ยกเลิก
+                                                    อยู่ระหว่างการจัดซื้อ
                                                 </a>
-                                            </li> -->
+                                            </li>
                                         </ul>
                                     </div>
                                     <button
