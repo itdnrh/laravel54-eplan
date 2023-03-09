@@ -78,12 +78,6 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         }
     };
 
-    $scope.setIsApproved = function(e, inStock) {
-        $scope.isApproved = e.target.checked;
-
-        $scope.getAll(inStock);
-    };
-
     $scope.clearMaterial = function() {
         $scope.material = {
             id: '',
@@ -121,75 +115,6 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
 
         $scope.material.sum_price = price * amount;
         $('#sum_price').val(price * amount);
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getAll = function(inStock) {
-        $scope.loading = true;
-        $scope.materials = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            $scope.setMaterials(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.setMaterials = function(res) {
-        const { data, ...pager } = res.data.plans;
-
-        $scope.materials = data;
-        $scope.pager = pager;
-
-        $scope.plansTotal = $scope.calculatePlansTotal(res.data.plansTotal);
-    };
-
-    /** TODO: shold reflactor this method to be global method */
-    $scope.getDataWithUrl = function(e, url, inStock, cb) {
-        /** Check whether parent of clicked a tag is .disabled just do nothing */
-        if ($(e.currentTarget).parent().is('li.disabled')) return;
-
-        $scope.loading = true;
-        $scope.materials = [];
-        $scope.pager = null;
-
-        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved    = $scope.isApproved ? 'A' : '';
-        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-
-        $http.get(`${url}&type=2&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&status=${status}&in_stock=${inStock}&approved=${approved}&in_plan=${inPlan}&name=${name}&price=${price}&show_all=1`)
-        .then(function(res) {
-            cb(res);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
     };
 
     /*
