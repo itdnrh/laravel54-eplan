@@ -47,12 +47,13 @@
                                         @{{ group.name }}
                                     </option>
                                 </select>
-        
+
                                 <input
                                     type="text"
                                     ng-model="txtKeyword"
                                     class="form-control"
                                     ng-keyup="handleInputChange('txtKeyword', txtKeyword); getItems();"
+                                    placeholder="ค้นด้วยชื่อสินค้าและบริการ"
                                 />
                             </div>
                         </div><!-- /.box-body -->
