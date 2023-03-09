@@ -86,6 +86,9 @@
                                         @{{ formError.errors.asset_no[0] }}
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
                                     class="col-md-6 form-group"
                                     ng-class="{'has-error has-feedback': checkValidate(item, 'category_id')}"
@@ -124,6 +127,9 @@
                                         </option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
                                     class="col-md-12 form-group"
                                     ng-class="{'has-error has-feedback': checkValidate(item, 'item_name')}"
@@ -156,6 +162,9 @@
                                         @{{ formError.errors.en_name[0] }}
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div
                                     class="col-md-6 form-group"
                                     ng-class="{'has-error has-feedback': checkValidate(item, 'price_per_unit')}"
@@ -195,7 +204,17 @@
                                         @{{ formError.errors.unit_id[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-4 form-group">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <i class="fa fa-warning"></i>
+                                        กรณีการตั้งงบประมาณเป็นยอดรวม ให้เลือกการตัดยอดตามงบประมาณและเลือกมีรายการย่อย
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
                                     <label for="">การตัดยอด</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -209,7 +228,7 @@
                                         @{{ formError.errors.calc_method[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-4 form-group">
+                                <div class="col-md-6 form-group">
                                     <label for="">มีรายการย่อย</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -223,7 +242,10 @@
                                         @{{ formError.errors.have_subitem[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-4 form-group" ng-show="isMaterial(item.plan_type_id)">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
                                     <label for="">ใน/นอกคลัง</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -237,7 +259,7 @@
                                         @{{ formError.errors.in_stock[0] }}
                                     </span>
                                 </div>
-                                <div class="col-md-4 form-group" ng-show="isService(item.plan_type_id)">
+                                <div class="col-md-6 form-group" ng-show="isService(item.plan_type_id)">
                                     <label for="">เป็นรายการ Fix Cost</label>
                                     <div class="form-control" style="display: flex; gap: 30px;">
                                         <div>
@@ -251,6 +273,33 @@
                                         @{{ formError.errors.is_fixcost[0] }}
                                     </span>
                                 </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="">Add on</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="checkbox" ng-model="item.is_addon" ng-value="1" />
+                                            เป็นรายการงบเพิ่มเติม (Add on) 
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'is_addon')">
+                                        @{{ formError.errors.is_addon[0] }}
+                                    </span>
+                                </div>
+                                <div class="col-md-6 form-group" ng-show="isService(item.plan_type_id)">
+                                    <label for="">งบจ้างซ่อมบำรุง</label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="checkbox" ng-model="item.is_repairing_item" ng-value="1" />
+                                            เป็นรายการงบจ้างซ่อมบำรุง (รวม)
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'is_repairing_item')">
+                                        @{{ formError.errors.is_repairing_item[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="form-group col-md-12">
                                     <label for="">หมายเหตุ</label>
                                     <textarea
@@ -263,9 +312,7 @@
                                     ></textarea>
                                 </div>
                             </div>
-
                         </div><!-- /.box-body -->
-
                         <div class="box-footer clearfix">
                             <button
                                 ng-click="formValidate($event, '/items/validate', item, 'frmEditItem', update)"

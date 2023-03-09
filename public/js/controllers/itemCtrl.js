@@ -21,10 +21,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         price_per_unit: '',
         unit_id: '',
         in_stock: 0,
-        first_year: '2565',
-        have_subitem: 0,
         calc_method: 1,
+        have_subitem: 0,
         is_fixcost: 0,
+        is_repairing_item: 0,
+        is_addon: 0,
+        first_year: '2565',
         remark: '',
     };
 
@@ -60,10 +62,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             price_per_unit: '',
             unit_id: '',
             in_stock: 0,
-            first_year: '2565',
-            have_subitem: 0,
             calc_method: 1,
+            have_subitem: 0,
             is_fixcost: 0,
+            is_repairing_item: 0,
+            is_addon: 0,
+            first_year: '2565',
             remark: '',
         };
     };
@@ -139,23 +143,24 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
 
     $scope.setEditControls = function(item) {
         if (item) {
-            console.log(item);
             $scope.item.id              = item.id;
             $scope.item.asset_no        = item.asset_no;
             $scope.item.item_name       = item.item_name;
             $scope.item.en_name         = item.en_name;
             $scope.item.price_per_unit  = item.price_per_unit;
             $scope.item.in_stock        = item.in_stock;
-            $scope.item.first_year      = item.first_year;
-            $scope.item.have_subitem    = item.have_subitem;
             $scope.item.calc_method     = item.calc_method;
+            $scope.item.have_subitem    = item.have_subitem;
             $scope.item.is_fixcost      = item.is_fixcost;
+            $scope.item.is_repairing_item = item.is_repairing_item;
+            $scope.item.is_addon        = item.is_addon;
+            $scope.item.first_year      = item.first_year;
             $scope.item.remark          = item.remark;
             $scope.item.status          = item.status;
     
             /** Convert int value to string */
             $scope.item.plan_type_id    = item.plan_type_id.toString();
-            $scope.item.category_id     = item.category_id.toString();
+            $scope.item.category_id     = item.category_id ? item.category_id.toString() : '';
             $scope.item.group_id        = item.group_id ? item.group_id.toString() : '';
             $scope.item.unit_id         = item.unit_id.toString();
 

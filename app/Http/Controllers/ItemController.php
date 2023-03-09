@@ -19,15 +19,18 @@ class ItemController extends Controller
     {
         $rules = [
             'plan_type_id'      => 'required',
-            'category_id'       => 'required',
             'item_name'         => 'required',
-            'price_per_unit'    => 'required',
             'unit_id'           => 'required',
         ];
 
+        if ($request['is_addon'] != '1') {
+            $rules['category_id'] = 'required';
+            $rules['price_per_unit'] = 'required';
+        }
+
         $messages = [
             'plan_type_id.required'     => 'กรุณาเลือกประเภทแผน',
-            'category_id.not_in'        => 'กรุณาเลือกประเภทสินค้า/บริการ',
+            'category_id.required'        => 'กรุณาเลือกประเภทสินค้า/บริการ',
             'item_name.required'        => 'กรุณาระบุชื่อสินค้า/บริการ',
             'price_per_unit.required'   => 'กรุณาระบุราคาต่อหน่วย',
             'unit_id.required'          => 'กรุณาเลือกหน่วยนับ',
@@ -183,13 +186,15 @@ class ItemController extends Controller
             $item->asset_no     = $req['asset_no'];
             $item->item_name    = $req['item_name'];
             $item->en_name      = $req['en_name'];
-            $item->price_per_unit   = currencyToNumber($req['price_per_unit']);
+            $item->price_per_unit = currencyToNumber($req['price_per_unit']);
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
-            $item->first_year   = $req['first_year'];
             $item->have_subitem = $req['have_subitem'];
             $item->calc_method  = $req['calc_method'];
             $item->is_fixcost   = $req['is_fixcost'];
+            $item->is_repairing_item = $req['is_repairing_item'];
+            $item->is_addon     = $req['is_addon'];
+            $item->first_year   = $req['first_year'];
             $item->remark       = $req['remark'];
 
             if($item->save()) {
@@ -236,10 +241,12 @@ class ItemController extends Controller
             $item->price_per_unit = currencyToNumber($req['price_per_unit']);
             $item->unit_id      = $req['unit_id'];
             $item->in_stock     = $req['in_stock'];
-            $item->first_year   = $req['first_year'];
-            $item->have_subitem = $req['have_subitem'];
             $item->calc_method  = $req['calc_method'];
+            $item->have_subitem = $req['have_subitem'];
             $item->is_fixcost   = $req['is_fixcost'];
+            $item->is_repairing_item = $req['is_repairing_item'];
+            $item->is_addon     = $req['is_addon'];
+            $item->first_year   = $req['first_year'];
             $item->remark       = $req['remark'];
 
             if($item->save()) {
