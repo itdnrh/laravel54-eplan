@@ -305,7 +305,8 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
                     $scope.service.unit_id = item.unit_id.toString();
                     $scope.service.have_subitem = item.have_subitem;
                     $scope.service.calc_method = item.calc_method;
-                    $scope.is_addon = item.is_addon === 1;
+                    $scope.service.is_addon = item.is_addon === 1;
+
                     $('#have_subitem').val(item.have_subitem);
                     $('#calc_method').val(item.calc_method);
             //     }

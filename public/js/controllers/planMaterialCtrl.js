@@ -32,6 +32,8 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
+        is_addon: false,
+        addon_id: '',
         reason: '',
         remark: '',
         have_subitem: 0,
@@ -98,12 +100,14 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             unit_id: '',
             amount: '',
             sum_price: '',
-            start_month: '',
             request_cause: '',
             have_amount: '',
             budget_src_id: '1',
             strategic_id: '',
             service_plan_id: '',
+            start_month: '',
+            is_addon: false,
+            addon_id: '',
             reason: '',
             remark: '',
             have_subitem: 0,
@@ -188,6 +192,25 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         });
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Plan selection processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.onSelectedPlan = (e, plan) => {
+        if (plan) {
+            $scope.material.addon_detail = plan;
+            $scope.material.addon_id     = plan.id;
+        }
+
+        $('#plans-list').modal('hide');
+    };
+
+    /*
+    |-----------------------------------------------------------------------------
+    | Item selection operations
+    |-----------------------------------------------------------------------------
+    */
     $scope.onSelectedItem = function(event, item) {
         if (item) {
             /** Check existed data by depart */
@@ -205,6 +228,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
                     $scope.material.unit_id = item.unit_id.toString();
                     $scope.material.have_subitem = item.have_subitem;
                     $scope.material.calc_method = item.calc_method;
+                    $scope.material.is_addon = item.is_addon === 1;
 
                     $('#have_subitem').val(item.have_subitem);
                     $('#calc_method').val(item.calc_method);
@@ -360,6 +384,11 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         }
     };
 
+    /*
+    |-----------------------------------------------------------------------------
+    | Export data operations
+    |-----------------------------------------------------------------------------
+    */
     $scope.exportListToExcel = function(e, inStock) {
         e.preventDefault();
 

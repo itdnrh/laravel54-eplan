@@ -446,7 +446,7 @@
                                 <div
                                     class="form-group col-md-12"
                                     ng-class="{'has-error has-feedback': checkValidate(service, 'addon_id')}"
-                                    ng-show="is_addon"
+                                    ng-show="service.is_addon"
                                 >
                                     <label>ใช้กับแผนจ้างบริการ (ที่ได้รับการอนุมัติแล้ว) :</label>
                                     <div class="input-group">
@@ -462,13 +462,13 @@
                                             id="addon_id"
                                             name="addon_id"
                                             class="form-control"
-                                            ng-model="support.addon_id"
+                                            ng-model="service.addon_id"
                                         />
                                         <span class="input-group-btn">
                                             <button
                                                 type="button"
                                                 class="btn btn-info btn-flat"
-                                                ng-click="showAllPlansList('0-1', service.depart_id);"
+                                                ng-click="showAllPlansList(3, '0-1', service.depart_id);"
                                             >
                                                 ...
                                             </button>

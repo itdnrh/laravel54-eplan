@@ -652,16 +652,16 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     | Plan selection processes
     |-----------------------------------------------------------------------------
     */
-    $scope.showAllPlansList = (status, depart) => {
+    $scope.showAllPlansList = (type, status, depart) => {
         if (!depart) {
             toaster.pop('error', "ผลการตรวจสอบ", "กรุณาเลือกหน่วยงานก่อน !!!");
             return;
         }
 
-        $scope.getAllPlans(status, true);
+        $scope.getAllPlans(type, status, true);
     };
 
-    $scope.getAllPlans = (status, toggleModal=false) => {
+    $scope.getAllPlans = (type, status, toggleModal=false) => {
         $scope.loading = true;
         $scope.plans = [];
         $scope.plans_pager = null;
@@ -671,7 +671,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
                         ? $scope.cboDepart
                         : $('#depart_id').val();
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=3&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
         .then(function(res) {
             if (toggleModal) $('#plans-list').modal('show');
 
@@ -684,7 +684,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         });
     };
 
-    $scope.getAllPlansWithUrl = function(e, url, status, cb) {
+    $scope.getAllPlansWithUrl = function(e, url, type, status, cb) {
         /** Check whether parent of clicked a tag is .disabled just do nothing */
         if ($(e.currentTarget).parent().is('li.disabled')) return;
 
@@ -697,7 +697,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
                         ? $scope.cboDepart
                         : $('#depart_id').val();
 
-        $http.get(`${url}&type=3&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
+        $http.get(`${url}&type=${type}&name=${name}&depart=${depart}&status=${status}&approved=A&addon=0`)
         .then(function(res) {
             cb(res);
 

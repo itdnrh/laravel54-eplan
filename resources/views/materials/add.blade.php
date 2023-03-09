@@ -455,6 +455,44 @@
 
                             <div class="row">
                                 <div
+                                    class="form-group col-md-12"
+                                    ng-class="{'has-error has-feedback': checkValidate(material, 'addon_id')}"
+                                    ng-show="material.is_addon"
+                                >
+                                    <label>ใช้กับแผนจ้างบริการ (ที่ได้รับการอนุมัติแล้ว) :</label>
+                                    <div class="input-group">
+                                        <div class="form-control" readonly>
+                                            @{{ material.addon_detail.plan_no }}
+                                            @{{ material.addon_detail.plan_item.item.item_name }}
+                                            <span ng-show="material.addon_detail">
+                                                งบประมาณ @{{ material.addon_detail.plan_item.sum_price | currency:'':2 }} บาท
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="hidden"
+                                            id="addon_id"
+                                            name="addon_id"
+                                            class="form-control"
+                                            ng-model="material.addon_id"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                type="button"
+                                                class="btn btn-info btn-flat"
+                                                ng-click="showAllPlansList(2, '0-1', material.depart_id);"
+                                            >
+                                                ...
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(material, 'addon_id')">
+                                        @{{ formError.errors.addon_id[0] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(material, 'reason')}"
                                 >
@@ -517,6 +555,7 @@
 
         @include('shared._items-list')
         @include('shared._item-form')
+        @include('shared._plans-list')
 
     </section>
 

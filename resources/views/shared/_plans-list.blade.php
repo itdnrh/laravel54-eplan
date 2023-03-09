@@ -20,14 +20,20 @@
                                     class="form-control"
                                     style="width: 50%;"
                                     ng-model="txtKeyword"
-                                    ng-keyup="handleInputChange('txtKeyword', txtKeyword); getAllPlans('0-1');"
+                                    ng-keyup="
+                                        handleInputChange('txtKeyword', txtKeyword);
+                                        getAllPlans(planType, '0-1');
+                                    "
                                 />
                                 <select
                                     name="cboDepart"
                                     ng-model="cboDepart"
-                                    ng-change="handleInputChange('cboDepart', cboDepart); getAllPlans('0-1');"
                                     class="form-control select2" 
                                     style="width: 50%; font-size: 12px;"
+                                    ng-change="
+                                        handleInputChange('cboDepart', cboDepart);
+                                        getAllPlans(planType, '0-1');
+                                    "
                                 >
                                     <option value="">-- กลุ่มงานทั้งหมด --</option>
                                     @foreach($departs as $depart)
@@ -129,13 +135,13 @@
                         <div class="col-md-4">
                             <ul class="pagination pagination-sm no-margin">
                                 <li ng-if="plans_pager.current_page !== 1">
-                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.path+ '?page=1', '0-1', setAllPlans)" aria-label="Previous">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.path+ '?page=1', planType, '0-1', setAllPlans)" aria-label="Previous">
                                         <span aria-hidden="true">First</span>
                                     </a>
                                 </li>
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==1)}">
-                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.prev_page_url, '0-1', setAllPlans)" aria-label="Prev">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.prev_page_url, planType, '0-1', setAllPlans)" aria-label="Prev">
                                         <span aria-hidden="true">Prev</span>
                                     </a>
                                 </li>
@@ -147,7 +153,7 @@
                                 </li> -->
 
                                 <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
-                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.next_page_url, '0-1', setAllPlans)" aria-label="Next">
+                                    <a ng-click="getAllPlansWithUrl($event, plans_pager.next_page_url, planType, '0-1', setAllPlans)" aria-label="Next">
                                         <span aria-hidden="true">Next</span>
                                     </a>
                                 </li>
