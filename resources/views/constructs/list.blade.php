@@ -234,7 +234,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-8">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
                                         id="txtItemName"
@@ -246,6 +246,26 @@
                                             getPlans(4, '', setPlans);
                                         "
                                     />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        class="form-control"
+                                        ng-change="
+                                            handleInputChange('cboStatus', cboStatus);
+                                            getPlans(4, '', setPlans);
+                                        "
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ดำเนินการแล้วบางส่วน</option>
+                                        <option value="2">ดำเนินการครบแล้ว</option>
+                                        <option value="9">อยู่ระหว่างการจัดซื้อ</option>
+                                        <option value="99">ยกเลิก</option>
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
