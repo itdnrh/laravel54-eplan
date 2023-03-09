@@ -247,6 +247,17 @@
                                         @{{ formError.errors.is_fixcost[0] }}
                                     </span>
                                 </div>
+                                <div class="col-md-4 form-group">
+                                    <label for=""></label>
+                                    <div class="form-control" style="display: flex; gap: 30px;">
+                                        <div>
+                                            <input type="checkbox" ng-model="newItem.is_addon" ng-value="1" /> เป็นรายการงบเพิ่มเติม (Add on) 
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(item, 'is_addon')">
+                                        @{{ formError.errors.is_addon[0] }}
+                                    </span>
+                                </div>
                                 <div class="form-group col-md-12">
                                     <label for="">หมายเหตุ</label>
                                     <textarea

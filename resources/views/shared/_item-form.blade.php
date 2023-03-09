@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">เพิ่มรายการสินค้า/บริการ</h5>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding-bottom: 0;">
                     <div class="row">
                         <div
                             class="col-md-12 form-group"
@@ -132,8 +132,8 @@
                             <label for="">หน่วยนับ <span class="required-field">*</span></label>
                             <select
                                 type="text"
-                                id="unit_id"
-                                name="unit_id"
+                                id="item_unit_id"
+                                name="item_unit_id"
                                 ng-model="newItem.unit_id"
                                 class="form-control"
                             >
@@ -149,10 +149,55 @@
                             </span>
                         </div>
                     </div>
+
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12 alert alert-warning alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <i class="fa fa-warning"></i>
+                                กรณีการตั้งงบประมาณเป็นยอดรวม ให้เลือกการตัดยอดตามงบประมาณและเลือกมีรายการย่อย
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="">การตัดยอด</label>
+                            <div class="form-control" style="display: flex; gap: 30px;">
+                                <div>
+                                    <input type="radio" ng-model="newItem.calc_method" ng-value="1" /> ตัดยอดตามจำนวน 
+                                </div>
+                                <div>
+                                    <input type="radio" ng-model="newItem.calc_method" ng-value="2" /> ตัดยอดตามงบประมาณ
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="">มีรายการย่อย</label>
+                            <div class="form-control" style="display: flex; gap: 30px;">
+                                <div>
+                                    <input type="radio" ng-model="newItem.have_subitem" ng-value="1" /> มีรายการย่อย 
+                                </div>
+                                <div>
+                                    <input type="radio" ng-model="newItem.have_subitem" ng-value="0" /> ไม่มีรายการย่อย
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group" ng-show="isService(newItem.plan_type_id)">
+                            <label for="">เป็นรายการ Fix Cost</label>
+                            <div class="form-control" style="display: flex; gap: 30px;">
+                                <div>
+                                    <input type="radio" ng-model="newItem.is_fixcost" ng-value="0" /> ไม่เป็น
+                                </div>
+                                <div>
+                                    <input type="radio" ng-model="newItem.is_fixcost" ng-value="1" /> เป็น
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6 form-group" ng-show="isMaterial(newItem.plan_type_id)">
                             <label for="">ใน/นอกคลัง</label>
-                            <div style="display: flex; gap: 30px;">
+                            <div class="form-control" style="display: flex; gap: 30px;">
                                 <div>
                                     <input
                                         type="radio"
@@ -169,16 +214,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="form-group"
-                            ng-class="{
-                                'col-md-6': isMaterial(newItem.plan_type_id),
-                                'col-md-12': !isMaterial(newItem.plan_type_id)
-                            }"
-                        >
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
                             <label for="">หมายเหตุ</label>
                             <textarea
-                                rows=""
+                                rows="4"
                                 id="remark"
                                 name="remark"
                                 ng-model="newItem.remark"

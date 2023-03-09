@@ -80,10 +80,11 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         price_per_unit: '',
         unit_id: '',
         in_stock: 0,
-        first_year: '2565',
-        have_subitem: 0,
         calc_method: 1,
+        have_subitem: 0,
         is_fixcost: 0,
+        is_addon: 0,
+        first_year: '2565',
         remark: '',
         error: {}
     };
@@ -357,21 +358,15 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         $scope.newItem.plan_type_id = $scope.planType.toString();
         $scope.newItem.in_stock = $scope.inStock;
 
-        // if (parseInt($scope.planType) === 2) {
-        //     $scope.newItem.in_stock = 0;
-        // } else if (parseInt($scope.planType) === 6) {
-        //     $scope.newItem.in_stock = 1;
-        // } else {
-        //     $scope.newItem.in_stock = '';
-        // }
-
         $scope.onPlanTypeSelected($scope.planType);
+
+        $(`#item_unit_id`).select2({ theme: 'bootstrap' });
 
         $('#item-form').modal('show');
     };
 
     $scope.createNewItem = function(event, cb) {
-        if (validateNewItem($scope.newItem)) {            
+        if (validateNewItem($scope.newItem)) {
             $http.post(`${CONFIG.baseUrl}/items/store`, $scope.newItem)
             .then(res => {
                 if (res.data.status == 1) {
@@ -453,10 +448,11 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             price_per_unit: '',
             unit_id: '',
             in_stock: 0,
-            first_year: '2565',
-            have_subitem: 0,
             calc_method: 1,
+            have_subitem: 0,
             is_fixcost: 0,
+            is_addon: 0,
+            first_year: '2565',
             remark: '',
             error: {}
         };
