@@ -81,12 +81,16 @@
         <div class="row">
             <section class="col-lg-6 connectedSortable">
 
-                @include('dashboard._pie-chart')
-                
+                @include('dashboard._pie-plan-type')
+
+                @include('dashboard._pie-plan-faction')
+
             </section>
             <section class="col-lg-6 connectedSortable">
 
-                @include('dashboard._project-pie-chart')
+                @include('dashboard._pie-project-type')
+
+                @include('dashboard._pie-project-faction')
 
             </section>
         </div>
