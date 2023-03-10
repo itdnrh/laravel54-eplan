@@ -85,8 +85,28 @@ class ReportController extends Controller
                         ->groupBy('projects.owner_depart')
                         ->get();
 
+        $payments = \DB::table('project_payments')
+                        ->select(
+                            \DB::raw("projects.owner_depart as depart_id"),
+                            \DB::raw("sum(case when (projects.project_type_id=1) then project_payments.net_total end) as hos_paid"),
+                            \DB::raw("sum(case when (projects.project_type_id=2) then project_payments.net_total end) as cup_paid"),
+                            \DB::raw("sum(case when (projects.project_type_id=3) then project_payments.net_total end) as tam_paid"),
+                            \DB::raw("sum(project_payments.net_total) as total_paid")
+                        )
+                        ->leftJoin('projects', 'projects.id', '=', 'project_payments.project_id')
+                        ->where('projects.year', $year)
+                        // ->when(!empty($type), function($q) use ($type) {
+                        //     $q->where('projects.project_type_id', $type);
+                        // })
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('projects.approved', $approved);
+                        })
+                        ->groupBy("projects.owner_depart")
+                        ->get();
+
         return [
             'projects'  => $projects,
+            'payments' => $payments,
             'departs'   => Depart::all(),
             'factions'  => Faction::whereNotIn('faction_id', [6,4,12])->get()
         ];

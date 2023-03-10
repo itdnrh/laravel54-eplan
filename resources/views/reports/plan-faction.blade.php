@@ -161,6 +161,14 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div id="pieChartContainer" style="width: 100%; height: 400px; margin: 20px auto;"></div>
+
+                            </div>
+                        </div>
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">

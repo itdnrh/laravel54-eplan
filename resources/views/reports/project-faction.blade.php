@@ -89,48 +89,68 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;" rowspan="2">#</th>
                                     <th style="text-align: left;" rowspan="2">กลุ่มภารกิจ</th>
-                                    <th style="text-align: center;" colspan="2">โรงพยาบาล</th>
-                                    <th style="text-align: center;" colspan="2">CUP</th>
-                                    <th style="text-align: center;" colspan="2">ตำบล</th>
-                                    <th style="text-align: center;" colspan="2">รวม</th>
+                                    <th style="text-align: center;" colspan="3">โรงพยาบาล</th>
+                                    <th style="text-align: center;" colspan="3">CUP</th>
+                                    <th style="text-align: center;" colspan="3">ตำบล</th>
+                                    <th style="text-align: center;" colspan="3">รวม</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 6%; text-align: center;">จำนวน</th>
-                                    <th style="width: 8%; text-align: center;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">จำนวน</th>
-                                    <th style="width: 8%; text-align: center;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">จำนวน</th>
-                                    <th style="width: 8%; text-align: center;">งบประมาณ</th>
-                                    <th style="width: 6%; text-align: center;">จำนวน</th>
-                                    <th style="width: 8%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 5%; text-align: center;">จำนวน</th>
+                                    <th style="width: 7%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 7%; text-align: center;">ใช้ไป</th>
+                                    <th style="width: 5%; text-align: center;">จำนวน</th>
+                                    <th style="width: 7%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 7%; text-align: center;">ใช้ไป</th>
+                                    <th style="width: 5%; text-align: center;">จำนวน</th>
+                                    <th style="width: 7%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 7%; text-align: center;">ใช้ไป</th>
+                                    <th style="width: 5%; text-align: center;">จำนวน</th>
+                                    <th style="width: 7%; text-align: center;">งบประมาณ</th>
+                                    <th style="width: 7%; text-align: center;">ใช้ไป</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, project) in projects">
+                                <tr ng-repeat="(index, project) in projects" style="font-size: 12px;">
                                     <td style="text-align: center;">@{{ index+1 }}</td>
                                     <td>@{{ project.faction_name }}</td>
                                     <td style="text-align: center;">@{{ project.hos_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.hos_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ project.hos_paid | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ project.cup_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.cup_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ project.cup_paid | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ project.tam_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.tam_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ project.tam_paid | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ project.total_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ project.total_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ project.total_paid | currency:'':0 }}</td>
                                 </tr>
-                                <tr style="font-weight: bold;">
+                                <tr style="font-size: 12px; font-weight: bold;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
                                     <td style="text-align: center;">@{{ totalByFaction.hos_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByFaction.hos_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByFaction.hos_paid | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ totalByFaction.cup_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByFaction.cup_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByFaction.cup_paid | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ totalByFaction.tam_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByFaction.tam_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByFaction.tam_paid | currency:'':0 }}</td>
                                     <td style="text-align: center;">@{{ totalByFaction.total_amount | currency:'':0 }}</td>
                                     <td style="text-align: right;">@{{ totalByFaction.total_budget | currency:'':0 }}</td>
+                                    <td style="text-align: right;">@{{ totalByFaction.total_paid | currency:'':0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div id="pieChartContainer" style="width: 100%; height: 400px; margin: 20px auto;"></div>
+
+                            </div>
+                        </div>
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" ng-show="false">
                         <div class="row">
