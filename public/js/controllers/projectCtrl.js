@@ -1,8 +1,5 @@
 app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
 /** ################################################################################## */
-    $scope.loading = false;
-
-    $scope.projects = [];
     $scope.cboStrategic = '';
     $scope.cboStrategy = '';
     $scope.cboKpi = '';
@@ -10,7 +7,13 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.cboDepart = '';
     $scope.txtKeyword = '';
     $scope.searchKey = '';
+    $scope.isInPlan = 'I';
     $scope.isApproved = '';
+    $scope.cboStatus = "";
+
+    $scope.loading = false;
+    $scope.projects = [];
+    $scope.projectsTotal = 0;
     $scope.pager = null;
     $scope.persons = [];
     $scope.persons_pager = null;
@@ -138,6 +141,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
         let approved    = $scope.isApproved ? 'A' : '';
 
         $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&approved=${approved}&status=${status}`)
@@ -156,6 +160,10 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
         $scope.projects = data;
         $scope.pager = pager;
+
+        if (res.data.projectsTotal) {
+            $scope.projectsTotal = res.data.projectsTotal;
+        }
     };
 
     $scope.getProjectsWithUrl = function(e, url, cb) {
@@ -174,6 +182,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
         let name        = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
         let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
         let approved    = $scope.isApproved ? 'A' : '';
 
         $http.get(`${url}&year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&approved=${approved}&status=${status}`)

@@ -178,17 +178,34 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>ชื่อโครงการ</label>
-                                        <input
-                                            id="txtKeyword"
-                                            name="txtKeyword"
-                                            ng-model="txtKeyword"
-                                            class="form-control"
-                                            ng-keyup="getAll($event)"
-                                        >
-                                    </div>
+                                <div class="form-group col-md-8">
+                                    <label>ชื่อโครงการ</label>
+                                    <input
+                                        id="txtKeyword"
+                                        name="txtKeyword"
+                                        ng-model="txtKeyword"
+                                        class="form-control"
+                                        ng-keyup="getAll($event)"
+                                    >
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        class="form-control"
+                                        ng-change="getAll($event)"
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ส่งงานแผนแล้ว</option>
+                                        <option value="2">ส่งการเงินแล้ว</option>
+                                        <option value="3">ผอ.อนุมัติแล้ว</option>
+                                        <option value="4">ดำเนินโครงการแล้ว</option>
+                                        <option value="9">ปิดโครงการแล้ว</option>
+                                        <option value="99">ยกเลิก</option>
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
@@ -369,7 +386,7 @@
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
+                                จำนวน @{{ pager.total }} รายการ | ยอดขอทั้งสิ้น <b>@{{ projectsTotal | currency:'':2 }}</b> บาท
                             </div>
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">

@@ -162,11 +162,11 @@ class ProjectController extends Controller
                         })
                         ->when(!empty($name), function($q) use ($name) {
                             $q->where('project_name', 'Like', $name.'%');
-                        })
-                        ->paginate(10);
+                        });
 
         return [
-            'projects' => $projects,
+            'projectsTotal' => $projects->sum('total_budget'),
+            'projects'      => $projects->paginate(10),
         ];
     }
 
@@ -213,11 +213,11 @@ class ProjectController extends Controller
                         // })
                         ->when(!empty($name), function($q) use ($name) {
                             $q->where('project_name', 'Like', '%'.$name.'%');
-                        })
-                        ->paginate(10);
+                        });
 
         return [
-            'projects' => $projects,
+            'projectsTotal' => $projects->sum('total_budget'),
+            'projects'      => $projects->paginate(10),
         ];
     }
 
