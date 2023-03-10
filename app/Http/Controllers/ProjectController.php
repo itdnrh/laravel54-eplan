@@ -105,18 +105,19 @@ class ProjectController extends Controller
         $pattern = '/^\<|\>|\&|\-/i';
 
         /** Get params from query string */
-        $year = $req->get('year');
-        $strategic = $req->get('strategic');
-        $strategy = $req->get('strategy');
-        $faction = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
-                    ? $req->get('faction') 
-                    : Auth::user()->memberOf->faction_id;
-        $depart = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
-                    ? $req->get('depart') 
-                    : Auth::user()->memberOf->depart_id;
-        $name = $req->get('name');
-        $approved = $req->get('approved');
-        $status = $req->get('status');
+        $year       = $req->get('year');
+        $strategic  = $req->get('strategic');
+        $strategy   = $req->get('strategy');
+        $faction    = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
+                        ? $req->get('faction') 
+                        : Auth::user()->memberOf->faction_id;
+        $depart     = (Auth::user()->person_id == '1300200009261' || Auth::user()->person_id == '3249900388197' || Auth::user()->memberOf->depart_id == 3 || Auth::user()->memberOf->depart_id == 4)
+                        ? $req->get('depart') 
+                        : Auth::user()->memberOf->depart_id;
+        $name       = $req->get('name');
+        $inPlan     = $req->get('in_plan');
+        $approved   = $req->get('approved');
+        $status     = $req->get('status');
 
         // if($status != '-') {
         //     if (preg_match($pattern, $status, $matched) == 1) {
@@ -150,9 +151,12 @@ class ProjectController extends Controller
                         ->when(!empty($depart), function($q) use ($depart) {
                             $q->where('owner_depart', $depart);
                         })
-                        // ->when($status != '', function($q) use ($status) {
-                        //     $q->where('status', $status);
-                        // })
+                        ->when($status != '', function($q) use ($status) {
+                            $q->where('status', $status);
+                        })
+                        ->when($inPlan != '', function($q) use ($inPlan) {
+                            $q->where('in_plan', $inPlan);
+                        })
                         ->when($approved != '', function($q) use ($approved) {
                             $q->where('approved', $approved);
                         })
