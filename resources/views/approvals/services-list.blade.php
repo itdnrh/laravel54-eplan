@@ -395,45 +395,45 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
+                                หน้า @{{ plans_pager.current_page }} จาก @{{ plans_pager.last_page }}
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                จำนวน @{{ pager.total }} รายการ
+                                จำนวน @{{ plans_pager.total }} รายการ | ยอดขอทั้งสิ้น <b>@{{ plansTotal | currency:'':2 }}</b> บาท
                             </div>
                             <div class="col-md-4">
-                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
-                                    <li ng-if="pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=1', { type: 3 }, setPlans)" aria-label="Previous">
+                                <ul class="pagination pagination-sm no-margin pull-right" ng-show="plans_pager.last_page > 1">
+                                    <li ng-if="plans_pager.current_page !== 1">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1', 3, '', setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
-                                    <li ng-class="{'disabled': (pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.prev_page_url, { type: 3 }, setPlans)" aria-label="Prev">
+                                    <li ng-class="{'disabled': (plans_pager.current_page==1)}">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.prev_page_url, 3, '', setPlans)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
 
-                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': pager.current_page==i}">
-                                        <a href="#" ng-click="getDataWithUrl(pager.path + '?page=' +i)">
+                                    <!-- <li ng-repeat="i in debtPages" ng-class="{'active': plans_pager.current_page==i}">
+                                        <a href="#" ng-click="getPlansWithUrl(plans_pager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
                                     </li> -->
 
-                                    <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
-                                        <a href="#" ng-click="pager.path">
+                                    <!-- <li ng-if="plans_pager.current_page < plans_pager.last_page && (plans_pager.last_page - plans_pager.current_page) > 10">
+                                        <a href="#" ng-click="plans_pager.path">
                                             ...
                                         </a>
                                     </li> -->
 
-                                    <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.next_page_url, { type: 3 }, setPlans)" aria-label="Next">
+                                    <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.next_page_url, 3, '', setPlans)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
-                                    <li ng-if="pager.current_page !== pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, pager.path+ '?page=' +pager.last_page, { type: 3 }, setPlans)" aria-label="Previous">
+                                    <li ng-if="plans_pager.current_page !== plans_pager.last_page">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, 3, '', setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

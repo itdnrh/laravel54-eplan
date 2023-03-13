@@ -317,7 +317,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.exportListToExcel = function(e, inStock) {
         e.preventDefault();
 
-        if($scope.materials.length == 0) {
+        if($scope.plans.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
@@ -338,7 +338,7 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
     $scope.exportListToPdf = function(e, inStock) {
         e.preventDefault();
 
-        if($scope.materials.length == 0) {
+        if($scope.plans.length == 0) {
             toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
         } else {
             let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
