@@ -178,7 +178,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-6">
                                     <label>ชื่อโครงการ</label>
                                     <input
                                         id="txtKeyword"
@@ -188,7 +188,23 @@
                                         ng-keyup="getAll($event)"
                                     >
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>ในแผน/นอกแผน</label>
+                                        <select
+                                            id="isInPlan"
+                                            name="isInPlan"
+                                            ng-model="isInPlan"
+                                            class="form-control"
+                                            ng-change="getAll($event)"
+                                        >
+                                            <option value="">-- ทั้งหมด --</option>
+                                            <option value="I">ในแผน</option>
+                                            <option value="O">นอกแผน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label>สถานะ</label>
                                     <select
                                         id="cboStatus"
