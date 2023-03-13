@@ -256,13 +256,13 @@
                         </table>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 หน้า @{{ pager.current_page }} จาก @{{ pager.last_page }}
                             </div>
-                            <div class="col-md-4" style="text-align: center;">
+                            <div class="col-md-6" style="text-align: center;">
                                 จำนวน <b>@{{ pager.total }}</b> รายการ | ยอดขอสนับสนุนทั้งสิ้น <b>@{{ sumWithdrawals | currency:'':2 }}</b> บาท
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="pager.last_page > 1">
                                     <li ng-if="pager.current_page !== 1">
                                         <a href="#" ng-click="getWithdrawalsWithUrl($event, pager.path+ '?page=1', setWithdrawals)" aria-label="Previous">
