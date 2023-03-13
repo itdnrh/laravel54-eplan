@@ -152,7 +152,7 @@
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'project_type_id')}"
                                 >
                                     <label>ประเภทโครงการ : <span class="required-field">*</span></label>
@@ -173,7 +173,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'budget_src_id')}"
                                 >
                                     <label>แหล่งงบประมาณ : <span class="required-field">*</span></label>
@@ -195,11 +195,38 @@
                                         @{{ formError.errors.desc[0] }}
                                     </span>
                                 </div>
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'in_plan')}"
+                                >
+                                    <label>ในแผน/นอกแผน : <span class="required-field">*</span></label>
+                                    <div class="form-control checkbox-groups">
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="I"
+                                                    ng-model="project.in_plan"
+                                                    tabindex="3"> ในแผน
+                                        </div>
+                                        <div class="checkbox-container">
+                                            <input  type="radio"
+                                                    id="in_plan"
+                                                    name="in_plan"
+                                                    value="O"
+                                                    ng-model="project.in_plan"
+                                                    tabindex="3"> นอกแผน
+                                        </div>
+                                    </div>
+                                    <span class="help-block" ng-show="checkValidate(project, 'in_plan')">
+                                        @{{ formError.errors.in_plan[0] }}
+                                    </span>
+                                </div>
                             </div>
                             
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'total_budget')}"
                                 >
                                     <label>งบที่ขออนุมัติ : <span class="required-field">*</span></label>
@@ -220,7 +247,7 @@
                                     </span>
                                 </div>
                                 <!-- <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'total_actual')}"
                                 >
                                     <label>งบที่ดำเนินการ : <span class="required-field">*</span></label>
@@ -235,11 +262,32 @@
                                         @{{ formError.errors.total_actual[0] }}
                                     </span>
                                 </div> -->
+                                <div
+                                    class="form-group col-md-4"
+                                    ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
+                                >
+                                    <label>ระยะเวลาดำเนินงาน : <span class="required-field">*</span></label>
+                                    <select
+                                        id="start_month"
+                                        name="start_month"
+                                        ng-model="project.start_month"
+                                        class="form-control"
+                                        tabindex="10"
+                                    >
+                                        <option value="">-- เลือกเดือน --</option>
+                                        <option value="@{{ month.id }}" ng-repeat="month in monthLists">
+                                            @{{ month.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="checkValidate(project, 'start_month')">
+                                        @{{ formError.errors.start_month[0] }}
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'faction_id')}"
                                 >
                                     <label>หน่วยงาน : <span class="required-field">*</span></label>
@@ -264,7 +312,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'owner_depart')}"
                                 >
                                     <label>&nbsp;</label>
@@ -289,10 +337,8 @@
                                         @{{ formError.errors.owner_depart[0] }}
                                     </span>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div
-                                    class="form-group col-md-6"
+                                    class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(project, 'owner_person')}"
                                 >
                                     <label>ผู้รับผิดชอบ : <span class="required-field">*</span></label>
@@ -325,28 +371,8 @@
                                         @{{ formError.errors.owner_person[0] }}
                                     </span>
                                 </div>
-                                <div
-                                    class="form-group col-md-6"
-                                    ng-class="{'has-error has-feedback': checkValidate(project, 'start_month')}"
-                                >
-                                    <label>ระยะเวลาดำเนินงาน : <span class="required-field">*</span></label>
-                                    <select
-                                        id="start_month"
-                                        name="start_month"
-                                        ng-model="project.start_month"
-                                        class="form-control"
-                                        tabindex="10"
-                                    >
-                                        <option value="">-- เลือกเดือน --</option>
-                                        <option value="@{{ month.id }}" ng-repeat="month in monthLists">
-                                            @{{ month.name }}
-                                        </option>
-                                    </select>
-                                    <span class="help-block" ng-show="checkValidate(project, 'start_month')">
-                                        @{{ formError.errors.start_month[0] }}
-                                    </span>
-                                </div>
                             </div>
+
                             <div class="row">
                                 <div
                                     class="form-group col-md-6"
@@ -433,6 +459,8 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#total_budget').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 

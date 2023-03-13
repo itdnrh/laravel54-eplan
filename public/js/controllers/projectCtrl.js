@@ -32,6 +32,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         total_actual: '',
         total_actual_str: '',
         budget_src_id: '1',
+        in_plan: 'I',
         faction_id: '',
         owner_depart: '',
         owner_person: '',
@@ -107,6 +108,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             total_actual: '',
             total_actual_str: '',
             budget_src_id: '1',
+            in_plan: 'I',
             faction_id: '',
             owner_depart: '',
             owner_person: '',
@@ -144,7 +146,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&approved=${approved}&status=${status}`)
+        $http.get(`${CONFIG.baseUrl}/projects/search?year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&in_plan=${inPlan}&approved=${approved}&status=${status}`)
         .then(function(res) {
             $scope.setProjects(res);
 
@@ -185,7 +187,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
         let approved    = $scope.isApproved ? 'A' : '';
 
-        $http.get(`${url}&year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&approved=${approved}&status=${status}`)
+        $http.get(`${url}&year=${year}&strategic=${strategic}&strategy=${strategy}&kpi=${kpi}&faction=${faction}&depart=${depart}&name=${name}&in_plan=${inPlan}&approved=${approved}&status=${status}`)
         .then(function(res) {
             cb(res);
 
@@ -215,7 +217,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
             $scope.project.total_budget_str = project.total_budget_str;
             $scope.project.total_actual     = project.total_actual;
             $scope.project.total_actual_str = project.total_actual_str;
-            $scope.project.budget_src       = project.budget_src;
+            $scope.project.in_plan          = project.in_plan;
 
             $scope.project.approved         = project.approved;
             $scope.project.attachment       = project.attachment;

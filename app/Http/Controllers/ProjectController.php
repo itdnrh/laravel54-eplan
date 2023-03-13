@@ -323,6 +323,7 @@ class ProjectController extends Controller
             $project->total_budget      = $req['total_budget'];
             $project->total_budget_str  = $req['total_budget_str'];
             $project->budget_src_id     = $req['budget_src_id'];
+            $project->in_plan           = $req['in_plan'];
             $project->owner_depart      = $req['owner_depart'];
             $project->owner_person      = $req['owner_person'];
             $project->start_month       = $req['start_month'];
@@ -392,6 +393,7 @@ class ProjectController extends Controller
         $project->total_actual      = $req['total_actual'];
         $project->total_actual_str  = $req['total_actual_str'];
         $project->budget_src_id     = $req['budget_src_id'];
+        $project->in_plan           = $req['in_plan'];
         $project->owner_depart      = $req['owner_depart'];
         $project->owner_person      = $req['owner_person'];
         $project->start_month       = $req['start_month'];
