@@ -454,10 +454,10 @@ ul.committee-lists {
 }
 
 .print-options {
+  position: absolute;
   margin: 0;
   padding: 0;
-  bottom: 10px;
-  position: absolute;
+  bottom: 15px;
   font-size: 14px;
   /* border: 1px dotted red; */
 }

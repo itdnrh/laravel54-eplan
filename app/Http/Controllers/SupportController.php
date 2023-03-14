@@ -998,7 +998,12 @@ class SupportController extends Controller
             "headOfFaction" => $headOfFaction,
         ];
 
+        $paper = [
+            'size'  => 'a4',
+            'orientation' => 'portrait'
+        ];
+
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.support-form', $data);
+        return renderPdf('forms.support-form', $data, $paper);
     }
 }
