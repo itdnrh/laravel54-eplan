@@ -303,10 +303,25 @@ td > p {
   text-align: justify;
 }
 
+.with-expanded-2x {
+  letter-spacing: 0.2px;
+}
+
+.with-expanded-3x {
+  letter-spacing: 0.3px;
+}
+
 .with-compressed {
   letter-spacing: 0.001mm;
 }
 
+.with-compressed-2x {
+  letter-spacing: -0.2px;
+}
+
+.with-compressed-3x {
+  letter-spacing: -0.3px;
+}
 /*
 *---------------------------------------------------------------------------
 * การตัดหน้า (ขึ้นหน้าใหม่)

@@ -21,7 +21,7 @@
                                 @if(strlen($project->depart->depart_name) < 120)
                                     <div class="content__header-text" style="width: 87%;">
                                 @else
-                                    <div class="content__header-text" style="width: 87%; font-size: 18.5px;">
+                                    <div class="content__header-text" style="width: 88%; font-size: 18.5px;">
                                 @endif
                                     <span style="margin: 0 0 0 2px;">
                                         {{ $project->owner_depart != 37 ? $project->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
@@ -39,7 +39,9 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ที่</span>
                                 <div class="content__header-text" style="width: 95%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit($project->depart->memo_no.'/') }}</span>
+                                    <span style="margin: 0 5px;">
+                                        {{ thainumDigit($project->depart->memo_no.'/') }}
+                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -70,18 +72,21 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            <?php
+                                $faction = '';
+                                $department = '';
+                                if($project->depart->faction_id == '7') {
+                                    $faction .= ' กลุ่มภารกิจด้านพัฒนาระบบบริการฯ';
+                                } else {
+                                    $faction .= $project->depart->faction->faction_name;
+                                }
+
+                                $department = $project->depart->depart_name.' ';
+                                $departNameLen = strlen($department.' '.$faction);
+                            ?>
+
                             <div class="memo-paragraph with-expanded">
-                                ตามที่
-                                @if($project->owner_depart != 37)
-                                    <span>{{ $project->depart->depart_name }}</span>
-                                @else
-                                    <span style="font-size: 20px;">{{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}</span>
-                                @endif
-                                @if($project->depart->faction_id == '7')
-                                    กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
-                                @else
-                                    {{ $project->depart->faction->faction_name }}
-                                @endif
+                                ตามที่ <span class="{{ ($departNameLen > 220) ? 'with-expanded-3x' : '' }}">{{ $department.$faction }}</span>
                                 ได้รับอนุมัติให้จัดทำ {{ thainumDigit($project->project_name) }}                                
                                 รหัสโครงการ 
                                 @if(!empty($project->project_no))
@@ -101,17 +106,7 @@
                     <tr>
                         <td colspan="4">
                             <div class="memo-paragraph with-expanded">
-                                ในการนี้
-                                @if($project->owner_depart != 37)
-                                    <span>{{ $project->depart->depart_name }}</span>
-                                @else
-                                    <span style="font-size: 20px;">{{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}</span>
-                                @endif
-                                @if($project->depart->faction_id == '7')
-                                    กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
-                                @else
-                                    {{ $project->depart->faction->faction_name }}
-                                @endif
+                                ในการนี้ <span class="{{ ($departNameLen > 200 && $departNameLen <= 220) ? 'with-compressed-2x' : ($departNameLen > 220 ? 'with-expanded-2x' : '') }}">{{ $department.$faction }}</span>
                                 จึงขออนุมัติดำเนิน{{ thainumDigit($project->project_name) }}
                                 @if(strlen($project->project_name) > 250 || strlen($project->project_name) <= 130)
                                     {{ 'ตามเอกสารที่แนบมาพร้อมนี้' }}
