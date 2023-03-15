@@ -925,12 +925,14 @@ class ProjectController extends Controller
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.depart_id', $project->owner_depart)
                             ->where('level.duty_id', '2')
+                            ->where('personal.person_state', '1')
                             ->with('prefix','position')
                             ->first();
 
         $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                             ->where('level.faction_id', $project->depart->faction_id)
                             ->where('level.duty_id', '1')
+                            ->where('personal.person_state', '1')
                             ->with('prefix','position')
                             ->first();
 
