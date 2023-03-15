@@ -418,6 +418,12 @@ ul.committee-lists {
 * ส่วนการลงนาม
 *---------------------------------------------------------------------------
 */
+.approval-checkbox {
+  margin: 20px 0 20px 40px;
+  font-weight: bold;
+  /* border: 1px solid red; */
+}
+
 .signature {
   width: 100%;
   margin: 0 0 0 40px;

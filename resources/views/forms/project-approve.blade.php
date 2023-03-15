@@ -136,7 +136,7 @@
                             </p>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td></td>
                         <td colspan="3" style="text-align: center; padding: 5px;">
                             <div class="signature">
@@ -148,6 +148,22 @@
                                 </p>
                                 <p style="margin: 0;">
                                     ผู้รับผิดชอบโครงการ
+                                </p>
+                            </div>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td></td>
+                        <td colspan="3" style="text-align: center; padding: 5px;">
+                            <div class="signature">
+                                <p style="margin: 30px 0 0;">
+                                    ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
+                                </p>
+                                <p style="margin: 0;">
+                                    <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>
+                                </p>
+                                <p style="margin: 0;">
+                                    หัวหน้า{{ $project->owner_depart != 37 ? $project->depart->depart_name : 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
                                 </p>
                             </div>
                         </td>
@@ -180,7 +196,7 @@
                     <tr>
                         <td></td>
                         <td colspan="3" style="text-align: center; padding: 5px;">
-                            <p style="margin: 20px 0 20px 0; font-weight: bold;">
+                            <p class="approval-checkbox">
                                 <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
                                 <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
                             </p>
