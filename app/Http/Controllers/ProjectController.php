@@ -942,7 +942,12 @@ class ProjectController extends Controller
             "headOfDepart"  => $headOfDepart,
         ];
 
+        $paper = [
+            'size'  => 'a4',
+            'orientation' => 'portrait'
+        ];
+
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        return renderPdf('forms.project-approve', $data);
+        return renderPdf('forms.project-approve', $data, $paper);
     }
 }

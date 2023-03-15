@@ -71,32 +71,30 @@
                     <tr>
                         <td colspan="4">
                             <div class="memo-paragraph with-expanded">
-                                <p>
-                                    ตามที่
-                                    @if($project->owner_depart != 37)
-                                        <span>{{ $project->depart->depart_name }}</span>
-                                    @else
-                                        <span style="font-size: 20px;">{{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}</span>
-                                    @endif
-                                    @if($project->depart->faction_id == '7')
-                                        กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
-                                    @else
-                                        {{ $project->depart->faction->faction_name }}
-                                    @endif
-                                    ได้รับอนุมัติให้จัดทำ {{ thainumDigit($project->project_name) }}                                
-                                    รหัสโครงการ 
-                                    @if(!empty($project->project_no))
-                                        <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
-                                    @else
-                                        <span class="dot">............................</span>
-                                    @endif
-                                    งบประมาณสนับสนุนจาก <span>{{ thainumDigit($project->budgetSrc->name) }}โรงพยาบาลฯ</span>
-                                    ปีงบประมาณ <span>{{ thainumDigit($project->year) }}</span>
-                                    จำนวน <span>{{ thainumDigit(number_format($project->total_budget, 2)) }}</span> บาท
-                                    <span>({{ $project->total_budget_str }})</span>
-                                    โดยเป็นโครงการระดับ <span>{{ $project->projectType->name }}</span> นั้น
-                                    <!-- โดยมีวัตถุประสงค์เพื่อ <span>{{ thainumDigit($project->remark) }}</span> นั้น -->
-                                </p>
+                                ตามที่
+                                @if($project->owner_depart != 37)
+                                    <span>{{ $project->depart->depart_name }}</span>
+                                @else
+                                    <span style="font-size: 20px;">{{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}</span>
+                                @endif
+                                @if($project->depart->faction_id == '7')
+                                    กลุ่มภารกิจด้านพัฒนาระบบบริการฯ
+                                @else
+                                    {{ $project->depart->faction->faction_name }}
+                                @endif
+                                ได้รับอนุมัติให้จัดทำ {{ thainumDigit($project->project_name) }}                                
+                                รหัสโครงการ 
+                                @if(!empty($project->project_no))
+                                    <span style="margin: 0;">{{ thainumDigit($project->project_no) }}</span>
+                                @else
+                                    <span class="dot">............................</span>
+                                @endif
+                                งบประมาณสนับสนุนจาก <span>{{ thainumDigit($project->budgetSrc->name) }}โรงพยาบาลฯ</span>
+                                ปีงบประมาณ <span>{{ thainumDigit($project->year) }}</span>
+                                จำนวน <span>{{ thainumDigit(number_format($project->total_budget, 2)) }}</span> บาท
+                                <span>({{ $project->total_budget_str }})</span>
+                                โดยเป็นโครงการระดับ <span>{{ $project->projectType->name }}</span> นั้น
+                                <!-- โดยมีวัตถุประสงค์เพื่อ <span>{{ thainumDigit($project->remark) }}</span> นั้น -->
                             </div>
                         </td>
                     </tr>
@@ -114,7 +112,7 @@
                                 @else
                                     {{ $project->depart->faction->faction_name }}
                                 @endif
-                                จึงขออนุมัติดำเนิน {{ thainumDigit($project->project_name) }}
+                                จึงขออนุมัติดำเนิน{{ thainumDigit($project->project_name) }}
                                 @if(strlen($project->project_name) > 250 || strlen($project->project_name) <= 130)
                                     {{ 'ตามเอกสารที่แนบมาพร้อมนี้' }}
                                 @elseif(strlen($project->project_name) > 220 && strlen($project->project_name) <= 250)
@@ -131,11 +129,13 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <p class="memo-paragraph">
+                            <div class="memo-paragraph" style="padding-top: 10px;">
                                 จึงเรียนมาเพื่อโปรดทราบและพิจารณาอนุมัติ
-                            </p>
+                            </div>
                         </td>
                     </tr>
+
+                    <!-- =========================== Owner =========================== -->
                     <!-- <tr>
                         <td></td>
                         <td colspan="3" style="text-align: center; padding: 5px;">
@@ -152,6 +152,8 @@
                             </div>
                         </td>
                     </tr> -->
+                    
+                    <!-- =========================== Head of depart =========================== -->
                     <tr>
                         <td></td>
                         <td colspan="3" style="text-align: center; padding: 5px;">
@@ -168,6 +170,8 @@
                             </div>
                         </td>
                     </tr>
+                    
+                    <!-- =========================== Head of faction =========================== -->
                     <tr>
                         <td></td>
                         <td colspan="3" style="text-align: center; padding: 5px;">
@@ -193,6 +197,8 @@
                             </div>
                         </td>
                     </tr>
+                    
+                    <!-- =========================== Director =========================== -->
                     <tr>
                         <td></td>
                         <td colspan="3" style="text-align: center; padding: 5px;">
