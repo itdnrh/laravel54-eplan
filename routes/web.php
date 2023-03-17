@@ -311,6 +311,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('factions/list', 'FactionController@index');
     Route::get('system/factions', 'FactionController@index');
     Route::get('factions/detail/{id}', 'FactionController@detail');
+    Route::get('factions/edit/{id}', 'FactionController@edit');
 
     /** กลุ่มงาน */
     Route::post('departs/validate', 'DepartController@formValidate');

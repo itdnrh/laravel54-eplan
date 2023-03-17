@@ -28,7 +28,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>ชื่อเจ้าหนี้</label>
+                                        <label>ชื่อภารกิจ</label>
                                         <input
                                             type="text"
                                             id="txtKeyword"
@@ -36,20 +36,6 @@
                                             ng-model="txtKeyword"
                                             ng-keyup="getSuppliers($event)"
                                             class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>จังหวัด</label>
-                                        <select
-                                            id="cboChangwat"
-                                            name="cboChangwat"
-                                            ng-model="cboChangwat"
-                                            ng-keyup="getSuppliers($event)"
-                                            class="form-control"
-                                        >
-
-                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +50,7 @@
                                 <h3 class="box-title">กลุ่มภารกิจ</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/suppliers/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/factions/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
                             </div>

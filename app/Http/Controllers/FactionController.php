@@ -13,21 +13,11 @@ class FactionController extends Controller
     public function formValidate(Request $request)
     {
         $rules = [
-            'prename_id'                => 'required',
-            'supplier_name'             => 'required',
-            'supplier_address1'         => 'required',
-            'supplier_address2'         => 'required',
-            'supplier_address3'         => 'required',
+            'faction_name' => 'required',
         ];
 
         $messages = [
-            'prename_id.required'               => 'กรุณาเลือกคำนำหน้า',
-            'supplier_name.required'            => 'กรุณาระบุชื่อเจ้าหนี้',
-            'supplier_address1.required'        => 'กรุณาระบุที่อยู่',
-            'supplier_address2.required'        => 'กรุณาระบุที่อยู่ (ต.และ อ.)',
-            'supplier_address3.required'        => 'กรุณาระบุที่อยู่ (จ.)',
-            'chw_id.required'                   => 'กรุณาเลือกจังหวัด',
-            'supplier_zipcode.required'         => 'กรุณาระบุรหัสไปรษณีย์',
+            'faction_name.required' => 'กรุณาระบุชื่อกลุ่มภารกิจ',
         ];
 
         $validator = \Validator::make($request->all(), $rules, $messages);
@@ -57,7 +47,6 @@ class FactionController extends Controller
     public function getAll(Request $req)
     {
         $name       = $req->get('name');
-        $changwat   = $req->get('changwat');
 
         $factions = Faction::with('departs')
                         ->when(!empty($name), function($q) use ($name) {
@@ -85,10 +74,7 @@ class FactionController extends Controller
 
     public function create()
     {
-        return view('factions.add', [
-            "prefixes"  => SupplierPrefix::all(),
-            "changwats" => Changwat::all()
-        ]);
+        return view('factions.add');
     }
 
     public function store(Request $req)
@@ -120,9 +106,7 @@ class FactionController extends Controller
     public function edit(Request $req, $id)
     {
         return view('factions.edit', [
-            "faction"   => Faction::where('supplier_id', $id)->first(),
-            "prefixes"  => SupplierPrefix::all(),
-            "changwats" => Changwat::all()
+            "faction" => Faction::where('faction_id', $id)->first()
         ]);
     }
 
@@ -130,7 +114,6 @@ class FactionController extends Controller
     {
         try {
             $faction = Faction::where('faction_id', $id)->first();
-            $faction->faction_id    = $req['faction_id'];
             $faction->faction_name  = $req['faction_name'];
 
             if ($faction->save()) {

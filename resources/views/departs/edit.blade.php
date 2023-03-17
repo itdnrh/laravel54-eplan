@@ -123,6 +123,9 @@
                                             id="is_actived"
                                             name="is_actived"
                                             ng-model="depart.is_actived"
+                                            ng-checked="depart.is_actived == 1"
+                                            ng-true-value="1"
+                                            ng-false-value="0"
                                         />
                                     </div>
                                 </div>

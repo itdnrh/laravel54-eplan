@@ -8,12 +8,9 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.pager = null;
 
     $scope.faction = {
-        prename_id: '',
-        supplier_name: '',
-    };
-
-    $scope.onSelectedChangwat = function(e) {
-        $scope.supplier.supplier_address3 = $('#chw_id option:selected').text().replaceAll(/\s/g,'');
+        faction_id: '',
+        faction_name: '',
+        is_actived: false,
     };
 
     $scope.getFactions = function(event) {
@@ -23,7 +20,7 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         $scope.pager = null;
 
         let name = $scope.txtKeyword === '' ? '' : $scope.txtKeyword;
-        
+
         $http.get(`${CONFIG.apiUrl}/factions?name=${name}`)
         .then(function(res) {
             $scope.setFactions(res);
@@ -73,7 +70,7 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
         $http.get(`${CONFIG.apiUrl}/factions/${id}`)
         .then(function(res) {
-            cb(res.data.supplier);
+            cb(res.data.faction);
 
             $scope.loading = false;
         }, function(err) {
@@ -83,32 +80,11 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         });
     };
 
-    $scope.setEditControls = function(supplier) {
-        if (supplier) {
-            console.log(supplier);
-            $scope.supplier.id                  = supplier.supplier_id;
-            $scope.supplier.prename_id          = supplier.prename_id ? supplier.prename_id.toString() : '';
-            $scope.supplier.supplier_name       = supplier.supplier_name;
-            $scope.supplier.supplier_address1   = supplier.supplier_address1;
-            $scope.supplier.supplier_address2   = supplier.supplier_address2;
-            $scope.supplier.supplier_address3   = supplier.supplier_address3;
-            $scope.supplier.chw_id              = supplier.chw_id ? supplier.chw_id.toString() : '';
-            $scope.supplier.supplier_zipcode    = supplier.supplier_zipcode;
-            $scope.supplier.supplier_phone      = supplier.supplier_phone;
-            $scope.supplier.supplier_fax        = supplier.supplier_fax;
-            $scope.supplier.supplier_email      = supplier.supplier_email;
-            $scope.supplier.supplier_agent_name = supplier.supplier_agent_name;
-            $scope.supplier.supplier_agent_contact = supplier.supplier_agent_contact;
-            $scope.supplier.supplier_agent_email = supplier.supplier_agent_email;
-            $scope.supplier.supplier_bank_acc   = supplier.supplier_bank_acc;
-            $scope.supplier.supplier_credit     = supplier.supplier_credit;
-            $scope.supplier.supplier_taxid      = supplier.supplier_taxid;
-            $scope.supplier.supplier_taxrate    = supplier.supplier_taxrate;
-            $scope.supplier.supplier_note       = supplier.supplier_note;
-
-            /** Set date value to datepicker input of doc_date */
-            $('#prename_id').val(supplier.prename_id).trigger('change.select2');
-            $('#chw_id').val(supplier.chw_id).trigger('change.select2');
+    $scope.setEditControls = function(faction) {
+        if (faction) {
+            $scope.faction.faction_id   = faction.faction_id;
+            $scope.faction.faction_name = faction.faction_name;
+            $scope.faction.is_actived   = faction.is_actived;
         }
     };
 
@@ -139,21 +115,21 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
     $scope.update = function(event, form) {
         event.preventDefault();
-        $scope.loading = true;
+        
+        if(confirm("คุณต้องแก้ไขกลุ่มภารกิจ รหัส " + $scope.faction.faction_id + " ใช่หรือไม่?")) {
+            $scope.loading = true;
+            $scope.faction.user = $('#user').val();
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + $scope.supplier.id + " ใช่หรือไม่?")) {
-            $scope.supplier.user = $('#user').val();
-
-            $http.post(`${CONFIG.baseUrl}/factions/update/${$scope.supplier.id}`, $scope.supplier)
+            $http.put(`${CONFIG.apiUrl}/factions/${$scope.faction.faction_id}`, $scope.faction)
             .then(function(res) {
                 console.log(res);
 
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
 
-                setTimeout(function (){
-                    window.location.href = `${CONFIG.baseUrl}/system/factions`;
-                }, 2000); 
+                    setTimeout(function (){
+                        window.location.href = `${CONFIG.baseUrl}/system/factions`;
+                    }, 2000); 
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 }
@@ -165,16 +141,15 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
                 $scope.loading = false;
             });
-        } else {
-            $scope.loading = false;
         }
     };
 
     $scope.delete = function(id) {
-        $scope.loading = true;
-
+        
         if(confirm("คุณต้องลบรายการหนี้เลขที่ " + id + " ใช่หรือไม่?")) {
-            $http.post(`${CONFIG.baseUrl}/factions/delete/${id}`)
+            $scope.loading = true;
+
+            $http.delete(`${CONFIG.baseUrl}/factions/${id}`)
             .then(function(res) {
                 console.log(res);
 
@@ -193,8 +168,6 @@ app.controller('factionCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
                 $scope.loading = false;
             });
-        } else {
-            $scope.loading = false;
         }
     };
 
