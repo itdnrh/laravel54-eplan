@@ -166,6 +166,13 @@
                             </div>
                         </div><!-- /.row -->
                     </div><!-- /.box-footer -->
+
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div ng-show="loading" class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <!-- end loading -->
+
                 </div><!-- /.box -->
 
             </div><!-- /.col -->
