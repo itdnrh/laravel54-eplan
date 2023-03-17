@@ -5,262 +5,195 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดแผนครุภัณฑ์ : เลขที่ ({{ $plan->plan_no }})
+            รายละเอียดสินค้า/บริการ : ID ({{ $item->id }})
             <!-- <small>preview of simple tables</small> -->
         </h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดแผนครุภัณฑ์</li>
+            <li class="breadcrumb-item active">รายละเอียดสินค้า/บริการ</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="planAssetCtrl" ng-init="getById({{ $plan->id }}, setEditControls);">
-        <div class="row">
+    <section
+        class="content"
+        ng-controller="itemCtrl"
+        ng-init="getById({{ $item->id }}, setEditControls);"
+    >
+    <div class="row">
             <div class="col-md-12">
+
                 <div class="box box-info">
                     <div class="box-header">
-                        <h3 class="box-title">รายละเอียดแผนครุภัณฑ์</h3>
+                        <h3 class="box-title">
+                            รายละเอียดสินค้า/บริการ
+                            <span>ID: {{ $item->id }}</span>
+                        </h3>
                     </div>
+
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="form-group col-md-6">
-                                    <label>ปีงบ :</label>
-                                    <input type="text"
-                                            id="year" 
-                                            name="year"
-                                            ng-model="asset.year"
-                                            class="form-control">
-                                    </inp>
+                            <div class="col-md-6 form-group">
+                                <label for="">ประเภทแผน</label>
+                                <div class="form-control">
+                                    @{{ item.planType.plan_type_name }}
                                 </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>ประเภทครุภัณฑ์ :</label>
-                                    <select id="category_id"
-                                            name="category_id"
-                                            ng-model="asset.category_id"
-                                            class="form-control">
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                    </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="">รหัสครุภัณฑ์ (ถ้ามี)</label>
+                                <div class="form-control">
+                                    @{{ item.asset_no }}
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="asset.desc"
-                                        class="form-control" />
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="">ประเภทสินค้า/บริการ</label>
+                                <div class="form-control">
+                                    @{{ item.category.name }}
                                 </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>รายละเอียด (Spec.) :</label>
-                                    <input  type="text"
-                                            id="spec"
-                                            name="spec"
-                                            ng-model="asset.spec"
-                                            class="form-control">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="">กลุ่มสินค้า/บริการ</label>
+                                <div class="form-control">
+                                    @{{ item.group.name }}
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>ราคาต่อหน่วย :</label>
-                                    <input  type="text"
-                                            id="price_per_unit"
-                                            name="price_per_unit"
-                                            ng-model="asset.price_per_unit"
-                                            class="form-control" />
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="">ชื่อสินค้า/บริการ (ไทย)</label>
+                                <div class="form-control">
+                                    @{{ item.item_name }}
                                 </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="">ชื่อสินค้า/บริการ (อังกฤษ)</label>
+                                <div class="form-control">
+                                    @{{ item.en_name }}
+                                </div>
+                            </div>
+                        </div>
 
-                                <div class="form-group col-md-6">
-                                    <label>จำนวน :</label>
-                                    <div style="display: flex; gap: 5px;">
-                                        <input  type="text"
-                                                id="amount"
-                                                name="amount"
-                                                ng-model="asset.amount"
-                                                class="form-control" />
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="">ราคา</label>
+                                <div class="form-control">
+                                    @{{ item.price_per_unit | currency:'':2 }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="">หน่วยนับ</label>
+                                <div class="form-control select2">
+                                    @{{ item.unit.name }}
+                                </div>
+                            </div>
+                        </div>
 
-                                        <select id="unit_id"
-                                                name="unit_id"
-                                                ng-model="asset.unit_id"
-                                                class="form-control">
-                                            @foreach($units as $unit)
-                                                <option value="{{ $unit->id }}">
-                                                    {{ $unit->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12 alert alert-warning alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <i class="fa fa-warning"></i>
+                                    กรณีการตั้งงบประมาณเป็นยอดรวม ให้เลือกการตัดยอดตามงบประมาณและเลือกมีรายการย่อย
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="">การตัดยอด</label>
+                                <div class="form-control" style="display: flex; gap: 30px;">
+                                    <div ng-show="item.calc_method == 1">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        ตัดยอดตามจำนวน 
                                     </div>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>กลุ่มงาน :</label>
-                                    <select id="depart_id"
-                                            name="depart_id"
-                                            ng-model="asset.depart_id"
-                                            class="form-control">
-                                            @foreach($departs as $depart)
-                                                <option value="{{ $depart->depart_id }}">
-                                                    {{ $depart->depart_name }}
-                                                </option>
-                                            @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>งาน :</label>
-                                    <select id="division_id"
-                                            name="division_id"
-                                            ng-model="asset.division_id"
-                                            class="form-control">
-                                            @foreach($divisions as $division)
-                                                <option value="{{ $division->ward_id }}">
-                                                    {{ $division->ward_name }}
-                                                </option>
-                                            @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>เหตุผล :</label>
-                                    <textarea
-                                        id="reason" 
-                                        name="reason" 
-                                        ng-model="asset.reason" 
-                                        class="form-control"
-                                    ></textarea>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>หมายเหตุ :</label>
-                                    <textarea
-                                        id="remark" 
-                                        name="remark" 
-                                        ng-model="asset.remark" 
-                                        class="form-control"
-                                    ></textarea>
-                                </div>
-                                
-                                
-                                <div class="col-md-12" style="margin-bottom: 15px;" ng-show="asset.attachment">
-                                    <label>เอกสารแนบ :</label>
-                                    <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
-                                            title="ไฟล์แนบ"
-                                            target="_blank">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                            @{{ asset.attachment }}
-                                        </a>
-
-                                        <span style="margin-left: 10px;">
-                                            <a href="#">
-                                                <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>เริ่มเดือน :</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            value="@{{ asset.start_month }}"
-                                            class="form-control pull-right"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>สถานะ :</label>
-                                    <div style="border: 1px solid #d2d6de; height: 34px; display: flex; align-items: center; padding: 0 5px;">
-                                        <span class="label label-primary" ng-show="asset.status == 0">
-                                            @{{ asset.status }} อยู่ระหว่างดำเนินการ
-                                        </span>
-                                        <span class="label label-info" ng-show="asset.status == 1">
-                                            @{{ asset.status }} ส่งเอกสารแล้ว
-                                        </span>
-                                        <span class="label bg-navy" ng-show="asset.status == 2">
-                                            @{{ asset.status }} รับเอกสารแล้ว
-                                        </span>
-                                        <span class="label label-success" ng-show="asset.status == 3">
-                                            @{{ asset.status }} ออกใบสั้งซื้อแล้ว
-                                        </span>
-                                        <span class="label bg-maroon" ng-show="asset.status == 4">
-                                            @{{ asset.status }} ตรวจรับแล้ว
-                                        </span>
-                                        <span class="label label-warning" ng-show="asset.status == 5">
-                                            @{{ asset.status }} ส่งเบิกเงินแล้ว
-                                        </span>
-                                        <span class="label label-danger" ng-show="asset.status == 6">
-                                            @{{ asset.status }} ตั้งหนี้แล้ว
-                                        </span>
-                                        <span class="label label-default" ng-show="asset.status == 9">
-                                            @{{ asset.status }} ยกเลิก
-                                        </span>
+                                    <div ng-show="item.calc_method == 2">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        ตัดยอดตามงบประมาณ
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-2">
-                                <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                                    <a
-                                        href="#"
-                                        class="btn btn-success"
-                                        ng-show="[0].includes(asset.status)"
-                                        ng-click="showSupportedForm()"
-                                    >
-                                        <i class="fa fa-print"></i> บันทึกขอสนับสนุน
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-primary"
-                                        ng-show="[1].includes(asset.status)"
-                                        ng-click="showPoForm()"
-                                    >
-                                        <i class="fa fa-calculator"></i> บันทึกใบ PO
-                                    </a>
-                                    <a
-                                        href="#"
-                                        ng-click="edit(asset.asset_id)"
-                                        ng-show="[0,1].includes(asset.status)"
-                                        class="btn btn-warning"
-                                    >
-                                        <i class="fa fa-edit"></i> แก้ไข
-                                    </a>
-                                    <form
-                                        id="frmDelete"
-                                        method="POST"
-                                        action="{{ url('/asset/delete') }}"
-                                        ng-show="[0,1].includes(asset.status)"
-                                    >
-                                        <input type="hidden" id="id" name="id" value="@{{ asset.asset_id }}" />
-                                        {{ csrf_field() }}
-                                        <button
-                                            type="submit"
-                                            ng-click="delete($event, asset.asset_id)"
-                                            class="btn btn-danger btn-block"
-                                        >
-                                            <i class="fa fa-trash"></i> ลบ
-                                        </button>
-                                    </form>
+                            <div class="col-md-6 form-group">
+                                <label for="">มีรายการย่อย</label>
+                                <div class="form-control" style="display: flex; gap: 30px;">
+                                    <div ng-show="item.have_subitem == 1">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        มีรายการย่อย 
+                                    </div>
+                                    <div ng-show="item.have_subitem == 0">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        ไม่มีรายการย่อย
+                                    </div>
                                 </div>
-                                <!-- /** Action buttons container */ -->
-
                             </div>
+                        </div>
 
-                            @include('shared._supported-form')
-                            @include('shared._po-form')
+                        <div class="row">
+                            <div class="col-md-6 form-group" ng-show="isMaterial(item.plan_type_id)">
+                                <label for="">ใน/นอกคลัง</label>
+                                <div class="form-control" style="display: flex; gap: 30px;">
+                                    <div ng-show="item.in_stock == 1">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        ในคลัง 
+                                    </div>
+                                    <div ng-show="item.in_stock == 0">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        นอกคลัง
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group" ng-show="isService(item.plan_type_id)">
+                                <label for="">เป็นรายการ Fix Cost</label>
+                                <div class="form-control" style="display: flex; gap: 30px;">
+                                    <div ng-show="item.is_fixcost == 0">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        ไม่เป็น
+                                    </div>
+                                    <div ng-show="item.is_fixcost == 1">
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                        เป็น
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="">Add on</label>
+                                <div class="form-control" style="display: flex; gap: 30px;">
+                                    <div>
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="item.is_addon == 1"></i>
+                                        <i class="fa fa-times text-danger" aria-hidden="true" ng-show="item.is_addon != 1"></i>
+                                        เป็นรายการงบเพิ่มเติม (Add on) 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group" ng-show="isService(item.plan_type_id)">
+                                <label for="">งบจ้างซ่อมบำรุง</label>
+                                <div class="form-control" style="display: flex; gap: 30px;">
+                                    <div>
+                                        <i class="fa fa-check-square-o text-success" aria-hidden="true" ng-show="item.is_repairing_item == 1"></i>
+                                        <i class="fa fa-times text-danger" aria-hidden="true" ng-show="item.is_repairing_item != 1"></i>
+                                        เป็นรายการงบจ้างซ่อมบำรุง (รวม)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        </div><!-- /.row -->
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="">หมายเหตุ</label>
+                                <textarea
+                                    rows=""
+                                    id="remark"
+                                    name="remark"
+                                    rows="5"
+                                    ng-model="item.remark"
+                                    class="form-control"
+                                    readonly
+                                ></textarea>
+                            </div>
+                        </div>
                     </div><!-- /.box-body -->
+                    <div class="box-footer clearfix">
+                    </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 
             </div><!-- /.col -->

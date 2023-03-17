@@ -156,13 +156,11 @@ class ItemController extends Controller
     public function detail($id)
     {
         return view('items.detail', [
-            "plan"          => Plan::with('asset')->where('id', $id)->first(),
+            "item"          => Item::with('planType','category','group','unit')->where('id', $id)->first(),
+            "planTypes"     => PlanType::all(),
             "categories"    => ItemCategory::all(),
             "groups"        => ItemGroup::all(),
             "units"         => Unit::all(),
-            "factions"      => Faction::all(),
-            "departs"       => Depart::all(),
-            "divisions"     => Division::all(),
         ]);
     }
 

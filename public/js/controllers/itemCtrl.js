@@ -28,6 +28,10 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
         is_addon: 0,
         first_year: '2565',
         remark: '',
+        planType: null,
+        category: null,
+        group: null,
+        unit: null
     };
 
     /** ============================== Init Form elements ============================== */
@@ -69,6 +73,10 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             is_addon: 0,
             first_year: '2565',
             remark: '',
+            planType: null,
+            category: null,
+            group: null,
+            unit: null
         };
     };
 
@@ -158,6 +166,12 @@ app.controller('itemCtrl', function(CONFIG, $scope, $http, toaster, StringFormat
             $scope.item.remark          = item.remark;
             $scope.item.status          = item.status;
     
+            /** Object props */
+            $scope.item.planType        = item.plan_type;
+            $scope.item.category        = item.category ? item.category : null;
+            $scope.item.group           = item.group ? item.group : null;
+            $scope.item.unit            = item.unit ? item.unit : null;
+
             /** Convert int value to string */
             $scope.item.plan_type_id    = item.plan_type_id.toString();
             $scope.item.category_id     = item.category_id ? item.category_id.toString() : '';

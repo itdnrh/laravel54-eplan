@@ -292,7 +292,7 @@ class ProjectController extends Controller
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::all(),
             "kpis"          => Kpi::all(),
-            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "factions"      => Faction::where('is_actived', 1)->get(),
             "departs"       => Depart::all(),
         ]);
     }
@@ -305,7 +305,7 @@ class ProjectController extends Controller
             "strategics"    => Strategic::all(),
             "strategies"    => Strategy::orderBy('strategy_no')->get(),
             "kpis"          => Kpi::orderBy('kpi_no')->get(),
-            "factions"      => Faction::whereNotIn('faction_id', [6,4,12])->get(),
+            "factions"      => Faction::where('is_actived', 1)->get(),
             "departs"       => Depart::all(),
         ]);
     }
