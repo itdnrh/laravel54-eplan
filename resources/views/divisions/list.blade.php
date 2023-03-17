@@ -124,8 +124,20 @@
                                     <td style="text-align: center;">@{{ division.memo_no }}</td>
                                     <td style="text-align: center;">@{{ division.tel_no }}</td>
                                     <td style="text-align: center;">
-                                        <i class="fa fa-circle text-success" aria-hidden="true" ng-show="division.is_actived == '1'"></i>
-                                        <i class="fa fa-circle text-danger" aria-hidden="true" ng-show="division.is_actived != '1'"></i>
+                                        <a
+                                            href="#"
+                                            ng-click="active($event, division.ward_id, !division.is_actived)"
+                                            ng-show="division.is_actived == '1'"
+                                        >
+                                            <i class="fa fa-circle text-success" aria-hidden="true"></i>
+                                        </a>
+                                        <a 
+                                            href="#"
+                                            ng-click="active($event, division.ward_id, !division.is_actived)"
+                                            ng-show="division.is_actived != '1'"
+                                        >
+                                            <i class="fa fa-circle text-danger" aria-hidden="true"></i>
+                                        </a>
                                     </td>
                                     <td style="text-align: center;">
                                         <!-- <a  href="{{ url('/divisions/detail') }}/@{{ division.ward_id }}"

@@ -156,6 +156,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('divisions', 'DivisionController@store');
     Route::put('divisions/{id}', 'DivisionController@update');
     Route::delete('divisions/{id}', 'DivisionController@delete');
+    Route::put('divisions/{id}/active', 'DivisionController@active');
 
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');

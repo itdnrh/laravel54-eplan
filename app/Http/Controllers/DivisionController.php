@@ -163,4 +163,30 @@ class DivisionController extends Controller
             ];
         }
     }
+
+    public function active(Request $req, $id)
+    {
+        try {
+            $division = Division::find($id);
+            $division->is_actived = $req['is_actived'];
+
+            if ($division->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully',
+                    'division'  => $division
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
 }
