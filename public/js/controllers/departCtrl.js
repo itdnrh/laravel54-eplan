@@ -31,7 +31,6 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
         $http.get(`${CONFIG.apiUrl}/departs?faction=${faction}&name=${name}`)
         .then(function(res) {
             $scope.setDeparts(res);
-            console.log(res);
 
             $scope.loading = false;
         }, function(err) {
@@ -105,12 +104,12 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
 
         $http.post(`${CONFIG.baseUrl}/departs/store`, $scope.depart)
         .then(function(res) {
-            console.log(res);
-
             if (res.data.status == 1) {
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
 
-                window.location.href = `${CONFIG.baseUrl}/departs/list`;
+                const { faction_id } = res.data.depart;
+
+                window.location.href = `${CONFIG.baseUrl}/departs/list?faction=${faction_id}`;
             } else {
                 toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             }
@@ -137,8 +136,10 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
 
+                    const { faction_id } = res.data.depart;
+
                 setTimeout(function (){
-                    window.location.href = `${CONFIG.baseUrl}/departs/list`;
+                    window.location.href = `${CONFIG.baseUrl}/departs/list?faction=${faction_id}`;
                 }, 2000); 
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
@@ -165,7 +166,41 @@ app.controller('departCtrl', function($scope, $http, toaster, CONFIG, ModalServi
                 if (res.data.status == 1) {
                     toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
 
-                    window.location.href = `${CONFIG.baseUrl}/departs/list`;
+                    const { faction_id } = res.data.depart;
+
+                    window.location.href = `${CONFIG.baseUrl}/departs/list?faction=${faction_id}`;
+                } else {
+                    toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.active = function(event, id, isActive) {
+        event.preventDefault();
+
+        if(confirm(`คุณต้องแก้ไขสถานะหน่วยงาน รหัส ${id} ใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            const data = { user: $('#user').val(), is_actived: isActive };
+
+            $http.put(`${CONFIG.apiUrl}/departs/${id}/active`, data)
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "", 'แก้ไขสถานะหน่วยงานเรียบร้อยแล้ว !!!');
+
+                    const { faction_id } = res.data.depart;
+
+                    setTimeout(function (){
+                        window.location.href = `${CONFIG.baseUrl}/departs/list?faction=${faction_id}`;
+                    }, 2000); 
                 } else {
                     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 }

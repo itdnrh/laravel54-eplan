@@ -142,6 +142,10 @@ Route::group(['middleware' => 'api'], function () {
     /** ข้อมูลหน่วยงาน */
     Route::get('factions', 'FactionController@getAll');
     Route::get('factions/{id}', 'FactionController@getById');
+    Route::post('factions', 'FactionController@store');
+    Route::put('factions/{id}', 'FactionController@update');
+    Route::delete('factions/{id}', 'FactionController@delete');
+    Route::put('factions/{id}/active', 'FactionController@active');
 
     /** กลุ่มงาน */
     Route::get('departs', 'DepartController@search');
@@ -149,6 +153,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('departs', 'DepartController@store');
     Route::put('departs/{id}', 'DepartController@update');
     Route::delete('departs/{id}', 'DepartController@delete');
+    Route::put('departs/{id}/active', 'DepartController@active');
 
     /** งาน */
     Route::get('divisions', 'DivisionController@search');

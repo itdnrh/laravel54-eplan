@@ -156,12 +156,39 @@ class FactionController extends Controller
     public function delete($id)
     {
         try {
-            $supplier = Supplier::where('supplier_id', $id)->first();
+            $faction = Faction::where('faction_id', $id)->first();
 
-            if ($supplier->delete()) {
+            if ($faction->delete()) {
                 return [
                     'status'    => 1,
-                    'message'   => 'Deleting successfully'
+                    'message'   => 'Deleting successfully',
+                    'faction'   => $faction
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function active(Request $req, $id)
+    {
+        try {
+            $faction = Faction::find($id);
+            $faction->is_actived = $req['is_actived'];
+
+            if ($faction->save()) {
+                return [
+                    'status'    => 1,
+                    'message'   => 'Updating successfully',
+                    'faction'    => $faction
                 ];
             } else {
                 return [

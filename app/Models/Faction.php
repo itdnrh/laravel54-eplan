@@ -8,6 +8,9 @@ class Faction extends Model
 {
     protected $connection = "person";
     protected $table = "faction";
+    protected $primaryKey = "faction_id";
+    // public $increment = false;
+    public $timestamps = false;
 
     public function departs()
     {
