@@ -45,22 +45,14 @@
                             <div class="col-md-10">
                                 <div class="form-group col-md-6">
                                     <label>ในแผน/นอกแผน :</label>
-                                    <div class="form-control checkbox-groups">
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="in_plan"
-                                                    name="in_plan"
-                                                    value="I"
-                                                    ng-model="service.in_plan"
-                                                    tabindex="3"> ในแผน
+                                    <div class="form-control">
+                                        <div ng-show="service.in_plan == 'I'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            ในแผน 
                                         </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="in_plan"
-                                                    name="in_plan"
-                                                    value="O"
-                                                    ng-model="service.in_plan"
-                                                    tabindex="3"> นอกแผน
+                                        <div ng-show="service.in_plan == 'O'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            นอกแผน
                                         </div>
                                     </div>
                                 </div>
@@ -314,7 +306,7 @@
                                 </div>
 
                                 <!-- ======================= รายละเอียดการปรับแผน ======================= -->
-                                <div class="col-md-12" ng-show="service.is_adjust" style="padding: 10px; background-color: #EFEFEF;"></div>
+                                <div class="col-md-12" ng-show="service.is_adjust" style="padding: 10px; background-color: #EFEFEF;">
                                     @include('shared._adjust-list')
                                 </div>
                             </div>

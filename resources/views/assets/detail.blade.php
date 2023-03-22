@@ -42,22 +42,14 @@
                             <div class="col-md-10">
                                 <div class="form-group col-md-6">
                                     <label>ในแผน/นอกแผน :</label>
-                                    <div class="form-control checkbox-groups">
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="in_plan"
-                                                    name="in_plan"
-                                                    value="I"
-                                                    ng-model="asset.in_plan"
-                                                    tabindex="3"> ในแผน
+                                    <div class="form-control">
+                                        <div ng-show="asset.in_plan == 'I'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            ในแผน 
                                         </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="in_plan"
-                                                    name="in_plan"
-                                                    value="O"
-                                                    ng-model="asset.in_plan"
-                                                    tabindex="3"> นอกแผน
+                                        <div ng-show="asset.in_plan == 'O'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            นอกแผน
                                         </div>
                                     </div>
                                 </div>

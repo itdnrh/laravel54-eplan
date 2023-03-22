@@ -388,7 +388,7 @@ class PlanController extends Controller
 
             // if($plan->save()) {
                 /** Update is_adjust field of found plans table */
-                // Plan::find($id)->update(['is_adjust' => 1]);
+                Plan::find($id)->update(['is_adjust' => 1]);
 
                 /** Create new plan adjustment data */
                 $adjustment = new PlanAdjustment;

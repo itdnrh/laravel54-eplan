@@ -44,21 +44,15 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="form-group col-md-6">
-                                    <label>ในแผน/นอกแผน :</label>
-                                    <div class="form-control checkbox-groups">
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="in_plan"
-                                                    name="in_plan"
-                                                    value="I"
-                                                    ng-model="material.in_plan"> ในแผน
+                                    <label>ในแผน/นอกแผน : </label>
+                                    <div class="form-control">
+                                        <div ng-show="material.in_plan == 'I'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            ในแผน 
                                         </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="in_plan"
-                                                    name="in_plan"
-                                                    value="O"
-                                                    ng-model="material.in_plan"> นอกแผน
+                                        <div ng-show="material.in_plan == 'O'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            นอกแผน
                                         </div>
                                     </div>
                                 </div>
