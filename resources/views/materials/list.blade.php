@@ -353,6 +353,9 @@
                                     <td>
                                         <p style="margin: 0; font-weight: bold;">
                                             @{{ plan.plan_item.item.category.name }}
+                                            <span ng-show="plan.is_adjust" class="badge bg-red">
+                                                ปรับแผน
+                                            </span>
                                         </p>
                                         <p style="margin: 0; color: blue;">
                                             @{{ plan.plan_item.item.item_name }} 

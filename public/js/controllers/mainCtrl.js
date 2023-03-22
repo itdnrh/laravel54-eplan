@@ -621,6 +621,28 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         $('#sum_price').val(sumPrice);
     };
 
+    $scope.inPlan = function(e, plan) {
+        if (!plan) {
+            toaster.pop('error', "ผลการตรวจสอบ", "กรุณากรอกข้อมูลให้ครบ !!!");
+            return;
+        }
+
+        if (confirm(`คุณต้องการปรับรายการแผน${plan.item.category.name} เลขที่ ${plan.plan_no} เข้าในแผนใช่หรือไม่?`)) {
+            $scope.loading = true;
+
+            $http.put(`${CONFIG.apiUrl}/plans/${plan.id}/inplan`, {})
+            .then(res => {
+                console.log(res);
+
+                $scope.loading = false;
+            }, (err) => {
+                console.log(err);
+
+                $scope.loading = false;
+            })
+        }
+    };
+
     /*
     |-----------------------------------------------------------------------------
     | Plan balance checking processes

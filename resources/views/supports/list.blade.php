@@ -356,7 +356,7 @@
                                             <span>@{{ support.details[0].unit.name }}</span>
                                             <a
                                                 href="#"
-                                                class="badge badge-danger"
+                                                class="badge bg-light-blue"
                                                 ng-show="support.details.length > 1"
                                                 ng-click="showDetailsList($event, support);"
                                             >

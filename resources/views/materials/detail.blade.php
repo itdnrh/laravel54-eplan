@@ -85,7 +85,7 @@
                                 <div class="form-group col-md-4">
                                     <label>งาน :</label>
                                     <div class="form-control">
-                                        @{{ material.division.ward_name }}
+                                        @{{ material.division ? material.division.ward_name : '-' }}
                                     </div>
                                 </div>
 
@@ -263,7 +263,10 @@
                                         </button>
                                     </form>
                                     <div class="btn-group" style="display: flex;" ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'">
-                                        <button type="button" class="btn btn-primary" style="width: 100%;">เปลี่ยนสถานะ</button>
+                                        <button type="button" class="btn btn-primary" style="width: 100%;">
+                                            <i class="fa fa-random"></i>
+                                            เปลี่ยนสถานะ
+                                        </button>
                                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
@@ -303,6 +306,17 @@
                                     >
                                         <i class="fa fa-sliders"></i> ปรับเปลี่ยนแผน
                                     </button>
+                                    <a
+                                        href="#"
+                                        ng-click="inPlan($event, material)"
+                                        ng-show="
+                                            (material.approved && material.in_plan == 'O') &&
+                                            {{ Auth::user()->memberOf->depart_id }} == '4'
+                                        "
+                                        class="btn btn-success"
+                                    >
+                                        <i class="fa fa-sign-in"></i> ปรับเข้าในแผน
+                                    </a>
                                 </div>
                                 <!-- ======================= Action buttons ======================= -->
 
