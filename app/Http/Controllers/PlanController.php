@@ -220,9 +220,8 @@ class PlanController extends Controller
     {
         return [
             'plan' => Plan::where('id', $id)
-                        ->with('budget','depart','division')
-                        ->with('planItem','planItem.unit')
-                        ->with('planItem.item','planItem.item.category')
+                        ->with('budget','depart','depart.faction','division','strategic','servicePlan')
+                        ->with('planItem','planItem.unit','planItem.item','planItem.item.category')
                         ->with('adjustments','adjustments.unit')
                         ->first(),
         ];

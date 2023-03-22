@@ -32,6 +32,15 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
         reason: '',
         remark: '',
         owner: '',
+        item: null,
+        unit: null,
+        faction: null,
+        depart: null,
+        division: null,
+        budgetSrc: null,
+        strategic: null,
+        servicePlan: null,
+        addon_detail: null,
     };
 
     /** ============================== Init Form elements ============================== */
@@ -97,6 +106,15 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
             reason: '',
             remark: '',
             owner: '',
+            item: null,
+            unit: null,
+            faction: null,
+            depart: null,
+            division: null,
+            budgetSrc: null,
+            strategic: null,
+            servicePlan: null,
+            addon_detail: null,
         };
     };
 

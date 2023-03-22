@@ -32,8 +32,21 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
+        have_subitem: 0,
+        calc_method: 1,
+        is_addon: false,
+        addon_id: '',
         reason: '',
-        remark: ''
+        remark: '',
+        item: null,
+        unit: null,
+        faction: null,
+        depart: null,
+        division: null,
+        budgetSrc: null,
+        strategic: null,
+        servicePlan: null,
+        addon_detail: null,
     };
 
     /** ============================== Init Form elements ============================== */
@@ -102,14 +115,27 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             unit_id: '',
             amount: '',
             sum_price: '',
-            start_month: '',
             request_cause: '',
             have_amount: '',
             budget_src_id: '1',
             strategic_id: '',
             service_plan_id: '',
+            start_month: '',
+            have_subitem: 0,
+            calc_method: 1,
+            is_addon: false,
+            addon_id: '',
             reason: '',
-            remark: ''
+            remark: '',
+            item: null,
+            unit: null,
+            faction: null,
+            depart: null,
+            division: null,
+            budgetSrc: null,
+            strategic: null,
+            servicePlan: null,
+            addon_detail: null,
         };
     };
 

@@ -1,7 +1,8 @@
-<div class="nav-tabs-custom">
+<div class="nav-tabs-custom" style="margin-bottom: 0; background-color: #EFEFEF;">
     <ul class="nav nav-tabs">
         <li class="active">
             <a href="#settings" data-toggle="tab">
+                <i class="fa fa-sliders"></i>
                 ข้อมูลการปรับแผน (ุ6 เดือนหลัง)
             </a>
         </li>

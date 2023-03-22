@@ -33,11 +33,21 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
+        have_subitem: 0,
+        calc_method: 1,
         is_addon: false,
         addon_id: '',
-        addon_detail: null,
         reason: '',
-        remark: ''
+        remark: '',
+        item: null,
+        unit: null,
+        faction: null,
+        depart: null,
+        division: null,
+        budgetSrc: null,
+        strategic: null,
+        servicePlan: null,
+        addon_detail: null,
     };
 
     /** DatePicker options */
@@ -110,11 +120,21 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
             strategic_id: '',
             service_plan_id: '',
             start_month: '',
+            have_subitem: 0,
+            calc_method: 1,
             is_addon: false,
             addon_id: '',
-            addon_detail: null,
             reason: '',
-            remark: ''
+            remark: '',
+            item: null,
+            unit: null,
+            faction: null,
+            depart: null,
+            division: null,
+            budgetSrc: null,
+            strategic: null,
+            servicePlan: null,
+            addon_detail: null,
         };
     };
 

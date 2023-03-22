@@ -32,12 +32,21 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
         strategic_id: '',
         service_plan_id: '',
         start_month: '',
+        have_subitem: 0,
+        calc_method: 1,
         is_addon: false,
         addon_id: '',
         reason: '',
         remark: '',
-        have_subitem: 0,
-        calc_method: 1,
+        item: null,
+        unit: null,
+        faction: null,
+        depart: null,
+        division: null,
+        budgetSrc: null,
+        strategic: null,
+        servicePlan: null,
+        addon_detail: null,
     };
 
     /** ============================== Init Form elements ============================== */
@@ -100,12 +109,21 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             strategic_id: '',
             service_plan_id: '',
             start_month: '',
+            have_subitem: 0,
+            calc_method: 1,
             is_addon: false,
             addon_id: '',
             reason: '',
             remark: '',
-            have_subitem: 0,
-            calc_method: 1,
+            item: null,
+            unit: null,
+            faction: null,
+            depart: null,
+            division: null,
+            budgetSrc: null,
+            strategic: null,
+            servicePlan: null,
+            addon_detail: null,
         };
     };
 
@@ -207,6 +225,16 @@ app.controller('planMaterialCtrl', function(CONFIG, $scope, $http, toaster, Stri
             $scope.material.approved        = plan.approved;
             $scope.material.status          = plan.status;
             $scope.material.is_adjust       = plan.is_adjust;
+
+            /** Set value to object props */
+            $scope.material.item            = plan.plan_item.item;
+            $scope.material.unit            = plan.plan_item.unit;
+            $scope.material.budgetSrc       = plan.budget;
+            $scope.material.faction         = plan.depart.faction;
+            $scope.material.depart          = plan.depart;
+            $scope.material.division        = plan.division && plan.division;
+            $scope.material.strategic       = plan.strategic && plan.strategic;
+            $scope.material.servicePlan     = plan.service_plan && plan.service_plan;
 
             /** Convert int value to string */
             $scope.material.plan_type_id    = plan.plan_type_id.toString();
