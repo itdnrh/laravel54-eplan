@@ -392,8 +392,9 @@ class PlanController extends Controller
 
                 /** Create new plan adjustment data */
                 $adjustment = new PlanAdjustment;
-                $adjustment->adjust_type        = $req['adjust_type'];
                 $adjustment->plan_id            = $req['plan_id'];
+                $adjustment->adjust_type        = $req['adjust_type'];
+                $adjustment->in_plan            = $req['in_plan'];
                 $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
                 $adjustment->old_unit_id        = $oldPlan->unit_id;
                 $adjustment->old_amount         = $oldPlan->amount;
@@ -412,6 +413,45 @@ class PlanController extends Controller
             //         'message'   => 'Something went wrong!!'
             //     ];
             // }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function inPlan(Request $req, $id)
+    {
+        try {
+            /** Get old data of found plan */
+            $oldPlan = PlanItem::with('plan')->where('plan_id', $id)->first();
+            
+            /** Update is_adjust field of found plans table */
+            if(Plan::find($id)->update(['in_plan' => 1, 'is_adjust' => 1])) {
+                /** Create new plan adjustment data */
+                $adjustment = new PlanAdjustment;
+                $adjustment->plan_id            = $req['plan_id'];
+                $adjustment->adjust_type        = $req['adjust_type'];
+                $adjustment->in_plan            = $req['in_plan'];
+                $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
+                $adjustment->old_unit_id        = $oldPlan->unit_id;
+                $adjustment->old_amount         = $oldPlan->amount;
+                $adjustment->old_sum_price      = $oldPlan->sum_price;
+                $adjustment->remark             = $req['remark'];
+                $adjustment->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Adjust plan data successfully!!',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
         } catch (\Exception $ex) {
             return [
                 'status'    => 0,

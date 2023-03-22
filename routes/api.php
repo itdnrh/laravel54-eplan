@@ -60,6 +60,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('plans/{id}/change', 'PlanController@change');
     Route::put('plans/{id}/status', 'PlanController@setStatus');
     Route::put('plans/{id}/adjust', 'PlanController@adjust');
+    Route::put('plans/{id}/inplan', 'PlanController@inPlan');
 
     /** ควบคุมกำกับติดตาม */
     Route::get('monthly', 'MonthlyController@getAll');
