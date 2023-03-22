@@ -161,58 +161,70 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     }
 
     $scope.setEditControls = function(plan) {
-        let { plan_item, ...rest } = plan;
+        if (plan) {
+            let { plan_item, ...rest } = plan;
 
-        /** Set all plan's props to plan model */
-        $scope.plan                     = { ...plan_item, ...rest };
+            /** Set all plan's props to plan model */
+            $scope.plan                     = { ...plan_item, ...rest };
 
-        /** Set global data */
-        $scope.planId                   = plan.id;
-        $scope.planType                 = 3;
+            /** Set global data */
+            $scope.planId                   = plan.id;
+            $scope.planType                 = 3;
 
-        /** Set ข้อมูลจ้างบริการ */
-        $scope.service.id               = plan.id;
-        $scope.service.in_plan          = plan.in_plan;
-        $scope.service.year             = plan.year.toString();
-        // $scope.service.plan_no          = plan.plan_no;
+            /** Set ข้อมูลจ้างบริการ */
+            $scope.service.id               = plan.id;
+            $scope.service.in_plan          = plan.in_plan;
+            $scope.service.year             = plan.year.toString();
+            // $scope.service.plan_no          = plan.plan_no;
 
-        $scope.service.item_id          = plan.plan_item.item ? plan.plan_item.item_id : '';
-        $scope.service.desc             = plan.plan_item.item ? plan.plan_item.item.item_name : '';
+            $scope.service.item_id          = plan.plan_item.item ? plan.plan_item.item_id : '';
+            $scope.service.desc             = plan.plan_item.item ? plan.plan_item.item.item_name : '';
 
-        $scope.service.price_per_unit   = plan.plan_item.price_per_unit;
-        $scope.service.amount           = plan.plan_item.amount;
-        $scope.service.sum_price        = plan.plan_item.sum_price;
-        $scope.service.request_cause    = plan.plan_item.request_cause;
-        $scope.service.have_amount      = plan.plan_item.have_amount;
-        $scope.service.start_month      = plan.start_month.toString();
-        $scope.service.reason           = plan.reason;
-        $scope.service.remark           = plan.remark;
-        $scope.service.approved         = plan.approved;
-        $scope.service.status           = plan.status;
-        $scope.service.is_adjust        = plan.is_adjust;
+            $scope.service.price_per_unit   = plan.plan_item.price_per_unit;
+            $scope.service.amount           = plan.plan_item.amount;
+            $scope.service.sum_price        = plan.plan_item.sum_price;
+            $scope.service.request_cause    = plan.plan_item.request_cause;
+            $scope.service.have_amount      = plan.plan_item.have_amount;
+            $scope.service.start_month      = plan.start_month.toString();
+            $scope.service.reason           = plan.reason;
+            $scope.service.remark           = plan.remark;
+            $scope.service.approved         = plan.approved;
+            $scope.service.status           = plan.status;
+            $scope.service.is_adjust        = plan.is_adjust;
 
-        /** Convert int value to string */
-        $scope.service.plan_type_id     = plan.plan_type_id.toString();
-        $scope.service.unit_id          = plan.plan_item.unit_id.toString();
-        $scope.service.faction_id       = plan.depart.faction_id.toString();
-        $scope.service.depart_id        = plan.depart_id.toString();
-        $scope.service.division_id      = plan.division_id ? plan.division_id.toString() : '';
-        $scope.service.budget_src_id    = plan.budget_src_id.toString();
-        $scope.service.strategic_id     = plan.strategic_id && plan.strategic_id.toString();
-        $scope.service.service_plan_id  = plan.service_plan_id && plan.service_plan_id.toString();
+            /** Set value to object props */
+            $scope.service.item            = plan.plan_item.item;
+            $scope.service.unit            = plan.plan_item.unit;
+            $scope.service.budgetSrc       = plan.budget;
+            $scope.service.faction         = plan.depart.faction;
+            $scope.service.depart          = plan.depart;
+            $scope.service.division        = plan.division && plan.division;
+            $scope.service.strategic       = plan.strategic && plan.strategic;
+            $scope.service.servicePlan     = plan.service_plan && plan.service_plan;
 
-        $scope.service.have_subitem     = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
-        $scope.service.calc_method      = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
+            /** Convert int value to string */
+            $scope.service.plan_type_id     = plan.plan_type_id.toString();
+            $scope.service.unit_id          = plan.plan_item.unit_id.toString();
+            $scope.service.faction_id       = plan.depart.faction_id.toString();
+            $scope.service.depart_id        = plan.depart_id.toString();
+            $scope.service.division_id      = plan.division_id ? plan.division_id.toString() : '';
+            $scope.service.budget_src_id    = plan.budget_src_id.toString();
+            $scope.service.strategic_id     = plan.strategic_id && plan.strategic_id.toString();
+            $scope.service.service_plan_id  = plan.service_plan_id && plan.service_plan_id.toString();
 
-        if (plan.plan_item.item) {
-            $('#item_id').val(plan.plan_item.item_id);
-            $('#have_subitem').val(plan.plan_item.item.have_subitem);
-            $('#calc_method').val(plan.plan_item.item.calc_method);
+            $scope.service.have_subitem     = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
+            $scope.service.calc_method      = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
+
+            if (plan.plan_item.item) {
+                $('#item_id').val(plan.plan_item.item_id);
+                $('#have_subitem').val(plan.plan_item.item.have_subitem);
+                $('#calc_method').val(plan.plan_item.item.calc_method);
+            }
+
+            /** Generate departs and divisions data from plan */
+            $scope.onFactionSelected(plan.depart.faction_id);
+            $scope.onDepartSelected(plan.depart_id);
         }
-
-        /** Generate departs and divisions data from plan */
-        $scope.onFactionSelected(plan.depart.faction_id);
-        $scope.onDepartSelected(plan.depart_id);
     };
 
     $scope.store = function(event, form) {

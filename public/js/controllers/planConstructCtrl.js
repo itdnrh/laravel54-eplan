@@ -186,62 +186,74 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     };
 
     $scope.setEditControls = function(plan) {
-        let { plan_item, ...rest } = plan;
+        if (plan) {
+            let { plan_item, ...rest } = plan;
 
-        /** Set all plan's props to plan model */
-        $scope.plan                         = { ...plan_item, ...rest };
+            /** Set all plan's props to plan model */
+            $scope.plan                         = { ...plan_item, ...rest };
 
-        /** Set global data */
-        $scope.planId                       = plan.id;
-        $scope.planType                     = 1;
+            /** Set global data */
+            $scope.planId                       = plan.id;
+            $scope.planType                     = 1;
 
-        /** Set ข้อมูลงานก่อสร้าง */
-        $scope.construct.id                 = plan.id;
-        $scope.construct.in_plan            = plan.in_plan;
-        $scope.construct.year               = plan.year.toString();
-        // $scope.construct.plan_no            = plan.plan_no;
+            /** Set ข้อมูลงานก่อสร้าง */
+            $scope.construct.id                 = plan.id;
+            $scope.construct.in_plan            = plan.in_plan;
+            $scope.construct.year               = plan.year.toString();
+            // $scope.construct.plan_no            = plan.plan_no;
 
-        $scope.construct.item_id            = plan.plan_item.item ? plan.plan_item.item_id : '';
-        $scope.construct.desc               = plan.plan_item.item ? plan.plan_item.item.item_name : '';
+            $scope.construct.item_id            = plan.plan_item.item ? plan.plan_item.item_id : '';
+            $scope.construct.desc               = plan.plan_item.item ? plan.plan_item.item.item_name : '';
 
-        $scope.construct.location           = plan.plan_item.location;
-        $scope.construct.building_id        = plan.plan_item.building_id ? plan.plan_item.building_id.toString() : '';
-        $scope.construct.boq_no             = plan.plan_item.boq_no;
-        $scope.construct.boq_file           = plan.plan_item.boq_file;
+            $scope.construct.location           = plan.plan_item.location;
+            $scope.construct.building_id        = plan.plan_item.building_id ? plan.plan_item.building_id.toString() : '';
+            $scope.construct.boq_no             = plan.plan_item.boq_no;
+            $scope.construct.boq_file           = plan.plan_item.boq_file;
 
-        $scope.construct.price_per_unit     = plan.plan_item.price_per_unit;
-        $scope.construct.amount             = plan.plan_item.amount;
-        $scope.construct.sum_price          = plan.plan_item.sum_price;
-        $scope.construct.request_cause      = plan.plan_item.request_cause;
-        $scope.construct.start_month        = plan.start_month.toString();
-        $scope.construct.reason             = plan.reason;
-        $scope.construct.remark             = plan.remark;
-        $scope.construct.approved           = plan.approved;
-        $scope.construct.status             = plan.status;
-        $scope.construct.is_adjust          = plan.is_adjust;
+            $scope.construct.price_per_unit     = plan.plan_item.price_per_unit;
+            $scope.construct.amount             = plan.plan_item.amount;
+            $scope.construct.sum_price          = plan.plan_item.sum_price;
+            $scope.construct.request_cause      = plan.plan_item.request_cause;
+            $scope.construct.start_month        = plan.start_month.toString();
+            $scope.construct.reason             = plan.reason;
+            $scope.construct.remark             = plan.remark;
+            $scope.construct.approved           = plan.approved;
+            $scope.construct.status             = plan.status;
+            $scope.construct.is_adjust          = plan.is_adjust;
 
-        /** Convert int value to string */
-        $scope.construct.plan_type_id       = plan.plan_type_id.toString();
-        $scope.construct.unit_id            = plan.plan_item.unit_id.toString();
-        $scope.construct.faction_id         = plan.depart.faction_id.toString();
-        $scope.construct.depart_id          = plan.depart_id.toString();
-        $scope.construct.division_id        = plan.division_id ? plan.division_id.toString() : '';
-        $scope.construct.budget_src_id      = plan.budget_src_id.toString();
-        $scope.construct.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
-        $scope.construct.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
-        
-        $scope.construct.have_subitem       = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
-        $scope.construct.calc_method        = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
+            /** Set value to object props */
+            $scope.construct.item            = plan.plan_item.item;
+            $scope.construct.unit            = plan.plan_item.unit;
+            $scope.construct.budgetSrc       = plan.budget;
+            $scope.construct.faction         = plan.depart.faction;
+            $scope.construct.depart          = plan.depart;
+            $scope.construct.division        = plan.division && plan.division;
+            $scope.construct.strategic       = plan.strategic && plan.strategic;
+            $scope.construct.servicePlan     = plan.service_plan && plan.service_plan;
 
-        if (plan.plan_item.item) {
-            $('#item_id').val(plan.plan_item.item_id);
-            $('#have_subitem').val(plan.plan_item.item.have_subitem);
-            $('#calc_method').val(plan.plan_item.item.calc_method);
+            /** Convert int value to string */
+            $scope.construct.plan_type_id       = plan.plan_type_id.toString();
+            $scope.construct.unit_id            = plan.plan_item.unit_id.toString();
+            $scope.construct.faction_id         = plan.depart.faction_id.toString();
+            $scope.construct.depart_id          = plan.depart_id.toString();
+            $scope.construct.division_id        = plan.division_id ? plan.division_id.toString() : '';
+            $scope.construct.budget_src_id      = plan.budget_src_id.toString();
+            $scope.construct.strategic_id       = plan.strategic_id && plan.strategic_id.toString();
+            $scope.construct.service_plan_id    = plan.service_plan_id && plan.service_plan_id.toString();
+            
+            $scope.construct.have_subitem       = plan.plan_item.item ? plan.plan_item.item.have_subitem : '';
+            $scope.construct.calc_method        = plan.plan_item.item ? plan.plan_item.item.calc_method : '';
+
+            if (plan.plan_item.item) {
+                $('#item_id').val(plan.plan_item.item_id);
+                $('#have_subitem').val(plan.plan_item.item.have_subitem);
+                $('#calc_method').val(plan.plan_item.item.calc_method);
+            }
+
+            /** Generate departs and divisions data from plan */
+            $scope.onFactionSelected(plan.depart.faction_id);
+            $scope.onDepartSelected(plan.depart_id);
         }
-
-        /** Generate departs and divisions data from plan */
-        $scope.onFactionSelected(plan.depart.faction_id);
-        $scope.onDepartSelected(plan.depart_id);
     };
 
     $scope.store = function(event, form) {
