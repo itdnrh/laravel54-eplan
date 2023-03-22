@@ -371,6 +371,48 @@ class PlanController extends Controller
         }
     }
 
+    public function cancel(Request $req, $id)
+    {
+        try {
+                 /** Get old data of found plan */
+            $oldPlan = PlanItem::with('plan')->where('plan_id', $id)->first();
+
+            /** Update found plan_items table */
+            $plan = Plan::find($id);
+            $plan->is_adjust    = 1;
+            $plan->status       = 99;
+
+            if($plan->save()) {
+                /** Create new plan adjustment data */
+                $adjustment = new PlanAdjustment;
+                $adjustment->plan_id            = $id;
+                $adjustment->adjust_type        = '9';
+                $adjustment->in_plan            = $oldPlan->plan->in_plan;
+                $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
+                $adjustment->old_unit_id        = $oldPlan->unit_id;
+                $adjustment->old_amount         = $oldPlan->amount;
+                $adjustment->old_sum_price      = $oldPlan->sum_price;
+                $adjustment->save();
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Cancel plan successfully!!',
+                    'plan'      => $plan
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function adjust(Request $req, $id)
     {
         try {

@@ -5,7 +5,7 @@
                 <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}" />
 
                 <div class="modal-header">
-                    <h5 class="modal-title">ปรับแผน (6 เดือนหลัง)</h5>
+                    <h5 class="modal-title">ปรับเปลี่ยนแผน</h5>
                 </div>
                 <div class="modal-body" style="padding: 20px 80px 10px;">
                     <!-- <div class="row">
