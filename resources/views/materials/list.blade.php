@@ -367,6 +367,11 @@
                                                 <i class="fa fa-paperclip" aria-hidden="true"></i>
                                             </a>
                                         </p>
+                                        <div ng-show="iterateHashtag(plan.remark).length > 0" class="hashtag-container">
+                                            <span ng-repeat="(index, tag) in iterateHashtag(plan.remark)" class="label bg-maroon">
+                                                @{{ tag }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ plan.plan_item.sum_price | currency:'':2 }}

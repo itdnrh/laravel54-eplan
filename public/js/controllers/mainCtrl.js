@@ -800,4 +800,10 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
 
         cb(e)
     };
+
+    $scope.iterateHashtag = function(str) {
+        if (!str || str.search('#') == -1) return [];
+
+        return str.split(' ');
+    };
 });

@@ -143,3 +143,8 @@ ul.order-details + a {
     text-decoration: underline;
     font-weight: bold;
 }
+
+.hashtag-container {
+    display: flex;
+    gap: 2px;
+}

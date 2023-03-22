@@ -335,7 +335,6 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 8%; text-align: center;">เลขที่แผน</th>
-                                    <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
                                     <th>รายการ</th>
                                     <th style="width: 8%; text-align: center;">ยอดงบที่ขอ</th>
                                     <th style="width: 8%; text-align: center;">ยอดงบคงเหลือ</th>
@@ -350,7 +349,6 @@
                                 <tr ng-repeat="(index, plan) in plans">
                                     <td style="text-align: center;">@{{ index+plans_pager.from }}</td>
                                     <td style="text-align: center;">@{{ plan.plan_no }}</td>
-                                    <!-- <td style="text-align: center;">@{{ plan.year }}</td> -->
                                     <td>
                                         <p style="margin: 0; font-weight: bold;">
                                             @{{ plan.plan_item.item.category.name }}
@@ -368,6 +366,11 @@
                                                 <i class="fa fa-paperclip" aria-hidden="true"></i>
                                             </a>
                                         </p>
+                                        <div ng-show="iterateHashtag(plan.remark).length > 0" class="hashtag-container">
+                                            <span ng-repeat="(index, tag) in iterateHashtag(plan.remark)" class="label bg-maroon">
+                                                @{{ tag }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ plan.plan_item.sum_price | currency:'':2 }}

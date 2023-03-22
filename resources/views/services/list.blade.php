@@ -356,17 +356,23 @@
                                             @{{ plan.plan_item.item.category.name }}
                                         </p>
                                         <p style="margin: 0; color: #dd0a35;">
-                                        @{{ plan.plan_item.item.item_name }} 
-                                        จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
-                                        <span>@{{ plan.plan_item.unit.name }}</span>
-                                        <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':2 }} บาท</span>
-                                        <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
-                                            class="btn btn-default btn-xs" 
-                                            title="ไฟล์แนบ"
-                                            target="_blank"
-                                            ng-show="asset.attachment">
-                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                        </a>
+                                            @{{ plan.plan_item.item.item_name }} 
+                                            จำนวนที่ขอ <span>@{{ plan.plan_item.amount | currency:'':0 }}</span>
+                                            <span>@{{ plan.plan_item.unit.name }}</span>
+                                            <span>ราคา @{{ plan.plan_item.price_per_unit | currency:'':2 }} บาท</span>
+                                            <a  href="{{ url('/'). '/uploads/' }}@{{ asset.attachment }}"
+                                                class="btn btn-default btn-xs" 
+                                                title="ไฟล์แนบ"
+                                                target="_blank"
+                                                ng-show="asset.attachment">
+                                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                            </a>
+                                        </p>
+                                        <div ng-show="iterateHashtag(plan.remark).length > 0" class="hashtag-container">
+                                            <span ng-repeat="(index, tag) in iterateHashtag(plan.remark)" class="label bg-maroon">
+                                                @{{ tag }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td style="text-align: center;">
                                         @{{ plan.plan_item.sum_price | currency:'':2 }}
