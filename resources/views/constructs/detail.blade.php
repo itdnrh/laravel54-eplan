@@ -295,7 +295,7 @@
                                         "
                                         class="btn bg-maroon"
                                     >
-                                        <i class="fa fa-sliders"></i> ปรับแผน (6 เดือนหลัง)
+                                        <i class="fa fa-sliders"></i> ปรับเปลี่ยนแผน
                                     </button>
                                 </div>
                                 <!-- ======================= Action buttons ======================= -->
