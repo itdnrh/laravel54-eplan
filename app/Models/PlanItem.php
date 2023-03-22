@@ -24,4 +24,9 @@ class PlanItem extends Model
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
+
+    public function building()
+    {
+        return $this->belongsTo(Building::class, 'building_id', 'id');
+    }
 }

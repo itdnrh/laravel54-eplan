@@ -222,7 +222,7 @@ class PlanController extends Controller
             'plan' => Plan::where('id', $id)
                         ->with('budget','depart','depart.faction','division','strategic','servicePlan')
                         ->with('planItem','planItem.unit','planItem.item','planItem.item.category')
-                        ->with('adjustments','adjustments.unit')
+                        ->with('planItem.building','adjustments','adjustments.unit')
                         ->first(),
         ];
     }

@@ -38,6 +38,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         addon_id: '',
         reason: '',
         remark: '',
+        building: null,
         item: null,
         unit: null,
         faction: null,
@@ -127,6 +128,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             addon_id: '',
             reason: '',
             remark: '',
+            building: null,
             item: null,
             unit: null,
             faction: null,
@@ -187,6 +189,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
 
     $scope.setEditControls = function(plan) {
         if (plan) {
+            console.log(plan);
             let { plan_item, ...rest } = plan;
 
             /** Set all plan's props to plan model */
@@ -222,14 +225,15 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
             $scope.construct.is_adjust          = plan.is_adjust;
 
             /** Set value to object props */
-            $scope.construct.item            = plan.plan_item.item;
-            $scope.construct.unit            = plan.plan_item.unit;
-            $scope.construct.budgetSrc       = plan.budget;
-            $scope.construct.faction         = plan.depart.faction;
-            $scope.construct.depart          = plan.depart;
-            $scope.construct.division        = plan.division && plan.division;
-            $scope.construct.strategic       = plan.strategic && plan.strategic;
-            $scope.construct.servicePlan     = plan.service_plan && plan.service_plan;
+            $scope.construct.building           = plan.plan_item.building;
+            $scope.construct.item               = plan.plan_item.item;
+            $scope.construct.unit               = plan.plan_item.unit;
+            $scope.construct.budgetSrc          = plan.budget;
+            $scope.construct.faction            = plan.depart.faction;
+            $scope.construct.depart             = plan.depart;
+            $scope.construct.division           = plan.division && plan.division;
+            $scope.construct.strategic          = plan.strategic && plan.strategic;
+            $scope.construct.servicePlan        = plan.service_plan && plan.service_plan;
 
             /** Convert int value to string */
             $scope.construct.plan_type_id       = plan.plan_type_id.toString();

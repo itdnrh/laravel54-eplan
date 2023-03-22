@@ -59,93 +59,55 @@
 
                                 <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
-                                    <input type="text"
-                                            id="year" 
-                                            name="year"
-                                            ng-model="service.year"
-                                            class="form-control"
-                                            tabindex="2">
-                                    </inp>
+                                    <div class="form-control">
+                                        @{{ service.year }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มภารกิจ :</label>
-                                    <select id="faction_id" 
-                                            name="faction_id"
-                                            class="form-control"
-                                            ng-model="service.faction_id"
-                                            ng-change="onFactionSelected(service.faction_id)">
-                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
-                                        @foreach($factions as $faction)
-                                            <option value="{{ $faction->faction_id }}">
-                                                {{ $faction->faction_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ service.faction.faction_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มงาน :</label>
-                                    <select id="depart_id" 
-                                            name="depart_id"
-                                            ng-model="service.depart_id" 
-                                            class="form-control select2"
-                                            ng-change="onDepartSelected(service.depart_id)">
-                                        <option value="">-- เลือกกลุ่มงาน --</option>
-                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
-                                            @{{ depart.depart_name }}
-                                        </option>
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ service.depart.depart_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>งาน :</label>
-                                    <select id="division_id" 
-                                            name="division_id"
-                                            ng-model="service.division_id" 
-                                            class="form-control select2">
-                                        <option value="">-- เลือกงาน --</option>
-                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ service.division ? service.division.ward_name : '-' }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="service.desc"
-                                        class="form-control pull-right"
-                                        tabindex="1" />
+                                    <div class="form-control">
+                                        @{{ service.desc }}
+                                    </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ราคาต่อหน่วย :</label>
                                     <div class="form-control">
                                         @{{ service.price_per_unit | currency:'':2 }}
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>จำนวนที่ขอ :</label>
                                     <div style="display: flex; gap: 5px;">
-                                        <input  type="text"
-                                                id="amount"
-                                                name="amount"
-                                                ng-model="service.amount"
-                                                class="form-control" />
-
-                                        <select id="unit_id"
-                                                name="unit_id"
-                                                ng-model="service.unit_id"
-                                                class="form-control">
-                                            @foreach($units as $unit)
-                                                <option value="{{ $unit->id }}">
-                                                    {{ $unit->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-control">
+                                            @{{ service.amount }}
+                                        </div>
+                                        <div class="form-control">
+                                            @{{ service.unit.name }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -186,53 +148,25 @@
                                     </div>
                                 </div> -->
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-2">
                                     <label>แหล่งเงินงบประมาณ :</label>
-                                    <select
-                                        id="budget_src_id"
-                                        name="budget_src_id"
-                                        ng-model="service.budget_src_id"
-                                        class="form-control"
-                                        tabindex="1"
-                                    >
-                                        <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
-                                        @foreach($budgetSources as $budgetSource)
-                                            <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ service.budgetSrc.name }}
+                                    </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-5">
                                     <label>ยุทธศาสตร์ :</label>
-                                    <select id="strategic_id" 
-                                            name="strategic_id"
-                                            ng-model="service.strategic_id"
-                                            ng-change="onStrategicSelected(service.strategic_id);"
-                                            class="form-control"
-                                            tabindex="7">
-                                        <option value="">-- เลือกยุทธศาสตร์ --</option>
-                                        @foreach($strategics as $strategic)
-                                            <option value="{{ $strategic->id }}">
-                                                {{ $strategic->strategic_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ service.strategic.strategic_name }}
+                                    </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-5">
                                     <label>Service Plan :</label>
-                                    <select id="service_plan_id" 
-                                            name="service_plan_id"
-                                            ng-model="service.service_plan_id"
-                                            class="form-control"
-                                            tabindex="7">
-                                        <option value="">-- เลือก Service Plan --</option>
-                                        @foreach($servicePlans as $servicePlan)
-                                            <option value="{{ $servicePlan->id }}">
-                                                {{ $servicePlan->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ service.servicePlan ? service.servicePlan.name : '-' }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -242,7 +176,7 @@
                                         name="reason" 
                                         ng-model="service.reason" 
                                         class="form-control"
-                                        tabindex="17"
+                                        rows="4"
                                     ></textarea>
                                 </div>
 
@@ -253,7 +187,7 @@
                                         name="remark" 
                                         ng-model="service.remark" 
                                         class="form-control"
-                                        tabindex="17"
+                                        rows="4"
                                     ></textarea>
                                 </div>
 
@@ -309,6 +243,8 @@
                                 <div class="col-md-12" ng-show="service.is_adjust" style="padding: 10px; background-color: #EFEFEF;">
                                     @include('shared._adjust-list')
                                 </div>
+                                <!-- ======================= รายละเอียดการปรับแผน ======================= -->
+
                             </div>
 
                             <!-- ======================= Action buttons ======================= -->
@@ -391,6 +327,8 @@
                                 <!-- ======================= Action buttons ======================= -->
 
                             </div>
+                            <!-- ======================= Action buttons ======================= -->
+
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

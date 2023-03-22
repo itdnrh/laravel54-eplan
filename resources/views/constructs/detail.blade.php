@@ -59,127 +59,70 @@
 
                                 <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
-                                    <input type="text"
-                                            id="year" 
-                                            name="year"
-                                            ng-model="construct.year"
-                                            class="form-control">
-                                    </inp>
+                                    <div class="form-control">@{{ construct.year }}</div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มภารกิจ :</label>
-                                    <select id="faction_id" 
-                                            name="faction_id"
-                                            ng-model="construct.faction_id" 
-                                            class="form-control"
-                                            ng-change="onFactionSelected(construct.faction_id)">
-                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
-                                        @foreach($factions as $faction)
-                                            <option value="{{ $faction->faction_id }}">
-                                                {{ $faction->faction_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ construct.faction.faction_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มงาน :</label>
-                                    <select id="depart_id" 
-                                            name="depart_id"
-                                            ng-model="construct.depart_id" 
-                                            class="form-control select2"
-                                            ng-change="onDepartSelected(construct.depart_id)">
-                                        <option value="">-- เลือกกลุ่มงาน --</option>
-                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
-                                            @{{ depart.depart_name }}
-                                        </option>
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ construct.depart.depart_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>งาน :</label>
-                                    <select id="division_id" 
-                                            name="division_id"
-                                            ng-model="construct.division_id" 
-                                            class="form-control select2">
-                                        <option value="">-- เลือกงาน --</option>
-                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ construct.division ? construct.division.ward_name : '-' }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label>รายการ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="construct.desc"
-                                        class="form-control pull-right"
-                                        tabindex="1" />
+                                    <div class="form-control">@{{ construct.desc }}</div>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label>สถานที่ :</label>
-                                    <input
-                                        type="text"
-                                        ng-model="construct.location"
-                                        class="form-control pull-right"
-                                        tabindex="1" />
+                                    <div class="form-control">@{{ construct.location }}</div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>อาคาร :</label>
-                                    <select id="building_id"
-                                            name="building_id"
-                                            ng-model="construct.building_id"
-                                            class="form-control">
-                                        <option value="">-- เลือกประเภท --</option>
-                                        @foreach($buildings as $building)
-                                            <option value="{{ $building->id }}">
-                                                {{ $building->building_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ construct.building.building_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>เลขที่ BOQ :</label>
-                                    <input
-                                        type="text"
-                                        id="boq_no"
-                                        name="boq_no"
-                                        ng-model="construct.boq_no"
-                                        class="form-control pull-right"
-                                        tabindex="4">
+                                    <div class="form-control">
+                                        @{{ construct.boq_no }}
+                                    </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>ราคาต่อหน่วย :</label>
                                     <div class="form-control">
                                         @{{ construct.price_per_unit | currency:'':2 }}
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>จำนวนที่ขอ :</label>
                                     <div style="display: flex; gap: 5px;">
-                                        <input  type="text"
-                                                id="amount"
-                                                name="amount"
-                                                ng-model="construct.amount"
-                                                class="form-control" />
-
-                                        <select id="unit_id"
-                                                name="unit_id"
-                                                ng-model="construct.unit_id"
-                                                class="form-control">
-                                            @foreach($units as $unit)
-                                                <option value="{{ $unit->id }}">
-                                                    {{ $unit->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-control">
+                                            @{{ construct.amount | currency:'':0 }}
+                                        </div>
+                                        <div class="form-control">
+                                            @{{ construct.unit.name }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -193,19 +136,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-12">
                                     <label>แหล่งเงินงบประมาณ :</label>
-                                    <select
-                                        id="budget_src_id"
-                                        name="budget_src_id"
-                                        ng-model="construct.budget_src_id"
-                                        class="form-control"
-                                    >
-                                        <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
-                                        @foreach($budgetSources as $budgetSource)
-                                            <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ construct.budgetSrc.name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -215,6 +150,7 @@
                                         name="reason" 
                                         ng-model="construct.reason" 
                                         class="form-control"
+                                        rows="4"
                                     ></textarea>
                                 </div>
 
@@ -225,6 +161,7 @@
                                         name="remark" 
                                         ng-model="construct.remark" 
                                         class="form-control"
+                                        rows="4"
                                     ></textarea>
                                 </div>
 
@@ -280,6 +217,8 @@
                                 <div class="col-md-12" ng-show="construct.is_adjust" style="padding: 10px; background-color: #EFEFEF;">
                                     @include('shared._adjust-list')
                                 </div>
+                                <!-- ======================= รายละเอียดการปรับแผน ======================= -->
+
                             </div>
 
                             <!-- ======================= Action buttons ======================= -->
@@ -362,6 +301,8 @@
                                 <!-- ======================= Action buttons ======================= -->
 
                             </div>
+                            <!-- ======================= Action buttons ======================= -->
+
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

@@ -55,55 +55,30 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>ปีงบ :</label>
-                                    <input type="text"
-                                            id="year" 
-                                            name="year"
-                                            ng-model="asset.year"
-                                            class="form-control">
-                                    </inp>
+                                    <div class="form-control">
+                                        @{{ asset.year }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มภารกิจ :</label>
-                                    <select id="faction_id" 
-                                            name="faction_id"
-                                            ng-model="asset.faction_id" 
-                                            class="form-control"
-                                            ng-change="onFactionSelected(asset.faction_id)">
-                                        <option value="">-- เลือกกลุ่มภารกิจ --</option>
-                                        @foreach($factions as $faction)
-                                            <option value="{{ $faction->faction_id }}">
-                                                {{ $faction->faction_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ asset.faction.faction_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>กลุ่มงาน :</label>
-                                    <select id="depart_id" 
-                                            name="depart_id"
-                                            ng-model="asset.depart_id" 
-                                            class="form-control select2"
-                                            ng-change="onDepartSelected(asset.depart_id)">
-                                        <option value="">-- เลือกกลุ่มงาน --</option>
-                                        <option ng-repeat="depart in forms.departs" value="@{{ depart.depart_id }}">
-                                            @{{ depart.depart_name }}
-                                        </option>
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ asset.depart.depart_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>งาน :</label>
-                                    <select id="division_id" 
-                                            name="division_id"
-                                            ng-model="asset.division_id" 
-                                            class="form-control select2">
-                                        <option value="">-- เลือกงาน --</option>
-                                        <option ng-repeat="division in forms.divisions" value="@{{ division.ward_id }}">
-                                            @{{ division.ward_name }}
-                                        </option>
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ asset.division.ward_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -138,89 +113,48 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>สาเหตุที่ขอ :</label>
-                                    <div class="form-control checkbox-groups">
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="N"
-                                                    ng-model="asset.request_cause"> ขอใหม่
+                                    <div class="form-control">
+                                        <div ng-show="asset.request_cause == 'N'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            ขอใหม่ 
                                         </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="R"
-                                                    ng-model="asset.request_cause"> ทดแทน
+                                        <div ng-show="asset.request_cause == 'R'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            ทดแทน 
                                         </div>
-                                        <div class="checkbox-container">
-                                            <input  type="radio"
-                                                    id="request_cause"
-                                                    name="request_cause"
-                                                    value="E"
-                                                    ng-model="asset.request_cause"> ขยายงาน
+                                        <div ng-show="asset.request_cause == 'E'">
+                                            <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+                                            ขยายงาน 
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>จำนวนเดิมที่มี :</label>
-                                    <input  type="text"
-                                            id="have_amount"
-                                            name="have_amount"
-                                            ng-model="asset.have_amount"
-                                            class="form-control pull-right"
-                                            tabindex="8"
-                                            ng-change="calculateSumPrice()" />
+                                    <div class="form-control">
+                                        @{{ asset.have_amount }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>แหล่งเงินงบประมาณ :</label>
-                                    <select
-                                        id="budget_src_id"
-                                        name="budget_src_id"
-                                        ng-model="asset.budget_src_id"
-                                        class="form-control"
-                                        tabindex="1"
-                                    >
-                                        <option value="">-- เลือกแหล่งเงินงบประมาณ --</option>
-                                        @foreach($budgetSources as $budgetSource)
-                                            <option value="{{ $budgetSource->id }}">{{ $budgetSource->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control" >
+                                        @{{ asset.budgetSrc.name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>ยุทธศาสตร์ :</label>
-                                    <select id="strategic_id" 
-                                            name="strategic_id"
-                                            ng-model="asset.strategic_id"
-                                            ng-change="onStrategicSelected(asset.strategic_id);"
-                                            class="form-control"
-                                            tabindex="7">
-                                        <option value="">-- เลือกยุทธศาสตร์ --</option>
-                                        @foreach($strategics as $strategic)
-                                            <option value="{{ $strategic->id }}">
-                                                {{ $strategic->strategic_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ asset.strategic.strategic_name }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>Service Plan :</label>
-                                    <select id="service_plan_id" 
-                                            name="service_plan_id"
-                                            ng-model="asset.service_plan_id"
-                                            class="form-control"
-                                            tabindex="7">
-                                        <option value="">-- เลือก Service Plan --</option>
-                                        @foreach($servicePlans as $servicePlan)
-                                            <option value="{{ $servicePlan->id }}">
-                                                {{ $servicePlan->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control">
+                                        @{{ asset.servicePlan ? asset.servicePlan.name : '-' }}
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -298,6 +232,8 @@
                                 <div class="col-md-12" ng-show="asset.is_adjust" style="padding: 10px; background-color: #EFEFEF;">
                                     @include('shared._adjust-list')
                                 </div>
+                                <!-- ======================= รายละเอียดการปรับแผน ======================= -->
+
                             </div>
 
                             <!-- ======================= Action buttons ======================= -->
@@ -379,6 +315,8 @@
                                 <!-- ======================= Action buttons ======================= -->
 
                             </div>
+                            <!-- ======================= Action buttons ======================= -->
+
                         </div><!-- /.row -->
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

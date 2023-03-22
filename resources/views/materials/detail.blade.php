@@ -149,7 +149,7 @@
                                 <div class="form-group col-md-6">
                                     <label>Service Plan :</label>
                                     <div class="form-control">
-                                        @{{ material.servicePlan.name }}
+                                        @{{ material.servicePlan ? material.servicePlan.name : '-' }}
                                     </div>
                                 </div>
 
