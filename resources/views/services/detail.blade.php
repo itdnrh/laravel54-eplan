@@ -323,6 +323,17 @@
                                     >
                                         <i class="fa fa-sliders"></i> ปรับเปลี่ยนแผน
                                     </button>
+                                    <a
+                                        href="#"
+                                        ng-click="inPlan($event, service)"
+                                        ng-show="
+                                            (service.approved && service.in_plan == 'O') &&
+                                            {{ Auth::user()->memberOf->depart_id }} == '4'
+                                        "
+                                        class="btn btn-success"
+                                    >
+                                        <i class="fa fa-sign-in"></i> ปรับเข้าในแผน
+                                    </a>
                                 </div>
                                 <!-- ======================= Action buttons ======================= -->
 

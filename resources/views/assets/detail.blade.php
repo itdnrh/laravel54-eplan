@@ -311,6 +311,17 @@
                                     >
                                         <i class="fa fa-sliders"></i> ปรับเปลี่ยนแผน
                                     </button>
+                                    <a
+                                        href="#"
+                                        ng-click="inPlan($event, asset)"
+                                        ng-show="
+                                            (asset.approved && asset.in_plan == 'O') &&
+                                            {{ Auth::user()->memberOf->depart_id }} == '4'
+                                        "
+                                        class="btn btn-success"
+                                    >
+                                        <i class="fa fa-sign-in"></i> ปรับเข้าในแผน
+                                    </a>
                                 </div>
                                 <!-- ======================= Action buttons ======================= -->
 
