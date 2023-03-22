@@ -378,7 +378,7 @@
                                     <button
                                         type="button"
                                         ng-click="showAdjustForm($event, asset)"
-                                        ng-show="(asset.approved && asset.status == 0) && {{ Auth::user()->memberOf->depart_id }} == '4'"
+                                        ng-show="(asset.approved && (asset.status == 0 || asset.status == 1)) && {{ Auth::user()->memberOf->depart_id }} == '4'"
                                         class="btn bg-maroon"
                                     >
                                         <i class="fa fa-sliders"></i> ปรับแผน (6 เดือนหลัง)

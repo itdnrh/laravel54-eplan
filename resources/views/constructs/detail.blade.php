@@ -354,6 +354,18 @@
                                             </li> -->
                                         </ul>
                                     </div>
+                                    <button
+                                        type="button"
+                                        ng-click="showAdjustForm($event, construct)"
+                                        ng-show="
+                                            (construct.approved && ((construct.status == 0 || construct.status == 1) ||
+                                            (construct.status == 2 && construct.have_subitem == 1))) &&
+                                            {{ Auth::user()->memberOf->depart_id }} == '4'
+                                        "
+                                        class="btn bg-maroon"
+                                    >
+                                        <i class="fa fa-sliders"></i> ปรับแผน (6 เดือนหลัง)
+                                    </button>
                                 </div>
                                 <!-- ======================= Action buttons ======================= -->
 
@@ -365,6 +377,7 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
 
+        @include('shared._adjust-form')
         @include('shared._change-form')
 
     </section>
@@ -372,6 +385,14 @@
     <script>
         $(function () {
             $('.select2').select2();
+
+            $('#unit_id').select2({ theme: 'bootstrap' });
+
+            $('#price_per_unit').inputmask("currency", { "placeholder": "0" });
+
+            $('#amount').inputmask("currency",{ "placeholder": "0", digits: 0 });
+
+            $('#sum_price').inputmask("currency", { "placeholder": "0" });
         });
     </script>
 
