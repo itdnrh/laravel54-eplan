@@ -314,7 +314,7 @@
                                 </div>
 
                                 <!-- ======================= รายละเอียดการปรับแผน ======================= -->
-                                <div class="col-md-12" ng-show="service.is_adjust">
+                                <div class="col-md-12" ng-show="service.is_adjust" style="padding: 10px; background-color: #EFEFEF;"></div>
                                     @include('shared._adjust-list')
                                 </div>
                             </div>

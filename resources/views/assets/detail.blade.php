@@ -303,7 +303,7 @@
                                 </div>
 
                                 <!-- ======================= รายละเอียดการปรับแผน ======================= -->
-                                <div class="col-md-12" ng-show="asset.is_adjust">
+                                <div class="col-md-12" ng-show="asset.is_adjust" style="padding: 10px; background-color: #EFEFEF;">
                                     @include('shared._adjust-list')
                                 </div>
                             </div>

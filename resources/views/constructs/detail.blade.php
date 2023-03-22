@@ -285,7 +285,7 @@
                                 </div>
 
                                 <!-- ======================= รายละเอียดการปรับแผน ======================= -->
-                                <div class="col-md-12" ng-show="construct.is_adjust">
+                                <div class="col-md-12" ng-show="construct.is_adjust" style="padding: 10px; background-color: #EFEFEF;">
                                     @include('shared._adjust-list')
                                 </div>
                             </div>
