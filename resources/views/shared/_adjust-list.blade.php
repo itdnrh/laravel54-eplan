@@ -26,9 +26,9 @@
                             <p ng-show="adjust.in_plan == 'O'" class="label label-danger">
                                 นอกแผน
                             </p>
-                            <p style="margin: 0;">ราคาต่อหน่วย: @{{ adjust.old_price_per_unit | currency:'':2 }} บาท</p>
-                            <p style="margin: 0;">จำนวนที่ขอ: @{{ adjust.old_amount }} @{{ adjust.unit.name }}</p>
-                            <p style="margin: 0;">รวมเป็นเงิน: @{{ adjust.old_sum_price | currency:'':2 }} บาท</p>
+                            <p style="margin: 0;">ราคาต่อหน่วย: @{{ adjust.price_per_unit | currency:'':2 }} บาท</p>
+                            <p style="margin: 0;">จำนวนที่ขอ: @{{ adjust.amount }} @{{ adjust.unit.name }}</p>
+                            <p style="margin: 0;">รวมเป็นเงิน: @{{ adjust.sum_price | currency:'':2 }} บาท</p>
                         </td>
                         <td style="color: gray;">
                             <p ng-show="plan.in_plan == 'I'" class="label label-success">

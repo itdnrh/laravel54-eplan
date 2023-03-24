@@ -437,10 +437,12 @@ class PlanController extends Controller
                 $adjustment->plan_id            = $req['plan_id'];
                 $adjustment->adjust_type        = $req['adjust_type'];
                 $adjustment->in_plan            = $oldPlan->plan->in_plan;
-                $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
-                $adjustment->old_unit_id        = $oldPlan->unit_id;
-                $adjustment->old_amount         = $oldPlan->amount;
-                $adjustment->old_sum_price      = $oldPlan->sum_price;
+                $adjustment->price_per_unit     = $oldPlan->price_per_unit;
+                $adjustment->unit_id            = $oldPlan->unit_id;
+                $adjustment->amount             = $oldPlan->amount;
+                $adjustment->sum_price          = $oldPlan->sum_price;
+                $adjustment->remain_amount      = $oldPlan->remain_amount;
+                $adjustment->remain_budget      = $oldPlan->remain_budget;
                 $adjustment->remark             = $req['remark'];
                 $adjustment->save();
 
@@ -479,10 +481,12 @@ class PlanController extends Controller
                 $adjustment->plan_id            = $id;
                 $adjustment->adjust_type        = 2;
                 $adjustment->in_plan            = $oldPlan->plan->in_plan;
-                $adjustment->old_price_per_unit = $oldPlan->price_per_unit;
-                $adjustment->old_unit_id        = $oldPlan->unit_id;
-                $adjustment->old_amount         = $oldPlan->amount;
-                $adjustment->old_sum_price      = $oldPlan->sum_price;
+                $adjustment->price_per_unit     = $oldPlan->price_per_unit;
+                $adjustment->unit_id            = $oldPlan->unit_id;
+                $adjustment->amount             = $oldPlan->amount;
+                $adjustment->sum_price          = $oldPlan->sum_price;
+                $adjustment->remain_amount      = $oldPlan->remain_amount;
+                $adjustment->remain_budget      = $oldPlan->remain_budget;
                 $adjustment->remark             = $req['remark'];
                 $adjustment->save();
 

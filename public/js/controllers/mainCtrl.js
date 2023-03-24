@@ -633,33 +633,34 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
                 $scope.loading = false;
             });
         } else {
-            $scope.loading = true;
-
             /** แก้ไขรายการ */
-            // $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/${adjustId}/adjust`, $scope.adjustment)
-            // .then(res => {
-                // if (res.data.status == 1) {
-                    // toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลการปรับแผนเรียบร้อย !!!");
+            if (confirm(`คุณต้องแก้ไขข้อมูลการปรับแผนใช่หรือไม่?`)) {
+                $scope.loading = true;
 
-                    // window.location.href = window.location.href;
-                // } else {
-                //     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
-                // }
+                $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/${adjustId}/adjust`, $scope.adjustment)
+                .then(res => {
+                    if (res.data.status == 1) {
+                        toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลการปรับแผนเรียบร้อย !!!");
 
-                // $scope.loading = false;
-            // }, (err) => {
-            //     console.log(err);
+                        window.location.href = window.location.href;
+                    } else {
+                        toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
+                    }
 
-                // toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลการปรับแผนได้ !!!");
+                    $scope.loading = false;
+                }, (err) => {
+                    console.log(err);
 
-                // $scope.loading = false;
-            // });
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลการปรับแผนได้ !!!");
+
+                    $scope.loading = false;
+                });
+            }
         }
     };
 
     $scope.deleteAdjust = function(e, adjustId) {
         if (!adjustId) {
-            console.log('On delete adjust...');
             if (confirm(`คุณต้องลบข้อมูลการปรับแผนใช่หรือไม่?`)) {
                 // $scope.loading = true;
 

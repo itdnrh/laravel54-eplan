@@ -15,6 +15,6 @@ class PlanAdjustment extends Model
 
     public function unit()
     {
-        return $this->belongsTo(Unit::class, 'old_unit_id', 'id');
+        return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
 }
