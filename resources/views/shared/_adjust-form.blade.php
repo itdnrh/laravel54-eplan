@@ -121,6 +121,19 @@
                             </span>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="">หมายเหตุ</label>
+                            <textarea
+                                rows="2"
+                                id="remark"
+                                name="remark"
+                                class="form-control"
+                                ng-model="adjustment.remark"
+                            ></textarea>
+                        </div>
+                    </div>
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button

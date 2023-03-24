@@ -30,6 +30,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.cboBudget = '';
     $scope.isApproved = false;
     $scope.isInPlan = 'I';
+    $scope.isAdjust = '';
 
     /** Input control iteration models */
     $scope.budgetYearRange = $rootScope.range(2565, parseInt($scope.cboYear) + 3);
@@ -567,22 +568,37 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     */
     $scope.adjustment = {
         id: '',
-        plan: null,
         plan_id: '',
+        adjust_type: 1,
         price_per_unit: '',
         unit_id: '',
         amount: '',
         sum_price: '',
-        adjust_type: 1
+        remark: '',
+        plan: null
     };
     $scope.setAdjustType = function(type) {
         $scope.adjustment.adjust_type = type;
     };
 
-    $scope.showAdjustForm = function(e, plan) {
+    $scope.showAdjustForm = function(e, plan, adjustId='') {
         if (plan) {
             $scope.adjustment.plan = plan;
             $scope.adjustment.plan_id = plan.id;
+
+            if (adjustId) {
+                const adjust = plan.adjustments.find(adj => adj.id == adjustId);
+
+                $scope.adjustment.id            = adjustId;
+                $scope.adjustment.adjust_type   = adjust.adjust_type;
+                $scope.adjustment.price_per_unit = adjust.old_price_per_unit;
+                $scope.adjustment.unit_id       = adjust.old_unit_id.toString();
+                $scope.adjustment.amount        = adjust.old_amount;
+                $scope.adjustment.sum_price     = adjust.old_sum_price;
+                $scope.adjustment.remark        = adjust.remark;
+
+                $('#unit_id').val(adjust.old_unit_id).trigger('change.select2');
+            }
     
             $('#adjust-form').modal('show');
         }
@@ -595,22 +611,75 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         }
 
         if (!adjustId) {
-            console.log('New adjust...');
+            $scope.loading = true;
+
             /** เพิ่มรายการใหม่ */
             $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/adjust`, $scope.adjustment)
             .then(res => {
-                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "บันทึกปรับแผนเรียบร้อย !!!");
+
+                    window.location.href = window.location.href;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
+                }
+
+                $scope.loading = false;
             }, (err) => {
                 console.log(err);
-            })
+
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
+
+                $scope.loading = false;
+            });
         } else {
+            $scope.loading = true;
+
             /** แก้ไขรายการ */
-            $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/${adjustId}/adjust`, $scope.adjustment)
-            .then(res => {
-                console.log(res);
-            }, (err) => {
-                console.log(err);
-            })
+            // $http.put(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/${adjustId}/adjust`, $scope.adjustment)
+            // .then(res => {
+                // if (res.data.status == 1) {
+                    // toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลการปรับแผนเรียบร้อย !!!");
+
+                    // window.location.href = window.location.href;
+                // } else {
+                //     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
+                // }
+
+                // $scope.loading = false;
+            // }, (err) => {
+            //     console.log(err);
+
+                // toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลการปรับแผนได้ !!!");
+
+                // $scope.loading = false;
+            // });
+        }
+    };
+
+    $scope.deleteAdjust = function(e, adjustId) {
+        if (!adjustId) {
+            console.log('On delete adjust...');
+            if (confirm(`คุณต้องลบข้อมูลการปรับแผนใช่หรือไม่?`)) {
+                // $scope.loading = true;
+
+                // $http.delete(`${CONFIG.apiUrl}/plans/${$scope.adjustment.plan_id}/adjust`, $scope.adjustment)
+                // .then(res => {
+                    // if (res.data.status == 1) {
+                        // toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลการปรับแผนเรียบร้อย !!!");
+
+                        // window.location.href = window.location.href;
+                    // } else {
+                    //     toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
+                    // }
+
+                    // $scope.loading = false;
+                // }, (err) => {
+                    // toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลการปรับแผนได้ !!!");
+
+                    // $scope.loading = false;
+                // });
+            }
         }
     };
 
@@ -632,11 +701,17 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
 
             $http.put(`${CONFIG.apiUrl}/plans/${plan.id}/inplan`, {})
             .then(res => {
-                console.log(res);
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "แก้ไขข้อมูลการปรับแผนเรียบร้อย !!!");
+
+                    window.location.href = window.location.href;
+                } else {
+                    toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถบันทึกปรับแผนได้ !!!");
+                }
 
                 $scope.loading = false;
             }, (err) => {
-                console.log(err);
+                toaster.pop('error', "ผลการตรวจสอบ", "พบข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลการปรับแผนได้ !!!");
 
                 $scope.loading = false;
             })
@@ -739,20 +814,21 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         $scope.plans = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
-        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved = $scope.isApproved ? 'A' : '';
-        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-        let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+        let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let approved    = $scope.isApproved ? 'A' : '';
+        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+        let adjust      = $scope.isAdjust === '' ? '' : $scope.isAdjust;
+        let in_stock    = inStock != undefined ? `&in_stock=${inStock}` : '';
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1${in_stock}`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&adjust=${adjust}&show_all=1${in_stock}`)
         .then(function(res) {
             cb(res);
 
@@ -771,20 +847,21 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         $scope.plans = [];
         $scope.pager = null;
 
-        let year    = $scope.cboYear === '' ? '' : $scope.cboYear;
-        let cate    = $scope.cboCategory === '' ? '' : $scope.cboCategory;
-        let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
-        let depart  = !$scope.cboDepart ? '' : $scope.cboDepart;
-        let division = !$scope.cboDivision ? '' : $scope.cboDivision;
-        let status  = $scope.cboStatus === '' ? '' : $scope.cboStatus;
-        let price   = $scope.cboPrice === '' ? '' : $scope.cboPrice;
-        let budget  = $scope.cboBudget === '' ? '' : $scope.cboBudget;
-        let name    = $scope.txtItemName === '' ? '' : $scope.txtItemName;
-        let approved = $scope.isApproved ? 'A' : '';
-        let inPlan  = $scope.isInPlan === '' ? '' : $scope.isInPlan;
-        let in_stock = inStock != undefined ? `&in_stock=${inStock}` : '';
+        let year        = $scope.cboYear === '' ? '' : $scope.cboYear;
+        let cate        = $scope.cboCategory === '' ? '' : $scope.cboCategory;
+        let faction     = $scope.cboFaction === '' ? '' : $scope.cboFaction;
+        let depart      = !$scope.cboDepart ? '' : $scope.cboDepart;
+        let division    = !$scope.cboDivision ? '' : $scope.cboDivision;
+        let status      = $scope.cboStatus === '' ? '' : $scope.cboStatus;
+        let price       = $scope.cboPrice === '' ? '' : $scope.cboPrice;
+        let budget      = $scope.cboBudget === '' ? '' : $scope.cboBudget;
+        let name        = $scope.txtItemName === '' ? '' : $scope.txtItemName;
+        let approved    = $scope.isApproved ? 'A' : '';
+        let inPlan      = $scope.isInPlan === '' ? '' : $scope.isInPlan;
+        let adjust      = $scope.isAdjust === '' ? '' : $scope.isAdjust;
+        let in_stock    = inStock != undefined ? `&in_stock=${inStock}` : '';
 
-        $http.get(`${url}&type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&show_all=1${in_stock}`)
+        $http.get(`${url}&type=${type}&year=${year}&cate=${cate}&faction=${faction}&depart=${depart}&division=${division}&budget=${budget}&status=${status}&name=${name}&price=${price}&approved=${approved}&in_plan=${inPlan}&adjust=${adjust}&show_all=1${in_stock}`)
         .then(function(res) {
             cb(res);
 

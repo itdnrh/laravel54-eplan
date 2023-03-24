@@ -12,8 +12,9 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th style="width: 50%;">รายละเอียดก่อนปรับ</th>
-                        <th style="width: 50%;">รายละเอียดการปรับ</th>
+                        <th style="width: 47%;">รายละเอียดก่อนปรับ</th>
+                        <th style="width: 47%;">รายละเอียดการปรับ</th>
+                        <th style="width: 6%; text-align: center;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,19 @@
                             <p style="margin: 0;">ราคาต่อหน่วย: @{{ plan.price_per_unit | currency:'':2 }} บาท</p>
                             <p style="margin: 0;">จำนวนที่ขอ: @{{ plan.amount }} @{{ plan.unit.name }}</p>
                             <p style="margin: 0;">รวมเป็นเงิน: @{{ plan.sum_price | currency:'':2 }} บาท</p>
+                        </td>
+                        <td style="text-align: center;">
+                            <button
+                                type="button"
+                                class="btn btn-warning btn-xs"
+                                ng-click="showAdjustForm($event, plan, adjust.id)"
+                                ng-show="{{ Auth::user()->memberOf->depart_id }} == '4'"
+                            >
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <a href="#" class="btn btn-danger btn-xs">
+                                <i class="fa fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 </tbody>

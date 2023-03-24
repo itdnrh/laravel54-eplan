@@ -164,6 +164,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::delete('divisions/{id}', 'DivisionController@delete');
     Route::put('divisions/{id}/active', 'DivisionController@active');
 
+    /** ปรับเปลี่ยนแผน */
+    Route::put('adjustments/{id}/update', 'PlanAdjustmentController@update');
+    Route::delete('adjustments/{id}/delete', 'PlanAdjustmentController@delete');
+
     /** รายงาน */
     Route::get('reports/project-faction', 'ReportController@getProjectByFaction');
     Route::get('reports/project-depart', 'ReportController@getProjectByDepart');

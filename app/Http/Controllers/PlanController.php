@@ -445,9 +445,8 @@ class PlanController extends Controller
                 $adjustment->save();
 
                 return [
-                    'status'    => 1,
-                    'message'   => 'Adjust plan data successfully!!',
-                    'plan'      => $plan
+                    "status"        => 1,
+                    "message"       => 'Adjust plan data successfully!!'
                 ];
             // } else {
             //     return [
@@ -457,8 +456,8 @@ class PlanController extends Controller
             // }
         } catch (\Exception $ex) {
             return [
-                'status'    => 0,
-                'message'   => $ex->getMessage()
+                "status"    => 0,
+                "message"   => $ex->getMessage()
             ];
         }
     }
@@ -536,6 +535,7 @@ class PlanController extends Controller
         $showAll    = $req->get('show_all');
         $haveSubitem = $req->get('have_subitem');
         $addon      = $req->get('addon');
+        $adjust     = $req->get('adjust');
 
         if($status != '') {
             if (preg_match($pattern, $status, $matched) == 1) {
@@ -620,6 +620,9 @@ class PlanController extends Controller
                     ->when($inPlan != '', function($q) use ($inPlan) {
                         $q->where('plans.in_plan', $inPlan);
                     })
+                    ->when(!empty($adjust), function($q) use ($adjust) {
+                        $q->where('plans.is_adjust', $adjust);
+                    })
                     ->when(count($conditions) > 0, function($q) use ($conditions) {
                         $q->where($conditions);
                     })
@@ -677,11 +680,11 @@ class PlanController extends Controller
         ];
 
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
-        $customPaper = [
+        $paper = [
             'size'          => 'a4',
             'orientation'   => 'landscape'
         ];
 
-        return renderPdf('forms.plans-list', $data, 'download', $customPaper);
+        return renderPdf('forms.plans-list', $data, $paper, 'download');
     }
 }
