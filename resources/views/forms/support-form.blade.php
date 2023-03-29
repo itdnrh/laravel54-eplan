@@ -880,7 +880,7 @@
                             <!-- ############################ Pagination ############################ -->
                             <!-- ============================== คณะกรรมการรวมไม่เกิน 2 คน ============================== -->
                             @if(count($committees) <= 2)
-                                @if($page == 1 && ((count($support->details) <= 4 && $haveRowOvered > 2) && (count($support->details) > 4 && count($support->details) <= 10) && $haveRowOvered == 0))
+                                @if($page == 1 && ((count($support->details) <= 4 && $haveRowOvered > 2) || (count($support->details) > 4 && count($support->details) <= 10) && $haveRowOvered == 0))
                                     <p class="page-number">- {{ thainumDigit(++$page) }} -</p>
                                 @endif
 

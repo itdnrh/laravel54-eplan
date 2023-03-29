@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แก้ไขใบสั่งซื้อ (P/O)
+            แก้ไขใบสั่งซื้อ/จ้าง (PO)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">แก้ไขใบสั่งซื้อ (P/O)</li>
+            <li class="breadcrumb-item active">แก้ไขใบสั่งซื้อ/จ้าง (PO)</li>
         </ol>
     </section>
 
@@ -35,7 +35,7 @@
 
                 <div class="box box-warning">
                     <div class="box-header">
-                        <h3 class="box-title">แก้ไขใบสั่งซื้อ (P/O) : รหัส {{ $order->id }}</h3>
+                        <h3 class="box-title">แก้ไขใบสั่งซื้อ/จ้าง (PO) : รหัส {{ $order->id }}</h3>
                     </div>
 
                     <form id="frmEditPO" name="frmEditPO" method="post" action="{{ url('/orders/update') }}" role="form" enctype="multipart/form-data">

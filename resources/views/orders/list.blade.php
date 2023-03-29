@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการใบสั่งซื้อ (P/O)
+            รายการใบสั่งซื้อ/จ้าง (PO)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการใบสั่งซื้อ (P/O)</li>
+            <li class="breadcrumb-item active">รายการใบสั่งซื้อ/จ้าง (PO)</li>
         </ol>
     </section>
 
@@ -204,11 +204,11 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title">รายการใบสั่งซื้อ (P/O)</h3>
+                                <h3 class="box-title">รายการใบสั่งซื้อ/จ้าง (PO)</h3>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ url('/orders/add') }}" class="btn btn-primary pull-right">
-                                    สร้างใบสั่งซื้อ (P/O)
+                                    สร้างใบสั่งซื้อ/จ้าง (PO)
                                 </a>
                             </div>
                         </div>

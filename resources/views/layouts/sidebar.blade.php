@@ -202,7 +202,7 @@
 								</li>
 								<li ng-class="{ 'active': submenu == 'list' }">
 									<a href="{{ url('orders/list') }}">
-										<i class="fa fa-circle-o"></i> ใบสั่งซื้อ/จ้าง
+										<i class="fa fa-circle-o"></i> ใบสั่งซื้อ/จ้าง (PO)
 									</a>
 								</li>
 								<!-- <li ng-class="{ 'active': submenu == 'repairs-list' }">

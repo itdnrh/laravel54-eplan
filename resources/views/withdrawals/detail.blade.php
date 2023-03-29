@@ -177,7 +177,7 @@
                             class="btn btn-success"
                         >
                             <i class="fa fa-print" aria-hidden="true"></i>
-                            พิมพ์เอกสารขอเบิกจ่ายเงิน
+                            พิมพ์เอกสารส่งเบิกเงิน
                         </a>
                         <button
                             ng-show="!withdrawal.completed"

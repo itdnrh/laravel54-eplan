@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มรายการตรวจรับ
+            เพิ่มรายการตรวจรับพัสดุ
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มรายการตรวจรับ</li>
+            <li class="breadcrumb-item active">เพิ่มรายการตรวจรับพัสดุ</li>
         </ol>
     </section>
 
@@ -27,7 +27,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มรายการตรวจรับ</h3>
+                        <h3 class="box-title">เพิ่มรายการตรวจรับพัสดุ</h3>
                     </div>
 
                     <form id="frmNewInspection" name="frmNewInspection" method="post" action="{{ url('/inspections/store') }}" role="form" enctype="multipart/form-data">

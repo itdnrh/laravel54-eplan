@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายละเอียดใบสั่งซื้อ (P/O)
+            รายละเอียดใบสั่งซื้อ/จ้าง (PO)
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายละเอียดใบสั่งซื้อ (P/O)</li>
+            <li class="breadcrumb-item active">รายละเอียดใบสั่งซื้อ/จ้าง (PO)</li>
         </ol>
     </section>
 
@@ -27,7 +27,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">รายละเอียดใบสั่งซื้อ (P/O)</h3>
+                        <h3 class="box-title">รายละเอียดใบสั่งซื้อ/จ้าง (PO)</h3>
                     </div>
 
                     <div class="box-body">
@@ -35,7 +35,7 @@
                             <li class="active">
                                 <a href="#order-detail" data-toggle="tab">
                                     <i class="fa fa-shopping-cart text-success" aria-hidden="true"></i>
-                                    ใบสั่งซื้อ (P/O)
+                                    ใบสั่งซื้อ/จ้าง (P/O)
                                     <!-- <span class="badge badge-light">0</span> -->
                                 </a>
                             </li>

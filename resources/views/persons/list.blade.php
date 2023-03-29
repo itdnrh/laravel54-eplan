@@ -158,12 +158,12 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">ลำดับ</th>
-                                    <th style="text-align: center;">ชื่อ-สกุล</th>
+                                    <th>ชื่อ-สกุล</th>
                                     <!-- <th style="width: 15%; text-align: center;">จ.18</th> -->
                                     <!-- <th style="width: 7%; text-align: center;">ว/ด/ป เกิด</th> -->
                                     <!-- <th style="width: 6%; text-align: center;">อายุ</th> -->
                                     <th style="width: 7%; text-align: center;">ว/ด/ป บรรจุ</th>
-                                    <!-- <th style="width: 5%; text-align: center;">อายุงาน</th> -->
+                                    <th style="width: 5%; text-align: center;">อายุงาน</th>
                                     <th style="width: 10%; text-align: center;">ประเภทตำแหน่ง</th>
                                     <th style="width: 20%; text-align: center;">ตำแหน่ง</th>
                                     <th style="width: 20%; text-align: center;">สังกัด</th>
@@ -181,7 +181,7 @@
                                     <!-- <td style="text-align: center;">@{{ row.person_birth | thdate }}</td> -->
                                     <!-- <td style="text-align: center;">@{{ row.ageY+ 'ป ' +row.ageM+ 'ด' }}</td> -->
                                     <td style="text-align: center;">@{{ row.person_singin | thdate }}</td>
-                                    <!-- <td style="text-align: center;">@{{ row.level+ 'ปี' }}</td> -->
+                                    <td style="text-align: center;">@{{ calcAge(row.person_singin, "years") }}ปี</td>
                                     <td style="text-align: center;">@{{ row.typeposition.typeposition_name }}</td>
                                     <td style="text-align: center;">
                                         @{{ row.position.position_name }}@{{ row.academic.ac_name }}
