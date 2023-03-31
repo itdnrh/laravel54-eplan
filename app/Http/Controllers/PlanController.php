@@ -421,12 +421,12 @@ class PlanController extends Controller
 
             /** Update found plan_items table */
             $plan = PlanItem::where('plan_id', $id)->first();
-            $plan->price_per_unit   = $req['price_per_unit'];
+            $plan->price_per_unit   = currencyToNumber($req['price_per_unit']);
             $plan->unit_id          = $req['unit_id'];
-            $plan->amount           = $req['amount'];
-            $plan->sum_price        = $req['sum_price'];
-            $plan->remain_amount    = $req['amount'] - $plan->remain_amount;
-            $plan->remain_budget    = $req['sum_price'] - $plan->remain_budget;
+            $plan->amount           = currencyToNumber($req['amount']);
+            $plan->sum_price        = currencyToNumber($req['sum_price']);
+            $plan->remain_amount    = currencyToNumber($req['amount']) - $plan->remain_amount;
+            $plan->remain_budget    = currencyToNumber($req['sum_price']) - $plan->remain_budget;
 
             if($plan->save()) {
                 /** Update is_adjust field of found plans table */
