@@ -591,13 +591,13 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
 
                 $scope.adjustment.id            = adjustId;
                 $scope.adjustment.adjust_type   = adjust.adjust_type;
-                $scope.adjustment.price_per_unit = adjust.old_price_per_unit;
-                $scope.adjustment.unit_id       = adjust.old_unit_id.toString();
-                $scope.adjustment.amount        = adjust.old_amount;
-                $scope.adjustment.sum_price     = adjust.old_sum_price;
+                $scope.adjustment.price_per_unit = adjust.price_per_unit;
+                $scope.adjustment.unit_id       = adjust.unit_id ? adjust.unit_id.toString() : '';
+                $scope.adjustment.amount        = adjust.amount;
+                $scope.adjustment.sum_price     = adjust.sum_price;
                 $scope.adjustment.remark        = adjust.remark;
 
-                $('#unit_id').val(adjust.old_unit_id).trigger('change.select2');
+                $('#unit_id').val(adjust.unit_id).trigger('change.select2');
             }
     
             $('#adjust-form').modal('show');
