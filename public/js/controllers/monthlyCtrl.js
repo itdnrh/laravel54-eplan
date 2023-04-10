@@ -171,7 +171,9 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
             let summaries = monthly.map(mon => {
                 const summary = budgets.find(b => b.expense_id === mon.expense_id);
-                mon.budget = summary.budget;
+
+                if (summary) mon.budget = summary.budget;
+
                 return mon;
             });
 
