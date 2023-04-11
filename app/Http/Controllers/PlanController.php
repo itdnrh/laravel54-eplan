@@ -413,7 +413,7 @@ class PlanController extends Controller
         }
     }
 
-    public function adjust(Request $req, $id)
+    public function storeAdjust(Request $req, $id)
     {
         try {
             /** Get old data of found plan */
@@ -423,10 +423,42 @@ class PlanController extends Controller
             $plan = PlanItem::where('plan_id', $id)->first();
             $plan->price_per_unit   = currencyToNumber($req['price_per_unit']);
             $plan->unit_id          = $req['unit_id'];
-            $plan->amount           = currencyToNumber($req['amount']);
-            $plan->sum_price        = currencyToNumber($req['sum_price']);
-            $plan->remain_amount    = currencyToNumber($req['amount']) - $plan->remain_amount;
-            $plan->remain_budget    = currencyToNumber($req['sum_price']) - $plan->remain_budget;
+
+            /** คำนวณยอดการใช้ */
+            $used_amount = $plan->amount - $plan->remain_amount;
+            $used_budget = $plan->sum_price - $plan->remain_budget;
+
+            if($plan->calc_method == 1) {
+                /** กรณีตัดยอดตามจำนวน */
+                if($plan->sum_price < currencyToNumber($req['sum_price'])) {
+                    /** กรณีขยายงบประมาณ */
+                    $plan->remain_amount = currencyToNumber($req['amount']) - $plan->remain_amount;
+                    $plan->remain_budget = currencyToNumber($req['sum_price']) - $plan->remain_budget;
+                } else {
+                    /** กรณีลดงบประมาณ */
+                    // TODO: 
+                }
+            } else {
+                /** กรณีตัดยอดตามงบประมาณ */
+                if($plan->sum_price < currencyToNumber($req['sum_price'])) {
+                    /** กรณีขยายงบประมาณ */
+                    $plan->remain_amount = $plan->remain_amount == 0 ? 1 : currencyToNumber($req['amount']);
+    
+                    if ($plan->remain_budget <= 0) {
+                        /** กรณีใช้เกินงบ */
+                        $plan->remain_budget = currencyToNumber($req['sum_price']) + $plan->remain_budget;
+                    } else if ($plan->remain_budget > 0) {
+                        /** กรณีเงินเหลือ */
+                        $plan->remain_budget = currencyToNumber($req['sum_price']) - $used_budget;
+                    }
+                } else {
+                    /** กรณีลดงบประมาณ */
+                    // TODO: 
+                }
+            }
+
+            $plan->amount       = currencyToNumber($req['amount']);
+            $plan->sum_price    = currencyToNumber($req['sum_price']);
 
             if($plan->save()) {
                 /** Update is_adjust field of found plans table */
