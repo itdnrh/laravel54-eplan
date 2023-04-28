@@ -755,6 +755,11 @@ class OrderController extends Controller
             "provinceOrders"    => $provinceOrders
         ];
 
+        $paper = [
+            'size'  => 'a4',
+            'orientation' => 'portrait'
+        ];
+
         /** Invoke helper function to return view of pdf instead of laravel's view to client */
         return renderPdf('forms.orders.spec-committee', $data);
     }
