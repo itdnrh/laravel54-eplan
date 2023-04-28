@@ -2,7 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>รายการแผนคำขอประจำปี</title>
-        <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
+        <link rel="stylesheet" href="{{ public_path('/css/pdf.css') }}">
     </head>
     <body style="margin: 20px 0;">
         <?php $row = 0; ?>

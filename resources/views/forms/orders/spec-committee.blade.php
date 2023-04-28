@@ -2,13 +2,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>บันทึกขอสนับสนุน</title>
-        <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
+        <link rel="stylesheet" href="{{ public_path('/css/pdf.css') }}">
     </head>
     <body>
         <div class="memo-container">
             <div class="memo-header">
                 <div class="logo-krut">
-                    <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
+                    <img src="{{ public_path('/img/krut.jpg') }}" alt="krut" />
                 </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
@@ -237,7 +237,7 @@
         <div class="memo-container">
             <div class="memo-header">
                 <div class="logo-krut">
-                    <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
+                    <img src="{{ public_path('/img/krut.jpg') }}" alt="krut" />
                 </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
@@ -298,8 +298,8 @@
                                 <span class="memo-paragraph-topic-inline">๑.เรื่องเดิม</span>
                                 ตามบันทึกที่ <span>{{ thainumDigit($departOfParcel->memo_no.'/'.$support->spec_doc_no) }}</span>
                                 ลงวันที่&nbsp;&nbsp;<span>{{ thainumDigit(convDbDateToLongThDate($support->spec_doc_date)) }}</span>
-                                ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}
-                                <span>{{ $support->order->category->name}}</span> สนับสนุน การทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น
+                                ได้แต่งตั้ง ข้าพเจ้า ผู้มีนามข้างท้ายเป็น{{ $committeeType }}กำหนดรายละเอียดคุณลักษณะเฉพาะและราคากลาง<span class="with-compressed-3x">{{$orderType}}{{ $support->order->category->name}}</span>
+                                <span class="with-compressed-3x">สนับสนุนการทำงานของเจ้าหน้าที่ ให้ทำงานได้อย่างมีประสิทธิภาพยิ่งขึ้น นั้น</span>
                             </p>
                         </td>
                     </tr>
@@ -358,8 +358,8 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <p>
-                                    ข้าพเจ้าฯ ได้สรุปรายละเอียดคุณลักษณะเฉพาะและราคากลาง{{$orderType}}<span>{{ $support->order->category->name}}</span>
+                                <p style="margin: 0;">
+                                    ข้าพเจ้าฯ ได้สรุปรายละเอียดคุณลักษณะเฉพาะและราคากลาง<span class="with-compressed-3x">{{$orderType}}{{ $support->order->category->name}}</span>
                                     จำนวน <span>{{ thainumDigit($support->amount) }} รายการ</span>
                                     เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
                                     <span>({{ baht_text($support->net_total) }})</span>
