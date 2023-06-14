@@ -1003,8 +1003,8 @@
                 </table>
 
                 <div style="text-align: center; position: absolute;">
-                    <p style="margin: 0 0 20px 0;">
-                        <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
+                    <p style="margin: 0 0 35px 0;">
+                        <span style="margin: 0 0 0 20px;">[&nbsp;&nbsp;] อนุมัติ</span>
                         <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
                     </p>
                     <p style="margin: 0;">
