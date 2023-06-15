@@ -2,13 +2,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>บันทึกขอสนับสนุน</title>
-        <link rel="stylesheet" href="{{ public_path('/css/pdf.css') }}" />
+        <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
     </head>
     <body>
         <div class="memo-container-narrow">
             <div class="memo-header-narrow">
                 <div class="logo-krut">
-                    <img src="{{ public_path('/img/krut.jpg') }}" alt="krut" />
+                    <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
                 </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
@@ -1003,8 +1003,8 @@
                 </table>
 
                 <div style="text-align: center; position: absolute;">
-                    <p style="margin: 0 0 20px 0;">
-                        <span style="margin: 0;">[&nbsp;&nbsp;] อนุมัติ</span>
+                    <p style="margin: 0 0 37px 0;">
+                        <span style="margin: 0 0 0 20px;">[&nbsp;&nbsp;] อนุมัติ</span>
                         <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span>
                     </p>
                     <p style="margin: 0;">

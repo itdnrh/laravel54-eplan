@@ -2,13 +2,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>บันทึกขอสนับสนุน</title>
-        <link rel="stylesheet" href="{{ public_path('/css/pdf.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pdf.css') }}">
     </head>
     <body>
         <div class="memo-container">
             <div class="memo-header">
                 <div class="logo-krut">
-                    <img src="{{ public_path('/img/krut.jpg') }}" alt="krut" />
+                    <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
                 </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
@@ -149,7 +149,7 @@
                                     ผู้อำนวยการโรงพยาบาลเทพรัตน์นครราชสีมา
                                 </p>
                                 <p style="margin: 0;">
-                                    ปฏิบัติราขการแทน ผู้ว่าราชการจังหวัดนครราชสีมา
+                                    ปฏิบัติราชการแทน ผู้ว่าราชการจังหวัดนครราชสีมา
                                 </p>
                             </div>
                         </td>
@@ -163,7 +163,7 @@
         <div class="memo-container">
             <div class="memo-header">
                 <div class="logo-krut">
-                    <img src="{{ public_path('/img/krut.jpg') }}" alt="krut" />
+                    <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
                 </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
@@ -248,7 +248,8 @@
                     <tr>
                         <td colspan="4">
                             <p class="memo-paragraph with-compressed with-expanded">
-                                จึงเรียนมาเพื่อโปรดทราบ <span>หากเห็นชอบโปรดอนุมัติให้ส่งเอกสารเบิกจ่ายเงินให้กลุ่มงานการเงิน ต่อไป</span>
+                                จึงเรียนมาเพื่อโปรดพิจารณา <span>หากเห็นชอบขอได้โปรดให้กลุ่มงานพัสดุส่งเอกสารเบิกจ่ายให้</span>
+                                <span>กลุ่มงานการเงิน ต่อไป</span>
                             </p>
                         </td>
                     </tr>
@@ -309,7 +310,7 @@
         <div class="memo-container">
             <div class="memo-header">
                 <div class="logo-krut">
-                    <img src="{{ public_path('/img/krut.jpg') }}" alt="krut" />
+                    <img src="{{ asset('/img/krut.jpg') }}" alt="krut" />
                 </div>
                 <h2>บันทึกข้อความ</h2>
             </div>
@@ -448,7 +449,7 @@
                                     ผู้อำนวยการโรงพยาบาลเทพรัตน์นครราชสีมา
                                 </p>
                                 <p style="margin: 0;">
-                                    ปฏิบัติราขการแทน ผู้ว่าราชการจังหวัดนครราชสีมา
+                                    ปฏิบัติราชการแทน ผู้ว่าราชการจังหวัดนครราชสีมา
                                 </p>
                             </div>
                             <div class="signature">
