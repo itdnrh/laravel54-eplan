@@ -431,6 +431,12 @@
                                         name="project_file"
                                         class="form-control"
                                     />
+                                    <div style="margin-top: 5px;" ng-show="project.project_file">
+                                        <a href="{{ url('/uploads/projects') }}/@{{ project.project_file }}" target="_blank">
+                                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                            @{{ project.project_file }}
+                                        </a>
+                                    </div>
                                     <span class="help-block" ng-show="checkValidate(project, 'project_file')">
                                         @{{ formError.errors.project_file[0] }}
                                     </span>

@@ -21,12 +21,12 @@ app.run(function(editableOptions) {
 
 /** Global functions */
 app.run(function ($rootScope, $window, $http, toaster) {
+	//console.log($rootScope);
 	$rootScope.range = _.range;
 	$rootScope.formError = null;
 
 	$rootScope.formValidate = function (event, path, validData, form, callback) {
 		event.preventDefault();
-
 		$http.post(env.baseUrl + path, { ...validData })
 			.then(function (res) {
 				$rootScope.formError = res.data;
@@ -45,7 +45,6 @@ app.run(function ($rootScope, $window, $http, toaster) {
 
 	$rootScope.checkValidate = function (validObj, field) {
 		let status = false;
-		
 		if($rootScope.formError) {
 			status = $rootScope.formError.errors.hasOwnProperty(field) ? true : false;
 		}

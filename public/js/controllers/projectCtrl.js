@@ -17,6 +17,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
     $scope.pager = null;
     $scope.persons = [];
     $scope.persons_pager = null;
+    $scope.new_total_budget = '';
 
     $scope.project = {
         id: '',
@@ -202,6 +203,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         $http.get(`${CONFIG.apiUrl}/projects/${id}`)
         .then(function(res) {
             cb(res.data.project);
+            console.log(res.data.project);
         }, function(err) {
             console.log(err);
         });
@@ -260,7 +262,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
 
     $scope.store = function(event, form) {
         event.preventDefault();
-
+        //$scope.new_total_budget = StringFormatService.replaceCommas($scope.project.total_budget);
         $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
         $('#total_budget_str').val($scope.project.total_budget_str);
 
@@ -275,6 +277,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         e.preventDefault();
     
         if(confirm(`คุณต้องแก้ไขโครงการเลขที่ ${$scope.project.id} ใช่หรือไม่?`)) {
+            //$scope.new_total_budget = StringFormatService.replaceCommas($scope.project.total_budget);
             $scope.project.total_budget_str = StringFormatService.arabicNumberToText($scope.project.total_budget);
             $('#total_budget_str').val($scope.project.total_budget_str);
 
@@ -573,7 +576,7 @@ app.controller('projectCtrl', function(CONFIG, $scope, $http, toaster, StringFor
         e.preventDefault();
 
         if (form.$invalid) {
-            toaster.pop('error', "ผลการตรวจสอบ", "คุณกรอกข้อมูลไม่ครบ !!!");
+            toaster.pop('error', "ผลการตรวจสอบ", "คุณกรอกข้อมูลไม่ครบ  555!!!");
             return;
         }
 
