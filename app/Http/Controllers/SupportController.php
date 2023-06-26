@@ -899,7 +899,7 @@ class SupportController extends Controller
                                 $q->where('plans.in_plan', $inPlan);
                             })
                             ->pluck('support_details.support_id');
-
+                            
         $supports = Support::with('planType','depart','division','officer','details')
                         ->with('details.unit','details.plan','details.plan.planItem.unit')
                         ->with('details.plan.planItem','details.plan.planItem.item')
@@ -949,7 +949,6 @@ class SupportController extends Controller
                             }
                         })
                         ->orderBy('sent_date', 'DESC');
-
         return $supports;
     }
 

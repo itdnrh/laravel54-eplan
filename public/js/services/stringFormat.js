@@ -38,6 +38,10 @@ app.service('StringFormatService', function(CONFIG, $http) {
 
 		return 	ArabicNumberToText(Number);
 	}
+
+	this.replaceCommas = function(value) {
+		return value ? value.replace(/,/g, '') : value;
+	}
 	
 	this.arabicNumberToText = function(Number)
 	{
@@ -45,6 +49,7 @@ app.service('StringFormatService', function(CONFIG, $http) {
 		var NumberArray = new Array ("ศูนย์", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า", "สิบ");
 		var DigitArray = new Array ("", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน");
 		var BahtText = "";
+	
 		if (isNaN(Number))
 		{
 			return "ข้อมูลนำเข้าไม่ถูกต้อง";

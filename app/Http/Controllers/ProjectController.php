@@ -35,7 +35,7 @@ class ProjectController extends Controller
             'strategic_id'  => 'required',
             'strategy_id'   => 'required',
             // 'kpi_id'        => 'required',
-            'total_budget'  => 'required|regex:/^\d{1,3}(,\d{3})*(\.\d+)?$/',
+            'total_budget'  => ['required', 'regex:/^\d{1,3}(?:,\d{3})*(?:\.\d+)?$/'],
             'budget_src_id' => 'required',
             'owner_depart'  => 'required',
             'owner_person'  => 'required',
@@ -62,7 +62,7 @@ class ProjectController extends Controller
             'owner_person.required'     => 'กรุณาระบุผู้รับผิดชอบ',
             'start_month.required'      => 'กรุณาเลือกระยะเวลาดำเนินงาน',
         ];
-
+        //echo $request->total_budget;
         $validator = \Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
@@ -321,7 +321,7 @@ class ProjectController extends Controller
             $project->strategy_id       = $req['strategy_id'];
             $project->kpi_id            = $req['kpi_id'];
             //$project->total_budget      = $req['total_budget'];
-            $project->total_budget      = str_replace(',', '', $req['total_budget']);;
+            $project->total_budget      = str_replace(',', '', $req['total_budget']);
             $project->total_budget_str  = $req['total_budget_str'];
             $project->budget_src_id     = $req['budget_src_id'];
             $project->in_plan           = $req['in_plan'];
@@ -389,9 +389,9 @@ class ProjectController extends Controller
         $project->project_type_id   = $req['project_type_id'];
         $project->strategy_id       = $req['strategy_id'];
         $project->kpi_id            = $req['kpi_id'];
-        $project->total_budget      = $req['total_budget'];
+        $project->total_budget      = str_replace(',', '', $req['total_budget']);
         $project->total_budget_str  = $req['total_budget_str'];
-        $project->total_actual      = $req['total_actual'];
+        $project->total_actual      = str_replace(',', '', $req['total_actual']);
         $project->total_actual_str  = $req['total_actual_str'];
         $project->budget_src_id     = $req['budget_src_id'];
         $project->in_plan           = $req['in_plan'];
@@ -416,6 +416,8 @@ class ProjectController extends Controller
 
         if($project->save()) {
             return redirect('/projects/list');
+        } else {
+            
         }
     }
 
