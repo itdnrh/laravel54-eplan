@@ -952,6 +952,7 @@ class SupportController extends Controller
         return $supports;
     }
 
+    
     public function printForm($id)
     {
         $support = Support::with('planType','depart','division')

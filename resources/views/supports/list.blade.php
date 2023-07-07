@@ -306,9 +306,9 @@
                                 <h3 class="box-title">บันทึกขอสนับสนุน</h3>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/supports/add') }}" class="btn btn-primary pull-right">
+                                <!-- <a href="{{ url('/supports/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
-                                </a>
+                                </a> -->
                                 <a href="#" ng-show="supports.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
                                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                     Excel
