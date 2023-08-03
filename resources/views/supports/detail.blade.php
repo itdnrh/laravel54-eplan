@@ -326,13 +326,13 @@
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
-                        <a
+                        <!-- <a
                             href="{{ url('/supports/'.$support->id.'/print') }}"
                             class="btn btn-success"
                         >
                             <i class="fa fa-print" aria-hidden="true"></i>
                             พิมพ์บันทึกขอสนับสนุน
-                        </a>
+                        </a> -->
                         <button
                             ng-click="showSendForm(support)"
                             ng-show="support.status == 0 || support.status == 9"

@@ -162,7 +162,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('supports/timeline', 'SupportController@timeline');
     Route::get('supports/search', 'SupportController@search');
     Route::get('supports/detail/{id}', 'SupportController@detail');
-    Route::get('supports/add', 'SupportController@create');
+    //Route::get('supports/add', 'SupportController@create');
+    Route::get('supports/add_by_june', 'SupportController@create');
     Route::post('supports/store', 'SupportController@store');
     Route::get('supports/edit/{id}', 'SupportController@edit');
     Route::post('supports/update/{id}', 'SupportController@update');
