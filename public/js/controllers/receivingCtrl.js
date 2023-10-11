@@ -122,7 +122,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
     };
 
     $scope.showReceiveSupportForm = function(e, support) {
-        const balance = $scope.checkAllBalance(support.details);
+        const balance = $scope.checkAllBalance(support.details); // ตรวจสอบยอดว่าว่ามีเพียงพอหรือไม่
 
         if (balance > 0) {
             toaster.pop('error', "ผลการตรวจสอบ", "พบรายการที่มีงบประมาณไม่เพียงพอ !!!");
@@ -214,7 +214,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let doc_no  = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=1`)
+        $http.get(`${CONFIG.baseUrl}/supports/search?year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=11&plan_approved=approved`)
         .then(function(res) {
             $scope.loading = false;
 
@@ -242,7 +242,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         let doc_no  = $scope.txtSupportNo == '' ? '' : $scope.txtSupportNo;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
 
-        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=1`)
+        $http.get(`${url}&year=${year}&type=${type}&depart=${depart}&doc_no=${doc_no}&in_plan=${in_plan}&status=11&plan_approved=approved`)
         .then(function(res) {
             cb(res);
 

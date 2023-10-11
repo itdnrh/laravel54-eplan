@@ -40,7 +40,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         topic: '',
         depart_id: '',
         division_id: '',
-        year: '2566', //(moment().year() + 543).toString(),
+        year: '2567', //(moment().year() + 543).toString(),
         plan_type_id: '',
         category_id: '',
         is_plan_group: false,
@@ -568,6 +568,34 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     | Send processes
     |-----------------------------------------------------------------------------
     */
+    $scope.showPlanSendForm = function(support) {
+        if (support) {
+            $('#support-form-plan').modal('show');
+        } 
+    };
+
+    $scope.sendDocPlan = function(e) {
+        $scope.loading = true;
+
+        $http.post(`${CONFIG.baseUrl}/supports/sendDocPlan`, $scope.support)
+        .then(function(res) {
+            if (res.data.status == 1) {
+                toaster.pop('success', "ผลการทำงาน", "ส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                window.location.href = `${CONFIG.baseUrl}/supports/list`;
+            } else {
+                toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+            }
+
+            $scope.loading = false;
+        }, function(err) {
+            $scope.loading = false;
+
+            console.log(err);
+            toaster.pop('error', "ผลการตรวจสอบ", "ไม่สามารถส่งบันทึกขอสนับสนุนได้ !!!");
+        });
+    };
+
     $scope.showSendForm = function(support) {
         if (support) {
             $('#support-from').modal('show');
@@ -617,7 +645,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
         let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
-        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+        let status  = $scope.cboStatus === '' ? '0-89' : $scope.cboStatus; ///0-9
         let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
         let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
@@ -651,7 +679,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let desc    = $scope.txtDesc === '' ? '' : $scope.txtDesc;
         let cate    = !$scope.cboCategory ? '' : $scope.cboCategory;
         let in_plan = $scope.cboInPlan === '' ? '' : $scope.cboInPlan;
-        let status  = $scope.cboStatus === '' ? '0-9' : $scope.cboStatus;
+        let status  = $scope.cboStatus === '' ? '0-89' : $scope.cboStatus;  /// 0 -9
         let sdate   = $scope.dtpSdate === '' ? '' : $scope.dtpSdate;
         let edate   = $scope.dtpEdate === '' ? '' : $scope.dtpEdate;
 
@@ -1012,6 +1040,32 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
 
         if(confirm(`คุณต้องการยกเลิกการส่งบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
             $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-sent`, { status: 0 })
+            .then(function(res) {
+                if (res.data.status == 1) {
+                    toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งบันทึกขอสนับสนุนเรียบร้อย !!!");
+
+                    window.location.href = `${CONFIG.baseUrl}/supports/list`;
+                } else {
+                    toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
+                }
+
+                $scope.loading = false;
+            }, function(err) {
+                $scope.loading = false;
+
+                console.log(err);
+                toaster.pop('error', "ผลการทำงาน", "พบข้อผิดพลาด ไม่สามารถยกเลิกส่งบันทึกขอสนับสนุนได้ !!!");
+            });
+        } else {
+            $scope.loading = false;
+        }
+    };
+
+    $scope.cancelSendPlan = function(e, id) {
+        $scope.loading = true;
+
+        if(confirm(`คุณต้องการยกเลิกการส่งบันทึกขอสนับสนุน รหัส ${id} ใช่หรือไม่?`)) {
+            $http.put(`${CONFIG.apiUrl}/supports/${id}/cancel-sent-plan`, { status: 0 })
             .then(function(res) {
                 if (res.data.status == 1) {
                     toaster.pop('success', "ผลการทำงาน", "ยกเลิกส่งบันทึกขอสนับสนุนเรียบร้อย !!!");

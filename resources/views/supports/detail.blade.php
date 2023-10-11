@@ -326,28 +326,46 @@
 
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix" style="text-align: center;">
-                        <!-- <a
+                        <a 
+                            ng-show="support.status != 88"
                             href="{{ url('/supports/'.$support->id.'/print') }}"
                             class="btn btn-success"
                         >
                             <i class="fa fa-print" aria-hidden="true"></i>
                             พิมพ์บันทึกขอสนับสนุน
-                        </a> -->
-                        <button
+                        </a>
+                        <!-- <button
                             ng-click="showSendForm(support)"
                             ng-show="support.status == 0 || support.status == 9"
                             class="btn btn-primary"
                         >
                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                            ส่งเอกสารไปพัสดุ
-                        </button>
+                            ส่งเอกสารพัสดุ
+                        </button> -->
                         <button
+                            ng-click="showPlanSendForm(support)"
+                            ng-show="support.status == 0 || support.status == 9"
+                            class="btn btn-primary"
+                        >
+                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                            ส่งเอกสาร
+                        </button>
+                        
+                        <!-- <button
                             ng-click="cancel($event, support.id)"
-                            ng-show="support.status == 1"
+                            ng-show="support.status == 10"
                             class="btn btn-danger"
                         >
                             <i class="fa fa-times-circle" aria-hidden="true"></i>
                             ยกเลิกการส่งเอกสาร
+                        </button> -->
+                        <button
+                            ng-click="cancelSendPlan($event, support.id)"
+                            ng-show="support.status == 10"
+                            class="btn btn-danger"
+                        >
+                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            ยกเลิกการส่งเอกสารแผน
                         </button>
                     </div><!-- /.box-footer -->
                 </div><!-- /.box -->
@@ -356,6 +374,7 @@
         </div><!-- /.row -->
 
         @include('shared._support-form')
+        @include('shared._support-form-plan')
 
     </section>
 

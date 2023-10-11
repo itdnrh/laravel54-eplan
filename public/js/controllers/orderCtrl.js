@@ -7,7 +7,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     /** Filtering input controls */
     $scope.vatRates = [0,7];
     $scope.editRow = false;
-    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
+    $scope.cboYear = '2567'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.cboOfficer = '';
     $scope.cboStatus = '0';

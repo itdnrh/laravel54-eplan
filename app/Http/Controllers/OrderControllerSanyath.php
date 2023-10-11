@@ -308,38 +308,32 @@ class OrderController extends Controller
                             'status'        => 3
                         ]);
 
-                        /** เปลี่ยนไปคัดงบตอนแผนอนุมัติ */
+                        /** ส่วนของการตัดงบในแผน มีการปรับโฟล์ให้ไปตัดงบที่ตอนแผนอนุมัติแทน */
                         /** ========== Update plan's remain_amount by decrease from request->amount ========== */
-                        //$planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
+                        $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
 
                         /** ตรวจสอบว่ารายการตัดยอดตามจำนวน หรือ ตามยอดเงิน */
+                        if ($planItem->calc_method == 1) {
+                            /** กรณีตัดยอดตามจำนวน */
+                            $planItem->remain_amount = (float)$planItem->remain_amount - (float)currencyToNumber($item['amount']);
+                            $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
+                        } else {
+                            /** กรณีตัดยอดตามยอดเงิน */
+                            $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
 
-
-                         if ($planItem->calc_method == 1) {
-                             /** กรณีตัดยอดตามจำนวน */
-                             $planItem->remain_amount = (float)$planItem->remain_amount - (float)currencyToNumber($item['amount']);
-                        //     $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
-                         } else {
-                             /** กรณีตัดยอดตามยอดเงิน */
-                        //     $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
-
-                             if ($planItem->remain_budget <= 0) {
-                                 $planItem->remain_amount = 0;
-                             }
-                         }
-                         $planItem->save();
-
-
+                            if ($planItem->remain_budget <= 0) {
+                                $planItem->remain_amount = 0;
+                            }
+                        }
+                        $planItem->save();
                         /** ========== Update plan's remain_amount by decrease from request->amount ========== */
 
                         /** Update plan's status to  1=ดำเนินการแล้วบางส่วน, 2=ดำเนินการครบแล้ว */
-
-
-                         //if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
-                         //    Plan::find($detail->plan_id)->update(['status' => 2]);
-                         //} else {
-                         //    Plan::find($detail->plan_id)->update(['status' => 1]);
-                         //}
+                        if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
+                            Plan::find($detail->plan_id)->update(['status' => 2]);
+                        } else {
+                            Plan::find($detail->plan_id)->update(['status' => 1]);
+                        }
                     }
 
                     /** If all support_details's status is equal to 3, should update supports's status to 3=ออกใบสั่งซื้อแล้ว  */

@@ -104,7 +104,12 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('supports/details/group', 'SupportController@getSupportDetailGroups');
     Route::put('supports/{id}/return', 'SupportController@onReturn');
     Route::put('supports/{id}/cancel-sent', 'SupportController@cancelSent');
+    Route::put('supports/{id}/cancel-sent-plan', 'SupportController@cancelSentPlan');
     Route::put('supports/{id}/cancel-received', 'SupportController@cancelReceived');
+    // Route::put('supports/{id}/sendDocPlan', 'SupportController@sendDocPlan');
+    /** แผนอนุมตัิ*/
+    Route::put('supports/{id}/plan_return', 'SupportController@planOnReturn');
+    Route::put('supports/{id}/plan-cancel-received', 'SupportController@planCancelReceived');
 
     Route::post('support-orders', 'SupportOrderController@store');
     Route::put('support-orders/{id}', 'SupportOrderController@update');

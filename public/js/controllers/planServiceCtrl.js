@@ -16,7 +16,7 @@ app.controller('planServiceCtrl', function(CONFIG, $scope, $http, toaster, Strin
     $scope.service = {
         id: '',
         in_plan: 'I',
-        year: '2566', //(moment().year() + 543).toString(),
+        year: '2567', //(moment().year() + 543).toString(),
         plan_no: '',
         faction_id: '',
         depart_id: '',

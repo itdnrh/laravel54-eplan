@@ -126,7 +126,7 @@
                                         <th style="width: 5%; text-align: center;">พ.ค.</th>
                                         <th style="width: 5%; text-align: center;">มิ.ย.</th>
                                         <th style="width: 5%; text-align: center;">ก.ค.</th>
-                                        <th style="width: 5%; text-align: center;">ก.ค.</th>
+                                        <th style="width: 5%; text-align: center;">ส.ค.</th>
                                         <th style="width: 5%; text-align: center;">ก.ย.</th>
                                         <th style="width: 5%; text-align: center;">รวม</th>
                                     </tr>
