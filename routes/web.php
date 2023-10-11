@@ -162,16 +162,21 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('supports/timeline', 'SupportController@timeline');
     Route::get('supports/search', 'SupportController@search');
     Route::get('supports/detail/{id}', 'SupportController@detail');
-    //Route::get('supports/add', 'SupportController@create');
-    Route::get('supports/add_by_june', 'SupportController@create');
+    Route::get('supports/add', 'SupportController@create');
+    //Route::get('supports/add_by_june', 'SupportController@create');
     Route::post('supports/store', 'SupportController@store');
     Route::get('supports/edit/{id}', 'SupportController@edit');
     Route::post('supports/update/{id}', 'SupportController@update');
     Route::post('supports/delete/{id}', 'SupportController@delete');
     Route::post('supports/send', 'SupportController@send');
+    Route::post('supports/sendDocPlan', 'SupportController@sendDocPlan');
     Route::post('supports/receive', 'SupportController@onReceive');
     Route::get('supports/{id}/print', 'SupportController@printForm');
     Route::get('supports/excel', 'SupportController@excel');
+
+    /** แผนอนุมัติการขอสนับสนุน */
+    Route::post('supports/planOnReceive', 'SupportController@planOnReceive');
+    Route::post('supports/planOnReturn', 'SupportController@planOnReturn');
 
     /** การขอสนับสนุนจ้างซ่อม */
     Route::post('repairs/validate', 'RepairController@formValidate');
@@ -200,6 +205,10 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('orders/received', 'OrderController@received');
     Route::get('orders/{id}/print', 'OrderController@printForm');
     Route::get('orders/{id}/print-spec', 'OrderController@printSpecCommittee');
+
+    /** การอนุมัติงบ */
+    Route::get('approvesupports/received_supports', 'ApprovalSupportsController@received_supports');
+    Route::get('approvesupports/search', 'ApprovalSupportsController@search');
 
     /** ตรวจรับพัสดุ */
     Route::post('inspections/validate', 'InspectionController@formValidate');

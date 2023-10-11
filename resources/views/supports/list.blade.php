@@ -306,9 +306,9 @@
                                 <h3 class="box-title">บันทึกขอสนับสนุน</h3>
                             </div>
                             <div class="col-md-6">
-                                <!-- <a href="{{ url('/supports/add') }}" class="btn btn-primary pull-right">
+                                <a href="{{ url('/supports/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
-                                </a> -->
+                                </a>
                                 <a href="#" ng-show="supports.length" ng-click="exportListToExcel($event)" class="btn btn-success pull-right" style="margin-right: 5px;">
                                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                     Excel
@@ -408,6 +408,15 @@
                                         </span>
                                         <span class="label label-danger" ng-show="support.status == 9">
                                             เอกสารถูกตีกลับ
+                                        </span>
+                                        <span class="label label-danger" ng-show="support.status == 10">
+                                            รออนุมัติพิจารณา
+                                        </span>
+                                        <span class="label label-warning" ng-show="support.status == 11">
+                                            อยู่ระหว่างการจัดซื้อ
+                                        </span>
+                                        <span class="label bg-navy" ng-show="support.status == 88">
+                                            ไม่อนุมัติ
                                         </span>
                                         <span class="label label-danger" ng-show="support.status == 99">
                                             ยกเลิก

@@ -4,7 +4,8 @@
 				<!-- Sidebar user panel -->
 				<div class="user-panel">
 					<div class="pull-left image">
-						<?php $userAvatarUrl = (Auth::user()->person_photo != '') ? "http://192.168.20.4:3839/ps/PhotoPersonal/" .Auth::user()->person_photo : asset('img/user2-160x160.jpg'); ?>
+						<?php // $userAvatarUrl = (Auth::user()->person_photo != '') ? "http://192.168.20.4:3839/ps/PhotoPersonal/" .Auth::user()->person_photo : asset('img/user2-160x160.jpg'); ?>
+						<?php $userAvatarUrl =  asset('img/user2-160x160.jpg'); ?>
 						<img
 							src="{{ $userAvatarUrl }}"
 							class="img-circle"
@@ -180,6 +181,31 @@
 						</ul>
 					</li>
 
+					<!-- การอนุมัติงบ -->
+							@if (
+						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->memberOf->depart_id == 2 ||
+						Auth::user()->memberOf->depart_id == 4
+					)
+						<li class="treeview" ng-class="{ 'menu-open active': menu == 'approvesupports' }">
+							<a href="#">
+								<i class="fa fa-money"></i>
+								<span>การอนุมัติงบ</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li ng-class="{ 'active': submenu == 'received_supports' }">
+									<a href="{{ url('approvesupports/received_supports') }}">
+										<i class="fa fa-circle-o"></i> อนุมัติใบขอสนับสนุน
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
+
+
 					<!-- จัดซื้อจัดจ้าง -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
@@ -228,6 +254,8 @@
 							</ul>
 						</li>
 					@endif
+
+				
 
 					<!-- บริหารสัญญา -->
 					@if (

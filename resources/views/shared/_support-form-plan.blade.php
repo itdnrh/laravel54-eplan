@@ -1,9 +1,9 @@
-<div class="modal fade" id="support-from" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal fade" id="support-form-plan" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form>
                 <div class="modal-header">
-                    <h5 class="modal-title">บันทึกส่งเอกสารไปพัสดุ</h5>
+                    <h5 class="modal-title">บันทึกส่งเอกสารไปแผน </h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -13,24 +13,24 @@
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-default">@{{ support.doc_prefix }}/</button>
                                 </div>
-                                <!-- <input
+                                <input
                                     type="text"
-                                    id="_doc_no"
-                                    name="_doc_no"
+                                    id="doc_no"
+                                    name="doc_no"
                                     ng-model="support.doc_no"
                                     class="form-control"
-                                /> -->
+                                />
                             </div>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="">ลงวันที่</label>
-                            <!-- <input
+                            <input
                                 type="text"
-                                id="_doc_date"
-                                name="_doc_date"
+                                id="doc_date"
+                                name="doc_date"
                                 ng-model="support.doc_date"
                                 class="form-control"
-                            /> -->
+                            />
                         </div>
                         <!-- <div class="col-md-6 form-group">
                             <label for="">วันที่ส่งเอกสาร</label>
@@ -44,12 +44,12 @@
                 </div><!-- /.modal-body -->
                 <div class="modal-footer" style="padding-bottom: 8px;">
                     <button
-                        ng-click="send($event, planType, planId)"
+                        ng-click="sendDocPlan($event, planType, planId)"
                         class="btn btn-primary"
                         data-dismiss="modal"
                         aria-label="Save"
                     >
-                        บันทึก
+                        บันทึกแผน
                     </button>
                     <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">
                         ปิด

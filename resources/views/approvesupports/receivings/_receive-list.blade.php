@@ -87,7 +87,6 @@
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
-                                <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
                                 <th style="width: 20%; text-align: center;">หน่วยงาน</th>
                                 <th style="width: 10%; text-align: center;">Actions</th>
                             </tr>

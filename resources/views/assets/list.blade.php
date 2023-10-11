@@ -425,7 +425,7 @@
                                                 title="แก้ไขรายการ">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <form
+                                            <!-- <form
                                                 id="frmDelete"
                                                 method="POST"
                                                 action="{{ url('/assets/delete') }}"
@@ -439,7 +439,7 @@
                                                 >
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                            </form>
+                                            </form> -->
                                         </div>
                                     </td>             
                                 </tr>

@@ -652,6 +652,89 @@ class SupportController extends Controller
         }
     }
 
+     // POST /supports/send_doc_plan
+     public function sendDocPlan(Request $req)
+     {
+         try {
+             $support = Support::find($req['id']);
+             $support->doc_no    = $req['doc_prefix'].'/'.$req['doc_no'];
+             $support->doc_date  = convThDateToDbDate($req['doc_date']);
+             $support->plan_send_doc_date = convThDateToDbDate($req['doc_date']);
+             $support->plan_send_doc_user = Auth::user()->person_id;
+             $support->status    = 10;
+ 
+             if ($support->save()) {
+                 /** Update support_details's status to 1=ส่งเอกสารแล้ว */
+                 SupportDetail::where('support_id', $req['id'])->update(['status' => 10]);
+ 
+                 /** Update all plans's status to 9=อยู่ระหว่างการจัดซื้อ */
+                 foreach($req['details'] as $detail) {
+                     $plan = Plan::with('planItem')->find($detail['plan_id']);
+ 
+                     if ($plan->planItem->calc_method == 1) {
+                         $plan->status = 9;
+                         $plan->save();
+                     }
+                 }
+ 
+                 return [
+                     'status'    => 1,
+                     'message'   => 'Support have been sent!!'
+                 ];
+             } else {
+                 return [
+                     'status'    => 0,
+                     'message'   => 'Something went wrong!!'
+                 ];
+             }
+         } catch (\Exception $ex) {
+             return [
+                 'status'    => 0,
+                 'message'   => $ex->getMessage()
+             ];
+         }
+     }
+
+    
+    // PUT /api/supports/:id/cancel-sent
+    public function cancelSentPlan(Request $req, $id)
+    {
+        try {
+            $support = Support::find($id);
+            $support->status    = 0;
+            $support->plan_send_doc_date = null;
+            $support->plan_send_doc_user = null;
+
+            if ($support->save()) {
+                /** Update support_details's status to 0=รอดำเนินการ */
+                SupportDetail::where('support_id', $id)->update(['status' => 0]);
+                
+                /** Update plans's status to 0=รอดำเนินการ */
+                $details = SupportDetail::where('support_id', $id)->get();
+                foreach($details as $detail) {
+                    Plan::where('id', $detail->plan_id)->update(['status' => 0]);
+                }
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Support have been canceled!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+    
+     
+
     // POST /supports/send
     public function send(Request $req)
     {
@@ -831,6 +914,177 @@ class SupportController extends Controller
         }
     }
 
+
+    // pland aprooveed supports
+    // POST /suports/:id/plan_approved
+    public function planOnReceive(Request $req)
+    {
+        try {
+            $plan_approved_budget = str_replace(',', '', $req['plan_approved_budget']);
+            $support = Support::find($req['support_id']);
+            $support->plan_approved_status   = 'approved';
+            $support->plan_approved_date     = convThDateToDbDate($req['plan_approved_date']);
+            $support->plan_approved_budget   = $plan_approved_budget;
+            $support->plan_approved_note     = $req['plan_approved_note'];
+            $support->plan_approved_user     = Auth::user()->person_id;
+            $support->status                 = 11;
+
+            if ($support->save()) {
+                /** Get all support's details */
+                $details = SupportDetail::where('support_id', $req['support_id'])->get();
+                foreach($details as $detail) {
+                    /** Update support_details's status to 2=รับเอกสารแล้ว */
+                    SupportDetail::find($detail->id)->update(['status' => 11]);
+                }
+
+                /** ตัดงบประมาณ */
+
+                /** ========== Update plan's remain_amount by decrease from request->amount ========== */
+                $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
+                $planItem->remain_budget = (float)$planItem->remain_budget - $plan_approved_budget;
+                //if ($planItem->calc_method == 1) {
+                /** กรณีตัดยอดตามจำนวน */
+                //    $planItem->remain_amount = (float)$planItem->remain_amount - (float)currencyToNumber($item['amount']);
+                //    $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($req['plan_approved_budget']);
+                //} else {
+                /** กรณีตัดยอดตามยอดเงิน */
+                //    $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($req['plan_approved_budget']);
+
+                    if ($planItem->remain_budget <= 0) {
+                        $planItem->remain_amount = 0;
+                    }
+                //}
+                $planItem->save();   
+                
+                
+                if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
+                    Plan::find($detail->plan_id)->update(['status' => 2]);
+                } else {
+                   Plan::find($detail->plan_id)->update(['status' => 1]);
+                }
+
+                /** ตัดงบประมาณ */
+
+                return [
+                    'status'    => 1,
+                    'support'   => $support,
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }    
+
+    public function planOnReturn(Request $req, $id)
+    {
+        try {
+            $support = Support::find($id);
+            $support->plan_approved_status  = 'bounced';
+            $support->plan_bounced_date     = date('Y-m-d h:i:s');
+            $support->plan_bounced_note     = $req['plan_bounced_note'];
+            $support->plan_bounced_user     = $req['user'];
+            $support->status                = 88;
+            $support->plan_approved_date    = NULL;
+            $support->plan_approved_budget    = NULL;
+            $support->plan_approved_note    = NULL;
+            $support->plan_approved_user    = NULL;
+
+            if ($support->save()) {
+                /** Update support_details's status to 0=รอดำเนินการ */
+                SupportDetail::where('support_id', $id)->update(['status' => 88]);
+
+                /** Update plans's status to 0=รอดำเนินการ */
+                $details = SupportDetail::where('support_id', $id)->get();
+                foreach($details as $detail) {
+                    Plan::where('id', $detail->plan_id)->update(['status' => 88]);
+                }
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'Support have been returned!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'Something went wrong!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function planCancelReceived(Request $req, $id){
+        try {
+            $support = Support::find($id);
+           // echo $support->plan_approved_budget;
+            $details = SupportDetail::where('support_id', $id)->get();
+            foreach($details as $detail) {
+                 /** ตัดงบประมาณ */
+               
+                /** ========== Update plan's remain_amount by decrease from request->amount ========== */
+                $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
+                $planItem->remain_budget = (float)$planItem->remain_budget + $support->plan_approved_budget;
+                    if ($planItem->remain_budget <= 0) {
+                        $planItem->remain_amount = 0;
+                    }
+                $planItem->save();   
+                
+                
+                if ($planItem->remain_amount = 0 || $planItem->remain_budget <= 0) {
+                    Plan::find($detail->plan_id)->update(['status' => 2]);
+                } else {
+                    Plan::find($detail->plan_id)->update(['status' => 1]);
+                }
+
+                /** ตัดงบประมาณ */
+
+            }
+
+            
+
+
+            $support->status = 10;
+            $support->plan_approved_status  = 'wait_approved';
+            $support->plan_bounced_date     = NULL;
+            $support->plan_bounced_note     = NULL;
+            $support->plan_bounced_user     = NULL;
+            $support->plan_approved_date    = NULL;
+            $support->plan_approved_budget  = NULL;
+            $support->plan_approved_note    = NULL;
+            $support->plan_approved_user    = NULL;
+
+            if ($support->save()) {
+
+                return [
+                    'status'    => 1,
+                    'message'   => 'ยกเลิกการอนุมัติงบประมาณสำเร็จ!!'
+                ];
+            } else {
+                return [
+                    'status'    => 0,
+                    'message'   => 'ไม่สามารถยกเลิกการอนุมัติรายการได้!!'
+                ];
+            }
+        } catch (\Exception $ex) {
+            return [
+                'status'    => 0,
+                'message'   => $ex->getMessage()
+            ];
+        }
+    }
+
     public function excel(Request $req)
     {
         $fileName = 'supports-list-' . date('YmdHis') . '.xlsx';
@@ -862,6 +1116,8 @@ class SupportController extends Controller
         $cate   = $req->get('cate');
         $inPlan = $req->get('in_plan');
         $status = $req->get('status');
+        $approved = $req->get('plan_approved');
+        $plan_send = $req->get('plan_send');
 
         list($sdate, $edate) = array_key_exists('date', $req->all())
                                 ? explode('-', $req->get('date'))
@@ -922,6 +1178,12 @@ class SupportController extends Controller
                         })
                         ->when(!empty($depart), function($q) use ($depart) {
                             $q->where('depart_id', $depart);
+                        })
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->where('plan_approved_status', $approved);
+                        })
+                        ->when(!empty($approved), function($q) use ($approved) {
+                            $q->whereNotNull('plan_send_doc_date');
                         })
                         ->when(!empty($division), function($q) use ($division) {
                             $q->where('division_id', $division);
