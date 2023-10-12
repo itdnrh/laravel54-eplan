@@ -319,7 +319,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                             ? $scope.cboDepart
                             : $('#depart_id').val();
 
-        $http.get(`${CONFIG.baseUrl}/plans/search?type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
+        $http.get(`${CONFIG.baseUrl}/plans/search?year=2567type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             if (toggleModal) $('#plans-list').modal('show');
 
