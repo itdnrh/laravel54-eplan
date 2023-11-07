@@ -22,6 +22,7 @@
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: right;">ประมาณการ</th>
+                <th style="width: 15%; text-align: right;">ยอดอนุมัติ</th>
                 <th style="width: 15%; text-align: right;">รับเอกสาร</th>
                 <th style="width: 15%; text-align: right;">ออกใบซื้อ/จ้าง</th>
                 <th style="width: 15%; text-align: right;">ส่งเบิกเงิน</th>
@@ -29,6 +30,7 @@
             </tr>
             <tr ng-repeat="(index, material) in materials" style="font-size: 12px;">
                 <td>@{{ materials_pager.from+index }}. @{{ material.category_name }}</td>
+                <td style="text-align: right;">@{{ asset.plan_approved | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.request | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.po | currency:'':0 }}</td>
@@ -38,6 +40,7 @@
             <tr>
                 <td style="text-align: center;">รวม</td>
                 <td style="text-align: right;">@{{ totalMaterial.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalMaterial.plan_approved | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalMaterial.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalMaterial.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalMaterial.withdraw | currency:'':0 }}</td>

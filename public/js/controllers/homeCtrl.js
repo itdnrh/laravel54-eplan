@@ -233,6 +233,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 $scope.totalAsset.inspect   += asset.inspect || 0;
                 $scope.totalAsset.withdraw  += asset.withdraw || 0;
                 $scope.totalAsset.debt      += asset.debt || 0;
+                $scope.totalAsset.plan_approved      += asset.plan_approved || 0;
             });
 
             $scope.assets_pager = pager;
@@ -330,6 +331,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
             $scope.totalMaterial.inspect   += material.inspect || 0;
             $scope.totalMaterial.withdraw  += material.withdraw || 0;
             $scope.totalMaterial.debt      += material.debt || 0;
+            $scope.totalAsset.plan_approved  += asset.plan_approved || 0;
         });
 
         $scope.materials_pager = pager;
@@ -439,6 +441,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 $scope.totalService.inspect   += service.inspect || 0;
                 $scope.totalService.withdraw  += service.withdraw || 0;
                 $scope.totalService.debt      += service.debt || 0;
+                $scope.totalAsset.plan_approved  += asset.plan_approved || 0;
             });
 
             $scope.loading = false;
@@ -521,6 +524,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
                 $scope.totalConstruct.inspect   += construct.inspect || 0;
                 $scope.totalConstruct.withdraw  += construct.withdraw || 0;
                 $scope.totalConstruct.debt      += construct.debt || 0;
+                $scope.totalAsset.plan_approved  += asset.plan_approved || 0;
             });
 
             $scope.loading = false;

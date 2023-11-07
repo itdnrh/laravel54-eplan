@@ -22,6 +22,7 @@
             <tr>
                 <th>ประเภท</th>
                 <th style="width: 15%; text-align: right;">ประมาณการ</th>
+                <th style="width: 15%; text-align: right;">ยอดอนุมัติ</th>
                 <th style="width: 15%; text-align: right;">รับเอกสาร</th>
                 <th style="width: 15%; text-align: right;">ออกใบซื้อ/จ้าง</th>
                 <th style="width: 15%; text-align: right;">ส่งเบิกเงิน</th>
@@ -30,6 +31,7 @@
             <tr ng-repeat="(index, asset) in assets">
                 <td>@{{ index+1 }}. @{{ asset.category_name }}</td>
                 <td style="text-align: right;">@{{ asset.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ asset.plan_approved | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ asset.withdraw | currency:'':0 }}</td>
@@ -38,6 +40,7 @@
             <tr>
                 <td style="text-align: center;">รวม</td>
                 <td style="text-align: right;">@{{ totalAsset.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ totalAsset.plan_approved | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalAsset.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalAsset.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ totalAsset.withdraw | currency:'':0 }}</td>
