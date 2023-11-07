@@ -1,7 +1,7 @@
 app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, StringFormatService, PaginateService) {
     /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboYear = '2566';
+    $scope.cboYear = '2567';
     $scope.cboSupplier = '';
     $scope.cboIsCompleted = '1';
     $scope.txtWithdrawNo = '';
@@ -21,7 +21,7 @@ app.controller('withdrawalCtrl', function(CONFIG, $scope, $http, toaster, String
 
     $scope.withdrawal = {
         id: '',
-        year: '2566',
+        year: '2567',
         order: null,
         order_id: '',
         doc_prefix: '',

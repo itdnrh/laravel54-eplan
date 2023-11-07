@@ -10,7 +10,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.supports = [];
     $scope.supports_pager = null;
 
-    $scope.cboYear = '2566'; //(moment().year() + 543).toString();
+    $scope.cboYear = '2567'; //(moment().year() + 543).toString();
     $scope.cboInPlan = '';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';
@@ -123,11 +123,11 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.showReceiveSupportForm = function(e, support) {
         const balance = $scope.checkAllBalance(support.details); // ตรวจสอบยอดว่าว่ามีเพียงพอหรือไม่
-
-        if (balance > 0) {
-            toaster.pop('error', "ผลการตรวจสอบ", "พบรายการที่มีงบประมาณไม่เพียงพอ !!!");
-            return;
-        }
+        // Disable Because Nccheck
+        //if (balance > 0) {
+        //    toaster.pop('error', "ผลการตรวจสอบ", "พบรายการที่มีงบประมาณไม่เพียงพอ !!!");
+        //    return;
+        //}
 
         $scope.receive.support_id = support.id;
 
