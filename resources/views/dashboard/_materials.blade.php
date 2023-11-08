@@ -30,8 +30,8 @@
             </tr>
             <tr ng-repeat="(index, material) in materials" style="font-size: 12px;">
                 <td>@{{ materials_pager.from+index }}. @{{ material.category_name }}</td>
-                <td style="text-align: right;">@{{ asset.plan_approved | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.request | currency:'':0 }}</td>
+                <td style="text-align: right;">@{{ material.plan_approved | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.received | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.po | currency:'':0 }}</td>
                 <td style="text-align: right;">@{{ material.withdraw | currency:'':0 }}</td>

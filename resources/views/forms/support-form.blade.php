@@ -985,19 +985,35 @@
                             </p>
                         </td>
                         <td colspan="2" style="text-align: center; padding: 10px;">
-                            <p style="margin: 0;">
+                            @if($support->depart_id == 39)
                                 @if(empty($support->head_of_faction))
-                                    หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
+                                    ผู้ช่วยผู้อำนวยการด้านสารสนเทศ<span class="dot">....................................</span>
                                 @else
                                     <span class="dot">......................................................</span>
                                 @endif
-                            </p>
-                            <p style="margin: 0;">
-                                ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
-                            </p>
-                            <p style="margin: 0;">
-                                <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span>
-                            </p>
+                                <p style="margin-left: 130px;">
+                                    (นายปิยะมิตร  สุมนศรีวรกุล)
+                                </p>
+                                <p style="margin-left: 135px;">
+                                    <span>นายแพทย์ชำนาญการพิเศษ</span>
+                                </p>
+                            @elseif(in_array($support->depart_id, [66,68]))
+                                <p style="margin: 0;">
+                                    @if(empty($support->head_of_faction))
+                                        หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
+                                    @else
+                                        <span class="dot">......................................................</span>
+                                    @endif
+                                </p>
+                                <p style="margin: 0;">
+                                    ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
+                                </p>
+                                <p style="margin: 0;">
+                                    <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span>
+                                </p>
+                            @else
+                            @endif
+        
                         </td>
                     </tr>
                 </table>
