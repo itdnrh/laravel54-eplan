@@ -997,7 +997,7 @@
                                 <p style="margin-left: 135px;">
                                     <span>นายแพทย์ชำนาญการพิเศษ</span>
                                 </p>
-                            @elseif(in_array($support->depart_id, [66,68]))
+                            @else
                                 <p style="margin: 0;">
                                     @if(empty($support->head_of_faction))
                                         หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
@@ -1011,7 +1011,6 @@
                                 <p style="margin: 0;">
                                     <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span>
                                 </p>
-                            @else
                             @endif
         
                         </td>
