@@ -22,7 +22,7 @@
                     <span style="font-size: 14px;">บาท</span>
                     <!-- <sup style="font-size: 20px">%</sup> -->
                 </h3>
-                <p><h4>แผนประมาณการ</h4></p>
+                <p><h4>ยอดอนุมัติ</h4></p>
             </div>
             <div class="icon">
                 <i class="ion ion-paper-airplane"></i>

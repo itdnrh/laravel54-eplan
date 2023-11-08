@@ -222,7 +222,8 @@ class DashboardController extends Controller
                         \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
-                        \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")
+                        \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt"),
+                        \DB::raw("sum(case when (supports.plan_approved_status = 'approved' ) then supports.plan_approved_budget end) as plan_approved")
                     )
                     ->leftJoin('support_details', 'support_details.support_id', '=', 'supports.id')
                     ->groupBy('supports.category_id')
@@ -288,7 +289,8 @@ class DashboardController extends Controller
                         \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
-                        \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")
+                        \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt"),
+                        \DB::raw("sum(case when (supports.plan_approved_status = 'approved' ) then supports.plan_approved_budget end) as plan_approved")
                     )
                     ->leftJoin('support_details', 'support_details.support_id', '=', 'supports.id')
                     ->groupBy('supports.category_id')
@@ -354,7 +356,8 @@ class DashboardController extends Controller
                         \DB::raw("sum(case when (support_details.status in (3,4,5,6)) then support_details.sum_price end) as po"),
                         \DB::raw("sum(case when (support_details.status in (4,5,6)) then support_details.sum_price end) as inspect"),
                         \DB::raw("sum(case when (support_details.status in (5,6)) then support_details.sum_price end) as withdraw"),
-                        \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt")
+                        \DB::raw("sum(case when (support_details.status =6) then support_details.sum_price end) as debt"),
+                        \DB::raw("sum(case when (supports.plan_approved_status = 'approved' ) then supports.plan_approved_budget end) as plan_approved")
                     )
                     ->leftJoin('support_details', 'support_details.support_id', '=', 'supports.id')
                     ->groupBy('supports.category_id')
