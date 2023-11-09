@@ -306,8 +306,8 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
         const balance = $scope.checkAllBalance(support.details);
 
         if (balance > 0) {
-            toaster.pop('error', "ผลการตรวจสอบ", "พบรายการที่มีงบประมาณไม่เพียงพอ !!!");
-            return;
+            //toaster.pop('error', "ผลการตรวจสอบ", "พบรายการที่มีงบประมาณไม่เพียงพอ !!!");
+            //return;
         }
 
         window.location.href = `${CONFIG.baseUrl}/orders/add?support=${support.id}`;
