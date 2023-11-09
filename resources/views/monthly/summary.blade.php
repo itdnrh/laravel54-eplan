@@ -78,7 +78,7 @@
                             <div class="col-md-6">
                                 <h3 class="box-title">สรุปผลการดำเนินงานแผนเงินบำรุง</h3>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->depart_id == '4' }}">
                                 <a href="{{ url('/monthly/add') }}" class="btn btn-primary pull-right">
                                     เพิ่มรายการ
                                 </a>
