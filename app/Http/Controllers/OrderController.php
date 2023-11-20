@@ -471,11 +471,11 @@ class OrderController extends Controller
                         if ($planItem->calc_method == 1) {
                             /** กรณีตัดยอดตามจำนวน */
                             $planItem->remain_amount = (float)$planItem->remain_amount + (float)$orderDetail->amount;
-                            $planItem->remain_budget = (float)$planItem->remain_budget + (float)$orderDetail->sum_price;
+                            //$planItem->remain_budget = (float)$planItem->remain_budget + (float)$orderDetail->sum_price; // ไปตัดที่หน้าแผนแทน
                         } else {
                             /** กรณีตัดยอดตามยอดเงิน */
                             $planItem->remain_amount = 1;
-                            $planItem->remain_budget = (float)$planItem->remain_budget + (float)$orderDetail->sum_price;
+                            //$planItem->remain_budget = (float)$planItem->remain_budget + (float)$orderDetail->sum_price;  // ไปตัดที่หน้าแผนแทน
                         }
                         $planItem->save();
 
@@ -513,10 +513,10 @@ class OrderController extends Controller
                             if ($planItem->calc_method == 1) {
                                 /** กรณีตัดยอดตามจำนวน */
                                 $planItem->remain_amount = (float)$planItem->remain_amount - (float)currencyToNumber($item['amount']);
-                                $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
+                                //$planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);  // ไปตัดที่หน้าแผนแทน 
                             } else {
                                 /** กรณีตัดยอดตามยอดเงิน */
-                                $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
+                                //$planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);  // ไปตัดที่หน้าแผนแทน
 
                                 if ($planItem->remain_budget <= 0) {
                                     $planItem->remain_amount = 0;
@@ -542,11 +542,11 @@ class OrderController extends Controller
                         if ($planItem->calc_method == 1) {
                             /** กรณีตัดยอดตามจำนวน */
                             $planItem->remain_amount = (float)$planItem->remain_amount + (float)$detail->amount;
-                            $planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;
+                            //$planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;  // ไปตัดที่หน้าแผนแทน
                         } else {
                             /** กรณีตัดยอดตามยอดเงิน */
                             $planItem->remain_amount = 1;
-                            $planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;
+                            //$planItem->remain_budget = (float)$planItem->remain_budget + (float)$detail->sum_price;  // ไปตัดที่หน้าแผนแทน
                         }
                         $planItem->save();
 
@@ -564,10 +564,10 @@ class OrderController extends Controller
                             if ($planItem->calc_method == 1) {
                                 /** กรณีตัดยอดตามจำนวน */
                                 $planItem->remain_amount = (float)$planItem->remain_amount - (float)currencyToNumber($item['amount']);
-                                $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
+                                //$planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);  // ไปตัดที่หน้าแผนแทน
                             } else {
                                 /** กรณีตัดยอดตามยอดเงิน */
-                                $planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);
+                                //$planItem->remain_budget = (float)$planItem->remain_budget - (float)currencyToNumber($item['sum_price']);  // ไปตัดที่หน้าแผนแทน
 
                                 if ($planItem->remain_budget <= 0) {
                                     $planItem->remain_amount = 0;
@@ -624,13 +624,15 @@ class OrderController extends Controller
 
                 foreach($orderDetail as $rm) {
                     /** Update support_details's status to 2=รับเอกสารแล้ว */
+                    /** Update support's status to 11= แผนรับเอกสารแล้ว */
                     SupportDetail::find($rm->support_detail_id)->update([
                         'ref_order_id'  => null,
-                        'status'        => 2
+                        'status'        => 11
                     ]);
 
                     /** Update support's status to 2=รับเอกสารแล้ว */
-                    Support::find($rm->support_id)->update(['status' => 2]);
+                    /** Update support's status to 11= แผนรับเอกสารแล้ว */
+                    Support::find($rm->support_id)->update(['status' => 11]);
 
                     /** Update plan's status to 0=รอดำเนินการ */
                     Plan::find($rm->plan_id)->update(['status' => 0]);
@@ -641,11 +643,11 @@ class OrderController extends Controller
                     if ($planItem->calc_method == 1) {
                         /** กรณีตัดยอดตามจำนวน */
                         $planItem->remain_amount = (float)$planItem->remain_amount + (float)$rm->amount;
-                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$rm->sum_price;
+                        //$planItem->remain_budget = (float)$planItem->remain_budget + (float)$rm->sum_price; // ไปติดที่หน้าแผนอนุมัติแทน
                     } else {
                         /** กรณีตัดยอดตามยอดเงิน */
                         $planItem->remain_amount = 1;
-                        $planItem->remain_budget = (float)$planItem->remain_budget + (float)$rm->sum_price;
+                        //$planItem->remain_budget = (float)$planItem->remain_budget + (float)$rm->sum_price; // ไปติดที่หน้าแผนอนุมัติแทน
                     }
                     $planItem->save();
 

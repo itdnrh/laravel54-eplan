@@ -993,7 +993,7 @@ class SupportController extends Controller
             $support->plan_bounced_user     = $req['user'];
             $support->status                = 88;
             $support->plan_approved_date    = NULL;
-            $support->plan_approved_budget    = NULL;
+            $support->plan_approved_budget  = NULL;
             $support->plan_approved_note    = NULL;
             $support->plan_approved_user    = NULL;
 
@@ -1035,7 +1035,7 @@ class SupportController extends Controller
                
                 /** ========== Update plan's remain_amount by decrease from request->amount ========== */
                 $planItem = PlanItem::where('plan_id', $detail->plan_id)->first();
-                $planItem->remain_budget = (float)$planItem->remain_budget + $support->plan_approved_budget;
+                $planItem->remain_budget = (float)$planItem->remain_budget + (float)$support->plan_approved_budget;
                     if ($planItem->remain_budget <= 0) {
                         $planItem->remain_amount = 0;
                     }
@@ -1051,8 +1051,6 @@ class SupportController extends Controller
                 /** ตัดงบประมาณ */
 
             }
-
-            
 
 
             $support->status = 10;
