@@ -150,7 +150,7 @@
                         </td>
                     </tr>
 
-                    @if(count($committees) > 1 || $haveRowOvered > 0)
+                    @if(count($committees) >= 1 || $haveRowOvered > 0)
                         <tr>
                             <td colspan="4">
                                 @if($haveRowOvered > 0)
@@ -175,7 +175,7 @@
                         </tr>
                     @endif
 
-                    @if(count($committees) > 1 || $haveRowOvered > 0)
+                    @if(count($committees) >= 1 || $haveRowOvered > 0)
                         <tr>
                             <td colspan="4">
                                 <div class="page-number">- ๒ -</div>
