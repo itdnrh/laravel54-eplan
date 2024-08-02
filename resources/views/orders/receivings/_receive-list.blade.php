@@ -83,7 +83,7 @@
                             <tr>
                                 <th style="width: 3%; text-align: center;">#</th>
                                 <!-- <th style="width: 8%; text-align: center;">ปีงบ</th> -->
-                                <th style="width: 8%; text-align: center;">เลขที่แผน</th>
+                                <th style="width: 8%; text-align: center;">เลขที่แผน5</th>
                                 <th>รายการ</th>
                                 <th style="width: 8%; text-align: center;">ราคาต่อหน่วย</th>
                                 <th style="width: 8%; text-align: center;">รวมเป็นเงิน</th>
