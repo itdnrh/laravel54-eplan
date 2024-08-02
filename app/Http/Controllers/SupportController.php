@@ -20,6 +20,7 @@ use App\Models\Faction;
 use App\Models\Depart;
 use App\Models\Division;
 use App\Models\ProvinceOrder;
+use App\Models\PlanApprovedBudget;
 
 class SupportController extends Controller
 {
@@ -855,7 +856,8 @@ class SupportController extends Controller
     {
         try {
             $support = Support::find($id);
-            $support->status = 1;
+            //$support->status = 1; OLD STATUS BEFORE ADD PLAN
+            $support->status = 11; 
 
             if ($support->save()) {
                 return [
@@ -885,9 +887,18 @@ class SupportController extends Controller
             $support->returned_reason   = $req['reason'];
             $support->returned_user     = $req['user'];
             $support->status            = 9;
+            $support->plan_approved_status  = 'wait_approved';
+            $support->plan_bounced_date     = NULL;
+            $support->plan_bounced_note     = NULL;
+            $support->plan_bounced_user     = NULL;
+            $support->plan_approved_date    = NULL;
+            $support->plan_approved_budget  = NULL;
+            $support->plan_approved_note    = NULL;
+            $support->plan_approved_user    = NULL;
 
             if ($support->save()) {
                 /** Update support_details's status to 0=รอดำเนินการ */
+                PlanApprovedBudget::where('support_id', $id)->delete();
                 SupportDetail::where('support_id', $id)->update(['status' => 0]);
 
                 /** Update plans's status to 0=รอดำเนินการ */
