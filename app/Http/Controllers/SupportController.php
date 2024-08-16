@@ -898,7 +898,7 @@ class SupportController extends Controller
 
             if ($support->save()) {
                 /** Update support_details's status to 0=รอดำเนินการ */
-                PlanApprovedBudget::where('support_id', $id)->delete();
+                //PlanApprovedBudget::where('support_id', $id)->delete(); ยกเลิกลบ การอนุมัติ
                 SupportDetail::where('support_id', $id)->update(['status' => 0]);
 
                 /** Update plans's status to 0=รอดำเนินการ */
