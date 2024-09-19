@@ -20,7 +20,7 @@ app.controller(
     $scope.cboDivision = '';
     $scope.dtpDate = StringFormatService.convFromDbDate(moment().format('YYYY-MM-DD'));
     $scope.dtpMonth = StringFormatService.convToThMonth(moment().format('YYYY-MM-DD'));
-    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567];
+    $scope.budgetYearRange = [2560,2561,2562,2563,2564,2565,2566,2567,2568];
     $scope.cboPlanType = '';
     $scope.cboProjectType = '';
     $scope.cboCategory = '';

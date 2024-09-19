@@ -27,7 +27,7 @@ app.controller('repairCtrl', function(CONFIG, $rootScope, $scope, $http, toaster
         topic: '',
         depart_id: '',
         division_id: '',
-        year: '2567', //(moment().year() + 543).toString(),
+        year: '2568', //(moment().year() + 543).toString(),
         plan_type_id: '3',
         plan_id: '',
         total: '',

@@ -21,7 +21,7 @@ app.controller('utilityCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         bill_date: '',
         supplier_id: '',
         supplier: null,
-        year: '2567',
+        year: '2568',
         month: '',
         utility_type_id: '',
         utility_type: null,
