@@ -7,7 +7,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
     /** Filtering input controls */
     $scope.vatRates = [0,7];
     $scope.editRow = false;
-    $scope.cboYear = '2567'; //(moment().year() + 543).toString();
+    $scope.cboYear = '2568'; //(moment().year() + 543).toString();
     $scope.cboSupplier = '';
     $scope.cboOfficer = '';
     $scope.cboStatus = '0';
@@ -38,7 +38,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         po_app_no: '',
         po_app_prefix: '',
         po_app_date: '',
-        year: '2567',
+        year: '2568',
         support_id: '',
         order_type_id: '',
         plan_type_id: '',
@@ -226,7 +226,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
             $scope.planGroups_pager = null;
             $scope.plans = [];
 
-            let year = $scope.order.year === '' ? '' : 2567;
+            let year = $scope.order.year === '' ? '' : 2568;
 
             $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
             .then(function(res) {
@@ -248,7 +248,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.planGroups_pager = null;
         $scope.plans = [];
 
-        let year = $scope.order.year === '' ? '' : 2567;
+        let year = $scope.order.year === '' ? '' : 2568;
 
         $http.get(`${CONFIG.apiUrl}/supports/details/group?year=${year}&cate=${cate}&status=2`)
         .then(function(res) {
@@ -270,7 +270,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.planGroups_pager = null;
         $scope.plans = [];
 
-        let year = $scope.order.year === '' ? '' : 2567;
+        let year = $scope.order.year === '' ? '' : 2568;
 
         $http.get(`${url}&year=${year}&type=${type}&status=2`)
         .then(function(res) {
@@ -347,7 +347,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.handleInputChange("plans", []);
         $scope.handleInputChange("plans_pager", null);
 
-        let year = $scope.order.year === '' ? '' : 2567;
+        let year = $scope.order.year === '' ? '' : 2568;
         let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
         let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;
@@ -376,7 +376,7 @@ app.controller('orderCtrl', function(CONFIG, $scope, $http, toaster, StringForma
         $scope.handleInputChange("plans", []);
         $scope.handleInputChange("plans_pager", null);
 
-        let year = $scope.order.year === '' ? '' : 2567;
+        let year = $scope.order.year === '' ? '' : 2568;
         let type = $scope.order.plan_type_id == '' ? '' : $scope.order.plan_type_id;
         let cate = $scope.order.category_id == '' ? '' : $scope.order.category_id;
         let depart = $scope.cboDepart == '' ? '' : $scope.cboDepart;

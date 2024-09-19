@@ -10,7 +10,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
 
     $scope.asset = {
         id: '',
-        year: '2567', //(moment().year() + 543).toString(),
+        year: '2568', //(moment().year() + 543).toString(),
         in_plan: 'I',
         plan_no: '',
         faction_id: '',
@@ -84,7 +84,7 @@ app.controller('planAssetCtrl', function(CONFIG, $scope, $http, toaster, StringF
     const clearAsset = function() {
         $scope.asset = {
             id: '',
-            year: '2567', //(moment().year() + 543).toString(),
+            year: '2568', //(moment().year() + 543).toString(),
             in_plan: 'I',
             plan_no: '',
             faction_id: '',
