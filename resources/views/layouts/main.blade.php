@@ -9,6 +9,8 @@
 
 	<title>E-Plan</title>
 
+</head>
+
 	<!-- icon -->
 	<link rel="icon" type="image/ico" href="{{ asset('/img/favicon.ico') }}">
 	<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/img/apple-touch-icon.png') }}">
@@ -100,6 +102,9 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/supportCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/orderCtrl.js') }}"></script>
 
+	<!-- // MAXX -->
+	<script type="text/javascript" src="{{ asset('/js/controllers/invoiceCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/invoiceDetailCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/approvedSupportCtrl.js') }}"></script>
 
 	<script type="text/javascript" src="{{ asset('/js/controllers/receivingCtrl.js') }}"></script>
@@ -125,12 +130,19 @@
 	<script type="text/javascript" src="{{ asset('/js/services/chart.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/services/excel.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/filters/thdate.js') }}"></script>
+
 	<!--<script type="text/javascript" src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 	<!--<script type="text/javascript" src="{{ asset('/js/services/dashboard.js') }}"></script>-->
 	<!-- AdminLTE for demo purposes -->
 	<!--<script type="text/javascript" src="{{ asset('/js/services/demo.js') }}"></script>-->
+
+	
+	<!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+	<!-- DataTables JS -->
+	<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 </head>
 <!-- To set sidebar mini style on init use .sidebar-collapse to body tag -->
 <body class="skin-blue hold-transition sidebar-mini" ng-app="app" ng-controller="mainCtrl" ng-init="setActivedMenu()"> 

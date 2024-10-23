@@ -174,6 +174,12 @@ function convDbDateToLongThMonth($dbDate)
     return MONTH_LONG_NAMES[$arrDate[1]]. ' ' .((int)$arrDate[0] + 543);
 }
 
+function convDbMonthIdToLonkThMonth($month_id){
+    if(empty($month_id)) return '';
+    
+    return MONTH_LONG_NAMES[$month_id];
+}
+
 /**
  * $renderType should be 'preview' | 'download'
  */

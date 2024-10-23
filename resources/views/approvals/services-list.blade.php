@@ -34,6 +34,27 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
+                         <!-- search-box  -->
+                         <div class="box-tools pull-right">
+                            <form action="#" class="form-inline">
+                                <div class="input-group input-group-sm">
+                                <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keyup="
+                                            handleInputChange('txtItemName', txtItemName);
+                                            getPlans(3, '', setPlans);
+                                        "
+                                    />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- search-box  -->
                     </div>
 
                     <form id="frmSearch" name="frmSearch" role="form">
@@ -212,7 +233,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
@@ -226,7 +247,7 @@
                                         "
                                     />
                                 </div>
-                            </div>
+                            </div> -->
                         </div><!-- /.box-body -->
                     </form>
                     <div class="box-footer" style="padding: 0;">

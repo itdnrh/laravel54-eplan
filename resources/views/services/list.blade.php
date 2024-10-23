@@ -103,6 +103,43 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <label>ชื่อสินค้า/บริการ</label>
+                                    <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keyup="
+                                            handleInputChange('txtItemName', txtItemName);
+                                            getPlans(3, '', setPlans);
+                                        "
+                                    />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>สถานะ</label>
+                                    <select
+                                        id="cboStatus"
+                                        name="cboStatus"
+                                        ng-model="cboStatus"
+                                        class="form-control"
+                                        ng-change="
+                                            handleInputChange('cboStatus', cboStatus);
+                                            getPlans(3, '', setPlans);
+                                        "
+                                    >
+                                        <option value="">-- ทั้งหมด --</option>
+                                        <option value="0">รอดำเนินการ</option>
+                                        <option value="1">ดำเนินการแล้วบางส่วน</option>
+                                        <option value="2">ดำเนินการครบแล้ว</option>
+                                        <option value="9">อยู่ระหว่างการจัดซื้อ</option>
+                                        <option value="99">ยกเลิก</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
                             <div class="row" ng-show="{{ Auth::user()->person_id }} == '1300200009261' || {{ Auth::user()->memberOf->duty_id }} == 1 || {{ Auth::user()->memberOf->depart_id }} == 4">
                                 <div class="col-md-6" ng-show="{{ Auth::user()->memberOf->person_id }} == '1300200009261' || {{ Auth::user()->person_id }} == '3249900388197' || {{ Auth::user()->memberOf->depart_id }} == 4">
                                     <div class="form-group">
@@ -233,41 +270,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    <label>ชื่อสินค้า/บริการ</label>
-                                    <input
-                                        id="txtItemName"
-                                        name="txtItemName"
-                                        class="form-control"
-                                        ng-model="txtItemName"
-                                        ng-keyup="
-                                            handleInputChange('txtItemName', txtItemName);
-                                            getPlans(3, '', setPlans);
-                                        "
-                                    />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>สถานะ</label>
-                                    <select
-                                        id="cboStatus"
-                                        name="cboStatus"
-                                        ng-model="cboStatus"
-                                        class="form-control"
-                                        ng-change="
-                                            handleInputChange('cboStatus', cboStatus);
-                                            getPlans(3, '', setPlans);
-                                        "
-                                    >
-                                        <option value="">-- ทั้งหมด --</option>
-                                        <option value="0">รอดำเนินการ</option>
-                                        <option value="1">ดำเนินการแล้วบางส่วน</option>
-                                        <option value="2">ดำเนินการครบแล้ว</option>
-                                        <option value="9">อยู่ระหว่างการจัดซื้อ</option>
-                                        <option value="99">ยกเลิก</option>
-                                    </select>
-                                </div>
-                            </div>
+                            
                         </div><!-- /.box-body -->
                     </form>
                     <div class="box-footer" style="padding: 0;">

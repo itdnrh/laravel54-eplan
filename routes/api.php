@@ -196,4 +196,20 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::get('reports/order-compare-support', 'ReportController@getOrderCompareSupport');
     Route::get('reports/order-backward-month', 'ReportController@getOrderBackwardMonth');
+
+    //รายการบิลภาครัฐ 
+    //Route::post('invoice_head/delete', 'InvoiceController@destroy');
+    //Route::delete('/invoice_head/{id}', 'ItemController@destroy')->name('items.destroy');
+    Route::get('invoice/{id}', 'InvoiceController@getById');
+    
+    Route::get('invoicedetail/{id}', 'InvoiceDetailController@getById');
+    Route::get('invoicedetail/getInvoiceDetailDataById/{id}', 'InvoiceDetailController@getInvoiceDetailDataById');
+    Route::put('invoicedetail/{id}/cancel-sent-plan', 'InvoiceDetailController@cancelSentPlan');
+
+    Route::get('invoicedetails/get-invoice', 'InvoiceDetailController@getInvoiceReportData');
+
+    //Route::get('getInvoiceReport', function () {return 'Hello, World!';});
+
+    //Route::get('invoicedetails/getInvoiceReport', function () {return 'Hello, World!';});
+
 });

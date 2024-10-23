@@ -68,6 +68,7 @@
 							</li>
 							@if (
 								Auth::user()->person_id == '1300200009261' ||
+								Auth::user()->person_id == '1300900115098' ||
 								Auth::user()->memberOf->depart_id == 4 ||
 								Auth::user()->memberOf->depart_id == 2 ||
 								count(Auth::user()->delegations) > 0
@@ -88,17 +89,18 @@
 									<i class="fa fa-circle-o"></i> ก่อสร้าง
 								</a>
 							</li>
-							<li ng-class="{ 'active': ['plans'].includes(menu) && ['projects','list','add','edit','detail'].includes(submenu)}">
+							<!-- <li ng-class="{ 'active': ['plans'].includes(menu) && ['projects','list','add','edit','detail'].includes(submenu)}">
 								<a href="{{ url('/plans/projects') }}">
 									<i class="fa fa-circle-o"></i> โครงการ
 								</a>
-							</li>
+							</li> -->
 						</ul>
 					</li>
 
 					<!-- การอนุมัติ -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 4
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': ['approvals'].includes(menu) }">
@@ -135,14 +137,57 @@
 										<i class="fa fa-circle-o"></i> ก่อสร้าง
 									</a>
 								</li>
-								<li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'projects' }">
+								<!-- <li ng-class="{ 'active': ['approvals'].includes(menu) && submenu == 'projects' }">
 									<a href="{{ url('approvals/projects') }}">
 										<i class="fa fa-circle-o"></i> โครงการ
 									</a>
-								</li>
+								</li> -->
 							</ul>
 						</li>
 					@endif
+
+					<!-- บิลเรียกเก็บจากภาครัฐ -->
+					<li class="treeview" ng-class="{ 'menu-open active': ['invoice','invoicedetail'].includes(menu) }">
+						<a href="#">
+							<i class="fa fa-credit-card"></i>
+							<span>บิลเรียกเก็บจากภาครัฐ</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li ng-class="{ 'active': menu == 'invoice' && submenu == 'list' }">
+								<a href="{{ url('invoice/list') }}">
+									<i class="fa fa-circle-o"></i> รายการคำขอ
+								</a>
+							</li>
+							<li ng-class="{ 'active': menu == 'invoicedetail' && submenu == 'list' }">
+								<a href="{{ url('invoicedetail/list') }}">
+									<i class="fa fa-circle-o"></i> พิมพ์บันทึกขอสนับสุนน
+								</a>
+							</li>
+							<!-- @if (
+								Auth::user()->person_id == '1300200009261' ||
+								Auth::user()->person_id == '1300900115098' ||
+								Auth::user()->memberOf->depart_id == 4 ||
+								Auth::user()->memberOf->depart_id == 1 ||
+								Auth::user()->memberOf->depart_id == 39 ||
+								Auth::user()->memberOf->depart_id == 72 ||
+								count(Auth::user()->delegations) > 0
+							)
+								<li ng-class="{ 'active': menu == 'repairs' && submenu == 'list' }">
+									<a href="{{ url('repairs/list') }}">
+										<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
+									</a>
+								</li>
+							@endif -->
+							<li ng-class="{ 'active': menu == 'invoicedetail' && submenu == 'invoice-report' }">
+								<a href="{{ url('invoicedetail/invoice-report') }}">
+									<i class="fa fa-circle-o"></i> สรุปผลการดำเนินงาน
+								</a>
+							</li>
+						</ul>
+					</li>
 
 					<!-- ขอสนับสนุน -->
 					<li class="treeview" ng-class="{ 'menu-open active': ['supports','repairs'].includes(menu) }">
@@ -159,8 +204,9 @@
 									<i class="fa fa-circle-o"></i> บันทึกขอสนับสนุน
 								</a>
 							</li>
-							@if (
+							<!-- @if (
 								Auth::user()->person_id == '1300200009261' ||
+								Auth::user()->person_id == '1300900115098' ||
 								Auth::user()->memberOf->depart_id == 4 ||
 								Auth::user()->memberOf->depart_id == 1 ||
 								Auth::user()->memberOf->depart_id == 39 ||
@@ -172,7 +218,7 @@
 										<i class="fa fa-circle-o"></i> บันทึกขอจ้างซ่อม
 									</a>
 								</li>
-							@endif
+							@endif -->
 							<li ng-class="{ 'active': menu == 'supports' && submenu == 'timeline' }">
 								<a href="{{ url('supports/timeline') }}">
 									<i class="fa fa-circle-o"></i> ติดตามพัสดุ
@@ -182,8 +228,9 @@
 					</li>
 
 					<!-- การอนุมัติงบ -->
-							@if (
+							<!-- @if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 4
 					)
 						<li class="treeview" ng-class="{ 'menu-open active': menu == 'approvesupports' }">
@@ -202,12 +249,13 @@
 								</li>
 							</ul>
 						</li>
-					@endif
+					@endif -->
 
 
 					<!-- จัดซื้อจัดจ้าง -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 2 ||
 						Auth::user()->memberOf->depart_id == 4
 					)
@@ -259,6 +307,7 @@
 					<!-- บริหารสัญญา -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 2 ||
 						count(Auth::user()->delegations) > 0
 					)
@@ -281,8 +330,9 @@
 					@endif
 
 					<!-- บริหารโครงการ -->
-					@if (
+					<!-- @if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 4 ||
 						Auth::user()->memberOf->depart_id == 3 ||
 						count(Auth::user()->delegations) > 0
@@ -303,11 +353,13 @@
 								</li>
 							</ul>
 						</li>
-					@endif
+						close 671009
+					@endif -->
 
 					<!-- ค่าสาธารณูปโภค -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 1 ||
 						count(Auth::user()->delegations) > 0
 					)
@@ -335,8 +387,9 @@
 					@endif
 
 					<!-- ควบคุมกำกับติดตาม -->
-					@if (
+					<!-- @if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						in_array(Auth::user()->memberOf->depart_id, [1,2,3,4,16,17,18,39,41]) ||
 						count(Auth::user()->delegations) > 0
 					)
@@ -361,11 +414,12 @@
 								</li>
 							</ul>
 						</li>
-					@endif
+					@endif -->
 
 					<!-- ประมาณการรายจ่าย -->
-					@if (
+					<!-- @if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 4||
 						count(Auth::user()->delegations) > 0
 					)
@@ -385,7 +439,7 @@
 								</li>
 							</ul>
 						</li>
-					@endif
+					@endif -->
 
 					<!-- รายงาน -->
 					<li>
@@ -416,6 +470,7 @@
 					<!-- ข้อมูลระบบ -->
 					@if (
 						Auth::user()->person_id == '1300200009261' ||
+						Auth::user()->person_id == '1300900115098' ||
 						Auth::user()->memberOf->depart_id == 4||
 						Auth::user()->memberOf->depart_id == 2||
 						count(Auth::user()->delegations) > 0
