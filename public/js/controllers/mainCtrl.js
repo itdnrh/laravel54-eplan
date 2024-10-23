@@ -19,6 +19,8 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.cboPlanType = "";
     $scope.cboSupplier = "";
     $scope.cboCategory = "";
+    $scope.cboInvoiceItem = "";
+    $scope.cboInvoiceItemDetail = "";
     $scope.cboGroup = "";
     $scope.cboFaction = "";
     $scope.cboDepart = "";
@@ -33,7 +35,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.isAdjust = '';
 
     /** Input control iteration models */
-    $scope.budgetYearRange = $rootScope.range(2565, parseInt($scope.cboYear) + 3);
+    $scope.budgetYearRange = $rootScope.range(2567, parseInt($scope.cboYear) + 3);
     $scope.monthLists = [
         { id: '10', name: 'ตุลาคม' },
         { id: '11', name: 'พฤศจิกายน' },
@@ -55,6 +57,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         categories: [],
         groups: [],
         expenses: [],
+        invoice_item_detail: [],
     };
 
     $scope.temps = {
@@ -63,6 +66,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         categories: [],
         groups: [],
         expenses: [],
+        invoice_item_detail: [],
     }
 
     /** Data selection models */
@@ -85,7 +89,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         have_subitem: 0,
         is_fixcost: 0,
         is_addon: 0,
-        first_year: '2565',
+        first_year: '2567',
         remark: '',
         error: {}
     };
@@ -151,6 +155,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             $scope.temps.departs = data.departs ? data.departs : [];
             $scope.temps.divisions = data.divisions ? data.divisions : [];
             $scope.temps.categories = data.categories ? data.categories : [];
+            $scope.temps.invoice_item_detail = data.invoice_item_detail ? data.invoice_item_detail : [];
             $scope.temps.groups = data.groups ? data.groups : [];
             $scope.temps.strategics = data.strategics ? data.strategics : [];
             $scope.temps.strategies = data.strategies ? data.strategies : [];
@@ -159,8 +164,11 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             $scope.forms.categories = data.categories
                                         ? data.categories.filter(cate => cate.plan_type_id === parseInt(planType))
                                         : [];
+            $scope.forms.invoice_item_detail = data.invoice_item_detail
+                                         ? data.invoice_item_detail.filter(ivi => ivi.invoice_item_id === parseInt(planType))
+                                         : [];
         }
-
+        
         $scope.planType = planType;
     };
 
@@ -199,6 +207,15 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.setCboCategory = function(cate) {
         $scope.cboCategory = cate;
     };
+
+    $scope.setcboInvoice = function(invoice) {
+        $scope.cboInvoiceItem = invoice;
+    };
+
+    $scope.setcboInvoiceItemDetail = function(ivi) {
+        $scope.cboInvoiceItemDetail = ivi;
+    };
+
 
     $scope.getMonthName = function(month) {
         const monthObj = $scope.monthLists.find(m => m.id == month);
@@ -276,6 +293,24 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             // $('#group_id').attr('disabled', true)
         }
     };
+
+    // ใช้งานกับ select 2 เมื่อเรียกประเภทบิล ในหน้าค้นหารายการ
+    $scope.onFilterInvoiceItemDetail = function(type){        
+        $scope.forms.invoice_item_detail = $scope.temps.invoice_item_detail.filter(ivi => ivi.invoice_item_id === parseInt(type));
+    }
+ // ใช้งานกับ select 2 เมื่อเรียกประเภทบิล ในหน้าเพิ่มคำขอ
+    $scope.onInvoiceSelected = function(type) {
+        $scope.forms.invoice_item_detail = $scope.temps.invoice_item_detail.filter(ivi => ivi.invoice_item_id === parseInt(type));
+
+        // if ([1,3,4].includes(parseInt(type))) {
+        //     $scope.forms.groups = $scope.temps.groups.filter(group => group.plan_type_id === parseInt(type));
+
+        //     $('#group_id').attr('disabled', false)
+        // } else {
+        //      $('#group_id').attr('disabled', true)
+        // }
+    };
+
 
     /*
     |-----------------------------------------------------------------------------
@@ -545,7 +580,24 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         plan.have_amount    = plan.have_amount ? $scope.currencyToNumber(plan.have_amount) : 0;
 
         $scope.formValidate(e, endpoint, plan, frmName, callback)
+        
     };
+
+     /*
+    |-----------------------------------------------------------------------------
+    | Item validation processes
+    |-----------------------------------------------------------------------------
+    */
+    $scope.onValidateFormInvoice = function(e, endpoint, plan, frmName, callback) {
+        e.preventDefault();        
+        //plan.price_per_unit = $scope.currencyToNumber(plan.price_per_unit);
+        //plan.sum_price      = $scope.currencyToNumber(plan.sum_price);
+        //plan.amount         = $scope.currencyToNumber(plan.amount);
+        //plan.have_amount    = plan.have_amount ? $scope.currencyToNumber(plan.have_amount) : 0;
+
+        $scope.formValidate(e, endpoint, plan, frmName, callback)
+    };
+
 
     /*
     |-----------------------------------------------------------------------------

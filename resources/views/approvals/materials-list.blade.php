@@ -34,6 +34,28 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
+                        <!-- search-box  -->
+                        <div class="box-tools pull-right">
+                            <form action="#" class="form-inline">
+                                <div class="input-group input-group-sm">
+                                <input
+                                        id="txtItemName"
+                                        name="txtItemName"
+                                        class="form-control"
+                                        ng-model="txtItemName"
+                                        ng-keyup="
+                                            handleInputChange('txtItemName', txtItemName);
+                                            getPlans(2, {{ $in_stock }}, setPlans);
+                                        "
+                                    />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- search-box  -->
+
                     </div>
 
                     <form id="frmSearch" name="frmSearch" role="form">
@@ -210,7 +232,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>ชื่อสินค้า/บริการ</label>
                                     <input
@@ -224,7 +246,8 @@
                                         "
                                     />
                                 </div>
-                            </div><!-- /.row -->
+                            </div> -->
+                            <!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
                     <div class="box-footer" style="padding: 0;">
@@ -405,13 +428,13 @@
                             <div class="col-md-4">
                                 <ul class="pagination pagination-sm no-margin pull-right" ng-show="plans_pager.last_page > 1">
                                     <li ng-if="plans_pager.current_page !== 1">
-                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.path+ '?page=1', { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Previous">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=1',  2, {{ $in_stock }}, setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
                                 
                                     <li ng-class="{'disabled': (plans_pager.current_page==1)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.prev_page_url, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Prev">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.prev_page_url,  2, {{ $in_stock }}, setPlans)" aria-label="Prev">
                                             <span aria-hidden="true">Prev</span>
                                         </a>
                                     </li>
@@ -428,14 +451,19 @@
                                         </a>
                                     </li> -->
 
+                                    <!-- <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.next_page_url, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Next">
+                                            <span aria-hidden="true">Next</span>
+                                        </a>
+                                    </li> -->
                                     <li ng-class="{'disabled': (plans_pager.current_page==plans_pager.last_page)}">
-                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.next_page_url, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Next">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.next_page_url, 2, {{ $in_stock }}, setPlans)" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
 
                                     <li ng-if="plans_pager.current_page !== plans_pager.last_page">
-                                        <a href="#" ng-click="getDataWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, { type: 2, inStock: {{ $in_stock }} }, setPlans)" aria-label="Previous">
+                                        <a href="#" ng-click="getPlansWithUrl($event, plans_pager.path+ '?page=' +plans_pager.last_page, 2, {{ $in_stock }}, setPlans)" aria-label="Previous">
                                             <span aria-hidden="true">Last</span>
                                         </a>
                                     </li>

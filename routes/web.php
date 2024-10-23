@@ -156,6 +156,32 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('approvals/{year}/year', 'ApprovalController@approveAll');
     Route::post('approvals/lists', 'ApprovalController@approveByList');
 
+    // บิลเรียกเก็บจากภาครัฐ 
+    Route::get('invoice/list', 'InvoiceController@index');
+    Route::get('invoice/add', 'InvoiceController@create');
+    Route::post('invoice/validate', 'InvoiceController@formValidate');
+    Route::post('invoice/store', 'InvoiceController@store');
+    Route::get('invoice/search', 'InvoiceController@search');
+    Route::get('invoice/getinvoice', 'InvoiceController@getInvoice');
+    Route::post('invoice/delete/{id}', 'InvoiceController@delete');
+    Route::get('invoice/edit/{id}', 'InvoiceController@edit');
+    Route::post('invoice/update/{id}', 'InvoiceController@update');
+
+    Route::get('invoicedetail/list', 'InvoiceDetailController@index');
+    Route::get('invoicedetail/add', 'InvoiceDetailController@create');
+    Route::post('invoicedetail/store', 'InvoiceDetailController@store');
+    Route::post('invoicedetail/validate', 'InvoiceDetailController@formValidate');
+    Route::get('invoicedetail/getInvoiceDetail', 'InvoiceDetailController@getInvoiceDetail');
+    Route::post('invoicedetail/delete/{id}', 'InvoiceDetailController@delete');
+    Route::get('invoicedetail/edit/{id}', 'InvoiceDetailController@edit');
+    Route::post('invoicedetail/update/{id}', 'InvoiceDetailController@update');
+    Route::post('invoicedetail/sendDocPlan', 'InvoiceDetailController@sendDocPlan');
+    Route::get('invoicedetail/detail/{id}', 'InvoiceDetailController@detail');
+    Route::get('invoicedetail/{id}/print', 'InvoiceDetailController@printForm');
+
+    Route::get('invoicedetail/invoice-report', 'InvoiceDetailController@invoiceReport');
+    //Route::get('invoicedetail/getInvoiceReport', 'InvoiceDetailController@getInvoiceReport');
+
     /** การขอสนับสนุนทั่วไป */
     Route::post('supports/validate', 'SupportController@formValidate');
     Route::get('supports/list', 'SupportController@index');

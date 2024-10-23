@@ -52,6 +52,9 @@
                         <label for="">
                             <input type="radio" name="inPlan" value="O" ng-click="onInPlanToggle($event)" /> นอกแผน
                         </label>
+                        <label for="">
+                            <input type="radio" name="inPlan" value="A" ng-click="onInPlanToggle($event)" /> ทั้งหมด
+                        </label>
                     </div>
                 </div>
             </div>
@@ -83,14 +86,15 @@
 
                 @include('dashboard._pie-plan-type')
 
-                @include('dashboard._pie-plan-faction')
+                
 
             </section>
             <section class="col-lg-6 connectedSortable">
 
-                @include('dashboard._pie-project-type')
+            @include('dashboard._pie-plan-faction')
+            {{--@include('dashboard._pie-project-type')--}}
 
-                @include('dashboard._pie-project-faction')
+            {{--@include('dashboard._pie-project-faction')--}}
 
             </section>
         </div>

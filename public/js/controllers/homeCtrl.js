@@ -172,7 +172,7 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         debt: 0,
         plan_approved: 0
     };
-    $scope.getSummaryAssets = function() {
+    $scope.getSummaryAssetsOld = function() {
         $scope.loading = true;
         $scope.assets = [];
         $scope.assets_pager = null;
@@ -247,6 +247,48 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
         });
     };
 
+    $scope.getSummaryAssets = function() {
+        $scope.loading = true;
+        $scope.assets = [];
+        $scope.assets_pager = null;
+        $scope.totalAsset = {
+            budget: 0,
+            request: 0,
+            sent: 0,
+            received: 0,
+            po: 0,
+            inspect: 0,
+            withdraw: 0,
+            debt: 0,
+            plan_approved: 0
+        };
+
+        let year = $scope.dtpYear
+
+        $http.get(`${CONFIG.apiUrl}/dashboard/summary-assets?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
+        .then(function(res) {
+            const { plans, budgets, categories } = res.data;
+            const { data, ...pager } = plans;
+            $scope.assets = plans.data;           
+            $scope.assets.forEach(asset => {
+                $scope.totalAsset.budget    += asset.budget || 0;
+                $scope.totalAsset.request   += asset.request || 0;
+                $scope.totalAsset.sent      += asset.sent || 0;
+                $scope.totalAsset.received  += asset.received || 0;
+                $scope.totalAsset.po        += asset.po || 0;
+                $scope.totalAsset.inspect   += asset.inspect || 0;
+                $scope.totalAsset.withdraw  += asset.withdraw || 0;
+                $scope.totalAsset.debt      += asset.debt || 0;
+                $scope.totalAsset.plan_approved   += asset.plan_approved || 0;
+            });
+            $scope.assets_pager = pager;
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     /*
     |-----------------------------------------------------------------------------
     | Material Summary
@@ -296,35 +338,10 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
     };
 
     $scope.setMaterials = function(res) {
-        const { plans, supports, budgets, categories } = res.data;
-
-        /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
-        const { data, ...pager } = plans;
-        let tmpPlans = data.map(plan => {
-            let support = supports.find(support => plan.category_id === support.category_id);
-
-            if (support) {
-                return { ...plan, ...support };
-            }
-
-            return plan;
-        });
-
-        let cates = categories.map(cate => {
-            const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
-            cate.budget = summary ? summary.budget : 0;
-
-            return cate;
-        });
-
-        $scope.materials = tmpPlans.map(plan => {
-            const cateInfo = cates.find(cate => cate.id === plan.category_id);
-
-            plan.category_name = cateInfo ? cateInfo.name : '';
-            plan.budget = cateInfo ? cateInfo.budget : '';
-
-            return plan;
-        });
+        
+      const { plans, budgets, categories } = res.data;
+            const { data, ...pager } = plans;
+            $scope.materials = plans.data;      
 
         $scope.materials.forEach(material => {
             $scope.totalMaterial.budget    += material.budget || 0;
@@ -409,35 +426,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-services?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
-            const { plans, supports, budgets, categories } = res.data;
-
-            /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
-            let tmpPlans = plans.map(plan => {
-                let support = supports.find(support => plan.category_id === support.category_id);
-
-                if (support) {
-                    return { ...plan, ...support };
-                }
-
-                return plan;
-            });
-
-            let cates = categories.map(cate => {
-                const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
-                cate.budget = summary ? summary.budget : 0;
-
-                return cate;
-            });
-
-            $scope.services = tmpPlans.map(plan => {
-                const cateInfo = cates.find(cate => cate.id === plan.category_id);
-                if (cateInfo) {
-                    plan.category_name = cateInfo.name;
-                    plan.budget = cateInfo.budget;
-                }
-
-                return plan;
-            });
+            const { plans, budgets, categories } = res.data;
+            const { data, ...pager } = plans;
+            $scope.services = plans.data;  
 
             $scope.services.forEach(service => {
                 $scope.totalService.budget    += service.budget || 0;
@@ -494,36 +485,9 @@ app.controller('homeCtrl', function(CONFIG, $scope, $http, StringFormatService, 
 
         $http.get(`${CONFIG.apiUrl}/dashboard/summary-constructs?year=${year}&approved=${$scope.approved}&in_plan=${$scope.inPlan}`)
         .then(function(res) {
-            const { plans, supports, budgets, categories } = res.data;
-
-            /** รวมข้อมูล plans กับ supports เข้าด้วยกันห */
-            let tmpPlans = plans.map(plan => {
-                let support = supports.find(support => plan.category_id === support.category_id);
-
-                if (support) {
-                    return { ...plan, ...support };
-                }
-
-                return plan;
-            });
-
-            let cates = categories.map(cate => {
-                const summary = budgets.find(bud => bud.expense_id === cate.expense_id);
-                cate.budget = summary ? summary.budget : 0;
-
-                return cate;
-            });
-
-            $scope.constructs = tmpPlans.map(plan => {
-                const cateInfo = cates.find(cate => cate.id === plan.category_id);
-                if (cateInfo) {
-                    plan.category_name = cateInfo.name;
-                    plan.budget = cateInfo.budget;
-                }
-
-                return plan;
-            });
-
+            const { plans, budgets, categories } = res.data;
+            const { data, ...pager } = plans;
+            $scope.constructs = plans.data;  
             $scope.constructs.forEach(construct => {
                 $scope.totalConstruct.budget    += construct.budget || 0;
                 $scope.totalConstruct.request   += construct.request || 0;
