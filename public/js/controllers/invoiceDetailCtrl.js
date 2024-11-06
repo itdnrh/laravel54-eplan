@@ -49,6 +49,8 @@ app.controller('invoiceDetailCtrl', function(CONFIG, $rootScope, $scope, $http, 
     oct_amount: 0,
     nov_amount: 0,
     dece_amount: 0,
+    sum_use_price : 0,
+    sum_sum_use_price : 0,
 };
 
   // $scope.apiInvoiceResponse = {
@@ -167,7 +169,7 @@ $scope.setEditControls = function(invoiceDetail) {
         $scope.invoiceDetail.ivh_id              = invoiceDetail.ivh_id.toString();
         $scope.invoiceDetail.year                = invoiceDetail.ivd_year.toString();
         $scope.invoiceDetail.start_month         = invoiceDetail.ivd_month.toString();
-        $scope.invoiceDetail.remark              = invoiceDetail.ivd_remark.toString();
+        $scope.invoiceDetail.remark              = invoiceDetail.ivd_remark ? invoiceDetail.ivd_remark.toString() : '';
         $scope.invoiceDetail.reason              = invoiceDetail.ivd_reason.toString();
         $scope.invoiceDetail.detail              = invoiceDetail.ivd_detail.toString();
         $scope.invoiceDetail.sum_price           = invoiceDetail.sum_price;
@@ -312,6 +314,8 @@ $scope.getReportSummaryByInovice = function () {
     oct_amount: 0,
     nov_amount: 0,
     dece_amount: 0,
+    sum_use_price : 0,
+    sum_sum_use_price : 0,
 };
 
   let faction = $scope.cboFaction === '' ? '' : $scope.cboFaction;
@@ -349,6 +353,7 @@ $scope.getReportSummaryByInovice = function () {
             $scope.totalInvoice.oct_amount += result.oct ? (+result.oct) : 0;
             $scope.totalInvoice.nov_amount += result.nov ? (+result.nov) : 0;
             $scope.totalInvoice.dece_amount += result.dece ? (+result.dece) : 0;
+            $scope.totalInvoice.sum_sum_use_price += result.sum_use_price  ? (+result.sum_use_price) : 0;
         });
     } else {
       $scope.totalInvoice = {
@@ -364,6 +369,8 @@ $scope.getReportSummaryByInovice = function () {
           oct_amount: 0,
           nov_amount: 0,
           dece_amount: 0,
+          sum_use_price : 0,
+          sum_sum_use_price : 0,
       };
     }
     $scope.loading = false;

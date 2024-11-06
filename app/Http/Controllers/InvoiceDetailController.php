@@ -167,7 +167,7 @@ class InvoiceDetailController extends Controller
                         ->join('invoice_item_detail', 'invoice_head.invoice_detail_id', '=', 'invoice_item_detail.invoice_detail_id')
                         ->join('invoice_item', 'invoice_item_detail.invoice_item_id', '=', 'invoice_item.invoice_item_id')
                         ->join('depart', 'invoice_head.depart_id', '=', 'depart.depart_id')
-                        ->select('invoice_detail.ivd_id','invoice_detail.ivd_year','invoice_detail.doc_no','invoice_detail.doc_date','invoice_detail.ivd_status','invoice_item.invoice_item_name'
+                        ->select('invoice_detail.ivd_id','invoice_detail.ivd_year','invoice_detail.ivd_month','invoice_detail.doc_no','invoice_detail.doc_date','invoice_detail.ivd_status','invoice_item.invoice_item_name'
                         ,'invoice_item_detail.invoice_detail_name','invoice_detail.ivd_use_price','depart.depart_name');
     $query->where('ivh_year',$bdg_year);
     if($status <> ""){
@@ -462,7 +462,7 @@ class InvoiceDetailController extends Controller
     }
         //print_r($invoicedetail);
         $data = [
-            "invoicedetail"       => $invoicedetail,
+            "invoicedetail"  => $invoicedetail,
             "contact"       => [],
             "committees"    => [],
             "headOfDepart"  => $headOfDepart,
@@ -504,6 +504,7 @@ class InvoiceDetailController extends Controller
             $results = DB::select("
             SELECT ii.invoice_item_id,ii.invoice_item_name,
             SUM(ih.sum_price) as sum_price,
+            SUM(id.ivd_use_price) as sum_use_price,
             SUM(CASE WHEN id.ivd_month = 01 THEN id.ivd_use_price ELSE 0 END) AS jan,
             SUM(CASE WHEN id.ivd_month = 02 THEN id.ivd_use_price ELSE 0 END) AS feb,
             SUM(CASE WHEN id.ivd_month = 03 THEN id.ivd_use_price ELSE 0 END) AS mar,

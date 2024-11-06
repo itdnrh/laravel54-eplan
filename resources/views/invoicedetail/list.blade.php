@@ -307,6 +307,7 @@
                                 <tr>
                                     <th style="width: 4%; text-align: center;">#</th>
                                     <th style="width: 5%; text-align: center;">ปีงบ</th>
+                                    <th style="width: 5%; text-align: center;">เดือน</th>
                                     <th style="width: 10%; text-align: center;">บันทึก</th>
                                     <th style="width: 18%;">หน่วยงาน</th>
                                     <th style="width: 17%; text-align: center;">ประเภทบิล</th>
@@ -321,7 +322,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="2" style="text-align:right">รวมเป็นเงิน:</th>
-                                    <th colspan="7"></th>
+                                    <th colspan="8"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -385,7 +386,7 @@
             
                         // Total over all pages
                         total = api
-                            .column( 6 )
+                            .column( 7 )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
@@ -393,7 +394,7 @@
             
                         // Total over this page
                         pageTotal = api
-                            .column( 6, { page: 'current'} )
+                            .column( 7, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
@@ -404,7 +405,7 @@
                         //var sumCol3Filtered = display.map(el => data[el][3]).reduce((a, b) => intVal(a) + intVal(b), 0 );
                     
                         // Update footer
-                        $( api.column( 3 ).footer() ).html(
+                        $( api.column( 4 ).footer() ).html(
                             //'บาท '+fm_number(pageTotal) +' ( บาท '+ fm_number(total) +' total) ($' + fm_number(sumCol3Filtered) +' filtered)'
                             ''+fm_number(pageTotal) +' ( '+ fm_number(total) +' รวมทั้งหมด)'
                         );
@@ -426,7 +427,18 @@
                     "columns": [
                         { "data": "ivd_id" },
                         { "data": "ivd_year" },
-                        { "data": "doc_no" },
+                        { "data": "ivd_month", 
+                            render: function(data,type,row){
+                                return getThaiMonth(data);
+                            }
+                        },
+                        { "data": "doc_no",
+                            render:function(data,type,row) {
+                                let date_thai = convertDateFormat(row['doc_date'], { buddhist: true });
+                                let doc_label = data+' <br> <small> วันที่ :'+date_thai+'</small>';
+                                return doc_label;
+                            },
+                         },
                         { "data": "depart_name" },
                         { "data": "invoice_item_name" },
                         { "data": "invoice_detail_name" },
@@ -505,6 +517,53 @@
                 }
                 
             }
+
+            function getThaiMonth(month) {
+                const thaiMonths = [
+                    'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                    'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                ];
+                // ลบ 1 เพราะ array เริ่มที่ 0 แต่เดือนเริ่มที่ 1
+                return thaiMonths[month - 1] || '';
+            }
+
+            // ฟังก์ชันที่มีความยืดหยุ่นมากขึ้น
+function convertDateFormat(dateString, options = {}) {
+    const {
+        inputFormat = 'YYYY-MM-DD',
+        outputFormat = 'DD/MM/YYYY',
+        separator = '/',
+        buddhist = false // true สำหรับพ.ศ.
+    } = options;
+
+    if (!dateString) return '';
+
+    try {
+        // แยกส่วนประกอบของวันที่
+        const date = new Date(dateString);
+        if (isNaN(date)) return '';
+
+        let day = date.getDate().toString().padStart(2, '0');
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let year = date.getFullYear();
+
+        // แปลงเป็นพ.ศ. ถ้าต้องการ
+        if (buddhist) {
+            year += 543;
+        }
+
+        // จัดรูปแบบตาม outputFormat
+        let result = outputFormat;
+        result = result.replace('DD', day);
+        result = result.replace('MM', month);
+        result = result.replace('YYYY', year);
+
+        return result;
+    } catch (e) {
+        console.error('Error converting date:', e);
+        return '';
+    }
+}
     </script>
 
 @endsection
