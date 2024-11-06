@@ -137,6 +137,9 @@
                                 <tr>
                                     <th style="text-align: center; width: 5%;">ลำดับ</th>
                                     <th style="text-align: center; width: 30%;">รายการ</th>
+                                    <th style="text-align: center; width: 6%;">ต.ค.</th>
+                                    <th style="text-align: center; width: 6%;">พ.ย.</th>
+                                    <th style="text-align: center; width: 6%;">ธ.ค.</th>
                                     <th style="text-align: center; width: 6%;">ม.ค.</th>
                                     <th style="text-align: center; width: 6%;">ก.พ.</th>
                                     <th style="text-align: center; width: 6%;">มี.ค.</th>
@@ -146,9 +149,7 @@
                                     <th style="text-align: center; width: 6%;">ก.ค.</th>
                                     <th style="text-align: center; width: 6%;">ส.ค.</th>
                                     <th style="text-align: center; width: 6%;">ก.ย.</th>
-                                    <th style="text-align: center; width: 6%;">ต.ค.</th>
-                                    <th style="text-align: center; width: 6%;">พ.ย.</th>
-                                    <th style="text-align: center; width: 6%;">ธ.ค.</th>
+                                    <th style="text-align: center; width: 6%;">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -157,6 +158,9 @@
                                     <td>
                                         @{{ result.invoice_item_name }}
                                     </td>
+                                    <td style="text-align: right;">@{{ result.oct | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ result.nov | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ result.dece | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ result.jan | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ result.feb | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ result.mar | currency:'':2 }}</td>
@@ -166,12 +170,13 @@
                                     <td style="text-align: right;">@{{ result.jul | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ result.aug | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ result.sep | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ result.oct | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ result.nov | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ result.dece | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ result.sum_use_price | currency:'':2 }}</td>
                                 </tr>
                                <tr style="font-weight: bold; font-size: 12px;">
                                     <td style="text-align: center;" colspan="2">รวม</td>
+                                    <td style="text-align: right;">@{{ totalInvoice.oct_amount | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalInvoice.nov_amount | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalInvoice.dece_amount | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalInvoice.jan_amount | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalInvoice.feb_amount | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalInvoice.mar_amount | currency:'':2 }}</td>
@@ -181,9 +186,7 @@
                                     <td style="text-align: right;">@{{ totalInvoice.jul_amount | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalInvoice.aug_amount | currency:'':2 }}</td>
                                     <td style="text-align: right;">@{{ totalInvoice.sep_amount | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalInvoice.oct_amount | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalInvoice.nov_amount | currency:'':2 }}</td>
-                                    <td style="text-align: right;">@{{ totalInvoice.dece_amount | currency:'':2 }}</td>
+                                    <td style="text-align: right;">@{{ totalInvoice.sum_sum_use_price | currency:'':2 }}</td>
                                 </tr>
                                 <!--  <tr style="font-weight: bold; font-size: 12px;">
                                     <td style="text-align: center;" colspan="2">คิดเป็น (ร้อยละ) ของทั้งหมด</td>

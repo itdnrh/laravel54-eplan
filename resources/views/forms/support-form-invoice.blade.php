@@ -115,7 +115,9 @@
                     </tr>
                     
                     <tr>
-                        <td colspan="4" style="text-align: center; padding-top: 50px;">
+                    <td></td>
+                    <td></td>
+                        <td colspan="2" style="text-align: center; padding-top: 50px;">
                             <p style="margin: 0;">
                                 หัวหน้ากลุ่มงาน<span class="dot">......................................................</span>
                             </p>
@@ -129,7 +131,9 @@
                     </tr>
 
                     <tr>
-                        <td colspan="4" style="text-align: center; padding-top: 50px;">
+                         <td></td>
+                         <td></td>
+                        <td colspan="2" style="text-align: center; padding-top: 50px;">
                             <p style="margin: 0;">
                                 @if(empty($invoicedetail->head_of_faction))
                                     หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
@@ -148,10 +152,11 @@
                         </td>
                     </tr>
 
-                </table>
-
-                <div style="text-align: center; position: absolute;">
-                    <p style="margin: 0 20px 37px 0;">
+                    <tr>
+                         <td></td>
+                         <td></td>
+                        <td colspan="2" style="text-align: center; padding-top: 50px;">
+                        <p style="margin: 0 20px 37px 0;">
                         <!-- <span style="margin: 0 0 0 20px;">[&nbsp;&nbsp;] อนุมัติ</span>
                         <span style="margin: 20px;">[&nbsp;&nbsp;] ไม่อนุมัติ</span> -->
                         อนุมัติ
@@ -162,7 +167,24 @@
                     <p style="margin: 0;">
                         ผู้อำนวยการโรงพยาบาลเทพรัตน์นครราชสีมา
                     </p>
-                </div>
+                         
+        
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- <div style="text-align: center; position: absolute;">
+                    <p style="margin: 0 20px 37px 0;">
+                        อนุมัติ
+                    </p>
+                    <p style="margin: 0;">
+                        ( นายชวศักดิ์  กนกกันฑพงษ์ )
+                    </p>
+                    <p style="margin: 0;">
+                        ผู้อำนวยการโรงพยาบาลเทพรัตน์นครราชสีมา
+                    </p>
+                </div> -->
             </div>
             <p class="print-options-left"><b>สำเนาเรียน</b> กลุ่มงานยุทธศาสตร์และแผนงานโครงการ, กลุ่มงานบัญชี, กลุ่มงานการเงิน</p>
             <p class="print-options">พิมพ์จากระบบ E-Plan เมื่อ {{ date('Y-m-d H:i:s') }}</p>

@@ -186,6 +186,7 @@
                                 <div
                                     class="form-group col-md-6"
                                     ng-class="{'has-error has-feedback': checkValidate(invoice, 'contact_person')}"
+                                    ng-show="{{ Auth::user()->person_id }} == '1300200009261'"
                                 >
                                     <label>ผู้ประสานงาน <span class="required-field">*</span> :</label>
                                     <div class="input-group">

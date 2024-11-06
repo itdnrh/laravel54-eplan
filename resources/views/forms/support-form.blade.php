@@ -985,7 +985,7 @@
                             </p>
                         </td>
                         <td colspan="2" style="text-align: center; padding: 10px;">
-                            @if($support->depart_id == 39)
+                            @if($support->depart_id == 39999)
                                 @if(empty($support->head_of_faction))
                                     ผู้ช่วยผู้อำนวยการด้านสารสนเทศ<span class="dot">....................................</span>
                                 @else
