@@ -7,7 +7,7 @@
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-	<title>E-Plan</title>
+	<title>E-Plan 2568 Version : 680212</title>
 
 </head>
 
@@ -106,6 +106,7 @@
 	<script type="text/javascript" src="{{ asset('/js/controllers/invoiceCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/invoiceDetailCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/approvedSupportCtrl.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/controllers/invoiceItemDetailCtrl.js') }}"></script>
 
 	<script type="text/javascript" src="{{ asset('/js/controllers/receivingCtrl.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/controllers/personCtrl.js') }}"></script>

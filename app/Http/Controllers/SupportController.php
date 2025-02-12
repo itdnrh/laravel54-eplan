@@ -21,6 +21,7 @@ use App\Models\Depart;
 use App\Models\Division;
 use App\Models\ProvinceOrder;
 use App\Models\PlanApprovedBudget;
+use App\Models\Personnel;
 
 class SupportController extends Controller
 {
@@ -1247,6 +1248,7 @@ class SupportController extends Controller
                             ->where('personal.person_state', '1')
                             ->with('prefix','position')
                             ->first();
+        $headOfDepartPosition = Personnel::withFullDetails($headOfDepart->person_id)->first();
 
         if (empty($support->head_of_faction)) {
             $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
@@ -1255,10 +1257,12 @@ class SupportController extends Controller
                                 ->where('personal.person_state', '1')
                                 ->with('prefix','position')
                                 ->first();
+             $headOfFactionPosition = Personnel::withFullDetails($headOfFaction->person_id)->first();
         } else {
             $headOfFaction = Person::where('person_id', $support->head_of_faction)
                                 ->with('prefix','position')
                                 ->first();
+            $headOfFactionPosition = Personnel::withFullDetails($headOfFaction->person_id)->first();
         }
 
         $data = [
@@ -1267,6 +1271,8 @@ class SupportController extends Controller
             "committees"    => $committees,
             "headOfDepart"  => $headOfDepart,
             "headOfFaction" => $headOfFaction,
+            "headOfFactionPosition" => $headOfFactionPosition,
+            "headOfDepartPosition" => $headOfDepartPosition
         ];
 
         $paper = [

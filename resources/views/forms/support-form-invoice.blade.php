@@ -73,7 +73,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
                                 <div class="content__header-text" style="width: 94%;">
-                                    <span>ขออนุมัติจ่ายเงินค่าบริการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ ๒๕๖๘</span>
+                                    <span>ขออนุมัติดำเนินการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ ๒๕๖๘</span>
                                 </div>
                             </div>
                             <div style="margin: 0; padding: 0;">
@@ -125,7 +125,8 @@
                                 ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
                             </p>
                             <p style="margin: 0;">
-                                <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>
+                                <span>{{$headOfDepartPosition->full_position}}</span>
+                                <!-- <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span> -->
                             </p>
                         </td>
                     </tr>
@@ -145,7 +146,8 @@
                                 ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
                             </p>
                             <p style="margin: 0;">
-                                <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span>
+                                <span>{{ $headOfFactionPosition->full_position }}</span>
+                                <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
                             </p>
                          
         

@@ -207,6 +207,19 @@ Route::group(['middleware' => 'api'], function () {
     Route::put('invoicedetail/{id}/cancel-sent-plan', 'InvoiceDetailController@cancelSentPlan');
 
     Route::get('invoicedetails/get-invoice', 'InvoiceDetailController@getInvoiceReportData');
+    Route::get('invoicedetail/get_personnel/{cid}', 'InvoiceDetailController@getPersonnel');
+
+
+    Route::get('invoice-details', 'InvoiceDetailController@index');
+    Route::post('invoice-details', 'InvoiceDetailController@store');
+    Route::put('invoice-details/{id}', 'InvoiceDetailController@update');
+    Route::delete('invoice-details/{id}', 'InvoiceDetailController@destroy');
+
+    // Route for fetching invoice items (this will be used to populate the dropdown)
+    //Route::get('invoice-items', 'InvoiceItemController@index');
+    Route::get('invoiceitem/getById/{id}', 'InvoiceItemController@getById');
+
+    
 
     //Route::get('getInvoiceReport', function () {return 'Hello, World!';});
 

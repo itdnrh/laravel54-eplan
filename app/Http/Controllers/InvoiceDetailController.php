@@ -16,6 +16,7 @@ use App\Models\Depart;
 use App\Models\Division;
 use App\Models\Unit;
 use App\Models\Person;
+use App\Models\Personnel;
 
 class InvoiceDetailController extends Controller
 {
@@ -432,6 +433,26 @@ class InvoiceDetailController extends Controller
         }
     }
 
+    public function getPersonnel($cid)
+    {
+        // 🔹 ดึงข้อมูลจาก Model พร้อม JOIN ตาราง position และ academic
+        $personnel = Personnel::withFullDetails($cid)->first();
+
+        // ตรวจสอบว่าพบข้อมูลหรือไม่
+        if (!$personnel) {
+            return response()->json(['message' => 'Personnel not found'], 404);
+        }
+
+        //🔹 จัดรูปแบบข้อมูล JSON
+        return response()->json([
+            'cid' => $personnel->cid,
+            'person_id' => $personnel->person_id,
+            'person_name' => $personnel->person_name,
+            'full_position' => (isset($personnel->full_position) && $personnel->full_position ? $personnel->full_position : ''),
+        ]);
+    }
+
+
     public function printForm($id)
     {
         $invoicedetail = InvoiceDetail::join('invoice_head', 'invoice_detail.ivh_id', '=', 'invoice_head.ivh_id')
@@ -447,6 +468,7 @@ class InvoiceDetailController extends Controller
                         ->where('personal.person_state', '1')
                         ->with('prefix','position')
                         ->first();
+                        $headOfDepartPosition = Personnel::withFullDetails($headOfDepart->person_id)->first();
   
     if (empty($invoicedetail->head_of_faction)) {
         $headOfFaction = Person::join('level', 'personal.person_id', '=', 'level.person_id')
@@ -455,10 +477,14 @@ class InvoiceDetailController extends Controller
                             ->where('personal.person_state', '1')
                             ->with('prefix','position')
                             ->first();
+       $headOfFactionPosition = Personnel::withFullDetails($headOfFaction->person_id)->first();
     } else {
         $headOfFaction = Person::where('person_id', $invoicedetail->head_of_faction)
                             ->with('prefix','position')
                             ->first();
+        $headOfFactionPosition = Personnel::withFullDetails($headOfFaction->person_id)->first();
+
+
     }
         //print_r($invoicedetail);
         $data = [
@@ -467,6 +493,8 @@ class InvoiceDetailController extends Controller
             "committees"    => [],
             "headOfDepart"  => $headOfDepart,
             "headOfFaction" => $headOfFaction,
+            "headOfFactionPosition" => $headOfFactionPosition,
+            "headOfDepartPosition" => $headOfDepartPosition
         ];
 
         $paper = [

@@ -69,6 +69,22 @@ return [
             'engine'        => null,
         ),
 
+        'personnel' => array(
+            'driver'        => 'mysql',
+            'host'          => env('DB_PSN_HOST', '127.0.0.1'),
+            'port'          => env('DB_PSN_PORT', '3306'),
+            'database'      => env('DB_PSN_DATABASE', 'forge'),
+            'username'      => env('DB_PSN_USERNAME', 'forge'),
+            'password'      => env('DB_PSN_PASSWORD', ''),
+            'unix_socket'   => env('DB_PSN_SOCKET', ''),
+            'charset'       => 'utf8',
+            'collation'     => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+            'engine'        => null,
+        ),
+
+
         'hosxp' => array(
             'driver'        => 'mysql',
             'host'          => env('DB_HOS_HOST', '127.0.0.1'),
