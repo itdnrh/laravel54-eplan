@@ -340,7 +340,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         $scope.loading = true;
         $scope.handleInputChange("plans", []);
         $scope.handleInputChange("plans_pager", null);
-
+        let year = $scope.cboYear === '' ? '' : $scope.cboYear;
+       // console.log(`Year ${year}`);
+        
         let type = $scope.support.plan_type_id === '' ? 1 : $scope.support.plan_type_id;
         let cate = $scope.support.category_id === '' ? '' : $scope.support.category_id;
         let name = $scope.txtKeyword == '' ? '' : $scope.txtKeyword;
@@ -348,7 +350,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                             ? $scope.cboDepart
                             : $('#depart_id').val();
 
-        $http.get(`${url}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
+        $http.get(`${url}&year=${year}&type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             cb(res);
 

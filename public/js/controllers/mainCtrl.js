@@ -85,7 +85,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         price_per_unit: '',
         unit_id: '',
         in_stock: 0,
-        calc_method: 1,
+        calc_method: 2,
         have_subitem: 0,
         is_fixcost: 0,
         is_addon: 0,
@@ -211,6 +211,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.setcboInvoice = function(invoice) {
         $scope.cboInvoiceItem = invoice;
     };
+    
 
     $scope.setcboInvoiceItemDetail = function(ivi) {
         $scope.cboInvoiceItemDetail = ivi;
@@ -484,7 +485,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
             price_per_unit: '',
             unit_id: '',
             in_stock: 0,
-            calc_method: 1,
+            calc_method: 2,
             have_subitem: 0,
             is_fixcost: 0,
             is_addon: 0,

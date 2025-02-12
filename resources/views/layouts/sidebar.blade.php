@@ -147,7 +147,7 @@
 					@endif
 
 					<!-- บิลเรียกเก็บจากภาครัฐ -->
-					<li class="treeview" ng-class="{ 'menu-open active': ['invoice','invoicedetail'].includes(menu) }">
+					<li class="treeview" ng-class="{ 'menu-open active': ['invoice','invoicedetail','invoiceitem'].includes(menu) }">
 						<a href="#">
 							<i class="fa fa-credit-card"></i>
 							<span>บิลเรียกเก็บจากภาครัฐ</span>
@@ -184,6 +184,11 @@
 							<li ng-class="{ 'active': menu == 'invoicedetail' && submenu == 'invoice-report' }">
 								<a href="{{ url('invoicedetail/invoice-report') }}">
 									<i class="fa fa-circle-o"></i> สรุปผลการดำเนินงาน
+								</a>
+							</li>
+							<li ng-class="{ 'active': menu == 'invoiceitem' && submenu == 'list' }">
+								<a href="{{ url('invoiceitem/list') }}">
+									<i class="fa fa-plus"></i> รายการบิล
 								</a>
 							</li>
 						</ul>

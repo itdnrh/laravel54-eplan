@@ -182,6 +182,26 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('invoicedetail/invoice-report', 'InvoiceDetailController@invoiceReport');
     //Route::get('invoicedetail/getInvoiceReport', 'InvoiceDetailController@getInvoiceReport');
 
+    // เพิ่มรายการบิล
+    Route::post('invoiceitem/validate', 'InvoiceItemController@formValidate');
+    Route::get('invoiceitem/list', 'InvoiceItemController@index');
+    Route::get('invoiceitem/getItemInvoiceDetail', 'InvoiceItemController@getItemInvoiceDetail');
+    Route::get('invoiceitem/add', 'InvoiceItemController@create');
+    Route::post('invoiceitem/store', 'InvoiceItemController@store');
+    Route::get('invoiceitem/edit/{id}', 'InvoiceItemController@edit');
+    Route::post('invoiceitem/update/{id}', 'InvoiceItemController@update');
+    Route::get('invoiceitem/getInvoiceItemDetail', 'InvoiceItemController@getInvoiceItemDetail');
+    
+    // Route::post('expenses/validate', 'ExpenseController@formValidate');
+    // Route::get('system/expenses', 'ExpenseController@index');
+    // Route::get('expenses/add', 'ExpenseController@create');
+    // Route::post('expenses/store', 'ExpenseController@store');
+    // Route::get('expenses/edit/{id}', 'ExpenseController@edit');
+    // Route::get('expenses/detail/{id}', 'ExpenseController@detail');
+    // Route::post('expenses/update/{id}', 'ExpenseController@update');
+    // Route::post('expenses/delete/{id}', 'ExpenseController@delete');
+
+
     /** การขอสนับสนุนทั่วไป */
     Route::post('supports/validate', 'SupportController@formValidate');
     Route::get('supports/list', 'SupportController@index');

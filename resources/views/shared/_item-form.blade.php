@@ -163,10 +163,10 @@
                             <label for="">การตัดยอด</label>
                             <div class="form-control" style="display: flex; gap: 30px;">
                                 <div>
-                                    <input type="radio" ng-model="newItem.calc_method" ng-value="1" /> ตัดยอดตามจำนวน 
+                                    <input type="radio" ng-model="newItem.calc_method" ng-value="1" disabled/> ตัดยอดตามจำนวน 
                                 </div>
                                 <div>
-                                    <input type="radio" ng-model="newItem.calc_method" ng-value="2" /> ตัดยอดตามงบประมาณ
+                                    <input type="radio" ng-model="newItem.calc_method" ng-value="2"/> ตัดยอดตามงบประมาณ
                                 </div>
                             </div>
                         </div>
