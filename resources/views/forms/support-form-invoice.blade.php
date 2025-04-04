@@ -23,13 +23,30 @@
                                 <div class="content__header-text" style="width: 87%;">
                                     <span style="margin: 0 5px;">
                                         @if($invoicedetail->depart_id == 37)
-                                            {{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
+                                            <!-- {{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }} -->
+                                            {{ str_replace('กลุ่มงาน', 'กง.', 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ') }}
                                         @elseif(in_array($invoicedetail->depart_id, [66,68]))
-                                            {{ $invoicedetail->depart_name }}
+                                            <!-- {{ $invoicedetail->depart_name }} -->
+                                            {{ str_replace('กลุ่มงาน', 'กง.', $invoicedetail->depart_name) }}
                                         @else
-                                            {{ $invoicedetail->depart_name }}
+                                            <!-- {{ $invoicedetail->depart_name }} -->
+                                            {{ str_replace('กลุ่มงาน', 'กง.', $invoicedetail->depart_name) }}
+                                        @endif
+                                        @if($invoicedetail->faction_id == '1')
+                                            กรภ.ด้านอำนวยการ 
+                                        @elseif($invoicedetail->faction_id == '2')
+                                            กรภ.ทุติยภูมิและตติยภูมิ
+                                        @elseif($invoicedetail->faction_id == '3')
+                                            กรภ.ด้านบริการปฐมภูมิ
+                                        @elseif($invoicedetail->faction_id == '7')
+                                            กรภ.พรส.
+                                        @elseif($invoicedetail->faction_id == '5')
+                                            กรภ.ด้านการพยาบาล
+                                        @else
+                                            {{$invoicedetail->faction_name}}
                                         @endif
                                     </span>
+                                    <!-- <span style="margin: 0 1px;"> {{$invoicedetail->faction_name}}</span> -->
                                     <span style="margin: 0 1px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
                                     <span style="margin: 0 1px;">
                                         @if(in_array($invoicedetail->depart_id, [66,68]))
@@ -132,12 +149,11 @@
                     </tr>
 
                     <tr>
-                         <td></td>
-                         <td></td>
-                        <td colspan="2" style="text-align: center; padding-top: 50px;">
+                    @if($invoicedetail->faction_id == '2')
+                    <td colspan="2" style="text-align: center; padding-top: 50px;">
                             <p style="margin: 0;">
                                 @if(empty($invoicedetail->head_of_faction))
-                                    หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
+                                    <span class="dot">......................................................</span>
                                 @else
                                     <span class="dot">......................................................</span>
                                 @endif
@@ -146,12 +162,33 @@
                                 ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
                             </p>
                             <p style="margin: 0;">
+                                <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
+                                <span>หัวหน้ากลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ</span>
+                                <!-- <span>{{ $headOfFactionPosition->full_position }}</span> -->
+                                <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
+                            </p>
+                        </td>
+                    @else
+                    <td colspan="2" style="text-align: center; padding-top: 50px;">
+                            <p style="margin: 0;">
+                                @if(empty($invoicedetail->head_of_faction))
+                                    หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
+                                @else
+                                    <span class="dot">......................................................</span>
+                                @endif
+                            </p>
+                            <p style="margin: 0 0 0 60px;">
+                                ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
+                            </p>
+                            <p style="margin: 0 0 0 60px;">
                                 <span>{{ $headOfFactionPosition->full_position }}</span>
                                 <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
                             </p>
-                         
-        
                         </td>
+                    @endif
+                       
+                        <td></td>
+                        <td></td>
                     </tr>
 
                     <tr>
