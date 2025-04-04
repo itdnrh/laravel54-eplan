@@ -459,8 +459,9 @@ class InvoiceDetailController extends Controller
                         ->join('invoice_item_detail', 'invoice_head.invoice_detail_id', '=', 'invoice_item_detail.invoice_detail_id')
                         ->join('invoice_item', 'invoice_item_detail.invoice_item_id', '=', 'invoice_item.invoice_item_id')
                         ->join('depart', 'invoice_head.depart_id', '=', 'depart.depart_id')
+                        ->join('db_ksh.faction', 'depart.faction_id', '=', 'db_ksh.faction.faction_id')
                         ->where('invoice_detail.ivd_id', $id)
-                        ->select('invoice_detail.*','depart.*','invoice_head.sum_price','invoice_item.invoice_item_id','invoice_head.remain_price','invoice_item.invoice_item_name','invoice_item_detail.invoice_detail_name')
+                        ->select('invoice_detail.*','depart.*','db_ksh.faction.faction_id','db_ksh.faction.faction_name','invoice_head.sum_price','invoice_item.invoice_item_id','invoice_head.remain_price','invoice_item.invoice_item_name','invoice_item_detail.invoice_detail_name')
                         ->firstOrFail();
         $headOfDepart = Person::join('level', 'personal.person_id', '=', 'level.person_id')
                         ->where('level.depart_id', $invoicedetail->depart_id)

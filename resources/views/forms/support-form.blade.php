@@ -974,6 +974,19 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center; padding-top: 10px;">
+                        @if($support->depart_id == 18)
+                            <p style="margin: 0;">
+                            <span class="dot">......................................................</span>
+                            </p>
+                            <p style="margin: 0;">
+                                ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
+                            </p>
+                            <p style="margin: 0;">
+                                <!-- <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span> -->
+                                 <span>รักษาการในตำแหน่ง</span>
+                                 <span>หัวหน้ากลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก</span>
+                            </p>
+                            @else 
                             <p style="margin: 0;">
                                 หัวหน้ากลุ่มงาน<span class="dot">......................................................</span>
                             </p>
@@ -983,6 +996,7 @@
                             <p style="margin: 0;">
                                 <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span>
                             </p>
+                            @endif
                         </td>
                         <td colspan="2" style="text-align: center; padding: 10px;">
                             @if($support->depart_id == 39999)
@@ -997,7 +1011,20 @@
                                 <p style="margin-left: 135px;">
                                     <span>นายแพทย์ชำนาญการพิเศษ</span>
                                 </p>
-                            @else
+                            @elseif($support->depart->faction_id == 2)
+                                @if(empty($support->head_of_faction))
+                                <font color="white">ประธานองค์กรแพทย์ รักษา</font><span class="dot">......................................................</span>
+                                @else
+                                    <span class="dot">......................................................</span>
+                                @endif
+                                <p style="margin-left: 130px;">
+                                ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
+                                </p>
+                                <p style="margin-left: 135px;">
+                                    <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
+                                    <span>หัวหน้ากลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ</span>
+                                </p>
+                            @else 
                                 <p style="margin: 0;">
                                     @if(empty($support->head_of_faction))
                                         หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
