@@ -151,6 +151,7 @@
                     <tr>
                     @if($invoicedetail->faction_id == '2')
                     <td colspan="2" style="text-align: center; padding-top: 50px;">
+                    <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
                             <p style="margin: 0;">
                                 @if(empty($invoicedetail->head_of_faction))
                                     <span class="dot">......................................................</span>
@@ -170,6 +171,7 @@
                         </td>
                     @else
                     <td colspan="2" style="text-align: center; padding-top: 50px;">
+                        <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
                             <p style="margin: 0;">
                                 @if(empty($invoicedetail->head_of_faction))
                                     หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
