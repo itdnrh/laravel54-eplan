@@ -33,15 +33,15 @@
                                             {{ str_replace('กลุ่มงาน', 'กง.', $invoicedetail->depart_name) }}
                                         @endif
                                         @if($invoicedetail->faction_id == '1')
-                                            กรภ.ด้านอำนวยการ 
+                                            กภ.ด้านอำนวยการ 
                                         @elseif($invoicedetail->faction_id == '2')
-                                            กรภ.ทุติยภูมิและตติยภูมิ
+                                            กภ.ทุติยภูมิและตติยภูมิ
                                         @elseif($invoicedetail->faction_id == '3')
-                                            กรภ.ด้านบริการปฐมภูมิ
+                                            กภ.ด้านบริการปฐมภูมิ
                                         @elseif($invoicedetail->faction_id == '7')
-                                            กรภ.พรส.
+                                            กภ.พรส.
                                         @elseif($invoicedetail->faction_id == '5')
-                                            กรภ.ด้านการพยาบาล
+                                            กภ.ด้านการพยาบาล
                                         @else
                                             {{$invoicedetail->faction_name}}
                                         @endif
@@ -116,10 +116,10 @@
                     <tr>
                         <td colspan="4">
                             <p class="memo-paragraph-content">
-                                <span>{{ $invoicedetail->depart_name }} {{ in_array($invoicedetail->depart_id, [66,68]) ? '('.$invoicedetail->ward_name.')' : '' }}</span>
-                                จึงขออนุมัติจ่ายเงินค่าบริการตามแผนเงินบำรุง โรงพยาบาล ปีงบประมาณ ๒๕๖๘ รายการดังกล่าว ประจำเดือน {{ thainumDigit(convDbMonthIdToLonkThMonth($invoicedetail->ivd_month)) }} 
+                                <span>{{ $invoicedetail->depart_name }} {{ in_array($invoicedetail->depart_id, [66,68]) ? '('.$invoicedetail->ward_name.')' : '' }}
+                                จึงขออนุมัติดำเนินการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ ๒๕๖๘ รายการดังกล่าว ประจำเดือน {{ thainumDigit(convDbMonthIdToLonkThMonth($invoicedetail->ivd_month)) }} 
                                 เป็นจำนวนเงินทั้งสิ้น {{ thainumDigit(number_format($invoicedetail->ivd_use_price,2)) }} ({{baht_text($invoicedetail->ivd_use_price)}})
-                                {{ thainumDigit($invoicedetail->ivd_detail) }}  รายละเอียดตามเอกสารที่แนบเรียนมาพร้อมนี้
+                                {{ thainumDigit($invoicedetail->ivd_detail) }} รายละเอียดตามเอกสารที่แนบเรียนมาพร้อมนี้</span>
                             </p>
                         </td>
                     </tr>
@@ -134,6 +134,22 @@
                     <tr>
                     <td></td>
                     <td></td>
+                        @if($invoicedetail->depart_id == '18')
+                        <td colspan="2" style="text-align: center; padding-top: 50px;">
+                            <p style="margin: 0;">
+                                <span class="dot">......................................................</span>
+                            </p>
+                            <p style="margin: 0;">
+                                ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
+                            </p>
+                            <p style="margin: 0;">
+                                <span>{{$headOfDepartPosition->full_position}}</span><br>
+                                <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
+                                <span>หัวหน้ากลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก</span>
+                                <!-- <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span> -->
+                            </p>
+                        </td>
+                        @else
                         <td colspan="2" style="text-align: center; padding-top: 50px;">
                             <p style="margin: 0;">
                                 หัวหน้ากลุ่มงาน<span class="dot">......................................................</span>
@@ -142,34 +158,16 @@
                                 ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
                             </p>
                             <p style="margin: 0;">
-                                <span>{{$headOfDepartPosition->full_position}}</span>
+                                <span>{{$headOfDepartPosition->full_position}}</span><br>
+                                <span>หัวหน้า{{$invoicedetail->depart_name}}</span>
                                 <!-- <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span> -->
                             </p>
                         </td>
+                        @endif
                     </tr>
 
                     <tr>
-                    @if($invoicedetail->faction_id == '2')
-                    <td colspan="2" style="text-align: center; padding-top: 50px;">
-                    <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
-                            <p style="margin: 0;">
-                                @if(empty($invoicedetail->head_of_faction))
-                                    <span class="dot">......................................................</span>
-                                @else
-                                    <span class="dot">......................................................</span>
-                                @endif
-                            </p>
-                            <p style="margin: 0;">
-                                ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
-                            </p>
-                            <p style="margin: 0;">
-                                <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
-                                <span>หัวหน้ากลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ</span>
-                                <!-- <span>{{ $headOfFactionPosition->full_position }}</span> -->
-                                <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
-                            </p>
-                        </td>
-                    @else
+
                     <td colspan="2" style="text-align: center; padding-top: 50px;">
                         <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
                             <p style="margin: 0;">
@@ -184,10 +182,25 @@
                             </p>
                             <p style="margin: 0 0 0 60px;">
                                 <span>{{ $headOfFactionPosition->full_position }}</span>
+                                <span>
+                                @if($invoicedetail->faction_id == '1')
+                                หัวหน้ากลุ่มภารกิจด้านอำนวยการ 
+                                @elseif($invoicedetail->faction_id == '2')
+                                หัวหน้ากลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ
+                                @elseif($invoicedetail->faction_id == '3')
+                                หัวหน้ากลุ่มภารกิจด้านบริการปฐมภูมิ
+                                @elseif($invoicedetail->faction_id == '7')
+                                หัวหน้ากลุ่มภารกิจด้านพัฒนาระบบบริการและสนับสนุนบริการสุขภา
+                                @elseif($invoicedetail->faction_id == '5')
+                                หัวหน้ากลุ่มภารกิจด้านการพยาบาล
+                                @else
+                                หัวหน้า{{$invoicedetail->faction_name}}
+                                @endif
+                                </span>
                                 <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
                             </p>
                         </td>
-                    @endif
+           
                        
                         <td></td>
                         <td></td>
