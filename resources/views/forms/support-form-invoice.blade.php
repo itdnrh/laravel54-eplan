@@ -149,27 +149,7 @@
                     </tr>
 
                     <tr>
-                    @if($invoicedetail->faction_id == '2')
-                    <td colspan="2" style="text-align: center; padding-top: 50px;">
-                    <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
-                            <p style="margin: 0;">
-                                @if(empty($invoicedetail->head_of_faction))
-                                    <span class="dot">......................................................</span>
-                                @else
-                                    <span class="dot">......................................................</span>
-                                @endif
-                            </p>
-                            <p style="margin: 0;">
-                                ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
-                            </p>
-                            <p style="margin: 0;">
-                                <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
-                                <span>หัวหน้ากลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ</span>
-                                <!-- <span>{{ $headOfFactionPosition->full_position }}</span> -->
-                                <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
-                            </p>
-                        </td>
-                    @else
+
                     <td colspan="2" style="text-align: center; padding-top: 50px;">
                         <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
                             <p style="margin: 0;">
@@ -187,7 +167,7 @@
                                 <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
                             </p>
                         </td>
-                    @endif
+
                        
                         <td></td>
                         <td></td>
