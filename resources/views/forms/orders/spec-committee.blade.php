@@ -21,9 +21,23 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}</span>
-                                    <span>โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    <span>โทร {{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}
+                        
+                                        @if($departOfParcel->faction_id == '1')
+                                            กลุ่มภารกิจด้านอำนวยการ 
+                                        @elseif($departOfParcel->faction_id == '2')
+                                            กลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ
+                                        @elseif($departOfParcel->faction_id == '3')
+                                            กลุ่มภารกิจด้านบริการปฐมภูมิ
+                                        @elseif($departOfParcel->faction_id == '7')
+                                            กรภ.พรส.
+                                        @elseif($departOfParcel->faction_id == '5')
+                                        กลุ่มภารกิจด้านการพยาบาล
+                                        @else
+                                            {{$departOfParcel->faction_id}}
+                                        @endif
+                                        โรงพยาบาลเทพรัตน์นครราชสีมา
+                                    <span>โทร. {{ thainumDigit($departOfParcel->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -94,12 +108,12 @@
                                 ๒. ข้อกฎหมาย
                             </p>
                             <p class="memo-paragraph-content with-compressed with-expanded">
-                                ๒.๑ ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ 
-                                และที่แก้ไขเพิ่มเติม ข้อ ๒๑ ในการจัดซื้อจัดจ้างที่มิใช่การจ้างก่อสร้าง ให้หัวหน้าหน่วยงานของรัฐแต่งตั้ง
-                                คณะกรรมการขึ้นมา  คณะหนึ่ง หรือจะให้เจ้าหน้าที่ หรือบุคคลใดบุคคลหนึ่งรับผิดชอบในการจัดทำร่างขอบเขต ของงาน 
-                                หรือ รายละเอียดคุณลักษณะเฉพาะของพัสดุที่จะซื้อหรือจ้าง รวมทั้งกำหนดหลักเกณฑ์พิจารณาคัดเลือก ข้อเสนอด้วย และ
-                                ข้อ ๒๑ วรรคสี่ องค์ประกอบ ระยะเวลาการพิจารณา และประชุมของคณะกรรมการ ตามวรรคหนึ่ง
-                                และวรรคสอง ให้เป็นไปตามที่หัวหน้าหน่วยงานของรัฐกำหนด ตามความจำเป็นและเหมาะสม
+                                <span>๒.๑ ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ </span>
+                                <span>และที่แก้ไขเพิ่มเติม ข้อ ๒๑ ในการจัดซื้อจัดจ้างที่มิใช่การจ้างก่อสร้าง ให้หัวหน้าหน่วยงานของรัฐแต่งตั้ง</span>
+                                <span>คณะกรรมการขึ้นมา  คณะหนึ่ง หรือจะให้เจ้าหน้าที่ หรือบุคคลใดบุคคลหนึ่งรับผิดชอบในการจัดทำร่างขอบเขต ของงาน </span>
+                                <span>หรือ รายละเอียดคุณลักษณะเฉพาะของพัสดุที่จะซื้อหรือจ้าง รวมทั้งกำหนดหลักเกณฑ์พิจารณาคัดเลือก</span>
+                                <span>ข้อเสนอด้วย และ ข้อ ๒๑ วรรคสี่ องค์ประกอบ ระยะเวลาการพิจารณา และประชุมของคณะกรรมการ</span>
+                                <span>ตามวรรคหนึ่งและวรรคสอง ให้เป็นไปตามที่หัวหน้าหน่วยงานของรัฐกำหนด ตามความจำเป็นและเหมาะสม</span>
                             </p>                            
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 ๒.๒ คำสั่งจังหวัดนครราชสีมา ที่ <span>{{ thainumDigit($provinceOrders[0]->order_no) }}</span>
@@ -191,7 +205,7 @@
 
                     <tr>
                         <td colspan="2">
-                            <div class="signature-approver" style="padding-top: 25px;">
+                            <div class="signature-approver" style="padding-top: 122px;">
                                 <p style="margin: 0; font-weight: bold;">
                                     <span style="margin: 0;">ชอบ/อนุมัติ</span>
                                 </p>
@@ -219,7 +233,7 @@
                                 </p>
                             </div>
                             <div class="signature">
-                                <p style="margin: 20px 0 0 0px;">
+                                <p style="margin: 40px 0 0 0px;">
                                     ลงชื่อ<span class="dot">...............................หัวหน้าเจ้าหน้าที่</span>
                                 </p>
                                 <p style="margin: 0;">
@@ -252,9 +266,26 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}</span>
+                                    <!-- <span>{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span>โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    <span>โทร {{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
+                                    <span>โทร {{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span> -->
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}
+                        
+                                        @if($departOfParcel->faction_id == '1')
+                                            กลุ่มภารกิจด้านอำนวยการ 
+                                        @elseif($departOfParcel->faction_id == '2')
+                                            กลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ
+                                        @elseif($departOfParcel->faction_id == '3')
+                                            กลุ่มภารกิจด้านบริการปฐมภูมิ
+                                        @elseif($departOfParcel->faction_id == '7')
+                                            กรภ.พรส.
+                                        @elseif($departOfParcel->faction_id == '5')
+                                        กลุ่มภารกิจด้านการพยาบาล
+                                        @else
+                                            {{$departOfParcel->faction_id}}
+                                        @endif
+                                        โรงพยาบาลเทพรัตน์นครราชสีมา
+                                    <span>โทร. {{ thainumDigit($departOfParcel->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -318,10 +349,11 @@
                                 ซึ่งสามารถจัดซื้อจัดจ้างได้จริงตามลำดับ (๔) โดยใช้เกณฑ์ราคากลางและคุณลักษณะพื้นฐานการจัดหา
                             </p>
                             <p class="memo-paragraph-content with-compressed with-expanded">
-                                ๒.๒ ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐
-                                ข้อ ๒๑ ในการจัดซื้อหรือจัดจ้าง ที่มิใช่การจ้างก่อสร้าง ให้หัวหน้าหน่วยงานของรัฐแต่งตั้งคณะกรรมการขึ้นมา คณะหนึ่ง
-                                หรือจะให้เจ้าหน้าที่ หรือบุคคลใดบุคคลหนึ่งรับผิดชอบในการจัดทำร่างขอบเขตของงานหรือราย-
-                                ละเอียดคุณลักษณะเฉพาะของพัสดุที่จะซื้อหรือจ้าง รวมทั้งกำหนดหลักเกณฑ์พิจารณาคัดเลือกข้อเสนอด้วย
+                                <span>๒.๒ ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐</span>
+                                <span>และที่แก้ไขเพิ่มเติม ข้อ ๒๑ ในการจัดซื้อหรือจัดจ้าง ที่มิใช่การจ้างก่อสร้าง ให้หัวหน้าหน่วยงานของรัฐแต่งตั้ง</span>
+                                <span>คณะกรรมการขึ้นมา คณะหนึ่งหรือจะให้เจ้าหน้าที่หรือบุคคลใดบุคคลหนึ่งรับผิดชอบ ในการจัดทำร่างขอบเขต</span>
+                                <span>ของงานหรือรายละเอียดคุณลักษณะเฉพาะของพัสดุที่จะซื้อหรือจ้าง รวมทั้งกำหนดหลักเกณฑ์พิจารณาคัดเลือก</span>
+                                <span>ข้อเสนอด้วย</span>
                             </p>
                             <p class="memo-paragraph-content with-compressed with-expanded">
                                 <!-- ๒.๓ คำสั่งจังหวัดนครราชสีมา ที่ <span>{{ thainumDigit($provinceOrders[0]->order_no) }}</span>
