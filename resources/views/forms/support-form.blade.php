@@ -1011,19 +1011,6 @@
                                 <p style="margin-left: 135px;">
                                     <span>นายแพทย์ชำนาญการพิเศษ</span>
                                 </p>
-                            @elseif($support->depart->faction_id == 2)
-                                @if(empty($support->head_of_faction))
-                                <font color="white">ประธานองค์กรแพทย์ รักษา</font><span class="dot">......................................................</span>
-                                @else
-                                    <span class="dot">......................................................</span>
-                                @endif
-                                <p style="margin-left: 130px;">
-                                ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
-                                </p>
-                                <p style="margin-left: 135px;">
-                                    <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
-                                    <span>หัวหน้ากลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ</span>
-                                </p>
                             @else 
                                 <p style="margin: 0;">
                                     @if(empty($support->head_of_faction))

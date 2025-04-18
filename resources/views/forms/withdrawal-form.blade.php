@@ -29,9 +29,27 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
+                                    <!-- <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span> -->
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}
+                                        
+                                        @if($departOfParcel->faction_id == '1')
+                                            กลุ่มภารกิจด้านอำนวยการ 
+                                        @elseif($departOfParcel->faction_id == '2')
+                                            กลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ
+                                        @elseif($departOfParcel->faction_id == '3')
+                                            กลุ่มภารกิจด้านบริการปฐมภูมิ
+                                        @elseif($departOfParcel->faction_id == '7')
+                                            กรภ.พรส.
+                                        @elseif($departOfParcel->faction_id == '5')
+                                        กลุ่มภารกิจด้านการพยาบาล
+                                        @else
+                                            {{$departOfParcel->faction_id}}
+                                        @endif
+                                        โรงพยาบาลเทพรัตน์นครราชสีมา
+                                    <span>โทร. {{ thainumDigit($departOfParcel->tel_no) }}</span>
+
                                 </div>
                             </div>
                         </td>
@@ -174,9 +192,27 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
+                                    <!-- <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span> -->
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}
+                        
+                                        @if($departOfParcel->faction_id == '1')
+                                            กลุ่มภารกิจด้านอำนวยการ 
+                                        @elseif($departOfParcel->faction_id == '2')
+                                            กลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ
+                                        @elseif($departOfParcel->faction_id == '3')
+                                            กลุ่มภารกิจด้านบริการปฐมภูมิ
+                                        @elseif($departOfParcel->faction_id == '7')
+                                            กรภ.พรส.
+                                        @elseif($departOfParcel->faction_id == '5')
+                                        กลุ่มภารกิจด้านการพยาบาล
+                                        @else
+                                            {{$departOfParcel->faction_id}}
+                                        @endif
+                                        โรงพยาบาลเทพรัตน์นครราชสีมา
+                                    <span>โทร. {{ thainumDigit($departOfParcel->tel_no) }}</span>
+
                                 </div>
                             </div>
                         </td>
@@ -321,9 +357,26 @@
                             <div class="content-header">
                                 <span class="content__header-topic">ส่วนราชการ</span>
                                 <div class="content__header-text" style="width: 87%;">
-                                    <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
+                                    <!-- <span style="margin: 0 5px;">{{ thainumDigit($departOfParcel->depart_name) }}</span>
                                     <span style="margin: 0 5px;">โรงพยาบาลเทพรัตน์นครราชสีมา</span>
-                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span>
+                                    โทร <span style="margin: 0 5px;">{{ thainumDigit('0 4439 5000 ต่อ '.$departOfParcel->tel_no) }}</span> -->
+                                    <span>{{ thainumDigit($departOfParcel->depart_name) }}
+                        
+                                        @if($departOfParcel->faction_id == '1')
+                                            กลุ่มภารกิจด้านอำนวยการ 
+                                        @elseif($departOfParcel->faction_id == '2')
+                                            กลุ่มภารกิจด้านบริการทุติยภูมิและตติยภูมิ
+                                        @elseif($departOfParcel->faction_id == '3')
+                                            กลุ่มภารกิจด้านบริการปฐมภูมิ
+                                        @elseif($departOfParcel->faction_id == '7')
+                                            กรภ.พรส.
+                                        @elseif($departOfParcel->faction_id == '5')
+                                        กลุ่มภารกิจด้านการพยาบาล
+                                        @else
+                                            {{$departOfParcel->faction_id}}
+                                        @endif
+                                        โรงพยาบาลเทพรัตน์นครราชสีมา
+                                    <span>โทร. {{ thainumDigit($departOfParcel->tel_no) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -386,8 +439,9 @@
                                 ๒. ข้อกฎหมาย/ระเบียบ
                             </p>
                             <p class="memo-paragraph-content with-compressed with-expanded">
-                                ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.<span>๒๕๖๐</span> 
-                                ข้อ<span>๑๖</span> เมื่อสิ้นสุดกระบวนการจัดซื้อจัดจ้างในแต่ละโครงการ ให้หน่วยงานของรัฐจัดให้มีการบันทึกรายงานพิจารณาราย- ละเอียด วิธีการและขั้นตอนการจัดซื้อจัดจ้างพร้อมทั้งเอกสารหลักฐานประกอบ
+                                <span>ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ และที่แก้ไขเพิ่มเติม</span> 
+                                <span>ข้อ ๑๖ เมื่อสิ้นสุดกระบวนการจัดซื้อจัดจ้างในแต่ละโครงการ ให้หน่วยงานของรัฐจัดให้มีการ</span>
+                                <span>บันทึกรายงาน พิจารณารายละเอียด วิธีการและขั้นตอนการจัดซื้อจัดจ้างพร้อมทั้งเอกสารหลักฐานประกอบ</span>
                             </p>
                         </td>
                     </tr>
@@ -397,9 +451,9 @@
                                 ๓. ข้อพิจารณา
                             </p>
                             <p class="memo-paragraph-content with-expanded">
-                                เพื่อให้การดำเนินการเป็นไปตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการ บริหารพัสดุภาครัฐ พ.ศ. <span>๒๕๖๐</span> 
-                                ข้อ <span>๑๖</span> จึงขอรายงานผลการพิจารณารายละเอียดวิธีการและขั้นตอนการจัดซื้อ-
-                                จัดจ้าง<span>{{ $planType->plan_type_name }}</span>
+                                <span>เพื่อให้การดำเนินการเป็นไปตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการ </span>
+                                <span>บริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ และที่แก้ไขเพิ่มเติม ข้อ ๑๖ จึงขอรายงานผล การพิจารณารายละเอียด</span>
+                                <span>วิธีการและขั้นตอนการจัดซื้อจัดจ้าง{{ $planType->plan_type_name }}</span>
                                 จำนวน <span>{{ thainumDigit(count($withdrawal->inspection->order->details)) }}</span> รายการ
                                 พร้อมทั้งหลักฐานประกอบ ตามรายการดังต่อไปนี้
                                 <p class="memo-paragraph-content">๑) บันทึกรายงานขอจ้าง</p>
@@ -453,7 +507,7 @@
                                 </p>
                             </div>
                             <div class="signature">
-                                <p style="margin: 10px 0 0;">
+                                <p style="margin: 20px 0 0;">
                                     ( {{ $headOfFaction->prefix->prefix_name.$headOfFaction->person_firstname. ' ' .$headOfFaction->person_lastname }} )
                                 </p>
                                 <p style="margin: 0;">
