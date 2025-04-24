@@ -144,7 +144,7 @@
                             </p>
                             <p style="margin: 0;">
                                 <span>{{$headOfDepartPosition->full_position}}</span><br>
-                                <span>ประธานองค์กรแพทย์ รักษาราชการแทน</span>
+                                <span>รักษาราชการแทน</span>
                                 <span>หัวหน้ากลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก</span>
                                 <!-- <span>{{ $headOfDepart->position->position_name }}{{ $headOfDepart->academic ? $headOfDepart->academic->ac_name : '' }}</span> -->
                             </p>
