@@ -974,7 +974,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center; padding-top: 10px;">
-                        @if($support->depart_id == 18)
+                        @if($support->depart_id == 1888)
                             <p style="margin: 0;">
                             <span class="dot">......................................................</span>
                             </p>
