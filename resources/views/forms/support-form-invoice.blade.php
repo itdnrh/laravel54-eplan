@@ -169,8 +169,8 @@
                     <tr>
 
                     <td colspan="2" style="text-align: center; padding-top: 50px;">
-                        <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
                             <p style="margin: 0;">
+                                <p style="margin: 0 0 37px 0;"><span>เห็นควรอนุมัติ</span></p>
                                 @if(empty($invoicedetail->head_of_faction))
                                     หัวหน้ากลุ่มภารกิจ<span class="dot">......................................................</span>
                                 @else
@@ -198,7 +198,7 @@
                                 @endif
                                 </span>
                                 <!-- <span>{{ $headOfFaction->position->position_name }}{{ $headOfFaction->academic ? $headOfFaction->academic->ac_name : '' }}</span> -->
-                            </p>
+                            </p>                            
                         </td>
            
                        
