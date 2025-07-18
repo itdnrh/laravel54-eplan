@@ -134,7 +134,7 @@
                     <tr>
                     <td></td>
                     <td></td>
-                        @if($invoicedetail->depart_id == '18')
+                        @if($invoicedetail->depart_id == '1888')
                         <td colspan="2" style="text-align: center; padding-top: 50px;">
                             <p style="margin: 0;">
                                 <span class="dot">......................................................</span>
