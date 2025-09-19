@@ -8,7 +8,7 @@ app.controller('invoiceDetailCtrl', function(CONFIG, $rootScope, $scope, $http, 
   $scope.cboInPlan = '';
 
   $scope.invoiceDetail = {
-    year:2568,
+    year:2569,
     start_month:"",
     invoice_item_id:'',
     invoice_detail_id:'',
