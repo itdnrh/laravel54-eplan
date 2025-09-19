@@ -12,7 +12,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
     $scope.loading = false;
 
     /** Filtering input models */
-    $scope.cboYear = '2568'; //parseInt(moment().format('MM')) > 9
+    $scope.cboYear = '2569'; //parseInt(moment().format('MM')) > 9
     //                     ? (moment().year() + 544).toString()
     //                     : (moment().year() + 543).toString();
     $scope.cboMonth = moment().format('MM');
