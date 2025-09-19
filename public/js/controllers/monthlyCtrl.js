@@ -6,7 +6,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
     $scope.expenseTypes = [];
 
-    $scope.cboYear = '2568'; //(moment().year() + 543).toString();
+    $scope.cboYear = '2569'; //(moment().year() + 543).toString();
     $scope.cboExpenseType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
@@ -18,7 +18,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
     $scope.monthly = {
         monthly_id: '',
-        year: '2568',
+        year: '2569',
         month: '',
         expense_type_id: '',
         expense_id: '',
@@ -77,7 +77,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
 
     const clearMonthly = function() {
         $scope.monthly.monthly_id = '';
-        $scope.monthly.year = '2568';
+        $scope.monthly.year = '2569';
         $scope.monthly.month = '';
         $scope.monthly.expense_type_id = '';
         $scope.monthly.expense_id = '';
@@ -348,7 +348,7 @@ app.controller('monthlyCtrl', function(CONFIG, $scope, $http, toaster, DatetimeS
     };
 
     $scope.multipleData = {
-        year: '2568',
+        year: '2569',
         month: DatetimeService.fotmatYearMonthBE(moment().format('YYYY-MM')),
         plan_type_id: '1',
         expenses: [],

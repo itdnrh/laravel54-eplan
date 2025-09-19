@@ -11,7 +11,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
     $scope.construct = {
         id: '',
         in_plan: 'I',
-        year: '2568', //(moment().year() + 543).toString(),
+        year: '2569', //(moment().year() + 543).toString(),
         plan_no: '',
         faction_id: '',
         depart_id: '',
@@ -101,7 +101,7 @@ app.controller('planConstructCtrl', function(CONFIG, $scope, $http, toaster, Str
         $scope.construct = {
             id: '',
             in_plan: 'I',
-            year: '2568', //(moment().year() + 543).toString(),
+            year: '2569', //(moment().year() + 543).toString(),
             plan_no: '',
             faction_id: '',
             depart_id: '',

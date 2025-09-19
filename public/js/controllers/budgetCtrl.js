@@ -6,7 +6,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     $scope.summary = [];
 
-    $scope.cboYear = '2568'; //(moment().year() + 543).toString();
+    $scope.cboYear = '2569'; //(moment().year() + 543).toString();
     $scope.cboExpenseType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
@@ -16,7 +16,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
 
     $scope.budget = {
         id: '',
-        year: '2568',
+        year: '2569',
         expense_type_id: '',
         expense_id: '',
         plan_id: '',
@@ -43,7 +43,7 @@ app.controller('budgetCtrl', function(CONFIG, $scope, $http, toaster, StringForm
     const clearBudget = function() {
         $scope.budget = {
             id: '',
-            year: '2568',
+            year: '2569',
             expense_type_id: '',
             expense_id: '',
             budget: '',

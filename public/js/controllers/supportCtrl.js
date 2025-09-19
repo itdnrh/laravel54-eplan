@@ -40,7 +40,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         topic: '',
         depart_id: '',
         division_id: '',
-        year: '2568', //(moment().year() + 543).toString(),
+        year: 2569, //(moment().year() + 543).toString(),
         plan_type_id: '',
         category_id: '',
         is_plan_group: false,
@@ -318,8 +318,9 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         let depart = ($('#user').val() == '1300200009261' || $('#depart_id').val() == 4 || $('#duty_id').val() == 1) 
                             ? $scope.cboDepart
                             : $('#depart_id').val();
-
-        $http.get(`${CONFIG.baseUrl}/plans/search?year=2568type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
+        let selectYear = $scope.support.year;
+                            
+        $http.get(`${CONFIG.baseUrl}/plans/search?year=${selectYear}type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             if (toggleModal) $('#plans-list').modal('show');
 

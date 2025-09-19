@@ -89,7 +89,7 @@ app.controller('mainCtrl', function(CONFIG, $rootScope, $scope, $http, toaster, 
         have_subitem: 0,
         is_fixcost: 0,
         is_addon: 0,
-        first_year: '2567',
+        first_year: '2569',
         remark: '',
         error: {}
     };

@@ -10,7 +10,7 @@ app.controller('receivingCtrl', function(CONFIG, $scope, $http, toaster, StringF
     $scope.supports = [];
     $scope.supports_pager = null;
 
-    $scope.cboYear = '2568'; //(moment().year() + 543).toString();
+    $scope.cboYear = '2569'; //(moment().year() + 543).toString();
     $scope.cboInPlan = '';
     $scope.txtSupportNo = '';
     $scope.txtReceivedNo = '';

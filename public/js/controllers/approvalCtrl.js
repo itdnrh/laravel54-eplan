@@ -6,7 +6,7 @@ app.controller('approvalCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.projects_pager = null;
     // $scope.loading = false;
 
-    $scope.cboYear = '2568', //(moment().year() + 543).toString(),
+    $scope.cboYear = '2569', //(moment().year() + 543).toString(),
     $scope.cboPlanType = "";
     $scope.cboCategory = "";
     $scope.cboFaction = "";
