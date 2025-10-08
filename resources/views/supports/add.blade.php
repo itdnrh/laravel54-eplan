@@ -70,7 +70,7 @@
                                     class="form-group col-md-4"
                                     ng-class="{'has-error has-feedback': checkValidate(support, 'year')}"
                                 >
-                                    <label>ปีงบประมาณ <span class="required-field">*</span> :</label>
+                                    <label>ปีงบประมาณ <span class="required-field">*</span> : </label>
                                     <select
                                         id="year"
                                         name="year"
@@ -78,7 +78,7 @@
                                         class="form-control"
                                     >
                                         <option value="">-- ทั้งหมด --</option>
-                                        <option ng-repeat="y in budgetYearRange" value="@{{ y }}">
+                                        <option ng-repeat="y in budgetYearRange" ng-value="y">
                                             @{{ y }}
                                         </option>
                                     </select>
