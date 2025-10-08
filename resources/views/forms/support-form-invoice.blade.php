@@ -90,7 +90,7 @@
                             <div class="content-header">
                                 <span class="content__header-topic">เรื่อง</span>
                                 <div class="content__header-text" style="width: 94%;">
-                                    <span>ขออนุมัติดำเนินการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ ๒๕๖๘</span>
+                                    <span>ขออนุมัติดำเนินการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ {{thainumDigit($invoicedetail->ivh_year)}}</span>
                                 </div>
                             </div>
                             <div style="margin: 0; padding: 0;">
@@ -105,7 +105,7 @@
                             <p class="memo-paragraph-content">
                                 ตามที่ <span>{{ $invoicedetail->depart_name }} {{ in_array($invoicedetail->depart_id, [66,68]) ? '('.$invoicedetail->ward_name.')' : '' }}</span>
                                 ได้รับอนุมัติให้ 
-                                ดำเนินงานตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ ๒๕๖๘ หมวด <span style="margin: 0 5px;">{{ thainumDigit($invoicedetail->invoice_item_name) }}</span>
+                                ดำเนินงานตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ {{thainumDigit($invoicedetail->ivh_year)}} หมวด <span style="margin: 0 5px;">{{ thainumDigit($invoicedetail->invoice_item_name) }}</span>
                                 รายการ <span style="margin: 0 5px;">{{ thainumDigit($invoicedetail->invoice_detail_name) }}</span>
                                 งบประมาณทั้งสิ้น {{ thainumDigit(number_format($invoicedetail->sum_price,2)) }} ({{baht_text($invoicedetail->sum_price)}})
                                 เพื่อ {{ thainumDigit($invoicedetail->ivd_reason) }} 
@@ -117,7 +117,7 @@
                         <td colspan="4">
                             <p class="memo-paragraph-content">
                                 <span>{{ $invoicedetail->depart_name }} {{ in_array($invoicedetail->depart_id, [66,68]) ? '('.$invoicedetail->ward_name.')' : '' }}
-                                จึงขออนุมัติดำเนินการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ ๒๕๖๘ รายการดังกล่าว ประจำเดือน {{ thainumDigit(convDbMonthIdToLonkThMonth($invoicedetail->ivd_month)) }} 
+                                จึงขออนุมัติดำเนินการตามแผนเงินบำรุงโรงพยาบาล ปีงบประมาณ {{thainumDigit($invoicedetail->ivh_year)}} รายการดังกล่าว ประจำเดือน {{ thainumDigit(convDbMonthIdToLonkThMonth($invoicedetail->ivd_month)) }} 
                                 เป็นจำนวนเงินทั้งสิ้น {{ thainumDigit(number_format($invoicedetail->ivd_use_price,2)) }} ({{baht_text($invoicedetail->ivd_use_price)}})
                                 {{ thainumDigit($invoicedetail->ivd_detail) }} รายละเอียดตามเอกสารที่แนบเรียนมาพร้อมนี้</span>
                             </p>
@@ -125,7 +125,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                             <p style="margin: 0 0 0 80px;">
+                             <p style="margin: 0 0 0 88px;">
                                 จึงเรียนมาเพื่อพิจารณา หากเห็นชอบโปรดอนุมัติ
                             </p>
                         </td>

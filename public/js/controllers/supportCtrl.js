@@ -7,7 +7,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     /** Filtering input controls */
     $scope.cboYear = parseInt(moment().format('MM')) > 9
                         ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
+                        : (moment().year() + 543).toString();                      
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
