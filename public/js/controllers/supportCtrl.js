@@ -7,7 +7,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
     /** Filtering input controls */
     $scope.cboYear = parseInt(moment().format('MM')) > 9
                         ? (moment().year() + 544).toString()
-                        : (moment().year() + 543).toString();
+                        : (moment().year() + 543).toString();                      
     $scope.cboPlanType = '';
     $scope.cboFaction = '';
     $scope.cboDepart = '';
@@ -60,7 +60,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
         env_committee: [],
         insp_committee: [],
         user: null
-    };
+    };    
 
     $scope.newItem = {
         plan: null,
@@ -319,7 +319,7 @@ app.controller('supportCtrl', function(CONFIG, $rootScope, $scope, $http, toaste
                             ? $scope.cboDepart
                             : $('#depart_id').val();
         let selectYear = $scope.support.year;
-                            
+                  
         $http.get(`${CONFIG.baseUrl}/plans/search?year=${selectYear}type=${type}&cate=${cate}&name=${name}&depart=${depart}&status=${status}&approved=A`)
         .then(function(res) {
             if (toggleModal) $('#plans-list').modal('show');
