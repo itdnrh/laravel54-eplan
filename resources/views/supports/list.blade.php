@@ -410,10 +410,10 @@
                                             เอกสารถูกตีกลับ
                                         </span>
                                         <span class="label label-danger" ng-show="support.status == 10">
-                                            รออนุมัติพิจารณา
+                                            รอแผนพิจารณา
                                         </span>
                                         <span class="label label-warning" ng-show="support.status == 11">
-                                            อยู่ระหว่างการจัดซื้อ
+                                            ผ่านการพิจารณา
                                         </span>
                                         <span class="label bg-navy" ng-show="support.status == 88">
                                             ไม่อนุมัติ
