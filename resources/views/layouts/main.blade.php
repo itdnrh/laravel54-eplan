@@ -7,7 +7,7 @@
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-	<title>E-Plan 2568 Version : 680212</title>
+	<title>E-Plan 2569 Version : 690130</title>
 
 </head>
 

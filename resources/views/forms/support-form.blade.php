@@ -24,6 +24,8 @@
                                     <span style="margin: 0 5px;">
                                         @if($support->depart_id == 37)
                                             {{ 'กลุ่มงานการพยาบาลด้านการควบคุมและป้องกันการติดเชื้อฯ' }}
+                                        @elseif($support->depart_id == 69)
+                                            {{ 'งานโภชนาศาสตร์' }}
                                         @elseif(in_array($support->depart_id, [66,68]))
                                             {{ $support->depart->depart_name }}
                                         @else
@@ -83,7 +85,11 @@
                     <tr>
                         <td colspan="4">
                             <p class="memo-paragraph-content">
+                                @if($support->depart_id == 69)
+                                    {{ 'ด้วยงานโภชนาศาสตร์' }}
+                                @else
                                 ด้วย <span>{{ $support->depart->depart_name }} {{ in_array($support->depart_id, [66,68]) ? '('.$support->division->ward_name.')' : '' }}</span>
+                                @endif
                                 มีความประสงค์ขอให้ดำเนินการซื้อ / จ้าง ดังนี้
                             </p>
                         </td>
@@ -988,7 +994,11 @@
                             </p>
                             @else 
                             <p style="margin: 0;">
+                                @if($support->depart_id == 69)
+                                หัวหน้างาน<span class="dot">......................................................</span>
+                                @else
                                 หัวหน้ากลุ่มงาน<span class="dot">......................................................</span>
+                                @endif
                             </p>
                             <p style="margin: 0;">
                                 ( {{ $headOfDepart->prefix->prefix_name.$headOfDepart->person_firstname. ' ' .$headOfDepart->person_lastname }} )
