@@ -380,10 +380,6 @@
                                 <span>ปลัดจังหวัด หัวหน้าส่วนราชการประจำจังหวัด นายอำเภอ และหัวหน้าหน่วยงาน</span>
                                 <span>ในสังกัดสำนักงานสาธารณสุขจังหวัดนครราชสีมา ปฏิบัติราชการแทน ตามภาคผนวก ฉ. การมอบอำนาจ</span>
                                 <span>การจัดซื้อจัดจ้างและการบริหารพัสดุ ข้อ ๖. ผู้อำนวยการโรงพยาบาลทั่วไป ให้มีอำนาจดำเนินการภายในวงเงิน ครั้งหนึ่งไม่เกิน ๑๐,๐๐๐,๐๐๐ บาท (สิบล้านบาทถ้วน)</span>
-                                   
-                                 
-                                 
-                                
                             </p>
                         </td>
                     </tr>
@@ -392,14 +388,16 @@
                             <?php $spacing = strlen(baht_text($support->net_total)) > 80 ? '&nbsp;' : ''; ?>
                             <?php $unspacing = strlen(baht_text($support->net_total)) > 80 ? '' : '&nbsp;'; ?>
                             <?php $sourcePrices = [1 => 'ราคาที่ได้จากการจัดซื้อภายใน 2 ปีงบประมาณ', 2 => 'อื่นๆ']; ?>
-                            <div class="memo-paragraph-content with-compressed with-expanded">
+                            <div class="memo-paragraph-content with-compressed ">
                                 <span class="memo-paragraph-topic-inline">๓.ข้อพิจารณา</span>
                                 บัดนี้ ผู้กำหนดรายละเอียดคุณลักษณะ ได้กำหนดรายละเอียดคุณลักษณะ เฉพาะและราคากลาง{{$orderType}}<span>{{ $support->order->category->name}}</span>
                                 จำนวน <span>{{ thainumDigit($support->amount) }} รายการ</span>
                                 เป็นเงินทั้งสิ้น <span>{{ thainumDigit(number_format($support->net_total, 2)) }} บาท</span>
-                                <span>({{ baht_text($support->net_total) }})</span>
-                                โรงพยาบาลเทพรัตน์นครราชสีมา โดยถือปฏิบัติตาม{{ $spacing }}ระเบียบกระทรวงการคลัง{{ $unspacing }}ว่าด้วยการจัดซื้อจัดจ้าง และการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ และที่แก้ไขเพิ่มเติม
-                                ข้อ ๒๑ และได้พิจารณาราคากลาง โดยถือปฏิบัติตามพระราชบัญญัติ การจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ มาตรา ๔
+                                <span>({{ baht_text($support->net_total) }}) โรงพยาบาลเทพรัตน์นครราชสีมา โดยถือปฏิบัติตาม ระเบียบกระทรวงการคลัง</span>
+                                <!-- <span>การคลัง {{ $unspacing }}</span> -->
+                                <span>ว่าด้วยการจัดซื้อจัดจ้าง และการบริหารพัสดุภาครัฐ พ.ศ. ๒๕๖๐ และที่แก้ไขเพิ่มเติม</span>
+                                <span>ข้อ ๒๑ และได้ พิจารณาราคากลาง โดยถือปฏิบัติตามพระราชบัญญัติ การจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ</span>
+                                <span>พ.ศ. ๒๕๖๐ มาตรา ๔</span>
                                 <table style="width: 100%; margin: 10px;" class="table" border="1">
                                     <tr>
                                         <th style="text-align: center;">ลำดับ</th>
